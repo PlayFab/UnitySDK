@@ -244,7 +244,8 @@ namespace PlayFab
 		/// </summary>
 		public static void RegisterPlayFabUser(RegisterPlayFabUserRequest request, RegisterPlayFabUserCallback resultCallback, ErrorCallback errorCallback)
 		{
-			
+			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
+
 			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
 			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
 			{
@@ -257,7 +258,8 @@ namespace PlayFab
 				}
 				if(result != null)
 				{
-					
+					AuthKey = result.SessionTicket ?? AuthKey;
+
 					if(resultCallback != null)
 					{
 						resultCallback(result);
