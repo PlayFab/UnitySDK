@@ -33,7 +33,7 @@ namespace PlayFab.Internal
 			Dictionary<String, object> rawResultEnvelope = null;
 			try
 			{
-				rawResultEnvelope = (Dictionary<String, object>)JsonReader.Deserialize(responseStr );
+				rawResultEnvelope = (Dictionary<String, object>)JsonReader.Deserialize(responseStr, Util.GlobalJsonReaderSettings);
 				if(rawResultEnvelope.ContainsKey("data"))
 				{
 					Dictionary<String, object> rawResult = (Dictionary<String, object>)rawResultEnvelope["data"];
