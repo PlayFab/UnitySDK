@@ -56,7 +56,7 @@ namespace PlayFab.Internal
 				PlayFabErrorCode errorEnum;
 				try
 				{
-					errorEnum = (PlayFabErrorCode)rawResultEnvelope["errorCode"];
+					errorEnum = (PlayFabErrorCode)(int)(double)rawResultEnvelope["errorCode"];
 				}
 				catch
 				{
@@ -77,7 +77,7 @@ namespace PlayFab.Internal
 
 				error = new PlayFabError
 				{
-					HttpCode = (int)rawResultEnvelope["code"],
+					HttpCode = (int)(double)rawResultEnvelope["code"],
 					HttpStatus = (string)rawResultEnvelope["status"],
 					Error = errorEnum,
 					ErrorMessage = (string)rawResultEnvelope["errorMessage"],
