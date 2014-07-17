@@ -27,8 +27,13 @@ namespace PlayFab.Internal
 		private IEnumerator MakeRequest (string url, string data, string authType, string authKey, HTTPCallback callback)
 		{
 			byte[] bData = System.Text.Encoding.UTF8.GetBytes(data);
-			
-			Dictionary<string,string> headers = new Dictionary<string,string>();
+
+#if UNITY_4_5
+			Dictionary<string, string> headers = new Dictionary<string,string>();
+#else
+			// Using hashtable for compatibility with Unity < 4.5
+			Hashtable headers = new Hashtable ();
+#endif
 			headers.Add("Content-Type", "application/json");
 			if(authType != null)
 				headers.Add(authType, authKey);
