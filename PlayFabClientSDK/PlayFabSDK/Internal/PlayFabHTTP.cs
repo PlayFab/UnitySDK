@@ -38,7 +38,8 @@ namespace PlayFab.Internal
 			if(authType != null)
 				headers.Add(authType, authKey);
 			headers.Add("X-ReportErrorAsSuccess", "true");
-			
+			headers.Add("X-PlayFabSDK", PlayFabVersion.getVersionString ());
+
 			WWW www = new WWW(url, bData, headers);
 			yield return www;
 			
