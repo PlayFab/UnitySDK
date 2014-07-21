@@ -11,7 +11,7 @@ namespace PlayFab
 	/// </summary>
 	public class PlayFabAdminAPI
 	{
-		public delegate void GetUserAccountInfoCallback(GetUserAccountInfoResult result);
+		public delegate void GetUserAccountInfoCallback(LookupUserAccountInfoResult result);
 		public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
 		public delegate void UpdateUserTitleDisplayNameCallback(UpdateUserTitleDisplayNameResult result);
 		public delegate void GetCatalogItemsCallback(GetCatalogItemsResult result);
@@ -38,16 +38,16 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the relevant details for a specified user, based upon a match against a supplied unique identifier
 		/// </summary>
-		public static void GetUserAccountInfo(GetUserAccountInfoRequest request, GetUserAccountInfoCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserAccountInfo(LookupUserAccountInfoRequest request, GetUserAccountInfoCallback resultCallback, ErrorCallback errorCallback)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
 			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
 			{
-				GetUserAccountInfoResult result = null;
+				LookupUserAccountInfoResult result = null;
 				PlayFabError error = null;
-				ResultContainer<GetUserAccountInfoResult>.HandleResults(responseStr, errorStr, out result, out error);
+				ResultContainer<LookupUserAccountInfoResult>.HandleResults(responseStr, errorStr, out result, out error);
 				if(error != null && errorCallback != null)
 				{
 					errorCallback(error);

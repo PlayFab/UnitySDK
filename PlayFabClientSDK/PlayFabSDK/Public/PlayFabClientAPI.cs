@@ -682,7 +682,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Retrieves the user's current inventory of virtual goods
+		/// Retrieves the specified version of the title's catalog of virtual goods, including all defined properties
 		/// </summary>
 		public static void GetCatalogItems(GetCatalogItemsRequest request, GetCatalogItemsCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -798,7 +798,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Retrieves the specified version of the title's catalog of virtual goods, including all defined properties
+		/// Retrieves the user's current inventory of virtual goods
 		/// </summary>
 		public static void GetUserInventory(GetUserInventoryRequest request, GetUserInventoryCallback resultCallback, ErrorCallback errorCallback)
 		{

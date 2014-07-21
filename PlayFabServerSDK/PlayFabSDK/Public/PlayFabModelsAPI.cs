@@ -745,65 +745,6 @@ namespace PlayFab.Model
 	
 	
 	
-	public class GetUserAccountInfoRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// PlayFab unique identifier to match against existing user accounts
-		/// </summary>
-		
-		public string PlayFabId { get; set;}
-		
-		/// <summary>
-		/// email address to match against existing user accounts
-		/// </summary>
-		
-		public string Email { get; set;}
-		
-		/// <summary>
-		/// PlayFab username to match against existing user accounts
-		/// </summary>
-		
-		public string Username { get; set;}
-		
-		/// <summary>
-		/// title-specific username to match against existing user accounts
-		/// </summary>
-		
-		public string TitleDisplayName { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Email = (string)JsonUtil.Get<string>(json, "Email");
-			Username = (string)JsonUtil.Get<string>(json, "Username");
-			TitleDisplayName = (string)JsonUtil.Get<string>(json, "TitleDisplayName");
-		}
-	}
-	
-	
-	
-	public class GetUserAccountInfoResult : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// user info for the user matching the request
-		/// </summary>
-		
-		public UserAccountInfo UserInfo { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
-		}
-	}
-	
-	
-	
 	public class GetUserInventoryRequest : PlayFabModelBase
 	{
 		
@@ -814,10 +755,17 @@ namespace PlayFab.Model
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// used to limit results to only those from a specific catalog version
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
 		}
 	}
 	
@@ -943,6 +891,65 @@ namespace PlayFab.Model
 		{
 			
 			Builds = JsonUtil.GetObjectList<GetServerBuildInfoResult>(json, "Builds");
+		}
+	}
+	
+	
+	
+	public class LookupUserAccountInfoRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier to match against existing user accounts
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// email address to match against existing user accounts
+		/// </summary>
+		
+		public string Email { get; set;}
+		
+		/// <summary>
+		/// PlayFab username to match against existing user accounts
+		/// </summary>
+		
+		public string Username { get; set;}
+		
+		/// <summary>
+		/// title-specific username to match against existing user accounts
+		/// </summary>
+		
+		public string TitleDisplayName { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			Email = (string)JsonUtil.Get<string>(json, "Email");
+			Username = (string)JsonUtil.Get<string>(json, "Username");
+			TitleDisplayName = (string)JsonUtil.Get<string>(json, "TitleDisplayName");
+		}
+	}
+	
+	
+	
+	public class LookupUserAccountInfoResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// user info for the user matching the request
+		/// </summary>
+		
+		public UserAccountInfo UserInfo { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
 		}
 	}
 	
@@ -2105,6 +2112,44 @@ namespace PlayFab.Model
 		{
 			
 			AchievementResults = JsonUtil.GetObjectList<AwardSteamAchievementItem>(json, "AchievementResults");
+		}
+	}
+	
+	
+	
+	public class GetUserAccountInfoRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier of the user whose information is being requested
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+		}
+	}
+	
+	
+	
+	public class GetUserAccountInfoResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier of the user whose information was requested
+		/// </summary>
+		
+		public UserAccountInfo UserInfo { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
 		}
 	}
 	
