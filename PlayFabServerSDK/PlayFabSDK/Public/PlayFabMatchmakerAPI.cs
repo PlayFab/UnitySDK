@@ -1,6 +1,6 @@
 using System;
 using Pathfinding.Serialization.JsonFx;
-using PlayFab.Model;
+using PlayFab.MatchmakerModels;
 using PlayFab.Internal;
 
 namespace PlayFab

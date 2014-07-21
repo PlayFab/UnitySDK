@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using PlayFab.Internal;
 
-namespace PlayFab.Model
+namespace PlayFab.ClientModels
 {
-
 	
 	
 	
@@ -3166,6 +3166,5 @@ namespace PlayFab.Model
 			
 		}
 	}
-	
 	
 }

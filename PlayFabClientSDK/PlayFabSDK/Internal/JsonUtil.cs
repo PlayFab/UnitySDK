@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Globalization;
 
-namespace PlayFab.Model
+namespace PlayFab.Internal
 {
 	public abstract class PlayFabModelBase
 	{

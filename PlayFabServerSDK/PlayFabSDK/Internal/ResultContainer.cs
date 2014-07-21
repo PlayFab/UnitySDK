@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Pathfinding.Serialization.JsonFx;
 using PlayFab;
 using System;
-using PlayFab.Model;
 
 namespace PlayFab.Internal
 {
