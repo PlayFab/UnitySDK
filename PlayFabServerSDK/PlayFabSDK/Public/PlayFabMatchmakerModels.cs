@@ -52,6 +52,9 @@ namespace PlayFab.MatchmakerModels
 	
 	
 	
+	/// <summary>
+	/// A unique item instance in a player's inventory
+	/// </summary>
 	public class ItemInstance : PlayFabModelBase
 	{
 		

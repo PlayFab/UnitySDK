@@ -111,6 +111,9 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	/// <summary>
+	/// A purchasable item from the item catalog
+	/// </summary>
 	public class CatalogItem : PlayFabModelBase
 	{
 		
@@ -697,6 +700,9 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	/// <summary>
+	/// A unique item instance in a player's inventory
+	/// </summary>
 	public class ItemInstance : PlayFabModelBase
 	{
 		

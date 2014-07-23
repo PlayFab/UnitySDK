@@ -165,6 +165,9 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	/// <summary>
+	/// A purchasable item from the item catalog
+	/// </summary>
 	public class CatalogItem : PlayFabModelBase
 	{
 		
@@ -456,6 +459,44 @@ namespace PlayFab.ClientModels
 			OrderId = (string)JsonUtil.Get<string>(json, "OrderId");
 			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
 			Items = JsonUtil.GetObjectList<PurchasedItem>(json, "Items");
+		}
+	}
+	
+	
+	
+	public class ConsumeItemRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique instance id of the item to be consumed
+		/// </summary>
+		
+		public string ItemInstanceId { get; set;}
+		
+		/// <summary>
+		/// Number of uses to consume
+		/// </summary>
+		
+		public int ConsumeCount { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
+			ConsumeCount = (int)JsonUtil.Get<double?>(json, "ConsumeCount");
+		}
+	}
+	
+	
+	
+	public class ConsumeItemResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
 		}
 	}
 	
@@ -1034,6 +1075,9 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	/// <summary>
+	/// A unique item instance in a player's inventory
+	/// </summary>
 	public class ItemInstance : PlayFabModelBase
 	{
 		

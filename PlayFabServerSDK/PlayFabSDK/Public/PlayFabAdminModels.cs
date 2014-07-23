@@ -115,6 +115,85 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class BanAccountRequest : PlayFabModelBase
+	{
+		
+		
+		
+		public string TitleId { get; set;}
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string BannedByPlayFabId { get; set;}
+		
+		
+		public string Reason { get; set;}
+		
+		
+		public string IPAddress { get; set;}
+		
+		
+		public string MACAddress { get; set;}
+		
+		
+		public uint? DurationInHours { get; set;}
+		
+		
+		public string Notes { get; set;}
+		
+		
+		public string UniqueBanId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			BannedByPlayFabId = (string)JsonUtil.Get<string>(json, "BannedByPlayFabId");
+			Reason = (string)JsonUtil.Get<string>(json, "Reason");
+			IPAddress = (string)JsonUtil.Get<string>(json, "IPAddress");
+			MACAddress = (string)JsonUtil.Get<string>(json, "MACAddress");
+			DurationInHours = (uint?)JsonUtil.Get<double?>(json, "DurationInHours");
+			Notes = (string)JsonUtil.Get<string>(json, "Notes");
+			UniqueBanId = (string)JsonUtil.Get<string>(json, "UniqueBanId");
+		}
+	}
+	
+	
+	
+	public class BanMultipleAccountsRequest : PlayFabModelBase
+	{
+		
+		
+		
+		public List<BanAccountRequest> accounts { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			accounts = JsonUtil.GetObjectList<BanAccountRequest>(json, "accounts");
+		}
+	}
+	
+	
+	
+	public class BanMultipleAccountsResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
+	/// <summary>
+	/// A purchasable item from the item catalog
+	/// </summary>
 	public class CatalogItem : PlayFabModelBase
 	{
 		
@@ -653,6 +732,9 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	/// <summary>
+	/// Information about particular server build
+	/// </summary>
 	public class GetServerBuildInfoResult : PlayFabModelBase
 	{
 		
@@ -790,6 +872,9 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	/// <summary>
+	/// A unique item instance in a player's inventory
+	/// </summary>
 	public class ItemInstance : PlayFabModelBase
 	{
 		

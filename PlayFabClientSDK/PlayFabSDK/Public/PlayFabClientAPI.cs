@@ -36,6 +36,7 @@ namespace PlayFab
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
 		public delegate void GetTitleNewsCallback(GetTitleNewsResult result);
 		public delegate void ConfirmPurchaseCallback(ConfirmPurchaseResult result);
+		public delegate void ConsumeItemCallback(ConsumeItemResult result);
 		public delegate void GetUserInventoryCallback(GetUserInventoryResult result);
 		public delegate void PayForPurchaseCallback(PayForPurchaseResult result);
 		public delegate void PurchaseItemCallback(PurchaseItemResult result);
@@ -795,6 +796,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ConfirmPurchase", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Consume uses of a consumable item. When all uses are consumed, it will be removed from the player's inventory.
+		/// </summary>
+		public static void ConsumeItem(ConsumeItemRequest request, ConsumeItemCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ConsumeItemResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ConsumeItemResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ConsumeItem", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
