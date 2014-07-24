@@ -42,4 +42,3 @@ PlayFabSettings.TitleId = "your title id here";
 6. Using the plugin
 -------------------
 You are now ready to begin making API calls using the PlayFabClientAPI singleton. See the mini example for an idea of how this works, and check out the online documentation at http://api.playfab.com/Documentation/Client for a complete list of available APIs.
-
