@@ -18,6 +18,7 @@ The source code repository **playfab-unity** contains two main projects: PlayFab
 Within the PlayFabClientSDK are the following directories:
 
 PlayFabSDK  Source code to the PlayFabSDK
+
 Examples    A quick and dirty example showing how to call the SDK
 
 
@@ -31,11 +32,12 @@ You must configure the SDK to us your unique TitleId, as assigned by the PlayFab
 
 Somewhere in your game's startup code, add the following:
 
+```
 using PlayFab;
-
 
 PlayFabSettings.UseDevelopmentEnvironment = true;
 PlayFabSettings.TitleId = "your title id here";
+```
 
 6. Using the plugin
 -------------------
