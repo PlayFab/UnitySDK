@@ -35,7 +35,7 @@ Somewhere in your game's startup code, add the following:
 ```
 using PlayFab;
 
-PlayFabSettings.UseDevelopmentEnvironment = true;
+PlayFabSettings.UseDevelopmentEnvironment = false;
 PlayFabSettings.TitleId = "your title id here";
 ```
 
