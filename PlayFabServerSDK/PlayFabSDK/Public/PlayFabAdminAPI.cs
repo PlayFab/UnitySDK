@@ -14,15 +14,26 @@ namespace PlayFab
 		public delegate void GetUserAccountInfoCallback(LookupUserAccountInfoResult result);
 		public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
 		public delegate void UpdateUserTitleDisplayNameCallback(UpdateUserTitleDisplayNameResult result);
+		public delegate void GetUserDataCallback(GetUserDataResult result);
+		public delegate void GetUserInternalDataCallback(GetUserDataResult result);
+		public delegate void GetUserReadOnlyDataCallback(GetUserDataResult result);
+		public delegate void UpdateUserDataCallback(UpdateUserDataResult result);
+		public delegate void UpdateUserInternalDataCallback(UpdateUserDataResult result);
+		public delegate void UpdateUserReadOnlyDataCallback(UpdateUserDataResult result);
+		public delegate void AddVirtualCurrencyTypesCallback(BlankResult result);
 		public delegate void GetCatalogItemsCallback(GetCatalogItemsResult result);
 		public delegate void GetRandomResultTablesCallback(GetRandomResultTablesResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
+		public delegate void ListVirualCurrencyTypesCallback(ListVirtualCurrencyTypesResult result);
 		public delegate void SetCatalogItemsCallback(UpdateCatalogItemsResult result);
 		public delegate void SetTitleDataCallback(SetTitleDataResult result);
 		public delegate void UpdateCatalogItemsCallback(UpdateCatalogItemsResult result);
 		public delegate void UpdateRandomResultTablesCallback(UpdateRandomResultTablesResult result);
+		public delegate void AddUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
 		public delegate void GetUserInventoryCallback(GetUserInventoryResult result);
+		public delegate void GrantItemsToUsersCallback(GrantItemsToUsersResult result);
 		public delegate void RevokeInventoryItemCallback(RevokeInventoryResult result);
+		public delegate void SubtractUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
 		public delegate void GetMatchmakerGameInfoCallback(GetMatchmakerGameInfoResult result);
 		public delegate void GetMatchmakerGameModesCallback(GetMatchmakerGameModesResult result);
 		public delegate void ModifyMatchmakerGameModesCallback(ModifyMatchmakerGameModesResult result);
@@ -123,6 +134,209 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Retrieves the title-specific custom data for the user which is readable and writable by the client
+		/// </summary>
+		public static void GetUserData(GetUserDataRequest request, GetUserDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetUserDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetUserData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Retrieves the title-specific custom data for the user which cannot be accessed by the client
+		/// </summary>
+		public static void GetUserInternalData(GetUserDataRequest request, GetUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetUserDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetUserInternalData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Retrieves the title-specific custom data for the user which can only be read by the client
+		/// </summary>
+		public static void GetUserReadOnlyData(GetUserDataRequest request, GetUserReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetUserDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetUserReadOnlyData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Updates the title-specific custom data for the user which is readable and writable by the client
+		/// </summary>
+		public static void UpdateUserData(UpdateUserDataRequest request, UpdateUserDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				UpdateUserDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/UpdateUserData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Updates the title-specific custom data for the user which cannot be accessed by the client
+		/// </summary>
+		public static void UpdateUserInternalData(UpdateUserDataRequest request, UpdateUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				UpdateUserDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/UpdateUserInternalData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Updates the title-specific custom data for the user which can only be read by the client
+		/// </summary>
+		public static void UpdateUserReadOnlyData(UpdateUserDataRequest request, UpdateUserReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				UpdateUserDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/UpdateUserReadOnlyData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Adds a list of virtual currencies to this title
+		/// </summary>
+		public static void AddVirtualCurrencyTypes(AddVirtualCurrencyTypesRequest request, AddVirtualCurrencyTypesCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				BlankResult result = null;
+				PlayFabError error = null;
+				ResultContainer<BlankResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/AddVirtualCurrencyTypes", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
 		/// Retrieves the specified version of the title's catalog of virtual goods, including all defined properties
 		/// </summary>
 		public static void GetCatalogItems(GetCatalogItemsRequest request, GetCatalogItemsCallback resultCallback, ErrorCallback errorCallback)
@@ -207,6 +421,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetTitleData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Retuns a list of all defined virtual currencies for this title
+		/// </summary>
+		public static void ListVirualCurrencyTypes(ListVirtualCurrencyTypesRequest request, ListVirualCurrencyTypesCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ListVirtualCurrencyTypesResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ListVirtualCurrencyTypesResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ListVirualCurrencyTypes", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>
@@ -326,6 +569,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Increments the specified virtual currency by the stated amount
+		/// </summary>
+		public static void AddUserVirtualCurrency(AddUserVirtualCurrencyRequest request, AddUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ModifyUserVirtualCurrencyResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/AddUserVirtualCurrency", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
 		/// Retrieves the specified user's current inventory of virtual goods
 		/// </summary>
 		public static void GetUserInventory(GetUserInventoryRequest request, GetUserInventoryCallback resultCallback, ErrorCallback errorCallback)
@@ -355,6 +627,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Adds the specified items to the specified user inventories
+		/// </summary>
+		public static void GrantItemsToUsers(GrantItemsToUsersRequest request, GrantItemsToUsersCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GrantItemsToUsersResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GrantItemsToUsersResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GrantItemsToUsers", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
 		/// Revokes access to an item in a user's inventory
 		/// </summary>
 		public static void RevokeInventoryItem(RevokeInventoryItemRequest request, RevokeInventoryItemCallback resultCallback, ErrorCallback errorCallback)
@@ -381,6 +682,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/RevokeInventoryItem", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Decrements the specified virtual currency by the stated amount
+		/// </summary>
+		public static void SubtractUserVirtualCurrency(SubtractUserVirtualCurrencyRequest request, SubtractUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ModifyUserVirtualCurrencyResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/SubtractUserVirtualCurrency", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>

@@ -573,10 +573,17 @@ namespace PlayFab.ServerModels
 		
 		public List<ItemInstance> Inventory { get; set;}
 		
+		/// <summary>
+		/// array of virtual currency balance(s) belonging to the user
+		/// </summary>
+		
+		public Dictionary<string,int> VirtualCurrency { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			Inventory = JsonUtil.GetObjectList<ItemInstance>(json, "Inventory");
+			VirtualCurrency = JsonUtil.GetDictionaryInt32(json, "VirtualCurrency");
 		}
 	}
 	
@@ -956,23 +963,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
-		/// <summary>
-		/// key that was set
-		/// </summary>
-		
-		public string Key { get; set;}
-		
-		/// <summary>
-		/// new value set for key
-		/// </summary>
-		
-		public string Value { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			Key = (string)JsonUtil.Get<string>(json, "Key");
-			Value = (string)JsonUtil.Get<string>(json, "Value");
 		}
 	}
 	
