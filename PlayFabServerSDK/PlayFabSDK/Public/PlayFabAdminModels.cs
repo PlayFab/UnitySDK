@@ -93,7 +93,7 @@ namespace PlayFab.AdminModels
 		/// time this build was last modified (or uploaded, if this build has never been modified)
 		/// </summary>
 		
-		public DateTime? Timestamp { get; set;}
+		public DateTime Timestamp { get; set;}
 		
 		/// <summary>
 		/// the unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
@@ -108,7 +108,7 @@ namespace PlayFab.AdminModels
 			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
 			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
+			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 		}
 	}
@@ -556,7 +556,7 @@ namespace PlayFab.AdminModels
 		/// time when the Game Server Instance was created
 		/// </summary>
 		
-		public DateTime? StartTime { get; set;}
+		public DateTime StartTime { get; set;}
 		
 		/// <summary>
 		/// time when Game Server Instance is currently scheduled to end
@@ -617,7 +617,7 @@ namespace PlayFab.AdminModels
 			
 			LobbyId = (string)JsonUtil.Get<string>(json, "LobbyId");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
-			StartTime = (DateTime?)JsonUtil.GetDateTime(json, "StartTime");
+			StartTime = (DateTime)JsonUtil.GetDateTime(json, "StartTime");
 			EndTime = (DateTime?)JsonUtil.GetDateTime(json, "EndTime");
 			Mode = (string)JsonUtil.Get<string>(json, "Mode");
 			BuildVersion = (string)JsonUtil.Get<string>(json, "BuildVersion");
@@ -755,7 +755,7 @@ namespace PlayFab.AdminModels
 		/// time this build was last modified (or uploaded, if this build has never been modified)
 		/// </summary>
 		
-		public DateTime? Timestamp { get; set;}
+		public DateTime Timestamp { get; set;}
 		
 		/// <summary>
 		/// the unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
@@ -770,7 +770,7 @@ namespace PlayFab.AdminModels
 			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
 			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
+			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 		}
 	}
@@ -855,13 +855,13 @@ namespace PlayFab.AdminModels
 		/// user specific data for this title
 		/// </summary>
 		
-		public Dictionary<string,string> Data { get; set;}
+		public Dictionary<string,UserDataRecord> Data { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
+			Data = JsonUtil.GetObjectDictionary<UserDataRecord>(json, "Data");
 		}
 	}
 	
@@ -1353,7 +1353,7 @@ namespace PlayFab.AdminModels
 		/// time this build was last modified (or uploaded, if this build has never been modified)
 		/// </summary>
 		
-		public DateTime? Timestamp { get; set;}
+		public DateTime Timestamp { get; set;}
 		
 		/// <summary>
 		/// the unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
@@ -1368,7 +1368,7 @@ namespace PlayFab.AdminModels
 			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
 			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
+			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 		}
 	}
@@ -1839,7 +1839,7 @@ namespace PlayFab.AdminModels
 		/// time / date account was created
 		/// </summary>
 		
-		public DateTime? Created { get; set;}
+		public DateTime Created { get; set;}
 		
 		/// <summary>
 		/// account name
@@ -1881,13 +1881,39 @@ namespace PlayFab.AdminModels
 		{
 			
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Created = (DateTime?)JsonUtil.GetDateTime(json, "Created");
+			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
 			Username = (string)JsonUtil.Get<string>(json, "Username");
 			TitleInfo = JsonUtil.GetObject<UserTitleInfo>(json, "TitleInfo");
 			PrivateInfo = JsonUtil.GetObject<UserPrivateAccountInfo>(json, "PrivateInfo");
 			FacebookInfo = JsonUtil.GetObject<UserFacebookInfo>(json, "FacebookInfo");
 			SteamInfo = JsonUtil.GetObject<UserSteamInfo>(json, "SteamInfo");
 			GameCenterInfo = JsonUtil.GetObject<UserGameCenterInfo>(json, "GameCenterInfo");
+		}
+	}
+	
+	
+	
+	public class UserDataRecord : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// The user-supplied data for this user data key
+		/// </summary>
+		
+		public string Value { get; set;}
+		
+		/// <summary>
+		/// The time this data was last updated
+		/// </summary>
+		
+		public DateTime LastUpdated { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Value = (string)JsonUtil.Get<string>(json, "Value");
+			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
 		}
 	}
 	
@@ -2041,7 +2067,7 @@ namespace PlayFab.AdminModels
 		/// When this object was created. Title specific reporting for user creation time should be done against this rather than the User created field since account creation can differ significantly between title registration.
 		/// </summary>
 		
-		public DateTime? Created { get; set;}
+		public DateTime Created { get; set;}
 		
 		/// <summary>
 		/// Last time the user logged in to this title
@@ -2060,7 +2086,7 @@ namespace PlayFab.AdminModels
 			
 			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
 			Origination = (UserOrigination?)JsonUtil.GetEnum<UserOrigination>(json, "Origination");
-			Created = (DateTime?)JsonUtil.GetDateTime(json, "Created");
+			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
 			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
 			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
 		}

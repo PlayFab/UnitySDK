@@ -445,7 +445,7 @@ namespace PlayFab.ClientModels
 		/// date and time of the purchase
 		/// </summary>
 		
-		public DateTime? PurchaseDate { get; set;}
+		public DateTime PurchaseDate { get; set;}
 		
 		/// <summary>
 		/// array of items purchased
@@ -457,7 +457,7 @@ namespace PlayFab.ClientModels
 		{
 			
 			OrderId = (string)JsonUtil.Get<string>(json, "OrderId");
-			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
+			PurchaseDate = (DateTime)JsonUtil.GetDateTime(json, "PurchaseDate");
 			Items = JsonUtil.GetObjectList<PurchasedItem>(json, "Items");
 		}
 	}
@@ -1026,12 +1026,12 @@ namespace PlayFab.ClientModels
 		/// user specific data for this title
 		/// </summary>
 		
-		public Dictionary<string,string> Data { get; set;}
+		public Dictionary<string,UserDataRecord> Data { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
+			Data = JsonUtil.GetObjectDictionary<UserDataRecord>(json, "Data");
 		}
 	}
 	
@@ -2552,7 +2552,7 @@ namespace PlayFab.ClientModels
 		/// date and time when the news items was posted
 		/// </summary>
 		
-		public DateTime? Timestamp { get; set;}
+		public DateTime Timestamp { get; set;}
 		
 		/// <summary>
 		/// title of the news item
@@ -2569,7 +2569,7 @@ namespace PlayFab.ClientModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
+			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			Title = (string)JsonUtil.Get<string>(json, "Title");
 			Body = (string)JsonUtil.Get<string>(json, "Body");
 		}
@@ -2869,7 +2869,7 @@ namespace PlayFab.ClientModels
 		/// time / date account was created
 		/// </summary>
 		
-		public DateTime? Created { get; set;}
+		public DateTime Created { get; set;}
 		
 		/// <summary>
 		/// account name
@@ -2911,13 +2911,39 @@ namespace PlayFab.ClientModels
 		{
 			
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Created = (DateTime?)JsonUtil.GetDateTime(json, "Created");
+			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
 			Username = (string)JsonUtil.Get<string>(json, "Username");
 			TitleInfo = JsonUtil.GetObject<UserTitleInfo>(json, "TitleInfo");
 			PrivateInfo = JsonUtil.GetObject<UserPrivateAccountInfo>(json, "PrivateInfo");
 			FacebookInfo = JsonUtil.GetObject<UserFacebookInfo>(json, "FacebookInfo");
 			SteamInfo = JsonUtil.GetObject<UserSteamInfo>(json, "SteamInfo");
 			GameCenterInfo = JsonUtil.GetObject<UserGameCenterInfo>(json, "GameCenterInfo");
+		}
+	}
+	
+	
+	
+	public class UserDataRecord : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// The user-supplied data for this user data key
+		/// </summary>
+		
+		public string Value { get; set;}
+		
+		/// <summary>
+		/// The time this data was last updated
+		/// </summary>
+		
+		public DateTime LastUpdated { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Value = (string)JsonUtil.Get<string>(json, "Value");
+			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
 		}
 	}
 	
@@ -3071,7 +3097,7 @@ namespace PlayFab.ClientModels
 		/// When this object was created. Title specific reporting for user creation time should be done against this rather than the User created field since account creation can differ significantly between title registration.
 		/// </summary>
 		
-		public DateTime? Created { get; set;}
+		public DateTime Created { get; set;}
 		
 		/// <summary>
 		/// Last time the user logged in to this title
@@ -3090,7 +3116,7 @@ namespace PlayFab.ClientModels
 			
 			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
 			Origination = (UserOrigination?)JsonUtil.GetEnum<UserOrigination>(json, "Origination");
-			Created = (DateTime?)JsonUtil.GetDateTime(json, "Created");
+			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
 			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
 			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
 		}
@@ -3137,7 +3163,7 @@ namespace PlayFab.ClientModels
 		public string kind { get; set;}
 		
 		
-		public DateTime? purchaseTime { get; set;}
+		public DateTime purchaseTime { get; set;}
 		
 		
 		public int puchaseState { get; set;}
@@ -3152,7 +3178,7 @@ namespace PlayFab.ClientModels
 		{
 			
 			kind = (string)JsonUtil.Get<string>(json, "kind");
-			purchaseTime = (DateTime?)JsonUtil.GetDateTime(json, "purchaseTime");
+			purchaseTime = (DateTime)JsonUtil.GetDateTime(json, "purchaseTime");
 			puchaseState = (int)JsonUtil.Get<double?>(json, "puchaseState");
 			consumptionState = (int)JsonUtil.Get<double?>(json, "consumptionState");
 			developerPayload = (string)JsonUtil.Get<string>(json, "developerPayload");
