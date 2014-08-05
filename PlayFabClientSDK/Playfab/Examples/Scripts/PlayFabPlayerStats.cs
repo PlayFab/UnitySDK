@@ -3,7 +3,7 @@ using System.Collections;
 using PlayFab.Examples;
 
 
-public class PlayerStats : MonoBehaviour {
+public class PlayFabPlayerStats : MonoBehaviour {
 
 	public Texture2D health,kills,money,cursor;
 
