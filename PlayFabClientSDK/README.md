@@ -32,7 +32,9 @@ Create a new Unity project or open an existing Unity project. From the PlayFabCl
 
 5. Configuring the Plugin
 -------------------------
-You must configure the SDK with your unique TitleId, as assigned by the PlayFab developer portal. Your TitleId will be a short string that looks something like "5A7F" in your Title URL.
+You must configure the SDK with your unique TitleId, as assigned by the PlayFab developer portal. Your TitleId will be a short string that looks something like "8D34" in your Title URL.
+
+Please use 8D34 as a TitleId if you would like to try the various pre-made scenes.
 
 Once the package installed go to PlayFab->GameConfig and type in your TitleId and current CatalogVersion then Click Save.
 
