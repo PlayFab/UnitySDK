@@ -24,11 +24,19 @@ Examples    A quick and dirty example showing how to call the SDK
 
 4. Installing the Plugin
 ------------------------
-Create a new Unity project or open an existing Unity project. From the PlayFabClientSDK directory, drag the PlayFabSDK folder into your project's assets (anywhere is ok).
+Download PlayFabPackage.unitypackage and unpack in your project.
+
+OR
+
+Create a new Unity project or open an existing Unity project. From the PlayFabClientSDK directory, drag the PlayFabSDK folder into your project's assets (anywhere is ok). This procedure will loose the reference to the Prefabs but you can still put them back manually.
 
 5. Configuring the Plugin
 -------------------------
-You must configure the SDK to us your unique TitleId, as assigned by the PlayFab developer portal. Your TitleId will be a short string that looks something like "5A7F".
+You must configure the SDK with your unique TitleId, as assigned by the PlayFab developer portal. Your TitleId will be a short string that looks something like "5A7F" in your Title URL.
+
+Once the package installed go to PlayFab->GameConfig and type in your TitleId and current CatalogVersion then Click Save.
+
+OR
 
 Somewhere in your game's startup code, add the following:
 
@@ -38,6 +46,11 @@ using PlayFab;
 PlayFabSettings.UseDevelopmentEnvironment = false;
 PlayFabSettings.TitleId = "your title id here";
 ```
+
+OR
+
+Edit directly PlayFabSettings in Playfab->PlayFabSDK->Public
+
 
 6. Using the plugin
 -------------------
