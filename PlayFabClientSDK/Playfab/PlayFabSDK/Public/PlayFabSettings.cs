@@ -13,7 +13,7 @@ namespace PlayFab
 
 	public class PlayFabSettings
 	{
-		public static bool UseDevelopmentEnvironment = false;
+		public static bool UseDevelopmentEnvironment = false; // Leave to false, only production is available at the moment.
 		public static string DevelopmentEnvironmentURL = ".playfabsandbox.com";
 		public static string ProductionEnvironmentURL = ".playfabapi.com";
 		public static string TitleId = null;
