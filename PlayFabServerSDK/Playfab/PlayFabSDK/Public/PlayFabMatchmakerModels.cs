@@ -53,62 +53,62 @@ namespace PlayFab.MatchmakerModels
 	
 	
 	/// <summary>
-	/// A unique item instance in a player's inventory
+	/// A unique instance of an item in a user's inventory
 	/// </summary>
 	public class ItemInstance : PlayFabModelBase
 	{
 		
 		
 		/// <summary>
-		/// Object name
+		/// unique identifier for the inventory item, as defined in the catalog
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// unique item id
+		/// unique item identifier for this specific instance of the item
 		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 		
 		/// <summary>
-		/// class name object belongs to
+		/// class name for the inventory item, as defined in the catalog
 		/// </summary>
 		
 		public string ItemClass { get; set;}
 		
 		/// <summary>
-		/// date purchased
+		/// timestamp for when this instance was purchased
 		/// </summary>
 		
 		public string PurchaseDate { get; set;}
 		
 		/// <summary>
-		/// date object will expire (optional)
+		/// timestamp for when this instance will expire
 		/// </summary>
 		
 		public string Expiration { get; set;}
 		
 		/// <summary>
-		/// number of remaining uses (optional)
+		/// total number of remaining uses, if this is a consumable item
 		/// </summary>
 		
 		public uint? RemainingUses { get; set;}
 		
 		/// <summary>
-		/// game specific comment
+		/// game specific comment associated with this instance when it was added to the user inventory
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
 		/// <summary>
-		/// catalog version that this item is part of
+		/// catalog version for the inventory item, when this instance was created
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
 		/// <summary>
-		/// Unique ID of the parent of where this item may have come from (e.g. if it comes from a crate or coupon)
+		/// unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container
 		/// </summary>
 		
 		public string BundleParent { get; set;}

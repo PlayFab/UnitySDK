@@ -17,14 +17,17 @@ namespace PlayFab
 		public delegate void GetUserDataCallback(GetUserDataResult result);
 		public delegate void GetUserInternalDataCallback(GetUserDataResult result);
 		public delegate void GetUserReadOnlyDataCallback(GetUserDataResult result);
+		public delegate void ResetUserStatisticsCallback(ResetUserStatisticsResult result);
 		public delegate void UpdateUserDataCallback(UpdateUserDataResult result);
 		public delegate void UpdateUserInternalDataCallback(UpdateUserDataResult result);
 		public delegate void UpdateUserReadOnlyDataCallback(UpdateUserDataResult result);
+		public delegate void AddNewsCallback(AddNewsResult result);
 		public delegate void AddVirtualCurrencyTypesCallback(BlankResult result);
 		public delegate void GetCatalogItemsCallback(GetCatalogItemsResult result);
 		public delegate void GetRandomResultTablesCallback(GetRandomResultTablesResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
 		public delegate void ListVirualCurrencyTypesCallback(ListVirtualCurrencyTypesResult result);
+		public delegate void RemoveTitleDataCallback(RemoveTitleDataResult result);
 		public delegate void SetCatalogItemsCallback(UpdateCatalogItemsResult result);
 		public delegate void SetTitleDataCallback(SetTitleDataResult result);
 		public delegate void UpdateCatalogItemsCallback(UpdateCatalogItemsResult result);
@@ -221,6 +224,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Completely removes all statistics of the specified user, for this title
+		/// </summary>
+		public static void ResetUserStatistics(ResetUserStatisticsRequest request, ResetUserStatisticsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ResetUserStatisticsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ResetUserStatisticsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ResetUserStatistics", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
 		/// Updates the title-specific custom data for the user which is readable and writable by the client
 		/// </summary>
 		public static void UpdateUserData(UpdateUserDataRequest request, UpdateUserDataCallback resultCallback, ErrorCallback errorCallback)
@@ -305,6 +337,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/UpdateUserReadOnlyData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Adds a new news item to the title's news feed
+		/// </summary>
+		public static void AddNews(AddNewsRequest request, AddNewsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				AddNewsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<AddNewsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/AddNews", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>
@@ -450,6 +511,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ListVirualCurrencyTypes", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Removes an existing piece of custom title data
+		/// </summary>
+		public static void RemoveTitleData(RemoveTitleDataRequest request, RemoveTitleDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				RemoveTitleDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<RemoveTitleDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/RemoveTitleData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>

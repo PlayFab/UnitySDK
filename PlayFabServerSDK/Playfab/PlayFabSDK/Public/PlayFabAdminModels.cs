@@ -7,6 +7,58 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class AddNewsRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Time this news was published. If not set, defaults to now.
+		/// </summary>
+		
+		public DateTime? Timestamp { get; set;}
+		
+		/// <summary>
+		/// Title (headline) of the news item
+		/// </summary>
+		
+		public string Title { get; set;}
+		
+		/// <summary>
+		/// Body text of the news
+		/// </summary>
+		
+		public string Body { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
+			Title = (string)JsonUtil.Get<string>(json, "Title");
+			Body = (string)JsonUtil.Get<string>(json, "Body");
+		}
+	}
+	
+	
+	
+	public class AddNewsResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique id of the new news item
+		/// </summary>
+		
+		public string NewsId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			NewsId = (string)JsonUtil.Get<string>(json, "NewsId");
+		}
+	}
+	
+	
+	
 	public class AddServerBuildRequest : PlayFabModelBase
 	{
 		
@@ -187,109 +239,109 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// internal item name
+		/// unique identifier for this item
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// class name to which item belongs
+		/// class to which the item belongs
 		/// </summary>
 		
 		public string ItemClass { get; set;}
 		
 		/// <summary>
-		/// catalog item we are working against
+		/// catalog item for this item
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
 		/// <summary>
-		/// displayable item name
+		/// text name for the item, to show in-game
 		/// </summary>
 		
 		public string DisplayName { get; set;}
 		
 		/// <summary>
-		/// text description of item
+		/// text description of item, to show in-game
 		/// </summary>
 		
 		public string Description { get; set;}
 		
 		/// <summary>
-		/// Price of this object in virtual currencies
+		/// price of this item in virtual currencies and "RM" (the base Real Money purchase price, in USD pennies)
 		/// </summary>
 		
 		public Dictionary<string,uint> VirtualCurrencyPrices { get; set;}
 		
 		/// <summary>
-		/// Price of this object in real money currencies
+		/// override prices for this item for specific currencies
 		/// </summary>
 		
 		public Dictionary<string,uint> RealCurrencyPrices { get; set;}
 		
 		/// <summary>
-		/// if this object was dropped, when it was dropped (optional)
+		/// the date this item becomes available for purchase
 		/// </summary>
 		
 		public DateTime? ReleaseDate { get; set;}
 		
 		/// <summary>
-		/// date this object will no longer be viable (optional)
+		/// the date this item will no longer be available for purchase
 		/// </summary>
 		
 		public DateTime? ExpirationDate { get; set;}
 		
 		/// <summary>
-		/// is this a free object?
+		/// (deprecated)
 		/// </summary>
 		
 		public bool? IsFree { get; set;}
 		
 		/// <summary>
-		/// can we buy this object (might be only gettable by being dropped by a monster)
+		/// can this item be purchased (if not, it can still be granted by a server-based operation, such as a loot drop from a monster)
 		/// </summary>
 		
 		public bool? NotForSale { get; set;}
 		
 		/// <summary>
-		/// can we pass this object to someone else?
+		/// can an instance of this item be exchanged between players?
 		/// </summary>
 		
 		public bool? NotForTrade { get; set;}
 		
 		/// <summary>
-		/// List of item tags
+		/// list of item tags
 		/// </summary>
 		
 		public List<string> Tags { get; set;}
 		
 		/// <summary>
-		/// Game specific custom data field (could be json, xml, etc)
+		/// game specific custom data
 		/// </summary>
 		
 		public string CustomData { get; set;}
 		
 		/// <summary>
-		/// array of unique item Id's that, if the player already has, will automatically place this item in a players inventory
+		/// array of ItemId values which are evaluated when any item is added to the player inventory - if all items in this array are present, the this item will also be added to the player inventory
 		/// </summary>
 		
 		public List<string> GrantedIfPlayerHas { get; set;}
 		
 		/// <summary>
-		/// If set, makes this item consumable and sets consumable properties
+		/// defines the consumable properties (number of uses, timeout) for the item
 		/// </summary>
 		
 		public CatalogItemConsumableInfo Consumable { get; set;}
 		
 		/// <summary>
-		/// If set, makes this item a container and sets container properties
+		/// defines the container properties for the item - containers are items which include contain other items, including random drop tables and virtual currencies, and which require a "key" item to open
 		/// </summary>
 		
 		public CatalogItemContainerInfo Container { get; set;}
 		
 		/// <summary>
-		/// If set, makes this item a bundle and sets bundle properties
+		/// defines the bundle properties for the item - bundles are items which contain other items, including random drop tables and virtual currencies
 		/// </summary>
 		
 		public CatalogItemBundleInfo Bundle { get; set;}
@@ -325,19 +377,19 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// array of Unique item id's that this item will grant you once you have this item in your inventory
+		/// unique ItemId values for all items which will be added to the player inventory when the bundle is added
 		/// </summary>
 		
 		public List<string> BundledItems { get; set;}
 		
 		/// <summary>
-		/// array of result table id's that this item will reference and randomly create items from
+		/// unique TableId values for all RandomResultTable objects which are part of the bundle (random tables will be resolved and add the relevant items to the player inventory when the bundle is added)
 		/// </summary>
 		
 		public List<string> BundledResultTables { get; set;}
 		
 		/// <summary>
-		/// Virtual currencies contained in this item
+		/// virtual currency types and balances which will be added to the player inventory when the bundle is added
 		/// </summary>
 		
 		public Dictionary<string,uint> BundledVirtualCurrencies { get; set;}
@@ -358,19 +410,19 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// number of times this object can be used
+		/// number of times this object can be used, after which it will be removed from the player inventory
 		/// </summary>
 		
 		public uint UsageCount { get; set;}
 		
 		/// <summary>
-		/// duration of how long this item is viable after player aqquires it (in seconds) (optional)
+		/// duration in seconds for how long the item will remain in the player inventory - once elapsed, the item will be removed
 		/// </summary>
 		
 		public uint? UsagePeriod { get; set;}
 		
 		/// <summary>
-		/// All items that have the same value in this string get their expiration dates added together.
+		/// all inventory item instances in the player inventory sharing a non-null UsagePeriodGroup have their UsagePeriod values added together, and share the result - when that period has elapsed, all the items in the group will be removed
 		/// </summary>
 		
 		public string UsagePeriodGroup { get; set;}
@@ -391,25 +443,25 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// unique item id that, if in posession, the object unlocks and provides the player with content items
+		/// unique ItemId which is required to unlock the container (items in the container will not be added to the player inventory until it is unlocked)
 		/// </summary>
 		
 		public string KeyItemId { get; set;}
 		
 		/// <summary>
-		/// array of Unique item id's that this item will grant you once you have opened it
+		/// unique ItemId values for all items which will be added to the player inventory, once the container has been unlocked
 		/// </summary>
 		
 		public List<string> ItemContents { get; set;}
 		
 		/// <summary>
-		/// array of result table id's that this item will reference and randomly create items from
+		/// unique TableId values for all RandomResultTable objects which are part of the container (once unlocked, random tables will be resolved and add the relevant items to the player inventory)
 		/// </summary>
 		
 		public List<string> ResultTableContents { get; set;}
 		
 		/// <summary>
-		/// Virtual currencies contained in this item
+		/// virtual currency types and balances which will be added to the player inventory when the container is unlocked
 		/// </summary>
 		
 		public Dictionary<string,uint> VirtualCurrencyContents { get; set;}
@@ -997,6 +1049,9 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	/// <summary>
+	/// Result of granting an item to a user
+	/// </summary>
 	public class ItemGrantResult : PlayFabModelBase
 	{
 		
@@ -1012,6 +1067,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string ItemId { get; set;}
+		
+		/// <summary>
+		/// unique instance Id of the granted item
+		/// </summary>
+		
+		public string ItemInstanceId { get; set;}
 		
 		/// <summary>
 		/// string detailing any additional information concerning this operation
@@ -1030,6 +1091,7 @@ namespace PlayFab.AdminModels
 			
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
 			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
+			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
 			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
 			Result = (bool)JsonUtil.Get<bool?>(json, "Result");
 		}
@@ -1038,62 +1100,62 @@ namespace PlayFab.AdminModels
 	
 	
 	/// <summary>
-	/// A unique item instance in a player's inventory
+	/// A unique instance of an item in a user's inventory
 	/// </summary>
 	public class ItemInstance : PlayFabModelBase
 	{
 		
 		
 		/// <summary>
-		/// Object name
+		/// unique identifier for the inventory item, as defined in the catalog
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// unique item id
+		/// unique item identifier for this specific instance of the item
 		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 		
 		/// <summary>
-		/// class name object belongs to
+		/// class name for the inventory item, as defined in the catalog
 		/// </summary>
 		
 		public string ItemClass { get; set;}
 		
 		/// <summary>
-		/// date purchased
+		/// timestamp for when this instance was purchased
 		/// </summary>
 		
 		public string PurchaseDate { get; set;}
 		
 		/// <summary>
-		/// date object will expire (optional)
+		/// timestamp for when this instance will expire
 		/// </summary>
 		
 		public string Expiration { get; set;}
 		
 		/// <summary>
-		/// number of remaining uses (optional)
+		/// total number of remaining uses, if this is a consumable item
 		/// </summary>
 		
 		public uint? RemainingUses { get; set;}
 		
 		/// <summary>
-		/// game specific comment
+		/// game specific comment associated with this instance when it was added to the user inventory
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
 		/// <summary>
-		/// catalog version that this item is part of
+		/// catalog version for the inventory item, when this instance was created
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
 		/// <summary>
-		/// Unique ID of the parent of where this item may have come from (e.g. if it comes from a crate or coupon)
+		/// unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container
 		/// </summary>
 		
 		public string BundleParent { get; set;}
@@ -1481,6 +1543,68 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class RemoveTitleDataRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// key we want to remove
+		/// </summary>
+		
+		public string Key { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Key = (string)JsonUtil.Get<string>(json, "Key");
+		}
+	}
+	
+	
+	
+	public class RemoveTitleDataResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
+	public class ResetUserStatisticsRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier of the user whose statistics are to be reset
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+		}
+	}
+	
+	
+	
+	public class ResetUserStatisticsResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
 	public class ResultTableNode : PlayFabModelBase
 	{
 		
@@ -1830,49 +1954,49 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// unique id for account
+		/// unique identifier for the user account
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// time / date account was created
+		/// timestamp indicating when the user account was created
 		/// </summary>
 		
 		public DateTime Created { get; set;}
 		
 		/// <summary>
-		/// account name
+		/// user account name in the PlayFab service
 		/// </summary>
 		
 		public string Username { get; set;}
 		
 		/// <summary>
-		/// specific game title information
+		/// title-specific information for the user account
 		/// </summary>
 		
 		public UserTitleInfo TitleInfo { get; set;}
 		
 		/// <summary>
-		/// user's private account into
+		/// personal information for the user which is considered more sensitive
 		/// </summary>
 		
 		public UserPrivateAccountInfo PrivateInfo { get; set;}
 		
 		/// <summary>
-		/// facebook information (if linked)
+		/// user Facebook information, if a Facebook account has been linked
 		/// </summary>
 		
 		public UserFacebookInfo FacebookInfo { get; set;}
 		
 		/// <summary>
-		/// steam information (if linked)
+		/// user Steam information, if a Steam account has been linked
 		/// </summary>
 		
 		public UserSteamInfo SteamInfo { get; set;}
 		
 		/// <summary>
-		/// gamecenter information (if linked)
+		/// user Gamecenter information, if a Gamecenter account has been linked
 		/// </summary>
 		
 		public UserGameCenterInfo GameCenterInfo { get; set;}
@@ -1898,13 +2022,13 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// The user-supplied data for this user data key
+		/// user-supplied data for this user data key
 		/// </summary>
 		
 		public string Value { get; set;}
 		
 		/// <summary>
-		/// The time this data was last updated
+		/// timestamp indicating when this data was last updated
 		/// </summary>
 		
 		public DateTime LastUpdated { get; set;}
@@ -1924,19 +2048,19 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// facebook id
+		/// Facebook identifier
 		/// </summary>
 		
 		public string FacebookId { get; set;}
 		
 		/// <summary>
-		/// facebook username
+		/// Facebook username
 		/// </summary>
 		
 		public string FacebookUsername { get; set;}
 		
 		/// <summary>
-		/// facebook display name
+		/// Facebook display name
 		/// </summary>
 		
 		public string FacebookDisplayname { get; set;}
@@ -1957,7 +2081,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// gamecenter id if account is linked
+		/// Gamecenter identifier
 		/// </summary>
 		
 		public string GameCenterId { get; set;}
@@ -1993,7 +2117,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// Email address
+		/// user email address
 		/// </summary>
 		
 		public string Email { get; set;}
@@ -2012,25 +2136,25 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// steam id
+		/// Steam identifier
 		/// </summary>
 		
 		public string SteamId { get; set;}
 		
 		/// <summary>
-		/// if account is linked to steam, this is the country that steam reports the player being in
+		/// the country in which the player resides, from Steam data
 		/// </summary>
 		
 		public string SteamCountry { get; set;}
 		
 		/// <summary>
-		/// Currency set in the user's steam account
+		/// currency type set in the user Steam account
 		/// </summary>
 		
 		public Currency? SteamCurrency { get; set;}
 		
 		/// <summary>
-		/// STEAM specific - what stage of game ownership is the user at with Steam
+		/// what stage of game ownership the user is listed as being in, from Steam
 		/// </summary>
 		
 		public TitleActivationStatus? SteamActivationStatus { get; set;}
@@ -2052,31 +2176,31 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// displayable game name
+		/// name of the game, as it is displayed in-game
 		/// </summary>
 		
 		public string DisplayName { get; set;}
 		
 		/// <summary>
-		/// optional value that details where the user originated
+		/// source by which the user first joined the game, if known
 		/// </summary>
 		
 		public UserOrigination? Origination { get; set;}
 		
 		/// <summary>
-		/// When this object was created. Title specific reporting for user creation time should be done against this rather than the User created field since account creation can differ significantly between title registration.
+		/// timestamp indicating when the user was first associated with this game (this can differ significantly from when the user first registered with PlayFab)
 		/// </summary>
 		
 		public DateTime Created { get; set;}
 		
 		/// <summary>
-		/// Last time the user logged in to this title
+		/// timestamp for the last user login for this title
 		/// </summary>
 		
 		public DateTime? LastLogin { get; set;}
 		
 		/// <summary>
-		///  Time the user first logged in. This can be different from when the UTD was created. For example we create a UTD when issuing a beta key. An arbitrary amount of time can pass before the user actually logs in.
+		/// timestamp indicating when the user first signed into this game (this can differ from the Created timestamp, as other events, such as issuing a beta key to the user, can associate the title to the user)
 		/// </summary>
 		
 		public DateTime? FirstLogin { get; set;}
