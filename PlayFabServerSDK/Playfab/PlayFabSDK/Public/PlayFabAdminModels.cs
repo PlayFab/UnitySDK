@@ -1882,11 +1882,18 @@ namespace PlayFab.AdminModels
 		
 		public Dictionary<string,string> Data { get; set;}
 		
+		/// <summary>
+		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
+		/// </summary>
+		
+		public UserDataPermission? Permission { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
 			Data = JsonUtil.GetDictionary<string>(json, "Data");
+			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
 		}
 	}
 	
@@ -2017,6 +2024,14 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public enum UserDataPermission
+	{
+		Private,
+		Public
+	}
+	
+	
+	
 	public class UserDataRecord : PlayFabModelBase
 	{
 		
@@ -2033,11 +2048,18 @@ namespace PlayFab.AdminModels
 		
 		public DateTime LastUpdated { get; set;}
 		
+		/// <summary>
+		/// Permissions on this data key
+		/// </summary>
+		
+		public UserDataPermission? Permission { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			Value = (string)JsonUtil.Get<string>(json, "Value");
 			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
+			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
 		}
 	}
 	
