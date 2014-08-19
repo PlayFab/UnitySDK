@@ -347,7 +347,7 @@ namespace PlayFab.ClientModels
 		/// number of times this object can be used, after which it will be removed from the player inventory
 		/// </summary>
 		
-		public uint UsageCount { get; set;}
+		public uint? UsageCount { get; set;}
 		
 		/// <summary>
 		/// duration in seconds for how long the item will remain in the player inventory - once elapsed, the item will be removed
@@ -364,7 +364,7 @@ namespace PlayFab.ClientModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			UsageCount = (uint)JsonUtil.Get<double?>(json, "UsageCount");
+			UsageCount = (uint?)JsonUtil.Get<double?>(json, "UsageCount");
 			UsagePeriod = (uint?)JsonUtil.Get<double?>(json, "UsagePeriod");
 			UsagePeriodGroup = (string)JsonUtil.Get<string>(json, "UsagePeriodGroup");
 		}
@@ -1494,7 +1494,7 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -1541,7 +1541,7 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -1594,7 +1594,7 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -1641,7 +1641,7 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -1674,7 +1674,7 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -2384,7 +2384,7 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -2501,7 +2501,7 @@ namespace PlayFab.ClientModels
 		public string Email { get; set;}
 		
 		/// <summary>
-		/// unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}

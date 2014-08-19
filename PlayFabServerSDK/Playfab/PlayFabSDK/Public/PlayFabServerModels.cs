@@ -293,7 +293,7 @@ namespace PlayFab.ServerModels
 		/// number of times this object can be used, after which it will be removed from the player inventory
 		/// </summary>
 		
-		public uint UsageCount { get; set;}
+		public uint? UsageCount { get; set;}
 		
 		/// <summary>
 		/// duration in seconds for how long the item will remain in the player inventory - once elapsed, the item will be removed
@@ -310,7 +310,7 @@ namespace PlayFab.ServerModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			UsageCount = (uint)JsonUtil.Get<double?>(json, "UsageCount");
+			UsageCount = (uint?)JsonUtil.Get<double?>(json, "UsageCount");
 			UsagePeriod = (uint?)JsonUtil.Get<double?>(json, "UsagePeriod");
 			UsagePeriodGroup = (string)JsonUtil.Get<string>(json, "UsagePeriodGroup");
 		}
@@ -1241,6 +1241,32 @@ namespace PlayFab.ServerModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+		}
+	}
+	
+	
+	
+	public class UpdateUserInternalDataRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier of the user whose custom data is being updated
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// data to be written to the user's custom data
+		/// </summary>
+		
+		public Dictionary<string,string> Data { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			Data = JsonUtil.GetDictionary<string>(json, "Data");
 		}
 	}
 	

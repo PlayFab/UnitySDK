@@ -148,7 +148,7 @@ namespace PlayFab.AdminModels
 		public DateTime Timestamp { get; set;}
 		
 		/// <summary>
-		/// the unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// the unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -413,7 +413,7 @@ namespace PlayFab.AdminModels
 		/// number of times this object can be used, after which it will be removed from the player inventory
 		/// </summary>
 		
-		public uint UsageCount { get; set;}
+		public uint? UsageCount { get; set;}
 		
 		/// <summary>
 		/// duration in seconds for how long the item will remain in the player inventory - once elapsed, the item will be removed
@@ -430,7 +430,7 @@ namespace PlayFab.AdminModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			UsageCount = (uint)JsonUtil.Get<double?>(json, "UsageCount");
+			UsageCount = (uint?)JsonUtil.Get<double?>(json, "UsageCount");
 			UsagePeriod = (uint?)JsonUtil.Get<double?>(json, "UsagePeriod");
 			UsagePeriodGroup = (string)JsonUtil.Get<string>(json, "UsagePeriodGroup");
 		}
@@ -810,7 +810,7 @@ namespace PlayFab.AdminModels
 		public DateTime Timestamp { get; set;}
 		
 		/// <summary>
-		/// the unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// the unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -1418,7 +1418,7 @@ namespace PlayFab.AdminModels
 		public DateTime Timestamp { get; set;}
 		
 		/// <summary>
-		/// the unique identifier for the title, found in the URL on the PlayFab developer site as "TitleId=[n]" when a title has been selected
+		/// the unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
 		/// </summary>
 		
 		public string TitleId { get; set;}
@@ -1538,37 +1538,6 @@ namespace PlayFab.AdminModels
 		{
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-		}
-	}
-	
-	
-	
-	public class RemoveTitleDataRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// key we want to remove
-		/// </summary>
-		
-		public string Key { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Key = (string)JsonUtil.Get<string>(json, "Key");
-		}
-	}
-	
-	
-	
-	public class RemoveTitleDataResult : PlayFabModelBase
-	{
-		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
 		}
 	}
 	
@@ -1753,6 +1722,54 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class SetupPushNotificationRequest : PlayFabModelBase
+	{
+		
+		
+		
+		public string Name { get; set;}
+		
+		
+		public string Platform { get; set;}
+		
+		
+		public string Key { get; set;}
+		
+		
+		public string Credential { get; set;}
+		
+		
+		public bool OverwriteOldARN { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Name = (string)JsonUtil.Get<string>(json, "Name");
+			Platform = (string)JsonUtil.Get<string>(json, "Platform");
+			Key = (string)JsonUtil.Get<string>(json, "Key");
+			Credential = (string)JsonUtil.Get<string>(json, "Credential");
+			OverwriteOldARN = (bool)JsonUtil.Get<bool?>(json, "OverwriteOldARN");
+		}
+	}
+	
+	
+	
+	public class SetupPushNotificationResult : PlayFabModelBase
+	{
+		
+		
+		
+		public string ARN { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			ARN = (string)JsonUtil.Get<string>(json, "ARN");
+		}
+	}
+	
+	
+	
 	public class SubtractUserVirtualCurrencyRequest : PlayFabModelBase
 	{
 		
@@ -1811,13 +1828,13 @@ namespace PlayFab.AdminModels
 		/// array of catalog items to be submitted
 		/// </summary>
 		
-		public List<CatalogItem> CatalogItems { get; set;}
+		public List<CatalogItem> Catalog { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			CatalogItems = JsonUtil.GetObjectList<CatalogItem>(json, "CatalogItems");
+			Catalog = JsonUtil.GetObjectList<CatalogItem>(json, "Catalog");
 		}
 	}
 	
@@ -1906,6 +1923,32 @@ namespace PlayFab.AdminModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+		}
+	}
+	
+	
+	
+	public class UpdateUserInternalDataRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier of the user whose custom data is being updated
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// data to be written to the user's custom data
+		/// </summary>
+		
+		public Dictionary<string,string> Data { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			Data = JsonUtil.GetDictionary<string>(json, "Data");
 		}
 	}
 	

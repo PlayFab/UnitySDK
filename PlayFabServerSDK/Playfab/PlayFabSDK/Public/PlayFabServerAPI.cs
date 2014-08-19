@@ -271,7 +271,7 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user which cannot be accessed by the client
 		/// </summary>
-		public static void UpdateUserInternalData(UpdateUserDataRequest request, UpdateUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserInternalData(UpdateUserInternalDataRequest request, UpdateUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 

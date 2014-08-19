@@ -27,7 +27,6 @@ namespace PlayFab
 		public delegate void GetRandomResultTablesCallback(GetRandomResultTablesResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
 		public delegate void ListVirualCurrencyTypesCallback(ListVirtualCurrencyTypesResult result);
-		public delegate void RemoveTitleDataCallback(RemoveTitleDataResult result);
 		public delegate void SetCatalogItemsCallback(UpdateCatalogItemsResult result);
 		public delegate void SetTitleDataCallback(SetTitleDataResult result);
 		public delegate void UpdateCatalogItemsCallback(UpdateCatalogItemsResult result);
@@ -284,7 +283,7 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user which cannot be accessed by the client
 		/// </summary>
-		public static void UpdateUserInternalData(UpdateUserDataRequest request, UpdateUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserInternalData(UpdateUserInternalDataRequest request, UpdateUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -511,35 +510,6 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ListVirualCurrencyTypes", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
-		}
-		
-		/// <summary>
-		/// Removes an existing piece of custom title data
-		/// </summary>
-		public static void RemoveTitleData(RemoveTitleDataRequest request, RemoveTitleDataCallback resultCallback, ErrorCallback errorCallback)
-		{
-			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
-			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
-			{
-				RemoveTitleDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<RemoveTitleDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
-				{
-					errorCallback(error);
-				}
-				if(result != null)
-				{
-					
-					if(resultCallback != null)
-					{
-						resultCallback(result);
-					}
-				}
-			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/RemoveTitleData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>
