@@ -18,40 +18,27 @@ This document assumes familiarity with the Unity game engine, MonoDevelop Unity 
 --------------
 The source code repository **playfab-unity** contains two main projects: PlayFabClientSDK and PlayFabServerSDK. The PlayFabClientSDK is the SDK you will integrate into your game project. The Server SDK is less commonly needed and is used to create custom administration tools.
 
-Within the PlayFabClientSDK are the following directories:
-
-PlayFabSDK  Source code to the PlayFabSDK
-
-Examples    A quick and dirty example showing how to call the SDK
-
 
 4. Installing the Plugin
 ------------------------
 
-Create a new Unity project or open an existing Unity project. From the PlayFabClientSDK directory, drag the PlayFabSDK folder into your project's assets (anywhere is ok).
+Create a new Unity project or open an existing Unity project. From the PlayFabClientSDK directory, drag the playfab/PlayFabSDK folder into your project's assets (anywhere is ok). You may optionally also install the Unity Editor tools by dragging the playfab/Editor directory into your project's assets.
 
 5. Configuring the Plugin
 -------------------------
 You must configure the SDK with your unique TitleId, as assigned by the PlayFab developer portal. Your TitleId will be a short string that looks something like "8D34" in your Title URL.
 
-Please use 8D34 as a TitleId if you would like to try the various pre-made scenes.
+Use 8D34 as a demonstration TitleId if you would like to try the various pre-made scenes without making and configurating your own title.
 
-Once the package installed go to PlayFab->GameConfig and type in your TitleId and current CatalogVersion then Click Save.
+If you have installed the PlayFab editor tools, go to PlayFab->GameConfig and type in your TitleId and current CatalogVersion then Click Save.
 
-OR
-
-Somewhere in your game's startup code, add the following:
+If you'd prefer to configure the SDK via code, then somewhere in your game's startup code, add the following:
 
 ```
 using PlayFab;
 
-PlayFabSettings.UseDevelopmentEnvironment = false;
 PlayFabSettings.TitleId = "your title id here";
 ```
-
-OR
-
-Edit directly PlayFabSettings in Playfab->PlayFabSDK->Public
 
 
 6. Using the plugin
