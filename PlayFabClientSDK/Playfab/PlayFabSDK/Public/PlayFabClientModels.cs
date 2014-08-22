@@ -3114,12 +3114,6 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// user whose statistics are to be updated
-		/// </summary>
-		
-		public string PlayFabId { get; set;}
-		
-		/// <summary>
 		/// statistics to be updated with the provided values
 		/// </summary>
 		
@@ -3128,7 +3122,6 @@ namespace PlayFab.ClientModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
 			UserStatistics = JsonUtil.GetDictionaryInt32(json, "UserStatistics");
 		}
 	}
