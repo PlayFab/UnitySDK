@@ -81,13 +81,13 @@ namespace PlayFab.MatchmakerModels
 		/// timestamp for when this instance was purchased
 		/// </summary>
 		
-		public string PurchaseDate { get; set;}
+		public DateTime? PurchaseDate { get; set;}
 		
 		/// <summary>
 		/// timestamp for when this instance will expire
 		/// </summary>
 		
-		public string Expiration { get; set;}
+		public DateTime? Expiration { get; set;}
 		
 		/// <summary>
 		/// total number of remaining uses, if this is a consumable item
@@ -119,8 +119,8 @@ namespace PlayFab.MatchmakerModels
 			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
 			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
 			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
-			PurchaseDate = (string)JsonUtil.Get<string>(json, "PurchaseDate");
-			Expiration = (string)JsonUtil.Get<string>(json, "Expiration");
+			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
+			Expiration = (DateTime?)JsonUtil.GetDateTime(json, "Expiration");
 			RemainingUses = (uint?)JsonUtil.Get<double?>(json, "RemainingUses");
 			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
 			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");

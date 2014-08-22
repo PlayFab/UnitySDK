@@ -35,9 +35,11 @@ namespace PlayFab
 		public delegate void GetUserReadOnlyDataCallback(GetUserDataResult result);
 		public delegate void GetUserStatisticsCallback(GetUserStatisticsResult result);
 		public delegate void UpdateUserDataCallback(UpdateUserDataResult result);
+		public delegate void UpdateUserStatisticsCallback(UpdateUserStatisticsResult result);
 		public delegate void GetCatalogItemsCallback(GetCatalogItemsResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
 		public delegate void GetTitleNewsCallback(GetTitleNewsResult result);
+		public delegate void AddUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
 		public delegate void ConfirmPurchaseCallback(ConfirmPurchaseResult result);
 		public delegate void ConsumeItemCallback(ConsumeItemResult result);
 		public delegate void GetUserInventoryCallback(GetUserInventoryResult result);
@@ -45,6 +47,7 @@ namespace PlayFab
 		public delegate void PurchaseItemCallback(PurchaseItemResult result);
 		public delegate void RedeemCouponCallback(RedeemCouponResult result);
 		public delegate void StartPurchaseCallback(StartPurchaseResult result);
+		public delegate void SubtractUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
 		public delegate void UnlockContainerItemCallback(UnlockContainerItemResult result);
 		public delegate void AddFriendCallback(AddFriendResult result);
 		public delegate void GetFriendsListCallback(GetFriendsListResult result);
@@ -774,6 +777,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Updates the values of the specified title-specific statistics for the user
+		/// </summary>
+		public static void UpdateUserStatistics(UpdateUserStatisticsRequest request, UpdateUserStatisticsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				UpdateUserStatisticsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UpdateUserStatisticsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateUserStatistics", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
 		/// Retrieves the specified version of the title's catalog of virtual goods, including all defined properties
 		/// </summary>
 		public static void GetCatalogItems(GetCatalogItemsRequest request, GetCatalogItemsCallback resultCallback, ErrorCallback errorCallback)
@@ -858,6 +890,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetTitleNews", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Increments the user's balance of the specified virtual currency by the stated amount
+		/// </summary>
+		public static void AddUserVirtualCurrency(AddUserVirtualCurrencyRequest request, AddUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ModifyUserVirtualCurrencyResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddUserVirtualCurrency", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
@@ -1061,6 +1122,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/StartPurchase", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Decrements the user's balance of the specified virtual currency by the stated amount
+		/// </summary>
+		public static void SubtractUserVirtualCurrency(SubtractUserVirtualCurrencyRequest request, SubtractUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ModifyUserVirtualCurrencyResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/SubtractUserVirtualCurrency", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>

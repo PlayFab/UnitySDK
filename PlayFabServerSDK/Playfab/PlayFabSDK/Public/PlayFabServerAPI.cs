@@ -443,7 +443,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Increments the specified virtual currency by the stated amount
+		/// Increments  the user's balance of the specified virtual currency by the stated amount
 		/// </summary>
 		public static void AddUserVirtualCurrency(AddUserVirtualCurrencyRequest request, AddUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -530,7 +530,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Decrements the specified virtual currency by the stated amount
+		/// Decrements the user's balance of the specified virtual currency by the stated amount
 		/// </summary>
 		public static void SubtractUserVirtualCurrency(SubtractUserVirtualCurrencyRequest request, SubtractUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
 		{
