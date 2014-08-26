@@ -24,13 +24,19 @@ namespace PlayFab.Examples{
 		// Use this for initialization
 		void Start () {
 			GetTitleNewsRequest request = new GetTitleNewsRequest ();
-			request.Keys = Convert.ToUInt32(newsToLoad);
-			PlayFabClientAPI.GetTitleNews (request, OnNewsResult, OnPlayFabError);
-		}
+			request.Count = Convert.ToInt32(newsToLoad);
+			if (PlayFabData.AuthKey != null)
+				PlayFabClientAPI.GetTitleNews (request, OnNewsResult, OnPlayFabError);
+		}	
 
 		private void OnNewsResult(GetTitleNewsResult result){
 			news = result.News;
 			newsLoaded = true;
+
+			// as soon as the news gets loaded, show it -- as long as we're done logging in and registering the user
+			if (PlayFabGameBridge.gameState == 3) {
+				showNews = true;
+			}
 		}
 		
 		private void OnPlayFabError(PlayFabError error)
@@ -44,13 +50,19 @@ namespace PlayFab.Examples{
 				Rect newsIconRect = new Rect (Screen.width-iconSpace -newsButton.width,0+iconSpace,newsButton.width,newsButton.height );
 				if (GUI.Button (newsIconRect, newsButton,GUIStyle.none)) {
 					showNews = !showNews;
+					Time.timeScale = !showNews ? 1.0f : 0.0f;
 				};
+				drawCursor = false;
+				if (Input.mousePosition.x < newsIconRect.x + newsIconRect.width && Input.mousePosition.x > newsIconRect.x && Screen.height - Input.mousePosition.y < newsIconRect.y + newsIconRect.height && Screen.height - Input.mousePosition.y > newsIconRect.y)
+					drawCursor = true;
+				Rect winRect = new Rect (Screen.width * 0.5f - newsBackground.width *0.5f,100,newsBackground.width,newsBackground.height );
 				if (showNews) {
-					Rect winRect = new Rect (Screen.width * 0.5f - newsBackground.width *0.5f,100,newsBackground.width,newsBackground.height );
+					Time.timeScale = 0.0f;
 					GUI.DrawTexture (winRect, newsBackground);
 					Rect closeRect = new Rect (winRect.x+newsBackground.width-close.width,winRect.y,close.width,close.height );
 					if (GUI.Button (closeRect, close,GUIStyle.none)) {
 						showNews = false;
+						Time.timeScale = !showNews ? 1.0f : 0.0f;
 					};
 					GUI.skin.label.alignment = TextAnchor.UpperLeft;
 					Rect prevRect = new Rect();
@@ -80,15 +92,14 @@ namespace PlayFab.Examples{
 						prevRect = labelRect;
 						prevRect.y += textSpace*2;
 					}
-					drawCursor = false;
 					if (Input.mousePosition.x < winRect.x + winRect.width && Input.mousePosition.x > winRect.x && Screen.height - Input.mousePosition.y < winRect.y + winRect.height && Screen.height - Input.mousePosition.y > winRect.y)
 						drawCursor = true;
-					if (drawCursor) {
-						Rect cursorRect = new Rect (Input.mousePosition.x,Screen.height-Input.mousePosition.y,cursor.width,cursor.height );
-						GUI.DrawTexture (cursorRect, cursor);
-					}
-				};
-
+				}
+				if (drawCursor) {
+					Rect cursorRect = new Rect (Input.mousePosition.x,Screen.height-Input.mousePosition.y,cursor.width,cursor.height );
+					GUI.DrawTexture (cursorRect, cursor);
+					PlayFabGameBridge.mouseOverGui = true;
+				}
 			}
 		}
 	}

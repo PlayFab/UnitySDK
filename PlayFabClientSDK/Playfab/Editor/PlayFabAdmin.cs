@@ -12,7 +12,7 @@ namespace PlayFab.Editor
         [MenuItem ("Playfab/Admin Panel")]
         private static void ShowWindow ()
         {
-			Application.OpenURL("https://gsw.uberentdev.com/");
+			Application.OpenURL("https://developer.playfab.com/");
         }
       }
 }

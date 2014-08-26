@@ -7,7 +7,7 @@ public class MiniExample : MonoBehaviour {
 
 
 	void Start () {
-		PlayFabSettings.UseDevelopmentEnvironment = false;
+		PlayFabSettings.UseDevelopmentEnvironment = true;
 		PlayFabSettings.TitleId = "AAA";
 		PlayFabSettings.GlobalErrorHandler = OnPlayFabError;
 

@@ -12,6 +12,7 @@ namespace PlayFab.Editor
 		private string catalogVersion;
 		private bool keepSessionKey;
 		private bool angryBotsModActivated;
+		private bool skipLogin;
 		private Texture2D[] sprites;
 		private List<GameObject> prefabFiles = new List<GameObject>() ;
 		private GUIStyle txtStyle = new GUIStyle();
@@ -43,7 +44,12 @@ namespace PlayFab.Editor
 			EditorGUIUtility.labelWidth = 200;
 			keepSessionKey = EditorGUILayout.Toggle("Keep session key", keepSessionKey);
 			EditorGUIUtility.labelWidth = 0;
-			if(keepSessionKey)EditorGUILayout.LabelField ("Current authKey : "+PlayFabClientAPI.AuthKey,txtStyle);
+			if (keepSessionKey) {
+				EditorGUILayout.LabelField ("Current authKey : "+PlayFabClientAPI.AuthKey,txtStyle);
+				EditorGUIUtility.labelWidth = 200;
+				skipLogin = EditorGUILayout.Toggle("  Skip Login", skipLogin);
+				EditorGUIUtility.labelWidth = 0;
+			}
 			EditorGUIUtility.labelWidth = 200;
 			angryBotsModActivated = EditorGUILayout.Toggle("AngryBots Demo Activated", angryBotsModActivated);
 			EditorGUIUtility.labelWidth = 0;

@@ -20,7 +20,8 @@ namespace PlayFab.Examples{
 			keys.Add ("icon_health");
 			keys.Add ("icon_kill");
 			request.Keys = keys;
-			PlayFabClientAPI.GetTitleData (request, OnTitleData, OnPlayFabError);
+			if (PlayFabData.AuthKey != null)
+				PlayFabClientAPI.GetTitleData (request, OnTitleData, OnPlayFabError);
 		}
 
 		private void OnTitleData( GetTitleDataResult result){
