@@ -28,11 +28,11 @@ namespace PlayFab.Internal
 		{
 			byte[] bData = System.Text.Encoding.UTF8.GetBytes(data);
 
-#if UNITY_4_5
-			Dictionary<string, string> headers = new Dictionary<string,string>();
-#else
+#if UNITY_4_4 || UNITY_4_3 || UNITY_4_2 || UNITY_4_2 || UNITY_4_0 || UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
 			// Using hashtable for compatibility with Unity < 4.5
 			Hashtable headers = new Hashtable ();
+#else
+			Dictionary<string, string> headers = new Dictionary<string,string>();
 #endif
 			headers.Add("Content-Type", "application/json");
 			if(authType != null)
