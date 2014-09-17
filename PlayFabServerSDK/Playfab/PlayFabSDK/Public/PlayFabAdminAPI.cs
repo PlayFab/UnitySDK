@@ -41,6 +41,7 @@ namespace PlayFab
 		public delegate void ModifyMatchmakerGameModesCallback(ModifyMatchmakerGameModesResult result);
 		public delegate void AddServerBuildCallback(AddServerBuildResult result);
 		public delegate void GetServerBuildInfoCallback(GetServerBuildInfoResult result);
+		public delegate void GetServerBuildUploadUrlCallback(GetServerBuildUploadURLResult result);
 		public delegate void ListServerBuildsCallback(ListBuildsResult result);
 		public delegate void ModifyServerBuildCallback(ModifyServerBuildResult result);
 		public delegate void RemoveServerBuildCallback(RemoveServerBuildResult result);
@@ -916,6 +917,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetServerBuildInfo", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Retrieves the pre-authorized URL for uploading the game server package for a new build
+		/// </summary>
+		public static void GetServerBuildUploadUrl(GetServerBuildUploadURLRequest request, GetServerBuildUploadUrlCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetServerBuildUploadURLResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetServerBuildUploadURLResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetServerBuildUploadUrl", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>

@@ -102,10 +102,18 @@ namespace PlayFab.ClientModels
 		
 		public string DeviceToken { get; set;}
 		
+		
+		public bool? SendPushNotificationConfirmation { get; set;}
+		
+		
+		public string ConfirmationMessege { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			DeviceToken = (string)JsonUtil.Get<string>(json, "DeviceToken");
+			SendPushNotificationConfirmation = (bool?)JsonUtil.Get<bool?>(json, "SendPushNotificationConfirmation");
+			ConfirmationMessege = (string)JsonUtil.Get<string>(json, "ConfirmationMessege");
 		}
 	}
 	
@@ -970,13 +978,13 @@ namespace PlayFab.ClientModels
 		/// maximum number of entries to retrieve
 		/// </summary>
 		
-		public int? MaxResultsCount { get; set;}
+		public int MaxResultsCount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			StatisticName = (string)JsonUtil.Get<string>(json, "StatisticName");
-			MaxResultsCount = (int?)JsonUtil.Get<double?>(json, "MaxResultsCount");
+			MaxResultsCount = (int)JsonUtil.Get<double?>(json, "MaxResultsCount");
 		}
 	}
 	
@@ -1021,14 +1029,14 @@ namespace PlayFab.ClientModels
 		/// maximum number of entries to retrieve
 		/// </summary>
 		
-		public int? MaxResultsCount { get; set;}
+		public int MaxResultsCount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			StatisticName = (string)JsonUtil.Get<string>(json, "StatisticName");
 			StartPosition = (int)JsonUtil.Get<double?>(json, "StartPosition");
-			MaxResultsCount = (int?)JsonUtil.Get<double?>(json, "MaxResultsCount");
+			MaxResultsCount = (int)JsonUtil.Get<double?>(json, "MaxResultsCount");
 		}
 	}
 	
@@ -1124,6 +1132,128 @@ namespace PlayFab.ClientModels
 		{
 			
 			News = JsonUtil.GetObjectList<TitleNewsItem>(json, "News");
+		}
+	}
+	
+	
+	
+	public class GetUserCombinedInfoRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFabId of the user to load info about. Defaults to yourself if not set.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// If set to false, account info will not be returned (defaults to true)
+		/// </summary>
+		
+		public bool? GetAccountInfo { get; set;}
+		
+		/// <summary>
+		/// If set to false, inventory will not be returned (defaults to true). Inventory will never be returned for users other than yourself.
+		/// </summary>
+		
+		public bool? GetInventory { get; set;}
+		
+		/// <summary>
+		/// If set to false, virtual currency balances will not be returned (defaults to true). Currency balances will never be returned for users other than yourself.
+		/// </summary>
+		
+		public bool? GetVirtualCurrency { get; set;}
+		
+		/// <summary>
+		/// If set to false, custom user data will not be returned (defaults to true).
+		/// </summary>
+		
+		public bool? GetUserData { get; set;}
+		
+		/// <summary>
+		/// User custom data keys to return. Leave null to get all keys. For users other than yourself, only public data will be returned.
+		/// </summary>
+		
+		public List<string> UserDataKeys { get; set;}
+		
+		/// <summary>
+		/// If set to false, read-only user data will not be returned (defaults to true).
+		/// </summary>
+		
+		public bool? GetReadOnlyData { get; set;}
+		
+		/// <summary>
+		/// User read-only custom data keys to return. Leave null to get all keys. For users other than yourself, only public data will be returned.
+		/// </summary>
+		
+		public List<string> ReadOnlyDataKeys { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			GetAccountInfo = (bool?)JsonUtil.Get<bool?>(json, "GetAccountInfo");
+			GetInventory = (bool?)JsonUtil.Get<bool?>(json, "GetInventory");
+			GetVirtualCurrency = (bool?)JsonUtil.Get<bool?>(json, "GetVirtualCurrency");
+			GetUserData = (bool?)JsonUtil.Get<bool?>(json, "GetUserData");
+			UserDataKeys = JsonUtil.GetList<string>(json, "UserDataKeys");
+			GetReadOnlyData = (bool?)JsonUtil.Get<bool?>(json, "GetReadOnlyData");
+			ReadOnlyDataKeys = JsonUtil.GetList<string>(json, "ReadOnlyDataKeys");
+		}
+	}
+	
+	
+	
+	public class GetUserCombinedInfoResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFabId of the owner of the combined info
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// account information for the user
+		/// </summary>
+		
+		public UserAccountInfo AccountInfo { get; set;}
+		
+		/// <summary>
+		/// array of inventory items in the user's current inventory
+		/// </summary>
+		
+		public List<ItemInstance> Inventory { get; set;}
+		
+		/// <summary>
+		/// array of virtual currency balance(s) belonging to the user
+		/// </summary>
+		
+		public Dictionary<string,int> VirtualCurrency { get; set;}
+		
+		/// <summary>
+		/// user specific custom data
+		/// </summary>
+		
+		public Dictionary<string,UserDataRecord> Data { get; set;}
+		
+		/// <summary>
+		/// user specific read-only data
+		/// </summary>
+		
+		public Dictionary<string,UserDataRecord> ReadOnlyData { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			AccountInfo = JsonUtil.GetObject<UserAccountInfo>(json, "AccountInfo");
+			Inventory = JsonUtil.GetObjectList<ItemInstance>(json, "Inventory");
+			VirtualCurrency = JsonUtil.GetDictionaryInt32(json, "VirtualCurrency");
+			Data = JsonUtil.GetObjectDictionary<UserDataRecord>(json, "Data");
+			ReadOnlyData = JsonUtil.GetObjectDictionary<UserDataRecord>(json, "ReadOnlyData");
 		}
 	}
 	
@@ -1459,13 +1589,13 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// A unique event name which will be used as the table name in the Redshift database. The name will be made lower case, and cannot not contain spaces. The use of underscores is recommended, for readability. Events also cannot match reserved terms. The PlayFab reserved terms are 'log_in' and 'purchase', while the Redshift reserved terms can be found here: http://docs.aws.amazon.com/redshift/latest/dg/r_pg_keywords.html.
+		/// A unique event name which will be used as the table name in the Redshift database. The name will be made lower case, and cannot not contain spaces. The use of underscores is recommended, for readability. Events also cannot match reserved terms. The PlayFab reserved terms are 'log_in' and 'purchase', 'create' and 'request', while the Redshift reserved terms can be found here: http://docs.aws.amazon.com/redshift/latest/dg/r_pg_keywords.html.
 		/// </summary>
 		
 		public string eventName { get; set;}
 		
 		/// <summary>
-		/// Contains all the data for this event. Event Values can be numerics (float, double, integer, long) or strings, and must be consistent on a per-event basis (if the Value for Key 'A' in Event 'Foo' is an integer the first time it is sent, it must be an integer in all subsequent 'Foo' events). As with event names, Keys must also not use reserved words (see above). Finally, the Body for an event must be less than 32KB of serialized data.
+		/// Contains all the data for this event. Event Values can be strings, booleans or numerics (float, double, integer, long) and must be consistent on a per-event basis (if the Value for Key 'A' in Event 'Foo' is an integer the first time it is sent, it must be an integer in all subsequent 'Foo' events). As with event names, Keys must also not use reserved words (see above). Finally, the size of the Body for an event must be less than 32KB (UTF-8 format).
 		/// </summary>
 		
 		public Dictionary<string,object> Body { get; set;}
@@ -1484,13 +1614,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
-		
-		public List<string> errors { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			errors = JsonUtil.GetList<string>(json, "errors");
 		}
 	}
 	
@@ -1599,9 +1725,15 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
+		/// <summary>
+		/// unique token from Google Play for the user
+		/// </summary>
 		
 		public string AccessToken { get; set;}
 		
@@ -2410,10 +2542,18 @@ namespace PlayFab.ClientModels
 		
 		public string DeviceToken { get; set;}
 		
+		
+		public bool? SendPushNotificationConfirmation { get; set;}
+		
+		
+		public string ConfirmationMessege { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			DeviceToken = (string)JsonUtil.Get<string>(json, "DeviceToken");
+			SendPushNotificationConfirmation = (bool?)JsonUtil.Get<bool?>(json, "SendPushNotificationConfirmation");
+			ConfirmationMessege = (string)JsonUtil.Get<string>(json, "ConfirmationMessege");
 		}
 	}
 	
@@ -2920,6 +3060,18 @@ namespace PlayFab.ClientModels
 	
 	
 	public class UnlinkGameCenterAccountResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
+	public class UnlinkSteamAccountRequest : PlayFabModelBase
 	{
 		
 		
@@ -3449,6 +3601,12 @@ namespace PlayFab.ClientModels
 		
 		public DateTime? FirstLogin { get; set;}
 		
+		/// <summary>
+		/// boolean indicating whether or not the user is currently banned for a title
+		/// </summary>
+		
+		public bool? isBanned { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -3457,6 +3615,7 @@ namespace PlayFab.ClientModels
 			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
 			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
 			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
+			isBanned = (bool?)JsonUtil.Get<bool?>(json, "isBanned");
 		}
 	}
 	
@@ -3466,17 +3625,26 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// packageName as defined in the Google Play marketplace
+		/// </summary>
 		
 		public string packageName { get; set;}
 		
+		/// <summary>
+		/// productId defined in the Google Play marketplace for the catalog item (must match the ItemId in the PlayFab catalog)
+		/// </summary>
 		
 		public string productId { get; set;}
 		
+		/// <summary>
+		/// receipt returned from the Google Play service for the in-app purchase
+		/// </summary>
 		
 		public string purchaseToken { get; set;}
 		
 		/// <summary>
-		/// OAuth 2.0 token retrieved from Google
+		/// OAuth 2.0 session token for the user retrieved from Google
 		/// </summary>
 		
 		public string accessToken { get; set;}
@@ -3497,18 +3665,33 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// type of purchase, as defined by Google Play
+		/// </summary>
 		
 		public string kind { get; set;}
 		
+		/// <summary>
+		/// timestamp of the purchase in the Google Play marketplace
+		/// </summary>
 		
 		public DateTime purchaseTime { get; set;}
 		
+		/// <summary>
+		/// whether the purchase was successful, cancelled, or revoked, as defined by Google Play
+		/// </summary>
 		
 		public int puchaseState { get; set;}
 		
+		/// <summary>
+		/// whether the purchased item has been consumed in Google Play
+		/// </summary>
 		
 		public int consumptionState { get; set;}
 		
+		/// <summary>
+		/// developer defined string in Google Play to be returned on any purchase
+		/// </summary>
 		
 		public string developerPayload { get; set;}
 		
@@ -3536,7 +3719,7 @@ namespace PlayFab.ClientModels
 		public string ReceiptData { get; set;}
 		
 		/// <summary>
-		/// name of the object purchased
+		/// name of the object purchased from the App store (must match the ItemId in the PlayFab catalog)
 		/// </summary>
 		
 		public string ObjectName { get; set;}

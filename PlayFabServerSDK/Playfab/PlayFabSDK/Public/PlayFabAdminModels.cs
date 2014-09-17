@@ -70,12 +70,6 @@ namespace PlayFab.AdminModels
 		public string BuildId { get; set;}
 		
 		/// <summary>
-		/// date and time to apply (stamp) to this build (usually current time/date)
-		/// </summary>
-		
-		public DateTime? Timestamp { get; set;}
-		
-		/// <summary>
 		/// is this build currently allowed to be used
 		/// </summary>
 		
@@ -103,7 +97,6 @@ namespace PlayFab.AdminModels
 		{
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
 			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
 			DedicatedServerEligible = (bool)JsonUtil.Get<bool?>(json, "DedicatedServerEligible");
 			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
@@ -153,6 +146,12 @@ namespace PlayFab.AdminModels
 		
 		public string TitleId { get; set;}
 		
+		/// <summary>
+		/// the current status of the build validation and processing steps
+		/// </summary>
+		
+		public GameBuildStatus? Status { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -162,6 +161,7 @@ namespace PlayFab.AdminModels
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
+			Status = (GameBuildStatus?)JsonUtil.GetEnum<GameBuildStatus>(json, "Status");
 		}
 	}
 	
@@ -491,6 +491,17 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public enum GameBuildStatus
+	{
+		Available,
+		Validating,
+		InvalidBuildPackage,
+		Processing,
+		FailedToProcess
+	}
+	
+	
+	
 	public class GameModeInfo : PlayFabModelBase
 	{
 		
@@ -815,6 +826,12 @@ namespace PlayFab.AdminModels
 		
 		public string TitleId { get; set;}
 		
+		/// <summary>
+		/// the current status of the build validation and processing steps
+		/// </summary>
+		
+		public GameBuildStatus? Status { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -824,6 +841,45 @@ namespace PlayFab.AdminModels
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
+			Status = (GameBuildStatus?)JsonUtil.GetEnum<GameBuildStatus>(json, "Status");
+		}
+	}
+	
+	
+	
+	public class GetServerBuildUploadURLRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// unique identifier of the game server build to upload
+		/// </summary>
+		
+		public string BuildId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
+		}
+	}
+	
+	
+	
+	public class GetServerBuildUploadURLResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// pre-authorized URL for uploading the game server build package
+		/// </summary>
+		
+		public string URL { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			URL = (string)JsonUtil.Get<string>(json, "URL");
 		}
 	}
 	
@@ -1423,6 +1479,12 @@ namespace PlayFab.AdminModels
 		
 		public string TitleId { get; set;}
 		
+		/// <summary>
+		/// the current status of the build validation and processing steps
+		/// </summary>
+		
+		public GameBuildStatus? Status { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -1432,6 +1494,7 @@ namespace PlayFab.AdminModels
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
+			Status = (GameBuildStatus?)JsonUtil.GetEnum<GameBuildStatus>(json, "Status");
 		}
 	}
 	
@@ -1528,16 +1591,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
-		/// <summary>
-		/// unique identifier of the previously uploaded build executable to be removed
-		/// </summary>
-		
-		public string BuildId { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
 		}
 	}
 	
@@ -1726,18 +1782,33 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// name of the application sending the messsage (application names must be made up of only uppercase and lowercase ASCII letters, numbers, underscores, hyphens, and periods, and must be between 1 and 256 characters long)
+		/// </summary>
 		
 		public string Name { get; set;}
 		
+		/// <summary>
+		/// supported ARN platforms are Apple Push Notification Service (APNS and APNS_SANDBOX) for iOS and Google Cloud Messaging (GCM) for Android
+		/// </summary>
 		
 		public string Platform { get; set;}
 		
+		/// <summary>
+		/// for APNS, this is the PlatformPrincipal (SSL Certificate)
+		/// </summary>
 		
 		public string Key { get; set;}
 		
+		/// <summary>
+		/// Credential is the Private Key for APNS/APNS_SANDBOX, and the API Key for GCM
+		/// </summary>
 		
 		public string Credential { get; set;}
 		
+		/// <summary>
+		/// replace any existing ARN with the newly generated one
+		/// </summary>
 		
 		public bool OverwriteOldARN { get; set;}
 		
@@ -2270,6 +2341,12 @@ namespace PlayFab.AdminModels
 		
 		public DateTime? FirstLogin { get; set;}
 		
+		/// <summary>
+		/// boolean indicating whether or not the user is currently banned for a title
+		/// </summary>
+		
+		public bool? isBanned { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -2278,6 +2355,7 @@ namespace PlayFab.AdminModels
 			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
 			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
 			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
+			isBanned = (bool?)JsonUtil.Get<bool?>(json, "isBanned");
 		}
 	}
 	

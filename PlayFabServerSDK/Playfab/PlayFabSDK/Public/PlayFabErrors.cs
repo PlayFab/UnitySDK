@@ -77,21 +77,25 @@ namespace PlayFab
 		DuplicateUsername = 1065,
 		InvalidBuyerInfo = 1066,
 		NoGameModeParamsSet = 1067,
-		TooLong = 1068,
-		ReservedWord = 1069,
-		InvalidBodyValue = 1070,
+		BodyTooLarge = 1068,
+		ReservedWordInBody = 1069,
+		InvalidTypeInBody = 1070,
 		InvalidRequest = 1071,
-		ReservedEvent = 1072,
+		ReservedEventName = 1072,
 		InvalidUserStatistics = 1073,
 		NotAuthenticated = 1074,
 		StreamAlreadyExists = 1075,
 		ErrorCreatingStream = 1076,
 		StreamNotFound = 1077,
 		InvalidAccount = 1078,
-		DisplayNameUpdatesNotEnabledForTitle = 1079,
 		PurchaseDoesNotExist = 1080,
 		InvalidPurchaseTransactionStatus = 1081,
-		APINotEnabledForGameClientAccess = 1082
+		APINotEnabledForGameClientAccess = 1082,
+		NoPushNotificationARNForTitle = 1083,
+		BuildAlreadyExists = 1084,
+		BuildPackageDoesNotExist = 1085,
+		BuildIsActive = 1086,
+		CustomAnalyticsEventsNotEnabledForTitle = 1087
 	}
 	
 	public class PlayFabError

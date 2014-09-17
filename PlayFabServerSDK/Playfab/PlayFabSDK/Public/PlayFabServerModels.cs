@@ -429,14 +429,14 @@ namespace PlayFab.ServerModels
 		/// maximum number of entries to retrieve
 		/// </summary>
 		
-		public int? MaxResultsCount { get; set;}
+		public int MaxResultsCount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			StatisticName = (string)JsonUtil.Get<string>(json, "StatisticName");
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			MaxResultsCount = (int?)JsonUtil.Get<double?>(json, "MaxResultsCount");
+			MaxResultsCount = (int)JsonUtil.Get<double?>(json, "MaxResultsCount");
 		}
 	}
 	
@@ -478,14 +478,14 @@ namespace PlayFab.ServerModels
 		/// maximum number of entries to retrieve
 		/// </summary>
 		
-		public int? MaxResultsCount { get; set;}
+		public int MaxResultsCount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			StatisticName = (string)JsonUtil.Get<string>(json, "StatisticName");
 			StartPosition = (int)JsonUtil.Get<double?>(json, "StartPosition");
-			MaxResultsCount = (int?)JsonUtil.Get<double?>(json, "MaxResultsCount");
+			MaxResultsCount = (int)JsonUtil.Get<double?>(json, "MaxResultsCount");
 		}
 	}
 	
@@ -1581,6 +1581,12 @@ namespace PlayFab.ServerModels
 		
 		public DateTime? FirstLogin { get; set;}
 		
+		/// <summary>
+		/// boolean indicating whether or not the user is currently banned for a title
+		/// </summary>
+		
+		public bool? isBanned { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -1589,6 +1595,7 @@ namespace PlayFab.ServerModels
 			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
 			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
 			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
+			isBanned = (bool?)JsonUtil.Get<bool?>(json, "isBanned");
 		}
 	}
 	

@@ -20,6 +20,7 @@ namespace PlayFab
 		public delegate void RegisterPlayFabUserCallback(RegisterPlayFabUserResult result);
 		public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
 		public delegate void GetAccountInfoCallback(GetAccountInfoResult result);
+		public delegate void GetUserCombinedInfoCallback(GetUserCombinedInfoResult result);
 		public delegate void LinkFacebookAccountCallback(LinkFacebookAccountResult result);
 		public delegate void LinkGameCenterAccountCallback(LinkGameCenterAccountResult result);
 		public delegate void LinkSteamAccountCallback(LinkSteamAccountResult result);
@@ -342,6 +343,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Retrieves all requested data for a user in one unified request. By default, this API returns all  data for the locally signed-in user. The input parameters may be used to limit the data retrieved any any subset of the available data, as well as retrieve the available data for a different user. Note that certain data, including inventory, virtual currency balances, and personally identifying information, may only be retrieved for the locally signed-in user. In the example below, a request is made for the account details, virtual currency balances, and specified user data for the locally signed-in user.
+		/// </summary>
+		public static void GetUserCombinedInfo(GetUserCombinedInfoRequest request, GetUserCombinedInfoCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetUserCombinedInfoResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetUserCombinedInfoResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserCombinedInfo", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
 		/// Links the Facebook account associated with the provided Facebook access token to the user's PlayFab account
 		/// </summary>
 		public static void LinkFacebookAccount(LinkFacebookAccountRequest request, LinkFacebookAccountCallback resultCallback, ErrorCallback errorCallback)
@@ -489,7 +519,7 @@ namespace PlayFab
 		/// <summary>
 		/// Unlinks the related Steam account from the user's PlayFab account
 		/// </summary>
-		public static void UnlinkSteamAccount(LinkSteamAccountRequest request, UnlinkSteamAccountCallback resultCallback, ErrorCallback errorCallback)
+		public static void UnlinkSteamAccount(UnlinkSteamAccountRequest request, UnlinkSteamAccountCallback resultCallback, ErrorCallback errorCallback)
 		{
 			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
 
@@ -1328,7 +1358,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Validates with the iTunes store that the receipt for an iOS in-app purchase is valid and that it matches the purchased catalog item
+		/// Validates with the Apple store that the receipt for an iOS in-app purchase is valid and that it matches the purchased catalog item
 		/// </summary>
 		public static void ValidateIOSReceipt(ValidateIOSReceiptRequest request, ValidateIOSReceiptCallback resultCallback, ErrorCallback errorCallback)
 		{
