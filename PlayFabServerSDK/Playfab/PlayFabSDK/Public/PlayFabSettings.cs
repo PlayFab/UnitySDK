@@ -19,7 +19,7 @@ namespace PlayFab
 		public static string TitleId = null;
 		public static PlayFabLogLevel LogLevel = PlayFabLogLevel.Warning | PlayFabLogLevel.Error;
 		public static ErrorCallback GlobalErrorHandler  { get; set; }
-		public static DeveloperSecretKey = null;
+		public static string DeveloperSecretKey = null;
 		
 		public static string GetURL()
 		{
