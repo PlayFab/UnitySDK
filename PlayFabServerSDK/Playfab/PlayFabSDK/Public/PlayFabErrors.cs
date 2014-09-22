@@ -95,7 +95,10 @@ namespace PlayFab
 		BuildAlreadyExists = 1084,
 		BuildPackageDoesNotExist = 1085,
 		BuildIsActive = 1086,
-		CustomAnalyticsEventsNotEnabledForTitle = 1087
+		CustomAnalyticsEventsNotEnabledForTitle = 1087,
+		InvalidSharedGroupId = 1088,
+		NotAuthorized = 1089,
+		MissingTitleGoogleProperties = 1090
 	}
 	
 	public class PlayFabError

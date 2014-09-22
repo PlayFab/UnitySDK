@@ -245,10 +245,10 @@ namespace PlayFab.MatchmakerModels
 		public uint GameMode { get; set;}
 		
 		/// <summary>
-		/// IP Address of the external service which should receive status updates for the session
+		/// custom command line argument when starting game server process
 		/// </summary>
 		
-		public string Subscriber { get; set;}
+		public string CustomCommandLineData { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
@@ -256,7 +256,7 @@ namespace PlayFab.MatchmakerModels
 			Build = (string)JsonUtil.Get<string>(json, "Build");
 			Region = (Region)JsonUtil.GetEnum<Region>(json, "Region");
 			GameMode = (uint)JsonUtil.Get<double?>(json, "GameMode");
-			Subscriber = (string)JsonUtil.Get<string>(json, "Subscriber");
+			CustomCommandLineData = (string)JsonUtil.Get<string>(json, "CustomCommandLineData");
 		}
 	}
 	

@@ -335,7 +335,7 @@ namespace PlayFab.AdminModels
 		public CatalogItemConsumableInfo Consumable { get; set;}
 		
 		/// <summary>
-		/// defines the container properties for the item - containers are items which include contain other items, including random drop tables and virtual currencies, and which require a "key" item to open
+		/// defines the container properties for the item - what items it contains, including random drop tables and virtual currencies, and what item (if any) is required to open it via the UnlockContainerItem API
 		/// </summary>
 		
 		public CatalogItemContainerInfo Container { get; set;}
@@ -438,12 +438,15 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	/// <summary>
+	/// Containers are inventory items that can hold other items defined in the catalog, as well as virtual currency, which is added to the player inventory when the container is unlocked, using the UnlockContainerItem API. The items can be anything defined in the catalog, as well as RandomResultTable objects which will be resolved when the container is unlocked. Containers and their keys should be defined as Consumable (having a limited number of uses) in their catalog defintiions, unless the intent is for the player to be able to re-use them infinitely.
+	/// </summary>
 	public class CatalogItemContainerInfo : PlayFabModelBase
 	{
 		
 		
 		/// <summary>
-		/// unique ItemId which is required to unlock the container (items in the container will not be added to the player inventory until it is unlocked)
+		/// ItemId for the catalog item used to unlock the container, if any (if not specified, a call to UnlockContainerItem will open the container, adding the contents to the player inventory and currency balances)
 		/// </summary>
 		
 		public string KeyItemId { get; set;}
@@ -663,18 +666,6 @@ namespace PlayFab.AdminModels
 		
 		public uint ServerPort { get; set;}
 		
-		/// <summary>
-		/// output log from this Game Server Instance
-		/// </summary>
-		
-		public string StdOutLog { get; set;}
-		
-		/// <summary>
-		/// error log from this Game Server Instance
-		/// </summary>
-		
-		public string StdErrLog { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -688,8 +679,6 @@ namespace PlayFab.AdminModels
 			Players = JsonUtil.GetList<string>(json, "Players");
 			ServerAddress = (string)JsonUtil.Get<string>(json, "ServerAddress");
 			ServerPort = (uint)JsonUtil.Get<double?>(json, "ServerPort");
-			StdOutLog = (string)JsonUtil.Get<string>(json, "StdOutLog");
-			StdErrLog = (string)JsonUtil.Get<string>(json, "StdErrLog");
 		}
 	}
 	
@@ -880,6 +869,44 @@ namespace PlayFab.AdminModels
 		{
 			
 			URL = (string)JsonUtil.Get<string>(json, "URL");
+		}
+	}
+	
+	
+	
+	public class GetStoreItemsRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// which store is being requested
+		/// </summary>
+		
+		public string StoreId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			StoreId = (string)JsonUtil.Get<string>(json, "StoreId");
+		}
+	}
+	
+	
+	
+	public class GetStoreItemsResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// array of items which can be purchased from this store
+		/// </summary>
+		
+		public List<StoreItem> Store { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Store = JsonUtil.GetObjectList<StoreItem>(json, "Store");
 		}
 	}
 	
@@ -1745,7 +1772,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// key we want to set a value on (note, this is additive - will only replace an existing key's value if they are the same name
+		/// key we want to set a value on (note, this is additive - will only replace an existing key's value if they are the same name.) Keys are trimmed of whitespace. Keys may not begin with the '!' character.
 		/// </summary>
 		
 		public string Key { get; set;}
@@ -1789,7 +1816,7 @@ namespace PlayFab.AdminModels
 		public string Name { get; set;}
 		
 		/// <summary>
-		/// supported ARN platforms are Apple Push Notification Service (APNS and APNS_SANDBOX) for iOS and Google Cloud Messaging (GCM) for Android
+		/// supported notification platforms are Apple Push Notification Service (APNS and APNS_SANDBOX) for iOS and Google Cloud Messaging (GCM) for Android
 		/// </summary>
 		
 		public string Platform { get; set;}
@@ -1807,7 +1834,7 @@ namespace PlayFab.AdminModels
 		public string Credential { get; set;}
 		
 		/// <summary>
-		/// replace any existing ARN with the newly generated one
+		/// replace any existing ARN with the newly generated one. If this is set to false, an error will be returned if notifactions have already setup for this platform.
 		/// </summary>
 		
 		public bool OverwriteOldARN { get; set;}
@@ -1829,6 +1856,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// Amazon Resource Name for the created notification topic.
+		/// </summary>
 		
 		public string ARN { get; set;}
 		
@@ -1836,6 +1866,49 @@ namespace PlayFab.AdminModels
 		{
 			
 			ARN = (string)JsonUtil.Get<string>(json, "ARN");
+		}
+	}
+	
+	
+	
+	/// <summary>
+	/// A store entry that list a catalog item at a particular price
+	/// </summary>
+	public class StoreItem : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// ItemId of the item for sale in the store
+		/// </summary>
+		
+		public string ItemId { get; set;}
+		
+		/// <summary>
+		/// Catalog version of the item. Leave null to always use the most recent version.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// price of this item in virtual currencies and "RM" (the base Real Money purchase price, in USD pennies)
+		/// </summary>
+		
+		public Dictionary<string,uint> VirtualCurrencyPrices { get; set;}
+		
+		/// <summary>
+		/// override prices for this item for specific currencies
+		/// </summary>
+		
+		public Dictionary<string,uint> RealCurrencyPrices { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
+			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
+			VirtualCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyPrices");
+			RealCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "RealCurrencyPrices");
 		}
 	}
 	
@@ -1954,6 +2027,44 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class UpdateStoreItemsRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// which store is being updated
+		/// </summary>
+		
+		public string StoreId { get; set;}
+		
+		/// <summary>
+		/// array of store items to be submitted
+		/// </summary>
+		
+		public List<StoreItem> Store { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			StoreId = (string)JsonUtil.Get<string>(json, "StoreId");
+			Store = JsonUtil.GetObjectList<StoreItem>(json, "Store");
+		}
+	}
+	
+	
+	
+	public class UpdateStoreItemsResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
 	public class UpdateUserDataRequest : PlayFabModelBase
 	{
 		
@@ -1965,7 +2076,7 @@ namespace PlayFab.AdminModels
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// data to be written to the user's custom data
+		/// data to be written to the user's custom data. Keys are trimmed of whitespace. Keys may not begin with a '!' character.
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}

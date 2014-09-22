@@ -25,12 +25,15 @@ namespace PlayFab
 		public delegate void AddVirtualCurrencyTypesCallback(BlankResult result);
 		public delegate void GetCatalogItemsCallback(GetCatalogItemsResult result);
 		public delegate void GetRandomResultTablesCallback(GetRandomResultTablesResult result);
+		public delegate void GetStoreItemsCallback(GetStoreItemsResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
 		public delegate void ListVirualCurrencyTypesCallback(ListVirtualCurrencyTypesResult result);
 		public delegate void SetCatalogItemsCallback(UpdateCatalogItemsResult result);
+		public delegate void SetStoreItemsCallback(UpdateStoreItemsResult result);
 		public delegate void SetTitleDataCallback(SetTitleDataResult result);
 		public delegate void UpdateCatalogItemsCallback(UpdateCatalogItemsResult result);
 		public delegate void UpdateRandomResultTablesCallback(UpdateRandomResultTablesResult result);
+		public delegate void UpdateStoreItemsCallback(UpdateStoreItemsResult result);
 		public delegate void AddUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
 		public delegate void GetUserInventoryCallback(GetUserInventoryResult result);
 		public delegate void GrantItemsToUsersCallback(GrantItemsToUsersResult result);
@@ -456,6 +459,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Gets all items in the specified virtual store
+		/// </summary>
+		public static void GetStoreItems(GetStoreItemsRequest request, GetStoreItemsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetStoreItemsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetStoreItemsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetStoreItems", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
 		/// Retrieves the key-value store of custom title settings
 		/// </summary>
 		public static void GetTitleData(GetTitleDataRequest request, GetTitleDataCallback resultCallback, ErrorCallback errorCallback)
@@ -543,6 +575,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Sets all the items in one virtual store
+		/// </summary>
+		public static void SetStoreItems(UpdateStoreItemsRequest request, SetStoreItemsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				UpdateStoreItemsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UpdateStoreItemsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/SetStoreItems", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
 		/// Creates and updates the key-value store of custom title settings
 		/// </summary>
 		public static void SetTitleData(SetTitleDataRequest request, SetTitleDataCallback resultCallback, ErrorCallback errorCallback)
@@ -627,6 +688,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/UpdateRandomResultTables", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Updates an existing virtual item store with new or modified items
+		/// </summary>
+		public static void UpdateStoreItems(UpdateStoreItemsRequest request, UpdateStoreItemsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				UpdateStoreItemsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UpdateStoreItemsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/UpdateStoreItems", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>

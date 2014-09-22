@@ -66,6 +66,44 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class AddSharedGroupMembersRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the shared group.
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+		
+		/// <summary>
+		/// list of PlayFabIds of users to add as members of the shared group
+		/// </summary>
+		
+		public List<string> PlayFabIds { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
+			PlayFabIds = JsonUtil.GetList<string>(json, "PlayFabIds");
+		}
+	}
+	
+	
+	
+	public class AddSharedGroupMembersResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
 	public class AddUserVirtualCurrencyRequest : PlayFabModelBase
 	{
 		
@@ -102,9 +140,15 @@ namespace PlayFab.ClientModels
 		
 		public string DeviceToken { get; set;}
 		
+		/// <summary>
+		/// If true, send a test push message immediately after sucessful registration. Defaults to false.
+		/// </summary>
 		
 		public bool? SendPushNotificationConfirmation { get; set;}
 		
+		/// <summary>
+		/// Message to display when confirming push notification.
+		/// </summary>
 		
 		public string ConfirmationMessege { get; set;}
 		
@@ -303,7 +347,7 @@ namespace PlayFab.ClientModels
 		public CatalogItemConsumableInfo Consumable { get; set;}
 		
 		/// <summary>
-		/// defines the container properties for the item - containers are items which include contain other items, including random drop tables and virtual currencies, and which require a "key" item to open
+		/// defines the container properties for the item - what items it contains, including random drop tables and virtual currencies, and what item (if any) is required to open it via the UnlockContainerItem API
 		/// </summary>
 		
 		public CatalogItemContainerInfo Container { get; set;}
@@ -406,12 +450,15 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	/// <summary>
+	/// Containers are inventory items that can hold other items defined in the catalog, as well as virtual currency, which is added to the player inventory when the container is unlocked, using the UnlockContainerItem API. The items can be anything defined in the catalog, as well as RandomResultTable objects which will be resolved when the container is unlocked. Containers and their keys should be defined as Consumable (having a limited number of uses) in their catalog defintiions, unless the intent is for the player to be able to re-use them infinitely.
+	/// </summary>
 	public class CatalogItemContainerInfo : PlayFabModelBase
 	{
 		
 		
 		/// <summary>
-		/// unique ItemId which is required to unlock the container (items in the container will not be added to the player inventory until it is unlocked)
+		/// ItemId for the catalog item used to unlock the container, if any (if not specified, a call to UnlockContainerItem will open the container, adding the contents to the player inventory and currency balances)
 		/// </summary>
 		
 		public string KeyItemId { get; set;}
@@ -531,6 +578,44 @@ namespace PlayFab.ClientModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+		}
+	}
+	
+	
+	
+	public class CreateSharedGroupRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the shared group. Leave null to have a random ID assigned
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
+		}
+	}
+	
+	
+	
+	public class CreateSharedGroupResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier assigned to the shared group
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
 		}
 	}
 	
@@ -719,12 +804,6 @@ namespace PlayFab.ClientModels
 		public string GameMode { get; set;}
 		
 		/// <summary>
-		/// level name this server is running, if applicable
-		/// </summary>
-		
-		public string Map { get; set;}
-		
-		/// <summary>
 		/// maximum players this server can support
 		/// </summary>
 		
@@ -761,7 +840,6 @@ namespace PlayFab.ClientModels
 			LobbyID = (string)JsonUtil.Get<string>(json, "LobbyID");
 			BuildVersion = (string)JsonUtil.Get<string>(json, "BuildVersion");
 			GameMode = (string)JsonUtil.Get<string>(json, "GameMode");
-			Map = (string)JsonUtil.Get<string>(json, "Map");
 			MaxPlayers = (int)JsonUtil.Get<double?>(json, "MaxPlayers");
 			PlayerUsernames = JsonUtil.GetList<string>(json, "PlayerUsernames");
 			RunTime = (uint)JsonUtil.Get<double?>(json, "RunTime");
@@ -1056,6 +1134,103 @@ namespace PlayFab.ClientModels
 		{
 			
 			Leaderboard = JsonUtil.GetObjectList<PlayerLeaderboardEntry>(json, "Leaderboard");
+		}
+	}
+	
+	
+	
+	public class GetSharedGroupDataRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the shared group to load data from
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+		
+		/// <summary>
+		/// specific keys to search for in the shared group's user data. Leave null to get all keys. Set to an empty array to get no keys.
+		/// </summary>
+		
+		public List<string> Keys { get; set;}
+		
+		/// <summary>
+		/// if true, also return the list of member of the shared group. Defaults to false if not specified
+		/// </summary>
+		
+		public bool? GetMembers { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
+			Keys = JsonUtil.GetList<string>(json, "Keys");
+			GetMembers = (bool?)JsonUtil.Get<bool?>(json, "GetMembers");
+		}
+	}
+	
+	
+	
+	public class GetSharedGroupDataResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// data for this shared data group
+		/// </summary>
+		
+		public Dictionary<string,SharedGroupDataRecord> Data { get; set;}
+		
+		/// <summary>
+		/// List of PlayFabIds of the members of this group, if requested
+		/// </summary>
+		
+		public List<string> Members { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Data = JsonUtil.GetObjectDictionary<SharedGroupDataRecord>(json, "Data");
+			Members = JsonUtil.GetList<string>(json, "Members");
+		}
+	}
+	
+	
+	
+	public class GetStoreItemsRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// which store is being requested
+		/// </summary>
+		
+		public string StoreId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			StoreId = (string)JsonUtil.Get<string>(json, "StoreId");
+		}
+	}
+	
+	
+	
+	public class GetStoreItemsResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// array of store items
+		/// </summary>
+		
+		public List<StoreItem> Store { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Store = JsonUtil.GetObjectList<StoreItem>(json, "Store");
 		}
 	}
 	
@@ -2316,7 +2491,7 @@ namespace PlayFab.ClientModels
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// price the client expects to pay for the item (in case a new catalog was uploaded, with new prices)
+		/// price the client expects to pay for the item (in case a new catalog or store was uploaded, with new prices)
 		/// </summary>
 		
 		public int Price { get; set;}
@@ -2327,6 +2502,12 @@ namespace PlayFab.ClientModels
 		
 		public string CatalogVersion { get; set;}
 		
+		/// <summary>
+		/// store to buy this item through. If not set, prices default to those in the catalog.
+		/// </summary>
+		
+		public string StoreId { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
@@ -2334,6 +2515,7 @@ namespace PlayFab.ClientModels
 			VirtualCurrency = (string)JsonUtil.Get<string>(json, "VirtualCurrency");
 			Price = (int)JsonUtil.Get<double?>(json, "Price");
 			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
+			StoreId = (string)JsonUtil.Get<string>(json, "StoreId");
 		}
 	}
 	
@@ -2542,9 +2724,15 @@ namespace PlayFab.ClientModels
 		
 		public string DeviceToken { get; set;}
 		
+		/// <summary>
+		/// If true, send a test push message immediately after sucessful registration. Defaults to false.
+		/// </summary>
 		
 		public bool? SendPushNotificationConfirmation { get; set;}
 		
+		/// <summary>
+		/// Message to display when confirming push notification.
+		/// </summary>
 		
 		public string ConfirmationMessege { get; set;}
 		
@@ -2682,6 +2870,44 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class RemoveSharedGroupMembersRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the shared group.
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+		
+		/// <summary>
+		/// list of PlayFabIds of users to remove from the shared group
+		/// </summary>
+		
+		public List<string> PlayFabIds { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
+			PlayFabIds = JsonUtil.GetList<string>(json, "PlayFabIds");
+		}
+	}
+	
+	
+	
+	public class RemoveSharedGroupMembersResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
 	public class SendAccountRecoveryEmailRequest : PlayFabModelBase
 	{
 		
@@ -2758,6 +2984,46 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class SharedGroupDataRecord : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// data stored for the specified group data key
+		/// </summary>
+		
+		public string Value { get; set;}
+		
+		/// <summary>
+		/// PlayFabId of the user to last update this value
+		/// </summary>
+		
+		public string LastUpdatedBy { get; set;}
+		
+		/// <summary>
+		/// timestamp for when this data was last updated
+		/// </summary>
+		
+		public DateTime LastUpdated { get; set;}
+		
+		/// <summary>
+		/// Permissions on this data key
+		/// </summary>
+		
+		public UserDataPermission? Permission { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Value = (string)JsonUtil.Get<string>(json, "Value");
+			LastUpdatedBy = (string)JsonUtil.Get<string>(json, "LastUpdatedBy");
+			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
+			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
+		}
+	}
+	
+	
+	
 	public class StartGameRequest : PlayFabModelBase
 	{
 		
@@ -2787,10 +3053,10 @@ namespace PlayFab.ClientModels
 		public bool PasswordRestricted { get; set;}
 		
 		/// <summary>
-		/// the identifier of the lobby the user came from within the match maker service
+		/// custom command line argument when starting game server process
 		/// </summary>
 		
-		public string ReplayLobbyId { get; set;}
+		public string CustomCommandLineData { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
@@ -2799,7 +3065,7 @@ namespace PlayFab.ClientModels
 			Region = (Region)JsonUtil.GetEnum<Region>(json, "Region");
 			GameMode = (string)JsonUtil.Get<string>(json, "GameMode");
 			PasswordRestricted = (bool)JsonUtil.Get<bool?>(json, "PasswordRestricted");
-			ReplayLobbyId = (string)JsonUtil.Get<string>(json, "ReplayLobbyId");
+			CustomCommandLineData = (string)JsonUtil.Get<string>(json, "CustomCommandLineData");
 		}
 	}
 	
@@ -2864,10 +3130,16 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// catalog version for the items to be purchased
+		/// catalog version for the items to be purchased. Defaults to most recent catalog.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// store through which to purchase items. If not set, prices will be pulled from the catalog itself.
+		/// </summary>
+		
+		public string StoreId { get; set;}
 		
 		/// <summary>
 		/// the set of items to purchase
@@ -2879,6 +3151,7 @@ namespace PlayFab.ClientModels
 		{
 			
 			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
+			StoreId = (string)JsonUtil.Get<string>(json, "StoreId");
 			Items = JsonUtil.GetObjectList<ItemPuchaseRequest>(json, "Items");
 		}
 	}
@@ -2920,6 +3193,49 @@ namespace PlayFab.ClientModels
 			Contents = JsonUtil.GetObjectList<CartItem>(json, "Contents");
 			PaymentOptions = JsonUtil.GetObjectList<PaymentOption>(json, "PaymentOptions");
 			VirtualCurrencyBalances = JsonUtil.GetDictionaryInt32(json, "VirtualCurrencyBalances");
+		}
+	}
+	
+	
+	
+	/// <summary>
+	/// A store entry that list a catalog item at a particular price
+	/// </summary>
+	public class StoreItem : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// ItemId of the item for sale in the store
+		/// </summary>
+		
+		public string ItemId { get; set;}
+		
+		/// <summary>
+		/// Catalog version of the item. Leave null to always use the most recent version.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// price of this item in virtual currencies and "RM" (the base Real Money purchase price, in USD pennies)
+		/// </summary>
+		
+		public Dictionary<string,uint> VirtualCurrencyPrices { get; set;}
+		
+		/// <summary>
+		/// override prices for this item for specific currencies
+		/// </summary>
+		
+		public Dictionary<string,uint> RealCurrencyPrices { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
+			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
+			VirtualCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyPrices");
+			RealCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "RealCurrencyPrices");
 		}
 	}
 	
@@ -3212,6 +3528,51 @@ namespace PlayFab.ClientModels
 	
 	
 	public class UpdatePasswordResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
+	public class UpdateSharedGroupDataRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the shared group.
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+		
+		/// <summary>
+		/// data to be written to the shared group. A key with a null value will be removed, rather than being set to null. Keys are trimmed of whitespace and must not begin with a '!' character.
+		/// </summary>
+		
+		public Dictionary<string,string> Data { get; set;}
+		
+		/// <summary>
+		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
+		/// </summary>
+		
+		public UserDataPermission? Permission { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
+			Data = JsonUtil.GetDictionary<string>(json, "Data");
+			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
+		}
+	}
+	
+	
+	
+	public class UpdateSharedGroupDataResult : PlayFabModelBase
 	{
 		
 		
@@ -3626,36 +3987,22 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// packageName as defined in the Google Play marketplace
+		/// The original json string returned by the Google Play IAB api
 		/// </summary>
 		
-		public string packageName { get; set;}
+		public string ReceiptJson { get; set;}
 		
 		/// <summary>
-		/// productId defined in the Google Play marketplace for the catalog item (must match the ItemId in the PlayFab catalog)
+		/// The signature returned by the Google Play IAB api
 		/// </summary>
 		
-		public string productId { get; set;}
-		
-		/// <summary>
-		/// receipt returned from the Google Play service for the in-app purchase
-		/// </summary>
-		
-		public string purchaseToken { get; set;}
-		
-		/// <summary>
-		/// OAuth 2.0 session token for the user retrieved from Google
-		/// </summary>
-		
-		public string accessToken { get; set;}
+		public string Signature { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			packageName = (string)JsonUtil.Get<string>(json, "packageName");
-			productId = (string)JsonUtil.Get<string>(json, "productId");
-			purchaseToken = (string)JsonUtil.Get<string>(json, "purchaseToken");
-			accessToken = (string)JsonUtil.Get<string>(json, "accessToken");
+			ReceiptJson = (string)JsonUtil.Get<string>(json, "ReceiptJson");
+			Signature = (string)JsonUtil.Get<string>(json, "Signature");
 		}
 	}
 	
@@ -3665,44 +4012,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
-		/// <summary>
-		/// type of purchase, as defined by Google Play
-		/// </summary>
-		
-		public string kind { get; set;}
-		
-		/// <summary>
-		/// timestamp of the purchase in the Google Play marketplace
-		/// </summary>
-		
-		public DateTime purchaseTime { get; set;}
-		
-		/// <summary>
-		/// whether the purchase was successful, cancelled, or revoked, as defined by Google Play
-		/// </summary>
-		
-		public int puchaseState { get; set;}
-		
-		/// <summary>
-		/// whether the purchased item has been consumed in Google Play
-		/// </summary>
-		
-		public int consumptionState { get; set;}
-		
-		/// <summary>
-		/// developer defined string in Google Play to be returned on any purchase
-		/// </summary>
-		
-		public string developerPayload { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			kind = (string)JsonUtil.Get<string>(json, "kind");
-			purchaseTime = (DateTime)JsonUtil.GetDateTime(json, "purchaseTime");
-			puchaseState = (int)JsonUtil.Get<double?>(json, "puchaseState");
-			consumptionState = (int)JsonUtil.Get<double?>(json, "consumptionState");
-			developerPayload = (string)JsonUtil.Get<string>(json, "developerPayload");
 		}
 	}
 	

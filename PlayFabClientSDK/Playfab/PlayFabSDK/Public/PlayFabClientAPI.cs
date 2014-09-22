@@ -38,6 +38,7 @@ namespace PlayFab
 		public delegate void UpdateUserDataCallback(UpdateUserDataResult result);
 		public delegate void UpdateUserStatisticsCallback(UpdateUserStatisticsResult result);
 		public delegate void GetCatalogItemsCallback(GetCatalogItemsResult result);
+		public delegate void GetStoreItemsCallback(GetStoreItemsResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
 		public delegate void GetTitleNewsCallback(GetTitleNewsResult result);
 		public delegate void AddUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
@@ -64,6 +65,11 @@ namespace PlayFab
 		public delegate void AndroidDevicePushNotificationRegistrationCallback(AndroidDevicePushNotificationRegistrationResult result);
 		public delegate void ValidateGooglePlayPurchaseCallback(ValidateGooglePlayPurchaseResult result);
 		public delegate void LogEventCallback(LogEventResult result);
+		public delegate void AddSharedGroupMembersCallback(AddSharedGroupMembersResult result);
+		public delegate void CreateSharedGroupCallback(CreateSharedGroupResult result);
+		public delegate void GetSharedGroupDataCallback(GetSharedGroupDataResult result);
+		public delegate void RemoveSharedGroupMembersCallback(RemoveSharedGroupMembersResult result);
+		public delegate void UpdateSharedGroupDataCallback(UpdateSharedGroupDataResult result);
 		
 		
 		
@@ -865,6 +871,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Retrieves the list of catalog items for sale in a particular virutal store, including that store's pricing.
+		/// </summary>
+		public static void GetStoreItems(GetStoreItemsRequest request, GetStoreItemsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetStoreItemsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetStoreItemsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetStoreItems", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
 		/// Retrieves the key-value store of custom title settings
 		/// </summary>
 		public static void GetTitleData(GetTitleDataRequest request, GetTitleDataCallback resultCallback, ErrorCallback errorCallback)
@@ -1561,7 +1596,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Validates with the GooglePlay store that the receipt for an in-app purchase is valid and that it matches the purchased catalog item
+		/// Validates a Google Play purchase and gives the corresponding item to the player.
 		/// </summary>
 		public static void ValidateGooglePlayPurchase(ValidateGooglePlayPurchaseRequest request, ValidateGooglePlayPurchaseCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1616,6 +1651,151 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LogEvent", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Adds new members to the group. Only existing group members can add new members
+		/// </summary>
+		public static void AddSharedGroupMembers(AddSharedGroupMembersRequest request, AddSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				AddSharedGroupMembersResult result = null;
+				PlayFabError error = null;
+				ResultContainer<AddSharedGroupMembersResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddSharedGroupMembers", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Requests the creation of a shared group object. It will be created with the current user as its only member.
+		/// </summary>
+		public static void CreateSharedGroup(CreateSharedGroupRequest request, CreateSharedGroupCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				CreateSharedGroupResult result = null;
+				PlayFabError error = null;
+				ResultContainer<CreateSharedGroupResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/CreateSharedGroup", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Gets data in a shared group object. You may load data, the member list, or both at once. Non-members of the group may use this to load group data, including membership, but will not get data keys marked as private.
+		/// </summary>
+		public static void GetSharedGroupData(GetSharedGroupDataRequest request, GetSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetSharedGroupDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetSharedGroupDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetSharedGroupData", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Removes members from the group. Only existing group members can remove members. Removing all members (including yourself) deletes the group completely.
+		/// </summary>
+		public static void RemoveSharedGroupMembers(RemoveSharedGroupMembersRequest request, RemoveSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				RemoveSharedGroupMembersResult result = null;
+				PlayFabError error = null;
+				ResultContainer<RemoveSharedGroupMembersResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RemoveSharedGroupMembers", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Adds or updates data keys to a shared group object. Data written to the group is readable only by members of the group unless marked public. Only group members can update data.
+		/// </summary>
+		public static void UpdateSharedGroupData(UpdateSharedGroupDataRequest request, UpdateSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				UpdateSharedGroupDataResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UpdateSharedGroupDataResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateSharedGroupData", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		
