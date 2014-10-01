@@ -59,7 +59,6 @@ namespace PlayFab
 		public delegate void ValidateIOSReceiptCallback(ValidateIOSReceiptResult result);
 		public delegate void GetCurrentGamesCallback(CurrentGamesResult result);
 		public delegate void GetGameServerRegionsCallback(GameServerRegionsResult result);
-		public delegate void GetRegionPlaylistsCallback(RegionPlaylistsResult result);
 		public delegate void MatchmakeCallback(MatchmakeResult result);
 		public delegate void StartGameCallback(StartGameResult result);
 		public delegate void AndroidDevicePushNotificationRegistrationCallback(AndroidDevicePushNotificationRegistrationResult result);
@@ -871,7 +870,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Retrieves the list of catalog items for sale in a particular virutal store, including that store's pricing.
+		/// Retrieves the set of items defined for the specified store, including all prices defined
 		/// </summary>
 		public static void GetStoreItems(GetStoreItemsRequest request, GetStoreItemsCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1480,35 +1479,6 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Get statistics about game server mode playlists.
-		/// </summary>
-		public static void GetRegionPlaylists(RegionPlaylistsRequest request, GetRegionPlaylistsCallback resultCallback, ErrorCallback errorCallback)
-		{
-			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
-
-			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
-			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
-			{
-				RegionPlaylistsResult result = null;
-				PlayFabError error = null;
-				ResultContainer<RegionPlaylistsResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
-				{
-					errorCallback(error);
-				}
-				if(result != null)
-				{
-					
-					if(resultCallback != null)
-					{
-						resultCallback(result);
-					}
-				}
-			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetRegionPlaylists", serializedJSON, "X-Authorization", AuthKey, callback);
-		}
-		
-		/// <summary>
 		/// Assign the current player to an existing or new game server matching the given parameters and return the connection information.
 		/// </summary>
 		public static void Matchmake(MatchmakeRequest request, MatchmakeCallback resultCallback, ErrorCallback errorCallback)
@@ -1654,7 +1624,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds new members to the group. Only existing group members can add new members
+		/// Adds users to the set of those able to update both the shared data, as well as the set of users in the group. Only users in the group can add new members.
 		/// </summary>
 		public static void AddSharedGroupMembers(AddSharedGroupMembersRequest request, AddSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1683,7 +1653,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Requests the creation of a shared group object. It will be created with the current user as its only member.
+		/// Requests the creation of a shared group object, containing key/value pairs which may be updated by all members of the group. Upon creation, the current user will be the only member of the group.
 		/// </summary>
 		public static void CreateSharedGroup(CreateSharedGroupRequest request, CreateSharedGroupCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1712,7 +1682,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Gets data in a shared group object. You may load data, the member list, or both at once. Non-members of the group may use this to load group data, including membership, but will not get data keys marked as private.
+		/// Retrieves data stored in a shared group object, as well as the list of members in the group. Non-members of the group may use this to retrieve group data, including membership, but will not get retrieve data for keys marked as private.
 		/// </summary>
 		public static void GetSharedGroupData(GetSharedGroupDataRequest request, GetSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1741,7 +1711,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Removes members from the group. Only existing group members can remove members. Removing all members (including yourself) deletes the group completely.
+		/// Removes users from the set of those able to update the shared data and the set of users in the group. Only users in the group can remove members. If as a result of the call, zero users remain with access, the group and its associated data will be deleted.
 		/// </summary>
 		public static void RemoveSharedGroupMembers(RemoveSharedGroupMembersRequest request, RemoveSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1770,7 +1740,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds or updates data keys to a shared group object. Data written to the group is readable only by members of the group unless marked public. Only group members can update data.
+		/// Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group can update the data.
 		/// </summary>
 		public static void UpdateSharedGroupData(UpdateSharedGroupDataRequest request, UpdateSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
 		{

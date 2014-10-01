@@ -98,7 +98,8 @@ namespace PlayFab
 		CustomAnalyticsEventsNotEnabledForTitle = 1087,
 		InvalidSharedGroupId = 1088,
 		NotAuthorized = 1089,
-		MissingTitleGoogleProperties = 1090
+		MissingTitleGoogleProperties = 1090,
+		InvalidItemProperties = 1091
 	}
 	
 	public class PlayFabError
