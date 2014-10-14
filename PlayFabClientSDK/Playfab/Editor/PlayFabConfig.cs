@@ -11,10 +11,8 @@ namespace PlayFab.Editor
 		private string titleId;
 		private string catalogVersion;
 		private bool keepSessionKey;
-		private bool angryBotsModActivated;
 		private bool skipLogin;
 		private Texture2D[] sprites;
-		private List<GameObject> prefabFiles = new List<GameObject>() ;
 		private GUIStyle txtStyle = new GUIStyle();
 
 		[MenuItem ("Playfab/Game Config")]
@@ -28,8 +26,6 @@ namespace PlayFab.Editor
 			titleId = PlayFabData.TitleId;
 			catalogVersion = PlayFabData.CatalogVersion;
 			keepSessionKey = PlayFabData.KeepSessionKey;
-			angryBotsModActivated = PlayFabData.AngryBotsModActivated;
-			ListFiles();
 			pfLogo = (Texture2D)Resources.LoadAssetAtPath ("Assets/Playfab/Editor/PlayFablogo.png", typeof(Texture2D));
 			hideFlags = HideFlags.HideAndDontSave;
 			txtStyle.normal.textColor = Color.red;
@@ -39,6 +35,13 @@ namespace PlayFab.Editor
         public void OnGUI ()
         {
 			GUILayout.Label(pfLogo);
+			if (GUILayout.Button ("Operations Dashboard", GUILayout.Width(200)))
+			{
+				OpenDashboard ();
+			}
+			EditorGUILayout.Space();
+			GUILayout.Box ("", new GUILayoutOption[]{GUILayout.ExpandWidth (true), GUILayout.Height (1)});
+			EditorGUILayout.Space();
 			titleId    = EditorGUILayout.TextField ("Title Id", titleId);
 			catalogVersion    = EditorGUILayout.TextField ("Catalog Version", catalogVersion);
 			EditorGUIUtility.labelWidth = 200;
@@ -51,33 +54,24 @@ namespace PlayFab.Editor
 				EditorGUIUtility.labelWidth = 0;
 			}
 			EditorGUIUtility.labelWidth = 200;
-			angryBotsModActivated = EditorGUILayout.Toggle("AngryBots Demo Activated", angryBotsModActivated);
 			EditorGUIUtility.labelWidth = 0;
-			if (GUILayout.Button ("Save"))
+			if (GUILayout.Button ("Save Configuration"))
 			{
 				SaveConfig ();
 			}
 			GUI.enabled = true;	
-		
+			EditorGUILayout.Space();
 			GUILayout.Box ("", new GUILayoutOption[]{GUILayout.ExpandWidth (true), GUILayout.Height (1)});
-
-			EditorGUILayout.LabelField ("Prefabs");
-			EditorGUIUtility.labelWidth = 100;
-			Vector2 scrollPosition  = new Vector2(0,200);
-			scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-			foreach( GameObject pf in prefabFiles )
+			EditorGUILayout.Space();
+			if (GUILayout.Button ("WebAPI Docs", GUILayout.Width(200)))
 			{
-				GUILayout.BeginHorizontal("box");
-
-				EditorGUILayout.ObjectField( pf.name, pf, typeof( GameObject ),false );
-				if (GUILayout.Button ("Add prefab"))
-				{
-					CreateSimplePrefab (pf);
-				}
-				GUILayout.EndHorizontal();
-			} 
-			EditorGUILayout.EndScrollView();
-			EditorGUIUtility.labelWidth = 0;
+				OpenWebApiDocs ();
+			}
+			if (GUILayout.Button ("Getting Started Guide", GUILayout.Width(200)))
+			{
+				OpenGettingStarted ();
+			}
+			GUI.enabled = true;	
 		}
 		
 		private void SaveConfig ()
@@ -85,31 +79,18 @@ namespace PlayFab.Editor
 			PlayFabData.TitleId = titleId;
 			PlayFabData.CatalogVersion = catalogVersion;
 			PlayFabData.KeepSessionKey = keepSessionKey;
-			PlayFabData.AngryBotsModActivated = angryBotsModActivated;
 			PlayFabData.SaveData ();
             AssetDatabase.Refresh ();
 		}
 
-		private void CreateSimplePrefab(GameObject tempGameObject )
-		{
-			var clone = Instantiate(tempGameObject) as GameObject;
-			clone.name = tempGameObject.name;
-
+		private void OpenWebApiDocs() {
+			Application.OpenURL("http://api.playfab.com/documentation");
 		}
-
-		/// <summary>
-		/// Lists Prefabs files.
-		/// </summary>
-
-		private void ListFiles(){
-			DirectoryInfo info = new DirectoryInfo(@"./Assets/PlayFab/Prefabs/");
-			FileInfo[] fileInfo = info.GetFiles();
-			foreach  (FileInfo file in fileInfo) {
-				if(file.Extension==".prefab"){
-					GameObject tempGameObject = (GameObject)Resources.LoadAssetAtPath ("Assets/Playfab/Prefabs/"+file.Name,typeof(GameObject) );
-					prefabFiles.Add(tempGameObject);
-				}
-			}
+		private void OpenGettingStarted() {
+			Application.OpenURL("http://developer.playfab.com/gettingstarted.html");
+		}
+		private void OpenDashboard() {
+			Application.OpenURL("https://developer.playfab.com/");
 		}
 	}
 }

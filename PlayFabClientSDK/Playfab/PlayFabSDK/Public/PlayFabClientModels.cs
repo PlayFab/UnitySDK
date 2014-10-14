@@ -1789,9 +1789,12 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		public List<string> errors { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+			errors = JsonUtil.GetList<string>(json, "errors");
 		}
 	}
 	
