@@ -31,7 +31,6 @@
 using System;
 using System.IO;
 using System.Text;
-using Pathfinding.Serialization.JsonFx;
 
 #if WINDOWS_STORE
 using TP = System.Reflection.TypeInfo;
@@ -39,7 +38,7 @@ using TP = System.Reflection.TypeInfo;
 using TP = System.Type;
 #endif
 
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/// <summary>
 	/// An <see cref="IDataWriter"/> adapter for <see cref="JsonWriter"/>

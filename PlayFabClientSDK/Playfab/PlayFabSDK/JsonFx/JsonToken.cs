@@ -30,7 +30,7 @@
 
 using System;
 
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/// <summary>
 	/// Parse Tokens

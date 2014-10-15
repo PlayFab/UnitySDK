@@ -1,5 +1,5 @@
 using System;
-using Pathfinding.Serialization.JsonFx;
+using PlayFab.Serialization.JsonFx;
 using PlayFab.ClientModels;
 using PlayFab.Internal;
 
@@ -11,6 +11,7 @@ namespace PlayFab
 	/// </summary>
 	public class PlayFabClientAPI
 	{
+		public delegate void AddUsernamePasswordCallback(AddUsernamePasswordResult result);
 		public delegate void LoginWithAndroidDeviceIDCallback(LoginResult result);
 		public delegate void LoginWithFacebookCallback(LoginResult result);
 		public delegate void LoginWithGoogleAccountCallback(LoginResult result);
@@ -30,6 +31,7 @@ namespace PlayFab
 		public delegate void UpdateEmailAddressCallback(UpdateEmailAddressResult result);
 		public delegate void UpdatePasswordCallback(UpdatePasswordResult result);
 		public delegate void UpdateUserTitleDisplayNameCallback(UpdateUserTitleDisplayNameResult result);
+		public delegate void GetFriendLeaderboardCallback(GetLeaderboardResult result);
 		public delegate void GetLeaderboardCallback(GetLeaderboardResult result);
 		public delegate void GetLeaderboardAroundCurrentUserCallback(GetLeaderboardAroundCurrentUserResult result);
 		public delegate void GetUserDataCallback(GetUserDataResult result);
@@ -72,6 +74,35 @@ namespace PlayFab
 		
 		
 		
+		
+		/// <summary>
+		/// Adds playfab username/password auth to an existing semi-anonymous account created via a 3rd party auth method.
+		/// </summary>
+		public static void AddUsernamePassword(AddUsernamePasswordRequest request, AddUsernamePasswordCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				AddUsernamePasswordResult result = null;
+				PlayFabError error = null;
+				ResultContainer<AddUsernamePasswordResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddUsernamePassword", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
 		
 		/// <summary>
 		/// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
@@ -635,6 +666,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateUserTitleDisplayName", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Retrieves a list of ranked friends of the current player for the given statistic, starting from the indicated point in the leaderboard
+		/// </summary>
+		public static void GetFriendLeaderboard(GetFriendLeaderboardRequest request, GetFriendLeaderboardCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetLeaderboardResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetLeaderboardResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetFriendLeaderboard", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
@@ -1479,7 +1539,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Assign the current player to an existing or new game server matching the given parameters and return the connection information.
+		/// Attempts to locate a game session matching the given parameters. Note that parameters specified in the search are required (they are not weighting factors). If a slot is found in a server instance matching the parameters, the slot will be assigned to that player, removing it from the availabe set. In that case, the information on the game session will be returned, otherwise the Status returned will be GameNotFound. Note that EnableQueue is deprecated at this time.
 		/// </summary>
 		public static void Matchmake(MatchmakeRequest request, MatchmakeCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1682,7 +1742,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Retrieves data stored in a shared group object, as well as the list of members in the group. Non-members of the group may use this to retrieve group data, including membership, but will not get retrieve data for keys marked as private.
+		/// Retrieves data stored in a shared group object, as well as the list of members in the group. Non-members of the group may use this to retrieve group data, including membership, but they will not receive data for keys marked as private.
 		/// </summary>
 		public static void GetSharedGroupData(GetSharedGroupDataRequest request, GetSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
 		{

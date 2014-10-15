@@ -40,7 +40,7 @@ using TP = System.Reflection.TypeInfo;
 using TP = System.Type;
 #endif
 
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/// <summary>
 	/// Designates a property or field to not be serialized.

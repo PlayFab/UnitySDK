@@ -140,6 +140,27 @@ namespace PlayFab.Internal
 			}
 			return null;
 		}
+		
+		public static List<DataType> GetListEnum<DataType>(Dictionary<string,object> json, string name)
+		{
+			object value;
+			if (json.TryGetValue(name, out value))
+			{
+				if(value == null)
+					return null;
+				
+				object[] objArray = (object[])value;
+				List<DataType> list = new List<DataType>();
+				
+				for(int i=0;i<objArray.Length; i++)
+				{
+					list.Add ((DataType)Enum.Parse(typeof(DataType), (string)objArray[i]));
+				}
+				
+				return list;
+			}
+			return null;
+		}
 
 
 		public static List<Int16> GetListInt16(Dictionary<string,object> json, string name)
