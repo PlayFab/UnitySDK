@@ -99,7 +99,11 @@ namespace PlayFab
 		InvalidSharedGroupId = 1088,
 		NotAuthorized = 1089,
 		MissingTitleGoogleProperties = 1090,
-		InvalidItemProperties = 1091
+		InvalidItemProperties = 1091,
+		InvalidPSNAuthCode = 1092,
+		InvalidItemId = 1093,
+		PushNotEnabledForAccount = 1094,
+		PushServiceError = 1095
 	}
 	
 	public class PlayFabError

@@ -104,6 +104,58 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class AddUsernamePasswordRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab username for the account to be signed in (3-24 characters)
+		/// </summary>
+		
+		public string Username { get; set;}
+		
+		/// <summary>
+		/// user email address, used for account password recovery
+		/// </summary>
+		
+		public string Email { get; set;}
+		
+		/// <summary>
+		/// password for the account to be signed in (6-24 characters)
+		/// </summary>
+		
+		public string Password { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Username = (string)JsonUtil.Get<string>(json, "Username");
+			Email = (string)JsonUtil.Get<string>(json, "Email");
+			Password = (string)JsonUtil.Get<string>(json, "Password");
+		}
+	}
+	
+	
+	
+	public class AddUsernamePasswordResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique user name
+		/// </summary>
+		
+		public string Username { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Username = (string)JsonUtil.Get<string>(json, "Username");
+		}
+	}
+	
+	
+	
 	public class AddUserVirtualCurrencyRequest : PlayFabModelBase
 	{
 		
@@ -964,6 +1016,39 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class GetFriendLeaderboardRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// statistic used to rank friends for this leaderboard
+		/// </summary>
+		
+		public string StatisticName { get; set;}
+		
+		/// <summary>
+		/// position in the leaderboard to start this listing (defaults to the first entry)
+		/// </summary>
+		
+		public int StartPosition { get; set;}
+		
+		/// <summary>
+		/// maximum number of entries to retrieve
+		/// </summary>
+		
+		public int MaxResultsCount { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			StatisticName = (string)JsonUtil.Get<string>(json, "StatisticName");
+			StartPosition = (int)JsonUtil.Get<double?>(json, "StartPosition");
+			MaxResultsCount = (int)JsonUtil.Get<double?>(json, "MaxResultsCount");
+		}
+	}
+	
+	
+	
 	public class GetFriendsListRequest : PlayFabModelBase
 	{
 		
@@ -1549,7 +1634,7 @@ namespace PlayFab.ClientModels
 		/// total number of remaining uses, if this is a consumable item
 		/// </summary>
 		
-		public uint? RemainingUses { get; set;}
+		public int? RemainingUses { get; set;}
 		
 		/// <summary>
 		/// game specific comment associated with this instance when it was added to the user inventory
@@ -1577,7 +1662,7 @@ namespace PlayFab.ClientModels
 			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
 			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
 			Expiration = (DateTime?)JsonUtil.GetDateTime(json, "Expiration");
-			RemainingUses = (uint?)JsonUtil.Get<double?>(json, "RemainingUses");
+			RemainingUses = (int?)JsonUtil.Get<double?>(json, "RemainingUses");
 			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
 			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
 			BundleParent = (string)JsonUtil.Get<string>(json, "BundleParent");
@@ -1749,12 +1834,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
-		public List<string> errors { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			errors = JsonUtil.GetList<string>(json, "errors");
 		}
 	}
 	
@@ -1765,15 +1847,29 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// a unique token identifying the user and game at the server level, for the current session
+		/// a unique token authorizing the user and game at the server level, for the current session
 		/// </summary>
 		
 		public string SessionTicket { get; set;}
+		
+		/// <summary>
+		/// player's unique PlayFabId
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// true if the account was newly created on this login
+		/// </summary>
+		
+		public bool NewlyCreated { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			SessionTicket = (string)JsonUtil.Get<string>(json, "SessionTicket");
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
+			NewlyCreated = (bool)JsonUtil.Get<bool?>(json, "NewlyCreated");
 		}
 	}
 	
@@ -2027,7 +2123,7 @@ namespace PlayFab.ClientModels
 		public string LobbyId { get; set;}
 		
 		/// <summary>
-		/// used to allow the user to wait in a queue to join the server, if it is full (only valid if LobbyId is specified)
+		/// [deprecated]
 		/// </summary>
 		
 		public bool? EnableQueue { get; set;}
@@ -2065,13 +2161,13 @@ namespace PlayFab.ClientModels
 		/// port number to use for non-http communications with the server
 		/// </summary>
 		
-		public uint? ServerPort { get; set;}
+		public int? ServerPort { get; set;}
 		
 		/// <summary>
 		/// port number to use for http communications with the server
 		/// </summary>
 		
-		public uint? WebSocketPort { get; set;}
+		public int? WebSocketPort { get; set;}
 		
 		/// <summary>
 		/// server authorization ticket (used by RedeemCoupon to validate user insertion into the game)
@@ -2089,7 +2185,7 @@ namespace PlayFab.ClientModels
 		/// time in milliseconds the application is configured to wait on matchmaking results
 		/// </summary>
 		
-		public uint? PollWaitTimeMS { get; set;}
+		public int? PollWaitTimeMS { get; set;}
 		
 		/// <summary>
 		/// result of match making process
@@ -2098,7 +2194,7 @@ namespace PlayFab.ClientModels
 		public MatchmakeStatus? Status { get; set;}
 		
 		/// <summary>
-		/// queue of unique user identifiers of players waiting to join this game (the current user will be at the end of this list)
+		/// [deprecated]
 		/// </summary>
 		
 		public List<string> Queue { get; set;}
@@ -2108,11 +2204,11 @@ namespace PlayFab.ClientModels
 			
 			LobbyID = (string)JsonUtil.Get<string>(json, "LobbyID");
 			ServerHostname = (string)JsonUtil.Get<string>(json, "ServerHostname");
-			ServerPort = (uint?)JsonUtil.Get<double?>(json, "ServerPort");
-			WebSocketPort = (uint?)JsonUtil.Get<double?>(json, "WebSocketPort");
+			ServerPort = (int?)JsonUtil.Get<double?>(json, "ServerPort");
+			WebSocketPort = (int?)JsonUtil.Get<double?>(json, "WebSocketPort");
 			Ticket = (string)JsonUtil.Get<string>(json, "Ticket");
 			Expires = (string)JsonUtil.Get<string>(json, "Expires");
-			PollWaitTimeMS = (uint?)JsonUtil.Get<double?>(json, "PollWaitTimeMS");
+			PollWaitTimeMS = (int?)JsonUtil.Get<double?>(json, "PollWaitTimeMS");
 			Status = (MatchmakeStatus?)JsonUtil.GetEnum<MatchmakeStatus>(json, "Status");
 			Queue = JsonUtil.GetList<string>(json, "Queue");
 		}
@@ -2517,15 +2613,13 @@ namespace PlayFab.ClientModels
 	
 	public enum Region
 	{
-		USWest,
 		USCentral,
 		USEast,
 		EUWest,
-		APSouthEast,
-		APNorthEast,
-		SAEast,
-		Australia,
-		China
+		Singapore,
+		Japan,
+		Brazil,
+		Australia
 	}
 	
 	
@@ -2947,7 +3041,7 @@ namespace PlayFab.ClientModels
 		/// port on the server to be used for communication
 		/// </summary>
 		
-		public uint? ServerPort { get; set;}
+		public int? ServerPort { get; set;}
 		
 		/// <summary>
 		/// unique identifier for the server
@@ -2972,7 +3066,7 @@ namespace PlayFab.ClientModels
 			
 			LobbyID = (string)JsonUtil.Get<string>(json, "LobbyID");
 			ServerHostname = (string)JsonUtil.Get<string>(json, "ServerHostname");
-			ServerPort = (uint?)JsonUtil.Get<double?>(json, "ServerPort");
+			ServerPort = (int?)JsonUtil.Get<double?>(json, "ServerPort");
 			Ticket = (string)JsonUtil.Get<string>(json, "Ticket");
 			Expires = (string)JsonUtil.Get<string>(json, "Expires");
 			Password = (string)JsonUtil.Get<string>(json, "Password");
@@ -3720,7 +3814,8 @@ namespace PlayFab.ClientModels
 		Unknown,
 		IOS,
 		LoadTest,
-		Android
+		Android,
+		PSN
 	}
 	
 	
@@ -3887,12 +3982,6 @@ namespace PlayFab.ClientModels
 		public string ReceiptData { get; set;}
 		
 		/// <summary>
-		/// name of the object purchased from the App store (must match the ItemId in the PlayFab catalog)
-		/// </summary>
-		
-		public string ObjectName { get; set;}
-		
-		/// <summary>
 		/// currency used for the purchase
 		/// </summary>
 		
@@ -3902,15 +3991,14 @@ namespace PlayFab.ClientModels
 		/// amount of the stated currency paid for the object
 		/// </summary>
 		
-		public uint PurchasePrice { get; set;}
+		public int PurchasePrice { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			ReceiptData = (string)JsonUtil.Get<string>(json, "ReceiptData");
-			ObjectName = (string)JsonUtil.Get<string>(json, "ObjectName");
 			CurrencyCode = (string)JsonUtil.Get<string>(json, "CurrencyCode");
-			PurchasePrice = (uint)JsonUtil.Get<double?>(json, "PurchasePrice");
+			PurchasePrice = (int)JsonUtil.Get<double?>(json, "PurchasePrice");
 		}
 	}
 	

@@ -70,22 +70,16 @@ namespace PlayFab.AdminModels
 		public string BuildId { get; set;}
 		
 		/// <summary>
-		/// is this build currently allowed to be used
+		/// appended to the end of the command line when starting game servers
 		/// </summary>
 		
-		public bool Active { get; set;}
+		public string AdditionalCommandLineArguments { get; set;}
 		
 		/// <summary>
-		/// is this build intended to run on dedicated ("bare metal") servers
+		/// regions in which this build should be running / available
 		/// </summary>
 		
-		public bool DedicatedServerEligible { get; set;}
-		
-		/// <summary>
-		/// Server host regions in which this build can be used
-		/// </summary>
-		
-		public List<string> ActiveRegions { get; set;}
+		public List<Region> ActiveRegions { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -93,14 +87,20 @@ namespace PlayFab.AdminModels
 		
 		public string Comment { get; set;}
 		
+		/// <summary>
+		/// maximum number of game server instances that can run on a single host machine
+		/// </summary>
+		
+		public int MaxGamesPerHost { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
-			DedicatedServerEligible = (bool)JsonUtil.Get<bool?>(json, "DedicatedServerEligible");
-			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
+			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
+			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
+			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
 		}
 	}
 	
@@ -117,16 +117,22 @@ namespace PlayFab.AdminModels
 		public string BuildId { get; set;}
 		
 		/// <summary>
-		/// is this build currently allowed to be used
-		/// </summary>
-		
-		public bool Active { get; set;}
-		
-		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
 		
-		public List<string> ActiveRegions { get; set;}
+		public List<Region> ActiveRegions { get; set;}
+		
+		/// <summary>
+		/// maximum number of game server instances that can run on a single host machine
+		/// </summary>
+		
+		public int MaxGamesPerHost { get; set;}
+		
+		/// <summary>
+		/// appended to the end of the command line when starting game servers
+		/// </summary>
+		
+		public string AdditionalCommandLineArguments { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -156,8 +162,9 @@ namespace PlayFab.AdminModels
 		{
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
-			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
+			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
+			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
+			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
@@ -208,12 +215,12 @@ namespace PlayFab.AdminModels
 		/// List of virtual currency names to add as valid virtual currencies for this title
 		/// </summary>
 		
-		public List<string> VirtualCurrencyIds { get; set;}
+		public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			VirtualCurrencyIds = JsonUtil.GetList<string>(json, "VirtualCurrencyIds");
+			VirtualCurrencies = JsonUtil.GetObjectList<VirtualCurrencyData>(json, "VirtualCurrencies");
 		}
 	}
 	
@@ -527,19 +534,12 @@ namespace PlayFab.AdminModels
 		
 		public uint MaxPlayerCount { get; set;}
 		
-		/// <summary>
-		/// performance cost of a Game Server Instance on a given server TODO what are the values expected?
-		/// </summary>
-		
-		public float PerfCostPerGame { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			Gamemode = (string)JsonUtil.Get<string>(json, "Gamemode");
 			MinPlayerCount = (uint)JsonUtil.Get<double?>(json, "MinPlayerCount");
 			MaxPlayerCount = (uint)JsonUtil.Get<double?>(json, "MaxPlayerCount");
-			PerfCostPerGame = (float)JsonUtil.Get<double?>(json, "PerfCostPerGame");
 		}
 	}
 	
@@ -786,16 +786,16 @@ namespace PlayFab.AdminModels
 		public string BuildId { get; set;}
 		
 		/// <summary>
-		/// is this build currently allowed to be used
-		/// </summary>
-		
-		public bool Active { get; set;}
-		
-		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
 		
-		public List<string> ActiveRegions { get; set;}
+		public List<Region> ActiveRegions { get; set;}
+		
+		/// <summary>
+		/// maximum number of game server instances that can run on a single host machine
+		/// </summary>
+		
+		public int MaxGamesPerHost { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -821,16 +821,23 @@ namespace PlayFab.AdminModels
 		
 		public GameBuildStatus? Status { get; set;}
 		
+		/// <summary>
+		/// error message, if any, about this build
+		/// </summary>
+		
+		public string ErrorMessage { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
-			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
+			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
+			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 			Status = (GameBuildStatus?)JsonUtil.GetEnum<GameBuildStatus>(json, "Status");
+			ErrorMessage = (string)JsonUtil.Get<string>(json, "ErrorMessage");
 		}
 	}
 	
@@ -879,7 +886,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// which store is being requested
+		/// unqiue identifier for the store which is being requested
 		/// </summary>
 		
 		public string StoreId { get; set;}
@@ -1223,7 +1230,7 @@ namespace PlayFab.AdminModels
 		/// total number of remaining uses, if this is a consumable item
 		/// </summary>
 		
-		public uint? RemainingUses { get; set;}
+		public int? RemainingUses { get; set;}
 		
 		/// <summary>
 		/// game specific comment associated with this instance when it was added to the user inventory
@@ -1251,7 +1258,7 @@ namespace PlayFab.AdminModels
 			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
 			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
 			Expiration = (DateTime?)JsonUtil.GetDateTime(json, "Expiration");
-			RemainingUses = (uint?)JsonUtil.Get<double?>(json, "RemainingUses");
+			RemainingUses = (int?)JsonUtil.Get<double?>(json, "RemainingUses");
 			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
 			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
 			BundleParent = (string)JsonUtil.Get<string>(json, "BundleParent");
@@ -1311,12 +1318,12 @@ namespace PlayFab.AdminModels
 		/// List of virtual currency names defined for this title
 		/// </summary>
 		
-		public List<string> VirtualCurrencyIds { get; set;}
+		public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			VirtualCurrencyIds = JsonUtil.GetList<string>(json, "VirtualCurrencyIds");
+			VirtualCurrencies = JsonUtil.GetObjectList<VirtualCurrencyData>(json, "VirtualCurrencies");
 		}
 	}
 	
@@ -1436,16 +1443,22 @@ namespace PlayFab.AdminModels
 		public DateTime? Timestamp { get; set;}
 		
 		/// <summary>
-		/// is this build currently allowed to be used
-		/// </summary>
-		
-		public bool? Active { get; set;}
-		
-		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
 		
-		public List<string> ActiveRegions { get; set;}
+		public List<Region> ActiveRegions { get; set;}
+		
+		/// <summary>
+		/// maximum number of game server instances that can run on a single host machine
+		/// </summary>
+		
+		public int MaxGamesPerHost { get; set;}
+		
+		/// <summary>
+		/// appended to the end of the command line when starting game servers
+		/// </summary>
+		
+		public string AdditionalCommandLineArguments { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -1458,8 +1471,9 @@ namespace PlayFab.AdminModels
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
 			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
-			Active = (bool?)JsonUtil.Get<bool?>(json, "Active");
-			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
+			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
+			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
+			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 		}
 	}
@@ -1477,16 +1491,22 @@ namespace PlayFab.AdminModels
 		public string BuildId { get; set;}
 		
 		/// <summary>
-		/// is this build currently allowed to be used
-		/// </summary>
-		
-		public bool Active { get; set;}
-		
-		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
 		
-		public List<string> ActiveRegions { get; set;}
+		public List<Region> ActiveRegions { get; set;}
+		
+		/// <summary>
+		/// maximum number of game server instances that can run on a single host machine
+		/// </summary>
+		
+		public int MaxGamesPerHost { get; set;}
+		
+		/// <summary>
+		/// appended to the end of the command line when starting game servers
+		/// </summary>
+		
+		public string AdditionalCommandLineArguments { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -1516,8 +1536,9 @@ namespace PlayFab.AdminModels
 		{
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			Active = (bool)JsonUtil.Get<bool?>(json, "Active");
-			ActiveRegions = JsonUtil.GetList<string>(json, "ActiveRegions");
+			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
+			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
+			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
@@ -1581,16 +1602,13 @@ namespace PlayFab.AdminModels
 	
 	public enum Region
 	{
-		USWest,
 		USCentral,
 		USEast,
 		EUWest,
-		APSouthEast,
-		APNorthEast,
-		SAEast,
-		Australia,
-		China,
-		UberLan
+		Singapore,
+		Japan,
+		Brazil,
+		Australia
 	}
 	
 	
@@ -1879,13 +1897,13 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// ItemId of the item for sale in the store
+		/// unique identifier of the item as it exists in the catalog - note that this must exactly match the ItemId from the catalog
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// Catalog version of the item. Leave null to always use the most recent version.
+		/// catalog version for this item
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
@@ -2032,13 +2050,13 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// which store is being updated
+		/// unqiue identifier for the store which is to be updated
 		/// </summary>
 		
 		public string StoreId { get; set;}
 		
 		/// <summary>
-		/// array of store items to be submitted
+		/// array of store items - references to catalog items, with specific pricing - to be added
 		/// </summary>
 		
 		public List<StoreItem> Store { get; set;}
@@ -2354,7 +2372,8 @@ namespace PlayFab.AdminModels
 		Unknown,
 		IOS,
 		LoadTest,
-		Android
+		Android,
+		PSN
 	}
 	
 	
@@ -2423,7 +2442,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// name of the game, as it is displayed in-game
+		/// name of the user, as it is displayed in-game
 		/// </summary>
 		
 		public string DisplayName { get; set;}
@@ -2467,6 +2486,53 @@ namespace PlayFab.AdminModels
 			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
 			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
 			isBanned = (bool?)JsonUtil.Get<bool?>(json, "isBanned");
+		}
+	}
+	
+	
+	
+	public class VirtualCurrencyData : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// unique id for this currency type
+		/// </summary>
+		
+		public string CurrencyCode { get; set;}
+		
+		/// <summary>
+		/// friendly name to show in the developer portal, reports, etc.
+		/// </summary>
+		
+		public string DisplayName { get; set;}
+		
+		/// <summary>
+		/// Users receive this amount upon first login to the title. Defaults to 0.
+		/// </summary>
+		
+		public int? InitialDeposit { get; set;}
+		
+		/// <summary>
+		/// Rate at which the currency accumulates over time, in units per day. Defaults to 0.
+		/// </summary>
+		
+		public int? RechargeRate { get; set;}
+		
+		/// <summary>
+		/// Maximum amount the currency will recharge to. Defaults to 0.
+		/// </summary>
+		
+		public int? RechargeMax { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			CurrencyCode = (string)JsonUtil.Get<string>(json, "CurrencyCode");
+			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
+			InitialDeposit = (int?)JsonUtil.Get<double?>(json, "InitialDeposit");
+			RechargeRate = (int?)JsonUtil.Get<double?>(json, "RechargeRate");
+			RechargeMax = (int?)JsonUtil.Get<double?>(json, "RechargeMax");
 		}
 	}
 	

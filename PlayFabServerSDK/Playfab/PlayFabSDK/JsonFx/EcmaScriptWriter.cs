@@ -40,7 +40,7 @@ using TP = System.Reflection.TypeInfo;
 using TP = System.Type;
 #endif
 
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/// <summary>
 	/// Writes data as full ECMAScript objects, rather than the limited set of JSON objects.
