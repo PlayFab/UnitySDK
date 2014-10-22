@@ -1955,6 +1955,39 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class LoginWithGameCenterRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
+		
+		public string TitleId { get; set;}
+		
+		/// <summary>
+		/// unique Game Center player id
+		/// </summary>
+		
+		public string PlayerId { get; set;}
+		
+		/// <summary>
+		/// automatically create a PlayFab account if one is not currently linked to this Game Center id
+		/// </summary>
+		
+		public bool CreateAccount { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
+			PlayerId = (string)JsonUtil.Get<string>(json, "PlayerId");
+			CreateAccount = (bool)JsonUtil.Get<bool?>(json, "CreateAccount");
+		}
+	}
+	
+	
+	
 	public class LoginWithGoogleAccountRequest : PlayFabModelBase
 	{
 		
@@ -3815,7 +3848,8 @@ namespace PlayFab.ClientModels
 		IOS,
 		LoadTest,
 		Android,
-		PSN
+		PSN,
+		GameCenter
 	}
 	
 	

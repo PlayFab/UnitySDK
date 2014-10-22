@@ -67,7 +67,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Sends an iOS/Android push notification to a specific user, if they they have a device that they have setup for push notifications. If a user has linked both Android and iOS devices, both will be notified.
+		/// Sends an iOS/Android Push Notification to a specific user, if that user's device has been configured for Push Notifications in PlayFab. If a user has linked both Android and iOS devices, both will be notified.
 		/// </summary>
 		public static void SendPushNotification(SendPushNotificationRequest request, SendPushNotificationCallback resultCallback, ErrorCallback errorCallback)
 		{

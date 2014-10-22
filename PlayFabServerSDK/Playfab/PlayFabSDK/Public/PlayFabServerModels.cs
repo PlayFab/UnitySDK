@@ -1139,7 +1139,7 @@ namespace PlayFab.ServerModels
 		public string Recipient { get; set;}
 		
 		/// <summary>
-		/// Text of message to send
+		/// text of message to send
 		/// </summary>
 		
 		public string Message { get; set;}
@@ -1531,7 +1531,8 @@ namespace PlayFab.ServerModels
 		IOS,
 		LoadTest,
 		Android,
-		PSN
+		PSN,
+		GameCenter
 	}
 	
 	

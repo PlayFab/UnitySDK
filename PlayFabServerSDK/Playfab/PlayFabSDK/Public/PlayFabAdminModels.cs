@@ -76,7 +76,7 @@ namespace PlayFab.AdminModels
 		public string AdditionalCommandLineArguments { get; set;}
 		
 		/// <summary>
-		/// regions in which this build should be running / available
+		/// server host regions in which this build should be running and available
 		/// </summary>
 		
 		public List<Region> ActiveRegions { get; set;}
@@ -212,7 +212,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// List of virtual currency names to add as valid virtual currencies for this title
+		/// List of virtual currencies and their initial deposits (the amount a user is granted when signing in for the first time) to the title
 		/// </summary>
 		
 		public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
@@ -773,7 +773,7 @@ namespace PlayFab.AdminModels
 	
 	
 	/// <summary>
-	/// Information about particular server build
+	/// Information about a particular server build
 	/// </summary>
 	public class GetServerBuildInfoResult : PlayFabModelBase
 	{
@@ -1284,7 +1284,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// array of uploaded builds
+		/// array of uploaded game server builds
 		/// </summary>
 		
 		public List<GetServerBuildInfoResult> Builds { get; set;}
@@ -2373,7 +2373,8 @@ namespace PlayFab.AdminModels
 		IOS,
 		LoadTest,
 		Android,
-		PSN
+		PSN,
+		GameCenter
 	}
 	
 	
@@ -2496,7 +2497,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// unique id for this currency type
+		/// unique two-character identifier for this currency type (e.g.: "CC", "GC")
 		/// </summary>
 		
 		public string CurrencyCode { get; set;}
@@ -2508,19 +2509,19 @@ namespace PlayFab.AdminModels
 		public string DisplayName { get; set;}
 		
 		/// <summary>
-		/// Users receive this amount upon first login to the title. Defaults to 0.
+		/// amount to automaticalyl grant users upon first login to the tilte
 		/// </summary>
 		
 		public int? InitialDeposit { get; set;}
 		
 		/// <summary>
-		/// Rate at which the currency accumulates over time, in units per day. Defaults to 0.
+		/// rate at which the currency automatically be added to over time, in units per day (24 hours)
 		/// </summary>
 		
 		public int? RechargeRate { get; set;}
 		
 		/// <summary>
-		/// Maximum amount the currency will recharge to. Defaults to 0.
+		/// maximum amount to which the currency will recharge (cannot exceed MaxAmount, but can be less)
 		/// </summary>
 		
 		public int? RechargeMax { get; set;}
