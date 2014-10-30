@@ -72,6 +72,8 @@ namespace PlayFab
 		public delegate void GetSharedGroupDataCallback(GetSharedGroupDataResult result);
 		public delegate void RemoveSharedGroupMembersCallback(RemoveSharedGroupMembersResult result);
 		public delegate void UpdateSharedGroupDataCallback(UpdateSharedGroupDataResult result);
+		public delegate void GetLogicServerUrlCallback(GetLogicServerUrlResult result);
+		public delegate void ServerActionCallback(ServerActionResult result);
 		
 		
 		
@@ -1858,6 +1860,65 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateSharedGroupData", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Gets the title-specific url for game logic servers. Must be called before making any calls to server-side logic.
+		/// </summary>
+		public static void GetLogicServerUrl(GetLogicServerUrlRequest request, GetLogicServerUrlCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetLogicServerUrlResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetLogicServerUrlResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					PlayFabSettings.LogicServerURL = result.Url;
+
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetLogicServerUrl", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Triggers a particular server action
+		/// </summary>
+		public static void ServerAction(ServerActionRequest request, ServerActionCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				ServerActionResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ServerActionResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetLogicURL()+"/Client/ServerAction", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		

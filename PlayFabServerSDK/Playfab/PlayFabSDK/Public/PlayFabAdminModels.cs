@@ -501,6 +501,37 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class DeleteServerLogicFileRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Filename of the logic file being deleted.
+		/// </summary>
+		
+		public string Filename { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Filename = (string)JsonUtil.Get<string>(json, "Filename");
+		}
+	}
+	
+	
+	
+	public class EmptyResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
 	public enum GameBuildStatus
 	{
 		Available,
@@ -1298,6 +1329,37 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class ListServerLogicFilesRequest : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
+	public class ListServerLogicFilesResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// List of javascript logic files for this title
+		/// </summary>
+		
+		public List<ServerLogicFile> LogicFiles { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			LogicFiles = JsonUtil.GetObjectList<ServerLogicFile>(json, "LogicFiles");
+		}
+	}
+	
+	
+	
 	public class ListVirtualCurrencyTypesRequest : PlayFabModelBase
 	{
 		
@@ -1785,6 +1847,39 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class ServerLogicFile : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// virtual filename of the logic file
+		/// </summary>
+		
+		public string Filename { get; set;}
+		
+		/// <summary>
+		/// contents of the logic file
+		/// </summary>
+		
+		public string FileContents { get; set;}
+		
+		/// <summary>
+		/// When this file was last updated
+		/// </summary>
+		
+		public DateTime LastUpdated { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Filename = (string)JsonUtil.Get<string>(json, "Filename");
+			FileContents = (string)JsonUtil.Get<string>(json, "FileContents");
+			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
+		}
+	}
+	
+	
+	
 	public class SetTitleDataRequest : PlayFabModelBase
 	{
 		
@@ -2040,6 +2135,32 @@ namespace PlayFab.AdminModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+		}
+	}
+	
+	
+	
+	public class UpdateServerLogicFileRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Filename of the logic file being added/updated. Must not contain '/' or '\' slash characters.
+		/// </summary>
+		
+		public string Filename { get; set;}
+		
+		/// <summary>
+		/// contents of the logic file being added/updated.
+		/// </summary>
+		
+		public string FileContents { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Filename = (string)JsonUtil.Get<string>(json, "Filename");
+			FileContents = (string)JsonUtil.Get<string>(json, "FileContents");
 		}
 	}
 	
@@ -2509,7 +2630,7 @@ namespace PlayFab.AdminModels
 		public string DisplayName { get; set;}
 		
 		/// <summary>
-		/// amount to automaticalyl grant users upon first login to the tilte
+		/// amount to automatically grant users upon first login to the tilte
 		/// </summary>
 		
 		public int? InitialDeposit { get; set;}

@@ -103,7 +103,8 @@ namespace PlayFab
 		InvalidPSNAuthCode = 1092,
 		InvalidItemId = 1093,
 		PushNotEnabledForAccount = 1094,
-		PushServiceError = 1095
+		PushServiceError = 1095,
+		JavascriptException = 1096
 	}
 	
 	public class PlayFabError

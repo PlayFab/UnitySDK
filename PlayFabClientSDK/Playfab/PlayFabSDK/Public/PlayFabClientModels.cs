@@ -1184,6 +1184,37 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class GetLogicServerUrlRequest : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+		}
+	}
+	
+	
+	
+	public class GetLogicServerUrlResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Url of the custom server logic server for this title
+		/// </summary>
+		
+		public string Url { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Url = (string)JsonUtil.Get<string>(json, "Url");
+		}
+	}
+	
+	
+	
 	public class GetSharedGroupDataRequest : PlayFabModelBase
 	{
 		
@@ -2924,6 +2955,51 @@ namespace PlayFab.ClientModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+		}
+	}
+	
+	
+	
+	public class ServerActionRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// server action to trigger
+		/// </summary>
+		
+		public string ActionId { get; set;}
+		
+		/// <summary>
+		/// parameters to pass into the action
+		/// </summary>
+		
+		public Dictionary<string,object> Params { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			ActionId = (string)JsonUtil.Get<string>(json, "ActionId");
+			Params = JsonUtil.GetDictionary<object>(json, "Params");
+		}
+	}
+	
+	
+	
+	public class ServerActionResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// return values from the server action
+		/// </summary>
+		
+		public Dictionary<string,object> Results { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Results = JsonUtil.GetDictionary<object>(json, "Results");
 		}
 	}
 	
