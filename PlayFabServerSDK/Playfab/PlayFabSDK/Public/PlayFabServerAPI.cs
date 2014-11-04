@@ -1,5 +1,5 @@
 using System;
-using Pathfinding.Serialization.JsonFx;
+using PlayFab.Serialization.JsonFx;
 using PlayFab.ServerModels;
 using PlayFab.Internal;
 
@@ -12,6 +12,7 @@ namespace PlayFab
 	public class PlayFabServerAPI
 	{
 		public delegate void GetUserAccountInfoCallback(GetUserAccountInfoResult result);
+		public delegate void SendPushNotificationCallback(SendPushNotificationResult result);
 		public delegate void GetLeaderboardCallback(GetLeaderboardResult result);
 		public delegate void GetLeaderboardAroundUserCallback(GetLeaderboardAroundUserResult result);
 		public delegate void GetUserDataCallback(GetUserDataResult result);
@@ -63,6 +64,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetUserAccountInfo", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Sends an iOS/Android Push Notification to a specific user, if that user's device has been configured for Push Notifications in PlayFab. If a user has linked both Android and iOS devices, both will be notified.
+		/// </summary>
+		public static void SendPushNotification(SendPushNotificationRequest request, SendPushNotificationCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				SendPushNotificationResult result = null;
+				PlayFabError error = null;
+				ResultContainer<SendPushNotificationResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/SendPushNotification", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>

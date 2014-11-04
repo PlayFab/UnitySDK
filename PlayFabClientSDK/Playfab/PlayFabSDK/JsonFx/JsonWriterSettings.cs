@@ -38,7 +38,7 @@ using TP = System.Reflection.TypeInfo;
 using TP = System.Type;
 #endif
 
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/// <summary>
 	/// Represents a proxy method for serialization of types which do not implement IJsonSerializable

@@ -1,5 +1,5 @@
 using System;
-using Pathfinding.Serialization.JsonFx;
+using PlayFab.Serialization.JsonFx;
 using PlayFab.MatchmakerModels;
 using PlayFab.Internal;
 

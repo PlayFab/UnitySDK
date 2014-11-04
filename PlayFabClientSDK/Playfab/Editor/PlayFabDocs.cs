@@ -4,15 +4,15 @@ using PlayFab;
 
 namespace PlayFab.Editor
 {
-	public class PlayFabAdmin: EditorWindow
+	public class PlayFabDocs: EditorWindow
     {
 		private float titleId;
 		private float catalogVersion;
 
-        [MenuItem ("Playfab/Dashboard")]
+        [MenuItem ("Playfab/Docs")]
         private static void ShowWindow ()
         {
-			Application.OpenURL("https://developer.playfab.com/");
+			Application.OpenURL("http://api.playfab.com/documentation");
         }
       }
 }

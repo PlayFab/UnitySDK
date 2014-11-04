@@ -1,5 +1,5 @@
 using System;
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/** Explicitly declare this member to be serialized.
 	 * \see JsonOptInAttribute

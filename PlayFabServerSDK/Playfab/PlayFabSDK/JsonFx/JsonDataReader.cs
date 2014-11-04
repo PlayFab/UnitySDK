@@ -38,7 +38,7 @@ using TP = System.Reflection.TypeInfo;
 using TP = System.Type;
 #endif
 
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/// <summary>
 	/// An <see cref="IDataReader"/> adapter for <see cref="JsonDataReader"/>

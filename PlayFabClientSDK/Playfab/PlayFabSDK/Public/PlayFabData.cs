@@ -15,9 +15,20 @@ namespace PlayFab{
 
 		public static string TitleId { get; set; }
 		public static string CatalogVersion { get; set; }
-		public static string AuthKey { get; set; }
-		public static bool AngryBotsModActivated { get; set; }
+
+		private static string _AuthKey;
+		public static string AuthKey {  
+			get { return _AuthKey; }
+			set
+			{
+				_AuthKey = value;
+				if (LoggedIn != null) LoggedIn(value);
+			} 
+		}
+		public static event LoggedInEventHandler LoggedIn;
+
 		public static bool KeepSessionKey { get; set; }
+		public static bool SkipLogin { get; set; }
 
 		public static bool SkipLogin { get; set; }
 
@@ -70,10 +81,13 @@ namespace PlayFab{
 			if (PlayFabSettings.TitleId == null)
 								PlayFabSettings.TitleId = TitleId;
 			CatalogVersion = data.CatalogVersion;
-			AngryBotsModActivated = data.AngryBotsModActivated;
 			KeepSessionKey = data.KeepSessionKey;
-			if(KeepSessionKey && PlayFabClientAPI.AuthKey==null &&  data.AuthKey!=null)
+			SkipLogin = data.SkipLogin;
+
+			if (KeepSessionKey && PlayFabClientAPI.AuthKey == null && data.AuthKey != null) {
 				PlayFabClientAPI.AuthKey = AuthKey = data.AuthKey;
+				Debug.Log ("Retrieved auth key: " + AuthKey);
+			}
 			else if(KeepSessionKey && PlayFabClientAPI.AuthKey!=null &&  data.AuthKey==null)
 				SaveData();
 		}
@@ -92,8 +106,8 @@ namespace PlayFab{
 			PlayfabGameData data = new PlayfabGameData ();
 			data.TitleId = TitleId;
 			data.CatalogVersion = CatalogVersion;
-			data.AngryBotsModActivated = AngryBotsModActivated;
 			data.KeepSessionKey = KeepSessionKey;
+			data.SkipLogin = SkipLogin;
 			if (KeepSessionKey && PlayFabClientAPI.AuthKey != null)
 				data.AuthKey = AuthKey = PlayFabClientAPI.AuthKey;
 			bf.Serialize (file,data);
@@ -101,12 +115,15 @@ namespace PlayFab{
 		}
 	}
 }
+
+public delegate void LoggedInEventHandler(string value);
+
 [Serializable]
 public class PlayfabGameData 
 {
 	public string TitleId;
 	public string CatalogVersion;
-	public bool AngryBotsModActivated;
 	public bool KeepSessionKey;
+	public bool SkipLogin;
 	public string AuthKey;
 }

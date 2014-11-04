@@ -83,7 +83,6 @@ namespace PlayFab.Examples{
 				if (GUI.Button(new Rect(winRect.x+18, yStart+175, 120, 20),"Register"))
 				{
 					PlayFabGameBridge.gameState = 1;
-					if(!PlayFabData.AngryBotsModActivated)Application.LoadLevel (previousScene);
 				}
 
 
@@ -100,9 +99,6 @@ namespace PlayFab.Examples{
 			Time.timeScale = 1.0f;	// unpause...
 			Application.LoadLevel (nextScene);
 			PlayFabData.AuthKey = PlayFabClientAPI.AuthKey;
-
-			//if(PlayFabData.AngryBotsModActivated)Application.LoadLevel ("Default"); // load the first level
-			//else Application.LoadLevel (nextScene);
 		}
 
 		// callback function if there is an error -- display appropriate error message

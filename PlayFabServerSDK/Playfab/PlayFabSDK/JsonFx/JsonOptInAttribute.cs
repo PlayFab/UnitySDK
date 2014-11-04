@@ -1,5 +1,5 @@
 using System;
-namespace Pathfinding.Serialization.JsonFx
+namespace PlayFab.Serialization.JsonFx
 {
 	/** Specifies that members of this class that should be serialized must be explicitly specified.
 	 * Classes that this attribute is applied to need to explicitly

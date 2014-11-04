@@ -1,5 +1,5 @@
 using System;
-using Pathfinding.Serialization.JsonFx;
+using PlayFab.Serialization.JsonFx;
 using PlayFab.AdminModels;
 using PlayFab.Internal;
 
@@ -27,7 +27,7 @@ namespace PlayFab
 		public delegate void GetRandomResultTablesCallback(GetRandomResultTablesResult result);
 		public delegate void GetStoreItemsCallback(GetStoreItemsResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
-		public delegate void ListVirualCurrencyTypesCallback(ListVirtualCurrencyTypesResult result);
+		public delegate void ListVirtualCurrencyTypesCallback(ListVirtualCurrencyTypesResult result);
 		public delegate void SetCatalogItemsCallback(UpdateCatalogItemsResult result);
 		public delegate void SetStoreItemsCallback(UpdateStoreItemsResult result);
 		public delegate void SetTitleDataCallback(SetTitleDataResult result);
@@ -372,7 +372,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds a list of virtual currencies to this title
+		/// Adds one or more virtual currencies to the set defined for the title
 		/// </summary>
 		public static void AddVirtualCurrencyTypes(AddVirtualCurrencyTypesRequest request, AddVirtualCurrencyTypesCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -459,7 +459,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Gets all items in the specified virtual store
+		/// Retrieves the set of items defined for the specified store, including all prices defined
 		/// </summary>
 		public static void GetStoreItems(GetStoreItemsRequest request, GetStoreItemsCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -517,9 +517,9 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Retuns a list of all defined virtual currencies for this title
+		/// Retuns the list of all defined virtual currencies for the title
 		/// </summary>
-		public static void ListVirualCurrencyTypes(ListVirtualCurrencyTypesRequest request, ListVirualCurrencyTypesCallback resultCallback, ErrorCallback errorCallback)
+		public static void ListVirtualCurrencyTypes(ListVirtualCurrencyTypesRequest request, ListVirtualCurrencyTypesCallback resultCallback, ErrorCallback errorCallback)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -542,7 +542,7 @@ namespace PlayFab
 					}
 				}
 			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ListVirualCurrencyTypes", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ListVirtualCurrencyTypes", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>
@@ -952,7 +952,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds the game server executable specified to the set of those a client is permitted to request in a call to StartGame
+		/// Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a client is permitted to request in a call to StartGame
 		/// </summary>
 		public static void AddServerBuild(AddServerBuildRequest request, AddServerBuildCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1010,7 +1010,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Retrieves the pre-authorized URL for uploading the game server package for a new build
+		/// Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for use - see AddServerBuild)
 		/// </summary>
 		public static void GetServerBuildUploadUrl(GetServerBuildUploadURLRequest request, GetServerBuildUploadUrlCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1097,7 +1097,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Remove the game server executable specified from the set of those a client is permitted to request in a call to StartGame
+		/// Removes the game server executable specified from the set of those a client is permitted to request in a call to StartGame
 		/// </summary>
 		public static void RemoveServerBuild(RemoveServerBuildRequest request, RemoveServerBuildCallback resultCallback, ErrorCallback errorCallback)
 		{

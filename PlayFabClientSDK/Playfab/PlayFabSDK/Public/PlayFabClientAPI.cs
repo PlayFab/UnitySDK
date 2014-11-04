@@ -1,5 +1,5 @@
 using System;
-using Pathfinding.Serialization.JsonFx;
+using PlayFab.Serialization.JsonFx;
 using PlayFab.ClientModels;
 using PlayFab.Internal;
 
@@ -11,8 +11,10 @@ namespace PlayFab
 	/// </summary>
 	public class PlayFabClientAPI
 	{
+		public delegate void AddUsernamePasswordCallback(AddUsernamePasswordResult result);
 		public delegate void LoginWithAndroidDeviceIDCallback(LoginResult result);
 		public delegate void LoginWithFacebookCallback(LoginResult result);
+		public delegate void LoginWithGameCenterCallback(LoginResult result);
 		public delegate void LoginWithGoogleAccountCallback(LoginResult result);
 		public delegate void LoginWithIOSDeviceIDCallback(LoginResult result);
 		public delegate void LoginWithPlayFabCallback(LoginResult result);
@@ -30,6 +32,7 @@ namespace PlayFab
 		public delegate void UpdateEmailAddressCallback(UpdateEmailAddressResult result);
 		public delegate void UpdatePasswordCallback(UpdatePasswordResult result);
 		public delegate void UpdateUserTitleDisplayNameCallback(UpdateUserTitleDisplayNameResult result);
+		public delegate void GetFriendLeaderboardCallback(GetLeaderboardResult result);
 		public delegate void GetLeaderboardCallback(GetLeaderboardResult result);
 		public delegate void GetLeaderboardAroundCurrentUserCallback(GetLeaderboardAroundCurrentUserResult result);
 		public delegate void GetUserDataCallback(GetUserDataResult result);
@@ -59,7 +62,6 @@ namespace PlayFab
 		public delegate void ValidateIOSReceiptCallback(ValidateIOSReceiptResult result);
 		public delegate void GetCurrentGamesCallback(CurrentGamesResult result);
 		public delegate void GetGameServerRegionsCallback(GameServerRegionsResult result);
-		public delegate void GetRegionPlaylistsCallback(RegionPlaylistsResult result);
 		public delegate void MatchmakeCallback(MatchmakeResult result);
 		public delegate void StartGameCallback(StartGameResult result);
 		public delegate void AndroidDevicePushNotificationRegistrationCallback(AndroidDevicePushNotificationRegistrationResult result);
@@ -73,6 +75,35 @@ namespace PlayFab
 		
 		
 		
+		
+		/// <summary>
+		/// Adds playfab username/password auth to an existing semi-anonymous account created via a 3rd party auth method.
+		/// </summary>
+		public static void AddUsernamePassword(AddUsernamePasswordRequest request, AddUsernamePasswordCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				AddUsernamePasswordResult result = null;
+				PlayFabError error = null;
+				ResultContainer<AddUsernamePasswordResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddUsernamePassword", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
 		
 		/// <summary>
 		/// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
@@ -134,6 +165,37 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithFacebook", serializedJSON, null, null, callback);
+		}
+		
+		/// <summary>
+		/// Signs the user in using an iOS GameCenter player Id, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+		/// </summary>
+		public static void LoginWithGameCenter(LoginWithGameCenterRequest request, LoginWithGameCenterCallback resultCallback, ErrorCallback errorCallback)
+		{
+			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
+			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				LoginResult result = null;
+				PlayFabError error = null;
+				ResultContainer<LoginResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					AuthKey = result.SessionTicket ?? AuthKey;
+
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithGameCenter", serializedJSON, null, null, callback);
 		}
 		
 		/// <summary>
@@ -639,6 +701,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Retrieves a list of ranked friends of the current player for the given statistic, starting from the indicated point in the leaderboard
+		/// </summary>
+		public static void GetFriendLeaderboard(GetFriendLeaderboardRequest request, GetFriendLeaderboardCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetLeaderboardResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetLeaderboardResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetFriendLeaderboard", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
 		/// Retrieves a list of ranked users for the given statistic, starting from the indicated point in the leaderboard
 		/// </summary>
 		public static void GetLeaderboard(GetLeaderboardRequest request, GetLeaderboardCallback resultCallback, ErrorCallback errorCallback)
@@ -871,7 +962,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Retrieves the list of catalog items for sale in a particular virutal store, including that store's pricing.
+		/// Retrieves the set of items defined for the specified store, including all prices defined
 		/// </summary>
 		public static void GetStoreItems(GetStoreItemsRequest request, GetStoreItemsCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1480,36 +1571,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Get statistics about game server mode playlists.
-		/// </summary>
-		public static void GetRegionPlaylists(RegionPlaylistsRequest request, GetRegionPlaylistsCallback resultCallback, ErrorCallback errorCallback)
-		{
-			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
-
-			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
-			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
-			{
-				RegionPlaylistsResult result = null;
-				PlayFabError error = null;
-				ResultContainer<RegionPlaylistsResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
-				{
-					errorCallback(error);
-				}
-				if(result != null)
-				{
-					
-					if(resultCallback != null)
-					{
-						resultCallback(result);
-					}
-				}
-			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetRegionPlaylists", serializedJSON, "X-Authorization", AuthKey, callback);
-		}
-		
-		/// <summary>
-		/// Assign the current player to an existing or new game server matching the given parameters and return the connection information.
+		/// Attempts to locate a game session matching the given parameters. Note that parameters specified in the search are required (they are not weighting factors). If a slot is found in a server instance matching the parameters, the slot will be assigned to that player, removing it from the availabe set. In that case, the information on the game session will be returned, otherwise the Status returned will be GameNotFound. Note that EnableQueue is deprecated at this time.
 		/// </summary>
 		public static void Matchmake(MatchmakeRequest request, MatchmakeCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1654,7 +1716,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds new members to the group. Only existing group members can add new members
+		/// Adds users to the set of those able to update both the shared data, as well as the set of users in the group. Only users in the group can add new members.
 		/// </summary>
 		public static void AddSharedGroupMembers(AddSharedGroupMembersRequest request, AddSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1683,7 +1745,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Requests the creation of a shared group object. It will be created with the current user as its only member.
+		/// Requests the creation of a shared group object, containing key/value pairs which may be updated by all members of the group. Upon creation, the current user will be the only member of the group.
 		/// </summary>
 		public static void CreateSharedGroup(CreateSharedGroupRequest request, CreateSharedGroupCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1712,7 +1774,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Gets data in a shared group object. You may load data, the member list, or both at once. Non-members of the group may use this to load group data, including membership, but will not get data keys marked as private.
+		/// Retrieves data stored in a shared group object, as well as the list of members in the group. Non-members of the group may use this to retrieve group data, including membership, but they will not receive data for keys marked as private.
 		/// </summary>
 		public static void GetSharedGroupData(GetSharedGroupDataRequest request, GetSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1741,7 +1803,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Removes members from the group. Only existing group members can remove members. Removing all members (including yourself) deletes the group completely.
+		/// Removes users from the set of those able to update the shared data and the set of users in the group. Only users in the group can remove members. If as a result of the call, zero users remain with access, the group and its associated data will be deleted.
 		/// </summary>
 		public static void RemoveSharedGroupMembers(RemoveSharedGroupMembersRequest request, RemoveSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1770,7 +1832,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds or updates data keys to a shared group object. Data written to the group is readable only by members of the group unless marked public. Only group members can update data.
+		/// Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group can update the data.
 		/// </summary>
 		public static void UpdateSharedGroupData(UpdateSharedGroupDataRequest request, UpdateSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
 		{

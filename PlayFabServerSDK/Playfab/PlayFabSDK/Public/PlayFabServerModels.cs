@@ -903,7 +903,7 @@ namespace PlayFab.ServerModels
 		/// total number of remaining uses, if this is a consumable item
 		/// </summary>
 		
-		public uint? RemainingUses { get; set;}
+		public int? RemainingUses { get; set;}
 		
 		/// <summary>
 		/// game specific comment associated with this instance when it was added to the user inventory
@@ -931,7 +931,7 @@ namespace PlayFab.ServerModels
 			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
 			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
 			Expiration = (DateTime?)JsonUtil.GetDateTime(json, "Expiration");
-			RemainingUses = (uint?)JsonUtil.Get<double?>(json, "RemainingUses");
+			RemainingUses = (int?)JsonUtil.Get<double?>(json, "RemainingUses");
 			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
 			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
 			BundleParent = (string)JsonUtil.Get<string>(json, "BundleParent");
@@ -1123,6 +1123,44 @@ namespace PlayFab.ServerModels
 			TicketIsValid = (bool)JsonUtil.Get<bool?>(json, "TicketIsValid");
 			Error = (string)JsonUtil.Get<string>(json, "Error");
 			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
+		}
+	}
+	
+	
+	
+	public class SendPushNotificationRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// PlayFabId of the recipient of the push notification
+		/// </summary>
+		
+		public string Recipient { get; set;}
+		
+		/// <summary>
+		/// text of message to send
+		/// </summary>
+		
+		public string Message { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Recipient = (string)JsonUtil.Get<string>(json, "Recipient");
+			Message = (string)JsonUtil.Get<string>(json, "Message");
+		}
+	}
+	
+	
+	
+	public class SendPushNotificationResult : PlayFabModelBase
+	{
+		
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
 		}
 	}
 	
@@ -1492,7 +1530,9 @@ namespace PlayFab.ServerModels
 		Unknown,
 		IOS,
 		LoadTest,
-		Android
+		Android,
+		PSN,
+		GameCenter
 	}
 	
 	
@@ -1561,7 +1601,7 @@ namespace PlayFab.ServerModels
 		
 		
 		/// <summary>
-		/// name of the game, as it is displayed in-game
+		/// name of the user, as it is displayed in-game
 		/// </summary>
 		
 		public string DisplayName { get; set;}
