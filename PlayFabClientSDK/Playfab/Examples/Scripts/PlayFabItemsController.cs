@@ -24,8 +24,8 @@ public class PlayFabItemsController : SingletonMonoBehaviour<PlayFabItemsControl
 		InventoryConsumed = Inventory = result.Inventory;
 		VirtualCurrency = result.VirtualCurrency;	
 
-		PlayFabGameBridge.consumableItems = new Dictionary<string,uint?>();
-		PlayFabGameBridge.consumableItemsConsumed = new Dictionary<string,uint?>(); 
+		PlayFabGameBridge.consumableItems = new Dictionary<string,int?>();
+		PlayFabGameBridge.consumableItemsConsumed = new Dictionary<string,int?>(); 
 		for (int i = 0; i<Inventory.Count; i++) {
 			if (Inventory [i].RemainingUses != null) {
 				Debug.Log ("Adding " + Inventory[i].RemainingUses + " of class " + Inventory[i].ItemClass);
@@ -60,7 +60,7 @@ public class PlayFabItemsController : SingletonMonoBehaviour<PlayFabItemsControl
 		}
 	}
 
-	private void ConsumeCalculator (string ItemClass,uint? toConsume){
+	private void ConsumeCalculator (string ItemClass,int? toConsume){
 			ConsumeItemRequest request = new ConsumeItemRequest ();
 			for (int i = 0; i<Inventory.Count; i++) {
 				if (Inventory[i].RemainingUses != null && Inventory[i].ItemClass == ItemClass && Inventory[i].RemainingUses != 0) {

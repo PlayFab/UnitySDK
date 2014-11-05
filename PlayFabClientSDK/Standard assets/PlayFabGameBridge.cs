@@ -29,13 +29,13 @@ public class PlayFabGameBridge : MonoBehaviour{
 	public static bool mouseOverGui = false;
 	
 	/// Hold the past and present of the item regarding the number of items
-	public static Dictionary<string,uint?> consumableItems = new Dictionary<string,uint?>();
-	public static Dictionary<string,uint?> consumableItemsConsumed = new Dictionary<string,uint?>();
+	public static Dictionary<string,int?> consumableItems = new Dictionary<string,int?>();
+	public static Dictionary<string,int?> consumableItemsConsumed = new Dictionary<string,int?>();
 	public static void consumeItem(string str){
 			consumableItems[str] -= 1;
 			consumableItemsConsumed[str] += 1;
 	}
-	public static void consumeItem(string str,uint? count){
+	public static void consumeItem(string str,int? count){
 		consumableItems[str] -= count;
 		consumableItemsConsumed[str] += count;
 	}

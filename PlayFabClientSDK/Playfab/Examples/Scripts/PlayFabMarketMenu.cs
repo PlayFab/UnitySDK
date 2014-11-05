@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
-using Pathfinding.Serialization.JsonFx;
+using PlayFab.Serialization.JsonFx;
 
 namespace PlayFab.Examples{
 
