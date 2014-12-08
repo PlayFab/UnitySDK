@@ -11,7 +11,6 @@ namespace PlayFab
 	/// </summary>
 	public class PlayFabClientAPI
 	{
-		public delegate void AddUsernamePasswordCallback(AddUsernamePasswordResult result);
 		public delegate void LoginWithAndroidDeviceIDCallback(LoginResult result);
 		public delegate void LoginWithFacebookCallback(LoginResult result);
 		public delegate void LoginWithGameCenterCallback(LoginResult result);
@@ -20,12 +19,14 @@ namespace PlayFab
 		public delegate void LoginWithPlayFabCallback(LoginResult result);
 		public delegate void LoginWithSteamCallback(LoginResult result);
 		public delegate void RegisterPlayFabUserCallback(RegisterPlayFabUserResult result);
-		public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
+		public delegate void AddUsernamePasswordCallback(AddUsernamePasswordResult result);
 		public delegate void GetAccountInfoCallback(GetAccountInfoResult result);
+		public delegate void GetPlayFabIDsFromFacebookIDsCallback(GetPlayFabIDsFromFacebookIDsResult result);
 		public delegate void GetUserCombinedInfoCallback(GetUserCombinedInfoResult result);
 		public delegate void LinkFacebookAccountCallback(LinkFacebookAccountResult result);
 		public delegate void LinkGameCenterAccountCallback(LinkGameCenterAccountResult result);
 		public delegate void LinkSteamAccountCallback(LinkSteamAccountResult result);
+		public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
 		public delegate void UnlinkFacebookAccountCallback(UnlinkFacebookAccountResult result);
 		public delegate void UnlinkGameCenterAccountCallback(UnlinkGameCenterAccountResult result);
 		public delegate void UnlinkSteamAccountCallback(UnlinkSteamAccountResult result);
@@ -77,35 +78,6 @@ namespace PlayFab
 		
 		
 		
-		
-		/// <summary>
-		/// Adds playfab username/password auth to an existing semi-anonymous account created via a 3rd party auth method.
-		/// </summary>
-		public static void AddUsernamePassword(AddUsernamePasswordRequest request, AddUsernamePasswordCallback resultCallback, ErrorCallback errorCallback)
-		{
-			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
-
-			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
-			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
-			{
-				AddUsernamePasswordResult result = null;
-				PlayFabError error = null;
-				ResultContainer<AddUsernamePasswordResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
-				{
-					errorCallback(error);
-				}
-				if(result != null)
-				{
-					
-					if(resultCallback != null)
-					{
-						resultCallback(result);
-					}
-				}
-			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddUsernamePassword", serializedJSON, "X-Authorization", AuthKey, callback);
-		}
 		
 		/// <summary>
 		/// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
@@ -170,7 +142,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Signs the user in using an iOS GameCenter player Id, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+		/// Signs the user in using an iOS Game Center player identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
 		/// </summary>
 		public static void LoginWithGameCenter(LoginWithGameCenterRequest request, LoginWithGameCenterCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -356,17 +328,18 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Forces an email to be sent to the registered email address for the user's account, with a link allowing the user to change the password
+		/// Adds playfab username/password auth to an existing semi-anonymous account created via a 3rd party auth method.
 		/// </summary>
-		public static void SendAccountRecoveryEmail(SendAccountRecoveryEmailRequest request, SendAccountRecoveryEmailCallback resultCallback, ErrorCallback errorCallback)
+		public static void AddUsernamePassword(AddUsernamePasswordRequest request, AddUsernamePasswordCallback resultCallback, ErrorCallback errorCallback)
 		{
-			
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
 			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
 			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
 			{
-				SendAccountRecoveryEmailResult result = null;
+				AddUsernamePasswordResult result = null;
 				PlayFabError error = null;
-				ResultContainer<SendAccountRecoveryEmailResult>.HandleResults(responseStr, errorStr, out result, out error);
+				ResultContainer<AddUsernamePasswordResult>.HandleResults(responseStr, errorStr, out result, out error);
 				if(error != null && errorCallback != null)
 				{
 					errorCallback(error);
@@ -380,7 +353,7 @@ namespace PlayFab
 					}
 				}
 			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/SendAccountRecoveryEmail", serializedJSON, null, null, callback);
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddUsernamePassword", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
@@ -410,6 +383,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetAccountInfo", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Retrieves the unique PlayFab identifiers for the given set of Facebook identifiers.
+		/// </summary>
+		public static void GetPlayFabIDsFromFacebookIDs(GetPlayFabIDsFromFacebookIDsRequest request, GetPlayFabIDsFromFacebookIDsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				GetPlayFabIDsFromFacebookIDsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetPlayFabIDsFromFacebookIDsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromFacebookIDs", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
@@ -526,6 +528,34 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkSteamAccount", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Forces an email to be sent to the registered email address for the user's account, with a link allowing the user to change the password
+		/// </summary>
+		public static void SendAccountRecoveryEmail(SendAccountRecoveryEmailRequest request, SendAccountRecoveryEmailCallback resultCallback, ErrorCallback errorCallback)
+		{
+			
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				SendAccountRecoveryEmailResult result = null;
+				PlayFabError error = null;
+				ResultContainer<SendAccountRecoveryEmailResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/SendAccountRecoveryEmail", serializedJSON, null, null, callback);
 		}
 		
 		/// <summary>

@@ -12,6 +12,7 @@ namespace PlayFab
 	public class PlayFabAdminAPI
 	{
 		public delegate void GetUserAccountInfoCallback(LookupUserAccountInfoResult result);
+		public delegate void ResetUsersCallback(BlankResult result);
 		public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
 		public delegate void UpdateUserTitleDisplayNameCallback(UpdateUserTitleDisplayNameResult result);
 		public delegate void GetUserDataCallback(GetUserDataResult result);
@@ -48,9 +49,6 @@ namespace PlayFab
 		public delegate void ListServerBuildsCallback(ListBuildsResult result);
 		public delegate void ModifyServerBuildCallback(ModifyServerBuildResult result);
 		public delegate void RemoveServerBuildCallback(RemoveServerBuildResult result);
-		public delegate void DeleteServerLogicFileCallback(EmptyResult result);
-		public delegate void ListServerLogicFilesCallback(ListServerLogicFilesResult result);
-		public delegate void UpdateServerLogicFileCallback(EmptyResult result);
 		
 		
 		
@@ -82,6 +80,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetUserAccountInfo", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Resets all title-specific information about a particular account, including user data, virtual currency balances, inventory, purchase history, and statistics
+		/// </summary>
+		public static void ResetUsers(ResetUsersRequest request, ResetUsersCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
+			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
+			{
+				BlankResult result = null;
+				PlayFabError error = null;
+				ResultContainer<BlankResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ResetUsers", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>
@@ -230,7 +257,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Completely removes all statistics of the specified user, for this title
+		/// Completely removes all statistics for the specified user, for the current game
 		/// </summary>
 		public static void ResetUserStatistics(ResetUserStatisticsRequest request, ResetUserStatisticsCallback resultCallback, ErrorCallback errorCallback)
 		{
@@ -1126,93 +1153,6 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/RemoveServerBuild", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
-		}
-		
-		/// <summary>
-		/// Deletes the javascript server logic file with the specified name.
-		/// </summary>
-		public static void DeleteServerLogicFile(DeleteServerLogicFileRequest request, DeleteServerLogicFileCallback resultCallback, ErrorCallback errorCallback)
-		{
-			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
-			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
-			{
-				EmptyResult result = null;
-				PlayFabError error = null;
-				ResultContainer<EmptyResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
-				{
-					errorCallback(error);
-				}
-				if(result != null)
-				{
-					
-					if(resultCallback != null)
-					{
-						resultCallback(result);
-					}
-				}
-			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/DeleteServerLogicFile", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
-		}
-		
-		/// <summary>
-		/// Lists all javascript logic files for this title on the server.
-		/// </summary>
-		public static void ListServerLogicFiles(ListServerLogicFilesRequest request, ListServerLogicFilesCallback resultCallback, ErrorCallback errorCallback)
-		{
-			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
-			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
-			{
-				ListServerLogicFilesResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ListServerLogicFilesResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
-				{
-					errorCallback(error);
-				}
-				if(result != null)
-				{
-					
-					if(resultCallback != null)
-					{
-						resultCallback(result);
-					}
-				}
-			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ListServerLogicFiles", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
-		}
-		
-		/// <summary>
-		/// Adds or updates the javascript server logic file with the specified name.
-		/// </summary>
-		public static void UpdateServerLogicFile(UpdateServerLogicFileRequest request, UpdateServerLogicFileCallback resultCallback, ErrorCallback errorCallback)
-		{
-			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
-			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
-			{
-				EmptyResult result = null;
-				PlayFabError error = null;
-				ResultContainer<EmptyResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
-				{
-					errorCallback(error);
-				}
-				if(result != null)
-				{
-					
-					if(resultCallback != null)
-					{
-						resultCallback(result);
-					}
-				}
-			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/UpdateServerLogicFile", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		

@@ -73,7 +73,13 @@ namespace PlayFab.AdminModels
 		/// appended to the end of the command line when starting game servers
 		/// </summary>
 		
-		public string AdditionalCommandLineArguments { get; set;}
+		public string CommandLineTemplate { get; set;}
+		
+		/// <summary>
+		/// path to the game server executable. Defaults to gameserver.exe
+		/// </summary>
+		
+		public string ExecutablePath { get; set;}
 		
 		/// <summary>
 		/// server host regions in which this build should be running and available
@@ -97,7 +103,8 @@ namespace PlayFab.AdminModels
 		{
 			
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
+			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
+			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
 			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
@@ -132,7 +139,13 @@ namespace PlayFab.AdminModels
 		/// appended to the end of the command line when starting game servers
 		/// </summary>
 		
-		public string AdditionalCommandLineArguments { get; set;}
+		public string CommandLineTemplate { get; set;}
+		
+		/// <summary>
+		/// path to the game server executable. Defaults to gameserver.exe
+		/// </summary>
+		
+		public string ExecutablePath { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -164,7 +177,8 @@ namespace PlayFab.AdminModels
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
 			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
 			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
+			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
+			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
@@ -288,36 +302,6 @@ namespace PlayFab.AdminModels
 		public Dictionary<string,uint> RealCurrencyPrices { get; set;}
 		
 		/// <summary>
-		/// the date this item becomes available for purchase
-		/// </summary>
-		
-		public DateTime? ReleaseDate { get; set;}
-		
-		/// <summary>
-		/// the date this item will no longer be available for purchase
-		/// </summary>
-		
-		public DateTime? ExpirationDate { get; set;}
-		
-		/// <summary>
-		/// (deprecated)
-		/// </summary>
-		
-		public bool? IsFree { get; set;}
-		
-		/// <summary>
-		/// can this item be purchased (if not, it can still be granted by a server-based operation, such as a loot drop from a monster)
-		/// </summary>
-		
-		public bool? NotForSale { get; set;}
-		
-		/// <summary>
-		/// can an instance of this item be exchanged between players?
-		/// </summary>
-		
-		public bool? NotForTrade { get; set;}
-		
-		/// <summary>
 		/// list of item tags
 		/// </summary>
 		
@@ -363,11 +347,6 @@ namespace PlayFab.AdminModels
 			Description = (string)JsonUtil.Get<string>(json, "Description");
 			VirtualCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyPrices");
 			RealCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "RealCurrencyPrices");
-			ReleaseDate = (DateTime?)JsonUtil.GetDateTime(json, "ReleaseDate");
-			ExpirationDate = (DateTime?)JsonUtil.GetDateTime(json, "ExpirationDate");
-			IsFree = (bool?)JsonUtil.Get<bool?>(json, "IsFree");
-			NotForSale = (bool?)JsonUtil.Get<bool?>(json, "NotForSale");
-			NotForTrade = (bool?)JsonUtil.Get<bool?>(json, "NotForTrade");
 			Tags = JsonUtil.GetList<string>(json, "Tags");
 			CustomData = (string)JsonUtil.Get<string>(json, "CustomData");
 			GrantedIfPlayerHas = JsonUtil.GetList<string>(json, "GrantedIfPlayerHas");
@@ -497,37 +476,6 @@ namespace PlayFab.AdminModels
 		BRL,
 		CIS,
 		CAD
-	}
-	
-	
-	
-	public class DeleteServerLogicFileRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// Filename of the logic file being deleted.
-		/// </summary>
-		
-		public string Filename { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Filename = (string)JsonUtil.Get<string>(json, "Filename");
-		}
-	}
-	
-	
-	
-	public class EmptyResult : PlayFabModelBase
-	{
-		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
 	}
 	
 	
@@ -1329,37 +1277,6 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class ListServerLogicFilesRequest : PlayFabModelBase
-	{
-		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
-	}
-	
-	
-	
-	public class ListServerLogicFilesResult : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// List of javascript logic files for this title
-		/// </summary>
-		
-		public List<ServerLogicFile> LogicFiles { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			LogicFiles = JsonUtil.GetObjectList<ServerLogicFile>(json, "LogicFiles");
-		}
-	}
-	
-	
-	
 	public class ListVirtualCurrencyTypesRequest : PlayFabModelBase
 	{
 		
@@ -1520,7 +1437,13 @@ namespace PlayFab.AdminModels
 		/// appended to the end of the command line when starting game servers
 		/// </summary>
 		
-		public string AdditionalCommandLineArguments { get; set;}
+		public string CommandLineTemplate { get; set;}
+		
+		/// <summary>
+		/// path to the game server executable. Defaults to gameserver.exe
+		/// </summary>
+		
+		public string ExecutablePath { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -1535,7 +1458,8 @@ namespace PlayFab.AdminModels
 			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
 			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
 			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
+			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
+			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 		}
 	}
@@ -1568,7 +1492,13 @@ namespace PlayFab.AdminModels
 		/// appended to the end of the command line when starting game servers
 		/// </summary>
 		
-		public string AdditionalCommandLineArguments { get; set;}
+		public string CommandLineTemplate { get; set;}
+		
+		/// <summary>
+		/// path to the game server executable. Defaults to gameserver.exe
+		/// </summary>
+		
+		public string ExecutablePath { get; set;}
 		
 		/// <summary>
 		/// developer comment(s) for this build
@@ -1600,7 +1530,8 @@ namespace PlayFab.AdminModels
 			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
 			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
 			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-			AdditionalCommandLineArguments = (string)JsonUtil.Get<string>(json, "AdditionalCommandLineArguments");
+			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
+			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
 			Comment = (string)JsonUtil.Get<string>(json, "Comment");
 			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
@@ -1701,6 +1632,25 @@ namespace PlayFab.AdminModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+		}
+	}
+	
+	
+	
+	public class ResetUsersRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Array of users to reset
+		/// </summary>
+		
+		public List<UserCredentials> Users { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Users = JsonUtil.GetObjectList<UserCredentials>(json, "Users");
 		}
 	}
 	
@@ -1847,39 +1797,6 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class ServerLogicFile : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// virtual filename of the logic file
-		/// </summary>
-		
-		public string Filename { get; set;}
-		
-		/// <summary>
-		/// contents of the logic file
-		/// </summary>
-		
-		public string FileContents { get; set;}
-		
-		/// <summary>
-		/// When this file was last updated
-		/// </summary>
-		
-		public DateTime LastUpdated { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Filename = (string)JsonUtil.Get<string>(json, "Filename");
-			FileContents = (string)JsonUtil.Get<string>(json, "FileContents");
-			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
-		}
-	}
-	
-	
-	
 	public class SetTitleDataRequest : PlayFabModelBase
 	{
 		
@@ -1923,7 +1840,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// name of the application sending the messsage (application names must be made up of only uppercase and lowercase ASCII letters, numbers, underscores, hyphens, and periods, and must be between 1 and 256 characters long)
+		/// name of the application sending the message (application names must be made up of only uppercase and lowercase ASCII letters, numbers, underscores, hyphens, and periods, and must be between 1 and 256 characters long)
 		/// </summary>
 		
 		public string Name { get; set;}
@@ -1947,7 +1864,7 @@ namespace PlayFab.AdminModels
 		public string Credential { get; set;}
 		
 		/// <summary>
-		/// replace any existing ARN with the newly generated one. If this is set to false, an error will be returned if notifactions have already setup for this platform.
+		/// replace any existing ARN with the newly generated one. If this is set to false, an error will be returned if notifications have already setup for this platform.
 		/// </summary>
 		
 		public bool OverwriteOldARN { get; set;}
@@ -2135,32 +2052,6 @@ namespace PlayFab.AdminModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-		}
-	}
-	
-	
-	
-	public class UpdateServerLogicFileRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// Filename of the logic file being added/updated. Must not contain '/' or '\' slash characters.
-		/// </summary>
-		
-		public string Filename { get; set;}
-		
-		/// <summary>
-		/// contents of the logic file being added/updated.
-		/// </summary>
-		
-		public string FileContents { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Filename = (string)JsonUtil.Get<string>(json, "Filename");
-			FileContents = (string)JsonUtil.Get<string>(json, "FileContents");
 		}
 	}
 	
@@ -2383,6 +2274,32 @@ namespace PlayFab.AdminModels
 			FacebookInfo = JsonUtil.GetObject<UserFacebookInfo>(json, "FacebookInfo");
 			SteamInfo = JsonUtil.GetObject<UserSteamInfo>(json, "SteamInfo");
 			GameCenterInfo = JsonUtil.GetObject<UserGameCenterInfo>(json, "GameCenterInfo");
+		}
+	}
+	
+	
+	
+	public class UserCredentials : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Username of user to reset
+		/// </summary>
+		
+		public string Username { get; set;}
+		
+		/// <summary>
+		/// Password of user to reset
+		/// </summary>
+		
+		public string Password { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Username = (string)JsonUtil.Get<string>(json, "Username");
+			Password = (string)JsonUtil.Get<string>(json, "Password");
 		}
 	}
 	

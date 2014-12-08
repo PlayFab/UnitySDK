@@ -345,36 +345,6 @@ namespace PlayFab.ClientModels
 		public Dictionary<string,uint> RealCurrencyPrices { get; set;}
 		
 		/// <summary>
-		/// the date this item becomes available for purchase
-		/// </summary>
-		
-		public DateTime? ReleaseDate { get; set;}
-		
-		/// <summary>
-		/// the date this item will no longer be available for purchase
-		/// </summary>
-		
-		public DateTime? ExpirationDate { get; set;}
-		
-		/// <summary>
-		/// (deprecated)
-		/// </summary>
-		
-		public bool? IsFree { get; set;}
-		
-		/// <summary>
-		/// can this item be purchased (if not, it can still be granted by a server-based operation, such as a loot drop from a monster)
-		/// </summary>
-		
-		public bool? NotForSale { get; set;}
-		
-		/// <summary>
-		/// can an instance of this item be exchanged between players?
-		/// </summary>
-		
-		public bool? NotForTrade { get; set;}
-		
-		/// <summary>
 		/// list of item tags
 		/// </summary>
 		
@@ -420,11 +390,6 @@ namespace PlayFab.ClientModels
 			Description = (string)JsonUtil.Get<string>(json, "Description");
 			VirtualCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyPrices");
 			RealCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "RealCurrencyPrices");
-			ReleaseDate = (DateTime?)JsonUtil.GetDateTime(json, "ReleaseDate");
-			ExpirationDate = (DateTime?)JsonUtil.GetDateTime(json, "ExpirationDate");
-			IsFree = (bool?)JsonUtil.Get<bool?>(json, "IsFree");
-			NotForSale = (bool?)JsonUtil.Get<bool?>(json, "NotForSale");
-			NotForTrade = (bool?)JsonUtil.Get<bool?>(json, "NotForTrade");
 			Tags = JsonUtil.GetList<string>(json, "Tags");
 			CustomData = (string)JsonUtil.Get<string>(json, "CustomData");
 			GrantedIfPlayerHas = JsonUtil.GetList<string>(json, "GrantedIfPlayerHas");
@@ -627,9 +592,23 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique instance identifier of the item with uses consumed
+		/// </summary>
+		
+		public string ItemInstanceId { get; set;}
+		
+		/// <summary>
+		/// number of uses remaining on the item
+		/// </summary>
+		
+		public int RemainingUses { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
+			RemainingUses = (int)JsonUtil.Get<double?>(json, "RemainingUses");
 		}
 	}
 	
@@ -741,19 +720,38 @@ namespace PlayFab.ClientModels
 		
 		public int GameCount { get; set;}
 		
-		/// <summary>
-		/// indicates there are servers for which there was no response
-		/// </summary>
-		
-		public bool? IncompleteResult { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			Games = JsonUtil.GetObjectList<GameInfo>(json, "Games");
 			PlayerCount = (int)JsonUtil.Get<double?>(json, "PlayerCount");
 			GameCount = (int)JsonUtil.Get<double?>(json, "GameCount");
-			IncompleteResult = (bool?)JsonUtil.Get<bool?>(json, "IncompleteResult");
+		}
+	}
+	
+	
+	
+	public class FacebookPlayFabIdPair : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// unique Facebook identifier for a user
+		/// </summary>
+		
+		public string FacebookId { get; set;}
+		
+		/// <summary>
+		/// unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Facebook identifier
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			FacebookId = (string)JsonUtil.Get<string>(json, "FacebookId");
+			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
 		}
 	}
 	
@@ -859,13 +857,13 @@ namespace PlayFab.ClientModels
 		/// maximum players this server can support
 		/// </summary>
 		
-		public int MaxPlayers { get; set;}
+		public int? MaxPlayers { get; set;}
 		
 		/// <summary>
 		/// array of strings of current player names on this server (note that these are PlayFab usernames, as opposed to title display names)
 		/// </summary>
 		
-		public List<string> PlayerUsernames { get; set;}
+		public List<string> PlayerUserIds { get; set;}
 		
 		/// <summary>
 		/// duration in seconds this server has been running
@@ -886,8 +884,8 @@ namespace PlayFab.ClientModels
 			LobbyID = (string)JsonUtil.Get<string>(json, "LobbyID");
 			BuildVersion = (string)JsonUtil.Get<string>(json, "BuildVersion");
 			GameMode = (string)JsonUtil.Get<string>(json, "GameMode");
-			MaxPlayers = (int)JsonUtil.Get<double?>(json, "MaxPlayers");
-			PlayerUsernames = JsonUtil.GetList<string>(json, "PlayerUsernames");
+			MaxPlayers = (int?)JsonUtil.Get<double?>(json, "MaxPlayers");
+			PlayerUserIds = JsonUtil.GetList<string>(json, "PlayerUserIds");
 			RunTime = (uint)JsonUtil.Get<double?>(json, "RunTime");
 			GameServerState = (string)JsonUtil.Get<string>(json, "GameServerState");
 		}
@@ -1188,9 +1186,23 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// Server version to use. The most recent production version will be returned if this is left null
+		/// </summary>
+		
+		public int? Version { get; set;}
+		
+		/// <summary>
+		/// If true, run against the latest test revision of server logic. Defaults to false if left null
+		/// </summary>
+		
+		public bool? Testing { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
+			Version = (int?)JsonUtil.Get<double?>(json, "Version");
+			Testing = (bool?)JsonUtil.Get<bool?>(json, "Testing");
 		}
 	}
 	
@@ -1210,6 +1222,44 @@ namespace PlayFab.ClientModels
 		{
 			
 			Url = (string)JsonUtil.Get<string>(json, "Url");
+		}
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromFacebookIDsRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// array of unique Facebook identifiers for which the title needs to get PlayFab identifiers
+		/// </summary>
+		
+		public List<string> FacebookIDs { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			FacebookIDs = JsonUtil.GetList<string>(json, "FacebookIDs");
+		}
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromFacebookIDsResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// mapping of Facebook identifiers to PlayFab identifiers
+		/// </summary>
+		
+		public List<FacebookPlayFabIdPair> Data { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Data = JsonUtil.GetObjectList<FacebookPlayFabIdPair>(json, "Data");
 		}
 	}
 	
@@ -1809,7 +1859,7 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// unique identifier from Steam for the user
+		/// authentication token for the user, returned as a byte array from Steam, and converted to a string (for example, the byte 0x08 should become "08")
 		/// </summary>
 		
 		public string SteamTicket { get; set;}
@@ -1938,7 +1988,7 @@ namespace PlayFab.ClientModels
 		/// automatically create a PlayFab account if one is not currently linked to this iOS device
 		/// </summary>
 		
-		public bool CreateAccount { get; set;}
+		public bool? CreateAccount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
@@ -1947,7 +1997,7 @@ namespace PlayFab.ClientModels
 			AndroidDeviceId = (string)JsonUtil.Get<string>(json, "AndroidDeviceId");
 			OS = (string)JsonUtil.Get<string>(json, "OS");
 			AndroidDevice = (string)JsonUtil.Get<string>(json, "AndroidDevice");
-			CreateAccount = (bool)JsonUtil.Get<bool?>(json, "CreateAccount");
+			CreateAccount = (bool?)JsonUtil.Get<bool?>(json, "CreateAccount");
 		}
 	}
 	
@@ -1973,14 +2023,14 @@ namespace PlayFab.ClientModels
 		/// automatically create a PlayFab account if one is not currently linked to this Facebook account
 		/// </summary>
 		
-		public bool CreateAccount { get; set;}
+		public bool? CreateAccount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 			AccessToken = (string)JsonUtil.Get<string>(json, "AccessToken");
-			CreateAccount = (bool)JsonUtil.Get<bool?>(json, "CreateAccount");
+			CreateAccount = (bool?)JsonUtil.Get<bool?>(json, "CreateAccount");
 		}
 	}
 	
@@ -2006,14 +2056,14 @@ namespace PlayFab.ClientModels
 		/// automatically create a PlayFab account if one is not currently linked to this Game Center id
 		/// </summary>
 		
-		public bool CreateAccount { get; set;}
+		public bool? CreateAccount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 			PlayerId = (string)JsonUtil.Get<string>(json, "PlayerId");
-			CreateAccount = (bool)JsonUtil.Get<bool?>(json, "CreateAccount");
+			CreateAccount = (bool?)JsonUtil.Get<bool?>(json, "CreateAccount");
 		}
 	}
 	
@@ -2035,11 +2085,18 @@ namespace PlayFab.ClientModels
 		
 		public string AccessToken { get; set;}
 		
+		/// <summary>
+		/// automatically create a PlayFab account if one is not currently linked to this Google account
+		/// </summary>
+		
+		public bool? CreateAccount { get; set;}
+		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 			AccessToken = (string)JsonUtil.Get<string>(json, "AccessToken");
+			CreateAccount = (bool?)JsonUtil.Get<bool?>(json, "CreateAccount");
 		}
 	}
 	
@@ -2077,7 +2134,7 @@ namespace PlayFab.ClientModels
 		/// automatically create a PlayFab account if one is not currently linked to this iOS device
 		/// </summary>
 		
-		public bool CreateAccount { get; set;}
+		public bool? CreateAccount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
@@ -2086,7 +2143,7 @@ namespace PlayFab.ClientModels
 			DeviceId = (string)JsonUtil.Get<string>(json, "DeviceId");
 			OS = (string)JsonUtil.Get<string>(json, "OS");
 			DeviceModel = (string)JsonUtil.Get<string>(json, "DeviceModel");
-			CreateAccount = (bool)JsonUtil.Get<bool?>(json, "CreateAccount");
+			CreateAccount = (bool?)JsonUtil.Get<bool?>(json, "CreateAccount");
 		}
 	}
 	
@@ -2136,7 +2193,7 @@ namespace PlayFab.ClientModels
 		public string TitleId { get; set;}
 		
 		/// <summary>
-		/// unique identifier from Steam for the user
+		/// authentication token for the user, returned as a byte array from Steam, and converted to a string (for example, the byte 0x08 should become "08")
 		/// </summary>
 		
 		public string SteamTicket { get; set;}
@@ -2145,14 +2202,14 @@ namespace PlayFab.ClientModels
 		/// automatically create a PlayFab account if one is not currently linked to this Steam account
 		/// </summary>
 		
-		public bool CreateAccount { get; set;}
+		public bool? CreateAccount { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
 			SteamTicket = (string)JsonUtil.Get<string>(json, "SteamTicket");
-			CreateAccount = (bool)JsonUtil.Get<bool?>(json, "CreateAccount");
+			CreateAccount = (bool?)JsonUtil.Get<bool?>(json, "CreateAccount");
 		}
 	}
 	
@@ -2971,16 +3028,23 @@ namespace PlayFab.ClientModels
 		public string ActionId { get; set;}
 		
 		/// <summary>
-		/// parameters to pass into the action
+		/// parameters to pass into the action (If you use this, don't use ParamsEncoded)
 		/// </summary>
 		
-		public Dictionary<string,object> Params { get; set;}
+		public object Params { get; set;}
+		
+		/// <summary>
+		/// json-encoded parameters to pass into the action (If you use this, don't use Params)
+		/// </summary>
+		
+		public string ParamsEncoded { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			ActionId = (string)JsonUtil.Get<string>(json, "ActionId");
-			Params = JsonUtil.GetDictionary<object>(json, "Params");
+			Params = JsonUtil.GetObject<object>(json, "Params");
+			ParamsEncoded = (string)JsonUtil.Get<string>(json, "ParamsEncoded");
 		}
 	}
 	
@@ -2991,15 +3055,29 @@ namespace PlayFab.ClientModels
 		
 		
 		/// <summary>
-		/// return values from the server action
+		/// return values from the server action as a dynamic object
 		/// </summary>
 		
-		public Dictionary<string,object> Results { get; set;}
+		public object Results { get; set;}
+		
+		/// <summary>
+		/// return values from the server action as a json encoded string
+		/// </summary>
+		
+		public string ResultsEncoded { get; set;}
+		
+		/// <summary>
+		/// any log statements generated during the run of this action
+		/// </summary>
+		
+		public string ActionLog { get; set;}
 		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			Results = JsonUtil.GetDictionary<object>(json, "Results");
+			Results = JsonUtil.GetObject<object>(json, "Results");
+			ResultsEncoded = (string)JsonUtil.Get<string>(json, "ResultsEncoded");
+			ActionLog = (string)JsonUtil.Get<string>(json, "ActionLog");
 		}
 	}
 	
