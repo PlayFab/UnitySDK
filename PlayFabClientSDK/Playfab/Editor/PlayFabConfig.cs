@@ -79,6 +79,7 @@ namespace PlayFab.Editor
 			PlayFabData.TitleId = titleId;
 			PlayFabData.CatalogVersion = catalogVersion;
 			PlayFabData.KeepSessionKey = keepSessionKey;
+			PlayFabData.SkipLogin = skipLogin;
 			PlayFabData.SaveData ();
             AssetDatabase.Refresh ();
 		}

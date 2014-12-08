@@ -1832,11 +1832,9 @@ namespace PlayFab.ClientModels
 	
 	public class LogEventResult : PlayFabModelBase
 	{
-		public List<string> errors { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
-			errors = JsonUtil.GetList<string>(json, "errors");
+
 		}
 	}
 	

@@ -38,7 +38,7 @@ public class PlayFabInventoryMenu : PlayFabItemsController {
 					GUI.DrawTexture (itemsRect[i], itemSelectedTextures[i-1]);	
 				}
 				else GUI.DrawTexture (itemsRect[i], itemTextures[(i-1)]);
-				uint? num = 0;
+				int? num = 0;
 				if (i > 1) // because item 1 has infinite ammo
 				{
 					if((i-1)>=PlayFabGameBridge.gunNames.Count &&PlayFabGameBridge.consumableItems.ContainsKey("HealthPack:Partial")){
