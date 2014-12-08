@@ -30,6 +30,8 @@ namespace PlayFab{
 		public static bool KeepSessionKey { get; set; }
 		public static bool SkipLogin { get; set; }
 
+		public static bool SkipLogin { get; set; }
+
 		/// 		SAVE % LOAD GAME DATA
 
 		void Awake() {
@@ -68,6 +70,9 @@ namespace PlayFab{
 					data = (PlayfabGameData)bf.Deserialize ( ms);
 				}
 			}else{
+				if(!File.Exists(Application.streamingAssetsPath  + "/playfab.data"))
+					return false;
+
 				file = File.Open (Application.streamingAssetsPath  + "/playfab.data", FileMode.Open, FileAccess.Read, FileShare.None);
 				data = (PlayfabGameData)bf.Deserialize (file);
 				file.Close ();

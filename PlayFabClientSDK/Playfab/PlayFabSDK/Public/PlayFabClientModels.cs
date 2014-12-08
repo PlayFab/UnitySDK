@@ -1832,8 +1832,7 @@ namespace PlayFab.ClientModels
 	
 	public class LogEventResult : PlayFabModelBase
 	{
-				
-			public override void Deserialize (Dictionary<string,object> json)
+		public override void Deserialize (Dictionary<string,object> json)
 		{
 
 		}
