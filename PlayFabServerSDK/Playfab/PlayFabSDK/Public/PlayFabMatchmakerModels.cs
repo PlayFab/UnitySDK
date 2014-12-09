@@ -138,7 +138,7 @@ namespace PlayFab.MatchmakerModels
 		/// unique identifier of the Game Server Instance the user is joining
 		/// </summary>
 		
-		public string ServerId { get; set;}
+		public string LobbyId { get; set;}
 		
 		/// <summary>
 		/// PlayFab unique identifier for the user joining
@@ -149,7 +149,7 @@ namespace PlayFab.MatchmakerModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			ServerId = (string)JsonUtil.Get<string>(json, "ServerId");
+			LobbyId = (string)JsonUtil.Get<string>(json, "LobbyId");
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
 		}
 	}
@@ -176,7 +176,7 @@ namespace PlayFab.MatchmakerModels
 		/// unique identifier of the Game Server Instance the user is leaving
 		/// </summary>
 		
-		public string ServerId { get; set;}
+		public string LobbyId { get; set;}
 		
 		/// <summary>
 		/// PlayFab unique identifier for the user leaving
@@ -187,7 +187,7 @@ namespace PlayFab.MatchmakerModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			ServerId = (string)JsonUtil.Get<string>(json, "ServerId");
+			LobbyId = (string)JsonUtil.Get<string>(json, "LobbyId");
 			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
 		}
 	}

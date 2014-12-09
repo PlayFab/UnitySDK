@@ -73,8 +73,8 @@ namespace PlayFab
 		public delegate void GetSharedGroupDataCallback(GetSharedGroupDataResult result);
 		public delegate void RemoveSharedGroupMembersCallback(RemoveSharedGroupMembersResult result);
 		public delegate void UpdateSharedGroupDataCallback(UpdateSharedGroupDataResult result);
-		public delegate void GetLogicServerUrlCallback(GetLogicServerUrlResult result);
-		public delegate void ServerActionCallback(ServerActionResult result);
+		public delegate void GetCloudScriptUrlCallback(GetCloudScriptUrlResult result);
+		public delegate void RunCloudScriptCallback(RunCloudScriptResult result);
 		
 		
 		
@@ -1893,18 +1893,18 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Gets the title-specific url for game logic servers. Must be called before making any calls to server-side logic.
+		/// Gets the title-specific url for Cloud Script servers. Must be called before making any calls to RunCloudScript.
 		/// </summary>
-		public static void GetLogicServerUrl(GetLogicServerUrlRequest request, GetLogicServerUrlCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCloudScriptUrl(GetCloudScriptUrlRequest request, GetCloudScriptUrlCallback resultCallback, ErrorCallback errorCallback)
 		{
 			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
 
 			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
 			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
 			{
-				GetLogicServerUrlResult result = null;
+				GetCloudScriptUrlResult result = null;
 				PlayFabError error = null;
-				ResultContainer<GetLogicServerUrlResult>.HandleResults(responseStr, errorStr, out result, out error);
+				ResultContainer<GetCloudScriptUrlResult>.HandleResults(responseStr, errorStr, out result, out error);
 				if(error != null && errorCallback != null)
 				{
 					errorCallback(error);
@@ -1919,22 +1919,22 @@ namespace PlayFab
 					}
 				}
 			};
-			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetLogicServerUrl", serializedJSON, "X-Authorization", AuthKey, callback);
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCloudScriptUrl", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
 		/// Triggers a particular server action
 		/// </summary>
-		public static void ServerAction(ServerActionRequest request, ServerActionCallback resultCallback, ErrorCallback errorCallback)
+		public static void RunCloudScript(RunCloudScriptRequest request, RunCloudScriptCallback resultCallback, ErrorCallback errorCallback)
 		{
 			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
 
 			string serializedJSON = JsonWriter.Serialize (request, Util.GlobalJsonWriterSettings);
 			PlayFabHTTP.HTTPCallback callback = delegate(string responseStr, string errorStr)
 			{
-				ServerActionResult result = null;
+				RunCloudScriptResult result = null;
 				PlayFabError error = null;
-				ResultContainer<ServerActionResult>.HandleResults(responseStr, errorStr, out result, out error);
+				ResultContainer<RunCloudScriptResult>.HandleResults(responseStr, errorStr, out result, out error);
 				if(error != null && errorCallback != null)
 				{
 					errorCallback(error);
@@ -1948,7 +1948,7 @@ namespace PlayFab
 					}
 				}
 			};
-			PlayFabHTTP.Post(PlayFabSettings.GetLogicURL()+"/Client/ServerAction", serializedJSON, "X-Authorization", AuthKey, callback);
+			PlayFabHTTP.Post(PlayFabSettings.GetLogicURL()+"/Client/RunCloudScript", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		

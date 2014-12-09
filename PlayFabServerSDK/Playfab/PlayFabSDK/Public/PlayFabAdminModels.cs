@@ -562,6 +562,62 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class GetDataReportRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Report name
+		/// </summary>
+		
+		public string ReportName { get; set;}
+		
+		/// <summary>
+		/// Reporting year (UTC)
+		/// </summary>
+		
+		public int Year { get; set;}
+		
+		/// <summary>
+		/// Reporting month (UTC)
+		/// </summary>
+		
+		public int Month { get; set;}
+		
+		/// <summary>
+		/// Reporting year (UTC)
+		/// </summary>
+		
+		public int Day { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			ReportName = (string)JsonUtil.Get<string>(json, "ReportName");
+			Year = (int)JsonUtil.Get<double?>(json, "Year");
+			Month = (int)JsonUtil.Get<double?>(json, "Month");
+			Day = (int)JsonUtil.Get<double?>(json, "Day");
+		}
+	}
+	
+	
+	
+	public class GetDataReportResult : PlayFabModelBase
+	{
+		
+		
+		
+		public string DownloadUrl { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			DownloadUrl = (string)JsonUtil.Get<string>(json, "DownloadUrl");
+		}
+	}
+	
+	
+	
 	public class GetMatchmakerGameInfoRequest : PlayFabModelBase
 	{
 		

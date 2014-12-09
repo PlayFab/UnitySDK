@@ -681,18 +681,11 @@ namespace PlayFab.ClientModels
 		
 		public string BuildVersion { get; set;}
 		
-		/// <summary>
-		/// server state to match against (running, ended, waiting for players etc.)
-		/// </summary>
-		
-		public string IncludeState { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			Region = (Region?)JsonUtil.GetEnum<Region>(json, "Region");
 			BuildVersion = (string)JsonUtil.Get<string>(json, "BuildVersion");
-			IncludeState = (string)JsonUtil.Get<string>(json, "IncludeState");
 		}
 	}
 	
@@ -1014,6 +1007,51 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class GetCloudScriptUrlRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Server version to use. The most recent production version will be returned if this is left null
+		/// </summary>
+		
+		public int? Version { get; set;}
+		
+		/// <summary>
+		/// If true, run against the latest test revision of server logic. Defaults to false if left null
+		/// </summary>
+		
+		public bool? Testing { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Version = (int?)JsonUtil.Get<double?>(json, "Version");
+			Testing = (bool?)JsonUtil.Get<bool?>(json, "Testing");
+		}
+	}
+	
+	
+	
+	public class GetCloudScriptUrlResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// Url of the Cloud Script logic server for this title
+		/// </summary>
+		
+		public string Url { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Url = (string)JsonUtil.Get<string>(json, "Url");
+		}
+	}
+	
+	
+	
 	public class GetFriendLeaderboardRequest : PlayFabModelBase
 	{
 		
@@ -1177,51 +1215,6 @@ namespace PlayFab.ClientModels
 		{
 			
 			Leaderboard = JsonUtil.GetObjectList<PlayerLeaderboardEntry>(json, "Leaderboard");
-		}
-	}
-	
-	
-	
-	public class GetLogicServerUrlRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// Server version to use. The most recent production version will be returned if this is left null
-		/// </summary>
-		
-		public int? Version { get; set;}
-		
-		/// <summary>
-		/// If true, run against the latest test revision of server logic. Defaults to false if left null
-		/// </summary>
-		
-		public bool? Testing { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Version = (int?)JsonUtil.Get<double?>(json, "Version");
-			Testing = (bool?)JsonUtil.Get<bool?>(json, "Testing");
-		}
-	}
-	
-	
-	
-	public class GetLogicServerUrlResult : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// Url of the custom server logic server for this title
-		/// </summary>
-		
-		public string Url { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Url = (string)JsonUtil.Get<string>(json, "Url");
 		}
 	}
 	
@@ -2285,12 +2278,6 @@ namespace PlayFab.ClientModels
 		public int? ServerPort { get; set;}
 		
 		/// <summary>
-		/// port number to use for http communications with the server
-		/// </summary>
-		
-		public int? WebSocketPort { get; set;}
-		
-		/// <summary>
 		/// server authorization ticket (used by RedeemCoupon to validate user insertion into the game)
 		/// </summary>
 		
@@ -2314,24 +2301,16 @@ namespace PlayFab.ClientModels
 		
 		public MatchmakeStatus? Status { get; set;}
 		
-		/// <summary>
-		/// [deprecated]
-		/// </summary>
-		
-		public List<string> Queue { get; set;}
-		
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
 			LobbyID = (string)JsonUtil.Get<string>(json, "LobbyID");
 			ServerHostname = (string)JsonUtil.Get<string>(json, "ServerHostname");
 			ServerPort = (int?)JsonUtil.Get<double?>(json, "ServerPort");
-			WebSocketPort = (int?)JsonUtil.Get<double?>(json, "WebSocketPort");
 			Ticket = (string)JsonUtil.Get<string>(json, "Ticket");
 			Expires = (string)JsonUtil.Get<string>(json, "Expires");
 			PollWaitTimeMS = (int?)JsonUtil.Get<double?>(json, "PollWaitTimeMS");
 			Status = (MatchmakeStatus?)JsonUtil.GetEnum<MatchmakeStatus>(json, "Status");
-			Queue = JsonUtil.GetList<string>(json, "Queue");
 		}
 	}
 	
@@ -2979,6 +2958,72 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class RunCloudScriptRequest : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// server action to trigger
+		/// </summary>
+		
+		public string ActionId { get; set;}
+		
+		/// <summary>
+		/// parameters to pass into the action (If you use this, don't use ParamsEncoded)
+		/// </summary>
+		
+		public object Params { get; set;}
+		
+		/// <summary>
+		/// json-encoded parameters to pass into the action (If you use this, don't use Params)
+		/// </summary>
+		
+		public string ParamsEncoded { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			ActionId = (string)JsonUtil.Get<string>(json, "ActionId");
+			Params = JsonUtil.GetObject<object>(json, "Params");
+			ParamsEncoded = (string)JsonUtil.Get<string>(json, "ParamsEncoded");
+		}
+	}
+	
+	
+	
+	public class RunCloudScriptResult : PlayFabModelBase
+	{
+		
+		
+		/// <summary>
+		/// return values from the server action as a dynamic object
+		/// </summary>
+		
+		public object Results { get; set;}
+		
+		/// <summary>
+		/// return values from the server action as a json encoded string
+		/// </summary>
+		
+		public string ResultsEncoded { get; set;}
+		
+		/// <summary>
+		/// any log statements generated during the run of this action
+		/// </summary>
+		
+		public string ActionLog { get; set;}
+		
+		public override void Deserialize (Dictionary<string,object> json)
+		{
+			
+			Results = JsonUtil.GetObject<object>(json, "Results");
+			ResultsEncoded = (string)JsonUtil.Get<string>(json, "ResultsEncoded");
+			ActionLog = (string)JsonUtil.Get<string>(json, "ActionLog");
+		}
+	}
+	
+	
+	
 	public class SendAccountRecoveryEmailRequest : PlayFabModelBase
 	{
 		
@@ -3012,72 +3057,6 @@ namespace PlayFab.ClientModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-		}
-	}
-	
-	
-	
-	public class ServerActionRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// server action to trigger
-		/// </summary>
-		
-		public string ActionId { get; set;}
-		
-		/// <summary>
-		/// parameters to pass into the action (If you use this, don't use ParamsEncoded)
-		/// </summary>
-		
-		public object Params { get; set;}
-		
-		/// <summary>
-		/// json-encoded parameters to pass into the action (If you use this, don't use Params)
-		/// </summary>
-		
-		public string ParamsEncoded { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ActionId = (string)JsonUtil.Get<string>(json, "ActionId");
-			Params = JsonUtil.GetObject<object>(json, "Params");
-			ParamsEncoded = (string)JsonUtil.Get<string>(json, "ParamsEncoded");
-		}
-	}
-	
-	
-	
-	public class ServerActionResult : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// return values from the server action as a dynamic object
-		/// </summary>
-		
-		public object Results { get; set;}
-		
-		/// <summary>
-		/// return values from the server action as a json encoded string
-		/// </summary>
-		
-		public string ResultsEncoded { get; set;}
-		
-		/// <summary>
-		/// any log statements generated during the run of this action
-		/// </summary>
-		
-		public string ActionLog { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Results = JsonUtil.GetObject<object>(json, "Results");
-			ResultsEncoded = (string)JsonUtil.Get<string>(json, "ResultsEncoded");
-			ActionLog = (string)JsonUtil.Get<string>(json, "ActionLog");
 		}
 	}
 	
