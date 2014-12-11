@@ -23,6 +23,16 @@ namespace PlayFab.Internal
 			return default(DataType);
 		}
 
+		public static object GetObjectRaw(Dictionary<string,object> json, string name)
+		{
+			object value=null;
+			if (json.TryGetValue(name, out value))
+			{
+				return value;
+			}
+			return null;
+		}
+		
 		public static DataType GetObject<DataType>(Dictionary<string,object> json, string name) where DataType : PlayFabModelBase, new()
 		{
 			object value;

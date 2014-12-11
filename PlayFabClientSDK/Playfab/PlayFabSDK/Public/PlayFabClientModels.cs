@@ -2984,7 +2984,7 @@ namespace PlayFab.ClientModels
 		{
 			
 			ActionId = (string)JsonUtil.Get<string>(json, "ActionId");
-			Params = JsonUtil.GetObject<object>(json, "Params");
+			Params = JsonUtil.GetObjectRaw(json, "Params");
 			ParamsEncoded = (string)JsonUtil.Get<string>(json, "ParamsEncoded");
 		}
 	}
@@ -3016,7 +3016,7 @@ namespace PlayFab.ClientModels
 		public override void Deserialize (Dictionary<string,object> json)
 		{
 			
-			Results = JsonUtil.GetObject<object>(json, "Results");
+			Results = JsonUtil.GetObjectRaw(json, "Results");
 			ResultsEncoded = (string)JsonUtil.Get<string>(json, "ResultsEncoded");
 			ActionLog = (string)JsonUtil.Get<string>(json, "ActionLog");
 		}
