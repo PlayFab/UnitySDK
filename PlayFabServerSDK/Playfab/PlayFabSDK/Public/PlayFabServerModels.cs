@@ -1,188 +1,169 @@
 using System;
 using System.Collections.Generic;
 using PlayFab.Internal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace PlayFab.ServerModels
 {
 	
 	
 	
-	public class AddSharedGroupMembersRequest : PlayFabModelBase
+	public class AddCharacterVirtualCurrencyRequest
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the shared group
-		/// </summary>
-		
-		public string SharedGroupId { get; set;}
-		
-		/// <summary>
-		/// list of PlayFabId identifiers of users to add as members of the shared group
-		/// </summary>
-		
-		public List<string> PlayFabIds { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
-			PlayFabIds = JsonUtil.GetList<string>(json, "PlayFabIds");
-		}
-	}
-	
-	
-	
-	public class AddSharedGroupMembersResult : PlayFabModelBase
-	{
-		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
-	}
-	
-	
-	
-	public class AddUserVirtualCurrencyRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose virtual currency balance is to be incremented
+		/// PlayFab unique identifier of the user whose virtual currency balance is to be incremented.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		
+		public string CharacterId { get; set;}
+		
 		/// <summary>
-		/// name of the virtual currency which is to be incremented
+		/// Name of the virtual currency which is to be incremented.
 		/// </summary>
 		
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// amount to be added to the user balance of the specified virtual currency
+		/// Amount to be added to the user balance of the specified virtual currency.
 		/// </summary>
 		
 		public int Amount { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			VirtualCurrency = (string)JsonUtil.Get<string>(json, "VirtualCurrency");
-			Amount = (int)JsonUtil.Get<double?>(json, "Amount");
-		}
+
 	}
 	
 	
 	
-	public class AuthenticateSessionTicketRequest : PlayFabModelBase
+	public class AddSharedGroupMembersRequest
 	{
 		
 		
 		/// <summary>
-		/// Session ticket as issued by a PlayFab client login API
+		/// Unique identifier for the shared group.
 		/// </summary>
 		
-		public string SessionTicket { get; set;}
+		public string SharedGroupId { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SessionTicket = (string)JsonUtil.Get<string>(json, "SessionTicket");
-		}
+		
+		public List<string> PlayFabIds { get; set;}
+
 	}
 	
 	
 	
-	public class AuthenticateSessionTicketResult : PlayFabModelBase
+	public class AddSharedGroupMembersResult
 	{
 		
-		
-		/// <summary>
-		/// account info for the user whose session ticket was supplied
-		/// </summary>
-		
-		public UserAccountInfo UserInfo { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
-		}
+
 	}
 	
 	
 	
-	public class AwardSteamAchievementItem : PlayFabModelBase
+	public class AddUserVirtualCurrencyRequest
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user who is to be granted the specified Steam achievement
+		/// PlayFab unique identifier of the user whose virtual currency balance is to be increased.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// unique Steam achievement name
+		/// Name of the virtual currency which is to be incremented.
+		/// </summary>
+		
+		public string VirtualCurrency { get; set;}
+		
+		/// <summary>
+		/// Amount to be added to the user balance of the specified virtual currency.
+		/// </summary>
+		
+		public int Amount { get; set;}
+
+	}
+	
+	
+	
+	public class AuthenticateSessionTicketRequest
+	{
+		
+		
+		/// <summary>
+		/// Session ticket as issued by a PlayFab client login API.
+		/// </summary>
+		
+		public string SessionTicket { get; set;}
+
+	}
+	
+	
+	
+	public class AuthenticateSessionTicketResult
+	{
+		
+		
+		/// <summary>
+		/// Account info for the user whose session ticket was supplied.
+		/// </summary>
+		
+		public UserAccountInfo UserInfo { get; set;}
+
+	}
+	
+	
+	
+	public class AwardSteamAchievementItem
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Unique Steam achievement name.
 		/// </summary>
 		
 		public string AchievementName { get; set;}
 		
 		/// <summary>
-		/// result of the award attempt (only valid on response, not on request)
+		/// Result of the award attempt (only valid on response, not on request).
 		/// </summary>
 		
 		public bool Result { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			AchievementName = (string)JsonUtil.Get<string>(json, "AchievementName");
-			Result = (bool)JsonUtil.Get<bool?>(json, "Result");
-		}
+
 	}
 	
 	
 	
-	public class AwardSteamAchievementRequest : PlayFabModelBase
+	public class AwardSteamAchievementRequest
 	{
 		
 		
 		/// <summary>
-		/// array of achievements to grant and the users to whom they are to be granted
+		/// Array of achievements to grant and the users to whom they are to be granted.
 		/// </summary>
 		
 		public List<AwardSteamAchievementItem> Achievements { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Achievements = JsonUtil.GetObjectList<AwardSteamAchievementItem>(json, "Achievements");
-		}
+
 	}
 	
 	
 	
-	public class AwardSteamAchievementResult : PlayFabModelBase
+	public class AwardSteamAchievementResult
 	{
 		
 		
 		/// <summary>
-		/// array of achievements granted
+		/// Array of achievements granted.
 		/// </summary>
 		
 		public List<AwardSteamAchievementItem> AchievementResults { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			AchievementResults = JsonUtil.GetObjectList<AwardSteamAchievementItem>(json, "AchievementResults");
-		}
+
 	}
 	
 	
@@ -190,7 +171,7 @@ namespace PlayFab.ServerModels
 	/// <summary>
 	/// A purchasable item from the item catalog
 	/// </summary>
-	public class CatalogItem : PlayFabModelBase
+	public class CatalogItem
 	{
 		
 		
@@ -272,28 +253,23 @@ namespace PlayFab.ServerModels
 		
 		public CatalogItemBundleInfo Bundle { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-			Description = (string)JsonUtil.Get<string>(json, "Description");
-			VirtualCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyPrices");
-			RealCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "RealCurrencyPrices");
-			Tags = JsonUtil.GetList<string>(json, "Tags");
-			CustomData = (string)JsonUtil.Get<string>(json, "CustomData");
-			GrantedIfPlayerHas = JsonUtil.GetList<string>(json, "GrantedIfPlayerHas");
-			Consumable = JsonUtil.GetObject<CatalogItemConsumableInfo>(json, "Consumable");
-			Container = JsonUtil.GetObject<CatalogItemContainerInfo>(json, "Container");
-			Bundle = JsonUtil.GetObject<CatalogItemBundleInfo>(json, "Bundle");
-		}
+		/// <summary>
+		/// if true, then this item instance can be used to grant a character to a user.
+		/// </summary>
+		
+		public bool CanBecomeCharacter { get; set;}
+		
+		/// <summary>
+		/// if true, then only one item instance of this type will exist and its remaininguses will be incremented instead
+		/// </summary>
+		
+		public bool IsStackable { get; set;}
+
 	}
 	
 	
 	
-	public class CatalogItemBundleInfo : PlayFabModelBase
+	public class CatalogItemBundleInfo
 	{
 		
 		
@@ -314,19 +290,12 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public Dictionary<string,uint> BundledVirtualCurrencies { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BundledItems = JsonUtil.GetList<string>(json, "BundledItems");
-			BundledResultTables = JsonUtil.GetList<string>(json, "BundledResultTables");
-			BundledVirtualCurrencies = JsonUtil.GetDictionaryUInt32(json, "BundledVirtualCurrencies");
-		}
+
 	}
 	
 	
 	
-	public class CatalogItemConsumableInfo : PlayFabModelBase
+	public class CatalogItemConsumableInfo
 	{
 		
 		
@@ -347,14 +316,7 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public string UsagePeriodGroup { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			UsageCount = (uint?)JsonUtil.Get<double?>(json, "UsageCount");
-			UsagePeriod = (uint?)JsonUtil.Get<double?>(json, "UsagePeriod");
-			UsagePeriodGroup = (string)JsonUtil.Get<string>(json, "UsagePeriodGroup");
-		}
+
 	}
 	
 	
@@ -362,7 +324,7 @@ namespace PlayFab.ServerModels
 	/// <summary>
 	/// Containers are inventory items that can hold other items defined in the catalog, as well as virtual currency, which is added to the player inventory when the container is unlocked, using the UnlockContainerItem API. The items can be anything defined in the catalog, as well as RandomResultTable objects which will be resolved when the container is unlocked. Containers and their keys should be defined as Consumable (having a limited number of uses) in their catalog defintiions, unless the intent is for the player to be able to re-use them infinitely.
 	/// </summary>
-	public class CatalogItemContainerInfo : PlayFabModelBase
+	public class CatalogItemContainerInfo
 	{
 		
 		
@@ -389,53 +351,102 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public Dictionary<string,uint> VirtualCurrencyContents { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			KeyItemId = (string)JsonUtil.Get<string>(json, "KeyItemId");
-			ItemContents = JsonUtil.GetList<string>(json, "ItemContents");
-			ResultTableContents = JsonUtil.GetList<string>(json, "ResultTableContents");
-			VirtualCurrencyContents = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyContents");
-		}
+
 	}
 	
 	
 	
-	public class CreateSharedGroupRequest : PlayFabModelBase
+	public class CharacterLeaderboardEntry
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the shared group (a random identifier will be assigned, if one is not specified)
+		/// PlayFab unique identifier of the user for this leaderboard entry.
 		/// </summary>
 		
-		public string SharedGroupId { get; set;}
+		public string PlayFabId { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
-		}
+		/// <summary>
+		/// PlayFab unique identifier of the character that belongs to the user for this leaderboard entry.
+		/// </summary>
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Title-specific display name of the character for this leaderboard entry.
+		/// </summary>
+		
+		public string CharacterName { get; set;}
+		
+		/// <summary>
+		/// Title-specific display name of the user for this leaderboard entry.
+		/// </summary>
+		
+		public string DisplayName { get; set;}
+		
+		/// <summary>
+		/// Name of the character class for this entry.
+		/// </summary>
+		
+		public string CharacterType { get; set;}
+		
+		/// <summary>
+		/// Specific value of the user's statistic.
+		/// </summary>
+		
+		public int StatValue { get; set;}
+		
+		/// <summary>
+		/// User's overall position in the leaderboard.
+		/// </summary>
+		
+		public int Position { get; set;}
+
 	}
 	
 	
 	
-	public class CreateSharedGroupResult : PlayFabModelBase
+	public class CharacterResult
+	{
+		
+		
+		
+		public string CharacterId { get; set;}
+		
+		
+		public string CharacterName { get; set;}
+		
+		
+		public string CharacterType { get; set;}
+
+	}
+	
+	
+	
+	public class CreateSharedGroupRequest
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the shared group
+		/// Unique identifier for the shared group (a random identifier will be assigned, if one is not specified).
 		/// </summary>
 		
 		public string SharedGroupId { get; set;}
+
+	}
+	
+	
+	
+	public class CreateSharedGroupResult
+	{
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
-		}
+		
+		/// <summary>
+		/// Unique identifier for the shared group.
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+
 	}
 	
 	
@@ -453,258 +464,453 @@ namespace PlayFab.ServerModels
 	
 	
 	
-	public class DeleteSharedGroupRequest : PlayFabModelBase
+	public class DeleteCharacterFromUserRequest
 	{
 		
 		
-		/// <summary>
-		/// unique identifier for the shared group
-		/// </summary>
-		
-		public string SharedGroupId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
-		}
-	}
-	
-	
-	
-	public class EmptyResult : PlayFabModelBase
-	{
-		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
-	}
-	
-	
-	
-	public class GetCatalogItemsRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// which catalog is being requested
-		/// </summary>
-		
-		public string CatalogVersion { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-		}
-	}
-	
-	
-	
-	public class GetCatalogItemsResult : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// array of items which can be purchased
-		/// </summary>
-		
-		public List<CatalogItem> Catalog { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Catalog = JsonUtil.GetObjectList<CatalogItem>(json, "Catalog");
-		}
-	}
-	
-	
-	
-	public class GetLeaderboardAroundUserRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// unique identifier for the title-specific statistic for the leaderboard
-		/// </summary>
-		
-		public string StatisticName { get; set;}
-		
-		/// <summary>
-		/// PlayFab unique identifier of the user to be centered in the list of entries
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		
+		public string CharacterId { get; set;}
+		
 		/// <summary>
-		/// maximum number of entries to retrieve
+		/// If true, the character's inventory will be transferred up to the owning user; otherwise, this request will purge those items.
 		/// </summary>
 		
-		public int MaxResultsCount { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			StatisticName = (string)JsonUtil.Get<string>(json, "StatisticName");
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			MaxResultsCount = (int)JsonUtil.Get<double?>(json, "MaxResultsCount");
-		}
+		public bool SaveCharacterInventory { get; set;}
+
 	}
 	
 	
 	
-	public class GetLeaderboardAroundUserResult : PlayFabModelBase
+	public class DeleteCharacterFromUserResult
 	{
 		
-		
-		/// <summary>
-		/// ordered list of leaderboard entries
-		/// </summary>
-		
-		public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Leaderboard = JsonUtil.GetObjectList<PlayerLeaderboardEntry>(json, "Leaderboard");
-		}
+
 	}
 	
 	
 	
-	public class GetLeaderboardRequest : PlayFabModelBase
+	public class DeleteSharedGroupRequest
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the title-specific statistic for the leaderboard
+		/// Unique identifier for the shared group.
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+
+	}
+	
+	
+	
+	public class EmptyResult
+	{
+		
+
+	}
+	
+	
+	
+	public class GetCatalogItemsRequest
+	{
+		
+		
+		/// <summary>
+		/// Which catalog is being requested.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+
+	}
+	
+	
+	
+	public class GetCatalogItemsResult
+	{
+		
+		
+		/// <summary>
+		/// Array of items which can be purchased.
+		/// </summary>
+		
+		public List<CatalogItem> Catalog { get; set;}
+
+	}
+	
+	
+	
+	public class GetCharacterDataRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Specific keys to search for in the custom user data.
+		/// </summary>
+		
+		public List<string> Keys { get; set;}
+
+	}
+	
+	
+	
+	public class GetCharacterDataResult
+	{
+		
+		
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Character specific data for this title.
+		/// </summary>
+		
+		public Dictionary<string,UserDataRecord> Data { get; set;}
+
+	}
+	
+	
+	
+	public class GetCharacterInventoryRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Used to limit results to only those from a specific catalog version.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+
+	}
+	
+	
+	
+	public class GetCharacterInventoryResult
+	{
+		
+		
+		/// <summary>
+		/// Array of inventory items belonging to the character.
+		/// </summary>
+		
+		public List<ItemInstance> Inventory { get; set;}
+		
+		/// <summary>
+		/// Array of virtual currency balance(s) belonging to the character.
+		/// </summary>
+		
+		public Dictionary<string,int> VirtualCurrency { get; set;}
+
+	}
+	
+	
+	
+	public class GetCharacterLeaderboardRequest
+	{
+		
+		
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Optional character type on which to filter the leaderboard entries.
+		/// </summary>
+		
+		public string CharacterType { get; set;}
+		
+		/// <summary>
+		/// Unique identifier for the title-specific statistic for the leaderboard.
 		/// </summary>
 		
 		public string StatisticName { get; set;}
 		
 		/// <summary>
-		/// first entry in the leaderboard to be retrieved
+		/// First entry in the leaderboard to be retrieved.
 		/// </summary>
 		
 		public int StartPosition { get; set;}
 		
 		/// <summary>
-		/// maximum number of entries to retrieve
+		/// Maximum number of entries to retrieve.
 		/// </summary>
 		
 		public int MaxResultsCount { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			StatisticName = (string)JsonUtil.Get<string>(json, "StatisticName");
-			StartPosition = (int)JsonUtil.Get<double?>(json, "StartPosition");
-			MaxResultsCount = (int)JsonUtil.Get<double?>(json, "MaxResultsCount");
-		}
+
 	}
 	
 	
 	
-	public class GetLeaderboardResult : PlayFabModelBase
+	public class GetCharacterLeaderboardResult
 	{
 		
 		
 		/// <summary>
-		/// ordered list of leaderboard entries
+		/// Ordered list of leaderboard entries.
+		/// </summary>
+		
+		public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
+
+	}
+	
+	
+	
+	public class GetCharacterStatisticsRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string CharacterId { get; set;}
+
+	}
+	
+	
+	
+	public class GetCharacterStatisticsResult
+	{
+		
+		
+		/// <summary>
+		/// Character statistics for the requested user.
+		/// </summary>
+		
+		public Dictionary<string,int> CharacterStatistics { get; set;}
+
+	}
+	
+	
+	
+	public class GetContentDownloadUrlRequest
+	{
+		
+		
+		/// <summary>
+		/// Key of the content item to fetch, usually formatted as a path, e.g. images/a.png
+		/// </summary>
+		
+		public string Key { get; set;}
+		
+		/// <summary>
+		/// HTTP method to fetch item - GET or HEAD. Use HEAD when only fetching metadata. Default is GET.
+		/// </summary>
+		
+		public string HttpMethod { get; set;}
+		
+		/// <summary>
+		/// True if download through CDN. CDN provides better download bandwidth and time. However, if you want latest, non-cached version of the content, set this to false. Default is true.
+		/// </summary>
+		
+		public bool? ThruCDN { get; set;}
+
+	}
+	
+	
+	
+	public class GetContentDownloadUrlResult
+	{
+		
+		
+		/// <summary>
+		/// URL for downloading content via HTTP GET or HEAD method. The URL will expire in 1 hour.
+		/// </summary>
+		
+		public string URL { get; set;}
+
+	}
+	
+	
+	
+	public class GetLeaderboardAroundCharacterRequest
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the title-specific statistic for the leaderboard.
+		/// </summary>
+		
+		public string StatisticName { get; set;}
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Optional character type on which to filter the leaderboard entries.
+		/// </summary>
+		
+		public string CharacterType { get; set;}
+		
+		/// <summary>
+		/// Maximum number of entries to retrieve.
+		/// </summary>
+		
+		public int MaxResultsCount { get; set;}
+
+	}
+	
+	
+	
+	public class GetLeaderboardAroundCharacterResult
+	{
+		
+		
+		/// <summary>
+		/// Ordered list of leaderboard entries.
+		/// </summary>
+		
+		public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
+
+	}
+	
+	
+	
+	public class GetLeaderboardAroundUserRequest
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the title-specific statistic for the leaderboard.
+		/// </summary>
+		
+		public string StatisticName { get; set;}
+		
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Maximum number of entries to retrieve.
+		/// </summary>
+		
+		public int MaxResultsCount { get; set;}
+
+	}
+	
+	
+	
+	public class GetLeaderboardAroundUserResult
+	{
+		
+		
+		/// <summary>
+		/// Ordered list of leaderboard entries.
 		/// </summary>
 		
 		public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Leaderboard = JsonUtil.GetObjectList<PlayerLeaderboardEntry>(json, "Leaderboard");
-		}
+
 	}
 	
 	
 	
-	public class GetSharedGroupDataRequest : PlayFabModelBase
+	public class GetLeaderboardForUsersCharactersRequest
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the shared group
+		/// Unique identifier for the title-specific statistic for the leaderboard.
 		/// </summary>
 		
-		public string SharedGroupId { get; set;}
+		public string StatisticName { get; set;}
+		
+		
+		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// specific keys to retrieve from the shared group (if not specified, all keys will be returned, while an empty array indicates that no keys should be returned)
+		/// Maximum number of entries to retrieve.
+		/// </summary>
+		
+		public int MaxResultsCount { get; set;}
+
+	}
+	
+	
+	
+	public class GetLeaderboardForUsersCharactersResult
+	{
+		
+		
+		/// <summary>
+		/// Ordered list of leaderboard entries.
+		/// </summary>
+		
+		public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
+
+	}
+	
+	
+	
+	public class GetLeaderboardRequest
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the title-specific statistic for the leaderboard.
+		/// </summary>
+		
+		public string StatisticName { get; set;}
+		
+		/// <summary>
+		/// First entry in the leaderboard to be retrieved.
+		/// </summary>
+		
+		public int StartPosition { get; set;}
+		
+		/// <summary>
+		/// Maximum number of entries to retrieve.
+		/// </summary>
+		
+		public int MaxResultsCount { get; set;}
+
+	}
+	
+	
+	
+	public class GetLeaderboardResult
+	{
+		
+		
+		/// <summary>
+		/// Ordered list of leaderboard entries.
+		/// </summary>
+		
+		public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
+
+	}
+	
+	
+	
+	public class GetPublisherDataRequest
+	{
+		
+		
+		/// <summary>
+		///  array of keys to get back data from the Publisher data blob, set by the admin tools
 		/// </summary>
 		
 		public List<string> Keys { get; set;}
-		
-		/// <summary>
-		/// if true, return the list of all members of the shared group
-		/// </summary>
-		
-		public bool? GetMembers { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
-			Keys = JsonUtil.GetList<string>(json, "Keys");
-			GetMembers = (bool?)JsonUtil.Get<bool?>(json, "GetMembers");
-		}
+
 	}
 	
 	
 	
-	public class GetSharedGroupDataResult : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// data for the requested keys
-		/// </summary>
-		
-		public Dictionary<string,SharedGroupDataRecord> Data { get; set;}
-		
-		/// <summary>
-		/// list of PlayFabId identifiers for the members of this group, if requested
-		/// </summary>
-		
-		public List<string> Members { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Data = JsonUtil.GetObjectDictionary<SharedGroupDataRecord>(json, "Data");
-			Members = JsonUtil.GetList<string>(json, "Members");
-		}
-	}
-	
-	
-	
-	public class GetTitleDataRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		///  array of keys to get back data from the TitleData data blob, set by the admin tools
-		/// </summary>
-		
-		public List<string> Keys { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Keys = JsonUtil.GetList<string>(json, "Keys");
-		}
-	}
-	
-	
-	
-	public class GetTitleDataResult : PlayFabModelBase
+	public class GetPublisherDataResult
 	{
 		
 		
@@ -713,329 +919,400 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
-		}
+
 	}
 	
 	
 	
-	public class GetUserAccountInfoRequest : PlayFabModelBase
+	public class GetSharedGroupDataRequest
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user whose information is being requested
+		/// Unique identifier for the shared group.
 		/// </summary>
 		
-		public string PlayFabId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-		}
-	}
-	
-	
-	
-	public class GetUserAccountInfoResult : PlayFabModelBase
-	{
-		
+		public string SharedGroupId { get; set;}
 		
 		/// <summary>
-		/// account info for the user whose information was requested
-		/// </summary>
-		
-		public UserAccountInfo UserInfo { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
-		}
-	}
-	
-	
-	
-	public class GetUserDataRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being requested
-		/// </summary>
-		
-		public string PlayFabId { get; set;}
-		
-		/// <summary>
-		/// specific keys to search for in the custom user data
+		/// Specific keys to retrieve from the shared group (if not specified, all keys will be returned, while an empty array indicates that no keys should be returned).
 		/// </summary>
 		
 		public List<string> Keys { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Keys = JsonUtil.GetList<string>(json, "Keys");
-		}
+		/// <summary>
+		/// If true, return the list of all members of the shared group.
+		/// </summary>
+		
+		public bool? GetMembers { get; set;}
+
 	}
 	
 	
 	
-	public class GetUserDataResult : PlayFabModelBase
+	public class GetSharedGroupDataResult
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being returned
+		/// Data for the requested keys.
+		/// </summary>
+		
+		public Dictionary<string,SharedGroupDataRecord> Data { get; set;}
+		
+		/// <summary>
+		/// List of PlayFabId identifiers for the members of this group, if requested.
+		/// </summary>
+		
+		public List<string> Members { get; set;}
+
+	}
+	
+	
+	
+	public class GetTitleDataRequest
+	{
+		
+		
+		/// <summary>
+		///  array of keys to get back data from the TitleData data blob, set by the admin tools
+		/// </summary>
+		
+		public List<string> Keys { get; set;}
+
+	}
+	
+	
+	
+	public class GetTitleDataResult
+	{
+		
+		
+		/// <summary>
+		/// a dictionary object of key / value pairs
+		/// </summary>
+		
+		public Dictionary<string,string> Data { get; set;}
+
+	}
+	
+	
+	
+	public class GetUserAccountInfoRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+
+	}
+	
+	
+	
+	public class GetUserAccountInfoResult
+	{
+		
+		
+		/// <summary>
+		/// Account info for the user whose information was requested.
+		/// </summary>
+		
+		public UserAccountInfo UserInfo { get; set;}
+
+	}
+	
+	
+	
+	public class GetUserDataRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Specific keys to search for in the custom user data.
+		/// </summary>
+		
+		public List<string> Keys { get; set;}
+
+	}
+	
+	
+	
+	public class GetUserDataResult
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier of the user whose custom data is being returned.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// user specific data for this title
+		/// User specific data for this title.
 		/// </summary>
 		
 		public Dictionary<string,UserDataRecord> Data { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Data = JsonUtil.GetObjectDictionary<UserDataRecord>(json, "Data");
-		}
+
 	}
 	
 	
 	
-	public class GetUserInventoryRequest : PlayFabModelBase
+	public class GetUserInventoryRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose inventory is being requested
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// used to limit results to only those from a specific catalog version
+		/// Used to limit results to only those from a specific catalog version.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-		}
+
 	}
 	
 	
 	
-	public class GetUserInventoryResult : PlayFabModelBase
+	public class GetUserInventoryResult
 	{
 		
 		
 		/// <summary>
-		/// array of inventory items belonging to the user
+		/// Array of inventory items belonging to the user.
 		/// </summary>
 		
 		public List<ItemInstance> Inventory { get; set;}
 		
 		/// <summary>
-		/// array of virtual currency balance(s) belonging to the user
+		/// Array of virtual currency balance(s) belonging to the user.
 		/// </summary>
 		
 		public Dictionary<string,int> VirtualCurrency { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Inventory = JsonUtil.GetObjectList<ItemInstance>(json, "Inventory");
-			VirtualCurrency = JsonUtil.GetDictionaryInt32(json, "VirtualCurrency");
-		}
+		/// <summary>
+		/// Array of remaining times and timestamps for virtual currencies.
+		/// </summary>
+		
+		public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes { get; set;}
+
 	}
 	
 	
 	
-	public class GetUserStatisticsRequest : PlayFabModelBase
+	public class GetUserStatisticsRequest
 	{
 		
 		
 		/// <summary>
-		/// user for whom statistics are being requested
+		/// User for whom statistics are being requested.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-		}
+
 	}
 	
 	
 	
-	public class GetUserStatisticsResult : PlayFabModelBase
+	public class GetUserStatisticsResult
 	{
 		
 		
 		/// <summary>
-		/// user statistics for the requested user
+		/// User statistics for the requested user.
 		/// </summary>
 		
 		public Dictionary<string,int> UserStatistics { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			UserStatistics = JsonUtil.GetDictionaryInt32(json, "UserStatistics");
-		}
+
 	}
 	
 	
 	
-	public class GrantItemsToUserRequest : PlayFabModelBase
+	public class GrantCharacterToUserRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Non-unique display name of the character being granted.
+		/// </summary>
+		
+		public string CharacterName { get; set;}
+		
+		/// <summary>
+		/// Type of the character being granted; statistics can be sliced based on this value.
+		/// </summary>
+		
+		public string CharacterType { get; set;}
+
+	}
+	
+	
+	
+	public class GrantCharacterToUserResult
 	{
 		
 		
 		/// <summary>
-		/// catalog version from which items are to be granted
+		/// Unique identifier tagged to this character.
+		/// </summary>
+		
+		public string CharacterId { get; set;}
+
+	}
+	
+	
+	
+	public class GrantItemsToCharacterRequest
+	{
+		
+		
+		/// <summary>
+		/// Catalog version from which items are to be granted.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user to whom the catalog items are to be granted
-		/// </summary>
+		
+		public string CharacterId { get; set;}
+		
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// string detailing any additional information concerning this operation
+		/// String detailing any additional information concerning this operation.
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
 		/// <summary>
-		/// array of itemIds to grant to the user
+		/// Array of itemIds to grant to the user.
 		/// </summary>
 		
 		public List<string> ItemIds { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
-			ItemIds = JsonUtil.GetList<string>(json, "ItemIds");
-		}
+
 	}
 	
 	
 	
-	public class GrantItemsToUserResult : PlayFabModelBase
+	public class GrantItemsToCharacterResult
 	{
 		
 		
 		/// <summary>
-		/// array of items granted to users
+		/// Array of items granted to users.
 		/// </summary>
 		
 		public List<ItemGrantResult> ItemGrantResults { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemGrantResults = JsonUtil.GetObjectList<ItemGrantResult>(json, "ItemGrantResults");
-		}
+
 	}
 	
 	
 	
-	public class GrantItemsToUsersRequest : PlayFabModelBase
+	public class GrantItemsToUserRequest
 	{
 		
 		
 		/// <summary>
-		/// catalog version from which items are to be granted
+		/// Catalog version from which items are to be granted.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// String detailing any additional information concerning this operation.
+		/// </summary>
+		
+		public string Annotation { get; set;}
+		
+		/// <summary>
+		/// Array of itemIds to grant to the user.
+		/// </summary>
+		
+		public List<string> ItemIds { get; set;}
+
+	}
+	
+	
+	
+	public class GrantItemsToUserResult
+	{
+		
+		
+		/// <summary>
+		/// Array of items granted to users.
+		/// </summary>
+		
+		public List<ItemGrantResult> ItemGrantResults { get; set;}
+
+	}
+	
+	
+	
+	public class GrantItemsToUsersRequest
+	{
+		
+		
+		/// <summary>
+		/// Catalog version from which items are to be granted.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
 		/// <summary>
-		/// array of items to grant and the users to whom the items are to be granted
+		/// Array of items to grant and the users to whom the items are to be granted.
 		/// </summary>
 		
 		public List<ItemGrant> ItemGrants { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			ItemGrants = JsonUtil.GetObjectList<ItemGrant>(json, "ItemGrants");
-		}
+
 	}
 	
 	
 	
-	public class GrantItemsToUsersResult : PlayFabModelBase
+	public class GrantItemsToUsersResult
 	{
 		
 		
 		/// <summary>
-		/// array of items granted to users
+		/// Array of items granted to users.
 		/// </summary>
 		
 		public List<ItemGrantResult> ItemGrantResults { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemGrantResults = JsonUtil.GetObjectList<ItemGrantResult>(json, "ItemGrantResults");
-		}
+
 	}
 	
 	
 	
-	public class ItemGrant : PlayFabModelBase
+	public class ItemGrant
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user to whom the catalog item is to be granted
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// unique identifier of the catalog item to be granted to the user
+		/// Unique identifier of the catalog item to be granted to the user.
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// string detailing any additional information concerning this operation
+		/// String detailing any additional information concerning this operation.
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
-		}
+		
+		public string CharacterId { get; set;}
+
 	}
 	
 	
@@ -1043,49 +1320,40 @@ namespace PlayFab.ServerModels
 	/// <summary>
 	/// Result of granting an item to a user
 	/// </summary>
-	public class ItemGrantResult : PlayFabModelBase
+	public class ItemGrantResult
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user to whom the catalog item is to be granted
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// unique identifier of the catalog item to be granted to the user
+		/// Unique identifier of the catalog item to be granted to the user.
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// unique instance Id of the granted item
+		/// Unique instance Id of the granted item.
 		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 		
 		/// <summary>
-		/// string detailing any additional information concerning this operation
+		/// String detailing any additional information concerning this operation.
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
 		/// <summary>
-		/// result of this operation
+		/// Result of this operation.
 		/// </summary>
 		
 		public bool Result { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
-			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
-			Result = (bool)JsonUtil.Get<bool?>(json, "Result");
-		}
+		
+		public string CharacterId { get; set;}
+
 	}
 	
 	
@@ -1093,207 +1361,364 @@ namespace PlayFab.ServerModels
 	/// <summary>
 	/// A unique instance of an item in a user's inventory
 	/// </summary>
-	public class ItemInstance : PlayFabModelBase
+	public class ItemInstance
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the inventory item, as defined in the catalog
+		/// Unique identifier for the inventory item, as defined in the catalog.
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// unique item identifier for this specific instance of the item
+		/// Unique item identifier for this specific instance of the item.
 		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 		
 		/// <summary>
-		/// class name for the inventory item, as defined in the catalog
+		/// Class name for the inventory item, as defined in the catalog.
 		/// </summary>
 		
 		public string ItemClass { get; set;}
 		
 		/// <summary>
-		/// timestamp for when this instance was purchased
+		/// Timestamp for when this instance was purchased.
 		/// </summary>
 		
 		public DateTime? PurchaseDate { get; set;}
 		
 		/// <summary>
-		/// timestamp for when this instance will expire
+		/// Timestamp for when this instance will expire.
 		/// </summary>
 		
 		public DateTime? Expiration { get; set;}
 		
 		/// <summary>
-		/// total number of remaining uses, if this is a consumable item
+		/// Total number of remaining uses, if this is a consumable item.
 		/// </summary>
 		
 		public int? RemainingUses { get; set;}
 		
 		/// <summary>
-		/// game specific comment associated with this instance when it was added to the user inventory
+		/// Game specific comment associated with this instance when it was added to the user inventory.
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
 		/// <summary>
-		/// catalog version for the inventory item, when this instance was created
+		/// Catalog version for the inventory item, when this instance was created.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
 		/// <summary>
-		/// unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container
+		/// Unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container.
 		/// </summary>
 		
 		public string BundleParent { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
-			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
-			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
-			Expiration = (DateTime?)JsonUtil.GetDateTime(json, "Expiration");
-			RemainingUses = (int?)JsonUtil.Get<double?>(json, "RemainingUses");
-			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			BundleParent = (string)JsonUtil.Get<string>(json, "BundleParent");
-		}
+		/// <summary>
+		/// A set of custom key-value pairs on the inventory item.
+		/// </summary>
+		
+		public Dictionary<string,string> CustomData { get; set;}
+
 	}
 	
 	
 	
-	public class ModifyItemUsesRequest : PlayFabModelBase
+	public class ListUsersCharactersRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+
+	}
+	
+	
+	
+	public class ListUsersCharactersResult
+	{
+		
+		
+		
+		public List<CharacterResult> Characters { get; set;}
+
+	}
+	
+	
+	
+	public class LogEventRequest
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user whose item is being modified
+		/// PlayFab User Id of the player associated with this event. For non-player associated events, this must be null and EntityId must be set.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// unique instance identifier of the item to be modified
+		/// For non player-associated events, a unique ID for the entity associated with this event. For player associated events, this must be null and PlayFabId must be set.
 		/// </summary>
 		
-		public string ItemInstanceId { get; set;}
+		public string EntityId { get; set;}
 		
 		/// <summary>
-		/// number of uses to add to the item. Can be negative to remove uses.
+		/// For non player-associated events, the type of entity associated with this event. For player associated events, this must be null.
 		/// </summary>
 		
-		public int UsesToAdd { get; set;}
+		public string EntityType { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
-			UsesToAdd = (int)JsonUtil.Get<double?>(json, "UsesToAdd");
-		}
+		/// <summary>
+		/// Optional timestamp for this event. If null, the a timestamp is auto-assigned to the event on the server.
+		/// </summary>
+		
+		public DateTime? Timestamp { get; set;}
+		
+		/// <summary>
+		/// A unique event name which will be used as the table name in the Redshift database. The name will be made lower case, and cannot not contain spaces. The use of underscores is recommended, for readability. Events also cannot match reserved terms. The PlayFab reserved terms are 'log_in' and 'purchase', 'create' and 'request', while the Redshift reserved terms can be found here: http://docs.aws.amazon.com/redshift/latest/dg/r_pg_keywords.html.
+		/// </summary>
+		
+		public string EventName { get; set;}
+		
+		/// <summary>
+		/// Contains all the data for this event. Event Values can be strings, booleans or numerics (float, double, integer, long) and must be consistent on a per-event basis (if the Value for Key 'A' in Event 'Foo' is an integer the first time it is sent, it must be an integer in all subsequent 'Foo' events). As with event names, Keys must also not use reserved words (see above). Finally, the size of the Body for an event must be less than 32KB (UTF-8 format).
+		/// </summary>
+		
+		public Dictionary<string,object> Body { get; set;}
+		
+		/// <summary>
+		/// Flag to set event Body as profile details in the Redshift database as well as a standard event.
+		/// </summary>
+		
+		public bool ProfileSetEvent { get; set;}
+
 	}
 	
 	
 	
-	public class ModifyItemUsesResult : PlayFabModelBase
+	public class LogEventResult
 	{
 		
-		
-		/// <summary>
-		/// unique instance identifier of the item with uses consumed
-		/// </summary>
-		
-		public string ItemInstanceId { get; set;}
-		
-		/// <summary>
-		/// number of uses remaining on the item
-		/// </summary>
-		
-		public int RemainingUses { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
-			RemainingUses = (int)JsonUtil.Get<double?>(json, "RemainingUses");
-		}
+
 	}
 	
 	
 	
-	public class ModifyUserVirtualCurrencyResult : PlayFabModelBase
+	public class ModifyCharacterVirtualCurrencyResult
 	{
 		
 		
 		/// <summary>
-		/// name of the virtual currency which was modified
+		/// Name of the virtual currency which was modified.
 		/// </summary>
 		
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// balance of the virtual currency after modification
+		/// Balance of the virtual currency after modification.
 		/// </summary>
 		
 		public int Balance { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			VirtualCurrency = (string)JsonUtil.Get<string>(json, "VirtualCurrency");
-			Balance = (int)JsonUtil.Get<double?>(json, "Balance");
-		}
+
 	}
 	
 	
 	
-	public class NotifyMatchmakerPlayerLeftRequest : PlayFabModelBase
+	public class ModifyItemUsesRequest
 	{
 		
 		
 		/// <summary>
-		/// unique identifier of the Game Instance the user is leaving
-		/// </summary>
-		
-		public string LobbyId { get; set;}
-		
-		/// <summary>
-		/// PlayFab unique identifier of the user that is leaving the Game Server Instance
+		/// PlayFab unique identifier of the user whose item is being modified.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			LobbyId = (string)JsonUtil.Get<string>(json, "LobbyId");
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-		}
+		/// <summary>
+		/// Unique instance identifier of the item to be modified.
+		/// </summary>
+		
+		public string ItemInstanceId { get; set;}
+		
+		/// <summary>
+		/// Number of uses to add to the item. Can be negative to remove uses.
+		/// </summary>
+		
+		public int UsesToAdd { get; set;}
+
 	}
 	
 	
 	
-	public class NotifyMatchmakerPlayerLeftResult : PlayFabModelBase
+	public class ModifyItemUsesResult
 	{
 		
 		
 		/// <summary>
-		/// state of user leaving the Game Server Instance
+		/// Unique instance identifier of the item with uses consumed.
 		/// </summary>
 		
-		public PlayerConnectionState? PlayerState { get; set;}
+		public string ItemInstanceId { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayerState = (PlayerConnectionState?)JsonUtil.GetEnum<PlayerConnectionState>(json, "PlayerState");
-		}
+		/// <summary>
+		/// Number of uses remaining on the item.
+		/// </summary>
+		
+		public int RemainingUses { get; set;}
+
+	}
+	
+	
+	
+	public class ModifyUserVirtualCurrencyResult
+	{
+		
+		
+		/// <summary>
+		/// User currency was subtracted from.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Name of the virtual currency which was modified.
+		/// </summary>
+		
+		public string VirtualCurrency { get; set;}
+		
+		/// <summary>
+		/// Amount added or subtracted from the user's virtual currency.
+		/// </summary>
+		
+		public int BalanceChange { get; set;}
+		
+		/// <summary>
+		/// Balance of the virtual currency after modification.
+		/// </summary>
+		
+		public int Balance { get; set;}
+
+	}
+	
+	
+	
+	public class MoveItemToCharacterFromCharacterRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Unique identifier of the character that currently has the item.
+		/// </summary>
+		
+		public string GivingCharacterId { get; set;}
+		
+		/// <summary>
+		/// Unique identifier of the character that will be receiving the item.
+		/// </summary>
+		
+		public string ReceivingCharacterId { get; set;}
+		
+		
+		public string ItemInstanceId { get; set;}
+
+	}
+	
+	
+	
+	public class MoveItemToCharacterFromCharacterResult
+	{
+		
+
+	}
+	
+	
+	
+	public class MoveItemToCharacterFromUserRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string CharacterId { get; set;}
+		
+		
+		public string ItemInstanceId { get; set;}
+
+	}
+	
+	
+	
+	public class MoveItemToCharacterFromUserResult
+	{
+		
+
+	}
+	
+	
+	
+	public class MoveItemToUserFromCharacterRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string CharacterId { get; set;}
+		
+		
+		public string ItemInstanceId { get; set;}
+
+	}
+	
+	
+	
+	public class MoveItemToUserFromCharacterResult
+	{
+		
+
+	}
+	
+	
+	
+	public class NotifyMatchmakerPlayerLeftRequest
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier of the Game Instance the user is leaving.
+		/// </summary>
+		
+		public string LobbyId { get; set;}
+		
+		
+		public string PlayFabId { get; set;}
+
+	}
+	
+	
+	
+	public class NotifyMatchmakerPlayerLeftResult
+	{
+		
+		
+		/// <summary>
+		/// State of user leaving the Game Server Instance.
+		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
+		
+		public PlayerConnectionState? PlayerState { get; set;}
+
 	}
 	
 	
@@ -1309,189 +1734,190 @@ namespace PlayFab.ServerModels
 	
 	
 	
-	public class PlayerLeaderboardEntry : PlayFabModelBase
+	public class PlayerLeaderboardEntry
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user for this leaderboard entry
+		/// PlayFab unique identifier of the user for this leaderboard entry.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// title-specific display name of the user for this leaderboard entry
+		/// Title-specific display name of the user for this leaderboard entry.
 		/// </summary>
 		
 		public string DisplayName { get; set;}
 		
 		/// <summary>
-		/// specific value of the user's statistic
+		/// Specific value of the user's statistic.
 		/// </summary>
 		
 		public int StatValue { get; set;}
 		
 		/// <summary>
-		/// user's overall position in the leaderboard
+		/// User's overall position in the leaderboard.
 		/// </summary>
 		
 		public int Position { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-			StatValue = (int)JsonUtil.Get<double?>(json, "StatValue");
-			Position = (int)JsonUtil.Get<double?>(json, "Position");
-		}
+
 	}
 	
 	
 	
-	public class RedeemMatchmakerTicketRequest : PlayFabModelBase
+	public class RedeemMatchmakerTicketRequest
 	{
 		
 		
 		/// <summary>
-		/// server authorization ticket passed back from a call to Matchmake or StartGame
+		/// Server authorization ticket passed back from a call to Matchmake or StartGame.
 		/// </summary>
 		
 		public string Ticket { get; set;}
 		
 		/// <summary>
-		/// IP Address of the Game Server Instance that is asking for validation of the authorization ticket
-		/// </summary>
-		
-		public string IP { get; set;}
-		
-		/// <summary>
-		/// unique identifier of the Game Server Instance that is asking for validation of the authorization ticket
+		/// Unique identifier of the Game Server Instance that is asking for validation of the authorization ticket.
 		/// </summary>
 		
 		public string LobbyId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Ticket = (string)JsonUtil.Get<string>(json, "Ticket");
-			IP = (string)JsonUtil.Get<string>(json, "IP");
-			LobbyId = (string)JsonUtil.Get<string>(json, "LobbyId");
-		}
+
 	}
 	
 	
 	
-	public class RedeemMatchmakerTicketResult : PlayFabModelBase
+	public class RedeemMatchmakerTicketResult
 	{
 		
 		
 		/// <summary>
-		/// boolean indicating whether the ticket was validated by the PlayFab service
+		/// Boolean indicating whether the ticket was validated by the PlayFab service.
 		/// </summary>
 		
 		public bool TicketIsValid { get; set;}
 		
 		/// <summary>
-		/// error value if the ticket was not validated
+		/// Error value if the ticket was not validated.
 		/// </summary>
 		
 		public string Error { get; set;}
 		
 		/// <summary>
-		/// user account information for the user validated
+		/// User account information for the user validated.
 		/// </summary>
 		
 		public UserAccountInfo UserInfo { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			TicketIsValid = (bool)JsonUtil.Get<bool?>(json, "TicketIsValid");
-			Error = (string)JsonUtil.Get<string>(json, "Error");
-			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
-		}
+
 	}
 	
 	
 	
-	public class RemoveSharedGroupMembersRequest : PlayFabModelBase
+	public class RemoveSharedGroupMembersRequest
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the shared group
+		/// Unique identifier for the shared group.
 		/// </summary>
 		
 		public string SharedGroupId { get; set;}
 		
-		/// <summary>
-		/// list of PlayFabId identifiers of users to remove from the shared group
-		/// </summary>
 		
 		public List<string> PlayFabIds { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
-			PlayFabIds = JsonUtil.GetList<string>(json, "PlayFabIds");
-		}
+
 	}
 	
 	
 	
-	public class RemoveSharedGroupMembersResult : PlayFabModelBase
+	public class RemoveSharedGroupMembersResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class SendPushNotificationRequest : PlayFabModelBase
+	public class ReportPlayerServerRequest
 	{
 		
 		
 		/// <summary>
-		/// PlayFabId of the recipient of the push notification
+		/// PlayFabId of the reporting player.
+		/// </summary>
+		
+		public string ReporterId { get; set;}
+		
+		/// <summary>
+		/// PlayFabId of the reported player.
+		/// </summary>
+		
+		public string ReporteeId { get; set;}
+		
+		/// <summary>
+		/// Title player was reported in, optional if report not for specific title.
+		/// </summary>
+		
+		public string TitleId { get; set;}
+		
+		/// <summary>
+		/// Optional additional comment by reporting player.
+		/// </summary>
+		
+		public string Comment { get; set;}
+
+	}
+	
+	
+	
+	public class ReportPlayerServerResult
+	{
+		
+		
+		
+		public bool Updated { get; set;}
+		
+		
+		public int SubmissionsRemaining { get; set;}
+
+	}
+	
+	
+	
+	public class SendPushNotificationRequest
+	{
+		
+		
+		/// <summary>
+		/// PlayFabId of the recipient of the push notification.
 		/// </summary>
 		
 		public string Recipient { get; set;}
 		
 		/// <summary>
-		/// text of message to send
+		/// Text of message to send.
 		/// </summary>
 		
 		public string Message { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Recipient = (string)JsonUtil.Get<string>(json, "Recipient");
-			Message = (string)JsonUtil.Get<string>(json, "Message");
-		}
+		/// <summary>
+		/// Subject of message to send (may not be displayed in all platforms.
+		/// </summary>
+		
+		public string Subject { get; set;}
+
 	}
 	
 	
 	
-	public class SendPushNotificationResult : PlayFabModelBase
+	public class SendPushNotificationResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class SetTitleDataRequest : PlayFabModelBase
+	public class SetPublisherDataRequest
 	{
 		
 		
@@ -1502,102 +1928,132 @@ namespace PlayFab.ServerModels
 		public string Key { get; set;}
 		
 		/// <summary>
-		/// new value to set
+		/// new value to set. Set to null to remove a value
 		/// </summary>
 		
 		public string Value { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Key = (string)JsonUtil.Get<string>(json, "Key");
-			Value = (string)JsonUtil.Get<string>(json, "Value");
-		}
+
 	}
 	
 	
 	
-	public class SetTitleDataResult : PlayFabModelBase
+	public class SetPublisherDataResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class SharedGroupDataRecord : PlayFabModelBase
+	public class SetTitleDataRequest
 	{
 		
 		
 		/// <summary>
-		/// data stored for the specified group data key
+		/// key we want to set a value on (note, this is additive - will only replace an existing key's value if they are the same name.) Keys are trimmed of whitespace. Keys may not begin with the '!' character.
+		/// </summary>
+		
+		public string Key { get; set;}
+		
+		/// <summary>
+		/// new value to set. Set to null to remove a value
+		/// </summary>
+		
+		public string Value { get; set;}
+
+	}
+	
+	
+	
+	public class SetTitleDataResult
+	{
+		
+
+	}
+	
+	
+	
+	public class SharedGroupDataRecord
+	{
+		
+		
+		/// <summary>
+		/// Data stored for the specified group data key.
 		/// </summary>
 		
 		public string Value { get; set;}
 		
 		/// <summary>
-		/// PlayFabId of the user to last update this value
+		/// PlayFabId of the user to last update this value.
 		/// </summary>
 		
 		public string LastUpdatedBy { get; set;}
 		
 		/// <summary>
-		/// timestamp for when this data was last updated
+		/// Timestamp for when this data was last updated.
 		/// </summary>
 		
 		public DateTime LastUpdated { get; set;}
 		
 		/// <summary>
-		/// indicates whether this data can be read by all users (public) or only members of the group (private)
+		/// Indicates whether this data can be read by all users (public) or only members of the group (private).
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public UserDataPermission? Permission { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Value = (string)JsonUtil.Get<string>(json, "Value");
-			LastUpdatedBy = (string)JsonUtil.Get<string>(json, "LastUpdatedBy");
-			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
-			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
-		}
+
 	}
 	
 	
 	
-	public class SubtractUserVirtualCurrencyRequest : PlayFabModelBase
+	public class SubtractCharacterVirtualCurrencyRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose virtual currency balance is to be decremented
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		
+		public string CharacterId { get; set;}
+		
 		/// <summary>
-		/// name of the virtual currency which is to be decremented
+		/// Name of the virtual currency which is to be decremented.
 		/// </summary>
 		
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// amount to be subtracted from the user balance of the specified virtual currency
+		/// Amount to be subtracted from the user balance of the specified virtual currency.
 		/// </summary>
 		
 		public int Amount { get; set;}
+
+	}
+	
+	
+	
+	public class SubtractUserVirtualCurrencyRequest
+	{
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			VirtualCurrency = (string)JsonUtil.Get<string>(json, "VirtualCurrency");
-			Amount = (int)JsonUtil.Get<double?>(json, "Amount");
-		}
+		
+		/// <summary>
+		/// PlayFab unique identifier of the user whose virtual currency balance is to be decreased.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Name of the virtual currency which is to be decremented.
+		/// </summary>
+		
+		public string VirtualCurrency { get; set;}
+		
+		/// <summary>
+		/// Amount to be subtracted from the user balance of the specified virtual currency.
+		/// </summary>
+		
+		public int Amount { get; set;}
+
 	}
 	
 	
@@ -1613,63 +2069,18 @@ namespace PlayFab.ServerModels
 	
 	
 	
-	public class UpdateSharedGroupDataRequest : PlayFabModelBase
+	public class UpdateCharacterDataRequest
 	{
 		
 		
-		/// <summary>
-		/// unique identifier for the shared group
-		/// </summary>
-		
-		public string SharedGroupId { get; set;}
-		
-		/// <summary>
-		/// key value pairs to be stored in the shared group - note that keys will be trimmed of whitespace, must not begin with a '!' character, and that null values will result in the removal of the key from the data set
-		/// </summary>
-		
-		public Dictionary<string,string> Data { get; set;}
-		
-		/// <summary>
-		/// permission to be applied to all user data keys in this request
-		/// </summary>
-		
-		public UserDataPermission? Permission { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SharedGroupId = (string)JsonUtil.Get<string>(json, "SharedGroupId");
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
-			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
-		}
-	}
-	
-	
-	
-	public class UpdateSharedGroupDataResult : PlayFabModelBase
-	{
-		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
-	}
-	
-	
-	
-	public class UpdateUserDataRequest : PlayFabModelBase
-	{
-		
-		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being updated
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		
+		public string CharacterId { get; set;}
+		
 		/// <summary>
-		/// data to be written to the user's custom data. Keys are trimmed of whitespace. Keys may not begin with a '!' character.
+		/// Data to be written to the user's character's custom data. Note that keys are trimmed of whitespace, are limited to 1024 characters, and may not begin with a '!' character.
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}
@@ -1677,97 +2088,191 @@ namespace PlayFab.ServerModels
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public UserDataPermission? Permission { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
-			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
-		}
+
 	}
 	
 	
 	
-	public class UpdateUserDataResult : PlayFabModelBase
+	public class UpdateCharacterDataResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class UpdateUserInternalDataRequest : PlayFabModelBase
+	public class UpdateCharacterStatisticsRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being updated
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		
+		public string CharacterId { get; set;}
+		
 		/// <summary>
-		/// data to be written to the user's custom data
+		/// Statistics to be updated with the provided values.
+		/// </summary>
+		
+		public Dictionary<string,int> CharacterStatistics { get; set;}
+
+	}
+	
+	
+	
+	public class UpdateCharacterStatisticsResult
+	{
+		
+
+	}
+	
+	
+	
+	public class UpdateSharedGroupDataRequest
+	{
+		
+		
+		/// <summary>
+		/// Unique identifier for the shared group.
+		/// </summary>
+		
+		public string SharedGroupId { get; set;}
+		
+		/// <summary>
+		/// Key value pairs to be stored in the shared group - note that keys will be trimmed of whitespace, must not begin with a '!' character, and that null values will result in the removal of the key from the data set.
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
-		}
+		/// <summary>
+		/// Permission to be applied to all user data keys in this request.
+		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
+		
+		public UserDataPermission? Permission { get; set;}
+
 	}
 	
 	
 	
-	public class UpdateUserStatisticsRequest : PlayFabModelBase
+	public class UpdateSharedGroupDataResult
+	{
+		
+
+	}
+	
+	
+	
+	public class UpdateUserDataRequest
 	{
 		
 		
-		/// <summary>
-		/// user whose statistics are to be updated
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// statistics to be updated with the provided values
+		/// Data to be written to the user's custom data. Note that keys are trimmed of whitespace, are limited to 1024 characters, and may not begin with a '!' character.
 		/// </summary>
 		
-		public Dictionary<string,int> UserStatistics { get; set;}
+		public Dictionary<string,string> Data { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			UserStatistics = JsonUtil.GetDictionaryInt32(json, "UserStatistics");
-		}
+		/// <summary>
+		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
+		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
+		
+		public UserDataPermission? Permission { get; set;}
+
 	}
 	
 	
 	
-	public class UpdateUserStatisticsResult : PlayFabModelBase
+	public class UpdateUserDataResult
+	{
+		
+
+	}
+	
+	
+	
+	public class UpdateUserInternalDataRequest
 	{
 		
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Data to be written to the user's custom data.
+		/// </summary>
+		
+		public Dictionary<string,string> Data { get; set;}
+
 	}
 	
 	
 	
-	public class UserAccountInfo : PlayFabModelBase
+	public class UpdateUserInventoryItemDataRequest
+	{
+		
+		
+		
+		public string CharacterId { get; set;}
+		
+		
+		public string PlayFabId { get; set;}
+		
+		
+		public string ItemInstanceId { get; set;}
+		
+		/// <summary>
+		/// Data to be written to the item's custom data. Note that keys are trimmed of whitespace.
+		/// </summary>
+		
+		public Dictionary<string,string> Data { get; set;}
+
+	}
+	
+	
+	
+	public class UpdateUserInventoryItemDataResult
+	{
+		
+
+	}
+	
+	
+	
+	public class UpdateUserStatisticsRequest
+	{
+		
+		
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Statistics to be updated with the provided values.
+		/// </summary>
+		
+		public Dictionary<string,int> UserStatistics { get; set;}
+
+	}
+	
+	
+	
+	public class UpdateUserStatisticsResult
+	{
+		
+
+	}
+	
+	
+	
+	public class UserAccountInfo
 	{
 		
 		
@@ -1818,19 +2323,7 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public UserGameCenterInfo GameCenterInfo { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
-			Username = (string)JsonUtil.Get<string>(json, "Username");
-			TitleInfo = JsonUtil.GetObject<UserTitleInfo>(json, "TitleInfo");
-			PrivateInfo = JsonUtil.GetObject<UserPrivateAccountInfo>(json, "PrivateInfo");
-			FacebookInfo = JsonUtil.GetObject<UserFacebookInfo>(json, "FacebookInfo");
-			SteamInfo = JsonUtil.GetObject<UserSteamInfo>(json, "SteamInfo");
-			GameCenterInfo = JsonUtil.GetObject<UserGameCenterInfo>(json, "GameCenterInfo");
-		}
+
 	}
 	
 	
@@ -1843,40 +2336,34 @@ namespace PlayFab.ServerModels
 	
 	
 	
-	public class UserDataRecord : PlayFabModelBase
+	public class UserDataRecord
 	{
 		
 		
 		/// <summary>
-		/// user-supplied data for this user data key
+		/// User-supplied data for this user data key.
 		/// </summary>
 		
 		public string Value { get; set;}
 		
 		/// <summary>
-		/// timestamp indicating when this data was last updated
+		/// Timestamp indicating when this data was last updated.
 		/// </summary>
 		
 		public DateTime LastUpdated { get; set;}
 		
 		/// <summary>
-		/// Permissions on this data key
+		/// Permissions on this data key.
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public UserDataPermission? Permission { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Value = (string)JsonUtil.Get<string>(json, "Value");
-			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
-			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
-		}
+
 	}
 	
 	
 	
-	public class UserFacebookInfo : PlayFabModelBase
+	public class UserFacebookInfo
 	{
 		
 		
@@ -1887,29 +2374,16 @@ namespace PlayFab.ServerModels
 		public string FacebookId { get; set;}
 		
 		/// <summary>
-		/// Facebook username
+		/// Facebook full name
 		/// </summary>
 		
-		public string FacebookUsername { get; set;}
-		
-		/// <summary>
-		/// Facebook display name
-		/// </summary>
-		
-		public string FacebookDisplayname { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			FacebookId = (string)JsonUtil.Get<string>(json, "FacebookId");
-			FacebookUsername = (string)JsonUtil.Get<string>(json, "FacebookUsername");
-			FacebookDisplayname = (string)JsonUtil.Get<string>(json, "FacebookDisplayname");
-		}
+		public string FullName { get; set;}
+
 	}
 	
 	
 	
-	public class UserGameCenterInfo : PlayFabModelBase
+	public class UserGameCenterInfo
 	{
 		
 		
@@ -1918,12 +2392,7 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public string GameCenterId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			GameCenterId = (string)JsonUtil.Get<string>(json, "GameCenterId");
-		}
+
 	}
 	
 	
@@ -1947,7 +2416,7 @@ namespace PlayFab.ServerModels
 	
 	
 	
-	public class UserPrivateAccountInfo : PlayFabModelBase
+	public class UserPrivateAccountInfo
 	{
 		
 		
@@ -1956,17 +2425,12 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public string Email { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Email = (string)JsonUtil.Get<string>(json, "Email");
-		}
+
 	}
 	
 	
 	
-	public class UserSteamInfo : PlayFabModelBase
+	public class UserSteamInfo
 	{
 		
 		
@@ -1985,28 +2449,22 @@ namespace PlayFab.ServerModels
 		/// <summary>
 		/// currency type set in the user Steam account
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public Currency? SteamCurrency { get; set;}
 		
 		/// <summary>
 		/// what stage of game ownership the user is listed as being in, from Steam
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public TitleActivationStatus? SteamActivationStatus { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SteamId = (string)JsonUtil.Get<string>(json, "SteamId");
-			SteamCountry = (string)JsonUtil.Get<string>(json, "SteamCountry");
-			SteamCurrency = (Currency?)JsonUtil.GetEnum<Currency>(json, "SteamCurrency");
-			SteamActivationStatus = (TitleActivationStatus?)JsonUtil.GetEnum<TitleActivationStatus>(json, "SteamActivationStatus");
-		}
+
 	}
 	
 	
 	
-	public class UserTitleInfo : PlayFabModelBase
+	public class UserTitleInfo
 	{
 		
 		
@@ -2019,6 +2477,7 @@ namespace PlayFab.ServerModels
 		/// <summary>
 		/// source by which the user first joined the game, if known
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public UserOrigination? Origination { get; set;}
 		
@@ -2045,17 +2504,33 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public bool? isBanned { get; set;}
+
+	}
+	
+	
+	
+	public class VirtualCurrencyRechargeTime
+	{
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-			Origination = (UserOrigination?)JsonUtil.GetEnum<UserOrigination>(json, "Origination");
-			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
-			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
-			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
-			isBanned = (bool?)JsonUtil.Get<bool?>(json, "isBanned");
-		}
+		
+		/// <summary>
+		/// Time remaining (in seconds) before the next recharge increment of the virtual currency.
+		/// </summary>
+		
+		public int SecondsToRecharge { get; set;}
+		
+		/// <summary>
+		/// Server timestamp in UTC indicating the next time the virtual currency will be incremented.
+		/// </summary>
+		
+		public DateTime RechargeTime { get; set;}
+		
+		/// <summary>
+		/// Maximum value to which the regenerating currency will automatically increment. Note that it can exceed this value through use of the AddUserVirtualCurrency API call. However, it will not regenerate automatically until it has fallen below this value.
+		/// </summary>
+		
+		public int RechargeMax { get; set;}
+
 	}
 	
 }

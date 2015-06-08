@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using PlayFab.Serialization.JsonFx;
+using Newtonsoft.Json;
 using PlayFab;
 using System;
 
 namespace PlayFab.Internal
 {
-	public class ResultContainer<ResultType> where ResultType : PlayFabModelBase, new()
+	public class ResultContainer<ResultType> where ResultType : class, new()
 	{
 		public int code;
 		public string status;
@@ -28,17 +28,10 @@ namespace PlayFab.Internal
 				return;
 			}
 
-			ResultType parsedResult = null;
-			Dictionary<String, object> rawResultEnvelope = null;
+			ResultContainer<ResultType> resultEnvelope = null;
 			try
 			{
-				rawResultEnvelope = (Dictionary<String, object>)JsonReader.Deserialize(responseStr, Util.GlobalJsonReaderSettings);
-				if(rawResultEnvelope.ContainsKey("data"))
-				{
-					Dictionary<String, object> rawResult = (Dictionary<String, object>)rawResultEnvelope["data"];
-					parsedResult = new ResultType();
-					parsedResult.Deserialize(rawResult);
-				}
+				resultEnvelope = JsonConvert.DeserializeObject<ResultContainer<ResultType>>(responseStr, Util.JsonSettings);
 			}
 			catch(Exception e)
 			{
@@ -50,42 +43,25 @@ namespace PlayFab.Internal
 				return;
 			}
 
-			if (rawResultEnvelope.ContainsKey("errorCode"))
+			if (resultEnvelope.errorCode.HasValue)
 			{
 				PlayFabErrorCode errorEnum;
 				try
 				{
-					errorEnum = (PlayFabErrorCode)(int)(double)rawResultEnvelope["errorCode"];
+					errorEnum = (PlayFabErrorCode)resultEnvelope.errorCode.Value;
 				}
 				catch
 				{
 					errorEnum = PlayFabErrorCode.Unknown;
 				}
 
-				Dictionary<string, List<string>> errorDetails = null;
-				if(rawResultEnvelope.ContainsKey("errorDetails"))
-				{
-					Dictionary<string,object> rawErrorDetails = (Dictionary<string,object>)rawResultEnvelope["errorDetails"];
-					errorDetails = new Dictionary<string, List<string>> ();
-					foreach(string key in rawErrorDetails.Keys)
-					{
-						object[] keyErrors = (object[])rawErrorDetails[key];
-						List<string> errorList = new List<string>();
-						for(int i=0; i<keyErrors.Length; i++)
-						{
-							errorList.Add ((string)keyErrors[i]);
-						}
-						errorDetails.Add (key, errorList);
-					}
-				}
-
 				error = new PlayFabError
 				{
-					HttpCode = (int)(double)rawResultEnvelope["code"],
-					HttpStatus = (string)rawResultEnvelope["status"],
+					HttpCode = resultEnvelope.code,
+					HttpStatus = resultEnvelope.status,
 					Error = errorEnum,
-					ErrorMessage = (string)rawResultEnvelope["errorMessage"],
-					ErrorDetails = errorDetails
+					ErrorMessage = resultEnvelope.errorMessage,
+					ErrorDetails = resultEnvelope.errorDetails
 				};
 				if(PlayFabSettings.GlobalErrorHandler != null)
 					PlayFabSettings.GlobalErrorHandler(error);
@@ -93,8 +69,7 @@ namespace PlayFab.Internal
 				return;
 			}
 			
-			result = parsedResult;
+			result = resultEnvelope.data;
 		}
 	}
 }
-

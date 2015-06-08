@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using PlayFab.Internal;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace PlayFab.AdminModels
 {
 	
 	
 	
-	public class AddNewsRequest : PlayFabModelBase
+	public class AddNewsRequest
 	{
 		
 		
@@ -28,19 +30,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string Body { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
-			Title = (string)JsonUtil.Get<string>(json, "Title");
-			Body = (string)JsonUtil.Get<string>(json, "Body");
-		}
+
 	}
 	
 	
 	
-	public class AddNewsResult : PlayFabModelBase
+	public class AddNewsResult
 	{
 		
 		
@@ -49,17 +44,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string NewsId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			NewsId = (string)JsonUtil.Get<string>(json, "NewsId");
-		}
+
 	}
 	
 	
 	
-	public class AddServerBuildRequest : PlayFabModelBase
+	public class AddServerBuildRequest
 	{
 		
 		
@@ -84,6 +74,7 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// server host regions in which this build should be running and available
 		/// </summary>
+		[JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
 		
 		public List<Region> ActiveRegions { get; set;}
 		
@@ -98,22 +89,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public int MaxGamesPerHost { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
-			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
-			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
-			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-		}
+
 	}
 	
 	
 	
-	public class AddServerBuildResult : PlayFabModelBase
+	public class AddServerBuildResult
 	{
 		
 		
@@ -126,6 +107,7 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
+		[JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
 		
 		public List<Region> ActiveRegions { get; set;}
 		
@@ -159,69 +141,47 @@ namespace PlayFab.AdminModels
 		
 		public DateTime Timestamp { get; set;}
 		
-		/// <summary>
-		/// the unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
-		/// </summary>
 		
 		public string TitleId { get; set;}
 		
 		/// <summary>
 		/// the current status of the build validation and processing steps
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public GameBuildStatus? Status { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
-			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
-			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
-			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
-			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
-			Status = (GameBuildStatus?)JsonUtil.GetEnum<GameBuildStatus>(json, "Status");
-		}
+
 	}
 	
 	
 	
-	public class AddUserVirtualCurrencyRequest : PlayFabModelBase
+	public class AddUserVirtualCurrencyRequest
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user whose virtual currency balance is to be incremented
+		/// PlayFab unique identifier of the user whose virtual currency balance is to be increased.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// name of the virtual currency which is to be incremented
+		/// Name of the virtual currency which is to be incremented.
 		/// </summary>
 		
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// amount to be added to the user balance of the specified virtual currency
+		/// Amount to be added to the user balance of the specified virtual currency.
 		/// </summary>
 		
 		public int Amount { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			VirtualCurrency = (string)JsonUtil.Get<string>(json, "VirtualCurrency");
-			Amount = (int)JsonUtil.Get<double?>(json, "Amount");
-		}
+
 	}
 	
 	
 	
-	public class AddVirtualCurrencyTypesRequest : PlayFabModelBase
+	public class AddVirtualCurrencyTypesRequest
 	{
 		
 		
@@ -230,24 +190,15 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			VirtualCurrencies = JsonUtil.GetObjectList<VirtualCurrencyData>(json, "VirtualCurrencies");
-		}
+
 	}
 	
 	
 	
-	public class BlankResult : PlayFabModelBase
+	public class BlankResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
@@ -255,7 +206,7 @@ namespace PlayFab.AdminModels
 	/// <summary>
 	/// A purchasable item from the item catalog
 	/// </summary>
-	public class CatalogItem : PlayFabModelBase
+	public class CatalogItem
 	{
 		
 		
@@ -337,28 +288,23 @@ namespace PlayFab.AdminModels
 		
 		public CatalogItemBundleInfo Bundle { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-			Description = (string)JsonUtil.Get<string>(json, "Description");
-			VirtualCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyPrices");
-			RealCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "RealCurrencyPrices");
-			Tags = JsonUtil.GetList<string>(json, "Tags");
-			CustomData = (string)JsonUtil.Get<string>(json, "CustomData");
-			GrantedIfPlayerHas = JsonUtil.GetList<string>(json, "GrantedIfPlayerHas");
-			Consumable = JsonUtil.GetObject<CatalogItemConsumableInfo>(json, "Consumable");
-			Container = JsonUtil.GetObject<CatalogItemContainerInfo>(json, "Container");
-			Bundle = JsonUtil.GetObject<CatalogItemBundleInfo>(json, "Bundle");
-		}
+		/// <summary>
+		/// if true, then this item instance can be used to grant a character to a user.
+		/// </summary>
+		
+		public bool CanBecomeCharacter { get; set;}
+		
+		/// <summary>
+		/// if true, then only one item instance of this type will exist and its remaininguses will be incremented instead
+		/// </summary>
+		
+		public bool IsStackable { get; set;}
+
 	}
 	
 	
 	
-	public class CatalogItemBundleInfo : PlayFabModelBase
+	public class CatalogItemBundleInfo
 	{
 		
 		
@@ -379,19 +325,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public Dictionary<string,uint> BundledVirtualCurrencies { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BundledItems = JsonUtil.GetList<string>(json, "BundledItems");
-			BundledResultTables = JsonUtil.GetList<string>(json, "BundledResultTables");
-			BundledVirtualCurrencies = JsonUtil.GetDictionaryUInt32(json, "BundledVirtualCurrencies");
-		}
+
 	}
 	
 	
 	
-	public class CatalogItemConsumableInfo : PlayFabModelBase
+	public class CatalogItemConsumableInfo
 	{
 		
 		
@@ -412,14 +351,7 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string UsagePeriodGroup { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			UsageCount = (uint?)JsonUtil.Get<double?>(json, "UsageCount");
-			UsagePeriod = (uint?)JsonUtil.Get<double?>(json, "UsagePeriod");
-			UsagePeriodGroup = (string)JsonUtil.Get<string>(json, "UsagePeriodGroup");
-		}
+
 	}
 	
 	
@@ -427,7 +359,7 @@ namespace PlayFab.AdminModels
 	/// <summary>
 	/// Containers are inventory items that can hold other items defined in the catalog, as well as virtual currency, which is added to the player inventory when the container is unlocked, using the UnlockContainerItem API. The items can be anything defined in the catalog, as well as RandomResultTable objects which will be resolved when the container is unlocked. Containers and their keys should be defined as Consumable (having a limited number of uses) in their catalog defintiions, unless the intent is for the player to be able to re-use them infinitely.
 	/// </summary>
-	public class CatalogItemContainerInfo : PlayFabModelBase
+	public class CatalogItemContainerInfo
 	{
 		
 		
@@ -454,15 +386,79 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public Dictionary<string,uint> VirtualCurrencyContents { get; set;}
+
+	}
+	
+	
+	
+	public class CloudScriptFile
+	{
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			KeyItemId = (string)JsonUtil.Get<string>(json, "KeyItemId");
-			ItemContents = JsonUtil.GetList<string>(json, "ItemContents");
-			ResultTableContents = JsonUtil.GetList<string>(json, "ResultTableContents");
-			VirtualCurrencyContents = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyContents");
-		}
+		
+		/// <summary>
+		/// Name of the javascript file. These names are not used internally by the server, they are only for developer organizational purposes.
+		/// </summary>
+		
+		public string Filename { get; set;}
+		
+		/// <summary>
+		/// Contents of the Cloud Script javascript. Must be string-escaped javascript.
+		/// </summary>
+		
+		public string FileContents { get; set;}
+
+	}
+	
+	
+	
+	public class CloudScriptVersionStatus
+	{
+		
+		
+		/// <summary>
+		/// Version number
+		/// </summary>
+		
+		public int Version { get; set;}
+		
+		/// <summary>
+		/// Published code revision for this Cloud Script version
+		/// </summary>
+		
+		public int PublishedRevision { get; set;}
+		
+		/// <summary>
+		/// Most recent revision for this Cloud Script version
+		/// </summary>
+		
+		public int LatestRevision { get; set;}
+
+	}
+	
+	
+	
+	public class ContentInfo
+	{
+		
+		
+		/// <summary>
+		/// Key of the content
+		/// </summary>
+		
+		public string Key { get; set;}
+		
+		/// <summary>
+		/// Size of the content in bytes
+		/// </summary>
+		
+		public long Size { get; set;}
+		
+		/// <summary>
+		/// Last modified time
+		/// </summary>
+		
+		public DateTime LastModified { get; set;}
+
 	}
 	
 	
@@ -480,6 +476,20 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class DeleteContentRequest
+	{
+		
+		
+		/// <summary>
+		/// Key of the content item to be deleted
+		/// </summary>
+		
+		public string Key { get; set;}
+
+	}
+	
+	
+	
 	public enum GameBuildStatus
 	{
 		Available,
@@ -491,7 +501,7 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class GameModeInfo : PlayFabModelBase
+	public class GameModeInfo
 	{
 		
 		
@@ -512,57 +522,191 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public uint MaxPlayerCount { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Gamemode = (string)JsonUtil.Get<string>(json, "Gamemode");
-			MinPlayerCount = (uint)JsonUtil.Get<double?>(json, "MinPlayerCount");
-			MaxPlayerCount = (uint)JsonUtil.Get<double?>(json, "MaxPlayerCount");
-		}
+
 	}
 	
 	
 	
-	public class GetCatalogItemsRequest : PlayFabModelBase
+	public class GetCatalogItemsRequest
 	{
 		
 		
 		/// <summary>
-		/// which catalog is being requested
+		/// Which catalog is being requested.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-		}
+
 	}
 	
 	
 	
-	public class GetCatalogItemsResult : PlayFabModelBase
+	public class GetCatalogItemsResult
 	{
 		
 		
 		/// <summary>
-		/// array of items which can be purchased
+		/// Array of items which can be purchased.
 		/// </summary>
 		
 		public List<CatalogItem> Catalog { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Catalog = JsonUtil.GetObjectList<CatalogItem>(json, "Catalog");
-		}
+
 	}
 	
 	
 	
-	public class GetDataReportRequest : PlayFabModelBase
+	public class GetCloudScriptRevisionRequest
+	{
+		
+		
+		/// <summary>
+		/// Version number. If left null, defaults to the latest version
+		/// </summary>
+		
+		public int? Version { get; set;}
+		
+		/// <summary>
+		/// Revision number. If left null, defaults to the latest revision
+		/// </summary>
+		
+		public int? Revision { get; set;}
+
+	}
+	
+	
+	
+	public class GetCloudScriptRevisionResult
+	{
+		
+		
+		/// <summary>
+		/// Version number.
+		/// </summary>
+		
+		public int Version { get; set;}
+		
+		/// <summary>
+		/// Revision number.
+		/// </summary>
+		
+		public int Revision { get; set;}
+		
+		/// <summary>
+		/// Time this revision was created
+		/// </summary>
+		
+		public DateTime CreatedAt { get; set;}
+		
+		/// <summary>
+		/// List of Cloud Script files in this revision.
+		/// </summary>
+		
+		public List<CloudScriptFile> Files { get; set;}
+		
+		/// <summary>
+		/// True if this is the currently published revision
+		/// </summary>
+		
+		public bool IsPublished { get; set;}
+
+	}
+	
+	
+	
+	public class GetCloudScriptVersionsRequest
+	{
+		
+
+	}
+	
+	
+	
+	public class GetCloudScriptVersionsResult
+	{
+		
+		
+		/// <summary>
+		/// List of versions
+		/// </summary>
+		
+		public List<CloudScriptVersionStatus> Versions { get; set;}
+
+	}
+	
+	
+	
+	public class GetContentListRequest
+	{
+		
+		
+		/// <summary>
+		/// Limits the response to keys that begin with the specified prefix. You can use prefixes to list contents under a folder, or for a specified version, etc.
+		/// </summary>
+		
+		public string Prefix { get; set;}
+
+	}
+	
+	
+	
+	public class GetContentListResult
+	{
+		
+		
+		/// <summary>
+		/// Number of content items returned. We currently have a maximum of 1000 items limit.
+		/// </summary>
+		
+		public long ItemCount { get; set;}
+		
+		/// <summary>
+		/// The total size of listed contents in bytes
+		/// </summary>
+		
+		public long TotalSize { get; set;}
+		
+		
+		public List<ContentInfo> Contents { get; set;}
+
+	}
+	
+	
+	
+	public class GetContentUploadUrlRequest
+	{
+		
+		
+		/// <summary>
+		/// Key of the content item to upload, usually formatted as a path, e.g. images/a.png
+		/// </summary>
+		
+		public string Key { get; set;}
+		
+		/// <summary>
+		/// A standard MIME type describing the format of the contents. The same MIME type has to be set in the header when uploading the content.
+		/// </summary>
+		
+		public string ContentType { get; set;}
+
+	}
+	
+	
+	
+	public class GetContentUploadUrlResult
+	{
+		
+		
+		/// <summary>
+		/// URL for uploading content via HTTP PUT method. The URL will expire in 1 hour.
+		/// </summary>
+		
+		public string URL { get; set;}
+
+	}
+	
+	
+	
+	public class GetDataReportRequest
 	{
 		
 		
@@ -589,36 +733,23 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public int Day { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ReportName = (string)JsonUtil.Get<string>(json, "ReportName");
-			Year = (int)JsonUtil.Get<double?>(json, "Year");
-			Month = (int)JsonUtil.Get<double?>(json, "Month");
-			Day = (int)JsonUtil.Get<double?>(json, "Day");
-		}
+
 	}
 	
 	
 	
-	public class GetDataReportResult : PlayFabModelBase
+	public class GetDataReportResult
 	{
 		
 		
 		
 		public string DownloadUrl { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			DownloadUrl = (string)JsonUtil.Get<string>(json, "DownloadUrl");
-		}
+
 	}
 	
 	
 	
-	public class GetMatchmakerGameInfoRequest : PlayFabModelBase
+	public class GetMatchmakerGameInfoRequest
 	{
 		
 		
@@ -627,17 +758,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string LobbyId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			LobbyId = (string)JsonUtil.Get<string>(json, "LobbyId");
-		}
+
 	}
 	
 	
 	
-	public class GetMatchmakerGameInfoResult : PlayFabModelBase
+	public class GetMatchmakerGameInfoResult
 	{
 		
 		
@@ -680,6 +806,7 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// region in which the Game Server Instance is running
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public Region? Region { get; set;}
 		
@@ -700,26 +827,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public uint ServerPort { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			LobbyId = (string)JsonUtil.Get<string>(json, "LobbyId");
-			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
-			StartTime = (DateTime)JsonUtil.GetDateTime(json, "StartTime");
-			EndTime = (DateTime?)JsonUtil.GetDateTime(json, "EndTime");
-			Mode = (string)JsonUtil.Get<string>(json, "Mode");
-			BuildVersion = (string)JsonUtil.Get<string>(json, "BuildVersion");
-			Region = (Region?)JsonUtil.GetEnum<Region>(json, "Region");
-			Players = JsonUtil.GetList<string>(json, "Players");
-			ServerAddress = (string)JsonUtil.Get<string>(json, "ServerAddress");
-			ServerPort = (uint)JsonUtil.Get<double?>(json, "ServerPort");
-		}
+
 	}
 	
 	
 	
-	public class GetMatchmakerGameModesRequest : PlayFabModelBase
+	public class GetMatchmakerGameModesRequest
 	{
 		
 		
@@ -728,17 +841,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string BuildVersion { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildVersion = (string)JsonUtil.Get<string>(json, "BuildVersion");
-		}
+
 	}
 	
 	
 	
-	public class GetMatchmakerGameModesResult : PlayFabModelBase
+	public class GetMatchmakerGameModesResult
 	{
 		
 		
@@ -747,29 +855,48 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<GameModeInfo> GameModes { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			GameModes = JsonUtil.GetObjectList<GameModeInfo>(json, "GameModes");
-		}
+
 	}
 	
 	
 	
-	public class GetRandomResultTablesRequest : PlayFabModelBase
+	public class GetPublisherDataRequest
 	{
 		
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+		/// <summary>
+		///  array of keys to get back data from the Publisher data blob, set by the admin tools
+		/// </summary>
+		
+		public List<string> Keys { get; set;}
+
 	}
 	
 	
 	
-	public class GetRandomResultTablesResult : PlayFabModelBase
+	public class GetPublisherDataResult
+	{
+		
+		
+		/// <summary>
+		/// a dictionary object of key / value pairs
+		/// </summary>
+		
+		public Dictionary<string,string> Data { get; set;}
+
+	}
+	
+	
+	
+	public class GetRandomResultTablesRequest
+	{
+		
+
+	}
+	
+	
+	
+	public class GetRandomResultTablesResult
 	{
 		
 		
@@ -778,17 +905,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public Dictionary<string,RandomResultTable> Tables { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Tables = JsonUtil.GetObjectDictionary<RandomResultTable>(json, "Tables");
-		}
+
 	}
 	
 	
 	
-	public class GetServerBuildInfoRequest : PlayFabModelBase
+	public class GetServerBuildInfoRequest
 	{
 		
 		
@@ -797,12 +919,7 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string BuildId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-		}
+
 	}
 	
 	
@@ -810,7 +927,7 @@ namespace PlayFab.AdminModels
 	/// <summary>
 	/// Information about a particular server build
 	/// </summary>
-	public class GetServerBuildInfoResult : PlayFabModelBase
+	public class GetServerBuildInfoResult
 	{
 		
 		
@@ -823,6 +940,7 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
+		[JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
 		
 		public List<Region> ActiveRegions { get; set;}
 		
@@ -844,15 +962,13 @@ namespace PlayFab.AdminModels
 		
 		public DateTime Timestamp { get; set;}
 		
-		/// <summary>
-		/// the unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
-		/// </summary>
 		
 		public string TitleId { get; set;}
 		
 		/// <summary>
 		/// the current status of the build validation and processing steps
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public GameBuildStatus? Status { get; set;}
 		
@@ -861,24 +977,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string ErrorMessage { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
-			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
-			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
-			Status = (GameBuildStatus?)JsonUtil.GetEnum<GameBuildStatus>(json, "Status");
-			ErrorMessage = (string)JsonUtil.Get<string>(json, "ErrorMessage");
-		}
+
 	}
 	
 	
 	
-	public class GetServerBuildUploadURLRequest : PlayFabModelBase
+	public class GetServerBuildUploadURLRequest
 	{
 		
 		
@@ -887,17 +991,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string BuildId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-		}
+
 	}
 	
 	
 	
-	public class GetServerBuildUploadURLResult : PlayFabModelBase
+	public class GetServerBuildUploadURLResult
 	{
 		
 		
@@ -906,55 +1005,40 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string URL { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			URL = (string)JsonUtil.Get<string>(json, "URL");
-		}
+
 	}
 	
 	
 	
-	public class GetStoreItemsRequest : PlayFabModelBase
+	public class GetStoreItemsRequest
 	{
 		
 		
 		/// <summary>
-		/// unqiue identifier for the store which is being requested
+		/// Unqiue identifier for the store which is being requested.
 		/// </summary>
 		
 		public string StoreId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			StoreId = (string)JsonUtil.Get<string>(json, "StoreId");
-		}
+
 	}
 	
 	
 	
-	public class GetStoreItemsResult : PlayFabModelBase
+	public class GetStoreItemsResult
 	{
 		
 		
 		/// <summary>
-		/// array of items which can be purchased from this store
+		/// Array of items which can be purchased from this store.
 		/// </summary>
 		
 		public List<StoreItem> Store { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Store = JsonUtil.GetObjectList<StoreItem>(json, "Store");
-		}
+
 	}
 	
 	
 	
-	public class GetTitleDataRequest : PlayFabModelBase
+	public class GetTitleDataRequest
 	{
 		
 		
@@ -963,17 +1047,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<string> Keys { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Keys = JsonUtil.GetList<string>(json, "Keys");
-		}
+
 	}
 	
 	
 	
-	public class GetTitleDataResult : PlayFabModelBase
+	public class GetTitleDataResult
 	{
 		
 		
@@ -982,194 +1061,147 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
-		}
+
 	}
 	
 	
 	
-	public class GetUserDataRequest : PlayFabModelBase
+	public class GetUserDataRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being requested
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// specific keys to search for in the custom user data
+		/// Specific keys to search for in the custom user data.
 		/// </summary>
 		
 		public List<string> Keys { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Keys = JsonUtil.GetList<string>(json, "Keys");
-		}
+
 	}
 	
 	
 	
-	public class GetUserDataResult : PlayFabModelBase
+	public class GetUserDataResult
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being returned
+		/// PlayFab unique identifier of the user whose custom data is being returned.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// user specific data for this title
+		/// User specific data for this title.
 		/// </summary>
 		
 		public Dictionary<string,UserDataRecord> Data { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Data = JsonUtil.GetObjectDictionary<UserDataRecord>(json, "Data");
-		}
+
 	}
 	
 	
 	
-	public class GetUserInventoryRequest : PlayFabModelBase
+	public class GetUserInventoryRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose inventory is being requested
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// used to limit results to only those from a specific catalog version
+		/// Used to limit results to only those from a specific catalog version.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-		}
+
 	}
 	
 	
 	
-	public class GetUserInventoryResult : PlayFabModelBase
+	public class GetUserInventoryResult
 	{
 		
 		
 		/// <summary>
-		/// array of inventory items belonging to the user
+		/// Array of inventory items belonging to the user.
 		/// </summary>
 		
 		public List<ItemInstance> Inventory { get; set;}
 		
 		/// <summary>
-		/// array of virtual currency balance(s) belonging to the user
+		/// Array of virtual currency balance(s) belonging to the user.
 		/// </summary>
 		
 		public Dictionary<string,int> VirtualCurrency { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Inventory = JsonUtil.GetObjectList<ItemInstance>(json, "Inventory");
-			VirtualCurrency = JsonUtil.GetDictionaryInt32(json, "VirtualCurrency");
-		}
+		/// <summary>
+		/// Array of remaining times and timestamps for virtual currencies.
+		/// </summary>
+		
+		public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes { get; set;}
+
 	}
 	
 	
 	
-	public class GrantItemsToUsersRequest : PlayFabModelBase
+	public class GrantItemsToUsersRequest
 	{
 		
 		
 		/// <summary>
-		/// catalog version from which items are to be granted
+		/// Catalog version from which items are to be granted.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
 		/// <summary>
-		/// array of items to grant and the users to whom the items are to be granted
+		/// Array of items to grant and the users to whom the items are to be granted.
 		/// </summary>
 		
 		public List<ItemGrant> ItemGrants { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			ItemGrants = JsonUtil.GetObjectList<ItemGrant>(json, "ItemGrants");
-		}
+
 	}
 	
 	
 	
-	public class GrantItemsToUsersResult : PlayFabModelBase
+	public class GrantItemsToUsersResult
 	{
 		
 		
 		/// <summary>
-		/// array of items granted to users
+		/// Array of items granted to users.
 		/// </summary>
 		
 		public List<ItemGrantResult> ItemGrantResults { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemGrantResults = JsonUtil.GetObjectList<ItemGrantResult>(json, "ItemGrantResults");
-		}
+
 	}
 	
 	
 	
-	public class ItemGrant : PlayFabModelBase
+	public class ItemGrant
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user to whom the catalog item is to be granted
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// unique identifier of the catalog item to be granted to the user
+		/// Unique identifier of the catalog item to be granted to the user.
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// string detailing any additional information concerning this operation
+		/// String detailing any additional information concerning this operation.
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
-		}
+		
+		public string CharacterId { get; set;}
+
 	}
 	
 	
@@ -1177,49 +1209,40 @@ namespace PlayFab.AdminModels
 	/// <summary>
 	/// Result of granting an item to a user
 	/// </summary>
-	public class ItemGrantResult : PlayFabModelBase
+	public class ItemGrantResult
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user to whom the catalog item is to be granted
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// unique identifier of the catalog item to be granted to the user
+		/// Unique identifier of the catalog item to be granted to the user.
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// unique instance Id of the granted item
+		/// Unique instance Id of the granted item.
 		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 		
 		/// <summary>
-		/// string detailing any additional information concerning this operation
+		/// String detailing any additional information concerning this operation.
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
 		/// <summary>
-		/// result of this operation
+		/// Result of this operation.
 		/// </summary>
 		
 		public bool Result { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
-			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
-			Result = (bool)JsonUtil.Get<bool?>(json, "Result");
-		}
+		
+		public string CharacterId { get; set;}
+
 	}
 	
 	
@@ -1227,94 +1250,83 @@ namespace PlayFab.AdminModels
 	/// <summary>
 	/// A unique instance of an item in a user's inventory
 	/// </summary>
-	public class ItemInstance : PlayFabModelBase
+	public class ItemInstance
 	{
 		
 		
 		/// <summary>
-		/// unique identifier for the inventory item, as defined in the catalog
+		/// Unique identifier for the inventory item, as defined in the catalog.
 		/// </summary>
 		
 		public string ItemId { get; set;}
 		
 		/// <summary>
-		/// unique item identifier for this specific instance of the item
+		/// Unique item identifier for this specific instance of the item.
 		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 		
 		/// <summary>
-		/// class name for the inventory item, as defined in the catalog
+		/// Class name for the inventory item, as defined in the catalog.
 		/// </summary>
 		
 		public string ItemClass { get; set;}
 		
 		/// <summary>
-		/// timestamp for when this instance was purchased
+		/// Timestamp for when this instance was purchased.
 		/// </summary>
 		
 		public DateTime? PurchaseDate { get; set;}
 		
 		/// <summary>
-		/// timestamp for when this instance will expire
+		/// Timestamp for when this instance will expire.
 		/// </summary>
 		
 		public DateTime? Expiration { get; set;}
 		
 		/// <summary>
-		/// total number of remaining uses, if this is a consumable item
+		/// Total number of remaining uses, if this is a consumable item.
 		/// </summary>
 		
 		public int? RemainingUses { get; set;}
 		
 		/// <summary>
-		/// game specific comment associated with this instance when it was added to the user inventory
+		/// Game specific comment associated with this instance when it was added to the user inventory.
 		/// </summary>
 		
 		public string Annotation { get; set;}
 		
 		/// <summary>
-		/// catalog version for the inventory item, when this instance was created
+		/// Catalog version for the inventory item, when this instance was created.
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
 		
 		/// <summary>
-		/// unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container
+		/// Unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container.
 		/// </summary>
 		
 		public string BundleParent { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
-			ItemClass = (string)JsonUtil.Get<string>(json, "ItemClass");
-			PurchaseDate = (DateTime?)JsonUtil.GetDateTime(json, "PurchaseDate");
-			Expiration = (DateTime?)JsonUtil.GetDateTime(json, "Expiration");
-			RemainingUses = (int?)JsonUtil.Get<double?>(json, "RemainingUses");
-			Annotation = (string)JsonUtil.Get<string>(json, "Annotation");
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			BundleParent = (string)JsonUtil.Get<string>(json, "BundleParent");
-		}
+		/// <summary>
+		/// A set of custom key-value pairs on the inventory item.
+		/// </summary>
+		
+		public Dictionary<string,string> CustomData { get; set;}
+
 	}
 	
 	
 	
-	public class ListBuildsRequest : PlayFabModelBase
+	public class ListBuildsRequest
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class ListBuildsResult : PlayFabModelBase
+	public class ListBuildsResult
 	{
 		
 		
@@ -1323,29 +1335,20 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<GetServerBuildInfoResult> Builds { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Builds = JsonUtil.GetObjectList<GetServerBuildInfoResult>(json, "Builds");
-		}
+
 	}
 	
 	
 	
-	public class ListVirtualCurrencyTypesRequest : PlayFabModelBase
+	public class ListVirtualCurrencyTypesRequest
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class ListVirtualCurrencyTypesResult : PlayFabModelBase
+	public class ListVirtualCurrencyTypesResult
 	{
 		
 		
@@ -1354,35 +1357,21 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			VirtualCurrencies = JsonUtil.GetObjectList<VirtualCurrencyData>(json, "VirtualCurrencies");
-		}
+
 	}
 	
 	
 	
-	public class LookupUserAccountInfoRequest : PlayFabModelBase
+	public class LookupUserAccountInfoRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier to match against existing user accounts
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
-		/// <summary>
-		/// email address to match against existing user accounts
-		/// </summary>
 		
 		public string Email { get; set;}
 		
-		/// <summary>
-		/// PlayFab username to match against existing user accounts
-		/// </summary>
 		
 		public string Username { get; set;}
 		
@@ -1391,20 +1380,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string TitleDisplayName { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Email = (string)JsonUtil.Get<string>(json, "Email");
-			Username = (string)JsonUtil.Get<string>(json, "Username");
-			TitleDisplayName = (string)JsonUtil.Get<string>(json, "TitleDisplayName");
-		}
+
 	}
 	
 	
 	
-	public class LookupUserAccountInfoResult : PlayFabModelBase
+	public class LookupUserAccountInfoResult
 	{
 		
 		
@@ -1413,17 +1394,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public UserAccountInfo UserInfo { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			UserInfo = JsonUtil.GetObject<UserAccountInfo>(json, "UserInfo");
-		}
+
 	}
 	
 	
 	
-	public class ModifyMatchmakerGameModesRequest : PlayFabModelBase
+	public class ModifyMatchmakerGameModesRequest
 	{
 		
 		
@@ -1438,30 +1414,20 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<GameModeInfo> GameModes { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildVersion = (string)JsonUtil.Get<string>(json, "BuildVersion");
-			GameModes = JsonUtil.GetObjectList<GameModeInfo>(json, "GameModes");
-		}
+
 	}
 	
 	
 	
-	public class ModifyMatchmakerGameModesResult : PlayFabModelBase
+	public class ModifyMatchmakerGameModesResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class ModifyServerBuildRequest : PlayFabModelBase
+	public class ModifyServerBuildRequest
 	{
 		
 		
@@ -1480,6 +1446,7 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
+		[JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
 		
 		public List<Region> ActiveRegions { get; set;}
 		
@@ -1506,23 +1473,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string Comment { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			Timestamp = (DateTime?)JsonUtil.GetDateTime(json, "Timestamp");
-			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
-			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
-			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
-			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-		}
+
 	}
 	
 	
 	
-	public class ModifyServerBuildResult : PlayFabModelBase
+	public class ModifyServerBuildResult
 	{
 		
 		
@@ -1535,6 +1491,7 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// array of regions where this build can used, when it is active
 		/// </summary>
+		[JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
 		
 		public List<Region> ActiveRegions { get; set;}
 		
@@ -1568,62 +1525,53 @@ namespace PlayFab.AdminModels
 		
 		public DateTime Timestamp { get; set;}
 		
-		/// <summary>
-		/// the unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
-		/// </summary>
 		
 		public string TitleId { get; set;}
 		
 		/// <summary>
 		/// the current status of the build validation and processing steps
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public GameBuildStatus? Status { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-			ActiveRegions = JsonUtil.GetListEnum<Region>(json, "ActiveRegions");
-			MaxGamesPerHost = (int)JsonUtil.Get<double?>(json, "MaxGamesPerHost");
-			CommandLineTemplate = (string)JsonUtil.Get<string>(json, "CommandLineTemplate");
-			ExecutablePath = (string)JsonUtil.Get<string>(json, "ExecutablePath");
-			Comment = (string)JsonUtil.Get<string>(json, "Comment");
-			Timestamp = (DateTime)JsonUtil.GetDateTime(json, "Timestamp");
-			TitleId = (string)JsonUtil.Get<string>(json, "TitleId");
-			Status = (GameBuildStatus?)JsonUtil.GetEnum<GameBuildStatus>(json, "Status");
-		}
+
 	}
 	
 	
 	
-	public class ModifyUserVirtualCurrencyResult : PlayFabModelBase
+	public class ModifyUserVirtualCurrencyResult
 	{
 		
 		
 		/// <summary>
-		/// name of the virtual currency which was modified
+		/// User currency was subtracted from.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Name of the virtual currency which was modified.
 		/// </summary>
 		
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// balance of the virtual currency after modification
+		/// Amount added or subtracted from the user's virtual currency.
+		/// </summary>
+		
+		public int BalanceChange { get; set;}
+		
+		/// <summary>
+		/// Balance of the virtual currency after modification.
 		/// </summary>
 		
 		public int Balance { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			VirtualCurrency = (string)JsonUtil.Get<string>(json, "VirtualCurrency");
-			Balance = (int)JsonUtil.Get<double?>(json, "Balance");
-		}
+
 	}
 	
 	
 	
-	public class RandomResultTable : PlayFabModelBase
+	public class RandomResultTable
 	{
 		
 		
@@ -1638,13 +1586,7 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<ResultTableNode> Nodes { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			TableId = (string)JsonUtil.Get<string>(json, "TableId");
-			Nodes = JsonUtil.GetObjectList<ResultTableNode>(json, "Nodes");
-		}
+
 	}
 	
 	
@@ -1662,7 +1604,7 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class RemoveServerBuildRequest : PlayFabModelBase
+	public class RemoveServerBuildRequest
 	{
 		
 		
@@ -1671,29 +1613,20 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string BuildId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			BuildId = (string)JsonUtil.Get<string>(json, "BuildId");
-		}
+
 	}
 	
 	
 	
-	public class RemoveServerBuildResult : PlayFabModelBase
+	public class RemoveServerBuildResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class ResetUsersRequest : PlayFabModelBase
+	public class ResetUsersRequest
 	{
 		
 		
@@ -1702,54 +1635,38 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<UserCredentials> Users { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Users = JsonUtil.GetObjectList<UserCredentials>(json, "Users");
-		}
+
 	}
 	
 	
 	
-	public class ResetUserStatisticsRequest : PlayFabModelBase
+	public class ResetUserStatisticsRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose statistics are to be reset
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-		}
+
 	}
 	
 	
 	
-	public class ResetUserStatisticsResult : PlayFabModelBase
+	public class ResetUserStatisticsResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class ResultTableNode : PlayFabModelBase
+	public class ResultTableNode
 	{
 		
 		
 		/// <summary>
 		/// Whether this entry in the table is an item or a link to another table
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public ResultTableNodeType ResultItemType { get; set;}
 		
@@ -1764,14 +1681,7 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public int Weight { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ResultItemType = (ResultTableNodeType)JsonUtil.GetEnum<ResultTableNodeType>(json, "ResultItemType");
-			ResultItem = (string)JsonUtil.Get<string>(json, "ResultItem");
-			Weight = (int)JsonUtil.Get<double?>(json, "Weight");
-		}
+
 	}
 	
 	
@@ -1784,7 +1694,7 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class RevokeInventoryItemRequest : PlayFabModelBase
+	public class RevokeInventoryItemRequest
 	{
 		
 		
@@ -1799,61 +1709,67 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			ItemInstanceId = (string)JsonUtil.Get<string>(json, "ItemInstanceId");
-		}
+
 	}
 	
 	
 	
-	public class RevokeInventoryResult : PlayFabModelBase
+	public class RevokeInventoryResult
+	{
+		
+
+	}
+	
+	
+	
+	public class SendAccountRecoveryEmailRequest
 	{
 		
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+		
+		public string Email { get; set;}
+
 	}
 	
 	
 	
-	public class SendAccountRecoveryEmailRequest : PlayFabModelBase
+	public class SendAccountRecoveryEmailResult
+	{
+		
+
+	}
+	
+	
+	
+	public class SetPublishedRevisionRequest
 	{
 		
 		
 		/// <summary>
-		/// email address to match against existing user accounts
+		/// Version number
 		/// </summary>
 		
-		public string Email { get; set;}
+		public int Version { get; set;}
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Email = (string)JsonUtil.Get<string>(json, "Email");
-		}
+		/// <summary>
+		/// Revision to make the current published revision
+		/// </summary>
+		
+		public int Revision { get; set;}
+
 	}
 	
 	
 	
-	public class SendAccountRecoveryEmailResult : PlayFabModelBase
+	public class SetPublishedRevisionResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class SetTitleDataRequest : PlayFabModelBase
+	public class SetPublisherDataRequest
 	{
 		
 		
@@ -1864,34 +1780,52 @@ namespace PlayFab.AdminModels
 		public string Key { get; set;}
 		
 		/// <summary>
-		/// new value to set
+		/// new value to set. Set to null to remove a value
 		/// </summary>
 		
 		public string Value { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Key = (string)JsonUtil.Get<string>(json, "Key");
-			Value = (string)JsonUtil.Get<string>(json, "Value");
-		}
+
 	}
 	
 	
 	
-	public class SetTitleDataResult : PlayFabModelBase
+	public class SetPublisherDataResult
+	{
+		
+
+	}
+	
+	
+	
+	public class SetTitleDataRequest
 	{
 		
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+		/// <summary>
+		/// key we want to set a value on (note, this is additive - will only replace an existing key's value if they are the same name.) Keys are trimmed of whitespace. Keys may not begin with the '!' character.
+		/// </summary>
+		
+		public string Key { get; set;}
+		
+		/// <summary>
+		/// new value to set. Set to null to remove a value
+		/// </summary>
+		
+		public string Value { get; set;}
+
 	}
 	
 	
 	
-	public class SetupPushNotificationRequest : PlayFabModelBase
+	public class SetTitleDataResult
+	{
+		
+
+	}
+	
+	
+	
+	public class SetupPushNotificationRequest
 	{
 		
 		
@@ -1924,21 +1858,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public bool OverwriteOldARN { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Name = (string)JsonUtil.Get<string>(json, "Name");
-			Platform = (string)JsonUtil.Get<string>(json, "Platform");
-			Key = (string)JsonUtil.Get<string>(json, "Key");
-			Credential = (string)JsonUtil.Get<string>(json, "Credential");
-			OverwriteOldARN = (bool)JsonUtil.Get<bool?>(json, "OverwriteOldARN");
-		}
+
 	}
 	
 	
 	
-	public class SetupPushNotificationResult : PlayFabModelBase
+	public class SetupPushNotificationResult
 	{
 		
 		
@@ -1947,12 +1872,7 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string ARN { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ARN = (string)JsonUtil.Get<string>(json, "ARN");
-		}
+
 	}
 	
 	
@@ -1960,7 +1880,7 @@ namespace PlayFab.AdminModels
 	/// <summary>
 	/// A store entry that list a catalog item at a particular price
 	/// </summary>
-	public class StoreItem : PlayFabModelBase
+	public class StoreItem
 	{
 		
 		
@@ -1969,12 +1889,6 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string ItemId { get; set;}
-		
-		/// <summary>
-		/// catalog version for this item
-		/// </summary>
-		
-		public string CatalogVersion { get; set;}
 		
 		/// <summary>
 		/// price of this item in virtual currencies and "RM" (the base Real Money purchase price, in USD pennies)
@@ -1987,48 +1901,33 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public Dictionary<string,uint> RealCurrencyPrices { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			ItemId = (string)JsonUtil.Get<string>(json, "ItemId");
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			VirtualCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "VirtualCurrencyPrices");
-			RealCurrencyPrices = JsonUtil.GetDictionaryUInt32(json, "RealCurrencyPrices");
-		}
+
 	}
 	
 	
 	
-	public class SubtractUserVirtualCurrencyRequest : PlayFabModelBase
+	public class SubtractUserVirtualCurrencyRequest
 	{
 		
 		
 		/// <summary>
-		/// PlayFab unique identifier of the user whose virtual currency balance is to be decremented
+		/// PlayFab unique identifier of the user whose virtual currency balance is to be decreased.
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// name of the virtual currency which is to be decremented
+		/// Name of the virtual currency which is to be decremented.
 		/// </summary>
 		
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// amount to be subtracted from the user balance of the specified virtual currency
+		/// Amount to be subtracted from the user balance of the specified virtual currency.
 		/// </summary>
 		
 		public int Amount { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			VirtualCurrency = (string)JsonUtil.Get<string>(json, "VirtualCurrency");
-			Amount = (int)JsonUtil.Get<double?>(json, "Amount");
-		}
+
 	}
 	
 	
@@ -2044,7 +1943,7 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class UpdateCatalogItemsRequest : PlayFabModelBase
+	public class UpdateCatalogItemsRequest
 	{
 		
 		
@@ -2059,30 +1958,60 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<CatalogItem> Catalog { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			CatalogVersion = (string)JsonUtil.Get<string>(json, "CatalogVersion");
-			Catalog = JsonUtil.GetObjectList<CatalogItem>(json, "Catalog");
-		}
+
 	}
 	
 	
 	
-	public class UpdateCatalogItemsResult : PlayFabModelBase
+	public class UpdateCatalogItemsResult
+	{
+		
+
+	}
+	
+	
+	
+	public class UpdateCloudScriptRequest
 	{
 		
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+		/// <summary>
+		/// Cloud Script version to update. If null, defaults to most recent version
+		/// </summary>
+		
+		public int? Version { get; set;}
+		
+		/// <summary>
+		/// List of Cloud Script files to upload to create the new revision. Must have at least one file.
+		/// </summary>
+		
+		public List<CloudScriptFile> Files { get; set;}
+
 	}
 	
 	
 	
-	public class UpdateRandomResultTablesRequest : PlayFabModelBase
+	public class UpdateCloudScriptResult
+	{
+		
+		
+		/// <summary>
+		/// Cloud Script version updated
+		/// </summary>
+		
+		public int Version { get; set;}
+		
+		/// <summary>
+		/// New revision number created
+		/// </summary>
+		
+		public int Revision { get; set;}
+
+	}
+	
+	
+	
+	public class UpdateRandomResultTablesRequest
 	{
 		
 		
@@ -2091,29 +2020,20 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<RandomResultTable> Tables { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Tables = JsonUtil.GetObjectList<RandomResultTable>(json, "Tables");
-		}
+
 	}
 	
 	
 	
-	public class UpdateRandomResultTablesResult : PlayFabModelBase
+	public class UpdateRandomResultTablesResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class UpdateStoreItemsRequest : PlayFabModelBase
+	public class UpdateStoreItemsRequest
 	{
 		
 		
@@ -2128,41 +2048,28 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public List<StoreItem> Store { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			StoreId = (string)JsonUtil.Get<string>(json, "StoreId");
-			Store = JsonUtil.GetObjectList<StoreItem>(json, "Store");
-		}
+
 	}
 	
 	
 	
-	public class UpdateStoreItemsResult : PlayFabModelBase
+	public class UpdateStoreItemsResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class UpdateUserDataRequest : PlayFabModelBase
+	public class UpdateUserDataRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being updated
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// data to be written to the user's custom data. Keys are trimmed of whitespace. Keys may not begin with a '!' character.
+		/// Data to be written to the user's custom data. Note that keys are trimmed of whitespace, are limited to 1024 characters, and may not begin with a '!' character.
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}
@@ -2170,59 +2077,40 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public UserDataPermission? Permission { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
-			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
-		}
+
 	}
 	
 	
 	
-	public class UpdateUserDataResult : PlayFabModelBase
+	public class UpdateUserDataResult
 	{
 		
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-		}
+
 	}
 	
 	
 	
-	public class UpdateUserInternalDataRequest : PlayFabModelBase
+	public class UpdateUserInternalDataRequest
 	{
 		
 		
-		/// <summary>
-		/// PlayFab unique identifier of the user whose custom data is being updated
-		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
-		/// data to be written to the user's custom data
+		/// Data to be written to the user's custom data.
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Data = JsonUtil.GetDictionary<string>(json, "Data");
-		}
+
 	}
 	
 	
 	
-	public class UpdateUserTitleDisplayNameRequest : PlayFabModelBase
+	public class UpdateUserTitleDisplayNameRequest
 	{
 		
 		
@@ -2237,18 +2125,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string DisplayName { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-		}
+
 	}
 	
 	
 	
-	public class UpdateUserTitleDisplayNameResult : PlayFabModelBase
+	public class UpdateUserTitleDisplayNameResult
 	{
 		
 		
@@ -2257,17 +2139,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string DisplayName { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-		}
+
 	}
 	
 	
 	
-	public class UserAccountInfo : PlayFabModelBase
+	public class UserAccountInfo
 	{
 		
 		
@@ -2318,24 +2195,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public UserGameCenterInfo GameCenterInfo { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			PlayFabId = (string)JsonUtil.Get<string>(json, "PlayFabId");
-			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
-			Username = (string)JsonUtil.Get<string>(json, "Username");
-			TitleInfo = JsonUtil.GetObject<UserTitleInfo>(json, "TitleInfo");
-			PrivateInfo = JsonUtil.GetObject<UserPrivateAccountInfo>(json, "PrivateInfo");
-			FacebookInfo = JsonUtil.GetObject<UserFacebookInfo>(json, "FacebookInfo");
-			SteamInfo = JsonUtil.GetObject<UserSteamInfo>(json, "SteamInfo");
-			GameCenterInfo = JsonUtil.GetObject<UserGameCenterInfo>(json, "GameCenterInfo");
-		}
+
 	}
 	
 	
 	
-	public class UserCredentials : PlayFabModelBase
+	public class UserCredentials
 	{
 		
 		
@@ -2345,18 +2210,9 @@ namespace PlayFab.AdminModels
 		
 		public string Username { get; set;}
 		
-		/// <summary>
-		/// Password of user to reset
-		/// </summary>
 		
 		public string Password { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Username = (string)JsonUtil.Get<string>(json, "Username");
-			Password = (string)JsonUtil.Get<string>(json, "Password");
-		}
+
 	}
 	
 	
@@ -2369,40 +2225,34 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class UserDataRecord : PlayFabModelBase
+	public class UserDataRecord
 	{
 		
 		
 		/// <summary>
-		/// user-supplied data for this user data key
+		/// User-supplied data for this user data key.
 		/// </summary>
 		
 		public string Value { get; set;}
 		
 		/// <summary>
-		/// timestamp indicating when this data was last updated
+		/// Timestamp indicating when this data was last updated.
 		/// </summary>
 		
 		public DateTime LastUpdated { get; set;}
 		
 		/// <summary>
-		/// Permissions on this data key
+		/// Permissions on this data key.
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public UserDataPermission? Permission { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Value = (string)JsonUtil.Get<string>(json, "Value");
-			LastUpdated = (DateTime)JsonUtil.GetDateTime(json, "LastUpdated");
-			Permission = (UserDataPermission?)JsonUtil.GetEnum<UserDataPermission>(json, "Permission");
-		}
+
 	}
 	
 	
 	
-	public class UserFacebookInfo : PlayFabModelBase
+	public class UserFacebookInfo
 	{
 		
 		
@@ -2413,29 +2263,16 @@ namespace PlayFab.AdminModels
 		public string FacebookId { get; set;}
 		
 		/// <summary>
-		/// Facebook username
+		/// Facebook full name
 		/// </summary>
 		
-		public string FacebookUsername { get; set;}
-		
-		/// <summary>
-		/// Facebook display name
-		/// </summary>
-		
-		public string FacebookDisplayname { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			FacebookId = (string)JsonUtil.Get<string>(json, "FacebookId");
-			FacebookUsername = (string)JsonUtil.Get<string>(json, "FacebookUsername");
-			FacebookDisplayname = (string)JsonUtil.Get<string>(json, "FacebookDisplayname");
-		}
+		public string FullName { get; set;}
+
 	}
 	
 	
 	
-	public class UserGameCenterInfo : PlayFabModelBase
+	public class UserGameCenterInfo
 	{
 		
 		
@@ -2444,12 +2281,7 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string GameCenterId { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			GameCenterId = (string)JsonUtil.Get<string>(json, "GameCenterId");
-		}
+
 	}
 	
 	
@@ -2473,7 +2305,7 @@ namespace PlayFab.AdminModels
 	
 	
 	
-	public class UserPrivateAccountInfo : PlayFabModelBase
+	public class UserPrivateAccountInfo
 	{
 		
 		
@@ -2482,17 +2314,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string Email { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			Email = (string)JsonUtil.Get<string>(json, "Email");
-		}
+
 	}
 	
 	
 	
-	public class UserSteamInfo : PlayFabModelBase
+	public class UserSteamInfo
 	{
 		
 		
@@ -2511,28 +2338,22 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// currency type set in the user Steam account
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public Currency? SteamCurrency { get; set;}
 		
 		/// <summary>
 		/// what stage of game ownership the user is listed as being in, from Steam
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public TitleActivationStatus? SteamActivationStatus { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			SteamId = (string)JsonUtil.Get<string>(json, "SteamId");
-			SteamCountry = (string)JsonUtil.Get<string>(json, "SteamCountry");
-			SteamCurrency = (Currency?)JsonUtil.GetEnum<Currency>(json, "SteamCurrency");
-			SteamActivationStatus = (TitleActivationStatus?)JsonUtil.GetEnum<TitleActivationStatus>(json, "SteamActivationStatus");
-		}
+
 	}
 	
 	
 	
-	public class UserTitleInfo : PlayFabModelBase
+	public class UserTitleInfo
 	{
 		
 		
@@ -2545,6 +2366,7 @@ namespace PlayFab.AdminModels
 		/// <summary>
 		/// source by which the user first joined the game, if known
 		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public UserOrigination? Origination { get; set;}
 		
@@ -2571,22 +2393,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public bool? isBanned { get; set;}
-		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-			Origination = (UserOrigination?)JsonUtil.GetEnum<UserOrigination>(json, "Origination");
-			Created = (DateTime)JsonUtil.GetDateTime(json, "Created");
-			LastLogin = (DateTime?)JsonUtil.GetDateTime(json, "LastLogin");
-			FirstLogin = (DateTime?)JsonUtil.GetDateTime(json, "FirstLogin");
-			isBanned = (bool?)JsonUtil.Get<bool?>(json, "isBanned");
-		}
+
 	}
 	
 	
 	
-	public class VirtualCurrencyData : PlayFabModelBase
+	public class VirtualCurrencyData
 	{
 		
 		
@@ -2619,16 +2431,33 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public int? RechargeMax { get; set;}
+
+	}
+	
+	
+	
+	public class VirtualCurrencyRechargeTime
+	{
 		
-		public override void Deserialize (Dictionary<string,object> json)
-		{
-			
-			CurrencyCode = (string)JsonUtil.Get<string>(json, "CurrencyCode");
-			DisplayName = (string)JsonUtil.Get<string>(json, "DisplayName");
-			InitialDeposit = (int?)JsonUtil.Get<double?>(json, "InitialDeposit");
-			RechargeRate = (int?)JsonUtil.Get<double?>(json, "RechargeRate");
-			RechargeMax = (int?)JsonUtil.Get<double?>(json, "RechargeMax");
-		}
+		
+		/// <summary>
+		/// Time remaining (in seconds) before the next recharge increment of the virtual currency.
+		/// </summary>
+		
+		public int SecondsToRecharge { get; set;}
+		
+		/// <summary>
+		/// Server timestamp in UTC indicating the next time the virtual currency will be incremented.
+		/// </summary>
+		
+		public DateTime RechargeTime { get; set;}
+		
+		/// <summary>
+		/// Maximum value to which the regenerating currency will automatically increment. Note that it can exceed this value through use of the AddUserVirtualCurrency API call. However, it will not regenerate automatically until it has fallen below this value.
+		/// </summary>
+		
+		public int RechargeMax { get; set;}
+
 	}
 	
 }

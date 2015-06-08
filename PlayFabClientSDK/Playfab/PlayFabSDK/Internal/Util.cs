@@ -1,5 +1,6 @@
 ﻿using System;
-using PlayFab.Serialization.JsonFx;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace PlayFab.Internal
 {
@@ -15,13 +16,13 @@ namespace PlayFab.Internal
             return args.Length > 0 ? string.Format (text, args) : text;
         }
 
-		public static JsonReaderSettings GlobalJsonReaderSettings = new JsonReaderSettings
-		{
-			AllNumbersAsDouble = true
-		};
-		public static JsonWriterSettings GlobalJsonWriterSettings = new JsonWriterSettings
-		{
-			WriteNulls = false
-		};
+        public static JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            Converters = { new IsoDateTimeConverter() { DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFF'Z'" } },
+        };
+        
+        public static Formatting JsonFormatting = Formatting.None;
+
     }
 }
