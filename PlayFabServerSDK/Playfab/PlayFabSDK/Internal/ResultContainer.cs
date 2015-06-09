@@ -28,10 +28,10 @@ namespace PlayFab.Internal
 				return;
 			}
 
-			ResultContainer<ResultType> resultEnvelope = null;
+			ResultContainer<ResultType> resultEnvelope = new ResultContainer<ResultType>();
 			try
 			{
-				resultEnvelope = JsonConvert.DeserializeObject<ResultContainer<ResultType>>(responseStr, Util.JsonSettings);
+				JsonConvert.PopulateObject(responseStr, resultEnvelope, Util.JsonSettings);
 			}
 			catch(Exception e)
 			{
