@@ -147,7 +147,9 @@ namespace PlayFab
 		KeyLengthExceeded = 1145,
 		DataLengthExceeded = 1146,
 		TooManyKeys = 1147,
-		FreeTierCannotHaveVirtualCurrency = 1148
+		FreeTierCannotHaveVirtualCurrency = 1148,
+		MissingAmazonSharedKey = 1149,
+		AmazonValidationError = 1150
 	}
 	
 	public class PlayFabError

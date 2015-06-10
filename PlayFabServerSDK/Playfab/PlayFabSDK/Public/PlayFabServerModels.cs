@@ -557,6 +557,12 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public List<string> Keys { get; set;}
+		
+		/// <summary>
+		/// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
+		/// </summary>
+		
+		public int? IfChangedFromDataVersion { get; set;}
 
 	}
 	
@@ -568,12 +574,6 @@ namespace PlayFab.ServerModels
 		
 		
 		public string CharacterId { get; set;}
-		
-		/// <summary>
-		/// Character specific data for this title.
-		/// </summary>
-		
-		public Dictionary<string,UserDataRecord> Data { get; set;}
 
 	}
 	
@@ -1035,6 +1035,12 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public List<string> Keys { get; set;}
+		
+		/// <summary>
+		/// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
+		/// </summary>
+		
+		public int? IfChangedFromDataVersion { get; set;}
 
 	}
 	
@@ -1049,6 +1055,12 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
+		
+		public uint DataVersion { get; set;}
 		
 		/// <summary>
 		/// User specific data for this title.
@@ -2099,6 +2111,12 @@ namespace PlayFab.ServerModels
 	public class UpdateCharacterDataResult
 	{
 		
+		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
+		
+		public uint DataVersion { get; set;}
 
 	}
 	
@@ -2194,6 +2212,12 @@ namespace PlayFab.ServerModels
 	public class UpdateUserDataResult
 	{
 		
+		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
+		
+		public uint DataVersion { get; set;}
 
 	}
 	

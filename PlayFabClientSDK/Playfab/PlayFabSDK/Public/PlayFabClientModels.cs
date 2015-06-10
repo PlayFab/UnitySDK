@@ -909,6 +909,12 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public List<string> Keys { get; set;}
+		
+		/// <summary>
+		/// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
+		/// </summary>
+		
+		public int? IfChangedFromDataVersion { get; set;}
 
 	}
 	
@@ -920,12 +926,6 @@ namespace PlayFab.ClientModels
 		
 		
 		public string CharacterId { get; set;}
-		
-		/// <summary>
-		/// Character specific data for this title.
-		/// </summary>
-		
-		public Dictionary<string,UserDataRecord> Data { get; set;}
 
 	}
 	
@@ -1112,6 +1112,18 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public int MaxResultsCount { get; set;}
+		
+		/// <summary>
+		/// Indicates whether Steam service friends should be included in the response. Default is true.
+		/// </summary>
+		
+		public bool? IncludeSteamFriends { get; set;}
+		
+		/// <summary>
+		/// Indicates whether Facebook friends should be included in the response. Default is true.
+		/// </summary>
+		
+		public bool? IncludeFacebookFriends { get; set;}
 
 	}
 	
@@ -1435,6 +1447,12 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public string StoreId { get; set;}
+		
+		/// <summary>
+		/// Catalog version for the requested store items. If null, defaults to most recent catalog.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
 
 	}
 	
@@ -1625,10 +1643,22 @@ namespace PlayFab.ClientModels
 		public Dictionary<string,UserDataRecord> Data { get; set;}
 		
 		/// <summary>
+		/// The version of the UserData that was returned.
+		/// </summary>
+		
+		public uint DataVersion { get; set;}
+		
+		/// <summary>
 		/// User specific read-only data.
 		/// </summary>
 		
 		public Dictionary<string,UserDataRecord> ReadOnlyData { get; set;}
+		
+		/// <summary>
+		/// The version of the Read-Only UserData that was returned.
+		/// </summary>
+		
+		public uint ReadOnlyDataVersion { get; set;}
 
 	}
 	
@@ -1649,6 +1679,12 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
+		/// </summary>
+		
+		public int? IfChangedFromDataVersion { get; set;}
 
 	}
 	
@@ -1663,6 +1699,9 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public Dictionary<string,UserDataRecord> Data { get; set;}
+		
+		
+		public uint DataVersion { get; set;}
 
 	}
 	
@@ -3572,6 +3611,12 @@ namespace PlayFab.ClientModels
 	public class UpdateCharacterDataResult
 	{
 		
+		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
+		
+		public uint DataVersion { get; set;}
 
 	}
 	
@@ -3636,6 +3681,12 @@ namespace PlayFab.ClientModels
 	public class UpdateUserDataResult
 	{
 		
+		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
+		
+		public uint DataVersion { get; set;}
 
 	}
 	
@@ -3923,6 +3974,52 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public bool? isBanned { get; set;}
+
+	}
+	
+	
+	
+	public class ValidateAmazonReceiptRequest
+	{
+		
+		
+		/// <summary>
+		/// ReceiptId returned by the Amazon App Store in-app purchase API
+		/// </summary>
+		
+		public string ReceiptId { get; set;}
+		
+		/// <summary>
+		/// AmazonId of the user making the purchase as returned by the Amazon App Store in-app purchase API
+		/// </summary>
+		
+		public string UserId { get; set;}
+		
+		/// <summary>
+		/// Catalog version to use when granting receipt item. If null, defaults to primary catalog.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// Currency used for the purchase.
+		/// </summary>
+		
+		public string CurrencyCode { get; set;}
+		
+		/// <summary>
+		/// Amount of the stated currency paid for the object.
+		/// </summary>
+		
+		public int PurchasePrice { get; set;}
+
+	}
+	
+	
+	
+	public class ValidateAmazonReceiptResult
+	{
+		
 
 	}
 	

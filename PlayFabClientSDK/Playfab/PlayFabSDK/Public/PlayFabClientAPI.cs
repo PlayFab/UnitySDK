@@ -96,6 +96,7 @@ namespace PlayFab
 		public delegate void GetCharacterDataCallback(GetCharacterDataResult result);
 		public delegate void GetCharacterReadOnlyDataCallback(GetCharacterDataResult result);
 		public delegate void UpdateCharacterDataCallback(UpdateCharacterDataResult result);
+		public delegate void ValidateAmazonIAPReceiptCallback(ValidateAmazonReceiptResult result);
 		
 		
 		
@@ -2579,6 +2580,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateCharacterData", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Validates with Amazon that the receipt for an Amazon App Store in-app purchase is valid and that it matches the purchased catalog item
+		/// </summary>
+		public static void ValidateAmazonIAPReceipt(ValidateAmazonReceiptRequest request, ValidateAmazonIAPReceiptCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			{
+				ValidateAmazonReceiptResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ValidateAmazonReceiptResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ValidateAmazonIAPReceipt", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		
