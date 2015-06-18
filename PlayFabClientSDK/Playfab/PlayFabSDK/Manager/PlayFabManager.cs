@@ -20,29 +20,34 @@ public class PlayFabManager : MonoBehaviour {
 
 		PlayFabSettings.TitleId = TitleId;
 
-		#if PLAYFAB_ANDROID
+		#if PLAYFAB_IOS
 		PlayFabClientAPI.LoginWithIOSDeviceID (new LoginWithIOSDeviceIDRequest
 		{
 			DeviceId = SystemInfo.deviceUniqueIdentifier,
 			OS = SystemInfo.operatingSystem,
 			DeviceModel = SystemInfo.deviceModel,
 			CreateAccount = true
-		}, onLogin, null);
-		#elif PLAYFAB_IOS
+		}, onLoginSuccess, null);
+		#elif PLAYFAB_ANDROID
 		PlayFabClientAPI.LoginWithAndroidDeviceID (new LoginWithAndroidDeviceIDRequest
 		{
 			AndroidDeviceId = SystemInfo.deviceUniqueIdentifier,
 			OS = SystemInfo.operatingSystem,
 			AndroidDevice = SystemInfo.deviceModel,
 			CreateAccount = true
-		}, onLogin, null);
+		}, onLoginSuccess, null);
 		#endif
 
 	}
 	
-	private void onLogin(LoginResult result)
+	private void onLoginSuccess(LoginResult result)
 	{
-
+		Debug.Log(string.Format("PlayFab Authentication Successful! -- Player ID:{0}", result.PlayFabId));
+	}
+	
+	private void onLoginError(PlayFabError error)
+	{
+		Debug.Log(string.Format("Error {0}: {1}", error.HttpCode, error.ErrorMessage));
 	}
 
 
