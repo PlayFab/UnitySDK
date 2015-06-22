@@ -7,24 +7,25 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.Resources;
-import android.util.Log;
+
 
 public class AndroidPlugin {
 
 	static final String TAG = "PlayFabUnityAndroidPlugin";
 	public static final String UNITY_EVENT_OBJECT = "_PlayFabGO";
 
+	//public static String PACKAGE_NAME;
 	public static final String PROPERTY_APP_VERSION = "_PlayFab_appVersion";
 	public static final String PROPERTY_NOTIFICATION_ID = "_PlayFab_notificationId";
-	public static int APP_ICON=0;
+	//public static int APP_ICON=0;
 	
 	public static void init()
 	{
-		Context context = UnityPlayer.currentActivity;
-		Resources res = context.getResources();
-		APP_ICON = res.getIdentifier("app_icon", "drawable", context.getPackageName());
-		Log.i(AndroidPlugin.TAG, "Initialized with app icon: " + APP_ICON);
+		//Context context = UnityPlayer.currentActivity;
+		/*Resources res = context.getResources();
+		PACKAGE_NAME = context.getPackageName();
+		APP_ICON = res.
+		Log.i(AndroidPlugin.TAG, "Initialized with app icon: " + APP_ICON);*/
 		
 		GoogleCloudMessaging.init();
 	}

@@ -1,9 +1,9 @@
 package com.playfab.unity.plugin;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.unity3d.player.UnityPlayer;
-import com.unity3d.player.UnityPlayerProxyActivity;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -22,6 +22,8 @@ public class GcmIntentService extends IntentService {
     NotificationCompat.Builder builder;
 
     private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
+    // temporary
+    private static int NotificationId = 1;
     
     public GcmIntentService() {
         super("GcmIntentService");
@@ -51,29 +53,41 @@ public class GcmIntentService extends IntentService {
                 // Post notification of received message.
             	Log.i(AndroidPlugin.TAG, "Received: " + extras.toString());
             	String defaultMessage = extras.getString("default");
-            	String subject = "Notification";
-            	int notificationId = AndroidPlugin.getNotificationId();
-            	sendNotification(notificationId, subject, defaultMessage);
-            	String encodedMessage = null;
-            	try
-            	{
-	            	JSONObject encoder = new JSONObject();
-	            	encoder.put("id", notificationId);
-	            	encoder.put("message", defaultMessage);
-	            	encodedMessage = encoder.toString();
-            	}
-            	catch(Exception e)
-            	{
-            		Log.e(AndroidPlugin.TAG, "Error encoding GCM into json ", e);
-            	}
-            	try
-            	{
-            		if(encodedMessage != null)
-            			UnityPlayer.UnitySendMessage(AndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", defaultMessage);
-            	}
-            	catch(Exception e)
-            	{
-            		Log.i(AndroidPlugin.TAG, "Did not forward to unity since it was not running");
+            	String subject = (String) getPackageManager().getApplicationLabel(getApplicationInfo());//"Notification";
+            	int notificationId = ++NotificationId;//AndroidPlugin.getNotificationId();
+            	
+            	if (UnityPlayer.currentActivity == null){
+            		try {
+            			JSONObject decoder = new JSONObject(defaultMessage);
+						String message = decoder.getString("Message");
+						sendNotification(notificationId, subject, message);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						Log.e(AndroidPlugin.TAG, "Error decoding Message into string ", e);
+					}
+            		
+            	}else {
+	            	/*String encodedMessage = null;
+	            	try
+	            	{
+		            	JSONObject encoder = new JSONObject();
+		            	encoder.put("id", notificationId);
+		            	encoder.put("message", defaultMessage);
+		            	encodedMessage = encoder.toString();
+	            	}
+	            	catch(Exception e)
+	            	{
+	            		Log.e(AndroidPlugin.TAG, "Error encoding GCM into json ", e);
+	            	}*/
+	            	try
+	            	{
+	            		//if(encodedMessage != null)
+	            			UnityPlayer.UnitySendMessage(AndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", defaultMessage);
+	            	}
+	            	catch(Exception e)
+	            	{
+	            		Log.i(AndroidPlugin.TAG, "Did not forward to unity since it was not running");
+	            	}
             	}
             }
         }
@@ -85,18 +99,19 @@ public class GcmIntentService extends IntentService {
     // This is just one simple example of what you might choose to do with
     // a GCM message.
     private void sendNotification(int id, String title, String msg) {
-    	
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
-
         PendingIntent contentIntent = PendingIntent.getActivity(this, REQUEST_CODE_UNITY_ACTIVITY,
-                new Intent(this, UnityPlayerProxyActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                getPackageManager().getLaunchIntentForPackage(getPackageName())
+                /*new Intent(this, UnityPlayerProxyActivity.class)*/, PendingIntent.FLAG_UPDATE_CURRENT);
         
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        
+        //Log.i(AndroidPlugin.TAG, "R.drawable.ic_launcher=="+R.drawable.ic_launcher);
+        //Log.i(AndroidPlugin.TAG, "?== "+getResources().getIdentifier("app_icon", "drawable", getPackageName()));
+        //getPackageManager().getApplicationIcon(getPackageName());
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-        .setSmallIcon(AndroidPlugin.APP_ICON)
+        .setSmallIcon(getResources().getIdentifier("app_icon", "drawable", getPackageName()))
         .setContentTitle(title)
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(msg))
