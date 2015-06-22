@@ -1,82 +1,42 @@
-PlayFab Unity Plugin
-====================
+PlayFab Server and Admin SDK
+============================
+
 
 1. Overview
 -----------
-This document describes the process of configuring and building the PlayFab Unity plugin binary and distribution package. The document also contains instructions for developers to start using the plugin in their Unity games.
+
+This SDK is intended for customers developing a server in Unity who wish to interact with PlayFab APIs. It is not intended to be included in a game client, and doing so would compromise your title's security.
 
 
-2. Prerequisites
-----------------
-This document assumes familiarity with the Unity game engine, MonoDevelop Unity .NET programming environment, and Mac OS X operating system environment.
+2. Installing the Server SDK
+----------------------------
+
+Drag the entire PlayFabServerSDK directory into your project's assets (anywhere is ok). This will copy the SDK into your project.
 
 
-3. Source Code
---------------
-The plugin source code repository **playfab-unity** contains the following directories.
-
-plugin  Unity project containing PlayFab Unity plugin implementation
-sample  Unity project containing PlayFab Unity plugin usage examples
-tools   Bash scripts for building and maintaining the plugin
-
-
-
-4. Installing the Plugin
-------------------------
-Create a new Unity project or open an existing Unity project. Double-click on **PlayFab.unitypackage** distribution package file. Click **Import** button in the bottom-right corner of the import package dialog in Unity editor.
-
-After installing the plugin, the Unity project will include **PlayFab** directory containing plugin usage examples and **PlayFab.dll** plugin binary added inside a special Unity **Plugins** directory.
-
-
-7. Using the Plugin
--------------------
-After plugin installation, open a Unity test scene by double-clicking on **TestScene.unity** file located in **PlayFab/Examples/Test/Scenes** directory in your Unity project.
-
-Run the scene by clicking on the **Play** arrow button in Unity editor. The Unity **Console** panel will show plugin configuration log output, indicating successful installation.
-
-Open up **TestScene.cs** source file located in **PlayFab/Examples/Test/Scripts** directory in your Unity project. The file shows an example of configuring PlayFab app ID/token through code and sending a custom event to PlayFab API servers.
-
-
-8. Configuring the Plugin
+3. Configuring the SDK
 -------------------------
-Please note the following multiple ways to configure the PlayFab Unity plugin.
+You must configure the server SDK with your unique TitleId, as assigned by the PlayFab developer portal. Your TitleId will be a short string that looks something like "8D34" in your Title URL.
 
-### Through Unity editor during plugin development
+Use 8D34 as a demonstration TitleId if you would like to try the various pre-made scenes without making and configurating your own title.
 
-- Create an empty Unity game object named **PlayFabApiManager**, place **PlayFabApiManager.cs** script onto the game object, select the game object in the Unity scene **Hierarchy** and set app ID/token fields to appropriate values in Unity **Inspector** panel.
+You must also set your title's secret key, as assigned by the PlayFab developer portal. Your secret key is a string of characters that looks something like "S07CDBJ3DBZ7ISLDDESJZ1UFSAFCID7A5XBK8SPXCSBA54P1FA".
 
-### Through PlayFab Unity editor extension after plugin installation
-
-- Open PlayFab Unity editor extension window by selecting **Window/PlayFab/Configure...** menu item in Unity editor.
-- Set app ID/token fields and click **Save** button, which will create **PlayFab.json** configuration file inside a special Unity **Resources** directory.
-
-### Through **PlayFab.json** configuration file located inside **Resources** directory
-
-- The plugin will attempt to read **PlayFab.json** configuraton file during its initialization sequence. The file must be in JSON format, and the following parameters can be placed inside.
+To configure the SDK via code, then somewhere in your game's startup code, add the following:
 
 ```
-    appId/appToken          app credentials from PlayFab developer portal
+using PlayFab;
 
-    apiEndPoint             PlayFab API server endpoint
-                            (used during plugin development and testing)
-
-    requestTimeout          HTTP request timeout
-                            (used during plugin development and testing)
-
-    maxRequestRedirects     HTTP request max number of redirects
-                            (used during plugin development and testing)
+PlayFabSettings.TitleId = "your title id here";
+PlayFabSettings.DeveloperSecretKey = "your secret key here";
 ```
 
-### Programmatically by setting app ID/token static properties on PlayFabApi class.
+IMPORTANT: Do not reveal your developer secret key, expose it anywhere in your game, or ship it in your public client. It must only be included in a pure server project that is not intended for public distribution.
 
-- Programmatic way to configure the plugin is shown in code examples included in the distribution package.
 
-### Please note the following precedence when configuring the PlayFab Unity plugin.
+4.  Combining both Client and Server SDKs in a single project
+-------------------------------------------------------------
 
-- Programmatic configuration overrides any other configuration.
+Combining the SDKs in a single project is not recommended, since the server SDK requires your developer secret key, and should never be released to the public. However, if you wish to create a project containing both SDKs for testing or tool purposes, you can do so as following:
 
-- PlayFab.json configuration overrides Unity game object configuration.
-
-- Unity editor extension window writes PlayFab.json configuration file.
-
-- Unity game object configuration does not override any other configuration.
+First unpack the PlayFab Client SDK into the project following the normal client SDK README. Then copy the contents of the server SDK over top of the client SDK, overwriting any shared files. This will result in a combined SDK with all API calls available.

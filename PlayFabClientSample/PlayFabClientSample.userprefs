@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PlayFabSDK/Editor/PlayFabPackager.cs">
+    <Files>
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabPackager.cs" Line="17" Column="1" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabAdmin.cs" Line="12" Column="26" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabConfig.cs" Line="18" Column="20" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabDocs.cs" Line="12" Column="26" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabGettingStarted.cs" Line="17" Column="8" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{91FCA6BD-A2A6-B5EE-B4A5-C6DA574833AB}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+	<BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_6_6;UNITY_4_6;UNITY_STANDALONE_OSX;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_IL2CPP;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;UNITY5_SCRIPTING_IN_UNITY4;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_GAMECENTER;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_MONO;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_OSX</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+	<Reference Include="System" />
+    <Reference Include="System.XML" />
+	<Reference Include="System.Core" />
+	<Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\PlayFabSDK\Internal\Log.cs" />
+     <Compile Include="Assets\PlayFabSDK\Internal\PlayFabHTTP.cs" />
+     <Compile Include="Assets\PlayFabSDK\Internal\PlayFabVersion.cs" />
+     <Compile Include="Assets\PlayFabSDK\Internal\ResultContainer.cs" />
+     <Compile Include="Assets\PlayFabSDK\Internal\SingletonMonoBehaviour.cs" />
+     <Compile Include="Assets\PlayFabSDK\Internal\Util.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\CRC32.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\Deflate.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\DeflateStream.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\GZipStream.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\InfTree.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\Inflate.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ParallelDeflateOutputStream.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZTree.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\Zlib.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZlibBaseStream.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZlibCodec.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZlibConstants.cs" />
+     <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZlibStream.cs" />
+     <Compile Include="Assets\PlayFabSDK\Manager\PlayFabManager.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\ConstructorHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\CustomCreationConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\DateTimeConverterBase.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\IsoDateTimeConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\JavaScriptDateTimeConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\KeyValuePairConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\RegexConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\StringEnumConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\VersionConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\DateFormatHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\DateParseHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\DateTimeZoneHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\DefaultValueHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\FloatFormatHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\FloatParseHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Formatting.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\IJsonLineInfo.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonArrayAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonConstructorAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonContainerAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonConvert.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonConverterAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonConverterCollection.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonDictionaryAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonException.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonExtensionDataAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonIgnoreAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonObjectAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonPosition.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonPropertyAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonReader.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonReaderException.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonSerializationException.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonSerializer.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonSerializerSettings.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonTextReader.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonTextWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonToken.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\JsonWriterException.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\Extensions.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\IJEnumerable.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JArray.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JConstructor.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JContainer.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JEnumerable.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JObject.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JProperty.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JPropertyDescriptor.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JPropertyKeyedCollection.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JRaw.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JToken.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JTokenEqualityComparer.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JTokenReader.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JTokenType.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JTokenWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JValue.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonMergeSettings.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\ArrayIndexFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\ArrayMultipleIndexFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\ArraySliceFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\FieldFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\FieldMultipleFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\JPath.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\PathFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\QueryExpression.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\QueryFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\JsonPath\ScanFilter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Linq\MergeArrayHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\MemberSerialization.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\MetadataPropertyHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\MissingMemberHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\NullValueHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\ObjectCreationHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\PreserveReferencesHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\ReferenceLoopHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Required.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\CachedAttributeGetter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\CamelCasePropertyNamesContractResolver.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\DefaultContractResolver.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\DefaultReferenceResolver.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\DefaultSerializationBinder.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\DiagnosticsTraceWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\ErrorContext.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\ErrorEventArgs.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\IAttributeProvider.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\IContractResolver.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\IReferenceResolver.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\ITraceWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\IValueProvider.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonArrayContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonContainerContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonDictionaryContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonFormatterConverter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonISerializableContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonLinqContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonObjectContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonPrimitiveContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonProperty.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonPropertyCollection.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonSerializerInternalBase.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonSerializerInternalReader.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonSerializerInternalWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonSerializerProxy.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonStringContract.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\JsonTypeReflector.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\MemoryTraceWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\ObjectConstructor.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\OnErrorAttribute.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\ReflectionAttributeProvider.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\ReflectionValueProvider.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\TraceJsonReader.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Serialization\TraceJsonWriter.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\StringEscapeHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\TypeNameHandling.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\AOTComparators.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\Base64Encoder.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\BidirectionalDictionary.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\CollectionUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\CollectionWrapper.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\ConvertUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\DateTimeParser.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\DateTimeUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\DictionaryWrapper.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\EnumUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\EnumValue.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\ILGeneratorExtensions.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\JavaScriptUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\JsonTokenUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\LateBoundReflectionDelegateFactory.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\LinqBridge.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\MathUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\MethodCall.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\MiscellaneousUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\PropertyNameTable.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\ReflectionDelegateFactory.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\ReflectionObject.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\ReflectionUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\StringBuffer.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\StringReference.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\StringUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\ThreadSafeStore.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\TypeExtensions.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Utilities\ValidationUtils.cs" />
+     <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\WriteState.cs" />
+     <Compile Include="Assets\PlayFabSDK\Public\PlayFabClientAPI.cs" />
+     <Compile Include="Assets\PlayFabSDK\Public\PlayFabClientModels.cs" />
+     <Compile Include="Assets\PlayFabSDK\Public\PlayFabData.cs" />
+     <Compile Include="Assets\PlayFabSDK\Public\PlayFabErrors.cs" />
+     <Compile Include="Assets\PlayFabSDK\Public\PlayFabSettings.cs" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+ <Reference Include="UnityEngine.UI">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.6/UnityEngine.UI.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{346BCC52-F845-44D9-792F-9EB83BB33632}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+	   Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

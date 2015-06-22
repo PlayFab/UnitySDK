@@ -11,26 +11,30 @@ This document describes the process of configuring and building the PlayFab Unit
 
 2. Prerequisites
 ----------------
-This document assumes familiarity with the Unity game engine, MonoDevelop Unity .NET programming environment, and Mac OS X operating system environment.
+This document assumes familiarity with the Unity game engine and the MonoDevelop Unity .NET programming environment.
 
 
-3. Source Code
+3. SDK orgnanization
 --------------
-The source code repository **playfab-unity** contains two main projects: PlayFabClientSDK and PlayFabServerSDK. The PlayFabClientSDK is the SDK you will integrate into your game project. The Server SDK is less commonly needed and is used to create custom administration tools.
+PlayFabClientSDK.unitypackage - Unity package containing the PlayFab client SDK. This has everything you need to add to your project to get started
+PlayFabClientSample - A sample project you can open and run to try out PlayFab wihout adding it to your project
+PlayFabServerSDK - Source to the less commonly needed PlayFab server SDK. This allows you to access PlayFab server APIs if you write a game server in Unity.
+PluginSource - Source code to the PlayFab native plugin in case you need to debug or modify it
+README.md - This file
 
 
-4. Installing the Plugin
+4. Installing the Client SDK
 ------------------------
+Create a new Unity project or open an existing Unity project. From the PlayFabClientSDK directory, drag PlayFabClientSDK.unitypackage into your project's assets (anywhere is ok). This will unpack the SDK into your project.
 
-Create a new Unity project or open an existing Unity project. From the PlayFabClientSDK directory, drag the playfab/PlayFabSDK folder into your project's assets (anywhere is ok). You may optionally also install the Unity Editor tools by dragging the playfab/Editor directory into your project's assets.
 
-5. Configuring the Plugin
+5. Configuring the SDK
 -------------------------
 You must configure the SDK with your unique TitleId, as assigned by the PlayFab developer portal. Your TitleId will be a short string that looks something like "8D34" in your Title URL.
 
 Use 8D34 as a demonstration TitleId if you would like to try the various pre-made scenes without making and configurating your own title.
 
-If you have installed the PlayFab editor tools, go to PlayFab->GameConfig and type in your TitleId and current CatalogVersion then Click Save.
+If you have installed the SDK via PlayFabClientSDK.unitypackage, go to PlayFab->GameConfig and type in your TitleId and current CatalogVersion then Click Save.
 
 If you'd prefer to configure the SDK via code, then somewhere in your game's startup code, add the following:
 
@@ -39,6 +43,8 @@ using PlayFab;
 
 PlayFabSettings.TitleId = "your title id here";
 ```
+
+If your project has an Android target, make sure to set your Bundle Identifier in the Player Settings panel.
 
 
 6. Using the plugin
