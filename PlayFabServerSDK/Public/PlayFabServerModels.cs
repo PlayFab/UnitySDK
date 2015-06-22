@@ -573,6 +573,21 @@ namespace PlayFab.ServerModels
 		
 		
 		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
+		
+		public uint DataVersion { get; set;}
+		
+		/// <summary>
+		/// User specific data for this title.
+		/// </summary>
+		
+		public Dictionary<string,UserDataRecord> Data { get; set;}
+		
+		
 		public string CharacterId { get; set;}
 
 	}

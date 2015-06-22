@@ -149,7 +149,12 @@ namespace PlayFab
 		TooManyKeys = 1147,
 		FreeTierCannotHaveVirtualCurrency = 1148,
 		MissingAmazonSharedKey = 1149,
-		AmazonValidationError = 1150
+		AmazonValidationError = 1150,
+		InvalidPSNIssuerId = 1151,
+		PSNInaccessible = 1152,
+		ExpiredAuthToken = 1153,
+		FailedToGetEntitlements = 1154,
+		FailedToConsumeEntitlement = 1155
 	}
 	
 	public class PlayFabError

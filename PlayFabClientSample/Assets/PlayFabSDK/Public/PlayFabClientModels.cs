@@ -723,6 +723,26 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class GameCenterPlayFabIdPair
+	{
+		
+		
+		/// <summary>
+		/// Unique Game Center identifier for a user.
+		/// </summary>
+		
+		public string GameCenterId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Game Center identifier.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+
+	}
+	
+	
+	
 	public class GameInfo
 	{
 		
@@ -926,6 +946,15 @@ namespace PlayFab.ClientModels
 		
 		
 		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// User specific data for this title.
+		/// </summary>
+		
+		public Dictionary<string,UserDataRecord> Data { get; set;}
+		
+		
+		public uint DataVersion { get; set;}
 
 	}
 	
@@ -1364,6 +1393,124 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class GetPlayFabIDsFromGameCenterIDsRequest
+	{
+		
+		
+		/// <summary>
+		/// Array of unique Game Center identifiers (the Player Identifier) for which the title needs to get PlayFab identifiers.
+		/// </summary>
+		
+		public List<string> GameCenterIDs { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromGameCenterIDsResult
+	{
+		
+		
+		/// <summary>
+		/// Mapping of Game Center identifiers to PlayFab identifiers.
+		/// </summary>
+		
+		public List<GameCenterPlayFabIdPair> Data { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromGoogleIDsRequest
+	{
+		
+		
+		/// <summary>
+		/// Array of unique Google identifiers (Google+ user IDs) for which the title needs to get PlayFab identifiers.
+		/// </summary>
+		
+		public List<string> GoogleIDs { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromGoogleIDsResult
+	{
+		
+		
+		/// <summary>
+		/// Mapping of Google identifiers to PlayFab identifiers.
+		/// </summary>
+		
+		public List<GooglePlayFabIdPair> Data { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromPSNAccountIDsRequest
+	{
+		
+		
+		/// <summary>
+		/// Array of unique PlayStation Network identifiers for which the title needs to get PlayFab identifiers.
+		/// </summary>
+		
+		public List<string> PSNAccountIDs { get; set;}
+		
+		/// <summary>
+		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
+		/// </summary>
+		
+		public int? IssuerId { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromPSNAccountIDsResult
+	{
+		
+		
+		/// <summary>
+		/// Mapping of PlayStation Network identifiers to PlayFab identifiers.
+		/// </summary>
+		
+		public List<PSNAccountPlayFabIdPair> Data { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromSteamIDsRequest
+	{
+		
+		
+		/// <summary>
+		/// Array of unique Steam identifiers (Steam profile IDs) for which the title needs to get PlayFab identifiers.
+		/// </summary>
+		
+		public List<ulong> SteamIDs { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromSteamIDsResult
+	{
+		
+		
+		/// <summary>
+		/// Mapping of Steam identifiers to PlayFab identifiers.
+		/// </summary>
+		
+		public List<SteamPlayFabIdPair> Data { get; set;}
+
+	}
+	
+	
+	
 	public class GetPublisherDataRequest
 	{
 		
@@ -1758,6 +1905,26 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public Dictionary<string,int> UserStatistics { get; set;}
+
+	}
+	
+	
+	
+	public class GooglePlayFabIdPair
+	{
+		
+		
+		/// <summary>
+		/// Unique Google identifier for a user.
+		/// </summary>
+		
+		public string GoogleId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Google identifier.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
 
 	}
 	
@@ -2615,6 +2782,26 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class PSNAccountPlayFabIdPair
+	{
+		
+		
+		/// <summary>
+		/// Unique PlayStation Network identifier for a user.
+		/// </summary>
+		
+		public string PSNAccountId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the PlayStation Network identifier.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+
+	}
+	
+	
+	
 	public class PurchasedItem
 	{
 		
@@ -2760,6 +2947,18 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public string AuthCode { get; set;}
+		
+		/// <summary>
+		/// Redirect URI supplied to PSN when requesting an auth code
+		/// </summary>
+		
+		public string RedirectUri { get; set;}
+		
+		/// <summary>
+		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
+		/// </summary>
+		
+		public int? IssuerId { get; set;}
 
 	}
 	
@@ -3304,6 +3503,26 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public Dictionary<string,int> VirtualCurrencyBalances { get; set;}
+
+	}
+	
+	
+	
+	public class SteamPlayFabIdPair
+	{
+		
+		
+		/// <summary>
+		/// Unique Steam identifier for a user.
+		/// </summary>
+		
+		public ulong SteamId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Steam identifier.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
 
 	}
 	
