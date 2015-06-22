@@ -15,10 +15,12 @@ using PlayFab.ClientModels;
 public class PlayFabManager : MonoBehaviour {
 
 	public string TitleId;
-	
-	void Start () {
 
+	void Awake () {
 		PlayFabSettings.TitleId = TitleId;
+	}
+
+	void Start () {
 
 		#if PLAYFAB_IOS
 		PlayFabClientAPI.LoginWithIOSDeviceID (new LoginWithIOSDeviceIDRequest

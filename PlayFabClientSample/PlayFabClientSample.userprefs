@@ -1,12 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PlayFabSDK/Editor/PlayFabPackager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PushExample.cs">
     <Files>
-      <File FileName="Assets/PlayFabSDK/Editor/PlayFabPackager.cs" Line="17" Column="1" />
-      <File FileName="Assets/PlayFabSDK/Editor/PlayFabAdmin.cs" Line="12" Column="26" />
-      <File FileName="Assets/PlayFabSDK/Editor/PlayFabConfig.cs" Line="18" Column="20" />
-      <File FileName="Assets/PlayFabSDK/Editor/PlayFabDocs.cs" Line="12" Column="26" />
-      <File FileName="Assets/PlayFabSDK/Editor/PlayFabGettingStarted.cs" Line="17" Column="8" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabPackager.cs" Line="1" Column="1" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabAdmin.cs" Line="1" Column="1" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabConfig.cs" Line="1" Column="1" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabDocs.cs" Line="1" Column="1" />
+      <File FileName="Assets/PlayFabSDK/Editor/PlayFabGettingStarted.cs" Line="1" Column="1" />
+      <File FileName="Assets/PlayFabSDK/Editor/AndroidManifestManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Plugins/PlayFabPluginEventHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets/PlayFabSDK/Manager/PlayFabManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/LoginExample.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PurchaseExample.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PushExample.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -218,6 +218,7 @@
      <Compile Include="Assets\PlayFabSDK\Public\PlayFabData.cs" />
      <Compile Include="Assets\PlayFabSDK\Public\PlayFabErrors.cs" />
      <Compile Include="Assets\PlayFabSDK\Public\PlayFabSettings.cs" />
+     <Compile Include="Assets\Scripts\LoginExample.cs" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/4.6.6/UnityEngine.UI.dll</HintPath>
