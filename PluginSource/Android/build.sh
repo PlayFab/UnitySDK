@@ -1,4 +1,4 @@
 #!/bin/bash
 set -x
 ant jar
-cp release/PlayFabUnityAndroid.jar ../../PlayFabClientSDK/Playfab/Plugins/Android
+cp release/PlayFabUnityAndroid.jar ../../PlayFabClientSample/Assets/Plugins/Android
