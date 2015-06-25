@@ -1,6 +1,6 @@
 UnitySDK README
 ========
-Welcome to the PlayFab Unity SDK. The quickest way to get started is to import our asset package (PlayFabClientSDK.unitypackage).
+Welcome to the PlayFab Unity SDK. The quickest way to get started is to import our asset package: [PlayFabClientSDK.unitypackage](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSDK.unitypackage).
 
 1. Overview:
 ----
