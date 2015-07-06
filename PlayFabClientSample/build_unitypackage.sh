@@ -1,2 +1,2 @@
 #!/bin/bash
-/Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -executeMethod PlayFabPackager.PackagePlayFabSDK
+/Applications/Unity\ 4.6/Unity.app/Contents/MacOS/Unity -quit -batchmode -executeMethod PlayFabPackager.PackagePlayFabSDK
