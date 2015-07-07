@@ -154,7 +154,27 @@ namespace PlayFab
 		PSNInaccessible = 1152,
 		ExpiredAuthToken = 1153,
 		FailedToGetEntitlements = 1154,
-		FailedToConsumeEntitlement = 1155
+		FailedToConsumeEntitlement = 1155,
+		TradeAcceptingUserNotAllowed = 1156,
+		TradeInventoryItemIsAssignedToCharacter = 1157,
+		TradeInventoryItemIsBundle = 1158,
+		TradeStatusNotValidForCancelling = 1159,
+		TradeStatusNotValidForAccepting = 1160,
+		TradeDoesNotExist = 1161,
+		TradeCancelled = 1162,
+		TradeAlreadyFilled = 1163,
+		TradeWaitForStatusTimeout = 1164,
+		TradeInventoryItemExpired = 1165,
+		TradeMissingOfferedAndAcceptedItems = 1166,
+		TradeAcceptedItemIsBundle = 1167,
+		TradeAcceptedItemIsStackable = 1168,
+		TradeInventoryItemInvalidStatus = 1169,
+		TradeAcceptedCatalogItemInvalid = 1170,
+		TradeAllowedUsersInvalid = 1171,
+		TradeInventoryItemDoesNotExist = 1172,
+		TradeInventoryItemIsConsumed = 1173,
+		TradeInventoryItemIsStackable = 1174,
+		TradeAcceptedItemsMismatch = 1175
 	}
 	
 	public class PlayFabError

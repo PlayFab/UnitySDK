@@ -9,6 +9,43 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class AcceptTradeRequest
+	{
+		
+		
+		/// <summary>
+		/// Player who opened trade.
+		/// </summary>
+		
+		public string OfferingPlayerId { get; set;}
+		
+		/// <summary>
+		/// Trade identifier.
+		/// </summary>
+		
+		public string TradeId { get; set;}
+		
+		/// <summary>
+		/// Items from the accepting player's inventory in exchange for the offered items in the trade. In the case of a gift, this will be null.
+		/// </summary>
+		
+		public List<string> AcceptedInventoryInstanceIds { get; set;}
+
+	}
+	
+	
+	
+	public class AcceptTradeResponse
+	{
+		
+		
+		
+		public TradeInfo Trade { get; set;}
+
+	}
+	
+	
+	
 	public class AddFriendRequest
 	{
 		
@@ -160,6 +197,31 @@ namespace PlayFab.ClientModels
 	public class AndroidDevicePushNotificationRegistrationResult
 	{
 		
+
+	}
+	
+	
+	
+	public class CancelTradeRequest
+	{
+		
+		
+		/// <summary>
+		/// Trade identifier.
+		/// </summary>
+		
+		public string TradeId { get; set;}
+
+	}
+	
+	
+	
+	public class CancelTradeResponse
+	{
+		
+		
+		
+		public TradeInfo Trade { get; set;}
 
 	}
 	
@@ -634,14 +696,6 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public int GameCount { get; set;}
-
-	}
-	
-	
-	
-	public class EmptyResult
-	{
-		
 
 	}
 	
@@ -1365,6 +1419,35 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class GetPlayerTradesRequest
+	{
+		
+		
+		/// <summary>
+		/// Returns only trades with the given status. If null, returns all trades.
+		/// </summary>
+		[JsonConverter(typeof(StringEnumConverter))]
+		
+		public TradeStatus? StatusFilter { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayerTradesResponse
+	{
+		
+		
+		
+		public List<TradeInfo> OpenedTrades { get; set;}
+		
+		
+		public List<TradeInfo> AcceptedTrades { get; set;}
+
+	}
+	
+	
+	
 	public class GetPlayFabIDsFromFacebookIDsRequest
 	{
 		
@@ -1444,40 +1527,6 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public List<GooglePlayFabIdPair> Data { get; set;}
-
-	}
-	
-	
-	
-	public class GetPlayFabIDsFromPSNAccountIDsRequest
-	{
-		
-		
-		/// <summary>
-		/// Array of unique PlayStation Network identifiers for which the title needs to get PlayFab identifiers.
-		/// </summary>
-		
-		public List<string> PSNAccountIDs { get; set;}
-		
-		/// <summary>
-		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
-		/// </summary>
-		
-		public int? IssuerId { get; set;}
-
-	}
-	
-	
-	
-	public class GetPlayFabIDsFromPSNAccountIDsResult
-	{
-		
-		
-		/// <summary>
-		/// Mapping of PlayStation Network identifiers to PlayFab identifiers.
-		/// </summary>
-		
-		public List<PSNAccountPlayFabIdPair> Data { get; set;}
 
 	}
 	
@@ -1670,6 +1719,37 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public List<TitleNewsItem> News { get; set;}
+
+	}
+	
+	
+	
+	public class GetTradeStatusRequest
+	{
+		
+		
+		/// <summary>
+		/// Player who opened trade.
+		/// </summary>
+		
+		public string OfferingPlayerId { get; set;}
+		
+		/// <summary>
+		/// Trade identifier as returned by OpenTradeOffer.
+		/// </summary>
+		
+		public string TradeId { get; set;}
+
+	}
+	
+	
+	
+	public class GetTradeStatusResponse
+	{
+		
+		
+		
+		public TradeInfo Trade { get; set;}
 
 	}
 	
@@ -2629,6 +2709,43 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class OpenTradeRequest
+	{
+		
+		
+		/// <summary>
+		/// Player inventory items offered for trade. If not set, the trade is effectively a gift request
+		/// </summary>
+		
+		public List<string> OfferedInventoryInstanceIds { get; set;}
+		
+		/// <summary>
+		/// Catalog items accepted for the trade. If not set, the trade is effectively a gift.
+		/// </summary>
+		
+		public List<string> RequestedCatalogItemIds { get; set;}
+		
+		/// <summary>
+		/// Players who are allowed to accept the trade. If null, the trade may be accepted by any player.
+		/// </summary>
+		
+		public List<string> AllowedPlayerIds { get; set;}
+
+	}
+	
+	
+	
+	public class OpenTradeResponse
+	{
+		
+		
+		
+		public TradeInfo Trade { get; set;}
+
+	}
+	
+	
+	
 	public class PayForPurchaseRequest
 	{
 		
@@ -2782,26 +2899,6 @@ namespace PlayFab.ClientModels
 	
 	
 	
-	public class PSNAccountPlayFabIdPair
-	{
-		
-		
-		/// <summary>
-		/// Unique PlayStation Network identifier for a user.
-		/// </summary>
-		
-		public string PSNAccountId { get; set;}
-		
-		/// <summary>
-		/// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the PlayStation Network identifier.
-		/// </summary>
-		
-		public string PlayFabId { get; set;}
-
-	}
-	
-	
-	
 	public class PurchasedItem
 	{
 		
@@ -2933,32 +3030,6 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public List<ItemInstance> GrantedItems { get; set;}
-
-	}
-	
-	
-	
-	public class RefreshPSNAuthTokenRequest
-	{
-		
-		
-		/// <summary>
-		/// Auth code returned by PSN OAuth system.
-		/// </summary>
-		
-		public string AuthCode { get; set;}
-		
-		/// <summary>
-		/// Redirect URI supplied to PSN when requesting an auth code
-		/// </summary>
-		
-		public string RedirectUri { get; set;}
-		
-		/// <summary>
-		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
-		/// </summary>
-		
-		public int? IssuerId { get; set;}
 
 	}
 	
@@ -3620,6 +3691,67 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class TradeInfo
+	{
+		
+		
+		[JsonConverter(typeof(StringEnumConverter))]
+		
+		public TradeStatus? Status { get; set;}
+		
+		
+		public string TradeId { get; set;}
+		
+		
+		public string OfferingPlayerId { get; set;}
+		
+		
+		public List<string> OfferedInventoryInstanceIds { get; set;}
+		
+		
+		public List<string> OfferedCatalogItemIds { get; set;}
+		
+		
+		public List<string> RequestedCatalogItemIds { get; set;}
+		
+		
+		public List<string> AllowedPlayerIds { get; set;}
+		
+		
+		public string AcceptedPlayerId { get; set;}
+		
+		
+		public List<string> AcceptedInventoryInstanceIds { get; set;}
+		
+		
+		public DateTime? OpenedAt { get; set;}
+		
+		
+		public DateTime? FilledAt { get; set;}
+		
+		
+		public DateTime? CancelledAt { get; set;}
+		
+		
+		public DateTime? InvalidatedAt { get; set;}
+
+	}
+	
+	
+	
+	public enum TradeStatus
+	{
+		Invalid,
+		Opening,
+		Open,
+		Accepting,
+		Accepted,
+		Filled,
+		Cancelled
+	}
+	
+	
+	
 	public enum TransactionStatus
 	{
 		CreateCart,
@@ -3634,6 +3766,7 @@ namespace PlayFab.ClientModels
 		FailedByUber,
 		Revoked,
 		TradePending,
+		Traded,
 		Upgraded,
 		StackPending,
 		Stacked,
