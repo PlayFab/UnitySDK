@@ -215,7 +215,6 @@
      <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\WriteState.cs" />
      <Compile Include="Assets\PlayFabSDK\Public\PlayFabClientAPI.cs" />
      <Compile Include="Assets\PlayFabSDK\Public\PlayFabClientModels.cs" />
-     <Compile Include="Assets\PlayFabSDK\Public\PlayFabData.cs" />
      <Compile Include="Assets\PlayFabSDK\Public\PlayFabErrors.cs" />
      <Compile Include="Assets\PlayFabSDK\Public\PlayFabSettings.cs" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />

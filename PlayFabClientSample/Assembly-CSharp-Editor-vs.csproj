@@ -48,7 +48,6 @@
   <ItemGroup>
      <Compile Include="Assets\PlayFabSDK\Editor\AndroidManifestManager.cs" />
      <Compile Include="Assets\PlayFabSDK\Editor\PlayFabAdmin.cs" />
-     <Compile Include="Assets\PlayFabSDK\Editor\PlayFabConfig.cs" />
      <Compile Include="Assets\PlayFabSDK\Editor\PlayFabDocs.cs" />
      <Compile Include="Assets\PlayFabSDK\Editor\PlayFabGettingStarted.cs" />
      <Compile Include="Assets\PlayFabSDK\Editor\PlayFabPackager.cs" />
