@@ -46,6 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\PlayFabSDK\DemoScene\PlayFabManager.cs" />
+     <Compile Include="Assets\PlayFabSDK\DemoScene\ScreenOutput.cs" />
      <Compile Include="Assets\PlayFabSDK\Internal\Log.cs" />
      <Compile Include="Assets\PlayFabSDK\Internal\PlayFabHTTP.cs" />
      <Compile Include="Assets\PlayFabSDK\Internal\PlayFabVersion.cs" />
@@ -65,7 +67,6 @@
      <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZlibCodec.cs" />
      <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZlibConstants.cs" />
      <Compile Include="Assets\PlayFabSDK\Ionic.Zlib\ZlibStream.cs" />
-     <Compile Include="Assets\PlayFabSDK\Manager\PlayFabManager.cs" />
      <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\ConstructorHandling.cs" />
      <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\CustomCreationConverter.cs" />
      <Compile Include="Assets\PlayFabSDK\Newtonsoft.Json\Converters\DateTimeConverterBase.cs" />

@@ -6,7 +6,6 @@ Welcome to the PlayFab Unity SDK. The quickest way to get started is to import o
 ----
 This document describes the process of configuring and building the PlayFab Unity plugin binary and distribution package. The document also contains instructions for developers to start using the plugin in their Unity games.
 
-
 2. Prerequisites:
 ----
 This document assumes familiarity with the Unity game engine, MonoDevelop Unity .NET programming environment, and Mac OS X operating system environment.
@@ -26,7 +25,6 @@ Our repository contians 4 major sections:
   3. PlayFabServerSDK - provides access to the PlayFab Server and Admin API subsets.
   4. PluginSource - Contains the source code for our native Android plugin 
 
-
 4. Installation & Configuration Instructions:
 ----
 #### Installation via the .unitypackage:
@@ -42,7 +40,7 @@ With projects running on Unity3d < 5.0, you will want to stick to the standard f
 #### Configuration:
 You must configure the SDK with your unique TitleId, as assigned by the PlayFab Game Manager and can be found under the Settings > Credentials section.
 
-Use 8D34 as a demonstration TitleId if you would like to try the various pre-made scenes without making and configurating your own title.
+Use AD08 as a demonstration TitleId if you would like to try the various pre-made scenes without making and configurating your own title.
 
 If you'd prefer to configure the SDK via code, then somewhere in your game's startup code, add the following:
 
@@ -52,10 +50,17 @@ using PlayFab;
 PlayFabSettings.TitleId = "your title id here";
 ```
 
-
 5. Usage Instructions:
 ----
 You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://playfab.com/docs#/menu/1383/1383) for a complete list of available APIs.
+
+#####New Users:
+* Check out our PlayFabSDK/DemoScene to see how to get started with device ID authentication and calling into Cloud Script.
+* Additional Examples:
+  * [Login Pathways](https://github.com/PlayFab/Unity3d_Login_Example_Project)
+  * [Photon Integration](https://github.com/PlayFab/Photon-Cloud-Integration)
+  * [MOBA Starter Project](https://github.com/PlayFab/UNION-OpenSource-MOBA)
+  * [Cloud Script Samples](https://github.com/PlayFab/CloudScriptSamples) 
 
 
 6. Troubleshooting:
@@ -75,7 +80,6 @@ Do you have ideas on how we can make our products and services better?
 Our Developer Success Team can assist with answering any questions as well as process any feedback you have about PlayFab services.
 
 [Forums, Support and Knowledge Base](https://support.playfab.com/support/home)
-
 
 7. Copyright and Licensing Information:
 ----

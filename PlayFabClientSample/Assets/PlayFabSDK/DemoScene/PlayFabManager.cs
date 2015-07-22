@@ -6,15 +6,14 @@
 #define PLAYFAB_IOS
 #endif
 
-
 using UnityEngine;
 
 using PlayFab;
 using PlayFab.ClientModels;
 
 public class PlayFabManager : MonoBehaviour {
-
 	public string TitleId;
+	public string callStatus = "** PlayFab Console ** \n Run on an Android or iOS device to see automatic device ID authentication.";
 
 	void Awake () {
 		PlayFabSettings.TitleId = TitleId;
@@ -25,7 +24,7 @@ public class PlayFabManager : MonoBehaviour {
 		#if PLAYFAB_IOS
 		PlayFabClientAPI.LoginWithIOSDeviceID (new LoginWithIOSDeviceIDRequest
 		{
-			DeviceId = SystemInfo.deviceUniqueIdentifier,
+			DeviceId = UnityEngine.iOS.Device.vendorIdentifier,
 			OS = SystemInfo.operatingSystem,
 			DeviceModel = SystemInfo.deviceModel,
 			CreateAccount = true
@@ -39,18 +38,18 @@ public class PlayFabManager : MonoBehaviour {
 			CreateAccount = true
 		}, onLoginSuccess, null);
 		#endif
-
 	}
 	
 	private void onLoginSuccess(LoginResult result)
 	{
-		Debug.Log(string.Format("PlayFab Authentication Successful! -- Player ID:{0}", result.PlayFabId));
+		this.callStatus = string.Format("PlayFab Authentication Successful! -- Player ID:{0}", result.PlayFabId);
+		Debug.Log(callStatus);
+		
 	}
 	
 	private void onLoginError(PlayFabError error)
 	{
-		Debug.Log(string.Format("Error {0}: {1}", error.HttpCode, error.ErrorMessage));
+		this.callStatus = string.Format("Error {0}: {1}", error.HttpCode, error.ErrorMessage);
+		Debug.Log(callStatus);
 	}
-
-
 }

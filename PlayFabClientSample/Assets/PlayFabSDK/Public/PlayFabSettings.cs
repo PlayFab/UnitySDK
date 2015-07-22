@@ -13,8 +13,6 @@ namespace PlayFab
 
 	public class PlayFabSettings
 	{
-		public static bool UseDevelopmentEnvironment = false; // Leave to false, only production is available at the moment.
-		public static string DevelopmentEnvironmentURL = ".playfabsandbox.com";
 		public static string ProductionEnvironmentURL = ".playfabapi.com";
 		public static string LogicServerURL = null;
 		public static string TitleId = null;
@@ -23,7 +21,7 @@ namespace PlayFab
 
 		public static string GetURL()
 		{
-			string baseUrl = UseDevelopmentEnvironment ? DevelopmentEnvironmentURL : ProductionEnvironmentURL;
+			string baseUrl = ProductionEnvironmentURL;
 			if(baseUrl.StartsWith("http"))
 				return baseUrl;
 			return "https://"+TitleId+baseUrl;
