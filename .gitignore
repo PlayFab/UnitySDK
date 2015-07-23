@@ -1,3 +1,5 @@
 PluginSource/Android/release/bin
 PluginSource/Android/libs/UnityPlayerClasses.jar
 PlayFabClientSample/Library
+
+/PlayFab*/Temp/
