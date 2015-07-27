@@ -20,11 +20,11 @@ public class PlayFabManager : MonoBehaviour {
 	}
 
 	void Start () {
-
+		Debug.Log("Starting Auto-login Process");
 		#if PLAYFAB_IOS
 		PlayFabClientAPI.LoginWithIOSDeviceID (new LoginWithIOSDeviceIDRequest
 		{
-			DeviceId = UnityEngine.iOS.Device.vendorIdentifier,
+			DeviceId = SystemInfo.deviceUniqueIdentifier,
 			OS = SystemInfo.operatingSystem,
 			DeviceModel = SystemInfo.deviceModel,
 			CreateAccount = true

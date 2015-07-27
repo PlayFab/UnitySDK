@@ -1,8 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PlayFabSDK/Manager/PlayFabManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PlayFabSDK/DemoScene/PlayFabManager.cs">
     <Files>
-      <File FileName="Assets/PlayFabSDK/Manager/PlayFabManager.cs" Line="54" Column="3" />
+      <File FileName="Assets/PlayFabSDK/DemoScene/PlayFabManager.cs" Line="27" Column="48" />
+      <File FileName="Assets/PlayFabSDK/Editor/AndroidManifestManager.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
