@@ -3,3 +3,7 @@ PluginSource/Android/libs/UnityPlayerClasses.jar
 PlayFabClientSample/Library
 
 /PlayFab*/Temp/
+*.csproj
+*.sln
+*.meta
+*/Library/
