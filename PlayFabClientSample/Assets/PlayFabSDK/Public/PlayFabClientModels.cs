@@ -102,6 +102,9 @@ namespace PlayFab.ClientModels
 		
 		public string SharedGroupId { get; set;}
 		
+		/// <summary>
+		/// an array of unique playfab-assigned numerical ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public List<string> PlayFabIds { get; set;}
 
@@ -121,12 +124,21 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// PlayFab username for the account (3-20 characters)
+		/// </summary>
 		
 		public string Username { get; set;}
 		
+		/// <summary>
+		/// user email address attached to their account
+		/// </summary>
 		
 		public string Email { get; set;}
 		
+		/// <summary>
+		/// password for the PlayFab account (6-30 characters)
+		/// </summary>
 		
 		public string Password { get; set;}
 
@@ -345,12 +357,6 @@ namespace PlayFab.ClientModels
 		public string CustomData { get; set;}
 		
 		/// <summary>
-		/// array of ItemId values which are evaluated when any item is added to the player inventory - if all items in this array are present, the this item will also be added to the player inventory
-		/// </summary>
-		
-		public List<string> GrantedIfPlayerHas { get; set;}
-		
-		/// <summary>
 		/// defines the consumable properties (number of uses, timeout) for the item
 		/// </summary>
 		
@@ -369,7 +375,7 @@ namespace PlayFab.ClientModels
 		public CatalogItemBundleInfo Bundle { get; set;}
 		
 		/// <summary>
-		/// if true, then this item instance can be used to grant a character to a user.
+		/// if true, then an item instance of this type can be used to grant a character to a user.
 		/// </summary>
 		
 		public bool CanBecomeCharacter { get; set;}
@@ -379,6 +385,12 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public bool IsStackable { get; set;}
+		
+		/// <summary>
+		/// if true, then an item instance of this type can be traded between players using the trading APIs
+		/// </summary>
+		
+		public bool IsTradable { get; set;}
 
 	}
 	
@@ -555,7 +567,7 @@ namespace PlayFab.ClientModels
 		/// Array of items purchased.
 		/// </summary>
 		
-		public List<PurchasedItem> Items { get; set;}
+		public List<ItemInstance> Items { get; set;}
 
 	}
 	
@@ -596,6 +608,40 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public int RemainingUses { get; set;}
+
+	}
+	
+	
+	
+	public class ConsumePSNEntitlementsRequest
+	{
+		
+		
+		/// <summary>
+		/// Which catalog to match granted entitlements against. If null, defaults to title default catalog
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// Id of the PSN service label to consume entitlements from
+		/// </summary>
+		
+		public int ServiceLabel { get; set;}
+
+	}
+	
+	
+	
+	public class ConsumePSNEntitlementsResult
+	{
+		
+		
+		/// <summary>
+		/// Array of items granted to the player as a result of consuming entitlements.
+		/// </summary>
+		
+		public List<ItemInstance> ItemsGranted { get; set;}
 
 	}
 	
@@ -696,6 +742,14 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public int GameCount { get; set;}
+
+	}
+	
+	
+	
+	public class EmptyResult
+	{
+		
 
 	}
 	
@@ -870,6 +924,9 @@ namespace PlayFab.ClientModels
 		
 		public string BuildVersion { get; set;}
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 
@@ -975,6 +1032,9 @@ namespace PlayFab.ClientModels
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// unique playfab-assigned numerical ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -998,6 +1058,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique playfab-assigned numerical ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -1007,6 +1070,9 @@ namespace PlayFab.ClientModels
 		
 		public Dictionary<string,UserDataRecord> Data { get; set;}
 		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
 		
 		public uint DataVersion { get; set;}
 
@@ -1018,9 +1084,15 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique playfab-assigned numerical ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// unique playfab-assigned numerical ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -1256,6 +1328,9 @@ namespace PlayFab.ClientModels
 		
 		public string StatisticName { get; set;}
 		
+		/// <summary>
+		/// unique playfab-assigned numerical ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -1532,6 +1607,40 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class GetPlayFabIDsFromPSNAccountIDsRequest
+	{
+		
+		
+		/// <summary>
+		/// Array of unique PlayStation Network identifiers for which the title needs to get PlayFab identifiers.
+		/// </summary>
+		
+		public List<string> PSNAccountIDs { get; set;}
+		
+		/// <summary>
+		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
+		/// </summary>
+		
+		public int? IssuerId { get; set;}
+
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromPSNAccountIDsResult
+	{
+		
+		
+		/// <summary>
+		/// Mapping of PlayStation Network identifiers to PlayFab identifiers.
+		/// </summary>
+		
+		public List<PSNAccountPlayFabIdPair> Data { get; set;}
+
+	}
+	
+	
+	
 	public class GetPlayFabIDsFromSteamIDsRequest
 	{
 		
@@ -1583,6 +1692,64 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public Dictionary<string,string> Data { get; set;}
+
+	}
+	
+	
+	
+	public class GetPurchaseRequest
+	{
+		
+		
+		/// <summary>
+		/// Purchase order identifier.
+		/// </summary>
+		
+		public string OrderId { get; set;}
+
+	}
+	
+	
+	
+	public class GetPurchaseResult
+	{
+		
+		
+		/// <summary>
+		/// Purchase order identifier.
+		/// </summary>
+		
+		public string OrderId { get; set;}
+		
+		/// <summary>
+		/// Payment provider used for transaction (If not VC)
+		/// </summary>
+		
+		public string PaymentProvider { get; set;}
+		
+		/// <summary>
+		/// Provider transaction ID (If not VC)
+		/// </summary>
+		
+		public string TransactionId { get; set;}
+		
+		/// <summary>
+		/// PlayFab transaction status
+		/// </summary>
+		
+		public string TransactionStatus { get; set;}
+		
+		/// <summary>
+		/// Date and time of the purchase.
+		/// </summary>
+		
+		public DateTime PurchaseDate { get; set;}
+		
+		/// <summary>
+		/// Array of items purchased.
+		/// </summary>
+		
+		public List<ItemInstance> Items { get; set;}
 
 	}
 	
@@ -1927,6 +2094,9 @@ namespace PlayFab.ClientModels
 		
 		public Dictionary<string,UserDataRecord> Data { get; set;}
 		
+		/// <summary>
+		/// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+		/// </summary>
 		
 		public uint DataVersion { get; set;}
 
@@ -2103,6 +2273,12 @@ namespace PlayFab.ClientModels
 		public int? RemainingUses { get; set;}
 		
 		/// <summary>
+		/// The number of uses that were added or removed to this item in this call.
+		/// </summary>
+		
+		public int? UsesIncrementedBy { get; set;}
+		
+		/// <summary>
 		/// Game specific comment associated with this instance when it was added to the user inventory.
 		/// </summary>
 		
@@ -2119,6 +2295,27 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public string BundleParent { get; set;}
+		
+		
+		public string DisplayName { get; set;}
+		
+		/// <summary>
+		/// Currency type for the cost of the catalog item.
+		/// </summary>
+		
+		public string UnitCurrency { get; set;}
+		
+		/// <summary>
+		/// Cost of the catalog item in the given currency.
+		/// </summary>
+		
+		public uint UnitPrice { get; set;}
+		
+		/// <summary>
+		/// Array of unique items that were awarded when this catalog item was purchased.
+		/// </summary>
+		
+		public List<string> BundleContents { get; set;}
 		
 		/// <summary>
 		/// A set of custom key-value pairs on the inventory item.
@@ -2296,6 +2493,68 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class LinkKongregateAccountRequest
+	{
+		
+		
+		/// <summary>
+		/// Numeric user ID assigned by Kongregate
+		/// </summary>
+		
+		public ulong KongregateId { get; set;}
+		
+		/// <summary>
+		/// Valid session auth ticket issued by Kongregate
+		/// </summary>
+		
+		public string AuthTicket { get; set;}
+
+	}
+	
+	
+	
+	public class LinkKongregateAccountResult
+	{
+		
+
+	}
+	
+	
+	
+	public class LinkPSNAccountRequest
+	{
+		
+		
+		/// <summary>
+		/// Authentication code provided by the PlayStation Network.
+		/// </summary>
+		
+		public string AuthCode { get; set;}
+		
+		/// <summary>
+		/// Redirect URI supplied to PSN when requesting an auth code
+		/// </summary>
+		
+		public string RedirectUri { get; set;}
+		
+		/// <summary>
+		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
+		/// </summary>
+		
+		public int? IssuerId { get; set;}
+
+	}
+	
+	
+	
+	public class LinkPSNAccountResult
+	{
+		
+
+	}
+	
+	
+	
 	public class LinkSteamAccountRequest
 	{
 		
@@ -2388,6 +2647,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -2423,6 +2685,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -2432,6 +2697,9 @@ namespace PlayFab.ClientModels
 		
 		public string Email { get; set;}
 		
+		/// <summary>
+		/// password for the PlayFab account (6-30 characters)
+		/// </summary>
 		
 		public string Password { get; set;}
 
@@ -2443,6 +2711,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -2466,6 +2737,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -2492,6 +2766,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -2523,10 +2800,45 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class LoginWithKongregateRequest
+	{
+		
+		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
+		
+		public string TitleId { get; set;}
+		
+		/// <summary>
+		/// Unique identifier from Kongregate for the user.
+		/// </summary>
+		
+		public ulong KongregateId { get; set;}
+		
+		/// <summary>
+		/// Token issued by Kongregate's client API for the user.
+		/// </summary>
+		
+		public string AuthTicket { get; set;}
+		
+		/// <summary>
+		/// Automatically create a PlayFab account if one is not currently linked to this Kongregate account.
+		/// </summary>
+		
+		public bool? CreateAccount { get; set;}
+
+	}
+	
+	
+	
 	public class LoginWithPlayFabRequest
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -2536,8 +2848,49 @@ namespace PlayFab.ClientModels
 		
 		public string Username { get; set;}
 		
+		/// <summary>
+		/// password for the PlayFab account (6-30 characters)
+		/// </summary>
 		
 		public string Password { get; set;}
+
+	}
+	
+	
+	
+	public class LoginWithPSNRequest
+	{
+		
+		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
+		
+		public string TitleId { get; set;}
+		
+		/// <summary>
+		/// Auth code provided by the PSN OAuth provider.
+		/// </summary>
+		
+		public string AuthCode { get; set;}
+		
+		/// <summary>
+		/// Redirect URI supplied to PSN when requesting an auth code
+		/// </summary>
+		
+		public string RedirectUri { get; set;}
+		
+		/// <summary>
+		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
+		/// </summary>
+		
+		public int? IssuerId { get; set;}
+		
+		/// <summary>
+		/// Automatically create a PlayFab account if one is not currently linked to this PSN account.
+		/// </summary>
+		
+		public bool? CreateAccount { get; set;}
 
 	}
 	
@@ -2547,6 +2900,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -2899,51 +3255,21 @@ namespace PlayFab.ClientModels
 	
 	
 	
-	public class PurchasedItem
+	public class PSNAccountPlayFabIdPair
 	{
 		
 		
 		/// <summary>
-		/// Unique instance identifier for this catalog item.
+		/// Unique PlayStation Network identifier for a user.
 		/// </summary>
 		
-		public string ItemInstanceId { get; set;}
+		public string PSNAccountId { get; set;}
 		
 		/// <summary>
-		/// Unique identifier for the catalog item.
+		/// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the PlayStation Network identifier.
 		/// </summary>
 		
-		public string ItemId { get; set;}
-		
-		/// <summary>
-		/// Catalog version for the item purchased.
-		/// </summary>
-		
-		public string CatalogVersion { get; set;}
-		
-		/// <summary>
-		/// Display name for the catalog item.
-		/// </summary>
-		
-		public string DisplayName { get; set;}
-		
-		/// <summary>
-		/// Currency type for the cost of the catalog item.
-		/// </summary>
-		
-		public string UnitCurrency { get; set;}
-		
-		/// <summary>
-		/// Cost of the catalog item in the given currency.
-		/// </summary>
-		
-		public uint UnitPrice { get; set;}
-		
-		/// <summary>
-		/// Array of unique items that were awarded when this catalog item was purchased.
-		/// </summary>
-		
-		public List<string> BundleContents { get; set;}
+		public string PlayFabId { get; set;}
 
 	}
 	
@@ -2995,7 +3321,7 @@ namespace PlayFab.ClientModels
 		/// Details for the items purchased.
 		/// </summary>
 		
-		public List<PurchasedItem> Items { get; set;}
+		public List<ItemInstance> Items { get; set;}
 
 	}
 	
@@ -3030,6 +3356,32 @@ namespace PlayFab.ClientModels
 		/// </summary>
 		
 		public List<ItemInstance> GrantedItems { get; set;}
+
+	}
+	
+	
+	
+	public class RefreshPSNAuthTokenRequest
+	{
+		
+		
+		/// <summary>
+		/// Auth code returned by PSN OAuth system.
+		/// </summary>
+		
+		public string AuthCode { get; set;}
+		
+		/// <summary>
+		/// Redirect URI supplied to PSN when requesting an auth code
+		/// </summary>
+		
+		public string RedirectUri { get; set;}
+		
+		/// <summary>
+		/// Id of the PSN issuer environment. If null, defaults to 256 (production)
+		/// </summary>
+		
+		public int? IssuerId { get; set;}
 
 	}
 	
@@ -3119,15 +3471,27 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
+		/// <summary>
+		/// PlayFab username for the account (3-20 characters)
+		/// </summary>
 		
 		public string Username { get; set;}
 		
+		/// <summary>
+		/// user email address attached to their account
+		/// </summary>
 		
 		public string Email { get; set;}
 		
+		/// <summary>
+		/// password for the PlayFab account (6-30 characters)
+		/// </summary>
 		
 		public string Password { get; set;}
 		
@@ -3199,6 +3563,9 @@ namespace PlayFab.ClientModels
 		
 		public string SharedGroupId { get; set;}
 		
+		/// <summary>
+		/// an array of unique playfab-assigned numerical ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public List<string> PlayFabIds { get; set;}
 
@@ -3350,9 +3717,15 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// user email address attached to their account
+		/// </summary>
 		
 		public string Email { get; set;}
 		
+		/// <summary>
+		/// unique numerical identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -3868,6 +4241,38 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class UnlinkKongregateAccountRequest
+	{
+		
+
+	}
+	
+	
+	
+	public class UnlinkKongregateAccountResult
+	{
+		
+
+	}
+	
+	
+	
+	public class UnlinkPSNAccountRequest
+	{
+		
+
+	}
+	
+	
+	
+	public class UnlinkPSNAccountResult
+	{
+		
+
+	}
+	
+	
+	
 	public class UnlinkSteamAccountRequest
 	{
 		
@@ -3940,6 +4345,9 @@ namespace PlayFab.ClientModels
 	{
 		
 		
+		/// <summary>
+		/// unique playfab-assigned numerical ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
