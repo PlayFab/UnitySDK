@@ -174,7 +174,15 @@ namespace PlayFab
 		TradeInventoryItemDoesNotExist = 1172,
 		TradeInventoryItemIsConsumed = 1173,
 		TradeInventoryItemIsStackable = 1174,
-		TradeAcceptedItemsMismatch = 1175
+		TradeAcceptedItemsMismatch = 1175,
+		InvalidKongregateToken = 1176,
+		FeatureNotConfiguredForTitle = 1177,
+		NoMatchingCatalogItemForReceipt = 1178,
+		InvalidCurrencyCode = 1179,
+		NoRealMoneyPriceForCatalogItem = 1180,
+		TradeInventoryItemIsNotTradable = 1181,
+		TradeAcceptedCatalogItemIsNotTradable = 1182,
+		UsersAlreadyFriends = 1183
 	}
 	
 	public class PlayFabError

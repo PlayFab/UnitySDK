@@ -66,6 +66,7 @@ namespace PlayFab
 		public delegate void DeleteContentCallback(BlankResult result);
 		public delegate void GetContentListCallback(GetContentListResult result);
 		public delegate void GetContentUploadUrlCallback(GetContentUploadUrlResult result);
+		public delegate void ResetCharacterStatisticsCallback(ResetCharacterStatisticsResult result);
 		
 		
 		
@@ -1662,6 +1663,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/GetContentUploadUrl", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Completely removes all statistics for the specified character, for the current game
+		/// </summary>
+		public static void ResetCharacterStatistics(ResetCharacterStatisticsRequest request, ResetCharacterStatisticsCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			{
+				ResetCharacterStatisticsResult result = null;
+				PlayFabError error = null;
+				ResultContainer<ResetCharacterStatisticsResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Admin/ResetCharacterStatistics", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		
