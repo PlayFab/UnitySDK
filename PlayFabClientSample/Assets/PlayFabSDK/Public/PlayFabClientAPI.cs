@@ -17,6 +17,7 @@ namespace PlayFab
 		public delegate void LoginWithFacebookCallback(LoginResult result);
 		public delegate void LoginWithGoogleAccountCallback(LoginResult result);
 		public delegate void LoginWithIOSDeviceIDCallback(LoginResult result);
+		public delegate void LoginWithKongregateCallback(LoginResult result);
 		public delegate void LoginWithPlayFabCallback(LoginResult result);
 		public delegate void LoginWithSteamCallback(LoginResult result);
 		public delegate void RegisterPlayFabUserCallback(RegisterPlayFabUserResult result);
@@ -32,6 +33,7 @@ namespace PlayFab
 		public delegate void LinkGameCenterAccountCallback(LinkGameCenterAccountResult result);
 		public delegate void LinkGoogleAccountCallback(LinkGoogleAccountResult result);
 		public delegate void LinkIOSDeviceIDCallback(LinkIOSDeviceIDResult result);
+		public delegate void LinkKongregateCallback(LinkKongregateAccountResult result);
 		public delegate void LinkSteamAccountCallback(LinkSteamAccountResult result);
 		public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
 		public delegate void UnlinkAndroidDeviceIDCallback(UnlinkAndroidDeviceIDResult result);
@@ -39,6 +41,7 @@ namespace PlayFab
 		public delegate void UnlinkGameCenterAccountCallback(UnlinkGameCenterAccountResult result);
 		public delegate void UnlinkGoogleAccountCallback(UnlinkGoogleAccountResult result);
 		public delegate void UnlinkIOSDeviceIDCallback(UnlinkIOSDeviceIDResult result);
+		public delegate void UnlinkKongregateCallback(UnlinkKongregateAccountResult result);
 		public delegate void UnlinkSteamAccountCallback(UnlinkSteamAccountResult result);
 		public delegate void UpdateUserTitleDisplayNameCallback(UpdateUserTitleDisplayNameResult result);
 		public delegate void GetFriendLeaderboardCallback(GetLeaderboardResult result);
@@ -60,6 +63,7 @@ namespace PlayFab
 		public delegate void ConfirmPurchaseCallback(ConfirmPurchaseResult result);
 		public delegate void ConsumeItemCallback(ConsumeItemResult result);
 		public delegate void GetCharacterInventoryCallback(GetCharacterInventoryResult result);
+		public delegate void GetPurchaseCallback(GetPurchaseResult result);
 		public delegate void GetUserInventoryCallback(GetUserInventoryResult result);
 		public delegate void PayForPurchaseCallback(PayForPurchaseResult result);
 		public delegate void PurchaseItemCallback(PurchaseItemResult result);
@@ -289,6 +293,37 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithIOSDeviceID", serializedJSON, null, null, callback);
+		}
+		
+		/// <summary>
+		/// Signs the user in using a Kongregate player account.
+		/// </summary>
+		public static void LoginWithKongregate(LoginWithKongregateRequest request, LoginWithKongregateCallback resultCallback, ErrorCallback errorCallback)
+		{
+			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
+			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			{
+				LoginResult result = null;
+				PlayFabError error = null;
+				ResultContainer<LoginResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					AuthKey = result.SessionTicket ?? AuthKey;
+
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithKongregate", serializedJSON, null, null, callback);
 		}
 		
 		/// <summary>
@@ -733,6 +768,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Links the Kongregate identifier to the user's PlayFab account
+		/// </summary>
+		public static void LinkKongregate(LinkKongregateAccountRequest request, LinkKongregateCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			{
+				LinkKongregateAccountResult result = null;
+				PlayFabError error = null;
+				ResultContainer<LinkKongregateAccountResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkKongregate", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
 		/// Links the Steam account associated with the provided Steam authentication ticket to the user's PlayFab account
 		/// </summary>
 		public static void LinkSteamAccount(LinkSteamAccountRequest request, LinkSteamAccountCallback resultCallback, ErrorCallback errorCallback)
@@ -932,6 +996,35 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkIOSDeviceID", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Unlinks the related Kongregate identifier from the user's PlayFab account
+		/// </summary>
+		public static void UnlinkKongregate(UnlinkKongregateAccountRequest request, UnlinkKongregateCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			{
+				UnlinkKongregateAccountResult result = null;
+				PlayFabError error = null;
+				ResultContainer<UnlinkKongregateAccountResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkKongregate", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
@@ -1544,6 +1637,35 @@ namespace PlayFab
 		}
 		
 		/// <summary>
+		/// Retrieves a completed purchase along with its current PlayFab status.
+		/// </summary>
+		public static void GetPurchase(GetPurchaseRequest request, GetPurchaseCallback resultCallback, ErrorCallback errorCallback)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			{
+				GetPurchaseResult result = null;
+				PlayFabError error = null;
+				ResultContainer<GetPurchaseResult>.HandleResults(responseStr, errorStr, out result, out error);
+				if(error != null && errorCallback != null)
+				{
+					errorCallback(error);
+				}
+				if(result != null)
+				{
+					
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPurchase", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
 		/// Retrieves the user's current inventory of virtual goods
 		/// </summary>
 		public static void GetUserInventory(GetUserInventoryRequest request, GetUserInventoryCallback resultCallback, ErrorCallback errorCallback)
@@ -1776,7 +1898,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds the PlayFab user, based upon a match against a supplied unique identifier, to the friend list of the local user
+		/// Adds the PlayFab user, based upon a match against a supplied unique identifier, to the friend list of the local user. At least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized.
 		/// </summary>
 		public static void AddFriend(AddFriendRequest request, AddFriendCallback resultCallback, ErrorCallback errorCallback)
 		{

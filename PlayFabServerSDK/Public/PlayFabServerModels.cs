@@ -19,6 +19,9 @@ namespace PlayFab.ServerModels
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -38,6 +41,44 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	public class AddFriendRequest
+	{
+		
+		
+		/// <summary>
+		/// PlayFab identifier of the player to add a new friend.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// The PlayFab identifier of the user being added.
+		/// </summary>
+		
+		public string FriendPlayFabId { get; set;}
+		
+		/// <summary>
+		/// The PlayFab username of the user being added
+		/// </summary>
+		
+		public string FriendUsername { get; set;}
+		
+		/// <summary>
+		/// Email address of the user being added.
+		/// </summary>
+		
+		public string FriendEmail { get; set;}
+		
+		/// <summary>
+		/// Title-specific display name of the user to being added.
+		/// </summary>
+		
+		public string FriendTitleDisplayName { get; set;}
+
+	}
+	
+	
+	
 	public class AddSharedGroupMembersRequest
 	{
 		
@@ -48,6 +89,9 @@ namespace PlayFab.ServerModels
 		
 		public string SharedGroupId { get; set;}
 		
+		/// <summary>
+		/// An array of unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public List<string> PlayFabIds { get; set;}
 
@@ -121,6 +165,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -230,12 +277,6 @@ namespace PlayFab.ServerModels
 		public string CustomData { get; set;}
 		
 		/// <summary>
-		/// array of ItemId values which are evaluated when any item is added to the player inventory - if all items in this array are present, the this item will also be added to the player inventory
-		/// </summary>
-		
-		public List<string> GrantedIfPlayerHas { get; set;}
-		
-		/// <summary>
 		/// defines the consumable properties (number of uses, timeout) for the item
 		/// </summary>
 		
@@ -254,7 +295,7 @@ namespace PlayFab.ServerModels
 		public CatalogItemBundleInfo Bundle { get; set;}
 		
 		/// <summary>
-		/// if true, then this item instance can be used to grant a character to a user.
+		/// if true, then an item instance of this type can be used to grant a character to a user.
 		/// </summary>
 		
 		public bool CanBecomeCharacter { get; set;}
@@ -264,6 +305,12 @@ namespace PlayFab.ServerModels
 		/// </summary>
 		
 		public bool IsStackable { get; set;}
+		
+		/// <summary>
+		/// if true, then an item instance of this type can be traded between players using the trading APIs
+		/// </summary>
+		
+		public bool IsTradable { get; set;}
 
 	}
 	
@@ -468,9 +515,15 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -514,6 +567,62 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	public class FriendInfo
+	{
+		
+		
+		/// <summary>
+		/// PlayFab unique identifier for this friend.
+		/// </summary>
+		
+		public string FriendPlayFabId { get; set;}
+		
+		/// <summary>
+		/// PlayFab unique username for this friend.
+		/// </summary>
+		
+		public string Username { get; set;}
+		
+		/// <summary>
+		/// Title-specific display name for this friend.
+		/// </summary>
+		
+		public string TitleDisplayName { get; set;}
+		
+		/// <summary>
+		/// Tags which have been associated with this friend.
+		/// </summary>
+		
+		public List<string> Tags { get; set;}
+		
+		/// <summary>
+		/// Unique lobby identifier of the Game Server Instance to which this player is currently connected.
+		/// </summary>
+		
+		public string CurrentMatchmakerLobbyId { get; set;}
+		
+		/// <summary>
+		/// Available Facebook information (if the user and PlayFab friend are also connected in Facebook).
+		/// </summary>
+		
+		public UserFacebookInfo FacebookInfo { get; set;}
+		
+		/// <summary>
+		/// Available Steam information (if the user and PlayFab friend are also connected in Steam).
+		/// </summary>
+		
+		public UserSteamInfo SteamInfo { get; set;}
+		
+		/// <summary>
+		/// Available Game Center information (if the user and PlayFab friend are also connected in Game Center).
+		/// </summary>
+		
+		public UserGameCenterInfo GameCenterInfo { get; set;}
+
+	}
+	
+	
+	
 	public class GetCatalogItemsRequest
 	{
 		
@@ -546,9 +655,15 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -572,6 +687,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -587,6 +705,9 @@ namespace PlayFab.ServerModels
 		
 		public Dictionary<string,UserDataRecord> Data { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 
@@ -598,9 +719,15 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -638,6 +765,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -687,9 +817,15 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 
@@ -751,6 +887,90 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	public class GetFriendLeaderboardRequest
+	{
+		
+		
+		/// <summary>
+		/// The player whose friend leaderboard to get
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Statistic used to rank friends for this leaderboard.
+		/// </summary>
+		
+		public string StatisticName { get; set;}
+		
+		/// <summary>
+		/// Position in the leaderboard to start this listing (defaults to the first entry).
+		/// </summary>
+		
+		public int StartPosition { get; set;}
+		
+		/// <summary>
+		/// Maximum number of entries to retrieve.
+		/// </summary>
+		
+		public int MaxResultsCount { get; set;}
+		
+		/// <summary>
+		/// Indicates whether Steam service friends should be included in the response. Default is true.
+		/// </summary>
+		
+		public bool? IncludeSteamFriends { get; set;}
+		
+		/// <summary>
+		/// Indicates whether Facebook friends should be included in the response. Default is true.
+		/// </summary>
+		
+		public bool? IncludeFacebookFriends { get; set;}
+
+	}
+	
+	
+	
+	public class GetFriendsListRequest
+	{
+		
+		
+		/// <summary>
+		/// PlayFab identifier of the player whose friend list to get.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Indicates whether Steam service friends should be included in the response. Default is true.
+		/// </summary>
+		
+		public bool? IncludeSteamFriends { get; set;}
+		
+		/// <summary>
+		/// Indicates whether Facebook friends should be included in the response. Default is true.
+		/// </summary>
+		
+		public bool? IncludeFacebookFriends { get; set;}
+
+	}
+	
+	
+	
+	public class GetFriendsListResult
+	{
+		
+		
+		/// <summary>
+		/// Array of friends found.
+		/// </summary>
+		
+		public List<FriendInfo> Friends { get; set;}
+
+	}
+	
+	
+	
 	public class GetLeaderboardAroundCharacterRequest
 	{
 		
@@ -761,9 +981,15 @@ namespace PlayFab.ServerModels
 		
 		public string StatisticName { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -807,6 +1033,9 @@ namespace PlayFab.ServerModels
 		
 		public string StatisticName { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -844,6 +1073,9 @@ namespace PlayFab.ServerModels
 		
 		public string StatisticName { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1017,6 +1249,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 
@@ -1042,6 +1277,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1091,14 +1329,11 @@ namespace PlayFab.ServerModels
 	{
 		
 		
-		
-		public string PlayFabId { get; set;}
-		
 		/// <summary>
-		/// Used to limit results to only those from a specific catalog version.
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
 		/// </summary>
 		
-		public string CatalogVersion { get; set;}
+		public string PlayFabId { get; set;}
 
 	}
 	
@@ -1162,6 +1397,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1195,6 +1433,122 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	/// <summary>
+	/// Result of granting an item to a user
+	/// </summary>
+	public class GrantedItemInstance
+	{
+		
+		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Result of this operation.
+		/// </summary>
+		
+		public bool Result { get; set;}
+		
+		/// <summary>
+		/// Unique identifier for the inventory item, as defined in the catalog.
+		/// </summary>
+		
+		public string ItemId { get; set;}
+		
+		/// <summary>
+		/// Unique item identifier for this specific instance of the item.
+		/// </summary>
+		
+		public string ItemInstanceId { get; set;}
+		
+		/// <summary>
+		/// Class name for the inventory item, as defined in the catalog.
+		/// </summary>
+		
+		public string ItemClass { get; set;}
+		
+		/// <summary>
+		/// Timestamp for when this instance was purchased.
+		/// </summary>
+		
+		public DateTime? PurchaseDate { get; set;}
+		
+		/// <summary>
+		/// Timestamp for when this instance will expire.
+		/// </summary>
+		
+		public DateTime? Expiration { get; set;}
+		
+		/// <summary>
+		/// Total number of remaining uses, if this is a consumable item.
+		/// </summary>
+		
+		public int? RemainingUses { get; set;}
+		
+		/// <summary>
+		/// The number of uses that were added or removed to this item in this call.
+		/// </summary>
+		
+		public int? UsesIncrementedBy { get; set;}
+		
+		/// <summary>
+		/// Game specific comment associated with this instance when it was added to the user inventory.
+		/// </summary>
+		
+		public string Annotation { get; set;}
+		
+		/// <summary>
+		/// Catalog version for the inventory item, when this instance was created.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// Unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container.
+		/// </summary>
+		
+		public string BundleParent { get; set;}
+		
+		
+		public string DisplayName { get; set;}
+		
+		/// <summary>
+		/// Currency type for the cost of the catalog item.
+		/// </summary>
+		
+		public string UnitCurrency { get; set;}
+		
+		/// <summary>
+		/// Cost of the catalog item in the given currency.
+		/// </summary>
+		
+		public uint UnitPrice { get; set;}
+		
+		/// <summary>
+		/// Array of unique items that were awarded when this catalog item was purchased.
+		/// </summary>
+		
+		public List<string> BundleContents { get; set;}
+		
+		/// <summary>
+		/// A set of custom key-value pairs on the inventory item.
+		/// </summary>
+		
+		public Dictionary<string,string> CustomData { get; set;}
+
+	}
+	
+	
+	
 	public class GrantItemsToCharacterRequest
 	{
 		
@@ -1205,9 +1559,15 @@ namespace PlayFab.ServerModels
 		
 		public string CatalogVersion { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1235,7 +1595,7 @@ namespace PlayFab.ServerModels
 		/// Array of items granted to users.
 		/// </summary>
 		
-		public List<ItemGrantResult> ItemGrantResults { get; set;}
+		public List<GrantedItemInstance> ItemGrantResults { get; set;}
 
 	}
 	
@@ -1251,6 +1611,9 @@ namespace PlayFab.ServerModels
 		
 		public string CatalogVersion { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1278,7 +1641,7 @@ namespace PlayFab.ServerModels
 		/// Array of items granted to users.
 		/// </summary>
 		
-		public List<ItemGrantResult> ItemGrantResults { get; set;}
+		public List<GrantedItemInstance> ItemGrantResults { get; set;}
 
 	}
 	
@@ -1312,7 +1675,7 @@ namespace PlayFab.ServerModels
 		/// Array of items granted to users.
 		/// </summary>
 		
-		public List<ItemGrantResult> ItemGrantResults { get; set;}
+		public List<GrantedItemInstance> ItemGrantResults { get; set;}
 
 	}
 	
@@ -1322,6 +1685,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1337,47 +1703,9 @@ namespace PlayFab.ServerModels
 		
 		public string Annotation { get; set;}
 		
-		
-		public string CharacterId { get; set;}
-
-	}
-	
-	
-	
-	/// <summary>
-	/// Result of granting an item to a user
-	/// </summary>
-	public class ItemGrantResult
-	{
-		
-		
-		
-		public string PlayFabId { get; set;}
-		
 		/// <summary>
-		/// Unique identifier of the catalog item to be granted to the user.
+		/// Unique PlayFab assigned ID for a specific character owned by a user
 		/// </summary>
-		
-		public string ItemId { get; set;}
-		
-		/// <summary>
-		/// Unique instance Id of the granted item.
-		/// </summary>
-		
-		public string ItemInstanceId { get; set;}
-		
-		/// <summary>
-		/// String detailing any additional information concerning this operation.
-		/// </summary>
-		
-		public string Annotation { get; set;}
-		
-		/// <summary>
-		/// Result of this operation.
-		/// </summary>
-		
-		public bool Result { get; set;}
-		
 		
 		public string CharacterId { get; set;}
 
@@ -1429,6 +1757,12 @@ namespace PlayFab.ServerModels
 		public int? RemainingUses { get; set;}
 		
 		/// <summary>
+		/// The number of uses that were added or removed to this item in this call.
+		/// </summary>
+		
+		public int? UsesIncrementedBy { get; set;}
+		
+		/// <summary>
 		/// Game specific comment associated with this instance when it was added to the user inventory.
 		/// </summary>
 		
@@ -1446,6 +1780,27 @@ namespace PlayFab.ServerModels
 		
 		public string BundleParent { get; set;}
 		
+		
+		public string DisplayName { get; set;}
+		
+		/// <summary>
+		/// Currency type for the cost of the catalog item.
+		/// </summary>
+		
+		public string UnitCurrency { get; set;}
+		
+		/// <summary>
+		/// Cost of the catalog item in the given currency.
+		/// </summary>
+		
+		public uint UnitPrice { get; set;}
+		
+		/// <summary>
+		/// Array of unique items that were awarded when this catalog item was purchased.
+		/// </summary>
+		
+		public List<string> BundleContents { get; set;}
+		
 		/// <summary>
 		/// A set of custom key-value pairs on the inventory item.
 		/// </summary>
@@ -1460,6 +1815,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 
@@ -1638,6 +1996,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1653,6 +2014,9 @@ namespace PlayFab.ServerModels
 		
 		public string ReceivingCharacterId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned instance identifier of the item
+		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 
@@ -1672,12 +2036,21 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned instance identifier of the item
+		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 
@@ -1697,12 +2070,21 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned instance identifier of the item
+		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 
@@ -1728,6 +2110,9 @@ namespace PlayFab.ServerModels
 		
 		public string LobbyId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 
@@ -1839,6 +2224,26 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	public class RemoveFriendRequest
+	{
+		
+		
+		/// <summary>
+		/// PlayFab identifier of the friend account which is to be removed.
+		/// </summary>
+		
+		public string FriendPlayFabId { get; set;}
+		
+		/// <summary>
+		/// The PlayFab identifier of the player to lose a friend
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+
+	}
+	
+	
+	
 	public class RemoveSharedGroupMembersRequest
 	{
 		
@@ -1849,6 +2254,9 @@ namespace PlayFab.ServerModels
 		
 		public string SharedGroupId { get; set;}
 		
+		/// <summary>
+		/// An array of unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public List<string> PlayFabIds { get; set;}
 
@@ -2037,9 +2445,15 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -2100,9 +2514,15 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -2141,9 +2561,15 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
@@ -2204,6 +2630,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -2242,6 +2671,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -2259,12 +2691,21 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
 		
 		public string CharacterId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// Unique PlayFab assigned instance identifier of the item
+		/// </summary>
 		
 		public string ItemInstanceId { get; set;}
 		
@@ -2290,6 +2731,9 @@ namespace PlayFab.ServerModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
