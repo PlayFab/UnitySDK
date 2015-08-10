@@ -141,6 +141,9 @@ namespace PlayFab.AdminModels
 		
 		public DateTime Timestamp { get; set;}
 		
+		/// <summary>
+		/// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -265,12 +268,6 @@ namespace PlayFab.AdminModels
 		public string CustomData { get; set;}
 		
 		/// <summary>
-		/// array of ItemId values which are evaluated when any item is added to the player inventory - if all items in this array are present, the this item will also be added to the player inventory
-		/// </summary>
-		
-		public List<string> GrantedIfPlayerHas { get; set;}
-		
-		/// <summary>
 		/// defines the consumable properties (number of uses, timeout) for the item
 		/// </summary>
 		
@@ -289,7 +286,7 @@ namespace PlayFab.AdminModels
 		public CatalogItemBundleInfo Bundle { get; set;}
 		
 		/// <summary>
-		/// if true, then this item instance can be used to grant a character to a user.
+		/// if true, then an item instance of this type can be used to grant a character to a user.
 		/// </summary>
 		
 		public bool CanBecomeCharacter { get; set;}
@@ -299,6 +296,12 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public bool IsStackable { get; set;}
+		
+		/// <summary>
+		/// if true, then an item instance of this type can be traded between players using the trading APIs
+		/// </summary>
+		
+		public bool IsTradable { get; set;}
 
 	}
 	
@@ -968,6 +971,9 @@ namespace PlayFab.AdminModels
 		
 		public DateTime Timestamp { get; set;}
 		
+		/// <summary>
+		/// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -1082,6 +1088,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1131,14 +1140,11 @@ namespace PlayFab.AdminModels
 	{
 		
 		
-		
-		public string PlayFabId { get; set;}
-		
 		/// <summary>
-		/// Used to limit results to only those from a specific catalog version.
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
 		/// </summary>
 		
-		public string CatalogVersion { get; set;}
+		public string PlayFabId { get; set;}
 
 	}
 	
@@ -1165,6 +1171,122 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes { get; set;}
+
+	}
+	
+	
+	
+	/// <summary>
+	/// Result of granting an item to a user
+	/// </summary>
+	public class GrantedItemInstance
+	{
+		
+		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
+		
+		public string CharacterId { get; set;}
+		
+		/// <summary>
+		/// Result of this operation.
+		/// </summary>
+		
+		public bool Result { get; set;}
+		
+		/// <summary>
+		/// Unique identifier for the inventory item, as defined in the catalog.
+		/// </summary>
+		
+		public string ItemId { get; set;}
+		
+		/// <summary>
+		/// Unique item identifier for this specific instance of the item.
+		/// </summary>
+		
+		public string ItemInstanceId { get; set;}
+		
+		/// <summary>
+		/// Class name for the inventory item, as defined in the catalog.
+		/// </summary>
+		
+		public string ItemClass { get; set;}
+		
+		/// <summary>
+		/// Timestamp for when this instance was purchased.
+		/// </summary>
+		
+		public DateTime? PurchaseDate { get; set;}
+		
+		/// <summary>
+		/// Timestamp for when this instance will expire.
+		/// </summary>
+		
+		public DateTime? Expiration { get; set;}
+		
+		/// <summary>
+		/// Total number of remaining uses, if this is a consumable item.
+		/// </summary>
+		
+		public int? RemainingUses { get; set;}
+		
+		/// <summary>
+		/// The number of uses that were added or removed to this item in this call.
+		/// </summary>
+		
+		public int? UsesIncrementedBy { get; set;}
+		
+		/// <summary>
+		/// Game specific comment associated with this instance when it was added to the user inventory.
+		/// </summary>
+		
+		public string Annotation { get; set;}
+		
+		/// <summary>
+		/// Catalog version for the inventory item, when this instance was created.
+		/// </summary>
+		
+		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// Unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container.
+		/// </summary>
+		
+		public string BundleParent { get; set;}
+		
+		
+		public string DisplayName { get; set;}
+		
+		/// <summary>
+		/// Currency type for the cost of the catalog item.
+		/// </summary>
+		
+		public string UnitCurrency { get; set;}
+		
+		/// <summary>
+		/// Cost of the catalog item in the given currency.
+		/// </summary>
+		
+		public uint UnitPrice { get; set;}
+		
+		/// <summary>
+		/// Array of unique items that were awarded when this catalog item was purchased.
+		/// </summary>
+		
+		public List<string> BundleContents { get; set;}
+		
+		/// <summary>
+		/// A set of custom key-value pairs on the inventory item.
+		/// </summary>
+		
+		public Dictionary<string,string> CustomData { get; set;}
 
 	}
 	
@@ -1198,7 +1320,7 @@ namespace PlayFab.AdminModels
 		/// Array of items granted to users.
 		/// </summary>
 		
-		public List<ItemGrantResult> ItemGrantResults { get; set;}
+		public List<GrantedItemInstance> ItemGrantResults { get; set;}
 
 	}
 	
@@ -1208,6 +1330,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -1223,47 +1348,9 @@ namespace PlayFab.AdminModels
 		
 		public string Annotation { get; set;}
 		
-		
-		public string CharacterId { get; set;}
-
-	}
-	
-	
-	
-	/// <summary>
-	/// Result of granting an item to a user
-	/// </summary>
-	public class ItemGrantResult
-	{
-		
-		
-		
-		public string PlayFabId { get; set;}
-		
 		/// <summary>
-		/// Unique identifier of the catalog item to be granted to the user.
+		/// Unique PlayFab assigned ID for a specific character owned by a user
 		/// </summary>
-		
-		public string ItemId { get; set;}
-		
-		/// <summary>
-		/// Unique instance Id of the granted item.
-		/// </summary>
-		
-		public string ItemInstanceId { get; set;}
-		
-		/// <summary>
-		/// String detailing any additional information concerning this operation.
-		/// </summary>
-		
-		public string Annotation { get; set;}
-		
-		/// <summary>
-		/// Result of this operation.
-		/// </summary>
-		
-		public bool Result { get; set;}
-		
 		
 		public string CharacterId { get; set;}
 
@@ -1315,6 +1402,12 @@ namespace PlayFab.AdminModels
 		public int? RemainingUses { get; set;}
 		
 		/// <summary>
+		/// The number of uses that were added or removed to this item in this call.
+		/// </summary>
+		
+		public int? UsesIncrementedBy { get; set;}
+		
+		/// <summary>
 		/// Game specific comment associated with this instance when it was added to the user inventory.
 		/// </summary>
 		
@@ -1331,6 +1424,27 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string BundleParent { get; set;}
+		
+		
+		public string DisplayName { get; set;}
+		
+		/// <summary>
+		/// Currency type for the cost of the catalog item.
+		/// </summary>
+		
+		public string UnitCurrency { get; set;}
+		
+		/// <summary>
+		/// Cost of the catalog item in the given currency.
+		/// </summary>
+		
+		public uint UnitPrice { get; set;}
+		
+		/// <summary>
+		/// Array of unique items that were awarded when this catalog item was purchased.
+		/// </summary>
+		
+		public List<string> BundleContents { get; set;}
 		
 		/// <summary>
 		/// A set of custom key-value pairs on the inventory item.
@@ -1390,17 +1504,26 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
+		/// <summary>
+		/// User email address attached to their account
+		/// </summary>
 		
 		public string Email { get; set;}
 		
+		/// <summary>
+		/// PlayFab username for the account (3-20 characters)
+		/// </summary>
 		
 		public string Username { get; set;}
 		
 		/// <summary>
-		/// title-specific username to match against existing user accounts
+		/// Title specific username to match against existing user accounts
 		/// </summary>
 		
 		public string TitleDisplayName { get; set;}
@@ -1414,7 +1537,7 @@ namespace PlayFab.AdminModels
 		
 		
 		/// <summary>
-		/// user info for the user matching the request
+		/// User info for the user matching the request
 		/// </summary>
 		
 		public UserAccountInfo UserInfo { get; set;}
@@ -1549,6 +1672,9 @@ namespace PlayFab.AdminModels
 		
 		public DateTime Timestamp { get; set;}
 		
+		/// <summary>
+		/// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
 		
 		public string TitleId { get; set;}
 		
@@ -1624,6 +1750,18 @@ namespace PlayFab.AdminModels
 		/// </summary>
 		
 		public string CatalogVersion { get; set;}
+		
+		/// <summary>
+		/// Unique name for this drop table
+		/// </summary>
+		
+		public string TableId { get; set;}
+		
+		/// <summary>
+		/// Child nodes that indicate what kind of drop table item this actually is.
+		/// </summary>
+		
+		public List<ResultTableNode> Nodes { get; set;}
 
 	}
 	
@@ -1664,6 +1802,34 @@ namespace PlayFab.AdminModels
 	
 	
 	
+	public class ResetCharacterStatisticsRequest
+	{
+		
+		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
+		
+		public string PlayFabId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
+		
+		public string CharacterId { get; set;}
+
+	}
+	
+	
+	
+	public class ResetCharacterStatisticsResult
+	{
+		
+
+	}
+	
+	
+	
 	public class ResetUsersRequest
 	{
 		
@@ -1682,6 +1848,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 
@@ -1764,6 +1933,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// User email address attached to their account
+		/// </summary>
 		
 		public string Email { get; set;}
 
@@ -2115,6 +2287,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -2153,6 +2328,9 @@ namespace PlayFab.AdminModels
 	{
 		
 		
+		/// <summary>
+		/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+		/// </summary>
 		
 		public string PlayFabId { get; set;}
 		
@@ -2266,6 +2444,9 @@ namespace PlayFab.AdminModels
 		
 		public string Username { get; set;}
 		
+		/// <summary>
+		/// Password for the PlayFab account (6-30 characters)
+		/// </summary>
 		
 		public string Password { get; set;}
 
