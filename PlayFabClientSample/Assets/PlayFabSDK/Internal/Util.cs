@@ -1,6 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System;
+using PlayFab.Json;
+using PlayFab.Json.Converters;
 
 namespace PlayFab.Internal
 {

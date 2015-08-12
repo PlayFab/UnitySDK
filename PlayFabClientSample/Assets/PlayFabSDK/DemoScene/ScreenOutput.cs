@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using PlayFab;
 using PlayFab.ClientModels;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using PlayFab.Json;
 
 public class ScreenOutput : MonoBehaviour {
 	

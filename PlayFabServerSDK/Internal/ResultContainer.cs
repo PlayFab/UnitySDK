@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using PlayFab.Json;
 using PlayFab;
 using System;
 

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using PlayFab.Internal;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using PlayFab.Json;
+using PlayFab.Json.Converters;
 
 namespace PlayFab.AdminModels
 {

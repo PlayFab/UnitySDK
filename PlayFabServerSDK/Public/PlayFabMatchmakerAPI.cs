@@ -1,5 +1,5 @@
 using System;
-using Newtonsoft.Json;
+using PlayFab.Json;
 using PlayFab.MatchmakerModels;
 using PlayFab.Internal;
 
