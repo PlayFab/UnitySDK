@@ -23,7 +23,7 @@ namespace PlayFab
 		/// <summary>
 		/// Validates a user with the PlayFab service
 		/// </summary>
-		public static void AuthUser(AuthUserRequest request, AuthUserCallback resultCallback, ErrorCallback errorCallback)
+		public static void AuthUser(AuthUserRequest request, AuthUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -40,6 +40,10 @@ namespace PlayFab
 				if(result != null)
 				{
 					
+					
+					result.CustomData = customData;
+					result.Request = request;
+					
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -52,7 +56,7 @@ namespace PlayFab
 		/// <summary>
 		/// Informs the PlayFab game server hosting service that the indicated user has joined the Game Server Instance specified
 		/// </summary>
-		public static void PlayerJoined(PlayerJoinedRequest request, PlayerJoinedCallback resultCallback, ErrorCallback errorCallback)
+		public static void PlayerJoined(PlayerJoinedRequest request, PlayerJoinedCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -69,6 +73,10 @@ namespace PlayFab
 				if(result != null)
 				{
 					
+					
+					result.CustomData = customData;
+					result.Request = request;
+					
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -81,7 +89,7 @@ namespace PlayFab
 		/// <summary>
 		/// Informs the PlayFab game server hosting service that the indicated user has left the Game Server Instance specified
 		/// </summary>
-		public static void PlayerLeft(PlayerLeftRequest request, PlayerLeftCallback resultCallback, ErrorCallback errorCallback)
+		public static void PlayerLeft(PlayerLeftRequest request, PlayerLeftCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -98,6 +106,10 @@ namespace PlayFab
 				if(result != null)
 				{
 					
+					
+					result.CustomData = customData;
+					result.Request = request;
+					
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -110,7 +122,7 @@ namespace PlayFab
 		/// <summary>
 		/// Instructs the PlayFab game server hosting service to instantiate a new Game Server Instance
 		/// </summary>
-		public static void StartGame(StartGameRequest request, StartGameCallback resultCallback, ErrorCallback errorCallback)
+		public static void StartGame(StartGameRequest request, StartGameCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -127,6 +139,10 @@ namespace PlayFab
 				if(result != null)
 				{
 					
+					
+					result.CustomData = customData;
+					result.Request = request;
+					
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -139,7 +155,7 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the relevant details for a specified user, which the external match-making service can then use to compute effective matches
 		/// </summary>
-		public static void UserInfo(UserInfoRequest request, UserInfoCallback resultCallback, ErrorCallback errorCallback)
+		public static void UserInfo(UserInfoRequest request, UserInfoCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -156,6 +172,10 @@ namespace PlayFab
 				if(result != null)
 				{
 					
+					
+					result.CustomData = customData;
+					result.Request = request;
+					
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -167,6 +187,7 @@ namespace PlayFab
 		
 		
 		
+
 	}
 }
 
