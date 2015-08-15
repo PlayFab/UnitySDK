@@ -40,7 +40,7 @@ public class ScreenOutput : MonoBehaviour {
 	void EnableTestCSButton()
 	{
 		// check to see if our player is authenticated
-		if(testCloudScript.interactable == false && !string.IsNullOrEmpty(PlayFabClientAPI.AuthKey))
+		if(testCloudScript.interactable == false && PlayFabClientAPI.IsClientLoggedIn())
 		{
 			testCloudScript.interactable = true;
 		}
