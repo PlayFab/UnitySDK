@@ -24,15 +24,7 @@ namespace PlayFab.UUnit
             suite.RunAllTests();
             UUnitTestResult result = suite.GetResults();
 
-            if (!result.AllTestsPassed())
-            {
-                Debug.LogWarning(result.Summary());
-                throw new Exception("Not all tests passed.");
-            }
-            else
-            {
-                Debug.Log(result.Summary());
-            }
+            Debug.Log(result.Summary());
         }
 
         /*[MenuItem("UUnit/Run Tests Incrementally")] Not quite ready for prime-time*/

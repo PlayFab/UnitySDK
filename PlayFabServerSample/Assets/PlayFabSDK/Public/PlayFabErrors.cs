@@ -182,7 +182,9 @@ namespace PlayFab
 		NoRealMoneyPriceForCatalogItem = 1180,
 		TradeInventoryItemIsNotTradable = 1181,
 		TradeAcceptedCatalogItemIsNotTradable = 1182,
-		UsersAlreadyFriends = 1183
+		UsersAlreadyFriends = 1183,
+		LinkedIdentifierAlreadyClaimed = 1184,
+		CustomIdNotLinked = 1185
 	}
 	
 	public class PlayFabError
