@@ -84,23 +84,24 @@ namespace PlayFab
 		/// <summary>
 		/// Validated a client's session ticket, and if successful, returns details for that user
 		/// </summary>
-		public static void AuthenticateSessionTicket(AuthenticateSessionTicketRequest request, AuthenticateSessionTicketCallback resultCallback, ErrorCallback errorCallback)
+		public static void AuthenticateSessionTicket(AuthenticateSessionTicketRequest request, AuthenticateSessionTicketCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				AuthenticateSessionTicketResult result = null;
-				PlayFabError error = null;
-				ResultContainer<AuthenticateSessionTicketResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<AuthenticateSessionTicketResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -113,23 +114,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the relevant details for a specified user
 		/// </summary>
-		public static void GetUserAccountInfo(GetUserAccountInfoRequest request, GetUserAccountInfoCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserAccountInfo(GetUserAccountInfoRequest request, GetUserAccountInfoCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserAccountInfoResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserAccountInfoResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserAccountInfoResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -142,23 +144,24 @@ namespace PlayFab
 		/// <summary>
 		/// Sends an iOS/Android Push Notification to a specific user, if that user's device has been configured for Push Notifications in PlayFab. If a user has linked both Android and iOS devices, both will be notified.
 		/// </summary>
-		public static void SendPushNotification(SendPushNotificationRequest request, SendPushNotificationCallback resultCallback, ErrorCallback errorCallback)
+		public static void SendPushNotification(SendPushNotificationRequest request, SendPushNotificationCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				SendPushNotificationResult result = null;
-				PlayFabError error = null;
-				ResultContainer<SendPushNotificationResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<SendPushNotificationResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -171,23 +174,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves a list of ranked users for the given statistic, starting from the indicated point in the leaderboard
 		/// </summary>
-		public static void GetLeaderboard(GetLeaderboardRequest request, GetLeaderboardCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetLeaderboard(GetLeaderboardRequest request, GetLeaderboardCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetLeaderboardResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetLeaderboardResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetLeaderboardResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -200,23 +204,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves a list of ranked users for the given statistic, centered on the currently signed-in user
 		/// </summary>
-		public static void GetLeaderboardAroundUser(GetLeaderboardAroundUserRequest request, GetLeaderboardAroundUserCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetLeaderboardAroundUser(GetLeaderboardAroundUserRequest request, GetLeaderboardAroundUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetLeaderboardAroundUserResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetLeaderboardAroundUserResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetLeaderboardAroundUserResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -229,23 +234,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the title-specific custom data for the user which is readable and writable by the client
 		/// </summary>
-		public static void GetUserData(GetUserDataRequest request, GetUserDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserData(GetUserDataRequest request, GetUserDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -258,23 +264,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the title-specific custom data for the user which cannot be accessed by the client
 		/// </summary>
-		public static void GetUserInternalData(GetUserDataRequest request, GetUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserInternalData(GetUserDataRequest request, GetUserInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -287,23 +294,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the publisher-specific custom data for the user which is readable and writable by the client
 		/// </summary>
-		public static void GetUserPublisherData(GetUserDataRequest request, GetUserPublisherDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserPublisherData(GetUserDataRequest request, GetUserPublisherDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -316,23 +324,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the publisher-specific custom data for the user which cannot be accessed by the client
 		/// </summary>
-		public static void GetUserPublisherInternalData(GetUserDataRequest request, GetUserPublisherInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserPublisherInternalData(GetUserDataRequest request, GetUserPublisherInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -345,23 +354,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the publisher-specific custom data for the user which can only be read by the client
 		/// </summary>
-		public static void GetUserPublisherReadOnlyData(GetUserDataRequest request, GetUserPublisherReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserPublisherReadOnlyData(GetUserDataRequest request, GetUserPublisherReadOnlyDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -374,23 +384,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the title-specific custom data for the user which can only be read by the client
 		/// </summary>
-		public static void GetUserReadOnlyData(GetUserDataRequest request, GetUserReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserReadOnlyData(GetUserDataRequest request, GetUserReadOnlyDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -403,23 +414,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the details of all title-specific statistics for the user
 		/// </summary>
-		public static void GetUserStatistics(GetUserStatisticsRequest request, GetUserStatisticsCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserStatistics(GetUserStatisticsRequest request, GetUserStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserStatisticsResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserStatisticsResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -432,23 +444,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user which is readable and writable by the client
 		/// </summary>
-		public static void UpdateUserData(UpdateUserDataRequest request, UpdateUserDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserData(UpdateUserDataRequest request, UpdateUserDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -461,23 +474,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user which cannot be accessed by the client
 		/// </summary>
-		public static void UpdateUserInternalData(UpdateUserInternalDataRequest request, UpdateUserInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserInternalData(UpdateUserInternalDataRequest request, UpdateUserInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -490,23 +504,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the publisher-specific custom data for the user which is readable and writable by the client
 		/// </summary>
-		public static void UpdateUserPublisherData(UpdateUserDataRequest request, UpdateUserPublisherDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserPublisherData(UpdateUserDataRequest request, UpdateUserPublisherDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -519,23 +534,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the publisher-specific custom data for the user which cannot be accessed by the client
 		/// </summary>
-		public static void UpdateUserPublisherInternalData(UpdateUserInternalDataRequest request, UpdateUserPublisherInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserPublisherInternalData(UpdateUserInternalDataRequest request, UpdateUserPublisherInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -548,23 +564,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the publisher-specific custom data for the user which can only be read by the client
 		/// </summary>
-		public static void UpdateUserPublisherReadOnlyData(UpdateUserDataRequest request, UpdateUserPublisherReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserPublisherReadOnlyData(UpdateUserDataRequest request, UpdateUserPublisherReadOnlyDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -577,23 +594,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user which can only be read by the client
 		/// </summary>
-		public static void UpdateUserReadOnlyData(UpdateUserDataRequest request, UpdateUserReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserReadOnlyData(UpdateUserDataRequest request, UpdateUserReadOnlyDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -606,23 +624,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the values of the specified title-specific statistics for the user
 		/// </summary>
-		public static void UpdateUserStatistics(UpdateUserStatisticsRequest request, UpdateUserStatisticsCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserStatistics(UpdateUserStatisticsRequest request, UpdateUserStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserStatisticsResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserStatisticsResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -635,23 +654,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the specified version of the title's catalog of virtual goods, including all defined properties
 		/// </summary>
-		public static void GetCatalogItems(GetCatalogItemsRequest request, GetCatalogItemsCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCatalogItems(GetCatalogItemsRequest request, GetCatalogItemsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetCatalogItemsResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetCatalogItemsResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetCatalogItemsResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -664,23 +684,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the key-value store of custom title settings
 		/// </summary>
-		public static void GetTitleData(GetTitleDataRequest request, GetTitleDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetTitleData(GetTitleDataRequest request, GetTitleDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetTitleDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetTitleDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetTitleDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -693,23 +714,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the key-value store of custom internal title settings
 		/// </summary>
-		public static void GetTitleInternalData(GetTitleDataRequest request, GetTitleInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetTitleInternalData(GetTitleDataRequest request, GetTitleInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetTitleDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetTitleDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetTitleDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -722,23 +744,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the key-value store of custom title settings
 		/// </summary>
-		public static void SetTitleData(SetTitleDataRequest request, SetTitleDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void SetTitleData(SetTitleDataRequest request, SetTitleDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				SetTitleDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<SetTitleDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<SetTitleDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -751,23 +774,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the key-value store of custom title settings
 		/// </summary>
-		public static void SetTitleInternalData(SetTitleDataRequest request, SetTitleInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void SetTitleInternalData(SetTitleDataRequest request, SetTitleInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				SetTitleDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<SetTitleDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<SetTitleDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -780,23 +804,24 @@ namespace PlayFab
 		/// <summary>
 		/// Increments  the character's balance of the specified virtual currency by the stated amount
 		/// </summary>
-		public static void AddCharacterVirtualCurrency(AddCharacterVirtualCurrencyRequest request, AddCharacterVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		public static void AddCharacterVirtualCurrency(AddCharacterVirtualCurrencyRequest request, AddCharacterVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				ModifyCharacterVirtualCurrencyResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ModifyCharacterVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<ModifyCharacterVirtualCurrencyResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -809,23 +834,24 @@ namespace PlayFab
 		/// <summary>
 		/// Increments  the user's balance of the specified virtual currency by the stated amount
 		/// </summary>
-		public static void AddUserVirtualCurrency(AddUserVirtualCurrencyRequest request, AddUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		public static void AddUserVirtualCurrency(AddUserVirtualCurrencyRequest request, AddUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				ModifyUserVirtualCurrencyResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -838,23 +864,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the specified character's current inventory of virtual goods
 		/// </summary>
-		public static void GetCharacterInventory(GetCharacterInventoryRequest request, GetCharacterInventoryCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCharacterInventory(GetCharacterInventoryRequest request, GetCharacterInventoryCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetCharacterInventoryResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetCharacterInventoryResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetCharacterInventoryResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -867,23 +894,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the specified user's current inventory of virtual goods
 		/// </summary>
-		public static void GetUserInventory(GetUserInventoryRequest request, GetUserInventoryCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetUserInventory(GetUserInventoryRequest request, GetUserInventoryCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetUserInventoryResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetUserInventoryResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetUserInventoryResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -896,23 +924,24 @@ namespace PlayFab
 		/// <summary>
 		/// Adds the specified items to the specified character's inventory
 		/// </summary>
-		public static void GrantItemsToCharacter(GrantItemsToCharacterRequest request, GrantItemsToCharacterCallback resultCallback, ErrorCallback errorCallback)
+		public static void GrantItemsToCharacter(GrantItemsToCharacterRequest request, GrantItemsToCharacterCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GrantItemsToCharacterResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GrantItemsToCharacterResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GrantItemsToCharacterResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -925,23 +954,24 @@ namespace PlayFab
 		/// <summary>
 		/// Adds the specified items to the specified user's inventory
 		/// </summary>
-		public static void GrantItemsToUser(GrantItemsToUserRequest request, GrantItemsToUserCallback resultCallback, ErrorCallback errorCallback)
+		public static void GrantItemsToUser(GrantItemsToUserRequest request, GrantItemsToUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GrantItemsToUserResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GrantItemsToUserResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GrantItemsToUserResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -954,23 +984,24 @@ namespace PlayFab
 		/// <summary>
 		/// Adds the specified items to the specified user inventories
 		/// </summary>
-		public static void GrantItemsToUsers(GrantItemsToUsersRequest request, GrantItemsToUsersCallback resultCallback, ErrorCallback errorCallback)
+		public static void GrantItemsToUsers(GrantItemsToUsersRequest request, GrantItemsToUsersCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GrantItemsToUsersResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GrantItemsToUsersResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GrantItemsToUsersResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -983,23 +1014,24 @@ namespace PlayFab
 		/// <summary>
 		/// Modifies the number of remaining uses of a player's inventory item
 		/// </summary>
-		public static void ModifyItemUses(ModifyItemUsesRequest request, ModifyItemUsesCallback resultCallback, ErrorCallback errorCallback)
+		public static void ModifyItemUses(ModifyItemUsesRequest request, ModifyItemUsesCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				ModifyItemUsesResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ModifyItemUsesResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<ModifyItemUsesResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1012,23 +1044,24 @@ namespace PlayFab
 		/// <summary>
 		/// Moves an item from a character's inventory into another of the users's character's inventory.
 		/// </summary>
-		public static void MoveItemToCharacterFromCharacter(MoveItemToCharacterFromCharacterRequest request, MoveItemToCharacterFromCharacterCallback resultCallback, ErrorCallback errorCallback)
+		public static void MoveItemToCharacterFromCharacter(MoveItemToCharacterFromCharacterRequest request, MoveItemToCharacterFromCharacterCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				MoveItemToCharacterFromCharacterResult result = null;
-				PlayFabError error = null;
-				ResultContainer<MoveItemToCharacterFromCharacterResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<MoveItemToCharacterFromCharacterResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1041,23 +1074,24 @@ namespace PlayFab
 		/// <summary>
 		/// Moves an item from a user's inventory into their character's inventory.
 		/// </summary>
-		public static void MoveItemToCharacterFromUser(MoveItemToCharacterFromUserRequest request, MoveItemToCharacterFromUserCallback resultCallback, ErrorCallback errorCallback)
+		public static void MoveItemToCharacterFromUser(MoveItemToCharacterFromUserRequest request, MoveItemToCharacterFromUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				MoveItemToCharacterFromUserResult result = null;
-				PlayFabError error = null;
-				ResultContainer<MoveItemToCharacterFromUserResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<MoveItemToCharacterFromUserResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1070,23 +1104,24 @@ namespace PlayFab
 		/// <summary>
 		/// Moves an item from a character's inventory into the owning user's inventory.
 		/// </summary>
-		public static void MoveItemToUserFromCharacter(MoveItemToUserFromCharacterRequest request, MoveItemToUserFromCharacterCallback resultCallback, ErrorCallback errorCallback)
+		public static void MoveItemToUserFromCharacter(MoveItemToUserFromCharacterRequest request, MoveItemToUserFromCharacterCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				MoveItemToUserFromCharacterResult result = null;
-				PlayFabError error = null;
-				ResultContainer<MoveItemToUserFromCharacterResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<MoveItemToUserFromCharacterResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1099,23 +1134,24 @@ namespace PlayFab
 		/// <summary>
 		/// Submit a report about a player (due to bad bahavior, etc.) on behalf of another player, so that customer service representatives for the title can take action concerning potentially poxic players.
 		/// </summary>
-		public static void ReportPlayer(ReportPlayerServerRequest request, ReportPlayerCallback resultCallback, ErrorCallback errorCallback)
+		public static void ReportPlayer(ReportPlayerServerRequest request, ReportPlayerCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				ReportPlayerServerResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ReportPlayerServerResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<ReportPlayerServerResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1128,23 +1164,24 @@ namespace PlayFab
 		/// <summary>
 		/// Decrements the character's balance of the specified virtual currency by the stated amount
 		/// </summary>
-		public static void SubtractCharacterVirtualCurrency(SubtractCharacterVirtualCurrencyRequest request, SubtractCharacterVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		public static void SubtractCharacterVirtualCurrency(SubtractCharacterVirtualCurrencyRequest request, SubtractCharacterVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				ModifyCharacterVirtualCurrencyResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ModifyCharacterVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<ModifyCharacterVirtualCurrencyResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1157,23 +1194,24 @@ namespace PlayFab
 		/// <summary>
 		/// Decrements the user's balance of the specified virtual currency by the stated amount
 		/// </summary>
-		public static void SubtractUserVirtualCurrency(SubtractUserVirtualCurrencyRequest request, SubtractUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback)
+		public static void SubtractUserVirtualCurrency(SubtractUserVirtualCurrencyRequest request, SubtractUserVirtualCurrencyCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				ModifyUserVirtualCurrencyResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1186,23 +1224,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the key-value pair data tagged to the specified item, which is read-only from the client.
 		/// </summary>
-		public static void UpdateUserInventoryItemCustomData(UpdateUserInventoryItemDataRequest request, UpdateUserInventoryItemCustomDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateUserInventoryItemCustomData(UpdateUserInventoryItemDataRequest request, UpdateUserInventoryItemCustomDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateUserInventoryItemDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateUserInventoryItemDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateUserInventoryItemDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1215,23 +1254,24 @@ namespace PlayFab
 		/// <summary>
 		/// Informs the PlayFab match-making service that the user specified has left the Game Server Instance
 		/// </summary>
-		public static void NotifyMatchmakerPlayerLeft(NotifyMatchmakerPlayerLeftRequest request, NotifyMatchmakerPlayerLeftCallback resultCallback, ErrorCallback errorCallback)
+		public static void NotifyMatchmakerPlayerLeft(NotifyMatchmakerPlayerLeftRequest request, NotifyMatchmakerPlayerLeftCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				NotifyMatchmakerPlayerLeftResult result = null;
-				PlayFabError error = null;
-				ResultContainer<NotifyMatchmakerPlayerLeftResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<NotifyMatchmakerPlayerLeftResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1244,23 +1284,24 @@ namespace PlayFab
 		/// <summary>
 		/// Validates a Game Server session ticket and returns details about the user
 		/// </summary>
-		public static void RedeemMatchmakerTicket(RedeemMatchmakerTicketRequest request, RedeemMatchmakerTicketCallback resultCallback, ErrorCallback errorCallback)
+		public static void RedeemMatchmakerTicket(RedeemMatchmakerTicketRequest request, RedeemMatchmakerTicketCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				RedeemMatchmakerTicketResult result = null;
-				PlayFabError error = null;
-				ResultContainer<RedeemMatchmakerTicketResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<RedeemMatchmakerTicketResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1273,23 +1314,24 @@ namespace PlayFab
 		/// <summary>
 		/// Awards the specified users the specified Steam achievements
 		/// </summary>
-		public static void AwardSteamAchievement(AwardSteamAchievementRequest request, AwardSteamAchievementCallback resultCallback, ErrorCallback errorCallback)
+		public static void AwardSteamAchievement(AwardSteamAchievementRequest request, AwardSteamAchievementCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				AwardSteamAchievementResult result = null;
-				PlayFabError error = null;
-				ResultContainer<AwardSteamAchievementResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<AwardSteamAchievementResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1302,23 +1344,24 @@ namespace PlayFab
 		/// <summary>
 		/// Logs a custom analytics event
 		/// </summary>
-		public static void LogEvent(LogEventRequest request, LogEventCallback resultCallback, ErrorCallback errorCallback)
+		public static void LogEvent(LogEventRequest request, LogEventCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				LogEventResult result = null;
-				PlayFabError error = null;
-				ResultContainer<LogEventResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<LogEventResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1331,23 +1374,24 @@ namespace PlayFab
 		/// <summary>
 		/// Adds users to the set of those able to update both the shared data, as well as the set of users in the group. Only users in the group (and the server) can add new members.
 		/// </summary>
-		public static void AddSharedGroupMembers(AddSharedGroupMembersRequest request, AddSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
+		public static void AddSharedGroupMembers(AddSharedGroupMembersRequest request, AddSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				AddSharedGroupMembersResult result = null;
-				PlayFabError error = null;
-				ResultContainer<AddSharedGroupMembersResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<AddSharedGroupMembersResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1360,23 +1404,24 @@ namespace PlayFab
 		/// <summary>
 		/// Requests the creation of a shared group object, containing key/value pairs which may be updated by all members of the group. When created by a server, the group will initially have no members.
 		/// </summary>
-		public static void CreateSharedGroup(CreateSharedGroupRequest request, CreateSharedGroupCallback resultCallback, ErrorCallback errorCallback)
+		public static void CreateSharedGroup(CreateSharedGroupRequest request, CreateSharedGroupCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				CreateSharedGroupResult result = null;
-				PlayFabError error = null;
-				ResultContainer<CreateSharedGroupResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<CreateSharedGroupResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1389,23 +1434,24 @@ namespace PlayFab
 		/// <summary>
 		/// Deletes a shared group, freeing up the shared group ID to be reused for a new group
 		/// </summary>
-		public static void DeleteSharedGroup(DeleteSharedGroupRequest request, DeleteSharedGroupCallback resultCallback, ErrorCallback errorCallback)
+		public static void DeleteSharedGroup(DeleteSharedGroupRequest request, DeleteSharedGroupCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				EmptyResult result = null;
-				PlayFabError error = null;
-				ResultContainer<EmptyResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<EmptyResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1418,23 +1464,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the key-value store of custom publisher settings
 		/// </summary>
-		public static void GetPublisherData(GetPublisherDataRequest request, GetPublisherDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetPublisherData(GetPublisherDataRequest request, GetPublisherDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetPublisherDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetPublisherDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetPublisherDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1447,23 +1494,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves data stored in a shared group object, as well as the list of members in the group. The server can access all public and private group data.
 		/// </summary>
-		public static void GetSharedGroupData(GetSharedGroupDataRequest request, GetSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetSharedGroupData(GetSharedGroupDataRequest request, GetSharedGroupDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetSharedGroupDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetSharedGroupDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetSharedGroupDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1476,23 +1524,24 @@ namespace PlayFab
 		/// <summary>
 		/// Removes users from the set of those able to update the shared data and the set of users in the group. Only users in the group can remove members. If as a result of the call, zero users remain with access, the group and its associated data will be deleted.
 		/// </summary>
-		public static void RemoveSharedGroupMembers(RemoveSharedGroupMembersRequest request, RemoveSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback)
+		public static void RemoveSharedGroupMembers(RemoveSharedGroupMembersRequest request, RemoveSharedGroupMembersCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				RemoveSharedGroupMembersResult result = null;
-				PlayFabError error = null;
-				ResultContainer<RemoveSharedGroupMembersResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<RemoveSharedGroupMembersResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1505,23 +1554,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the key-value store of custom publisher settings
 		/// </summary>
-		public static void SetPublisherData(SetPublisherDataRequest request, SetPublisherDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void SetPublisherData(SetPublisherDataRequest request, SetPublisherDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				SetPublisherDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<SetPublisherDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<SetPublisherDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1534,23 +1584,24 @@ namespace PlayFab
 		/// <summary>
 		/// Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group (and the server) can update the data.
 		/// </summary>
-		public static void UpdateSharedGroupData(UpdateSharedGroupDataRequest request, UpdateSharedGroupDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateSharedGroupData(UpdateSharedGroupDataRequest request, UpdateSharedGroupDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateSharedGroupDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateSharedGroupDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateSharedGroupDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1563,23 +1614,24 @@ namespace PlayFab
 		/// <summary>
 		/// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://support.playfab.com/support/discussions/topics/1000059929
 		/// </summary>
-		public static void GetContentDownloadUrl(GetContentDownloadUrlRequest request, GetContentDownloadUrlCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetContentDownloadUrl(GetContentDownloadUrlRequest request, GetContentDownloadUrlCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetContentDownloadUrlResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetContentDownloadUrlResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetContentDownloadUrlResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1592,23 +1644,24 @@ namespace PlayFab
 		/// <summary>
 		/// Deletes the specific character ID from the specified user.
 		/// </summary>
-		public static void DeleteCharacterFromUser(DeleteCharacterFromUserRequest request, DeleteCharacterFromUserCallback resultCallback, ErrorCallback errorCallback)
+		public static void DeleteCharacterFromUser(DeleteCharacterFromUserRequest request, DeleteCharacterFromUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				DeleteCharacterFromUserResult result = null;
-				PlayFabError error = null;
-				ResultContainer<DeleteCharacterFromUserResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<DeleteCharacterFromUserResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1621,23 +1674,24 @@ namespace PlayFab
 		/// <summary>
 		/// Lists all of the characters that belong to a specific user.
 		/// </summary>
-		public static void GetAllUsersCharacters(ListUsersCharactersRequest request, GetAllUsersCharactersCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetAllUsersCharacters(ListUsersCharactersRequest request, GetAllUsersCharactersCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				ListUsersCharactersResult result = null;
-				PlayFabError error = null;
-				ResultContainer<ListUsersCharactersResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<ListUsersCharactersResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1650,23 +1704,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves a list of ranked characters for the given statistic, starting from the indicated point in the leaderboard
 		/// </summary>
-		public static void GetCharacterLeaderboard(GetCharacterLeaderboardRequest request, GetCharacterLeaderboardCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCharacterLeaderboard(GetCharacterLeaderboardRequest request, GetCharacterLeaderboardCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetCharacterLeaderboardResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetCharacterLeaderboardResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetCharacterLeaderboardResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1679,23 +1734,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the details of all title-specific statistics for the specific character
 		/// </summary>
-		public static void GetCharacterStatistics(GetCharacterStatisticsRequest request, GetCharacterStatisticsCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCharacterStatistics(GetCharacterStatisticsRequest request, GetCharacterStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetCharacterStatisticsResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetCharacterStatisticsResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetCharacterStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1708,23 +1764,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves a list of ranked characters for the given statistic, centered on the requested user
 		/// </summary>
-		public static void GetLeaderboardAroundCharacter(GetLeaderboardAroundCharacterRequest request, GetLeaderboardAroundCharacterCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetLeaderboardAroundCharacter(GetLeaderboardAroundCharacterRequest request, GetLeaderboardAroundCharacterCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetLeaderboardAroundCharacterResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetLeaderboardAroundCharacterResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetLeaderboardAroundCharacterResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1737,23 +1794,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves a list of all of the user's characters for the given statistic.
 		/// </summary>
-		public static void GetLeaderboardForUserCharacters(GetLeaderboardForUsersCharactersRequest request, GetLeaderboardForUserCharactersCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetLeaderboardForUserCharacters(GetLeaderboardForUsersCharactersRequest request, GetLeaderboardForUserCharactersCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetLeaderboardForUsersCharactersResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetLeaderboardForUsersCharactersResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetLeaderboardForUsersCharactersResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1766,23 +1824,24 @@ namespace PlayFab
 		/// <summary>
 		/// Grants the specified character type to the user.
 		/// </summary>
-		public static void GrantCharacterToUser(GrantCharacterToUserRequest request, GrantCharacterToUserCallback resultCallback, ErrorCallback errorCallback)
+		public static void GrantCharacterToUser(GrantCharacterToUserRequest request, GrantCharacterToUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GrantCharacterToUserResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GrantCharacterToUserResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GrantCharacterToUserResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1795,23 +1854,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the values of the specified title-specific statistics for the specific character
 		/// </summary>
-		public static void UpdateCharacterStatistics(UpdateCharacterStatisticsRequest request, UpdateCharacterStatisticsCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateCharacterStatistics(UpdateCharacterStatisticsRequest request, UpdateCharacterStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateCharacterStatisticsResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateCharacterStatisticsResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateCharacterStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1824,23 +1884,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the title-specific custom data for the user which is readable and writable by the client
 		/// </summary>
-		public static void GetCharacterData(GetCharacterDataRequest request, GetCharacterDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCharacterData(GetCharacterDataRequest request, GetCharacterDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetCharacterDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetCharacterDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetCharacterDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1853,23 +1914,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the title-specific custom data for the user's character which cannot be accessed by the client
 		/// </summary>
-		public static void GetCharacterInternalData(GetCharacterDataRequest request, GetCharacterInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCharacterInternalData(GetCharacterDataRequest request, GetCharacterInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetCharacterDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetCharacterDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetCharacterDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1882,23 +1944,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the title-specific custom data for the user's character which can only be read by the client
 		/// </summary>
-		public static void GetCharacterReadOnlyData(GetCharacterDataRequest request, GetCharacterReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void GetCharacterReadOnlyData(GetCharacterDataRequest request, GetCharacterReadOnlyDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				GetCharacterDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<GetCharacterDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<GetCharacterDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1911,23 +1974,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user's chjaracter which is readable and writable by the client
 		/// </summary>
-		public static void UpdateCharacterData(UpdateCharacterDataRequest request, UpdateCharacterDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateCharacterData(UpdateCharacterDataRequest request, UpdateCharacterDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateCharacterDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateCharacterDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateCharacterDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1940,23 +2004,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user's character which cannot  be accessed by the client
 		/// </summary>
-		public static void UpdateCharacterInternalData(UpdateCharacterDataRequest request, UpdateCharacterInternalDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateCharacterInternalData(UpdateCharacterDataRequest request, UpdateCharacterInternalDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateCharacterDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateCharacterDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateCharacterDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1969,23 +2034,24 @@ namespace PlayFab
 		/// <summary>
 		/// Updates the title-specific custom data for the user's character which can only be read by the client
 		/// </summary>
-		public static void UpdateCharacterReadOnlyData(UpdateCharacterDataRequest request, UpdateCharacterReadOnlyDataCallback resultCallback, ErrorCallback errorCallback)
+		public static void UpdateCharacterReadOnlyData(UpdateCharacterDataRequest request, UpdateCharacterReadOnlyDataCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UpdateCharacterDataResult result = null;
-				PlayFabError error = null;
-				ResultContainer<UpdateCharacterDataResult>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UpdateCharacterDataResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -1997,6 +2063,7 @@ namespace PlayFab
 		
 		
         
+
 	}
 }
 

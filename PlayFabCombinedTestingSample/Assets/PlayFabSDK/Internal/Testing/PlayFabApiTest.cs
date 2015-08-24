@@ -125,7 +125,7 @@ namespace PlayFab.UUnit
             UUnitAssert.NotNull(lastReceivedMessage);
         }
 
-        public void SharedErrorCallback(PlayFabError error)
+        private void SharedErrorCallback(PlayFabError error)
         {
             lastReceivedMessage = error.ErrorMessage;
         }

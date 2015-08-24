@@ -43,7 +43,7 @@ namespace PlayFab.Internal
         /// <summary>
         /// Sends a POST HTTP request
         /// </summary>
-        public static void Post(string url, string data, string authType, string authKey, Action<string, string> callback)
+        public static void Post(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback)
         {
 #if PLAYFAB_IOS_PLUGIN
 			PlayFabiOSPlugin.Post(url, data, authType, authKey, PlayFabVersion.getVersionString(), callback);
@@ -55,7 +55,7 @@ namespace PlayFab.Internal
         /// <summary>
         /// Sends a POST HTTP request
         /// </summary>
-        public static void Post(string url, string data, string authType, string authKey, Action<string, string> callback, bool IsBlocking)
+        public static void Post(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback, bool IsBlocking)
         {
             if (IsBlocking)
             {
@@ -73,7 +73,7 @@ namespace PlayFab.Internal
         #endregion
 
         #region Web Request Methods based on PlayFabSettings.WebRequestTypes
-        private void InstPost(string url, string data, string authType, string authKey, Action<string, string> callback)
+        private void InstPost(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback)
         {
             pendingMessages += 1;
 #if !UNITY_WP8
@@ -86,15 +86,17 @@ namespace PlayFab.Internal
             StartCoroutine(MakeRequestViaUnity(url, data, authType, authKey, callback));
         }
 
-        private void MakeRequestViaWebRequest(string url, string data, string authType, string authKey, Action<string, string> callback)
+        private void MakeRequestViaWebRequest(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback)
         {
             byte[] payload = System.Text.Encoding.UTF8.GetBytes(data);
             //TODO: make closure it's own method.
             Thread workerThread = new Thread(() =>
             {
+                HttpWebRequest request = null;
+                HttpWebResponse response = null;
                 try
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request = (HttpWebRequest)WebRequest.Create(url);
                     //Prevents hitting a proxy is no proxy is available.
                     request.Proxy = null; //TODO: Add support for proxy's.
                     request.Headers.Add("X-ReportErrorAsSuccess", "true"); // Without this, we have to catch WebException instead, and manually decode the result
@@ -114,14 +116,13 @@ namespace PlayFab.Internal
                         stream.Write(payload, 0, payload.Length);
                     }
 
-                    var response = (HttpWebResponse)request.GetResponse();
-                    //Debug.Log("Response Code: " + response.StatusCode);
+                    response = (HttpWebResponse)request.GetResponse();
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         using (var stream = new System.IO.StreamReader(response.GetResponseStream()))
                         {
-                            var result = stream.ReadToEnd();
-                            //Lock for protection of simuiltanious API calls.
+                            string result = stream.ReadToEnd();
+                            //Lock for protection of simultaneous API calls.
                             lock (_RunOnMainThreadQueue)
                             {
                                 var cbc = new CallBackContainer() { action = callback, result = result, error = null };
@@ -131,26 +132,36 @@ namespace PlayFab.Internal
                     }
                     else
                     {
-                        var error = GetResonseCodeResult(response.StatusCode);
-                        var errorString = GenerateJsonError((int)response.StatusCode, error, 1123, error, error);
-                        //Lock for protection of simuiltanious API calls.
+                        var error = GeneratePfError(response.StatusCode, PlayFabErrorCode.ServiceUnavailable, "Failed to connect to PlayFab server", null);
+                        //Lock for protection of simultaneous API calls.
                         lock (_RunOnMainThreadQueue)
                         {
-                            var cbc = new CallBackContainer() { action = callback, result = errorString, error = null };
+                            var cbc = new CallBackContainer() { action = callback, result = null, error = error };
                             _RunOnMainThreadQueue.Enqueue(cbc);
                         }
                     }
                 }
-                catch (Exception e)
+                catch (WebException e)
                 {
-                    Debug.LogException(e);
-                    //Debug.Log(e.Message);
-                    //Debug.Log(e.StackTrace);
-                    var errorString = GenerateJsonError(500, e.Message, 1123, e.Message, e.Message);
-                    //Lock for protection of simuiltanious API calls.
+                    HttpStatusCode httpCode = response == null ? HttpStatusCode.ServiceUnavailable : response.StatusCode;
+                    var error = GeneratePfError(httpCode, PlayFabErrorCode.ServiceUnavailable, e.ToString(), null);
+                    //Lock for protection of simultaneous API calls.
                     lock (_RunOnMainThreadQueue)
                     {
-                        var cbc = new CallBackContainer() { action = callback, result = errorString, error = null };
+                        var cbc = new CallBackContainer() { action = callback, result = null, error = error };
+                        _RunOnMainThreadQueue.Enqueue(cbc);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e, gameObject); // If it's an unexpected exception, we should log it noisily
+
+                    HttpStatusCode httpCode = response == null ? HttpStatusCode.ServiceUnavailable : response.StatusCode;
+                    var error = GeneratePfError(httpCode, PlayFabErrorCode.ServiceUnavailable, e.ToString(), null);
+                    //Lock for protection of simultaneous API calls.
+                    lock (_RunOnMainThreadQueue)
+                    {
+                        var cbc = new CallBackContainer() { action = callback, result = null, error = error };
                         _RunOnMainThreadQueue.Enqueue(cbc);
                     }
                 }
@@ -159,8 +170,9 @@ namespace PlayFab.Internal
             workerThread.Start();
         }
 
-        private void MakeRequestViaWebRequestSyncronous(string url, string data, string authType, string authKey, Action<string, string> callback)
+        private void MakeRequestViaWebRequestSyncronous(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback)
         {
+            HttpWebResponse response = null;
             try
             {
                 byte[] payload = System.Text.Encoding.UTF8.GetBytes(data);
@@ -184,8 +196,7 @@ namespace PlayFab.Internal
                     stream.Write(payload, 0, payload.Length);
                 }
 
-                //Debug.LogFormat("Response Code: {0}", response.StatusCode);
-                var response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse)request.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     using (var stream = new System.IO.StreamReader(response.GetResponseStream()))
@@ -196,24 +207,25 @@ namespace PlayFab.Internal
                 }
                 else
                 {
-                    var error = GetResonseCodeResult(response.StatusCode);
-                    var errorString = GenerateJsonError((int)response.StatusCode, error, 1123, error, error);
-                    callback(errorString, null);
+                    HttpStatusCode httpCode = response == null ? HttpStatusCode.ServiceUnavailable : response.StatusCode;
+                    var error = GeneratePfError(httpCode, PlayFabErrorCode.ServiceUnavailable, "Failed to connect to PlayFab server", null);
+                    callback(null, error);
                 }
             }
             catch (Exception e)
             {
-                Debug.Log(e.Message);
-                Debug.Log(e.StackTrace);
-                var errorString = GenerateJsonError(500, e.Message, 1123, e.Message, e.Message);
-                //Lock for protection of simuiltanious API calls.
-                callback(errorString, null);
+                Debug.LogException(e, gameObject);
+
+                HttpStatusCode httpCode = response == null ? HttpStatusCode.ServiceUnavailable : response.StatusCode;
+                var error = GeneratePfError(httpCode, PlayFabErrorCode.ServiceUnavailable, e.ToString(), null);
+                //Lock for protection of simultaneous API calls.
+                callback(null, error);
             }
             pendingMessages -= 1;
         }
 
         //This is the old Unity WWW class call.
-        private IEnumerator MakeRequestViaUnity(string url, string data, string authType, string authKey, Action<string, string> callback)
+        private IEnumerator MakeRequestViaUnity(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback)
         {
             byte[] bData = System.Text.Encoding.UTF8.GetBytes(data);
 
@@ -233,8 +245,8 @@ namespace PlayFab.Internal
 
             if (!String.IsNullOrEmpty(www.error))
             {
-                Debug.LogError(www.error);
-                callback(null, www.error);
+                var error = GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, www.error, null);
+                callback(null, error);
             }
             else
             {
@@ -260,17 +272,16 @@ namespace PlayFab.Internal
             }
         }
 
-        private string GenerateJsonError(int code, string status, int errorCode, string error, string errorMessage)
+        private PlayFabError GeneratePfError(HttpStatusCode httpCode, PlayFabErrorCode pfErrorCode, string errorMessage, string errorDetails)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("{");
-            sb.AppendFormat("\"code\": {0},", code);
-            sb.AppendFormat("\"status\": \"{0}\",", status);
-            sb.AppendFormat("\"error\": \"{0}\",", error);
-            sb.AppendFormat("\"errorCode\": {0},", errorCode);
-            sb.AppendFormat("\"errorMessage\": \"{0}\"", errorMessage);
-            sb.Append("}");
-            return sb.ToString();
+            return new PlayFabError()
+            {
+                HttpCode = (int)httpCode,
+                HttpStatus = GetResonseCodeResult(httpCode),
+                Error = pfErrorCode,
+                ErrorMessage = errorMessage,
+                ErrorDetails = null // TODO PAUL: json convert these if possible
+            };
         }
         #endregion
 
@@ -278,7 +289,7 @@ namespace PlayFab.Internal
         readonly Queue<CallBackContainer> _tempActions = new Queue<CallBackContainer>();
         public void Update()
         {
-            //Lock for protection of simuiltanious API calls.
+            //Lock for protection of simultaneous API calls.
             lock (_RunOnMainThreadQueue)
             {
                 while (_RunOnMainThreadQueue.Count > 0)
@@ -319,8 +330,8 @@ namespace PlayFab.Internal
     /// </summary>
     public struct CallBackContainer
     {
-        public Action<string, string> action;
+        public Action<string, PlayFabError> action;
         public string result;
-        public string error;
+        public PlayFabError error;
     }
 }
