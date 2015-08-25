@@ -121,7 +121,7 @@ namespace PlayFab.Internal
                     {
                         using (var stream = new System.IO.StreamReader(response.GetResponseStream()))
                         {
-                            string result = stream.ReadToEnd();
+                            var result = stream.ReadToEnd();
                             //Lock for protection of simultaneous API calls.
                             lock (_RunOnMainThreadQueue)
                             {
@@ -154,7 +154,7 @@ namespace PlayFab.Internal
                 }
                 catch (Exception e)
                 {
-                    Debug.LogException(e, gameObject); // If it's an unexpected exception, we should log it noisily
+                    Debug.LogException(e); // If it's an unexpected exception, we should log it noisily
 
                     HttpStatusCode httpCode = response == null ? HttpStatusCode.ServiceUnavailable : response.StatusCode;
                     var error = GeneratePfError(httpCode, PlayFabErrorCode.ServiceUnavailable, e.ToString(), null);
@@ -214,7 +214,7 @@ namespace PlayFab.Internal
             }
             catch (Exception e)
             {
-                Debug.LogException(e, gameObject);
+                Debug.LogException(e);
 
                 HttpStatusCode httpCode = response == null ? HttpStatusCode.ServiceUnavailable : response.StatusCode;
                 var error = GeneratePfError(httpCode, PlayFabErrorCode.ServiceUnavailable, e.ToString(), null);
@@ -263,6 +263,8 @@ namespace PlayFab.Internal
             switch (code)
             {
                 //TODO: Handle more specific cases as needed.
+                case HttpStatusCode.OK:
+                    return string.Format("Success: {0}", code);
                 case HttpStatusCode.RequestTimeout:
                     return string.Format("Request Timeout: {0}", code);
                 case HttpStatusCode.BadRequest:
@@ -280,7 +282,7 @@ namespace PlayFab.Internal
                 HttpStatus = GetResonseCodeResult(httpCode),
                 Error = pfErrorCode,
                 ErrorMessage = errorMessage,
-                ErrorDetails = null // TODO PAUL: json convert these if possible
+                ErrorDetails = null
             };
         }
         #endregion
