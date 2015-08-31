@@ -86,9 +86,6 @@ public class PlayFabGcmListenerService extends GcmListenerService{
      * @param message GCM message received.
      */
     private void sendNotification(String message) {
-        Intent intent = new Intent(this, UnityPlayerProxyActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, REQUEST_CODE_UNITY_ACTIVITY,
                 getPackageManager().getLaunchIntentForPackage(getPackageName()),
                 PendingIntent.FLAG_UPDATE_CURRENT);
