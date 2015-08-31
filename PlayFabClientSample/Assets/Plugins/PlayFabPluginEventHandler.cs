@@ -19,7 +19,7 @@ namespace PlayFab.Internal
 
 		private Dictionary<int, Action<string,string>> HttpHandlers = new Dictionary<int, Action<string,string>>();
 
-		public static void init()
+		public static void Init()
 		{
 			if (PlayFabGO != null)
 				return;
@@ -35,27 +35,36 @@ namespace PlayFab.Internal
 
 		}
 
-		public void GCMRegistered(string id)
+
+	    public void GCMRegistrationReady(string status)
+	    {
+	        bool statusParam; 
+            bool.TryParse(status,out statusParam);
+            PlayFabGoogleCloudMessaging.RegistrationReady(statusParam);
+	    }
+
+		public void GCMRegistered(string token)
 		{
-			PlayFabGoogleCloudMessaging.registrationComplete (id, null);
+            var error = (string.IsNullOrEmpty(token)) ? token : null;
+		    PlayFabGoogleCloudMessaging.RegistrationComplete(token, error);
 		}
 
 		public void GCMRegisterError(string error)
 		{
-			PlayFabGoogleCloudMessaging.registrationComplete (null, error);
+		    PlayFabGoogleCloudMessaging.RegistrationComplete(null, error);
 		}
 
 		public void GCMMessageReceived(string message)
 		{
-			PlayFabGoogleCloudMessaging.messageReceived (message);
+		    PlayFabGoogleCloudMessaging.MessageReceived(message);
 		}
 
 		public static void addHttpDelegate(int id, Action<string,string> callback)
 		{
-			init ();
+		    Init();
 
-			if(callback != null)
-				PlayFabGO.HttpHandlers.Add (id, callback);
+		    if (callback != null)
+		        PlayFabGO.HttpHandlers.Add(id, callback);
 		}
 
 
