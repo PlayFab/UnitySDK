@@ -1,55 +1,55 @@
-﻿#if UNITY_EDITOR
-
-#elif UNITY_ANDROID
-#define PLAYFAB_ANDROID_PLUGIN
-#endif
-
-using System;
+﻿using System;
 using UnityEngine;
 
 using PlayFab.Internal;
+using PlayFab;
 
 namespace PlayFab
 {
 	public class PlayFabAndroidPlugin
 	{
 		private static bool Initted=false;
-#if PLAYFAB_ANDROID_PLUGIN
+#if UNITY_ANDROID && !UNITY_EDITOR
 
-		private static AndroidJavaClass AndroidPlugin;
+        private static AndroidJavaClass AndroidPlugin;
 		private static AndroidJavaClass PlayServicesUtils;
 
-		public static bool isAvailable() { return true; }
+		public static bool IsAvailable() { return true; }
 #else
-		public static bool isAvailable() { return false; }
+        public static bool IsAvailable() { return false; }
 #endif
 
-		public static void init()
+		public static void Init(string SenderID)
 		{
 			if (Initted)
 				return;
 
-			PlayFabPluginEventHandler.init ();
+			PlayFabPluginEventHandler.Init();
 
-#if PLAYFAB_ANDROID_PLUGIN
-			AndroidPlugin = new AndroidJavaClass("com.playfab.unity.plugin.AndroidPlugin");
-			AndroidPlugin.CallStatic("init");
+#if UNITY_ANDROID && !UNITY_EDITOR
+            AndroidPlugin = new AndroidJavaClass("com.playfab.unityplugin.PlayFabUnityAndroidPlugin");
+		    var staticParams = new object[] { SenderID , Application.productName};
+            AndroidPlugin.CallStatic("initGCM", staticParams);
 
-			PlayServicesUtils = new AndroidJavaClass("com.playfab.unity.plugin.PlayServicesUtils");
+            PlayServicesUtils = new AndroidJavaClass("com.playfab.unityplugin.GCM.PlayServicesUtils");
 #endif
-			PlayFabGoogleCloudMessaging.init ();
+            PlayFabGoogleCloudMessaging.Init();
 
 			Initted = true;
 		}
 
-#if PLAYFAB_ANDROID_PLUGIN
+#if UNITY_ANDROID && !UNITY_EDITOR
 
-		public static bool isPlayServicesAvailable()
+        public static bool IsPlayServicesAvailable()
 		{
 			return PlayServicesUtils.CallStatic<bool> ("isPlayServicesAvailable");
 		}
+
+        public static void StopPlugin(){
+            AndroidPlugin.CallStatic("stopPluginService");
+        }
 #else
-		public static bool isPlayServicesAvailable()
+        public static bool IsPlayServicesAvailable()
 		{
 			return false;
 		}
@@ -57,119 +57,68 @@ namespace PlayFab
 	}
 
 	public class PlayFabGoogleCloudMessaging
-	{
-		public delegate void GCMRegisterComplete(string id, string error);
+    {
+        #region Events
+	    public delegate void GCMRegisterReady(bool status);
+        public delegate void GCMRegisterComplete(string id, string error);
 		public delegate void GCMMessageReceived(string message);
 
-		private static GCMRegisterComplete RegistrationCallback;
-		private static GCMMessageReceived MessageCallbackEvent;
+	    public static GCMRegisterReady _RegistrationReadyCallback;
+		public static GCMRegisterComplete _RegistrationCallback;
+		public static GCMMessageReceived _MessageCallback;
+        #endregion
 
-		public static void addMessageListener (GCMMessageReceived listener)
+#if UNITY_ANDROID && !UNITY_EDITOR
+
+        private static AndroidJavaClass PlayFabGCMClass;
+
+		public static void Init()
 		{
-			MessageCallbackEvent += listener;
+			PlayFabGCMClass = new AndroidJavaClass("com.playfab.unityplugin.GCM.PlayFabGoogleCloudMessaging"); 
 		}
 
-		public static void removeMessageListener (GCMMessageReceived listener)
+		public static void GetToken()
 		{
-			MessageCallbackEvent -= listener;
+			PlayFabGCMClass.CallStatic("getToken");
 		}
 
-#if PLAYFAB_ANDROID_PLUGIN
+#else
 
-		private static AndroidJavaClass PlayFabGCMClass;
-
-		public static void init()
-		{
-			PlayFabGCMClass = new AndroidJavaClass("com.playfab.unity.plugin.GoogleCloudMessaging"); 
-		}
-
-		public static void registerAsync(string senderId, GCMRegisterComplete callback)
-		{
-			if (RegistrationCallback != null)
-				throw new Exception ("GCM Registration already in progress");
-
-			RegistrationCallback = callback;
-			PlayFabGCMClass.CallStatic ("registerInBackground", new object[] {senderId});
-		}
-
-
-		public static bool isRegistered()
-		{
-			return getRegistrationId() != null;
-		}
-
-		public static string getRegistrationId()
-		{
-			return PlayFabGCMClass.CallStatic<string> ("getRegistrationId");
-		}
-
-		public static void unregister()
-		{
-			PlayFabGCMClass.CallStatic ("unregister");
-		}
-
-		public static void cancelAllNotifications()
-		{
-			PlayFabGCMClass.CallStatic ("cancelAllNotifications");
-		}
-
-		public static void cancelNotification(int id)
-		{
-			PlayFabGCMClass.CallStatic ("cancelNotification", new object[] {id});
-		}
-
-	#else
-
-		public static void init()
+        public static void Init()
 		{
 
 		}
 		
-		public static void registerAsync(string senderId, GCMRegisterComplete callback)
-		{
-			registrationComplete(null, "Google Cloud Messaging not available");
-		}
-
-		public static bool isRegistered()
-		{
-			return false;
-		}
-		
-		public static string getRegistrationId()
+		public static string GetToken()
 		{
 			return null;
 		}
+#endif
 
-		public static void unregister()
+	    internal static void RegistrationReady(bool status)
+	    {
+	        if (_RegistrationReadyCallback == null)
+	            return;
+
+            _RegistrationReadyCallback(status);
+            _RegistrationReadyCallback = null;
+	    }
+
+        internal static void RegistrationComplete(string id, string error)
 		{
-		}
-
-		public static void cancelAllNotifications()
-		{
-
-		}
-		
-		public static void cancelNotification(int id)
-		{
-
-		}
-
-	#endif
-		internal static void registrationComplete(string id, string error)
-		{
-			if (RegistrationCallback == null)
+			if (_RegistrationCallback == null)
 				return;
 
-			RegistrationCallback (id, error);
-			RegistrationCallback = null;
+            _RegistrationCallback(id, error);
+			_RegistrationCallback = null;
 		}
 
-		internal static void messageReceived(string message)
+		internal static void MessageReceived(string message)
 		{
-			if (MessageCallbackEvent == null)
+			if (_MessageCallback == null)
 				return;
 
-			MessageCallbackEvent(message);
+			_MessageCallback(message);
 		}
 
 	}
