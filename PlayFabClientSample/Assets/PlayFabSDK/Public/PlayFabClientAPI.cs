@@ -98,6 +98,7 @@ namespace PlayFab
 		public delegate void GetCloudScriptUrlCallback(GetCloudScriptUrlResult result);
 		public delegate void RunCloudScriptCallback(RunCloudScriptResult result);
 		public delegate void GetContentDownloadUrlCallback(GetContentDownloadUrlResult result);
+		public delegate void GetAllUsersCharactersCallback(ListUsersCharactersResult result);
 		public delegate void GetCharacterLeaderboardCallback(GetCharacterLeaderboardResult result);
 		public delegate void GetLeaderboardAroundCharacterCallback(GetLeaderboardAroundCharacterResult result);
 		public delegate void GetLeaderboardForUserCharactersCallback(GetLeaderboardForUsersCharactersResult result);
@@ -2742,6 +2743,36 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetContentDownloadUrl", serializedJSON, "X-Authorization", AuthKey, callback);
+		}
+		
+		/// <summary>
+		/// Lists all of the characters that belong to a specific user.
+		/// </summary>
+		public static void GetAllUsersCharacters(ListUsersCharactersRequest request, GetAllUsersCharactersCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+		{
+			if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+			{
+				ListUsersCharactersResult result = null;
+				ResultContainer<ListUsersCharactersResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
+				{
+					errorCallback(pfError);
+				}
+				if(result != null)
+				{
+					
+					result.CustomData = customData;
+					result.Request = request;
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetAllUsersCharacters", serializedJSON, "X-Authorization", AuthKey, callback);
 		}
 		
 		/// <summary>
