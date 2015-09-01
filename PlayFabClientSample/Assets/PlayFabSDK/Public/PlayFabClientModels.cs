@@ -4044,8 +4044,9 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
+		/// </summary>
 		
+		[JsonConverter(typeof(StringEnumConverter))]
 		public UserDataPermission? Permission { get; set;}
 	}
 	

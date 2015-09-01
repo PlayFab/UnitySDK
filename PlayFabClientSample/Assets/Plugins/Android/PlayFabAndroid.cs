@@ -28,7 +28,13 @@ namespace PlayFab
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             AndroidPlugin = new AndroidJavaClass("com.playfab.unityplugin.PlayFabUnityAndroidPlugin");
-		    var staticParams = new object[] { SenderID , Application.productName};
+			
+			string applicationName = "PlayFab Application";
+			#if UNITY_5 || UNITY_5_1
+				applicationName = Application.productName;
+			#endif
+			var staticParams = new object[] { SenderID , applicationName};
+			
             AndroidPlugin.CallStatic("initGCM", staticParams);
 
             PlayServicesUtils = new AndroidJavaClass("com.playfab.unityplugin.GCM.PlayServicesUtils");
