@@ -30,9 +30,9 @@ namespace PlayFab
 
 
 
-		public static void init()
+		public static void Init(string senderId)
 		{
-			PlayFabPluginEventHandler.init ();
+			PlayFabPluginEventHandler.Init();
 		}
 
 		public static void Post(string url, string data, string authType, string authKey, string sdkVersion, Action<string,string> callback)

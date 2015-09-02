@@ -23,23 +23,24 @@ namespace PlayFab
 		/// <summary>
 		/// Validates a user with the PlayFab service
 		/// </summary>
-		public static void AuthUser(AuthUserRequest request, AuthUserCallback resultCallback, ErrorCallback errorCallback)
+		public static void AuthUser(AuthUserRequest request, AuthUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				AuthUserResponse result = null;
-				PlayFabError error = null;
-				ResultContainer<AuthUserResponse>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<AuthUserResponse>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -52,23 +53,24 @@ namespace PlayFab
 		/// <summary>
 		/// Informs the PlayFab game server hosting service that the indicated user has joined the Game Server Instance specified
 		/// </summary>
-		public static void PlayerJoined(PlayerJoinedRequest request, PlayerJoinedCallback resultCallback, ErrorCallback errorCallback)
+		public static void PlayerJoined(PlayerJoinedRequest request, PlayerJoinedCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				PlayerJoinedResponse result = null;
-				PlayFabError error = null;
-				ResultContainer<PlayerJoinedResponse>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<PlayerJoinedResponse>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -81,23 +83,24 @@ namespace PlayFab
 		/// <summary>
 		/// Informs the PlayFab game server hosting service that the indicated user has left the Game Server Instance specified
 		/// </summary>
-		public static void PlayerLeft(PlayerLeftRequest request, PlayerLeftCallback resultCallback, ErrorCallback errorCallback)
+		public static void PlayerLeft(PlayerLeftRequest request, PlayerLeftCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				PlayerLeftResponse result = null;
-				PlayFabError error = null;
-				ResultContainer<PlayerLeftResponse>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<PlayerLeftResponse>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -110,23 +113,24 @@ namespace PlayFab
 		/// <summary>
 		/// Instructs the PlayFab game server hosting service to instantiate a new Game Server Instance
 		/// </summary>
-		public static void StartGame(StartGameRequest request, StartGameCallback resultCallback, ErrorCallback errorCallback)
+		public static void StartGame(StartGameRequest request, StartGameCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				StartGameResponse result = null;
-				PlayFabError error = null;
-				ResultContainer<StartGameResponse>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<StartGameResponse>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -139,23 +143,24 @@ namespace PlayFab
 		/// <summary>
 		/// Retrieves the relevant details for a specified user, which the external match-making service can then use to compute effective matches
 		/// </summary>
-		public static void UserInfo(UserInfoRequest request, UserInfoCallback resultCallback, ErrorCallback errorCallback)
+		public static void UserInfo(UserInfoRequest request, UserInfoCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
-			Action<string,string> callback = delegate(string responseStr, string errorStr)
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
 			{
 				UserInfoResponse result = null;
-				PlayFabError error = null;
-				ResultContainer<UserInfoResponse>.HandleResults(responseStr, errorStr, out result, out error);
-				if(error != null && errorCallback != null)
+				ResultContainer<UserInfoResponse>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
 				{
-					errorCallback(error);
+					errorCallback(pfError);
 				}
 				if(result != null)
 				{
 					
+					result.CustomData = customData;
+					result.Request = request;
 					if(resultCallback != null)
 					{
 						resultCallback(result);
@@ -167,6 +172,7 @@ namespace PlayFab
 		
 		
         
+
 	}
 }
 

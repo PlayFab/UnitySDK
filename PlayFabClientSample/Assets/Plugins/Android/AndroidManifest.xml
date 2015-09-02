@@ -17,6 +17,7 @@
         android:anyDensity="true"/>
 
     <!-- Android GCM Plugin -->
+    <!-- Change the following two lines to your package name (example: [packagename].permission.C2D_MESSAGE ) -->
     <permission android:name="com.playfab.sdksamples.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="com.playfab.sdksamples.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -55,20 +56,49 @@
             <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
         </activity>
 
-        <activity android:name="org.onepf.openiab.UnityProxyActivity"
-              android:launchMode="singleTask"
-              android:label="@string/app_name"
-              android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
-        </activity>
-        
-        <!-- Android GCM Plugin -->
-        <receiver android:name="com.playfab.unity.plugin.GcmBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.playfab.sdksamples" />
-            </intent-filter>
-        </receiver>
-        <service android:name="com.playfab.unity.plugin.GcmIntentService" />
+
+      <!-- Begin GCM -->
+      <receiver
+          android:name="com.google.android.gms.gcm.GcmReceiver"
+          android:permission="com.google.android.c2dm.permission.SEND" 
+          android:exported="true">
+        <intent-filter>
+          <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+          <!-- for Gingerbread GSF backward compat -->
+          <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+          <!-- Change to your package name -->
+          <category android:name="com.playfab.unicornbattle" />
+        </intent-filter>
+      </receiver>
+
+      <service android:name="com.playfab.unityplugin.GCM.PlayFabGcmListenerService" android:exported="false">
+        <intent-filter>
+          <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        </intent-filter>
+      </service>
+
+      <service
+          android:name="com.playfab.unityplugin.GCM.PlayFabInstanceIDListenerService"
+          android:exported="false">
+        <intent-filter>
+          <action android:name="com.google.android.gms.iid.InstanceID"/>
+        </intent-filter>
+      </service>
+
+      <service
+          android:name="com.playfab.unityplugin.GCM.PlayFabRegistrationIntentService"
+          android:exported="false">
+      </service>
+      
+      <service
+          android:name="com.playfab.unityplugin.PlayFabUnityAndroidPlugin"
+          android:exported="false">
+      </service> 
+      
+      <!-- End GCM -->
+      <meta-data
+          android:name="com.google.android.gms.version"
+          android:value="@integer/google_play_services_version" />
         <!-- Android GCM Plugin -->
 
     </application>

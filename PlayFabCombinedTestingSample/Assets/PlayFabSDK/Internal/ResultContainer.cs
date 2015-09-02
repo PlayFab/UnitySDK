@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using PlayFab.Json;
 using PlayFab;
 using System;
+using System.Net;
 
 namespace PlayFab.Internal
 {
@@ -15,16 +16,14 @@ namespace PlayFab.Internal
 		public Dictionary<string, List<string> > errorDetails;
 		public ResultType data;
 		
-		public static void HandleResults(string responseStr, string errorStr, out ResultType result, out PlayFabError error)
+		public static void HandleResults(string responseStr, ref PlayFabError pfError, out ResultType result)
 		{
 			result = null;
-			error = null;
 
-			if(errorStr != null)
+			if(pfError != null)
 			{
-				error = new PlayFabError();
-				if(PlayFabSettings.GlobalErrorHandler != null)
-					PlayFabSettings.GlobalErrorHandler(error);
+                if (PlayFabSettings.GlobalErrorHandler != null)
+                    PlayFabSettings.GlobalErrorHandler(pfError);
 				return;
 			}
 
@@ -35,11 +34,14 @@ namespace PlayFab.Internal
 			}
 			catch(Exception e)
 			{
-				error = new PlayFabError();
-				error.Error = PlayFabErrorCode.Unknown;
-				error.ErrorMessage = e.ToString();
+                pfError = new PlayFabError();
+                pfError.HttpCode = (int)HttpStatusCode.OK; // Technically we did get a result from the server
+                pfError.HttpStatus = "Client failed to parse response from server";
+                pfError.Error = PlayFabErrorCode.Unknown;
+                pfError.ErrorMessage = e.ToString();
+                pfError.ErrorDetails = null;
 				if(PlayFabSettings.GlobalErrorHandler != null)
-					PlayFabSettings.GlobalErrorHandler(error);
+                    PlayFabSettings.GlobalErrorHandler(pfError);
 				return;
 			}
 
@@ -55,7 +57,7 @@ namespace PlayFab.Internal
 					errorEnum = PlayFabErrorCode.Unknown;
 				}
 
-				error = new PlayFabError
+                pfError = new PlayFabError
 				{
 					HttpCode = resultEnvelope.code,
 					HttpStatus = resultEnvelope.status,
@@ -64,7 +66,7 @@ namespace PlayFab.Internal
 					ErrorDetails = resultEnvelope.errorDetails
 				};
 				if(PlayFabSettings.GlobalErrorHandler != null)
-					PlayFabSettings.GlobalErrorHandler(error);
+                    PlayFabSettings.GlobalErrorHandler(pfError);
 
 				return;
 			}

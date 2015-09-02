@@ -89,13 +89,7 @@ namespace PlayFab.UUnit
                 if (File.Exists(filename))
                 {
                     string testInputsFile = File.ReadAllText(filename);
-                    JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        Converters = { new PlayFab.Json.Converters.IsoDateTimeConverter() { DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFF'Z'" } },
-                    };
-
-                    var serializer = JsonSerializer.Create(JsonSettings);
+                    var serializer = JsonSerializer.Create(PlayFab.Internal.Util.JsonSettings);
                     var testInputs = serializer.Deserialize<Dictionary<string, string>>(new JsonTextReader(new StringReader(testInputsFile)));
                     PlayFabApiTest.SetTitleInfo(testInputs);
                 }
@@ -125,7 +119,7 @@ namespace PlayFab.UUnit
             UUnitAssert.NotNull(lastReceivedMessage);
         }
 
-        public void SharedErrorCallback(PlayFabError error)
+        private void SharedErrorCallback(PlayFabError error)
         {
             lastReceivedMessage = error.ErrorMessage;
         }
@@ -235,6 +229,9 @@ namespace PlayFab.UUnit
             timeUpdated = testCounterReturn.LastUpdated;
             UUnitAssert.Equals(testCounterValueExpected, testCounterValueActual);
             UUnitAssert.True(timeUpdated > timeInitial);
+
+            // UnityEngine.Debug.Log((DateTime.UtcNow - timeUpdated).TotalSeconds);
+            UUnitAssert.True(Math.Abs((DateTime.UtcNow - timeUpdated).TotalMinutes) < 5); // Make sure that this timestamp is recent - This must also account for the difference between local machine time and server time
         }
         private void GetUserDataCallback(GetUserDataResult result)
         {
@@ -399,5 +396,27 @@ namespace PlayFab.UUnit
             else
                 lastReceivedMessage = "Get Server Leaderboard, empty";
         }
+
+        [UUnitTest]
+        public void AccountInfo()
+        {
+			GetAccountInfoRequest request = new GetAccountInfoRequest();
+			request.PlayFabId = playFabId;
+            PlayFabClientAPI.GetAccountInfo(request, AcctInfoCallback, SharedErrorCallback);
+            WaitForApiCalls();
+
+            UUnitAssert.Equals("Enums tested", lastReceivedMessage);
+        }
+		private void AcctInfoCallback(GetAccountInfoResult result)
+		{
+            if (result.AccountInfo == null || result.AccountInfo.TitleInfo == null || result.AccountInfo.TitleInfo.Origination == null
+            || !Enum.IsDefined(typeof(UserOrigination), result.AccountInfo.TitleInfo.Origination.Value))
+			{
+                lastReceivedMessage = "Enums not properly tested";
+				return;
+			}
+
+            lastReceivedMessage = "Enums tested";
+		}
     }
 }
