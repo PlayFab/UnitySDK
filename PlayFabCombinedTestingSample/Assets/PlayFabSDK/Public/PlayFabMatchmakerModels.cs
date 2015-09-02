@@ -193,8 +193,7 @@ namespace PlayFab.MatchmakerModels
 		
 		/// <summary>
 		/// Region with which to associate the server, for filtering.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Region Region { get; set;}
 		
 		/// <summary>
