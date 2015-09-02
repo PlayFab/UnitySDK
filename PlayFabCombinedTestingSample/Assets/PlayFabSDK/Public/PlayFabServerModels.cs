@@ -2013,8 +2013,7 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// State of user leaving the Game Server Instance.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public PlayerConnectionState? PlayerState { get; set;}
 		public object Request { get; set; }
 		public object CustomData { get; set;  }
@@ -2280,8 +2279,7 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// Indicates whether this data can be read by all users (public) or only members of the group (private).
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -2365,8 +2363,7 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -2431,8 +2428,7 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys in this request.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -2462,8 +2458,7 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -2628,8 +2623,7 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// Permissions on this data key.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -2708,14 +2702,12 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// currency type set in the user Steam account
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Currency? SteamCurrency { get; set;}
 		
 		/// <summary>
 		/// what stage of game ownership the user is listed as being in, from Steam
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public TitleActivationStatus? SteamActivationStatus { get; set;}
 	}
 	
@@ -2731,8 +2723,7 @@ namespace PlayFab.ServerModels
 		
 		/// <summary>
 		/// source by which the user first joined the game, if known
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserOrigination? Origination { get; set;}
 		
 		/// <summary>

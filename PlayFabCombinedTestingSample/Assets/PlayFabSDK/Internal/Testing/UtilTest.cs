@@ -3,6 +3,7 @@ using PlayFab.Json.Converters;
 using PlayFab.UUnit;
 using System;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace PlayFab.Internal
 {
@@ -84,6 +85,65 @@ namespace PlayFab.Internal
                     "\nActual json: " + actualJson + " vs expected json: " + expectedJson
                 );
             }
+        }
+
+        private enum testRegion
+        {
+            USCentral,
+            USEast,
+            EUWest,
+            Singapore,
+            Japan,
+            Brazil,
+            Australia
+        }
+        private class EnumConversionTestClass
+        {
+            public List<testRegion> enumList;
+            public testRegion[] enumArray;
+            public testRegion enumValue;
+
+            public override bool Equals(object obj)
+            {
+                if (object.ReferenceEquals(obj, null) || !(obj is EnumConversionTestClass))
+                    return false;
+                EnumConversionTestClass other = (EnumConversionTestClass)obj;
+                if (enumList.Count != other.enumList.Count || enumArray.Length != other.enumArray.Length)
+                    return false;
+
+                for (int i = 0; i < enumList.Count; i++)
+                    if (enumList[i] != other.enumList[i])
+                        return false;
+                for (int i = 0; i < enumArray.Length; i++)
+                    if (enumArray[i] != other.enumArray[i])
+                        return false;
+                return true;
+            }
+
+            public override int GetHashCode()
+            {
+                throw new NotImplementedException("EnumListTest is a test class, and not designed to be hashed.");
+            }
+        }
+        /// <summary>
+        /// Test that enum lists json-serialize and de-serialize correctly
+        /// </summary>
+        [UUnitTest]
+        void EnumConversionTest()
+        {
+            string expectedJson, actualJson;
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj = new EnumConversionTestClass();
+            expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumValue = testRegion.Australia;
+
+            expectedJson = "{\"enumList\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumArray\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumValue\":\"Australia\"}";
+
+            JsonConvert.PopulateObject(expectedJson, actualObj, Util.JsonSettings);
+            actualJson = JsonConvert.SerializeObject(actualObj, Util.JsonFormatting, Util.JsonSettings);
+
+            UUnitAssert.Equals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
+            UUnitAssert.Equals(expectedObj, actualObj);
         }
     }
 }

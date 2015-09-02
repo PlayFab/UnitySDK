@@ -133,7 +133,7 @@ namespace PlayFab.UUnit
 
         public static void Equals(object wanted, object got, string message)
         {
-            if (wanted == got)
+            if (wanted.Equals(got))
             {
                 return;
             }
@@ -142,7 +142,7 @@ namespace PlayFab.UUnit
 
         public new static void Equals(object wanted, object got)
         {
-            if (wanted == got)
+            if (wanted.Equals(got))
             {
                 return;
             }

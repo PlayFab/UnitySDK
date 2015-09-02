@@ -769,8 +769,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// region to check for game instances
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Region? Region { get; set;}
 		
 		/// <summary>
@@ -907,8 +906,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// region to which this server is associated
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Region? Region { get; set;}
 		
 		/// <summary>
@@ -1474,8 +1472,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Returns only trades with the given status. If null, returns all trades.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public TradeStatus? StatusFilter { get; set;}
 	}
 	
@@ -2769,8 +2766,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// region to match make against
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Region? Region { get; set;}
 		
 		/// <summary>
@@ -2836,8 +2832,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// result of match making process
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public MatchmakeStatus? Status { get; set;}
 		public object Request { get; set; }
 		public object CustomData { get; set;  }
@@ -2952,8 +2947,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Status of the transaction.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public TransactionStatus? Status { get; set;}
 		
 		/// <summary>
@@ -3184,8 +3178,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// unique identifier for the region
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Region? Region { get; set;}
 		
 		/// <summary>
@@ -3532,8 +3525,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Indicates whether this data can be read by all users (public) or only members of the group (private).
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -3549,8 +3541,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// the region to associate this server with for match filtering
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Region Region { get; set;}
 		
 		/// <summary>
@@ -3760,7 +3751,6 @@ namespace PlayFab.ClientModels
 	
 	public class TradeInfo
 	{   
-		[JsonConverter(typeof(StringEnumConverter))]
 		
 		public TradeStatus? Status { get; set;}
 		
@@ -4044,8 +4034,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -4080,8 +4069,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys in this request.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -4106,8 +4094,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -4241,8 +4228,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Indicates whether this data can be read by all users (public) or only the user (private).
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserDataPermission? Permission { get; set;}
 	}
 	
@@ -4321,14 +4307,12 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// currency type set in the user Steam account
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public Currency? SteamCurrency { get; set;}
 		
 		/// <summary>
 		/// what stage of game ownership the user is listed as being in, from Steam
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public TitleActivationStatus? SteamActivationStatus { get; set;}
 	}
 	
@@ -4344,8 +4328,7 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// source by which the user first joined the game, if known
-		/// </summary>[JsonConverter(typeof(StringEnumConverter))]
-		
+		/// </summary>
 		public UserOrigination? Origination { get; set;}
 		
 		/// <summary>

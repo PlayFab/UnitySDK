@@ -24,7 +24,7 @@ namespace PlayFab.Internal
         public static JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
         {
             NullValueHandling = NullValueHandling.Ignore,
-            Converters = { new IsoDateTimeConverter() },
+            Converters = { new IsoDateTimeConverter(), new StringEnumConverter() },
         };
 
         public static Formatting JsonFormatting = Formatting.None;

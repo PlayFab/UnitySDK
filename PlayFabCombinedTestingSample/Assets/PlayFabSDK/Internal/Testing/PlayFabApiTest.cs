@@ -89,13 +89,7 @@ namespace PlayFab.UUnit
                 if (File.Exists(filename))
                 {
                     string testInputsFile = File.ReadAllText(filename);
-                    JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        Converters = { new PlayFab.Json.Converters.IsoDateTimeConverter() { DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFF'Z'" } },
-                    };
-
-                    var serializer = JsonSerializer.Create(JsonSettings);
+                    var serializer = JsonSerializer.Create(PlayFab.Internal.Util.JsonSettings);
                     var testInputs = serializer.Deserialize<Dictionary<string, string>>(new JsonTextReader(new StringReader(testInputsFile)));
                     PlayFabApiTest.SetTitleInfo(testInputs);
                 }
