@@ -24,7 +24,7 @@ public class PlayFabUnityAndroidPlugin extends Service{
     public static final String PROPERTY_APP_ICON = "_PlayFab_AppIcon";
     public static final String PROPERTY_SENDER_ID = "_PlayFab_SenderID";
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
-
+    public static boolean PauseState = false;
 
     private static boolean mServiceBound = false;
     private static PlayFabUnityAndroidPlugin mBoundService;
@@ -119,6 +119,10 @@ public class PlayFabUnityAndroidPlugin extends Service{
         if(mServiceBound && mServiceConnection != null){
             UnityPlayer.currentActivity.unbindService(mServiceConnection);
         }
+    }
+
+    public static void updatePausedState(boolean state){
+        PauseState = state;
     }
 
 }
