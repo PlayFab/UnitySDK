@@ -121,8 +121,12 @@ namespace PlayFab.Internal
 			{
 				string[] args = response.Split(":".ToCharArray(), 2);
 				int reqId = int.Parse(args[0]);
-				Action<string,string> callback = HttpHandlers[reqId];
-				if(callback != null)
+#if UNITY_IOS
+                Action<string,PlayFabError> callback = HttpHandlers[reqId];
+#else
+                Action<string,string> callback = HttpHandlers[reqId];
+#endif
+                if (callback != null)
 					callback(args[1], null);
 				HttpHandlers.Remove(reqId);
 			}
