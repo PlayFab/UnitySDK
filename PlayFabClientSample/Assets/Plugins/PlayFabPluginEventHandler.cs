@@ -17,7 +17,11 @@ namespace PlayFab.Internal
 	{
 		private static PlayFabPluginEventHandler PlayFabGO;
 
-		private Dictionary<int, Action<string,string>> HttpHandlers = new Dictionary<int, Action<string,string>>();
+#if UNITY_IOS
+		private Dictionary<int, Action<string,PlayFabError>> HttpHandlers = new Dictionary<int, Action<string,PlayFabError>>();
+#else
+        private Dictionary<int, Action<string, string>> HttpHandlers = new Dictionary<int, Action<string, string>>();
+#endif
 
 		public static void Init()
 		{
@@ -59,7 +63,8 @@ namespace PlayFab.Internal
 		    PlayFabGoogleCloudMessaging.MessageReceived(message);
 		}
 
-		public static void addHttpDelegate(int id, Action<string,string> callback)
+#if UNITY_IOS
+		public static void addHttpDelegate(int id, Action<string,PlayFabError> callback)
 		{
 		    Init();
 
@@ -67,17 +72,40 @@ namespace PlayFab.Internal
 		        PlayFabGO.HttpHandlers.Add(id, callback);
 		}
 
+#else
+		public static void addHttpDelegate(int id, Action<string,string> callback)
+		{
+		    Init();
 
-		public void OnHttpError(string response)
+		    if (callback != null)
+		        PlayFabGO.HttpHandlers.Add(id, callback);
+		}
+#endif
+        public void OnHttpError(string response)
 		{
 			//Debug.Log ("Got HTTP error response: "+response);
 			try
 			{
 				string[] args = response.Split(":".ToCharArray(), 2);
 				int reqId = int.Parse(args[0]);
-				Action<string,string> callback = HttpHandlers[reqId];
-				if(callback != null)
+#if UNITY_IOS
+				Action<string,PlayFabError> callback = HttpHandlers[reqId];
+			    if (callback != null)
+			    {
+			        var cbError = new PlayFabError()
+			        {
+                        HttpStatus = "200",
+			            ErrorMessage = args[1],
+			        };
+			        callback(null, cbError);
+			    }
+
+#else
+                Action<string,string> callback = HttpHandlers[reqId];
+                if (callback != null) {
 					callback(null, args[1]);
+                }
+#endif
 				HttpHandlers.Remove(reqId);
 			}
 			catch(Exception e)
@@ -93,8 +121,12 @@ namespace PlayFab.Internal
 			{
 				string[] args = response.Split(":".ToCharArray(), 2);
 				int reqId = int.Parse(args[0]);
-				Action<string,string> callback = HttpHandlers[reqId];
-				if(callback != null)
+#if UNITY_IOS
+                Action<string,PlayFabError> callback = HttpHandlers[reqId];
+#else
+                Action<string,string> callback = HttpHandlers[reqId];
+#endif
+                if (callback != null)
 					callback(args[1], null);
 				HttpHandlers.Remove(reqId);
 			}

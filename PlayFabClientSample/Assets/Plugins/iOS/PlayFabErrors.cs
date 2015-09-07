@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace PlayFab
 {
-#if !UNITY_IOS
+#if UNITY_IOS 
 	/// <summary>
 	/// Error codes returned by PlayFabAPIs
 	/// </summary>
