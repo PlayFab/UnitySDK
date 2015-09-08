@@ -85,7 +85,8 @@ To make server API calls, set your DeveloperSecretKey, which can be found in the
 	using PlayFab;
 
 	void Awake(){
-		PlayFabSettings.DeveloperSecret = "2ksd93skd8390239s"; //your Developer Secret goes here.
+		PlayFabSettings.DeveloperSecretKey = "Find this in your dashboard/settings https://developer.playfab.com/title/properties/{your title Id}"; //your Developer Secret goes here.
+		// For security reasons you must never expose this value to players
 	} 
 
 ```
