@@ -12,6 +12,7 @@ namespace PlayFab
 	public class PlayFabServerAPI
 	{
 		public delegate void AuthenticateSessionTicketCallback(AuthenticateSessionTicketResult result);
+		public delegate void GetPlayFabIDsFromFacebookIDsCallback(GetPlayFabIDsFromFacebookIDsResult result);
 		public delegate void GetUserAccountInfoCallback(GetUserAccountInfoResult result);
 		public delegate void SendPushNotificationCallback(SendPushNotificationResult result);
 		public delegate void GetLeaderboardCallback(GetLeaderboardResult result);
@@ -33,6 +34,7 @@ namespace PlayFab
 		public delegate void GetCatalogItemsCallback(GetCatalogItemsResult result);
 		public delegate void GetTitleDataCallback(GetTitleDataResult result);
 		public delegate void GetTitleInternalDataCallback(GetTitleDataResult result);
+		public delegate void GetTitleNewsCallback(GetTitleNewsResult result);
 		public delegate void SetTitleDataCallback(SetTitleDataResult result);
 		public delegate void SetTitleInternalDataCallback(SetTitleDataResult result);
 		public delegate void AddCharacterVirtualCurrencyCallback(ModifyCharacterVirtualCurrencyResult result);
@@ -109,6 +111,36 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/AuthenticateSessionTicket", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Retrieves the unique PlayFab identifiers for the given set of Facebook identifiers.
+		/// </summary>
+		public static void GetPlayFabIDsFromFacebookIDs(GetPlayFabIDsFromFacebookIDsRequest request, GetPlayFabIDsFromFacebookIDsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+			{
+				GetPlayFabIDsFromFacebookIDsResult result = null;
+				ResultContainer<GetPlayFabIDsFromFacebookIDsResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
+				{
+					errorCallback(pfError);
+				}
+				if(result != null)
+				{
+					
+					result.CustomData = customData;
+					result.Request = request;
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetPlayFabIDsFromFacebookIDs", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>
@@ -739,6 +771,36 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetTitleInternalData", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Retrieves the title news feed, as configured in the developer portal
+		/// </summary>
+		public static void GetTitleNews(GetTitleNewsRequest request, GetTitleNewsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+			{
+				GetTitleNewsResult result = null;
+				ResultContainer<GetTitleNewsResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
+				{
+					errorCallback(pfError);
+				}
+				if(result != null)
+				{
+					
+					result.CustomData = customData;
+					result.Request = request;
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetTitleNews", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>

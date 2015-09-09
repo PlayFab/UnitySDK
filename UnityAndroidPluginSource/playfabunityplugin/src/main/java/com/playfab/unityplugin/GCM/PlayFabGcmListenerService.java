@@ -3,7 +3,6 @@ package com.playfab.unityplugin.GCM;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -15,8 +14,9 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
-import com.unity3d.player.UnityPlayerProxyActivity;
-
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
 import java.util.Set;
 
 /**
@@ -58,14 +58,33 @@ public class PlayFabGcmListenerService extends GcmListenerService{
         }else if(data.containsKey("default")){
             message = data.getString("default");
         }
+
+        //TODO: More needs to be explored here, so this is just preliminary setup for passing more complex json data in notifications.
+        if(isJSONValid(message)){
+            try {
+                JSONObject jObj = new JSONObject(message);
+                message = jObj.getString("message");
+                //TODO: Create a bundle "extras" and pass it with the notification.
+                //The big question is how do you get that notification bundle from within Unity "After the Fact"
+            }catch(JSONException e){
+                //Could not parse json. Shouldn't happen since we checked in the isJSONValid
+            }
+        }
+
         Log.i(PlayFabUnityAndroidPlugin.TAG, "Message Recieved: " + message);
 
         if( UnityPlayer.currentActivity != null ){
             try
             {
-                Log.i(PlayFabUnityAndroidPlugin.TAG,"Sending Notification to Unity");
-                //Try to send the message to Unity if it is running.
-                UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", message);
+                //If Unity is running and has focus
+                if(!PlayFabUnityAndroidPlugin.PauseState) {
+                    Log.i(PlayFabUnityAndroidPlugin.TAG, "Sending Notification to Unity");
+                    //Try to send the message to Unity if it is running.
+                    UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", message);
+                }else {
+                    //Unity doesn't have focus, so send to notification bar.
+                    sendNotification(message);
+                }
             }
             catch(Exception e)
             {
@@ -124,6 +143,21 @@ public class PlayFabGcmListenerService extends GcmListenerService{
         editor.putInt(PROPERTY_NOTIFICATION_ID, nextId);
         editor.commit();
         return id;
+    }
+
+    public boolean isJSONValid(String test) {
+        try {
+            new JSONObject(test);
+        } catch (JSONException ex) {
+            // edited, to include @Arthur's comment
+            // e.g. in case JSONArray is valid as well...
+            try {
+                new JSONArray(test);
+            } catch (JSONException ex1) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

@@ -637,6 +637,22 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	public class FacebookPlayFabIdPair
+	{   
+		
+		/// <summary>
+		/// Unique Facebook identifier for a user.
+		/// </summary>
+		public string FacebookId { get; set;}
+		
+		/// <summary>
+		/// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Facebook identifier.
+		/// </summary>
+		public string PlayFabId { get; set;}
+	}
+	
+	
+	
 	public class FriendInfo
 	{   
 		
@@ -1154,6 +1170,31 @@ namespace PlayFab.ServerModels
 	
 	
 	
+	public class GetPlayFabIDsFromFacebookIDsRequest
+	{   
+		
+		/// <summary>
+		/// Array of unique Facebook identifiers for which the title needs to get PlayFab identifiers.
+		/// </summary>
+		public List<string> FacebookIDs { get; set;}
+	}
+	
+	
+	
+	public class GetPlayFabIDsFromFacebookIDsResult
+	{   
+		
+		/// <summary>
+		/// Mapping of Facebook identifiers to PlayFab identifiers.
+		/// </summary>
+		public List<FacebookPlayFabIdPair> Data { get; set;}
+		public object Request { get; set; }
+		public object CustomData { get; set;  }
+		
+	}
+	
+	
+	
 	public class GetPublisherDataRequest
 	{   
 		
@@ -1237,6 +1278,31 @@ namespace PlayFab.ServerModels
 		/// a dictionary object of key / value pairs
 		/// </summary>
 		public Dictionary<string,string> Data { get; set;}
+		public object Request { get; set; }
+		public object CustomData { get; set;  }
+		
+	}
+	
+	
+	
+	public class GetTitleNewsRequest
+	{   
+		
+		/// <summary>
+		/// Limits the results to the last n entries. Defaults to 10 if not set.
+		/// </summary>
+		public int? Count { get; set;}
+	}
+	
+	
+	
+	public class GetTitleNewsResult
+	{   
+		
+		/// <summary>
+		/// Array of news items.
+		/// </summary>
+		public List<TitleNewsItem> News { get; set;}
 		public object Request { get; set; }
 		public object CustomData { get; set;  }
 		
@@ -2339,6 +2405,32 @@ namespace PlayFab.ServerModels
 		PendingSteam,
 		ActivatedSteam,
 		RevokedSteam
+	}
+	
+	
+	
+	public class TitleNewsItem
+	{   
+		
+		/// <summary>
+		/// Date and time when the news items was posted.
+		/// </summary>
+		public DateTime Timestamp { get; set;}
+		
+		/// <summary>
+		/// Unique identifier of news item.
+		/// </summary>
+		public string NewsId { get; set;}
+		
+		/// <summary>
+		/// Title of the news item.
+		/// </summary>
+		public string Title { get; set;}
+		
+		/// <summary>
+		/// News item text.
+		/// </summary>
+		public string Body { get; set;}
 	}
 	
 	
