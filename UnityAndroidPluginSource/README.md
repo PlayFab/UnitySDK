@@ -106,34 +106,34 @@ Once a ready message has been received we are free to make a call to **PlayFabGo
 GCMReady Event get called automatically.
 
 
-	```C# 
+```C# 
 
-		private void OnGCMReady(bool status)
-        {
-            Debug.Log("GCM Ready!");
-            PlayFabGoogleCloudMessaging.GetToken();
-        }
+	private void OnGCMReady(bool status)
+    {
+        Debug.Log("GCM Ready!");
+        PlayFabGoogleCloudMessaging.GetToken();
+    }
 
-	```
+```
 
 Once a token has been acquired, then the registration callback will be triggered.  We recommend that you store this token (short term) until you have logged into the API.   
 
-	```C#
+```C#
 
 	private void OnGCMRegistration(string token, string error)
-    {
-        Debug.Log(string.Format("GCM Token Recieved: {0}", token));
-        if (token != null)
-        {
-            _PushToken = token;
-        }
-    }
+	{
+	    Debug.Log(string.Format("GCM Token Recieved: {0}", token));
+	    if (token != null)
+	    {
+	        _PushToken = token;
+	    }
+	}
 
-	```
+```
 
 Now that you have acquired a token, you can use it after  you've loggeded in like below.
 
-	```C#
+```C#
 
     AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
     AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity");
@@ -164,7 +164,7 @@ Now that you have acquired a token, you can use it after  you've loggeded in lik
 
     }, HandleLoginError);
 
-	```
+```
 
 5. Advanced: CustomData via Push Notifications
 ----
@@ -177,7 +177,8 @@ First off you'll need to prepare some JSON that you will send via the SendNotifi
 
 Example:
  
-	```
+```JSON
+
 	{
 	    "Title": "Message from Game",
 	    "Icon": "app_icon",
@@ -188,7 +189,7 @@ Example:
 	    }
 	}
 
-	```
+```
 
 There is a new **PlayFabNotifiationPackage** object which holds the following fields:
 
