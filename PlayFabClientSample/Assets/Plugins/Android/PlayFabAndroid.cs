@@ -13,6 +13,7 @@ namespace PlayFab
 
         private static AndroidJavaClass AndroidPlugin;
 		private static AndroidJavaClass PlayServicesUtils;
+        private static AndroidJavaClass PlayFabPushCacheClass;
 
 		public static bool IsAvailable() { return true; }
 #else
@@ -80,13 +81,22 @@ namespace PlayFab
 
 		public static void Init()
 		{
-			PlayFabGCMClass = new AndroidJavaClass("com.playfab.unityplugin.GCM.PlayFabGoogleCloudMessaging"); 
+			PlayFabGCMClass = new AndroidJavaClass("com.playfab.unityplugin.GCM.PlayFabGoogleCloudMessaging");
+            PlayFabPushCacheClass = new AndroidJavaClass("com.playfab.unityplugin.GCM.PlayFabPushCache");
 		}
 
 		public static void GetToken()
 		{
 			PlayFabGCMClass.CallStatic("getToken");
 		}
+
+        public static void UpdatePaused(bool pausedState){
+            AndroidPlugin.CallStatic("updatePausedState", pausedState);
+        }
+
+        public static string GetPushCacheData(){
+            return PlayFabPushCacheClass.CallStatic<String>("getPushCacheData");
+        }
 
 #else
 
@@ -99,6 +109,16 @@ namespace PlayFab
 		{
 			return null;
 		}
+
+	    public static void UpdatePaused(bool pausedState)
+	    {
+            
+	    }
+
+        public static string GetPushCacheData()
+        {
+            return null;
+        }
 #endif
 
 	    internal static void RegistrationReady(bool status)
