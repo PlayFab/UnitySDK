@@ -71,12 +71,12 @@ The source code is fairly simple and this version of the PlayFab Unity Android P
 
 * **PlayFabUnityAndroidPlugin** -  We have created this class as a Service rather than an activity. It's purpose is to allow you to initialize the Plugin from within Unity.  You can accomplish this by making a call to the Android plugin as shown below from within unity.
 
-	```C#
+```C#
 
 	var senderId = "123456"; //put your sender id here.
 	PlayFabAndroidPlugin.init(senderId);
 
-	``` 
+``` 
 
 This makes a call to PlayFabUnityAndroidPlugin.initGCM()  and passes the SenderId & Game Title (Application.productName).  This sets up everything so that you can make a call to get the GCM Token.
 
@@ -84,25 +84,26 @@ PlayFabUnityAndroidPlugin is a service that is started and stopped when you open
 
 *  **GCM.PlayFabRegistrationIntentService** - This class get's and stores an instance of it's self.  It is our link to the InstanceID which is how you get a token from GCM.  Once you've called .initGCM, this service is started up and it will then send a message back to unity.  Messages are handled in the **UnityPluginEventHandler.cs**.
     
-	```C#
+```C#
 
-	    public void GCMRegistrationReady(string status)
-	    {
-	        bool statusParam; 
-            bool.TryParse(status,out statusParam);
-            PlayFabGoogleCloudMessaging.RegistrationReady(statusParam);
-	    }
+    public void GCMRegistrationReady(string status)
+    {
+        bool statusParam; 
+        bool.TryParse(status,out statusParam);
+        PlayFabGoogleCloudMessaging.RegistrationReady(statusParam);
+    }
 
-	```
+```
 
 Once a ready message has been received we are free to make a call to **PlayFabGoogleCloudMessaging.GetToken()** , you don't have to worry about using the UnityPluginEventHanlder.cs directly.  Simply subscribe to the event delegates.
 
-	```C#
+```C#
 
-        PlayFabGoogleCloudMessaging._RegistrationReadyCallback += OnGCMReady;
-        PlayFabGoogleCloudMessaging._RegistrationCallback += OnGCMRegistration;
-	```
-GCMRaedy Event get called automatically.
+    PlayFabGoogleCloudMessaging._RegistrationReadyCallback += OnGCMReady;
+    PlayFabGoogleCloudMessaging._RegistrationCallback += OnGCMRegistration;
+
+```
+GCMReady Event get called automatically.
 
 
 	```C# 
