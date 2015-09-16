@@ -22,8 +22,8 @@ This document assumes familiarity with the Unity game engine, Java, Gradle & Usi
 	* We also require you to use a PlayFab Admin API call to initailly setup your title.  In the future you won't have to do this, but for now you need to make a call to admin/SetupPushNotification
 		* https://api.playfab.com/Documentation/Admin/method/SetupPushNotification
 
-Setup Push notification via Admin API
----
+###Setup Push notification via Admin API
+
 I like using postman for this.  You can get postman (which is a chrome plugin) at http://www.getpostman.com
 
 *	headers - 
@@ -57,8 +57,8 @@ I like using postman for this.  You can get postman (which is a chrome plugin) a
 	*	Data model for holding push notification data
 
 
-Compiling in Android Studio
---- 
+###Compiling in Android Studio
+ 
 *	Open the project in Android Studio
 *	On the far right of the editor there is a Gradle tab.  Click that and then click the "refresh all gradle projects" button.
 *	In the gradle projects window you should see two entries.  UnityAndroidPluginSouce & :playfabunityplugin. Expand :playfabunityplugin --> Tasks --> other
