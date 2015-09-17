@@ -60,19 +60,6 @@ public class PlayFabGcmListenerService extends GcmListenerService{
         }
 
         setNotificationPackage(message);
-
-        //TODO: More needs to be explored here, so this is just preliminary setup for passing more complex json data in notifications.
-        if(isJSONValid(message)){
-            try {
-                JSONObject jObj = new JSONObject(message);
-                message = jObj.getString("message");
-                //TODO: Create a bundle "extras" and pass it with the notification.
-                //The big question is how do you get that notification bundle from within Unity "After the Fact"
-            }catch(JSONException e){
-                //Could not parse json. Shouldn't happen since we checked in the isJSONValid
-            }
-        }
-
         Log.i(PlayFabUnityAndroidPlugin.TAG, "Message Recieved: " + message);
 
         if( UnityPlayer.currentActivity != null ){
