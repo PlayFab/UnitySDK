@@ -59,6 +59,8 @@ public class PlayFabGcmListenerService extends GcmListenerService{
             message = data.getString("default");
         }
 
+        setNotificationPackage(message);
+
         //TODO: More needs to be explored here, so this is just preliminary setup for passing more complex json data in notifications.
         if(isJSONValid(message)){
             try {
@@ -109,11 +111,10 @@ public class PlayFabGcmListenerService extends GcmListenerService{
                 getPackageManager().getLaunchIntentForPackage(getPackageName()),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String title = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_GAME_TITLE, "");
-        String appIcon = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_APP_ICON, "app_icon");
+        String appIcon = PlayFabPushCache.getPushCache().Icon;
+        String title = PlayFabPushCache.getPushCache().Title;
+        Uri defaultSoundUri = PlayFabPushCache.getPushCache().Sound;
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(getResources().getIdentifier(appIcon, "drawable", getPackageName()))
                 .setContentTitle(title)
@@ -128,6 +129,41 @@ public class PlayFabGcmListenerService extends GcmListenerService{
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationId = getNotificationId();
         notificationManager.notify(notificationId, notificationBuilder.build()); //ID_NOTIFICATION
+    }
+
+    public void setNotificationPackage(String message){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        PlayFabNotificationPackage mPackage = new PlayFabNotificationPackage();
+        mPackage.Title = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_GAME_TITLE, "");
+        mPackage.Icon = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_APP_ICON, "app_icon");
+        mPackage.Message = message;
+        mPackage.Sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        if(isJSONValid(message)){
+            try {
+                JSONObject jObj = new JSONObject(message);
+
+                if(jObj.has("Message")){
+                    mPackage.Message = jObj.getString("message");
+                }
+
+                if(jObj.has("Icon")){
+                    mPackage.Icon = jObj.getString("icon");
+                }
+
+                if(jObj.has("Sound")){
+                    mPackage.Sound = Uri.parse("android.resource://" + getPackageName() + "/" + jObj.has("sound"));
+                }
+
+                if(jObj.has("CustomData")){
+                    mPackage.CustomData = jObj.getString("CustomData");
+                }
+            }catch(JSONException e){
+                //Could not parse json. Shouldn't happen since we checked in the isJSONValid
+            }
+        }
+
+        PlayFabPushCache.setPushCache(mPackage);
     }
 
     public synchronized int getNotificationId()
