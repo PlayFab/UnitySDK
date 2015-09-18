@@ -96,10 +96,12 @@ public class PlayFabGcmListenerService extends GcmListenerService{
                 getPackageManager().getLaunchIntentForPackage(getPackageName()),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String appIcon = PlayFabPushCache.getPushCache().Icon;
-        String title = PlayFabPushCache.getPushCache().Title;
-        Uri defaultSoundUri = PlayFabPushCache.getPushCache().Sound;
-        String message = PlayFabPushCache.getPushCache().Message;
+        PlayFabNotificationPackage pushNotificationPackage = PlayFabPushCache.getPushCache();
+
+        String appIcon = pushNotificationPackage.Icon;
+        String title = pushNotificationPackage.Title;
+        Uri defaultSoundUri = pushNotificationPackage.Sound;
+        String message = pushNotificationPackage.Message;
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(getResources().getIdentifier(appIcon, "drawable", getPackageName()))

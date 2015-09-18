@@ -6,9 +6,9 @@ using PlayFab;
 
 namespace PlayFab
 {
-	public class PlayFabAndroidPlugin
-	{
-		private static bool Initted=false;
+    public class PlayFabAndroidPlugin
+    {
+        private static bool Initted = false;
 #if UNITY_ANDROID && !UNITY_EDITOR
 
         private static AndroidJavaClass AndroidPlugin;
@@ -19,20 +19,20 @@ namespace PlayFab
         public static bool IsAvailable() { return false; }
 #endif
 
-		public static void Init(string SenderID)
-		{
-			if (Initted)
-				return;
+        public static void Init(string SenderID)
+        {
+            if (Initted)
+                return;
 
-			PlayFabPluginEventHandler.Init();
+            PlayFabPluginEventHandler.Init();
 
 #if UNITY_ANDROID && !UNITY_EDITOR
             AndroidPlugin = new AndroidJavaClass("com.playfab.unityplugin.PlayFabUnityAndroidPlugin");
 			
 			string applicationName = "PlayFab Application";
-			#if UNITY_5 || UNITY_5_1
+#if UNITY_5 || UNITY_5_1
 				applicationName = Application.productName;
-			#endif
+#endif
 			var staticParams = new object[] { SenderID , applicationName};
 			
             AndroidPlugin.CallStatic("initGCM", staticParams);
@@ -41,8 +41,8 @@ namespace PlayFab
 #endif
             PlayFabGoogleCloudMessaging.Init();
 
-			Initted = true;
-		}
+            Initted = true;
+        }
 
 #if UNITY_ANDROID && !UNITY_EDITOR
 
@@ -60,22 +60,22 @@ namespace PlayFab
         }
 #else
         public static bool IsPlayServicesAvailable()
-		{
-			return false;
-		}
+        {
+            return false;
+        }
 #endif
-	}
+    }
 
-	public class PlayFabGoogleCloudMessaging
+    public class PlayFabGoogleCloudMessaging
     {
         #region Events
-	    public delegate void GCMRegisterReady(bool status);
+        public delegate void GCMRegisterReady(bool status);
         public delegate void GCMRegisterComplete(string id, string error);
-		public delegate void GCMMessageReceived(string message);
+        public delegate void GCMMessageReceived(string message);
 
-	    public static GCMRegisterReady _RegistrationReadyCallback;
-		public static GCMRegisterComplete _RegistrationCallback;
-		public static GCMMessageReceived _MessageCallback;
+        public static GCMRegisterReady _RegistrationReadyCallback;
+        public static GCMRegisterComplete _RegistrationCallback;
+        public static GCMMessageReceived _MessageCallback;
         #endregion
 
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -101,19 +101,19 @@ namespace PlayFab
 #else
 
         public static void Init()
-		{
+        {
 
-		}
-		
-		public static string GetToken()
-		{
-			return null;
-		}
+        }
 
-	    public static void UpdatePaused(bool pausedState)
-	    {
-            
-	    }
+        public static string GetToken()
+        {
+            return null;
+        }
+
+        public static void UpdatePaused(bool pausedState)
+        {
+
+        }
 
         public static string GetPushCacheData()
         {
@@ -121,31 +121,31 @@ namespace PlayFab
         }
 #endif
 
-	    internal static void RegistrationReady(bool status)
-	    {
-	        if (_RegistrationReadyCallback == null)
-	            return;
+        internal static void RegistrationReady(bool status)
+        {
+            if (_RegistrationReadyCallback == null)
+                return;
 
             _RegistrationReadyCallback(status);
             _RegistrationReadyCallback = null;
-	    }
+        }
 
         internal static void RegistrationComplete(string id, string error)
-		{
-			if (_RegistrationCallback == null)
-				return;
+        {
+            if (_RegistrationCallback == null)
+                return;
 
             _RegistrationCallback(id, error);
-			_RegistrationCallback = null;
-		}
+            _RegistrationCallback = null;
+        }
 
-		internal static void MessageReceived(string message)
-		{
-			if (_MessageCallback == null)
-				return;
+        internal static void MessageReceived(string message)
+        {
+            if (_MessageCallback == null)
+                return;
 
-			_MessageCallback(message);
-		}
+            _MessageCallback(message);
+        }
 
-	}
+    }
 }
