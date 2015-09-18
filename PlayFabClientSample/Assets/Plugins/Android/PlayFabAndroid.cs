@@ -13,7 +13,6 @@ namespace PlayFab
 
         private static AndroidJavaClass AndroidPlugin;
 		private static AndroidJavaClass PlayServicesUtils;
-        private static AndroidJavaClass PlayFabPushCacheClass;
 
 		public static bool IsAvailable() { return true; }
 #else
@@ -55,6 +54,10 @@ namespace PlayFab
         public static void StopPlugin(){
             AndroidPlugin.CallStatic("stopPluginService");
         }
+
+        public static void UpdatePaused(bool pausedState){
+            AndroidPlugin.CallStatic("updatePausedState", pausedState);
+        }
 #else
         public static bool IsPlayServicesAvailable()
 		{
@@ -78,6 +81,7 @@ namespace PlayFab
 #if UNITY_ANDROID && !UNITY_EDITOR
 
         private static AndroidJavaClass PlayFabGCMClass;
+        private static AndroidJavaClass PlayFabPushCacheClass;
 
 		public static void Init()
 		{
@@ -89,10 +93,6 @@ namespace PlayFab
 		{
 			PlayFabGCMClass.CallStatic("getToken");
 		}
-
-        public static void UpdatePaused(bool pausedState){
-            AndroidPlugin.CallStatic("updatePausedState", pausedState);
-        }
 
         public static string GetPushCacheData(){
             return PlayFabPushCacheClass.CallStatic<String>("getPushCacheData");
