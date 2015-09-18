@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 
 namespace PlayFab
 {
-	public class PlayFabiOSPlugin
-	{
+    public class PlayFabiOSPlugin
+    {
 #if UNITY_IOS
 		[DllImport("__Internal")]
 		private static extern void pf_make_http_request(string url, string method, int numHeaders, string[] headers, string[] headerValues, string body, int requestId);
@@ -14,18 +14,18 @@ namespace PlayFab
 
 		public static bool isAvailable() { return true; }
 
-		#else
+#else
 
-		public static bool isAvailable() { return false; }
-		#endif
-
-
+        public static bool isAvailable() { return false; }
+#endif
 
 
-		public static void Init(string senderId)
-		{
-			PlayFabPluginEventHandler.Init();
-		}
+
+
+        public static void Init(string senderId)
+        {
+            PlayFabPluginEventHandler.Init();
+        }
 
 #if UNITY_IOS
 		public static void Post(string url, string data, string authType, string authKey, string sdkVersion, Action<string,PlayFabError> callback)
@@ -53,7 +53,7 @@ namespace PlayFab
         {
             callback(null, "This method only works on iOS");
 #endif
-		}
-	}
+        }
+    }
 }
 
