@@ -22,8 +22,8 @@ This document assumes familiarity with the Unity game engine, Java, Gradle & Usi
 	* We also require you to use a PlayFab Admin API call to initailly setup your title.  In the future you won't have to do this, but for now you need to make a call to admin/SetupPushNotification
 		* https://api.playfab.com/Documentation/Admin/method/SetupPushNotification
 
-Setup Push notification via Admin API
----
+###Setup Push notification via Admin API
+
 I like using postman for this.  You can get postman (which is a chrome plugin) at http://www.getpostman.com
 
 *	headers - 
@@ -51,9 +51,14 @@ I like using postman for this.  You can get postman (which is a chrome plugin) a
 	*	This class receives messages and sends them either to Unity or to the notification bar.
 *	**PlayFabGoogleCloudMessaging.java**
 	*	Allows you to call .getToken() to receive the GCM token and send it back to Unity.
+*	**PlayFabPushCache.java**	
+	*	Allows you to get the Cached push notification after it has been sent / received.
+*	**PlayFabNotificationPackage.java**
+	*	Data model for holding push notification data
 
-Compiling in Android Studio
---- 
+
+###Compiling in Android Studio
+ 
 *	Open the project in Android Studio
 *	On the far right of the editor there is a Gradle tab.  Click that and then click the "refresh all gradle projects" button.
 *	In the gradle projects window you should see two entries.  UnityAndroidPluginSouce & :playfabunityplugin. Expand :playfabunityplugin --> Tasks --> other
@@ -77,15 +82,16 @@ This makes a call to PlayFabUnityAndroidPlugin.initGCM()  and passes the SenderI
 
 PlayFabUnityAndroidPlugin is a service that is started and stopped when you open and close your unity application. It is bound to the Unity Activity so that it can only be accessed by Unity.  We choose to use a service so that we are not overriding the Main Activity of your project and will have no conflicts with other plugins that you wish to use. 
 
-*  **GCM.PlayFabRegistrationIntentService** - This class get's and stores an instance of it's self.  It is our link to the InstanceID which is how you get a token from GCM.  Once you've called .initGCM, this service is started up and it will then send a message back to unity.  Messages are handled in the **UnityPluginEventHandler.cs**.  
+*  **GCM.PlayFabRegistrationIntentService** - This class get's and stores an instance of it's self.  It is our link to the InstanceID which is how you get a token from GCM.  Once you've called .initGCM, this service is started up and it will then send a message back to unity.  Messages are handled in the **UnityPluginEventHandler.cs**.
+    
 ```C#
 
-	    public void GCMRegistrationReady(string status)
-	    {
-	        bool statusParam; 
-            bool.TryParse(status,out statusParam);
-            PlayFabGoogleCloudMessaging.RegistrationReady(statusParam);
-	    }
+    public void GCMRegistrationReady(string status)
+    {
+        bool statusParam; 
+        bool.TryParse(status,out statusParam);
+        PlayFabGoogleCloudMessaging.RegistrationReady(statusParam);
+    }
 
 ```
 
@@ -93,17 +99,20 @@ Once a ready message has been received we are free to make a call to **PlayFabGo
 
 ```C#
 
-                PlayFabGoogleCloudMessaging._RegistrationReadyCallback += OnGCMReady;
-                PlayFabGoogleCloudMessaging._RegistrationCallback += OnGCMRegistration;
+    PlayFabGoogleCloudMessaging._RegistrationReadyCallback += OnGCMReady;
+    PlayFabGoogleCloudMessaging._RegistrationCallback += OnGCMRegistration;
+
 ```
+GCMReady Event get called automatically.
+
 
 ```C# 
 
-		private void OnGCMReady(bool status)
-        {
-            Debug.Log("GCM Ready!");
-            PlayFabGoogleCloudMessaging.GetToken();
-        }
+	private void OnGCMReady(bool status)
+    {
+        Debug.Log("GCM Ready!");
+        PlayFabGoogleCloudMessaging.GetToken();
+    }
 
 ```
 
@@ -112,13 +121,13 @@ Once a token has been acquired, then the registration callback will be triggered
 ```C#
 
 	private void OnGCMRegistration(string token, string error)
-    {
-        Debug.Log(string.Format("GCM Token Recieved: {0}", token));
-        if (token != null)
-        {
-            _PushToken = token;
-        }
-    }
+	{
+	    Debug.Log(string.Format("GCM Token Recieved: {0}", token));
+	    if (token != null)
+	    {
+	        _PushToken = token;
+	    }
+	}
 
 ```
 
@@ -157,3 +166,48 @@ Now that you have acquired a token, you can use it after  you've loggeded in lik
 
 ```
 
+5. Advanced: CustomData via Push Notifications
+----
+
+Playfab supports custom notifications,  allowing you ultimate flexability on the type of messaging you want to send from the server to your game client.  
+
+To make use of CustomData, you'll need to send JSON data from the PlayFab Server through the GCM to the game client.  However, it is really not that complicated to accomplish.
+
+First off you'll need to prepare some JSON that you will send via the SendNotification API. 
+
+Example:
+ 
+```JSON
+
+	{
+	    "Title": "Message from Game",
+	    "Icon": "app_icon",
+	    "Message": "You've gained gold!",
+	    "CustomData":{
+	        "gold":"5",
+	        "currency":"G"
+	    }
+	}
+
+```
+
+There is a new **PlayFabNotifiationPackage** object which holds the following fields:
+
+*	Title -  String
+	*	Assigns a title to the Push if passed
+*	Sound - Uri
+	*	Assigns a custom sound to the Push if passed
+*	Icon - String
+	*   Assigns a custom Icon from "Drawable" if passed
+*	Message - String
+	*	Assigns a message to be displayed (required), if the message is not JSON then the all other attributes are not existing and reverts to defaults and the message is a straight passthrough
+*	CustomData - String
+	*	Holds a custom JSON data structure that can be accessed via  PlayFabPushCache static getPushCacheData() method.
+
+**See the diagram for Push Notification flow below**
+
+![](http://i.imgur.com/zp6vHiu.png)
+
+When an event is received either to the device or from within Unity,  you can make a call to "getPushCacheData()" method to retrieve the CustomData that was sent via the Push Notification. 
+
+**Please note:** that you will need to deserialize the CustomData and what your getting is Raw JSON.

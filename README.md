@@ -58,8 +58,6 @@ To building your game client, install our native iOS and Android plugins. To do 
 With projects running on Unity3d < 5.0, use the standard folder structure (Assets/Plugins/iOS & Assets/Plugins/Android). This means that if you are already using plugins, you must merge the PlayFab files into your existing folder structure. 
 
 #### Configuration:
-~~You must configure the SDK with your unique TitleId, as assigned by the PlayFab Game Manager. This value can be found in the Settings > Credentials section of the PlayFab dashboard (PlayFab website).~~
-
 You must configure the SDK with you unique TitleId.  This is done via the PlayFabSetting object.  Set your Title id at the startup either in an Awake method.
 
 **To configure the SDK in code, add the following code to your game's startup code:**
