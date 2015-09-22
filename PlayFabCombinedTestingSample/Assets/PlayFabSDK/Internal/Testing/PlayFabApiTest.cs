@@ -1,4 +1,4 @@
-﻿using PlayFab.ClientModels;
+using PlayFab.ClientModels;
 using PlayFab.Internal;
 using PlayFab.Json;
 using System;
@@ -397,6 +397,11 @@ namespace PlayFab.UUnit
                 lastReceivedMessage = "Get Server Leaderboard, empty";
         }
 
+        /// <summary>
+        /// CLIENT API
+        /// Test that AccountInfo can be requested
+        /// Parameter types tested: List of enum-as-strings converted to list of enums
+        /// </summary>
         [UUnitTest]
         public void AccountInfo()
         {
