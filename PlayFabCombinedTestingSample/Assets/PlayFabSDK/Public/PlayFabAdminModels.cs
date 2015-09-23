@@ -192,7 +192,7 @@ namespace PlayFab.AdminModels
 		public string ItemClass { get; set;}
 		
 		/// <summary>
-		/// catalog item for this item
+		/// catalog version for this item
 		/// </summary>
 		public string CatalogVersion { get; set;}
 		
@@ -255,6 +255,11 @@ namespace PlayFab.AdminModels
 		/// if true, then an item instance of this type can be traded between players using the trading APIs
 		/// </summary>
 		public bool IsTradable { get; set;}
+		
+		/// <summary>
+		/// URL to the item image. For Facebook purchase to display the image on the item purchase page, this must be set to an HTTP URL.
+		/// </summary>
+		public string ItemImageUrl { get; set;}
 	}
 	
 	
