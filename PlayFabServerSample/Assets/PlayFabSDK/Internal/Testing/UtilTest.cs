@@ -1,4 +1,4 @@
-﻿using PlayFab.Json;
+using PlayFab.Json;
 using PlayFab.Json.Converters;
 using PlayFab.UUnit;
 using System;
@@ -143,7 +143,7 @@ namespace PlayFab.Internal
             actualJson = JsonConvert.SerializeObject(actualObj, Util.JsonFormatting, Util.JsonSettings);
 
             UUnitAssert.Equals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
-            UUnitAssert.Equals(expectedObj, actualObj);
+            UUnitAssert.ObjEquals(expectedObj, actualObj);
         }
     }
 }

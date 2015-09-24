@@ -10,13 +10,9 @@ using System;
 
 namespace PlayFab.UUnit
 {
-    public class UUnitAssert
+    public static class UUnitAssert
     {
-        public static double DEFAULT_DOUBLE_PRECISION = 0.000001;
-
-        private UUnitAssert()
-        {
-        }
+        public const double DEFAULT_DOUBLE_PRECISION = 0.000001;
 
         public static void Skip()
         {
@@ -33,25 +29,21 @@ namespace PlayFab.UUnit
         public static void True(bool boolean, string message = null)
         {
             if (boolean)
-            {
                 return;
-            }
+
             if (string.IsNullOrEmpty(message))
-                throw new UUnitAssertException(true, false);
-            else
-                throw new UUnitAssertException(true, false, message);
+                message = "Expected: true, Actual: false";
+            throw new UUnitAssertException(true, false, message);
         }
 
         public static void False(bool boolean, string message = null)
         {
             if (!boolean)
-            {
                 return;
-            }
+
             if (string.IsNullOrEmpty(message))
-                throw new UUnitAssertException(true, false);
-            else
-                throw new UUnitAssertException(true, false, message);
+                message = "Expected: false, Actual: true";
+            throw new UUnitAssertException(true, false, message);
         }
 
         public static void NotNull(object something, string message = null)
@@ -74,79 +66,44 @@ namespace PlayFab.UUnit
             throw new UUnitAssertException(message);
         }
 
-        public static void Equals(string wanted, string got, string message)
+        public static void Equals(string wanted, string got, string message = null)
         {
             if (wanted == got)
-            {
                 return;
-            }
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
             throw new UUnitAssertException(wanted, got, message);
         }
 
-        public static void Equals(string wanted, string got)
+        public static void Equals(int wanted, int got, string message = null)
         {
             if (wanted == got)
                 return;
-            throw new UUnitAssertException(wanted, got);
-        }
 
-        public static void Equals(int wanted, int got, string message)
-        {
-            if (wanted == got)
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
             throw new UUnitAssertException(wanted, got, message);
         }
 
-        public static void Equals(int wanted, int got)
-        {
-            if (wanted == got)
-            {
-                return;
-            }
-            throw new UUnitAssertException(wanted, got);
-        }
-
-        public static void Equals(double wanted, double got, double precision)
+        public static void DblEquals(double wanted, double got, double precision = DEFAULT_DOUBLE_PRECISION, string message = null)
         {
             if (Math.Abs(wanted - got) < precision)
-            {
                 return;
-            }
-            throw new UUnitAssertException(wanted, got);
-        }
 
-        public static void Equals(double wanted, double got)
-        {
-            Equals(wanted, got, DEFAULT_DOUBLE_PRECISION);
-        }
-
-        public static void Equals(char wanted, char got)
-        {
-            if (wanted == got)
-            {
-                return;
-            }
-            throw new UUnitAssertException(wanted, got);
-        }
-
-        public static void Equals(object wanted, object got, string message)
-        {
-            if (wanted.Equals(got))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
             throw new UUnitAssertException(wanted, got, message);
         }
 
-        public new static void Equals(object wanted, object got)
+        public static void ObjEquals(object wanted, object got, string message = null)
         {
             if (wanted.Equals(got))
-            {
                 return;
-            }
-            throw new UUnitAssertException(wanted, got);
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
         }
     }
 }

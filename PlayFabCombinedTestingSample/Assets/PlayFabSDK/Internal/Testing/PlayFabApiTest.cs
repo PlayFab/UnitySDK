@@ -1,6 +1,7 @@
-﻿using PlayFab.ClientModels;
+using PlayFab.ClientModels;
 using PlayFab.Internal;
 using PlayFab.Json;
+using PlayFab.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -397,26 +398,68 @@ namespace PlayFab.UUnit
                 lastReceivedMessage = "Get Server Leaderboard, empty";
         }
 
+        /// <summary>
+        /// CLIENT API
+        /// Test that AccountInfo can be requested
+        /// Parameter types tested: List of enum-as-strings converted to list of enums
+        /// </summary>
         [UUnitTest]
         public void AccountInfo()
         {
-			GetAccountInfoRequest request = new GetAccountInfoRequest();
-			request.PlayFabId = playFabId;
+            GetAccountInfoRequest request = new GetAccountInfoRequest();
+            request.PlayFabId = playFabId;
             PlayFabClientAPI.GetAccountInfo(request, AcctInfoCallback, SharedErrorCallback);
             WaitForApiCalls();
 
             UUnitAssert.Equals("Enums tested", lastReceivedMessage);
         }
-		private void AcctInfoCallback(GetAccountInfoResult result)
-		{
+        private void AcctInfoCallback(GetAccountInfoResult result)
+        {
             if (result.AccountInfo == null || result.AccountInfo.TitleInfo == null || result.AccountInfo.TitleInfo.Origination == null
             || !Enum.IsDefined(typeof(UserOrigination), result.AccountInfo.TitleInfo.Origination.Value))
-			{
+            {
                 lastReceivedMessage = "Enums not properly tested";
-				return;
-			}
+                return;
+            }
 
             lastReceivedMessage = "Enums tested";
-		}
+        }
+
+        /// <summary>
+        /// CLIENT API
+        /// Test that CloudScript can be properly set up and invoked
+        /// </summary>
+        [UUnitTest]
+        private void CloudScript()
+        {
+            if (string.IsNullOrEmpty(PlayFabSettings.LogicServerURL))
+            {
+                PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), CloudScriptUrlCallback, SharedErrorCallback);
+                WaitForApiCalls();
+                UUnitAssert.True(lastReceivedMessage.StartsWith("CloudScript setup complete: "));
+            }
+
+            var request = new RunCloudScriptRequest();
+            request.ActionId = "helloWorld";
+            PlayFabClientAPI.RunCloudScript(request, CloudScriptHWCallback, SharedErrorCallback);
+                WaitForApiCalls();
+            UUnitAssert.Equals("Hello " + playFabId + "!", lastReceivedMessage);
+        }
+        private void CloudScriptUrlCallback(GetCloudScriptUrlResult result)
+        {
+            lastReceivedMessage = "CloudScript setup complete: " + result.Url;
+        }
+        private void CloudScriptHWCallback(RunCloudScriptResult result)
+        {
+            UUnitAssert.NotNull(result.ResultsEncoded);
+            JObject jobj = result.Results as JObject;
+            UUnitAssert.NotNull(jobj);
+            JToken jtok;
+            jobj.TryGetValue("messageValue", out jtok);
+            UUnitAssert.NotNull(jtok);
+            JValue jval = jtok as JValue;
+            UUnitAssert.NotNull(jval);
+            lastReceivedMessage = jval.Value as string;
+        }
     }
 }
