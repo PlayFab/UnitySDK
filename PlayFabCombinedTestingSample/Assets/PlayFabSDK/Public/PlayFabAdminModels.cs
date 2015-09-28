@@ -1918,6 +1918,11 @@ namespace PlayFab.AdminModels
 		public string PlayFabId { get; set;}
 		
 		/// <summary>
+		/// Unique PlayFab assigned ID for a specific character owned by a user
+		/// </summary>
+		public string CharacterId { get; set;}
+		
+		/// <summary>
 		/// unique PlayFab identifier for the item instance to be removed
 		/// </summary>
 		public string ItemInstanceId { get; set;}
