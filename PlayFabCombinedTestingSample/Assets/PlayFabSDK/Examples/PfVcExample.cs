@@ -11,24 +11,25 @@ namespace PlayFab.Examples
     /// This is example code for all the API's described here: PlayFab Inventory System - Basic Virtual Currency Guide
     /// This file contains calls to each of the functions described, an old-style Unity-gui to demonstrate the inventory changes taking place, and the prerequisite login and setup code.
     /// </summary>
-    public class PfVcBasics : PfExampleGui
+    [RequireComponent(typeof(PfLoginExample))]
+    public class PfVcExample : PfExampleGui
     {
         #region Data Variables
-        public string charName;
-        public string characterId;
-
-        // NOTE: There is no way to request this information presently, so the knowledge must be hard coded
+        // NOTE: There is no way to request all vc types presently, so the knowledge must be hard coded
         private HashSet<String> virutalCurrencyTypes = new HashSet<string>() { "SS", "GS", "ST" }; // Set your vcKeys here
         private Dictionary<string, int> userVirtualCurrency = new Dictionary<string, int>();
-        private Dictionary<string, int> characterVirtualCurrency = new Dictionary<string, int>();
+        private Dictionary<string, Dictionary<string, int>> characterVirtualCurrency = new Dictionary<string, Dictionary<string, int>>();
         #endregion Data Variables
 
         #region Unity GUI
-        private void OnGUI()
+        public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
-            bool charValid = isLoggedIn && !string.IsNullOrEmpty(characterId);
-            int rowIndex = 0, colIndex, temp;
+            bool charsValid = isLoggedIn && loginExample.characterIds.Count > 0;
+            int colIndex, temp;
+
+            if (characterVirtualCurrency == null)
+                return;
 
             // User Owned Currency
             Button(isLoggedIn, rowIndex, 0, "Refresh User VC:", GetUserInventory);
@@ -41,40 +42,42 @@ namespace PlayFab.Examples
             rowIndex++;
             rowIndex++;
 
-            // User Owned Currency
-            Button(charValid, rowIndex, 0, "Refresh Char VC:", GetCharacterInventory);
-            colIndex = 1;
-            foreach (var vcKey in virutalCurrencyTypes)
+            for (int charIndex = 0; charIndex < characterVirtualCurrency.Count; charIndex++)
             {
-                characterVirtualCurrency.TryGetValue(vcKey, out temp);
-                CounterField(charValid, rowIndex, colIndex++, vcKey + "=" + temp, AddCharacterVirtualCurrency(vcKey, 1), SubtractCharacterVirtualCurrency(vcKey, 1));
-            }
-        }
+                string eachCharacterId = loginExample.characterIds[charIndex];
+                string eachCharacterName = loginExample.characterNames[charIndex];
+                Dictionary<string, int> eachCharVcContainer = characterVirtualCurrency[eachCharacterId];
+                if (eachCharVcContainer == null)
+                    continue;
 
-        private ErrorCallback SharedFailCallback(string caller)
-        {
-            ErrorCallback output = (PlayFabError error) =>
-            {
-                Debug.LogError(caller + " failure: " + error.ErrorMessage);
-            };
-            return output;
+                // User Owned Currency
+                Button(charsValid, rowIndex, 0, "Refresh " + eachCharacterName + " VC:", GetCharacterInventory(eachCharacterId));
+                colIndex = 1;
+                foreach (var vcKey in virutalCurrencyTypes)
+                {
+                    eachCharVcContainer.TryGetValue(vcKey, out temp);
+                    CounterField(charsValid, rowIndex, colIndex++, vcKey + "=" + temp, AddCharacterVirtualCurrency(eachCharacterId, vcKey, 1), SubtractCharacterVirtualCurrency(eachCharacterId, vcKey, 1));
+                }
+                rowIndex++;
+                rowIndex++;
+            }
         }
         #endregion Unity GUI
 
         #region Prerequisite login and setup code
-        private void OnPfLoginComplete()
+        private void OnPfUserLoginComplete()
         {
-            var charRequest = new ClientModels.ListUsersCharactersRequest();
-            PlayFabClientAPI.GetAllUsersCharacters(charRequest, CharCallBack, SharedFailCallback("GetAllUsersCharacters"));
             GetUserInventory();
         }
-        private void CharCallBack(ClientModels.ListUsersCharactersResult charResult)
+
+        private void OnPfCharLoginComplete()
         {
-            foreach (var character in charResult.Characters)
-                if (character.CharacterName.ToLower() == charName.ToLower())
-                    characterId = character.CharacterId;
-            if (!string.IsNullOrEmpty(characterId))
-                GetCharacterInventory();
+            characterVirtualCurrency.Clear();
+            for (int i = 0; i < loginExample.characterIds.Count; i++)
+            {
+                characterVirtualCurrency[loginExample.characterIds[i]] = null;
+                GetCharacterInventory(loginExample.characterIds[i])();
+            }
         }
         #endregion Prerequisite login and setup code
 
@@ -91,15 +94,39 @@ namespace PlayFab.Examples
                 virutalCurrencyTypes.Add(pair.Key);
         }
 
-        private void GetCharacterInventory()
+        private Action GetCharacterInventory(string characterId, bool client = true)
         {
-            var getRequest = new ClientModels.GetCharacterInventoryRequest();
-            getRequest.CharacterId = characterId;
-            PlayFabClientAPI.GetCharacterInventory(getRequest, GetCharVcCallback, SharedFailCallback("GetCharacterInventory"));
+            Action output;
+            if (client)
+            {
+                output = () =>
+                {
+                    var getRequest = new ClientModels.GetCharacterInventoryRequest();
+                    getRequest.CharacterId = characterId;
+                    PlayFabClientAPI.GetCharacterInventory(getRequest, GetCharacterVcCallback_C, SharedFailCallback("GetCharacterInventory"));
+                };
+            }
+            else
+            {
+                output = () =>
+                {
+                    var getRequest = new ServerModels.GetCharacterInventoryRequest();
+                    getRequest.PlayFabId = loginExample.playFabId;
+                    getRequest.CharacterId = characterId;
+                    PlayFabServerAPI.GetCharacterInventory(getRequest, GetCharacterVcCallback_S, SharedFailCallback("GetCharacterInventory"));
+                };
+            }
+            return output;
         }
-        private void GetCharVcCallback(ClientModels.GetCharacterInventoryResult getResult)
+        private void GetCharacterVcCallback_C(ClientModels.GetCharacterInventoryResult getResult)
         {
-            characterVirtualCurrency = getResult.VirtualCurrency;
+            characterVirtualCurrency[((ClientModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
+            foreach (var pair in getResult.VirtualCurrency)
+                virutalCurrencyTypes.Add(pair.Key);
+        }
+        private void GetCharacterVcCallback_S(ServerModels.GetCharacterInventoryResult getResult)
+        {
+            characterVirtualCurrency[((ClientModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 virutalCurrencyTypes.Add(pair.Key);
         }
@@ -109,7 +136,7 @@ namespace PlayFab.Examples
             Action output = () =>
             {
                 ServerModels.AddUserVirtualCurrencyRequest addRequest = new ServerModels.AddUserVirtualCurrencyRequest();
-                addRequest.PlayFabId = pfLoginExample.playFabId;
+                addRequest.PlayFabId = loginExample.playFabId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
                 PlayFabServerAPI.AddUserVirtualCurrency(addRequest, AddCharVcCallback, SharedFailCallback("AddUserVirtualCurrency"));
@@ -125,7 +152,7 @@ namespace PlayFab.Examples
             Action output = () =>
             {
                 ServerModels.SubtractUserVirtualCurrencyRequest addRequest = new ServerModels.SubtractUserVirtualCurrencyRequest();
-                addRequest.PlayFabId = pfLoginExample.playFabId;
+                addRequest.PlayFabId = loginExample.playFabId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
                 PlayFabServerAPI.SubtractUserVirtualCurrency(addRequest, SubtractCharVcCallback, SharedFailCallback("SubtractUserVirtualCurrency"));
@@ -136,12 +163,12 @@ namespace PlayFab.Examples
         {
         }
 
-        private Action AddCharacterVirtualCurrency(string vcKey, int amt)
+        private Action AddCharacterVirtualCurrency(string characterId, string vcKey, int amt)
         {
             Action output = () =>
             {
                 ServerModels.AddCharacterVirtualCurrencyRequest addRequest = new ServerModels.AddCharacterVirtualCurrencyRequest();
-                addRequest.PlayFabId = pfLoginExample.playFabId;
+                addRequest.PlayFabId = loginExample.playFabId;
                 addRequest.CharacterId = characterId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
@@ -153,12 +180,12 @@ namespace PlayFab.Examples
         {
         }
 
-        private Action SubtractCharacterVirtualCurrency(string vcKey, int amt)
+        private Action SubtractCharacterVirtualCurrency(string characterId, string vcKey, int amt)
         {
             Action output = () =>
             {
                 ServerModels.SubtractCharacterVirtualCurrencyRequest addRequest = new ServerModels.SubtractCharacterVirtualCurrencyRequest();
-                addRequest.PlayFabId = pfLoginExample.playFabId;
+                addRequest.PlayFabId = loginExample.playFabId;
                 addRequest.CharacterId = characterId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;

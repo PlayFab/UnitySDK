@@ -1,16 +1,44 @@
-using PlayFab;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using AdminModels = PlayFab.AdminModels;
-using ClientModels = PlayFab.ClientModels;
-using ServerModels = PlayFab.ServerModels;
 
 namespace PlayFab.Examples
 {
     public class PfLoginExample : PfExampleGui
     {
+        #region Example inter-relationships
+        private void OnGUI()
+        {
+            if (loginExample == null)
+                activeWindow = loginExample = GetComponent<PfLoginExample>();
+            if (invExample == null)
+                invExample = GetComponent<PfInventoryExample>();
+            if (vcExample == null)
+                vcExample = GetComponent<PfVcExample>();
+            if (tradeExample == null)
+                tradeExample = GetComponent<PfTradeExample>();
+
+            int rowIndex = 0, colIndex = 0;
+            if (loginExample != null)
+                Button(true, rowIndex, colIndex++, "Login Example", () => { activeWindow = loginExample; });
+            if (invExample != null)
+                Button(true, rowIndex, colIndex++, "Inv Example", () => { activeWindow = invExample; });
+            if (vcExample != null)
+                Button(true, rowIndex, colIndex++, "VC Example", () => { activeWindow = vcExample; });
+            if (tradeExample != null)
+                Button(true, rowIndex, colIndex++, "Trade Example", () => { activeWindow = tradeExample; });
+
+            rowIndex++;
+            rowIndex++;
+            if (activeWindow == loginExample)
+                loginExample.OnExampleGUI(ref rowIndex);
+            else if (activeWindow == invExample)
+                invExample.OnExampleGUI(ref rowIndex);
+            else if (activeWindow == vcExample)
+                vcExample.OnExampleGUI(ref rowIndex);
+            else if (activeWindow == tradeExample)
+                tradeExample.OnExampleGUI(ref rowIndex);
+        }
+        #endregion Example inter-relationships
+
         #region Data Variables
         public string titleId = "Set your titleId here";
         public string devSecretKey = "Set your title secret key here";
@@ -20,24 +48,17 @@ namespace PlayFab.Examples
         public string password = "test password"; // The password for the user above
 
         public string playFabId;
+        public List<string> characterIds = new List<string>();
+        public List<string> characterNames = new List<string>();
         #endregion Data Variables
 
         #region Unity GUI
-        private void OnGUI()
+        public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
 
             // Login
-            Button(!isLoggedIn, 0, 0, "Login", LoginWithEmail);
-        }
-
-        private ErrorCallback SharedFailCallback(string caller)
-        {
-            ErrorCallback output = (PlayFabError error) =>
-            {
-                Debug.LogError(caller + " failure: " + error.ErrorMessage);
-            };
-            return output;
+            Button(!isLoggedIn, rowIndex, 0, "Login", LoginWithEmail);
         }
         #endregion Unity GUI
 
@@ -53,8 +74,21 @@ namespace PlayFab.Examples
         }
         private void LoginCallBack(ClientModels.LoginResult loginResult)
         {
-            pfLoginExample.playFabId = loginResult.PlayFabId;
-            gameObject.SendMessage("OnPfLoginComplete"); // Alert any other example components that login is complete
+            loginExample.playFabId = loginResult.PlayFabId;
+            gameObject.SendMessage("OnPfUserLoginComplete"); // Alert any other example components that user-login is complete
+            var charRequest = new ClientModels.ListUsersCharactersRequest();
+            PlayFabClientAPI.GetAllUsersCharacters(charRequest, CharCallBack, SharedFailCallback("GetAllUsersCharacters"));
+        }
+        private void CharCallBack(ClientModels.ListUsersCharactersResult charResult)
+        {
+            characterIds.Clear();
+            characterNames.Clear();
+            foreach (var character in charResult.Characters)
+            {
+                characterIds.Add(character.CharacterId);
+                characterNames.Add(character.CharacterName);
+            }
+            gameObject.SendMessage("OnPfCharLoginComplete"); // Alert any other example components that char-info is received
         }
         #endregion Login API
     }
