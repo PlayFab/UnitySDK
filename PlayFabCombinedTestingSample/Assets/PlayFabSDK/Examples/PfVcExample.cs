@@ -159,7 +159,7 @@ namespace PlayFab.Examples
             };
             return output;
         }
-        private void SubtractCharVcCallback(ServerModels.ModifyUserVirtualCurrencyResult addResult)
+        private void SubtractCharVcCallback(ServerModels.ModifyUserVirtualCurrencyResult subtractResult)
         {
         }
 
@@ -193,7 +193,7 @@ namespace PlayFab.Examples
             };
             return output;
         }
-        private void SubtractCharVcCallback(ServerModels.ModifyCharacterVirtualCurrencyResult addResult)
+        private void SubtractCharVcCallback(ServerModels.ModifyCharacterVirtualCurrencyResult subtractResult)
         {
         }
         #endregion Example Implementation of PlayFab Inventory APIs
