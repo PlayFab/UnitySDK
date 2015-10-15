@@ -3,6 +3,10 @@ package com.playfab.unityplugin.GCM;
 /**
  * Created by Marco on 9/16/2015.
  */
+
+/*
+  * a container class that holds the data from the last push notification received by the device
+*/
 public class PlayFabPushCache {
     private static PlayFabNotificationPackage mPushCache;
 
@@ -10,12 +14,14 @@ public class PlayFabPushCache {
         mPushCache = notification;
     }
 
+    // returns the entire push cache
     public static PlayFabNotificationPackage getPushCache(){
-        return mPushCache;
+        return mPushCache == null ? null : mPushCache;
     }
 
+    // returns only the custom data portion of the cache
     public static String getPushCacheData(){
-        return mPushCache.CustomData;
+        return mPushCache == null ? null : mPushCache.CustomData;
     }
 
 }

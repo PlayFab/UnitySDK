@@ -38,7 +38,7 @@ public class PlayFabPackager : MonoBehaviour {
         string IOS_PATH = System.IO.Path.Combine(BUILD_PATH, "PlayFabIOS");
         MkDir(BUILD_PATH);
         MkDir(IOS_PATH);
-        BuildPipeline.BuildPlayer(TEST_SCENES, IOS_PATH, BuildTarget.iPhone, BuildOptions.None);
+        BuildPipeline.BuildPlayer(TEST_SCENES, IOS_PATH, BuildTarget.iOS, BuildOptions.None);
     }
 
     [MenuItem("PlayFab/Testing/WinPhoneTestBuild")]
