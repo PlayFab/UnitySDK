@@ -87,11 +87,19 @@ namespace PlayFab.Examples.Client
         {
             Action output = () =>
             {
-                var purchaseRequest = new ClientModels.PurchaseItemRequest();
-                purchaseRequest.ItemId = itemId;
-                purchaseRequest.VirtualCurrency = "TODO";
-                purchaseRequest.Price = 99999999;
-                PlayFabClientAPI.PurchaseItem(purchaseRequest, PurchaseItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
+                string vcKey; int cost;
+                if (PfSharedModelEx.GetClientItemPrice(null, itemId, out vcKey, out cost))
+                {
+                    var purchaseRequest = new ClientModels.PurchaseItemRequest();
+                    purchaseRequest.ItemId = itemId;
+                    purchaseRequest.VirtualCurrency = vcKey;
+                    purchaseRequest.Price = cost;
+                    PlayFabClientAPI.PurchaseItem(purchaseRequest, PurchaseItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("You cannot afford this item");
+                }
             };
             return output;
         }
@@ -99,6 +107,7 @@ namespace PlayFab.Examples.Client
         {
             // You could theoretically keep your local inventory up-to-date with local information, but it's safer to have the full list:
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, null);
         }
 
         public static void GetUserInventory()
@@ -175,12 +184,20 @@ namespace PlayFab.Examples.Client
         {
             Action output = () =>
             {
-                var purchaseRequest = new ClientModels.PurchaseItemRequest();
-                purchaseRequest.CharacterId = characterId;
-                purchaseRequest.ItemId = itemId;
-                purchaseRequest.VirtualCurrency = "TODO";
-                purchaseRequest.Price = 999999;
-                PlayFabClientAPI.PurchaseItem(purchaseRequest, PurchaseItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
+                string vcKey; int cost;
+                if (PfSharedModelEx.GetClientItemPrice(null, itemId, out vcKey, out cost))
+                {
+                    var purchaseRequest = new ClientModels.PurchaseItemRequest();
+                    purchaseRequest.CharacterId = characterId;
+                    purchaseRequest.ItemId = itemId;
+                    purchaseRequest.VirtualCurrency = vcKey;
+                    purchaseRequest.Price = cost;
+                    PlayFabClientAPI.PurchaseItem(purchaseRequest, PurchaseItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("You cannot afford this item");
+                }
             };
             return output;
         }
@@ -188,6 +205,7 @@ namespace PlayFab.Examples.Client
         {
             // You could theoretically keep your local inventory up-to-date with local information, but it's safer to refresh the full list:
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, characterId);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, characterId);
         }
 
         public void GetInventory()

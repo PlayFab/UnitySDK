@@ -38,6 +38,37 @@ namespace PlayFab.Examples
         public static string swillItemId;
         public static List<ClientModels.TradeInfo> openTrades;
         #endregion Client Trade
+
+        #region Helper Functions
+        public static bool GetClientItemPrice(string characterId, string catalogItemId, out string vcKey, out int cost)
+        {
+            ClientModels.CatalogItem catalogItem;
+            vcKey = null;
+            cost = 0;
+
+            Dictionary<string, int> wallet = userVirtualCurrency;
+            if (characterId == null)
+                wallet = userVirtualCurrency;
+            else
+                characterVC.TryGetValue(characterId, out wallet);
+
+            if (clientCatalog.TryGetValue(catalogItemId, out catalogItem) && wallet != null)
+            {
+                foreach (var pair in catalogItem.VirtualCurrencyPrices)
+                {
+                    int curBalance;
+                    if (wallet.TryGetValue(pair.Key, out curBalance) && curBalance > pair.Value)
+                    {
+                        vcKey = pair.Key;
+                        cost = (int)pair.Value;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        #endregion Helper Functions
     }
 
     /// <summary>
