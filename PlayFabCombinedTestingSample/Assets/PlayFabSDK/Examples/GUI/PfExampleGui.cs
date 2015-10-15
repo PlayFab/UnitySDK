@@ -6,24 +6,29 @@ namespace PlayFab.Examples
     /// <summary>
     /// A light wrapper around UnityEngine.Gui to pre-size and arrange a grid of buttons
     /// </summary>
+    [RequireComponent(typeof(PfExampleRenderer))]
     public class PfExampleGui : MonoBehaviour
     {
-        #region Example inter-relationships
-        // Automatically fetch components relevant to this example (when appropriate)
-        protected static PfExampleGui activeWindow;
-        protected static PfLoginExample loginExample;
-        protected static PfInventoryExample invExample;
-        protected static PfVcExample vcExample;
-        protected static PfTradeExample tradeExample;
-        #endregion Example inter-relationships
+        private int buffer = 22;
+        private int rowHeight = 22;
+        private int rowWidth = 110;
+        private int ctrWidth = 12;
 
-        public int buffer = 22;
-        public int rowHeight = 22;
-        public int rowWidth = 110;
-        public int ctrWidth = 12;
+        /// <summary>
+        /// This is automatically called every tick from ExampleRenderer.
+        /// It is not intended to be called from anywhere else.
+        /// </summary>
+        internal void SetDimensions(int buffer, int rowWidth, int rowHeight, int ctrWidth)
+        {
+            this.buffer = buffer;
+            this.rowHeight = rowHeight;
+            this.rowWidth = rowWidth;
+            this.ctrWidth = ctrWidth;
+        }
 
         public virtual void OnExampleGUI(ref int rowIndex)
         {
+            // This should be implemented in each example
         }
 
         protected void Button(bool condition, int row, int column, string text, Action action)
@@ -56,15 +61,6 @@ namespace PlayFab.Examples
                 if (GUI.Button(new Rect(buffer + rowWidth * column + textWidth, buffer + rowHeight * row + rowHeight / 2 + rowHeight % 2, ctrWidth, rowHeight / 2), text))
                     Decrement();
             }
-        }
-
-        internal static ErrorCallback SharedFailCallback(string caller)
-        {
-            ErrorCallback output = (PlayFabError error) =>
-            {
-                Debug.LogError(caller + " failure: " + error.ErrorMessage);
-            };
-            return output;
         }
     }
 }
