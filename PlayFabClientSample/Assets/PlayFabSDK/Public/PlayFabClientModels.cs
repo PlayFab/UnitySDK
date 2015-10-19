@@ -2879,7 +2879,7 @@ namespace PlayFab.ClientModels
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// Amount added or subtracted from the user's virtual currency.
+		/// Amount added or subtracted from the user's virtual currency. Maximum VC balance is Int32 (2,147,483,647). Any increase over this value will be discarded.
 		/// </summary>
 		public int BalanceChange { get; set;}
 		
@@ -3822,6 +3822,7 @@ namespace PlayFab.ClientModels
 		RefundFailed,
 		ChargedBack,
 		FailedByUber,
+		FailedByPlayFab,
 		Revoked,
 		TradePending,
 		Traded,
@@ -3988,7 +3989,7 @@ namespace PlayFab.ClientModels
 	{   
 		
 		/// <summary>
-		/// Unique identifier of the container to attempt to unlock.
+		/// Category ItemId of the container type to unlock.
 		/// </summary>
 		public string ContainerItemId { get; set;}
 		
