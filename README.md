@@ -19,11 +19,9 @@ To connect to the PlayFab service, your machine must be running TLS v1.2 or bett
 
 3. Upgrading from previous versions
 ---
-it is always recommended that you remove and replace the SDK when upgrading, however we do understand that is not always an option.  So this section defines crucial changes that need to be made when merging / upgrading. 
+The easist way to stay up-to-date is to install our latest asset package. This will ensure that only new and changed files will be updated. 
 
-**Please be aware of the following changes.** 
-
-*	play-service-base-6.5.87.jar has been removed as of version 0.2.150831 and has been replaced with google-play-services.jar
+You can also manually update by overwriting the entire PlayFabSDK folder as well as the relevant Plugins subdirectories. 
 
 4. Source Code & Key Repository Components:
 ----
@@ -94,12 +92,7 @@ To make server API calls, set your DeveloperSecretKey, which can be found in the
 You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://playfab.com/docs#/menu/1383/1383) for a complete list of available APIs.
 
 #####New Users:
-* Check out our PlayFabSDK/DemoScene to see how to get started with device ID authentication and calling into Cloud Script.
-* Additional Examples:
-  * [Login Pathways](https://github.com/PlayFab/Unity3d_Login_Example_Project)
-  * [Photon Integration](https://github.com/PlayFab/Photon-Cloud-Integration)
-  * [MOBA Starter Project](https://github.com/PlayFab/UNION-OpenSource-MOBA)
-  * [Cloud Script Samples](https://github.com/PlayFab/CloudScriptSamples) 
+* Check out our Tutorials, Samples and more [here](https://playfab.com/docs/overview/)
 
 
 7. Troubleshooting:
