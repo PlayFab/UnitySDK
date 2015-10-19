@@ -673,7 +673,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds one or more virtual currencies to the set defined for the title
+		/// Adds one or more virtual currencies to the set defined for the title. Virtual Currencies have a maximum value of 2,147,483,647 when granted to a player. Any value over that will be discarded.
 		/// </summary>
 		public static void AddVirtualCurrencyTypes(AddVirtualCurrencyTypesRequest request, AddVirtualCurrencyTypesCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{

@@ -28,7 +28,7 @@ namespace PlayFab.ServerModels
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// Amount to be added to the user balance of the specified virtual currency.
+		/// Amount to be added to the character balance of the specified virtual currency. Maximum VC balance is Int32 (2,147,483,647). Any increase over this value will be discarded.
 		/// </summary>
 		public int Amount { get; set;}
 	}
@@ -105,7 +105,7 @@ namespace PlayFab.ServerModels
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// Amount to be added to the user balance of the specified virtual currency.
+		/// Amount to be added to the user balance of the specified virtual currency. Maximum VC balance is Int32 (2,147,483,647). Any increase over this value will be discarded.
 		/// </summary>
 		public int Amount { get; set;}
 	}
@@ -1958,7 +1958,7 @@ namespace PlayFab.ServerModels
 		public string VirtualCurrency { get; set;}
 		
 		/// <summary>
-		/// Amount added or subtracted from the user's virtual currency.
+		/// Amount added or subtracted from the user's virtual currency. Maximum VC balance is Int32 (2,147,483,647). Any increase over this value will be discarded.
 		/// </summary>
 		public int BalanceChange { get; set;}
 		
