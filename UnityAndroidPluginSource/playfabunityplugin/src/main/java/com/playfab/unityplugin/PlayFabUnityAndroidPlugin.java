@@ -17,6 +17,9 @@ import com.playfab.unityplugin.GCM.PlayFabRegistrationIntentService;
 import com.playfab.unityplugin.GCM.PlayServicesUtils;
 import com.unity3d.player.UnityPlayer;
 
+/**
+ * The main class for interfacing with the Unity environment
+ */
 public class PlayFabUnityAndroidPlugin extends Service{
     public static final String TAG = "PlayFabUAP"; //PlayFabUnityAndroidPlugin
     public static final String UNITY_EVENT_OBJECT = "_PlayFabGO";
@@ -24,7 +27,7 @@ public class PlayFabUnityAndroidPlugin extends Service{
     public static final String PROPERTY_APP_ICON = "_PlayFab_AppIcon";
     public static final String PROPERTY_SENDER_ID = "_PlayFab_SenderID";
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
-    public static boolean PauseState = true;
+    public static boolean RouteToNotificationArea = true;
 
     private static boolean mServiceBound = false;
     private static PlayFabUnityAndroidPlugin mBoundService;
@@ -121,8 +124,8 @@ public class PlayFabUnityAndroidPlugin extends Service{
         }
     }
 
-    public static void updatePausedState(boolean state){
-        PauseState = state;
+    public static void updateRouting(boolean state){
+        RouteToNotificationArea = state;
     }
 
 }

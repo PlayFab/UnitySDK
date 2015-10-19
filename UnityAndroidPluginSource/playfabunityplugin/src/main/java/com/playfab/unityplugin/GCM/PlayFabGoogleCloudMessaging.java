@@ -15,10 +15,16 @@ import java.io.IOException;
 /**
  * Created by Marco on 8/19/2015.
  */
+
+
+/**
+ * Used to communicate with the GCM service and obtain GCM tokens
+ */
 public class PlayFabGoogleCloudMessaging {
     private static final String TAG = "PlayFabGCM";
     private static final String[] TOPICS = {"global"};  //Should we pass this in?
 
+    // returns the push GCM token from google
     public static void getToken(){
         Log.i(TAG,"PlayFab GCM Get token has been requested.");
         SharedPreferences sharedPreferences = PlayFabRegistrationIntentService.GetInstance().getPluginPreferences(); //PreferenceManager.getDefaultSharedPreferences(this);
