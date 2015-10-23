@@ -8,7 +8,7 @@ namespace PlayFab.Editor
         [MenuItem("PlayFab/GettingStarted")]
         private static void GettingStarted()
         {
-            Application.OpenURL("https://playfab.com/docs/getting-started-guide/");
+            Application.OpenURL("https://playfab.com/docs/getting-started-with-playfab/");
         }
 
         [MenuItem("PlayFab/Docs")]

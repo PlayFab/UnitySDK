@@ -22,6 +22,10 @@ import java.util.Set;
 /**
  * Created by Marco on 8/18/2015.
  */
+
+/**
+ * Monitors the Notification channel and listens for and processes incoming GCM notifications
+ */
 public class PlayFabGcmListenerService extends GcmListenerService{
     private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
     public static final String PROPERTY_NOTIFICATION_ID = "_PlayFab_notificationId";
@@ -66,7 +70,7 @@ public class PlayFabGcmListenerService extends GcmListenerService{
             try
             {
                 //If Unity is running and has focus
-                if(!PlayFabUnityAndroidPlugin.PauseState) {
+                if(!PlayFabUnityAndroidPlugin.RouteToNotificationArea) {
                     Log.i(PlayFabUnityAndroidPlugin.TAG, "Sending Notification to Unity");
                     //Try to send the message to Unity if it is running.
                     UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", message);
@@ -100,7 +104,7 @@ public class PlayFabGcmListenerService extends GcmListenerService{
 
         String appIcon = pushNotificationPackage.Icon;
         String title = pushNotificationPackage.Title;
-        Uri defaultSoundUri = pushNotificationPackage.Sound;
+        Uri defaultSoundUri = Uri.parse(pushNotificationPackage.Sound);
         String message = pushNotificationPackage.Message;
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -125,7 +129,7 @@ public class PlayFabGcmListenerService extends GcmListenerService{
         mPackage.Title = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_GAME_TITLE, "");
         mPackage.Icon = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_APP_ICON, "app_icon");
         mPackage.Message = message;
-        mPackage.Sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        mPackage.Sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString();
 
         if(isJSONValid(message)){
             try {
@@ -133,6 +137,11 @@ public class PlayFabGcmListenerService extends GcmListenerService{
                 Log.i(PlayFabUnityAndroidPlugin.TAG,"Message was JSON");
                 //This is so that the ENTIRE JSON message is not in the notification should someone forget to send the "Message" attribute.
                 mPackage.Message = "";
+
+                if (jObj.has("Title")) {
+                    mPackage.Title = jObj.getString("Title");
+                }
+
                 if(jObj.has("Message")){
                     mPackage.Message = jObj.getString("Message");
                 }
@@ -142,7 +151,7 @@ public class PlayFabGcmListenerService extends GcmListenerService{
                 }
 
                 if(jObj.has("Sound")){
-                    mPackage.Sound = Uri.parse("android.resource://" + getPackageName() + "/" + jObj.getString("Sound"));
+                    mPackage.Sound = Uri.parse("android.resource://" + getPackageName() + "/" + jObj.getString("Sound")).toString();
                 }
 
                 if(jObj.has("CustomData")){

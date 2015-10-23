@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-
 using PlayFab.Internal;
 using PlayFab;
 
@@ -55,14 +54,19 @@ namespace PlayFab
             AndroidPlugin.CallStatic("stopPluginService");
         }
 
-        public static void UpdatePaused(bool pausedState){
-            AndroidPlugin.CallStatic("updatePausedState", pausedState);
+		public static void UpdateRouting(bool routeToNotificationArea){
+			AndroidPlugin.CallStatic("updateRouting", routeToNotificationArea);
         }
 #else
         public static bool IsPlayServicesAvailable()
         {
             return false;
         }
+        
+		public static void UpdateRouting(bool routeToNotificationArea)
+		{
+			
+		}
 #endif
     }
 
@@ -77,7 +81,6 @@ namespace PlayFab
         public static GCMRegisterComplete _RegistrationCallback;
         public static GCMMessageReceived _MessageCallback;
         #endregion
-
 #if UNITY_ANDROID && !UNITY_EDITOR
 
         private static AndroidJavaClass PlayFabGCMClass;
@@ -98,11 +101,33 @@ namespace PlayFab
             return PlayFabPushCacheClass.CallStatic<String>("getPushCacheData");
         }
 
+		public static PlayFabNotificationPackage GetPushCache()
+        {
+			AndroidJavaObject package = new AndroidJavaObject("com.playfab.unityplugin.GCM.PlayFabNotificationPackage");
+			package = PlayFabPushCacheClass.CallStatic<AndroidJavaObject>("getPushCache");
+			
+			PlayFabNotificationPackage cache = new PlayFabNotificationPackage();
+			if(package != null)
+			{
+				cache.Title = package.Get<string>("Title");
+				cache.Message = package.Get<string>("Message");
+				cache.Icon = package.Get<string>("Icon");
+				cache.Sound = package.Get<string>("Sound");
+				cache.CustomData = package.Get<string>("CustomData");
+			}
+			else
+			{
+				Debug.Log("Package was null");
+			}
+			
+			return cache;
+        }
+
 #else
 
         public static void Init()
         {
-
+			
         }
 
         public static string GetToken()
@@ -110,14 +135,14 @@ namespace PlayFab
             return null;
         }
 
-        public static void UpdatePaused(bool pausedState)
-        {
-
-        }
-
         public static string GetPushCacheData()
         {
             return null;
+        }
+
+		public static PlayFabNotificationPackage GetPushCache()
+        {
+            return new PlayFabNotificationPackage();
         }
 #endif
 
@@ -149,3 +174,16 @@ namespace PlayFab
 
     }
 }
+
+
+// c# wrapper that matches our native com.playfab.unityplugin.GCM.PlayFabNotificationPackage
+public struct PlayFabNotificationPackage 
+{
+	public string Sound;                // do not set this to use the default device sound; otherwise the sound you provide needs to exist in Android/res/raw/_____.mp3, .wav, .ogg
+	public string Title;                // title of this message
+	public string Icon;                 // to use the default app icon use app_icon, otherwise send the name of the custom image. Image must be in Android/res/drawable/_____.png, .jpg
+	public string Message;              // the actual message to transmit (this is what will be displayed in the notification area
+	public string CustomData;           // arbitrary key value pairs for game specific usage
+}
+
+

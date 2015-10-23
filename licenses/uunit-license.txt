@@ -1,0 +1,20 @@
+Unity has a custom license and subscription, linked to their editor.
+https://unity3d.com/get-unity
+
+We are not distributing the Unity-editor, or any Unity source.
+We are distributing a unity-example-project and PlayFab add-on for Unity.
+The PlayFab code can be examined with any text editor, but the project can only be opened with a properly licensed Unity3d editor, version 5.x or higher.
+
+Uunit Download location
+http://wiki.unity3d.com/index.php?title=UUnit
+
+License
+http://creativecommons.org/licenses/by-sa/3.0/
+
+/*
+ * UUnit system from UnityCommunity
+ * Heavily modified
+ * 0.4 release by pboechat
+ * http://wiki.unity3d.com/index.php?title=UUnit
+ * http://creativecommons.org/licenses/by-sa/3.0/
+*/
