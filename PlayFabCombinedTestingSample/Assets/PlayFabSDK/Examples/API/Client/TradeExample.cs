@@ -48,7 +48,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetTradesCallback(ClientModels.GetPlayerTradesResponse result)
         {
-            PfSharedModelEx.openTrades = result.OpenedTrades;
+            PfSharedModelEx.globalClientUser.openTrades = result.OpenedTrades;
         }
 
         public static Action OpenTrade(params string[] offeredInventoryInstanceIds)
@@ -59,7 +59,7 @@ namespace PlayFab.Examples.Client
                 // Optional field: null is anybody, alternately if specified, this is a targeted trade request
                 //   In this example, we restrict the trade to ourselves (because I don't have multiple clients for this example)
                 //   A normal trade process would use all the same steps, but would interact between multliple clients
-                openRequest.AllowedPlayerIds = new List<string>() { PfSharedModelEx.playFabId };
+                openRequest.AllowedPlayerIds = new List<string>() { PfSharedModelEx.globalClientUser.playFabId };
                 // Offering the items you have
                 openRequest.OfferedInventoryInstanceIds = new List<string>();
                 openRequest.OfferedInventoryInstanceIds.AddRange(offeredInventoryInstanceIds);

@@ -20,11 +20,11 @@ namespace PlayFab.Examples.Client
         public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
-            bool charsValid = isLoggedIn && PfSharedModelEx.characterIds.Count > 0;
+            bool charsValid = isLoggedIn && PfSharedModelEx.globalClientUser.characterIds.Count > 0;
             int colIndex;
 
             Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", InventoryExample.GetUserInventory);
-            TextField(isLoggedIn, rowIndex, 1, ref PfSharedModelEx.userInvDisplay);
+            TextField(isLoggedIn, rowIndex, 1, ref PfSharedModelEx.globalClientUser.userInvDisplay);
             rowIndex++;
             // Purchase Items
             TextField(isLoggedIn, rowIndex, 0, "Purchase User Item:");
@@ -37,32 +37,32 @@ namespace PlayFab.Examples.Client
             rowIndex++;
             // Consume Appropriate User Items
             TextField(isLoggedIn, rowIndex, 0, "Consume:");
-            if (PfSharedModelEx.clientUserItems != null)
+            if (PfSharedModelEx.globalClientUser.clientUserItems != null)
             {
                 colIndex = 1;
-                for (int i = 0; i < PfSharedModelEx.clientUserItems.Count; i++)
-                    if (PfSharedModelEx.consumableItemIds.Contains(PfSharedModelEx.clientUserItems[i].ItemId))
-                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.clientUserItems[i].DisplayName, InventoryExample.ConsumeUserItem(PfSharedModelEx.clientUserItems[i].ItemInstanceId));
+                for (int i = 0; i < PfSharedModelEx.globalClientUser.clientUserItems.Count; i++)
+                    if (PfSharedModelEx.consumableItemIds.Contains(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemId))
+                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, InventoryExample.ConsumeUserItem(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemInstanceId));
             }
             rowIndex++;
             // Open Appropriate User Containers
             TextField(isLoggedIn, rowIndex, 0, "Open:");
-            if (PfSharedModelEx.clientUserItems != null)
+            if (PfSharedModelEx.globalClientUser.clientUserItems != null)
             {
                 colIndex = 1;
-                for (int i = 0; i < PfSharedModelEx.clientUserItems.Count; i++)
-                    if (PfSharedModelEx.containerItemIds.Contains(PfSharedModelEx.clientUserItems[i].ItemId))
-                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.clientUserItems[i].DisplayName, InventoryExample.UnlockUserContainer(PfSharedModelEx.clientUserItems[i].ItemId));
+                for (int i = 0; i < PfSharedModelEx.globalClientUser.clientUserItems.Count; i++)
+                    if (PfSharedModelEx.containerItemIds.Contains(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemId))
+                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, InventoryExample.UnlockUserContainer(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemId));
             }
             rowIndex++;
             rowIndex++;
 
-            for (int charIndex = 0; charIndex < PfSharedModelEx.characterIds.Count; charIndex++)
+            for (int charIndex = 0; charIndex < PfSharedModelEx.globalClientUser.characterIds.Count; charIndex++)
             {
-                string eachCharacterId = PfSharedModelEx.characterIds[charIndex];
-                string eachCharacterName = PfSharedModelEx.characterNames[charIndex];
+                string eachCharacterId = PfSharedModelEx.globalClientUser.characterIds[charIndex];
+                string eachCharacterName = PfSharedModelEx.globalClientUser.characterNames[charIndex];
                 PfCharInv tempCharater;
-                if (!PfSharedModelEx.clientCharInventories.TryGetValue(eachCharacterId, out tempCharater))
+                if (!PfSharedModelEx.globalClientUser.clientCharInventories.TryGetValue(eachCharacterId, out tempCharater))
                     continue;
                 PfInvClientChar eachCharacter = tempCharater as PfInvClientChar;
                 if (eachCharacter == null || eachCharacter.inventory == null)

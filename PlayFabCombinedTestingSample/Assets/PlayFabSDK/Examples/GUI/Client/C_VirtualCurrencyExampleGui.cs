@@ -14,10 +14,10 @@ namespace PlayFab.Examples.Client
         public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
-            bool charsValid = isLoggedIn && PfSharedModelEx.characterIds.Count > 0;
+            bool charsValid = isLoggedIn && PfSharedModelEx.globalClientUser.characterIds.Count > 0;
             int colIndex, temp;
 
-            if (PfSharedModelEx.characterVC == null)
+            if (PfSharedModelEx.globalClientUser.characterVC == null)
                 return;
 
             // User Owned Currency
@@ -25,17 +25,17 @@ namespace PlayFab.Examples.Client
             colIndex = 1;
             foreach (var vcKey in PfSharedModelEx.virutalCurrencyTypes)
             {
-                PfSharedModelEx.userVirtualCurrency.TryGetValue(vcKey, out temp);
+                PfSharedModelEx.globalClientUser.userVirtualCurrency.TryGetValue(vcKey, out temp);
                 CounterField(isLoggedIn, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddUserVirtualCurrency(vcKey, 1), VirtualCurrencyExample.SubtractUserVirtualCurrency(vcKey, 1));
             }
             rowIndex++;
             rowIndex++;
 
-            for (int charIndex = 0; charIndex < PfSharedModelEx.characterVC.Count; charIndex++)
+            for (int charIndex = 0; charIndex < PfSharedModelEx.globalClientUser.characterVC.Count; charIndex++)
             {
-                string eachCharacterId = PfSharedModelEx.characterIds[charIndex];
-                string eachCharacterName = PfSharedModelEx.characterNames[charIndex];
-                Dictionary<string, int> eachCharVcContainer = PfSharedModelEx.characterVC[eachCharacterId];
+                string eachCharacterId = PfSharedModelEx.globalClientUser.characterIds[charIndex];
+                string eachCharacterName = PfSharedModelEx.globalClientUser.characterNames[charIndex];
+                Dictionary<string, int> eachCharVcContainer = PfSharedModelEx.globalClientUser.characterVC[eachCharacterId];
                 if (eachCharVcContainer == null)
                     continue;
 

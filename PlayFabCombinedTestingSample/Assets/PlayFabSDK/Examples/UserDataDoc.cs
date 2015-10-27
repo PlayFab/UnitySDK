@@ -21,7 +21,7 @@ namespace PlayFab.Examples
         {
             var updateRequest = new ServerModels.UpdateUserDataRequest()
             {
-                PlayFabId = PfSharedModelEx.playFabId,
+                PlayFabId = PfSharedModelEx.globalClientUser.playFabId,
                 Data = new Dictionary<string, string>()
         {
             {"Father", "Fred"},
@@ -49,7 +49,7 @@ namespace PlayFab.Examples
         {
             var getRequest = new ServerModels.GetUserDataRequest()
             {
-                PlayFabId = PfSharedModelEx.playFabId,
+                PlayFabId = PfSharedModelEx.globalClientUser.playFabId,
             };
 
             PlayFabServerAPI.GetUserReadOnlyData(getRequest,
@@ -71,7 +71,7 @@ namespace PlayFab.Examples
         {
             var updateRequest = new ServerModels.UpdateUserInternalDataRequest()
             {
-                PlayFabId = PfSharedModelEx.playFabId,
+                PlayFabId = PfSharedModelEx.globalClientUser.playFabId,
                 Data = new Dictionary<string, string>()
         {
             {"Class", "Fighter"},
@@ -96,7 +96,7 @@ namespace PlayFab.Examples
         {
             var getUserDataRequest = new ServerModels.GetUserDataRequest()
             {
-                PlayFabId = PfSharedModelEx.playFabId,
+                PlayFabId = PfSharedModelEx.globalClientUser.playFabId,
             };
 
             PlayFabServerAPI.GetUserInternalData(getUserDataRequest,

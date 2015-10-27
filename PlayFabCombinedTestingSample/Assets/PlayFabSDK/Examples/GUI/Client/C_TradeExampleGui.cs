@@ -27,9 +27,9 @@ namespace PlayFab.Examples.Client
 
             // Display User Items
             TextField(isLoggedIn, rowIndex, 0, "Offer (for swill):");
-            if (PfSharedModelEx.clientUserItems != null)
-                for (int i = 0; i < PfSharedModelEx.clientUserItems.Count; i++)
-                    Button(isLoggedIn, rowIndex, i + 1, PfSharedModelEx.clientUserItems[i].DisplayName, TradeExample.OpenTrade(PfSharedModelEx.clientUserItems[i].ItemInstanceId));
+            if (PfSharedModelEx.globalClientUser.clientUserItems != null)
+                for (int i = 0; i < PfSharedModelEx.globalClientUser.clientUserItems.Count; i++)
+                    Button(isLoggedIn, rowIndex, i + 1, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, TradeExample.OpenTrade(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemInstanceId));
             rowIndex++;
             rowIndex++;
 
@@ -38,28 +38,28 @@ namespace PlayFab.Examples.Client
             rowIndex++;
 
             // Display active trades
-            for (int i = 0; i < PfSharedModelEx.openTrades.Count; i++)
+            for (int i = 0; i < PfSharedModelEx.globalClientUser.openTrades.Count; i++)
             {
-                if (PfSharedModelEx.openTrades[i].Status != ClientModels.TradeStatus.Open)
+                if (PfSharedModelEx.globalClientUser.openTrades[i].Status != ClientModels.TradeStatus.Open)
                     continue;
 
-                Button(true, rowIndex, 0, "Cancel", TradeExample.CancelTrade(PfSharedModelEx.openTrades[i].TradeId));
+                Button(true, rowIndex, 0, "Cancel", TradeExample.CancelTrade(PfSharedModelEx.globalClientUser.openTrades[i].TradeId));
                 rowIndex++;
 
                 TextField(isLoggedIn, rowIndex, 0, "Offered Items:");
-                for (int j = 0; j < PfSharedModelEx.openTrades[i].OfferedCatalogItemIds.Count; j++)
+                for (int j = 0; j < PfSharedModelEx.globalClientUser.openTrades[i].OfferedCatalogItemIds.Count; j++)
                 {
                     ClientModels.CatalogItem catalogItem;
-                    if (PfSharedModelEx.clientCatalog.TryGetValue(PfSharedModelEx.openTrades[i].OfferedCatalogItemIds[j], out catalogItem))
+                    if (PfSharedModelEx.clientCatalog.TryGetValue(PfSharedModelEx.globalClientUser.openTrades[i].OfferedCatalogItemIds[j], out catalogItem))
                         TextField(isLoggedIn, rowIndex, j + 1, catalogItem.DisplayName);
                 }
                 rowIndex++;
 
                 List<string> tradeInstances; string displayItems;
-                if (GetAcceptOptions(PfSharedModelEx.openTrades[i], out tradeInstances, out displayItems))
+                if (GetAcceptOptions(PfSharedModelEx.globalClientUser.openTrades[i], out tradeInstances, out displayItems))
                 {
                     TextField(isLoggedIn, rowIndex, 0, "Accept With:");
-                    Button(true, rowIndex, 1, displayItems, TradeExample.AcceptTrade(PfSharedModelEx.openTrades[i].TradeId, PfSharedModelEx.openTrades[i].OfferingPlayerId, tradeInstances));
+                    Button(true, rowIndex, 1, displayItems, TradeExample.AcceptTrade(PfSharedModelEx.globalClientUser.openTrades[i].TradeId, PfSharedModelEx.globalClientUser.openTrades[i].OfferingPlayerId, tradeInstances));
                 }
                 rowIndex++;
                 rowIndex++;
@@ -84,7 +84,7 @@ namespace PlayFab.Examples.Client
                     return false; // The required item doesn't exist, just fail
 
                 bool foundTrade = false;
-                foreach (var itemInstance in PfSharedModelEx.clientUserItems)
+                foreach (var itemInstance in PfSharedModelEx.globalClientUser.clientUserItems)
                 {
                     if (tradeInstances.Contains(itemInstance.ItemInstanceId))
                         continue; // We've already allocated this item

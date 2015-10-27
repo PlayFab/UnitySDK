@@ -16,7 +16,7 @@ namespace PlayFab.Examples.Client
         static InventoryExample()
         {
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnAllCharactersLoaded, OnAllCharactersLoaded);
+            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, OnInventoryChanged);
         }
 
@@ -31,14 +31,14 @@ namespace PlayFab.Examples.Client
             PlayFabClientAPI.GetCatalogItems(catalogRequest, GetCatalogCallback, PfSharedControllerEx.FailCallback("GetCatalogItems"));
         }
 
-        private static void OnAllCharactersLoaded(string trash)
+        private static void OnUserCharactersLoaded(string playFabId)
         {
             GetUserInventory();
-            PfSharedModelEx.clientCharInventories.Clear();
-            for (int i = 0; i < PfSharedModelEx.characterIds.Count; i++)
+            PfSharedModelEx.globalClientUser.clientCharInventories.Clear();
+            for (int i = 0; i < PfSharedModelEx.globalClientUser.characterIds.Count; i++)
             {
-                var newInv = new PfInvClientChar(PfSharedModelEx.playFabId, PfSharedModelEx.characterIds[i], PfSharedModelEx.characterNames[i]);
-                PfSharedModelEx.clientCharInventories[PfSharedModelEx.characterIds[i]] = newInv;
+                var newInv = new PfInvClientChar(PfSharedModelEx.globalClientUser.playFabId, PfSharedModelEx.globalClientUser.characterIds[i], PfSharedModelEx.globalClientUser.characterNames[i]);
+                PfSharedModelEx.globalClientUser.clientCharInventories[PfSharedModelEx.globalClientUser.characterIds[i]] = newInv;
             }
         }
 
@@ -71,7 +71,7 @@ namespace PlayFab.Examples.Client
             {
                 // Reload the character inventory
                 PfCharInv tempCharater;
-                if (!PfSharedModelEx.clientCharInventories.TryGetValue(characterId, out tempCharater))
+                if (!PfSharedModelEx.globalClientUser.clientCharInventories.TryGetValue(characterId, out tempCharater))
                     return;
                 PfInvClientChar eachCharacter = tempCharater as PfInvClientChar;
                 if (eachCharacter == null || eachCharacter.inventory == null)
@@ -88,7 +88,7 @@ namespace PlayFab.Examples.Client
             Action output = () =>
             {
                 string vcKey; int cost;
-                if (PfSharedModelEx.GetClientItemPrice(null, itemId, out vcKey, out cost))
+                if (PfSharedModelEx.globalClientUser.GetClientItemPrice(null, itemId, out vcKey, out cost))
                 {
                     var purchaseRequest = new ClientModels.PurchaseItemRequest();
                     purchaseRequest.ItemId = itemId;
@@ -117,7 +117,7 @@ namespace PlayFab.Examples.Client
         }
         public static void GetUserItemsCallback(ClientModels.GetUserInventoryResult getResult)
         {
-            PfSharedModelEx.clientUserItems = getResult.Inventory;
+            PfSharedModelEx.globalClientUser.clientUserItems = getResult.Inventory;
             PfSharedControllerEx.sb.Length = 0;
             for (int i = 0; i < getResult.Inventory.Count; i++)
             {
@@ -125,8 +125,8 @@ namespace PlayFab.Examples.Client
                     PfSharedControllerEx.sb.Append(", ");
                 PfSharedControllerEx.sb.Append(getResult.Inventory[i].DisplayName);
             }
-            PfSharedModelEx.userInvDisplay = PfSharedControllerEx.sb.ToString();
-            PfSharedModelEx.clientUserItems = getResult.Inventory;
+            PfSharedModelEx.globalClientUser.userInvDisplay = PfSharedControllerEx.sb.ToString();
+            PfSharedModelEx.globalClientUser.clientUserItems = getResult.Inventory;
         }
 
         public static Action ConsumeUserItem(string itemInstanceId)
@@ -185,7 +185,7 @@ namespace PlayFab.Examples.Client
             Action output = () =>
             {
                 string vcKey; int cost;
-                if (PfSharedModelEx.GetClientItemPrice(null, itemId, out vcKey, out cost))
+                if (PfSharedModelEx.globalClientUser.GetClientItemPrice(null, itemId, out vcKey, out cost))
                 {
                     var purchaseRequest = new ClientModels.PurchaseItemRequest();
                     purchaseRequest.CharacterId = characterId;

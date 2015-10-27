@@ -15,7 +15,7 @@ namespace PlayFab.Examples.Client
         static VirtualCurrencyExample()
         {
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnAllCharactersLoaded, OnAllCharactersLoaded);
+            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnVcChanged, OnVcChanged);
         }
 
@@ -29,13 +29,13 @@ namespace PlayFab.Examples.Client
             GetUserVc();
         }
 
-        private static void OnAllCharactersLoaded(string trash)
+        private static void OnUserCharactersLoaded(string playFabId)
         {
-            PfSharedModelEx.characterVC.Clear();
-            for (int i = 0; i < PfSharedModelEx.characterIds.Count; i++)
+            PfSharedModelEx.globalClientUser.characterVC.Clear();
+            for (int i = 0; i < PfSharedModelEx.globalClientUser.characterIds.Count; i++)
             {
-                PfSharedModelEx.characterVC[PfSharedModelEx.characterIds[i]] = null;
-                GetCharacterVc(PfSharedModelEx.characterIds[i])();
+                PfSharedModelEx.globalClientUser.characterVC[PfSharedModelEx.globalClientUser.characterIds[i]] = null;
+                GetCharacterVc(PfSharedModelEx.globalClientUser.characterIds[i])();
             }
         }
 
@@ -56,7 +56,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetUserVcCallback(ClientModels.GetUserInventoryResult getResult)
         {
-            PfSharedModelEx.userVirtualCurrency = getResult.VirtualCurrency;
+            PfSharedModelEx.globalClientUser.userVirtualCurrency = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
@@ -73,7 +73,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetCharacterVcCallback(ClientModels.GetCharacterInventoryResult getResult)
         {
-            PfSharedModelEx.characterVC[((ClientModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
+            PfSharedModelEx.globalClientUser.characterVC[((ClientModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }

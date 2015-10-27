@@ -9,7 +9,7 @@ namespace PlayFab.Examples
         public enum EventType
         {
             OnUserLogin,
-            OnAllCharactersLoaded,
+            OnUserCharactersLoaded,
             OnCatalogLoaded,
             OnInventoryChanged,
             OnVcChanged,

@@ -20,78 +20,82 @@ namespace PlayFab.Examples.Server
         public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
-            bool charsValid = isLoggedIn && PfSharedModelEx.characterIds.Count > 0;
-            int colIndex;
 
-            Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", InventoryExample.GetUserInventory);
-            TextField(isLoggedIn, rowIndex, 1, ref PfSharedModelEx.userInvDisplay);
-            rowIndex++;
-            // Purchase Items
-            TextField(isLoggedIn, rowIndex, 0, "Grant User Item:");
-            if (PfSharedModelEx.serverCatalog != null)
+            foreach (var userPair in PfSharedModelEx.serverUsers)
             {
-                colIndex = 1;
-                foreach (var catalogPair in PfSharedModelEx.serverCatalog)
-                    Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, InventoryExample.GrantUserItem(catalogPair.Key));
-            }
-            rowIndex++;
-            // Move User Items to characters
-            for (int charIndex = 0; PfSharedModelEx.serverUserItems != null && charIndex < PfSharedModelEx.characterIds.Count; charIndex++)
-            {
-                string eachCharacterId = PfSharedModelEx.characterIds[charIndex];
-                PfCharInv tempCharater;
-                if (!PfSharedModelEx.serverCharInventories.TryGetValue(eachCharacterId, out tempCharater))
-                    continue;
-                PfInvServerChar eachCharacter = tempCharater as PfInvServerChar;
-                if (eachCharacter == null || eachCharacter.inventory == null)
-                    continue;
+                bool charsValid = isLoggedIn && userPair.Value.characterIds.Count > 0;
+                int colIndex;
 
-                TextField(eachCharacter != null, rowIndex, 0, "Move to " + eachCharacter.characterName + ":");
-                for (int i = 0; i < PfSharedModelEx.serverUserItems.Count; i++)
-                    Button(eachCharacter != null, rowIndex, i + 1, PfSharedModelEx.serverUserItems[i].DisplayName, eachCharacter.MoveToCharFromUser(PfSharedModelEx.serverUserItems[i].ItemInstanceId));
+                Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", InventoryExample.GetUserInventory(userPair.Key));
+                TextField(isLoggedIn, rowIndex, 1, ref userPair.Value.userInvDisplay);
                 rowIndex++;
-            }
-            // Revoke User Items
-            TextField(isLoggedIn, rowIndex, 0, "Revoke:");
-            if (PfSharedModelEx.serverUserItems != null)
-                for (int i = 0; i < PfSharedModelEx.serverUserItems.Count; i++)
-                    Button(isLoggedIn, rowIndex, i + 1, PfSharedModelEx.serverUserItems[i].DisplayName, InventoryExample.RevokeUserItem(PfSharedModelEx.serverUserItems[i].ItemInstanceId));
-            rowIndex++;
-            rowIndex++;
-
-            for (int charIndex = 0; charIndex < PfSharedModelEx.characterIds.Count; charIndex++)
-            {
-                string eachCharacterId = PfSharedModelEx.characterIds[charIndex];
-                PfCharInv tempCharater;
-                if (!PfSharedModelEx.serverCharInventories.TryGetValue(eachCharacterId, out tempCharater))
-                    continue;
-                PfInvServerChar eachCharacter = tempCharater as PfInvServerChar;
-                if (eachCharacter == null || eachCharacter.inventory == null)
-                    continue;
-
-                Button(charsValid, rowIndex, 0, "Refresh " + eachCharacter.characterName + " Inv", eachCharacter.GetInventory);
-                TextField(charsValid, rowIndex, 1, eachCharacter.inventoryDisplay);
-                rowIndex++;
-                // Grant Char Items
-                TextField(charsValid, rowIndex, 0, "Grant " + eachCharacter.characterName + " Item:");
+                // Purchase Items
+                TextField(isLoggedIn, rowIndex, 0, "Grant User Item:");
                 if (PfSharedModelEx.serverCatalog != null)
                 {
                     colIndex = 1;
                     foreach (var catalogPair in PfSharedModelEx.serverCatalog)
-                        Button(charsValid, rowIndex, colIndex++, catalogPair.Value.DisplayName, eachCharacter.GrantCharacterItem(catalogPair.Key));
+                        Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, InventoryExample.GrantUserItem(userPair.Key, catalogPair.Key));
                 }
                 rowIndex++;
-                // Move Character Items to User
-                TextField(charsValid, rowIndex, 0, "Move to User:");
-                for (int i = 0; i < eachCharacter.inventory.Count; i++)
-                    Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter.MoveToUser(eachCharacter.inventory[i].ItemInstanceId));
+                // Move User Items to characters
+                for (int charIndex = 0; userPair.Value.serverUserItems != null && charIndex < userPair.Value.characterIds.Count; charIndex++)
+                {
+                    string eachCharacterId = userPair.Value.characterIds[charIndex];
+                    PfCharInv tempCharater;
+                    if (!userPair.Value.serverCharInventories.TryGetValue(eachCharacterId, out tempCharater))
+                        continue;
+                    PfInvServerChar eachCharacter = tempCharater as PfInvServerChar;
+                    if (eachCharacter == null || eachCharacter.inventory == null)
+                        continue;
+
+                    TextField(eachCharacter != null, rowIndex, 0, "Move to " + eachCharacter.characterName + ":");
+                    for (int i = 0; i < userPair.Value.serverUserItems.Count; i++)
+                        Button(eachCharacter != null, rowIndex, i + 1, userPair.Value.serverUserItems[i].DisplayName, eachCharacter.MoveToCharFromUser(userPair.Value.serverUserItems[i].ItemInstanceId));
+                    rowIndex++;
+                }
+                // Revoke User Items
+                TextField(isLoggedIn, rowIndex, 0, "Revoke:");
+                if (userPair.Value.serverUserItems != null)
+                    for (int i = 0; i < userPair.Value.serverUserItems.Count; i++)
+                        Button(isLoggedIn, rowIndex, i + 1, userPair.Value.serverUserItems[i].DisplayName, InventoryExample.RevokeUserItem(userPair.Key, userPair.Value.serverUserItems[i].ItemInstanceId));
                 rowIndex++;
-                // Revoke Character Items
-                TextField(charsValid, rowIndex, 0, "Revoke:");
-                for (int i = 0; i < eachCharacter.inventory.Count; i++)
-                    Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter.RevokeItem(eachCharacter.inventory[i].ItemInstanceId));
                 rowIndex++;
-                rowIndex++;
+
+                for (int charIndex = 0; charIndex < userPair.Value.characterIds.Count; charIndex++)
+                {
+                    string eachCharacterId = userPair.Value.characterIds[charIndex];
+                    PfCharInv tempCharater;
+                    if (!userPair.Value.serverCharInventories.TryGetValue(eachCharacterId, out tempCharater))
+                        continue;
+                    PfInvServerChar eachCharacter = tempCharater as PfInvServerChar;
+                    if (eachCharacter == null || eachCharacter.inventory == null)
+                        continue;
+
+                    Button(charsValid, rowIndex, 0, "Refresh " + eachCharacter.characterName + " Inv", eachCharacter.GetInventory);
+                    TextField(charsValid, rowIndex, 1, eachCharacter.inventoryDisplay);
+                    rowIndex++;
+                    // Grant Char Items
+                    TextField(charsValid, rowIndex, 0, "Grant " + eachCharacter.characterName + " Item:");
+                    if (PfSharedModelEx.serverCatalog != null)
+                    {
+                        colIndex = 1;
+                        foreach (var catalogPair in PfSharedModelEx.serverCatalog)
+                            Button(charsValid, rowIndex, colIndex++, catalogPair.Value.DisplayName, eachCharacter.GrantCharacterItem(catalogPair.Key));
+                    }
+                    rowIndex++;
+                    // Move Character Items to User
+                    TextField(charsValid, rowIndex, 0, "Move to User:");
+                    for (int i = 0; i < eachCharacter.inventory.Count; i++)
+                        Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter.MoveToUser(eachCharacter.inventory[i].ItemInstanceId));
+                    rowIndex++;
+                    // Revoke Character Items
+                    TextField(charsValid, rowIndex, 0, "Revoke:");
+                    for (int i = 0; i < eachCharacter.inventory.Count; i++)
+                        Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter.RevokeItem(eachCharacter.inventory[i].ItemInstanceId));
+                    rowIndex++;
+                    rowIndex++;
+                }
             }
         }
         #endregion Unity GUI

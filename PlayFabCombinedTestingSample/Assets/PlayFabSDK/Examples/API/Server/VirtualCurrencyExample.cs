@@ -14,7 +14,7 @@ namespace PlayFab.Examples.Server
         static VirtualCurrencyExample()
         {
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnAllCharactersLoaded, OnAllCharactersLoaded);
+            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnVcChanged, OnVcChanged);
         }
         public static void SetUp()
@@ -25,48 +25,56 @@ namespace PlayFab.Examples.Server
 
         private static void OnUserLogin(string playFabId)
         {
-            GetUserVc();
+            // Reload the user VC
+            foreach (var userPair in PfSharedModelEx.serverUsers)
+                GetUserVc(userPair.Key)();
         }
 
-        private static void OnAllCharactersLoaded(string trash)
+        private static void OnUserCharactersLoaded(string playFabId)
         {
-            PfSharedModelEx.characterVC.Clear();
-            for (int i = 0; i < PfSharedModelEx.characterIds.Count; i++)
-            {
-                PfSharedModelEx.characterVC[PfSharedModelEx.characterIds[i]] = null;
-                GetCharacterVc(PfSharedModelEx.characterIds[i])();
-            }
+            PfSharedModelEx.serverUsers[playFabId].characterVC.Clear();
+            for (int i = 0; i < PfSharedModelEx.serverUsers[playFabId].characterIds.Count; i++)
+                GetCharacterVc(playFabId, PfSharedModelEx.serverUsers[playFabId].characterIds[i])();
         }
 
         private static void OnVcChanged(string characterId)
         {
-            if (characterId == null) // Reload the user inventory
-                GetUserVc();
-            else // Reload the character inventory
-                GetCharacterVc(characterId)();
+            foreach (var userPair in PfSharedModelEx.serverUsers)
+                if (characterId == null)
+                    // Reload the user VC
+                    GetUserVc(userPair.Key)();
+                else if (userPair.Value.characterIds.IndexOf(characterId) != -1)
+                    // Reload the character VC
+                    GetCharacterVc(userPair.Value.playFabId, characterId)();
         }
         #endregion Controller Event Handling
 
         #region Example Implementation of PlayFab Virtual Currency APIs
-        public static void GetUserVc()
+        public static Action GetUserVc(string playFabId)
         {
-            var getRequest = new ServerModels.GetUserInventoryRequest();
-            getRequest.PlayFabId = PfSharedModelEx.playFabId;
-            PlayFabServerAPI.GetUserInventory(getRequest, GetUserVcCallback, PfSharedControllerEx.FailCallback("GetUserInventory"));
+            Action output = () =>
+            {
+                var getRequest = new ServerModels.GetUserInventoryRequest();
+                getRequest.PlayFabId = playFabId;
+                PlayFabServerAPI.GetUserInventory(getRequest, GetUserVcCallback, PfSharedControllerEx.FailCallback("GetUserInventory"));
+            };
+            return output;
         }
         private static void GetUserVcCallback(ServerModels.GetUserInventoryResult getResult)
         {
-            PfSharedModelEx.userVirtualCurrency = getResult.VirtualCurrency;
+            string playFabId = ((ServerModels.GetUserInventoryRequest)getResult.Request).PlayFabId;
+
+            PfSharedModelEx.serverUsers[playFabId].userVirtualCurrency = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
 
-        public static Action GetCharacterVc(string characterId)
+        public static Action GetCharacterVc(string playFabId, string characterId)
         {
             Action output = () =>
             {
                 var getRequest = new ServerModels.GetCharacterInventoryRequest();
-                getRequest.PlayFabId = PfSharedModelEx.playFabId;
+                getRequest.PlayFabId = playFabId;
                 getRequest.CharacterId = characterId;
                 PlayFabServerAPI.GetCharacterInventory(getRequest, GetCharacterVcCallback, PfSharedControllerEx.FailCallback("GetCharacterInventory"));
             };
@@ -74,17 +82,19 @@ namespace PlayFab.Examples.Server
         }
         private static void GetCharacterVcCallback(ServerModels.GetCharacterInventoryResult getResult)
         {
-            PfSharedModelEx.characterVC[((ServerModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
+            string playFabId = ((ServerModels.GetCharacterInventoryRequest)getResult.Request).PlayFabId;
+
+            PfSharedModelEx.serverUsers[playFabId].characterVC[((ServerModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
 
-        public static Action AddUserVirtualCurrency(string vcKey, int amt)
+        public static Action AddUserVirtualCurrency(string playFabId, string vcKey, int amt)
         {
             Action output = () =>
             {
                 ServerModels.AddUserVirtualCurrencyRequest addRequest = new ServerModels.AddUserVirtualCurrencyRequest();
-                addRequest.PlayFabId = PfSharedModelEx.playFabId;
+                addRequest.PlayFabId = playFabId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
                 PlayFabServerAPI.AddUserVirtualCurrency(addRequest, ModifyUserVcCallback, PfSharedControllerEx.FailCallback("AddUserVirtualCurrency"));
@@ -92,12 +102,12 @@ namespace PlayFab.Examples.Server
             return output;
         }
 
-        public static Action SubtractUserVirtualCurrency(string vcKey, int amt)
+        public static Action SubtractUserVirtualCurrency(string playFabId, string vcKey, int amt)
         {
             Action output = () =>
             {
                 ServerModels.SubtractUserVirtualCurrencyRequest addRequest = new ServerModels.SubtractUserVirtualCurrencyRequest();
-                addRequest.PlayFabId = PfSharedModelEx.playFabId;
+                addRequest.PlayFabId = playFabId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
                 PlayFabServerAPI.SubtractUserVirtualCurrency(addRequest, ModifyUserVcCallback, PfSharedControllerEx.FailCallback("SubtractUserVirtualCurrency"));
@@ -111,12 +121,12 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, null);
         }
 
-        public static Action AddCharacterVirtualCurrency(string characterId, string vcKey, int amt)
+        public static Action AddCharacterVirtualCurrency(string playFabId, string characterId, string vcKey, int amt)
         {
             Action output = () =>
             {
                 ServerModels.AddCharacterVirtualCurrencyRequest addRequest = new ServerModels.AddCharacterVirtualCurrencyRequest();
-                addRequest.PlayFabId = PfSharedModelEx.playFabId;
+                addRequest.PlayFabId = playFabId;
                 addRequest.CharacterId = characterId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
@@ -134,12 +144,12 @@ namespace PlayFab.Examples.Server
             return output;
         }
 
-        public static Action SubtractCharacterVirtualCurrency(string characterId, string vcKey, int amt)
+        public static Action SubtractCharacterVirtualCurrency(string playFabId, string characterId, string vcKey, int amt)
         {
             Action output = () =>
             {
                 ServerModels.SubtractCharacterVirtualCurrencyRequest addRequest = new ServerModels.SubtractCharacterVirtualCurrencyRequest();
-                addRequest.PlayFabId = PfSharedModelEx.playFabId;
+                addRequest.PlayFabId = playFabId;
                 addRequest.CharacterId = characterId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
