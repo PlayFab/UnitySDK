@@ -23,29 +23,34 @@ namespace PlayFab.Examples.Server
 
         // The static constructor is called as a by-product of this call  }
 
-        private static void OnUserLogin(string playFabId)
+        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             // Reload the user VC
-            foreach (var userPair in PfSharedModelEx.serverUsers)
-                GetUserVc(userPair.Key)();
+            GetUserVc(playFabId)();
         }
 
-        private static void OnUserCharactersLoaded(string playFabId)
+        private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            PfSharedModelEx.serverUsers[playFabId].characterVC.Clear();
-            for (int i = 0; i < PfSharedModelEx.serverUsers[playFabId].characterIds.Count; i++)
-                GetCharacterVc(playFabId, PfSharedModelEx.serverUsers[playFabId].characterIds[i])();
+            UserModel updatedUser;
+            if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+                return;
+
+            for (int i = 0; i < updatedUser.characterIds.Count; i++)
+                GetCharacterVc(playFabId, updatedUser.characterIds[i])();
         }
 
-        private static void OnVcChanged(string characterId)
+        private static void OnVcChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            foreach (var userPair in PfSharedModelEx.serverUsers)
-                if (characterId == null)
-                    // Reload the user VC
-                    GetUserVc(userPair.Key)();
-                else if (userPair.Value.characterIds.IndexOf(characterId) != -1)
-                    // Reload the character VC
-                    GetCharacterVc(userPair.Value.playFabId, characterId)();
+            UserModel updatedUser;
+            if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+                return;
+
+            if (characterId == null)
+                // Reload the user VC
+                GetUserVc(playFabId)();
+            else if (updatedUser.characterIds.IndexOf(characterId) != -1)
+                // Reload the character VC
+                GetCharacterVc(playFabId, characterId)();
         }
         #endregion Controller Event Handling
 
@@ -64,7 +69,9 @@ namespace PlayFab.Examples.Server
         {
             string playFabId = ((ServerModels.GetUserInventoryRequest)getResult.Request).PlayFabId;
 
-            PfSharedModelEx.serverUsers[playFabId].userVirtualCurrency = getResult.VirtualCurrency;
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+                userModel.userVC = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
@@ -83,8 +90,15 @@ namespace PlayFab.Examples.Server
         private static void GetCharacterVcCallback(ServerModels.GetCharacterInventoryResult getResult)
         {
             string playFabId = ((ServerModels.GetCharacterInventoryRequest)getResult.Request).PlayFabId;
+            string characterId = ((ServerModels.GetCharacterInventoryRequest)getResult.Request).CharacterId;
 
-            PfSharedModelEx.serverUsers[playFabId].characterVC[((ServerModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
+            UserModel userModel;
+            CharacterModel characterModel;
+
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel)
+            && userModel.serverCharacterModels.TryGetValue(characterId, out characterModel))
+                characterModel.characterVC = getResult.VirtualCurrency;
+
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
@@ -117,8 +131,11 @@ namespace PlayFab.Examples.Server
 
         private static void ModifyUserVcCallback(ServerModels.ModifyUserVirtualCurrencyResult modifyResult)
         {
-            // You could theoretically keep your local balance up-to-date with local information, but it's safer to refresh the full list:
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, null);
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(modifyResult.PlayFabId, out userModel))
+                userModel.SetVcBalance(null, modifyResult.VirtualCurrency, modifyResult.Balance);
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, modifyResult.PlayFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         public static Action AddCharacterVirtualCurrency(string playFabId, string characterId, string vcKey, int amt)
@@ -130,18 +147,20 @@ namespace PlayFab.Examples.Server
                 addRequest.CharacterId = characterId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
-                PlayFabServerAPI.AddCharacterVirtualCurrency(addRequest, AddCharVcCallback(characterId), PfSharedControllerEx.FailCallback("AddCharacterVirtualCurrency"));
+                PlayFabServerAPI.AddCharacterVirtualCurrency(addRequest, AddCharVcCallback, PfSharedControllerEx.FailCallback("AddCharacterVirtualCurrency"));
             };
             return output;
         }
-        private static PlayFabServerAPI.AddCharacterVirtualCurrencyCallback AddCharVcCallback(string characterId)
+        private static void AddCharVcCallback(ServerModels.ModifyCharacterVirtualCurrencyResult modifyResult)
         {
-            PlayFabServerAPI.AddCharacterVirtualCurrencyCallback output = (ServerModels.ModifyCharacterVirtualCurrencyResult modifyResult) =>
-            {
-                // You could theoretically keep your local balance up-to-date with local information, but it's safer to refresh the full list:
-                PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, characterId);
-            };
-            return output;
+            string playFabId = ((ServerModels.AddCharacterVirtualCurrencyRequest)modifyResult.Request).PlayFabId;
+            string characterId = ((ServerModels.AddCharacterVirtualCurrencyRequest)modifyResult.Request).CharacterId;
+
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+                userModel.SetVcBalance(characterId, modifyResult.VirtualCurrency, modifyResult.Balance);
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         public static Action SubtractCharacterVirtualCurrency(string playFabId, string characterId, string vcKey, int amt)
@@ -153,18 +172,20 @@ namespace PlayFab.Examples.Server
                 addRequest.CharacterId = characterId;
                 addRequest.VirtualCurrency = vcKey;
                 addRequest.Amount = amt;
-                PlayFabServerAPI.SubtractCharacterVirtualCurrency(addRequest, SubtractCharVcCallback(characterId), PfSharedControllerEx.FailCallback("SubtractCharacterVirtualCurrency"));
+                PlayFabServerAPI.SubtractCharacterVirtualCurrency(addRequest, SubtractCharVcCallback, PfSharedControllerEx.FailCallback("SubtractCharacterVirtualCurrency"));
             };
             return output;
         }
-        private static PlayFabServerAPI.SubtractCharacterVirtualCurrencyCallback SubtractCharVcCallback(string characterId)
+        private static void SubtractCharVcCallback(ServerModels.ModifyCharacterVirtualCurrencyResult modifyResult)
         {
-            PlayFabServerAPI.SubtractCharacterVirtualCurrencyCallback output = (ServerModels.ModifyCharacterVirtualCurrencyResult modifyResult) =>
-            {
-                // You could theoretically keep your local balance up-to-date with local information, but it's safer to refresh the full list:
-                PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, characterId);
-            };
-            return output;
+            string playFabId = ((ServerModels.SubtractCharacterVirtualCurrencyRequest)modifyResult.Request).PlayFabId;
+            string characterId = ((ServerModels.SubtractCharacterVirtualCurrencyRequest)modifyResult.Request).CharacterId;
+
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+                userModel.SetVcBalance(characterId, modifyResult.VirtualCurrency, modifyResult.Balance);
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
         #endregion Example Implementation of PlayFab Inventory APIs
     }

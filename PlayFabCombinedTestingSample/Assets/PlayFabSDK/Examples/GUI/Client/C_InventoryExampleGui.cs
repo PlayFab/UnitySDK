@@ -61,10 +61,10 @@ namespace PlayFab.Examples.Client
             {
                 string eachCharacterId = PfSharedModelEx.globalClientUser.characterIds[charIndex];
                 string eachCharacterName = PfSharedModelEx.globalClientUser.characterNames[charIndex];
-                PfCharInv tempCharater;
-                if (!PfSharedModelEx.globalClientUser.clientCharInventories.TryGetValue(eachCharacterId, out tempCharater))
+                CharacterModel tempCharacter;
+                if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(eachCharacterId, out tempCharacter))
                     continue;
-                PfInvClientChar eachCharacter = tempCharater as PfInvClientChar;
+                PfInvClientChar eachCharacter = tempCharacter as PfInvClientChar;
                 if (eachCharacter == null || eachCharacter.inventory == null)
                     continue;
 

@@ -25,20 +25,24 @@ namespace PlayFab.Examples.Server
             // The static constructor is called as a by-product of this call
         }
 
-        private static void OnUserLogin(string playFabId)
+        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             var catalogRequest = new ServerModels.GetCatalogItemsRequest();
             PlayFabServerAPI.GetCatalogItems(catalogRequest, GetCatalogCallback, PfSharedControllerEx.FailCallback("GetCatalogItems"));
             GetUserInventory(playFabId)();
         }
 
-        private static void OnUserCharactersLoaded(string playFabId)
+        private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            PfSharedModelEx.serverUsers[playFabId].serverCharInventories.Clear();
-            for (int i = 0; i < PfSharedModelEx.serverUsers[playFabId].characterIds.Count; i++)
+            UserModel updatedUser;
+            if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+                return;
+
+            updatedUser.serverCharacterModels.Clear();
+            for (int i = 0; i < updatedUser.characterIds.Count; i++)
             {
-                var newCharInv = new PfInvServerChar(playFabId, PfSharedModelEx.serverUsers[playFabId].characterIds[i], PfSharedModelEx.serverUsers[playFabId].characterNames[i]);
-                PfSharedModelEx.serverUsers[playFabId].serverCharInventories[PfSharedModelEx.serverUsers[playFabId].characterIds[i]] = newCharInv;
+                var newCharInv = new PfInvServerChar(playFabId, updatedUser.characterIds[i], updatedUser.characterNames[i]);
+                updatedUser.serverCharacterModels[updatedUser.characterIds[i]] = newCharInv;
             }
         }
 
@@ -57,32 +61,32 @@ namespace PlayFab.Examples.Server
                 else if (each.Consumable != null && each.Consumable.UsageCount > 0)
                     PfSharedModelEx.consumableItemIds.Add(each.ItemId);
             }
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null, null, PfSharedControllerEx.Api.Server, false);
         }
 
-        private static void OnInventoryChanged(string characterId)
+        private static void OnInventoryChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
+            UserModel updatedUser;
+            CharacterModel tempCharacter;
+            if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+                return;
+
             if (characterId == null)
             {
                 // Reload the user inventory
-                foreach (var userPair in PfSharedModelEx.serverUsers)
-                    GetUserInventory(userPair.Key)();
+                GetUserInventory(playFabId)();
             }
             else
             {
-                foreach (var userPair in PfSharedModelEx.serverUsers)
-                {
-                    PfCharInv tempCharater;
-                    if (userPair.Value.characterIds.IndexOf(characterId) == -1 || !userPair.Value.serverCharInventories.TryGetValue(characterId, out tempCharater))
-                        continue;
+                // Reload the character inventory
+                if (updatedUser.characterIds.IndexOf(characterId) == -1 || !updatedUser.serverCharacterModels.TryGetValue(characterId, out tempCharacter))
+                    return;
 
-                    PfInvServerChar eachCharacter = tempCharater as PfInvServerChar;
-                    if (eachCharacter == null || eachCharacter.inventory == null)
-                        return;
+                PfInvServerChar eachCharacter = tempCharacter as PfInvServerChar;
+                if (eachCharacter == null || eachCharacter.inventory == null)
+                    return;
 
-                    // Reload the character inventory
-                    eachCharacter.GetInventory();
-                }
+                eachCharacter.GetInventory();
             }
         }
         #endregion Controller Event Handling
@@ -101,8 +105,14 @@ namespace PlayFab.Examples.Server
         }
         public static void GrantUserItemCallback(ServerModels.GrantItemsToUserResult grantResult)
         {
-            // You could theoretically keep your local inventory up-to-date with local information, but it's safer to refresh the full list:
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
+            string playFabId = ((ServerModels.GrantItemsToUserRequest)grantResult.Request).PlayFabId;
+
+            // Merge the items we received with the items we know we have
+            //UserModel userModel;
+            //if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            //    userModel.serverUserItems.AddRange(grantResult.ItemGrantResults); // TODO: Type mismatch makes this too complicated for now
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, true);
         }
 
         public static Action GetUserInventory(string playFabId)
@@ -126,8 +136,12 @@ namespace PlayFab.Examples.Server
                 PfSharedControllerEx.sb.Append(getResult.Inventory[i].DisplayName);
             }
 
-            PfSharedModelEx.serverUsers[playFabId].userInvDisplay = PfSharedControllerEx.sb.ToString();
-            PfSharedModelEx.serverUsers[playFabId].serverUserItems = getResult.Inventory;
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            {
+                userModel.userInvDisplay = PfSharedControllerEx.sb.ToString();
+                userModel.serverUserItems = getResult.Inventory;
+            }
         }
 
         public static Action RevokeUserItem(string playFabId, string itemInstanceId)
@@ -144,7 +158,15 @@ namespace PlayFab.Examples.Server
         }
         public static void RevokeItemCallback(AdminModels.RevokeInventoryResult revokeResult)
         {
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
+            string playFabId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).PlayFabId;
+            string characterId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).CharacterId;
+            string revokedItemInstanceId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).ItemInstanceId;
+
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+                userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
         #endregion Example Implementation of PlayFab Inventory APIs
     }
@@ -153,10 +175,8 @@ namespace PlayFab.Examples.Server
     /// A wrapper for inventory related, character centric, API calls and info
     /// This mostly exists because the characterId needs to be available at all steps in the process, and a class-wrapper avoids most of the Lambda-hell
     /// </summary>
-    public class PfInvServerChar : PfCharInv
+    public class PfInvServerChar : ServerCharacterModel
     {
-        public List<ServerModels.ItemInstance> inventory;
-
         public PfInvServerChar(string playFabId, string characterId, string characterName)
             : base(playFabId, characterId, characterName)
         {
@@ -177,8 +197,12 @@ namespace PlayFab.Examples.Server
         }
         public void GrantCharacterItemCallback(ServerModels.GrantItemsToCharacterResult grantResult)
         {
-            // You could theoretically keep your local inventory up-to-date with local information, but it's safer to refresh the full list:
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, characterId);
+            // Merge the items we received with the items we know we have
+            //UserModel userModel;
+            //if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            //    userModel.serverUserItems.AddRange(grantResult.ItemGrantResults); // TODO: Type mismatch makes this too complicated for now
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, true);
         }
 
         public void GetInventory()
@@ -215,9 +239,27 @@ namespace PlayFab.Examples.Server
         }
         public void MoveToCharCallback(ServerModels.MoveItemToCharacterFromUserResult moveResult)
         {
-            // You could theoretically keep your local inventory up-to-date with local information, but it's safer to refresh the full list:
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, characterId);
+            string playFabId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).PlayFabId;
+            string characterId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).CharacterId;
+            string movedItemInstanceId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).ItemInstanceId;
+
+            UserModel userModel;
+            CharacterModel tempModel;
+            ServerCharacterModel characterModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel)
+            && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
+            {
+                characterModel = tempModel as ServerCharacterModel;
+                var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
+                if (movedItem != null)
+                {
+                    userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
+                    characterModel.inventory.Add(movedItem);
+                }
+            }
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
         }
 
         public Action MoveToUser(string itemInstanceId)
@@ -234,9 +276,23 @@ namespace PlayFab.Examples.Server
         }
         public void MoveToUserCallback(ServerModels.MoveItemToUserFromCharacterResult moveResult)
         {
-            // You could theoretically keep your local inventory up-to-date with local information, but it's safer to refresh the full list:
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, characterId);
+            string playFabId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).PlayFabId;
+            string characterId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).CharacterId;
+            string movedItemInstanceId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).ItemInstanceId;
+
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            {
+                var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
+                if (movedItem != null)
+                {
+                    userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
+                    userModel.serverUserItems.Add(movedItem);
+                }
+            }
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
         }
 
         public Action RevokeItem(string itemInstanceId)
@@ -251,10 +307,17 @@ namespace PlayFab.Examples.Server
             };
             return output;
         }
-        public void RevokeItemCallback(AdminModels.RevokeInventoryResult moveResult)
+        public void RevokeItemCallback(AdminModels.RevokeInventoryResult revokeResult)
         {
-            // You could theoretically keep your local inventory up-to-date with local information, but it's safer to refresh the full list:
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, characterId);
+            string playFabId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).PlayFabId;
+            string characterId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).CharacterId;
+            string revokedItemInstanceId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).ItemInstanceId;
+
+            UserModel userModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+                userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
     }
 }

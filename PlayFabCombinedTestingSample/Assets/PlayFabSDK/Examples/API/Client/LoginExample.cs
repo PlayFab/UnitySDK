@@ -18,7 +18,7 @@ namespace PlayFab.Examples.Client
         {
             // CLIENT
             PfSharedModelEx.globalClientUser.playFabId = loginResult.PlayFabId;
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, loginResult.PlayFabId);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, loginResult.PlayFabId, null, PfSharedControllerEx.Api.Client, false);
             var charRequest = new ClientModels.ListUsersCharactersRequest();
             PlayFabClientAPI.GetAllUsersCharacters(charRequest, CharCallBack, PfSharedControllerEx.FailCallback("GetAllUsersCharacters"));
 
@@ -34,7 +34,7 @@ namespace PlayFab.Examples.Client
                 PfSharedModelEx.globalClientUser.characterIds.Add(character.CharacterId);
                 PfSharedModelEx.globalClientUser.characterNames.Add(character.CharacterName);
             }
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
         }
         #endregion Login API
     }

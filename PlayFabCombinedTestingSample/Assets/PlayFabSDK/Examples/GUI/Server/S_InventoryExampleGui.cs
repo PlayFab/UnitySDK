@@ -42,10 +42,10 @@ namespace PlayFab.Examples.Server
                 for (int charIndex = 0; userPair.Value.serverUserItems != null && charIndex < userPair.Value.characterIds.Count; charIndex++)
                 {
                     string eachCharacterId = userPair.Value.characterIds[charIndex];
-                    PfCharInv tempCharater;
-                    if (!userPair.Value.serverCharInventories.TryGetValue(eachCharacterId, out tempCharater))
+                    CharacterModel tempCharacter;
+                    if (!userPair.Value.serverCharacterModels.TryGetValue(eachCharacterId, out tempCharacter))
                         continue;
-                    PfInvServerChar eachCharacter = tempCharater as PfInvServerChar;
+                    PfInvServerChar eachCharacter = tempCharacter as PfInvServerChar;
                     if (eachCharacter == null || eachCharacter.inventory == null)
                         continue;
 
@@ -65,10 +65,10 @@ namespace PlayFab.Examples.Server
                 for (int charIndex = 0; charIndex < userPair.Value.characterIds.Count; charIndex++)
                 {
                     string eachCharacterId = userPair.Value.characterIds[charIndex];
-                    PfCharInv tempCharater;
-                    if (!userPair.Value.serverCharInventories.TryGetValue(eachCharacterId, out tempCharater))
+                    CharacterModel tempCharacter;
+                    if (!userPair.Value.serverCharacterModels.TryGetValue(eachCharacterId, out tempCharacter))
                         continue;
-                    PfInvServerChar eachCharacter = tempCharater as PfInvServerChar;
+                    PfInvServerChar eachCharacter = tempCharacter as PfInvServerChar;
                     if (eachCharacter == null || eachCharacter.inventory == null)
                         continue;
 
