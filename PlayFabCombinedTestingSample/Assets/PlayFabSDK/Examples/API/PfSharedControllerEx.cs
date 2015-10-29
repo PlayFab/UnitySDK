@@ -33,9 +33,12 @@ namespace PlayFab.Examples
             OnUserLogin,
             OnUserCharactersLoaded,
             OnCatalogLoaded,
+            OnTitleDataLoaded,
+            OnInternalTitleDataLoaded,
 
             OnInventoryChanged,
             OnVcChanged,
+            OnTitleDataChanged,
         }
 
         /// <summary>

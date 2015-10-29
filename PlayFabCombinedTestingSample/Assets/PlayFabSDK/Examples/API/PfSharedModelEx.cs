@@ -16,6 +16,10 @@ namespace PlayFab.Examples
         public static string swillItemId; // TODO: This is global information specific to 1 title - Resolve this
 
         #region Title information
+        public static Dictionary<string, string> clientTitleData = new Dictionary<string, string>();
+        public static Dictionary<string, string> serverTitleData = new Dictionary<string, string>();
+        public static Dictionary<string, string> serverInternalTitleData = new Dictionary<string, string>();
+
         public static HashSet<string> virutalCurrencyTypes = new HashSet<string>() { "SS", "GS", "ST" }; // Set your vcKeys here
         public static HashSet<string> consumableItemIds = new HashSet<string>();
         public static HashSet<string> containerItemIds = new HashSet<string>();

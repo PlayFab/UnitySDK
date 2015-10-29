@@ -23,12 +23,12 @@ namespace PlayFab.Examples
             {
                 PlayFabId = PfSharedModelEx.globalClientUser.playFabId,
                 Data = new Dictionary<string, string>()
-        {
-            {"Father", "Fred"},
-            {"Mother", "Alice"},
-            {"Sister", "Lucy"},
-            {"Brother", "Doug"}
-        },
+                {
+                    {"Father", "Fred"},
+                    {"Mother", "Alice"},
+                    {"Sister", "Lucy"},
+                    {"Brother", "Doug"}
+                },
                 Permission = PlayFab.ServerModels.UserDataPermission.Public
             };
 
