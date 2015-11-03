@@ -30,7 +30,7 @@ namespace PlayFab.Examples.Server
             rowIndex++;
 
             // Display each of the existing keys - Title Data
-            foreach (var titlePair in PfSharedModelEx.serverTitleData)
+            foreach (var titlePair in PfSharedModelEx.titleData)
             {
                 string eachKey = titlePair.Key, eachValue;
                 if (!existingValues.TryGetValue(eachKey, out eachValue))
@@ -53,7 +53,7 @@ namespace PlayFab.Examples.Server
             rowIndex++;
 
             // Display each of the existing keys - Internal Title Data
-            foreach (var titlePair in PfSharedModelEx.serverInternalTitleData)
+            foreach (var titlePair in PfSharedModelEx.titleInternalData)
             {
                 string eachKey = titlePair.Key, eachValue;
                 if (!existingInternalValues.TryGetValue(eachKey, out eachValue))

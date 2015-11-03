@@ -16,9 +16,9 @@ namespace PlayFab.Examples
         public static string swillItemId; // TODO: This is global information specific to 1 title - Resolve this
 
         #region Title information
-        public static Dictionary<string, string> clientTitleData = new Dictionary<string, string>();
-        public static Dictionary<string, string> serverTitleData = new Dictionary<string, string>();
-        public static Dictionary<string, string> serverInternalTitleData = new Dictionary<string, string>();
+        public static Dictionary<string, string> titleData = new Dictionary<string, string>();
+        public static Dictionary<string, string> titleInternalData = new Dictionary<string, string>();
+        public static Dictionary<string, string> publisherData = new Dictionary<string, string>(); // There is no non-user publisher internal data
 
         public static HashSet<string> virutalCurrencyTypes = new HashSet<string>() { "SS", "GS", "ST" }; // Set your vcKeys here
         public static HashSet<string> consumableItemIds = new HashSet<string>();
@@ -32,10 +32,16 @@ namespace PlayFab.Examples
 
     public class UserModel
     {
-        #region Client Login
+        #region General User Information
         public string playFabId;
         public List<string> characterIds = new List<string>();
         public List<string> characterNames = new List<string>();
+        public Dictionary<string, string> userData = new Dictionary<string, string>();
+        public Dictionary<string, string> userReadOnlyData = new Dictionary<string, string>();
+        public Dictionary<string, string> userInternalData = new Dictionary<string, string>();
+        public Dictionary<string, string> userPublisherData = new Dictionary<string, string>();
+        public Dictionary<string, string> userPublisherReadOnlyData = new Dictionary<string, string>();
+        public Dictionary<string, string> userPublisherInternalData = new Dictionary<string, string>();
         #endregion Login
 
         #region Shared/Server/Client Inventory
@@ -243,6 +249,11 @@ namespace PlayFab.Examples
         public string playFabId;
         public string characterId;
         public string characterName;
+
+        public Dictionary<string, string> characterData = new Dictionary<string, string>();
+        public Dictionary<string, string> characterReadOnlyData = new Dictionary<string, string>();
+        public Dictionary<string, string> characterInternalData = new Dictionary<string, string>();
+
         public string inventoryDisplay = "";
         public Dictionary<string, int> characterVC = new Dictionary<string, int>();
 

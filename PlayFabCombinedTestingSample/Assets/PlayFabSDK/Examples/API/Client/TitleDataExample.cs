@@ -31,7 +31,20 @@ namespace PlayFab.Examples.Client
         private static void GetTitleDataCallback(ClientModels.GetTitleDataResult result)
         {
             foreach (var eachTitleEntry in result.Data)
-                PfSharedModelEx.clientTitleData[eachTitleEntry.Key] = eachTitleEntry.Value;
+                PfSharedModelEx.titleData[eachTitleEntry.Key] = eachTitleEntry.Value;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Client, false);
+        }
+        public static void GetPublisherData()
+        {
+            var getRequest = new ClientModels.GetPublisherDataRequest();
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabClientAPI.GetPublisherData(getRequest, GetPublisherDataCallback, PfSharedControllerEx.FailCallback("GetPublisherData"));
+        }
+
+        private static void GetPublisherDataCallback(ClientModels.GetPublisherDataResult result)
+        {
+            foreach (var eachPublisherEntry in result.Data)
+                PfSharedModelEx.publisherData[eachPublisherEntry.Key] = eachPublisherEntry.Value;
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Client, false);
         }
     }

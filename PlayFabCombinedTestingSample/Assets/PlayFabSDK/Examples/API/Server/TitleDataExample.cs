@@ -23,6 +23,7 @@ namespace PlayFab.Examples.Server
         }
         #endregion Controller Event Handling
 
+        #region Title Data - Information stored per-title, usually title-global information
         public static void GetTitleData()
         {
             var getRequest = new ServerModels.GetTitleDataRequest();
@@ -32,7 +33,7 @@ namespace PlayFab.Examples.Server
         private static void GetTitleDataCallback(ServerModels.GetTitleDataResult result)
         {
             foreach (var eachTitleEntry in result.Data)
-                PfSharedModelEx.serverTitleData[eachTitleEntry.Key] = eachTitleEntry.Value;
+                PfSharedModelEx.titleData[eachTitleEntry.Key] = eachTitleEntry.Value;
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Server, false);
         }
 
@@ -45,8 +46,8 @@ namespace PlayFab.Examples.Server
         private static void GetInternalTitleDataCallback(ServerModels.GetTitleDataResult result)
         {
             foreach (var eachTitleEntry in result.Data)
-                PfSharedModelEx.serverInternalTitleData[eachTitleEntry.Key] = eachTitleEntry.Value;
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInternalTitleDataLoaded, null, null, PfSharedControllerEx.Api.Server, false);
+                PfSharedModelEx.titleInternalData[eachTitleEntry.Key] = eachTitleEntry.Value;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Server, false);
         }
 
         public static Action SetTitleData(string titleDataKey, string titleDataValue, bool internalData = false)
@@ -76,13 +77,11 @@ namespace PlayFab.Examples.Server
 
             if (string.IsNullOrEmpty(dataValue))
             {
-                PfSharedModelEx.serverTitleData.Remove(dataKey);
-                PfSharedModelEx.clientTitleData.Remove(dataKey); // Make the same modification to client, since it's mirrored there
+                PfSharedModelEx.titleData.Remove(dataKey);
             }
             else
             {
-                PfSharedModelEx.serverTitleData[dataKey] = dataValue;
-                PfSharedModelEx.clientTitleData[dataKey] = dataValue; // Make the same modification to client, since it's mirrored there
+                PfSharedModelEx.titleData[dataKey] = dataValue;
             }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataChanged, null, null, PfSharedControllerEx.Api.Server, false);
@@ -93,11 +92,61 @@ namespace PlayFab.Examples.Server
             string dataValue = ((ServerModels.SetTitleDataRequest)result.Request).Value;
 
             if (string.IsNullOrEmpty(dataValue))
-                PfSharedModelEx.serverInternalTitleData.Remove(dataKey);
+                PfSharedModelEx.titleInternalData.Remove(dataKey);
             else
-                PfSharedModelEx.serverInternalTitleData[dataKey] = dataValue;
+                PfSharedModelEx.titleInternalData[dataKey] = dataValue;
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataChanged, null, null, PfSharedControllerEx.Api.Server, false);
         }
+        #endregion Title Data - Information stored per-title, usually title-global information
+
+        #region Publisher Data - Information stored for all titles under a publisher
+        public static void GetPublisherData()
+        {
+            var getRequest = new ServerModels.GetPublisherDataRequest();
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabServerAPI.GetPublisherData(getRequest, GetPublisherDataCallback, PfSharedControllerEx.FailCallback("GetPublisherData"));
+        }
+        private static void GetPublisherDataCallback(ServerModels.GetPublisherDataResult result)
+        {
+            foreach (var eachPublisherEntry in result.Data)
+                PfSharedModelEx.publisherData[eachPublisherEntry.Key] = eachPublisherEntry.Value;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Server, false);
+        }
+
+        public static Action SetPublisherData(string PublisherDataKey, string PublisherDataValue)
+        {
+            if (string.IsNullOrEmpty(PublisherDataValue))
+                PublisherDataValue = null; // Ensure that this field is removed
+
+            Action output = () =>
+            {
+                // This api-call updates one PublisherData key at a time.
+                // You can remove a key by setting the value to null.
+                var updateRequest = new ServerModels.SetPublisherDataRequest();
+                updateRequest.Key = PublisherDataKey;
+                updateRequest.Value = PublisherDataValue;
+
+                PlayFabServerAPI.SetPublisherData(updateRequest, SetPublisherDataCallback, PfSharedControllerEx.FailCallback("SetPublisherData"));
+            };
+            return output;
+        }
+        private static void SetPublisherDataCallback(ServerModels.SetPublisherDataResult result)
+        {
+            string dataKey = ((ServerModels.SetPublisherDataRequest)result.Request).Key;
+            string dataValue = ((ServerModels.SetPublisherDataRequest)result.Request).Value;
+
+            if (string.IsNullOrEmpty(dataValue))
+            {
+                PfSharedModelEx.publisherData.Remove(dataKey);
+            }
+            else
+            {
+                PfSharedModelEx.publisherData[dataKey] = dataValue;
+            }
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataChanged, null, null, PfSharedControllerEx.Api.Server, false);
+        }
+        #endregion Publisher Data - Information stored for all titles under a publisher
     }
 }

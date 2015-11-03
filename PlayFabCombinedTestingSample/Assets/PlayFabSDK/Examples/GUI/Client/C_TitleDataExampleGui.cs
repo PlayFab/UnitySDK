@@ -21,7 +21,7 @@ namespace PlayFab.Examples.Client
             rowIndex++;
 
             // Display each of the existing keys - Title Data
-            foreach (var titlePair in PfSharedModelEx.clientTitleData)
+            foreach (var titlePair in PfSharedModelEx.titleData)
             {
                 // The client cannot modify title data
                 TextField(true, rowIndex, 0, titlePair.Key);
