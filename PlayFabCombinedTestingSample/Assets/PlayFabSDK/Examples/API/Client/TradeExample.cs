@@ -26,12 +26,12 @@ namespace PlayFab.Examples.Client
             // The static constructor is called as a by-product of this call
         }
 
-        private static void OnUserLogin(string playFabId)
+        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             GetTrades();
         }
 
-        private static void OnCatalogLoaded(string trash)
+        private static void OnCatalogLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             // Find the designated trade target item
             foreach (var catalogPair in PfSharedModelEx.clientCatalog)
@@ -48,7 +48,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetTradesCallback(ClientModels.GetPlayerTradesResponse result)
         {
-            PfSharedModelEx.openTrades = result.OpenedTrades;
+            PfSharedModelEx.globalClientUser.openTrades = result.OpenedTrades;
         }
 
         public static Action OpenTrade(params string[] offeredInventoryInstanceIds)
@@ -59,7 +59,7 @@ namespace PlayFab.Examples.Client
                 // Optional field: null is anybody, alternately if specified, this is a targeted trade request
                 //   In this example, we restrict the trade to ourselves (because I don't have multiple clients for this example)
                 //   A normal trade process would use all the same steps, but would interact between multliple clients
-                openRequest.AllowedPlayerIds = new List<string>() { PfSharedModelEx.playFabId };
+                openRequest.AllowedPlayerIds = new List<string>() { PfSharedModelEx.globalClientUser.playFabId };
                 // Offering the items you have
                 openRequest.OfferedInventoryInstanceIds = new List<string>();
                 openRequest.OfferedInventoryInstanceIds.AddRange(offeredInventoryInstanceIds);
@@ -75,10 +75,10 @@ namespace PlayFab.Examples.Client
             //   Since we fulfill this trade with ourselves, that step is somewhat automatic in this example
             Debug.Log("New trade opened: " + result.Trade.TradeId);
 
-            // We could append result.Trade to openTrades if we trusted the diff, but the latency for calls is pretty high, so it's safer to just fetch a clean list:
-            GetTrades();
-            // My inventory items just moved into escrow - It's safest to do a full refresh
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
+            PfSharedModelEx.globalClientUser.RemoveItems(null, new HashSet<string>(result.Trade.OfferedInventoryInstanceIds));
+            PfSharedModelEx.globalClientUser.openTrades.Add(result.Trade);
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         public static Action CancelTrade(string tradeId)
@@ -95,10 +95,9 @@ namespace PlayFab.Examples.Client
         {
             Debug.Log("Existing trade canceled: " + result.Trade.TradeId);
 
-            // We could remove the trade matching result.Trade.TradeId from openTrades if we trusted the diff, but the latency for calls is pretty high, so it's safer to just fetch a clean list:
-            GetTrades();
-            // The escrow items just returned to my inventory - It's safest to do a full refresh
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
+            PfSharedModelEx.globalClientUser.RemoveTrade(result.Trade.TradeId);
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, true);
         }
 
         public static Action AcceptTrade(string tradeId, string offeringPlayerId, List<string> acceptedInventoryInstanceIds)
@@ -117,11 +116,9 @@ namespace PlayFab.Examples.Client
         {
             Debug.Log("Existing trade completed: " + result.Trade.TradeId);
 
-            // We could remove the trade matching result.Trade.TradeId from openTrades if we trusted the diff, but the latency for calls is pretty high, so it's safer to just fetch a clean list:
-            GetTrades();
-            // At this point, both the user who made the offer, and the player who accepted the offer must refresh their inventory, as nothing in the result demonstrates how those inventories will change
-            // (The offering user doesn't even know that their inventory changed, so that can be a bit tricky)
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, null);
+            PfSharedModelEx.globalClientUser.RemoveTrade(result.Trade.TradeId);
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, true);
         }
         #endregion
     }

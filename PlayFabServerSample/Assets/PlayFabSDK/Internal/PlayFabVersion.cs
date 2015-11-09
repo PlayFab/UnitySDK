@@ -3,8 +3,8 @@ namespace PlayFab.Internal
 {
 	public class PlayFabVersion
 	{
-		public static string ApiRevision = "1.7.20151019";
-		public static string SdkRevision = "1.0.6";
+		public static string ApiRevision = "1.9.20151109";
+		public static string SdkRevision = "0.9.151109";
 
 		public static string getVersionString()
 		{

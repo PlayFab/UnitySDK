@@ -14,41 +14,43 @@ namespace PlayFab.Examples.Server
         public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
-            bool charsValid = isLoggedIn && PfSharedModelEx.characterIds.Count > 0;
-            int colIndex, temp;
 
-            if (PfSharedModelEx.characterVC == null)
-                return;
-
-            // User Owned Currency
-            Button(isLoggedIn, rowIndex, 0, "Refresh User VC:", VirtualCurrencyExample.GetUserVc);
-            colIndex = 1;
-            foreach (var vcKey in PfSharedModelEx.virutalCurrencyTypes)
+            foreach (var userPair in PfSharedModelEx.serverUsers)
             {
-                PfSharedModelEx.userVirtualCurrency.TryGetValue(vcKey, out temp);
-                CounterField(isLoggedIn, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddUserVirtualCurrency(vcKey, 1), VirtualCurrencyExample.SubtractUserVirtualCurrency(vcKey, 1));
-            }
-            rowIndex++;
-            rowIndex++;
-
-            for (int charIndex = 0; charIndex < PfSharedModelEx.characterVC.Count; charIndex++)
-            {
-                string eachCharacterId = PfSharedModelEx.characterIds[charIndex];
-                string eachCharacterName = PfSharedModelEx.characterNames[charIndex];
-                Dictionary<string, int> eachCharVcContainer = PfSharedModelEx.characterVC[eachCharacterId];
-                if (eachCharVcContainer == null)
-                    continue;
+                bool charsValid = isLoggedIn && userPair.Value.characterIds.Count > 0;
+                int colIndex, temp;
 
                 // User Owned Currency
-                Button(charsValid, rowIndex, 0, "Refresh " + eachCharacterName + " VC:", VirtualCurrencyExample.GetCharacterVc(eachCharacterId));
+                Button(isLoggedIn, rowIndex, 0, "Refresh User VC:", VirtualCurrencyExample.GetUserVc(userPair.Key));
                 colIndex = 1;
                 foreach (var vcKey in PfSharedModelEx.virutalCurrencyTypes)
                 {
-                    eachCharVcContainer.TryGetValue(vcKey, out temp);
-                    CounterField(charsValid, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddCharacterVirtualCurrency(eachCharacterId, vcKey, 1), VirtualCurrencyExample.SubtractCharacterVirtualCurrency(eachCharacterId, vcKey, 1));
+                    userPair.Value.userVC.TryGetValue(vcKey, out temp);
+                    CounterField(isLoggedIn, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddUserVirtualCurrency(userPair.Key, vcKey, 1), VirtualCurrencyExample.SubtractUserVirtualCurrency(userPair.Key, vcKey, 1));
                 }
                 rowIndex++;
                 rowIndex++;
+
+                for (int charIndex = 0; charIndex < userPair.Value.characterIds.Count; charIndex++)
+                {
+                    string eachCharacterId = userPair.Value.characterIds[charIndex];
+                    string eachCharacterName = userPair.Value.characterNames[charIndex];
+
+                    CharacterModel tempCharacter;
+                    if (!userPair.Value.serverCharacterModels.TryGetValue(eachCharacterId, out tempCharacter) || tempCharacter.characterVC== null)
+                        continue;
+
+                    // User Owned Currency
+                    Button(charsValid, rowIndex, 0, "Refresh " + eachCharacterName + " VC:", VirtualCurrencyExample.GetCharacterVc(userPair.Key, eachCharacterId));
+                    colIndex = 1;
+                    foreach (var vcKey in PfSharedModelEx.virutalCurrencyTypes)
+                    {
+                        tempCharacter.characterVC.TryGetValue(vcKey, out temp);
+                        CounterField(charsValid, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddCharacterVirtualCurrency(userPair.Key, eachCharacterId, vcKey, 1), VirtualCurrencyExample.SubtractCharacterVirtualCurrency(userPair.Key, eachCharacterId, vcKey, 1));
+                    }
+                    rowIndex++;
+                    rowIndex++;
+                }
             }
         }
         #endregion Unity GUI

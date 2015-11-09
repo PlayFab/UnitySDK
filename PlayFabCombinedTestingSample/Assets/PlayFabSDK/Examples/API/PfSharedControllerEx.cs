@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -5,14 +6,40 @@ namespace PlayFab.Examples
 {
     public static class PfSharedControllerEx
     {
-        public delegate void PfControllerDelegate(string identifier);
+        /// <summary>
+        /// PlayFab Example Controller event callback
+        /// </summary>
+        /// <param name="playFabId">playFabId of the user affected by this event</param>
+        /// <param name="characterId">characterId affected by this event, null implies plain user</param>
+        /// <param name="eventSourceApi">The api that affected this change</param>
+        /// <param name="requiresFullRefresh">
+        ///     If true, then all data models for all apis need to fully refresh their data to handle this event
+        ///     If false, the api-response has handled the local data-updates for this event, but other Api-data probably still needs to refresh
+        ///         This is only particularly relevant to the server/client keeping similar data in separate containers with different datatypes (inventory).
+        /// </param>
+        public delegate void PfControllerDelegate(string playFabId, string characterId, Api eventSourceApi, bool requiresFullRefresh);
+
+        [Flags]
+        public enum Api
+        {
+            Client,
+            Server,
+            Admin,
+            Matchmaker,
+        }
+
         public enum EventType
         {
             OnUserLogin,
-            OnAllCharactersLoaded,
+            OnUserCharactersLoaded,
             OnCatalogLoaded,
+            OnUserDataLoaded,
+            OnTitleDataLoaded,
+
             OnInventoryChanged,
             OnVcChanged,
+            OnUserDataChanged,
+            OnTitleDataChanged,
         }
 
         /// <summary>
@@ -31,11 +58,11 @@ namespace PlayFab.Examples
             eventCallbacks[evt] = storedDelegate;
         }
 
-        public static void PostEventMessage(EventType evt, string context)
+        public static void PostEventMessage(EventType evt, string playFabId, string characterId, Api eventSourceApi, bool requiresFullRefresh)
         {
             PfControllerDelegate storedDelegate;
             if (eventCallbacks.TryGetValue(evt, out storedDelegate) && storedDelegate != null)
-                storedDelegate(context);
+                storedDelegate(playFabId, characterId, eventSourceApi, requiresFullRefresh);
         }
 
         /// <summary>

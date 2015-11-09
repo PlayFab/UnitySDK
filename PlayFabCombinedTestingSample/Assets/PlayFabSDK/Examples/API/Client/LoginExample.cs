@@ -16,21 +16,25 @@ namespace PlayFab.Examples.Client
         }
         public static void LoginCallBack(ClientModels.LoginResult loginResult)
         {
-            PfSharedModelEx.playFabId = loginResult.PlayFabId;
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, loginResult.PlayFabId);
+            // CLIENT
+            PfSharedModelEx.globalClientUser.playFabId = loginResult.PlayFabId;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, loginResult.PlayFabId, null, PfSharedControllerEx.Api.Client, false);
             var charRequest = new ClientModels.ListUsersCharactersRequest();
             PlayFabClientAPI.GetAllUsersCharacters(charRequest, CharCallBack, PfSharedControllerEx.FailCallback("GetAllUsersCharacters"));
+
+            // SERVER - Re-use the same reference for now, but really it needs to create a separate object for each loaded player
+            PfSharedModelEx.serverUsers.Add(loginResult.PlayFabId, PfSharedModelEx.globalClientUser);
         }
         public static void CharCallBack(ClientModels.ListUsersCharactersResult charResult)
         {
-            PfSharedModelEx.characterIds.Clear();
-            PfSharedModelEx.characterNames.Clear();
+            PfSharedModelEx.globalClientUser.characterIds.Clear();
+            PfSharedModelEx.globalClientUser.characterNames.Clear();
             foreach (var character in charResult.Characters)
             {
-                PfSharedModelEx.characterIds.Add(character.CharacterId);
-                PfSharedModelEx.characterNames.Add(character.CharacterName);
+                PfSharedModelEx.globalClientUser.characterIds.Add(character.CharacterId);
+                PfSharedModelEx.globalClientUser.characterNames.Add(character.CharacterName);
             }
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnAllCharactersLoaded, null);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
         }
         #endregion Login API
     }

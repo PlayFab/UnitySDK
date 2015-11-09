@@ -15,7 +15,7 @@ namespace PlayFab.Examples.Client
         static VirtualCurrencyExample()
         {
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnAllCharactersLoaded, OnAllCharactersLoaded);
+            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
             PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnVcChanged, OnVcChanged);
         }
 
@@ -24,22 +24,18 @@ namespace PlayFab.Examples.Client
             // The static constructor is called as a by-product of this call
         }
 
-        private static void OnUserLogin(string playFabId)
+        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             GetUserVc();
         }
 
-        private static void OnAllCharactersLoaded(string trash)
+        private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            PfSharedModelEx.characterVC.Clear();
-            for (int i = 0; i < PfSharedModelEx.characterIds.Count; i++)
-            {
-                PfSharedModelEx.characterVC[PfSharedModelEx.characterIds[i]] = null;
-                GetCharacterVc(PfSharedModelEx.characterIds[i])();
-            }
+            for (int i = 0; i < PfSharedModelEx.globalClientUser.characterIds.Count; i++)
+                GetCharacterVc(PfSharedModelEx.globalClientUser.characterIds[i])();
         }
 
-        private static void OnVcChanged(string characterId)
+        private static void OnVcChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             if (characterId == null) // Reload the user inventory
                 GetUserVc();
@@ -56,7 +52,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetUserVcCallback(ClientModels.GetUserInventoryResult getResult)
         {
-            PfSharedModelEx.userVirtualCurrency = getResult.VirtualCurrency;
+            PfSharedModelEx.globalClientUser.userVC = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
@@ -73,7 +69,11 @@ namespace PlayFab.Examples.Client
         }
         private static void GetCharacterVcCallback(ClientModels.GetCharacterInventoryResult getResult)
         {
-            PfSharedModelEx.characterVC[((ClientModels.GetCharacterInventoryRequest)getResult.Request).CharacterId] = getResult.VirtualCurrency;
+            string characterId = ((ClientModels.GetCharacterInventoryRequest)getResult.Request).CharacterId;
+
+            CharacterModel characterModel;
+            if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out characterModel))
+                characterModel.characterVC = getResult.VirtualCurrency;
             foreach (var pair in getResult.VirtualCurrency)
                 PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
@@ -102,10 +102,11 @@ namespace PlayFab.Examples.Client
             return output;
         }
 
-        private static void ModifyUserVcCallback(ClientModels.ModifyUserVirtualCurrencyResult addResult)
+        private static void ModifyUserVcCallback(ClientModels.ModifyUserVirtualCurrencyResult modResult)
         {
-            // You could theoretically keep your local balance up-to-date with local information, but it's safer to refresh the full list:
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, null);
+            PfSharedModelEx.globalClientUser.SetVcBalance(null, modResult.VirtualCurrency, modResult.Balance);
+
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
         #endregion Example Implementation of PlayFab Inventory APIs
     }
