@@ -4049,6 +4049,11 @@ namespace PlayFab.ClientModels
 		public Dictionary<string,string> Data { get; set;}
 		
 		/// <summary>
+		/// Optional list of Data-keys to remove from CharacterData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+		/// </summary>
+		public List<string> KeysToRemove { get; set;}
+		
+		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
 		/// </summary>
 		public UserDataPermission? Permission { get; set;}
@@ -4084,6 +4089,11 @@ namespace PlayFab.ClientModels
 		public Dictionary<string,string> Data { get; set;}
 		
 		/// <summary>
+		/// Optional list of Data-keys to remove from GroupData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+		/// </summary>
+		public List<string> KeysToRemove { get; set;}
+		
+		/// <summary>
 		/// Permission to be applied to all user data keys in this request.
 		/// </summary>
 		public UserDataPermission? Permission { get; set;}
@@ -4107,6 +4117,11 @@ namespace PlayFab.ClientModels
 		/// Data to be written to the user's custom data. Note that keys are trimmed of whitespace, are limited to 1024 characters, and may not begin with a '!' character.
 		/// </summary>
 		public Dictionary<string,string> Data { get; set;}
+		
+		/// <summary>
+		/// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+		/// </summary>
+		public List<string> KeysToRemove { get; set;}
 		
 		/// <summary>
 		/// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.

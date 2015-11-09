@@ -48,6 +48,7 @@ namespace PlayFab
 		public delegate void MoveItemToCharacterFromCharacterCallback(MoveItemToCharacterFromCharacterResult result);
 		public delegate void MoveItemToCharacterFromUserCallback(MoveItemToCharacterFromUserResult result);
 		public delegate void MoveItemToUserFromCharacterCallback(MoveItemToUserFromCharacterResult result);
+		public delegate void RedeemCouponCallback(RedeemCouponResult result);
 		public delegate void ReportPlayerCallback(ReportPlayerServerResult result);
 		public delegate void SubtractCharacterVirtualCurrencyCallback(ModifyCharacterVirtualCurrencyResult result);
 		public delegate void SubtractUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
@@ -1191,6 +1192,36 @@ namespace PlayFab
 				}
 			};
 			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/MoveItemToUserFromCharacter", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+		}
+		
+		/// <summary>
+		/// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the Promotions->Coupons tab in the PlayFab Game Manager. See this post for more information on coupons:  https://playfab.com/blog/2015/06/18/using-stores-and-coupons-game-manager
+		/// </summary>
+		public static void RedeemCoupon(RedeemCouponRequest request, RedeemCouponCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+		{
+			if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+			{
+				RedeemCouponResult result = null;
+				ResultContainer<RedeemCouponResult>.HandleResults(responseStr, ref pfError, out result);
+				if(pfError != null && errorCallback != null)
+				{
+					errorCallback(pfError);
+				}
+				if(result != null)
+				{
+					
+					result.CustomData = customData;
+					result.Request = request;
+					if(resultCallback != null)
+					{
+						resultCallback(result);
+					}
+				}
+			};
+			PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/RedeemCoupon", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
 		}
 		
 		/// <summary>

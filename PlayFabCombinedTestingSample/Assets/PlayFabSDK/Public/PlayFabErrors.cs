@@ -185,7 +185,9 @@ namespace PlayFab
 		TradeAcceptedCatalogItemIsNotTradable = 1182,
 		UsersAlreadyFriends = 1183,
 		LinkedIdentifierAlreadyClaimed = 1184,
-		CustomIdNotLinked = 1185
+		CustomIdNotLinked = 1185,
+		TotalDataSizeExceeded = 1186,
+		DeleteKeyConflict = 1187
 	}
 	
 	public class PlayFabError

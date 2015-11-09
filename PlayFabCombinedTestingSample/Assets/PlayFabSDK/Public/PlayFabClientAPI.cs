@@ -151,7 +151,7 @@ namespace PlayFab
 		public static void LoginWithAndroidDeviceID(LoginWithAndroidDeviceIDRequest request, LoginWithAndroidDeviceIDCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -183,7 +183,7 @@ namespace PlayFab
 		public static void LoginWithCustomID(LoginWithCustomIDRequest request, LoginWithCustomIDCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -215,7 +215,7 @@ namespace PlayFab
 		public static void LoginWithEmailAddress(LoginWithEmailAddressRequest request, LoginWithEmailAddressCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -247,7 +247,7 @@ namespace PlayFab
 		public static void LoginWithFacebook(LoginWithFacebookRequest request, LoginWithFacebookCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -279,7 +279,7 @@ namespace PlayFab
 		public static void LoginWithGoogleAccount(LoginWithGoogleAccountRequest request, LoginWithGoogleAccountCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -311,7 +311,7 @@ namespace PlayFab
 		public static void LoginWithIOSDeviceID(LoginWithIOSDeviceIDRequest request, LoginWithIOSDeviceIDCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -343,7 +343,7 @@ namespace PlayFab
 		public static void LoginWithKongregate(LoginWithKongregateRequest request, LoginWithKongregateCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -375,7 +375,7 @@ namespace PlayFab
 		public static void LoginWithPlayFab(LoginWithPlayFabRequest request, LoginWithPlayFabCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -407,7 +407,7 @@ namespace PlayFab
 		public static void LoginWithSteam(LoginWithSteamRequest request, LoginWithSteamCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -439,7 +439,7 @@ namespace PlayFab
 		public static void RegisterPlayFabUser(RegisterPlayFabUserRequest request, RegisterPlayFabUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
 			request.TitleId = PlayFabSettings.TitleId ?? request.TitleId;
-			if(request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
 
 			string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
 			Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
@@ -1905,7 +1905,7 @@ namespace PlayFab
 		}
 		
 		/// <summary>
-		/// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the Promotions->Coupons tab in the PlayFab Game Manager. See this post for more information on coupons:  https://playfab.com/blog/2015/06/18/using-stores-and-coupons-game-manager
+		/// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the Promotions->Coupons tab in the PlayFab Game Manager. See this post for more information on coupons:  https://playfab.com/blog/using-stores-and-coupons-game-manager/
 		/// </summary>
 		public static void RedeemCoupon(RedeemCouponRequest request, RedeemCouponCallback resultCallback, ErrorCallback errorCallback, object customData = null)
 		{
