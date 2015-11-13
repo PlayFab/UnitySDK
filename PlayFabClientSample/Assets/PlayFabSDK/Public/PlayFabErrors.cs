@@ -187,7 +187,8 @@ namespace PlayFab
 		LinkedIdentifierAlreadyClaimed = 1184,
 		CustomIdNotLinked = 1185,
 		TotalDataSizeExceeded = 1186,
-		DeleteKeyConflict = 1187
+		DeleteKeyConflict = 1187,
+		InvalidXboxLiveToken = 1188
 	}
 	
 	public class PlayFabError
