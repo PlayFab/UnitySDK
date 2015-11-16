@@ -1972,7 +1972,7 @@ namespace PlayFab.ClientModels
 	{   
 		
 		/// <summary>
-		/// Specific keys to search for in the custom user data. Leave null to get all keys.
+		/// Specific keys to search for in the custom data. Leave null to get all keys.
 		/// </summary>
 		public List<string> Keys { get; set;}
 		
@@ -2443,6 +2443,26 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class LinkXboxAccountRequest
+	{   
+		
+		/// <summary>
+		/// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+		/// </summary>
+		public string XboxToken { get; set;}
+	}
+	
+	
+	
+	public class LinkXboxAccountResult
+	{   
+		public object Request { get; set; }
+		public object CustomData { get; set;  }
+		
+	}
+	
+	
+	
 	public class ListUsersCharactersRequest
 	{   
 		
@@ -2765,6 +2785,27 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Automatically create a PlayFab account if one is not currently linked to this Steam account.
+		/// </summary>
+		public bool? CreateAccount { get; set;}
+	}
+	
+	
+	
+	public class LoginWithXboxRequest
+	{   
+		
+		/// <summary>
+		/// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+		/// </summary>
+		public string TitleId { get; set;}
+		
+		/// <summary>
+		/// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+		/// </summary>
+		public string XboxToken { get; set;}
+		
+		/// <summary>
+		/// Automatically create a PlayFab account if one is not currently linked to this Xbox Live account.
 		/// </summary>
 		public bool? CreateAccount { get; set;}
 	}
@@ -3985,6 +4026,26 @@ namespace PlayFab.ClientModels
 	
 	
 	
+	public class UnlinkXboxAccountRequest
+	{   
+		
+		/// <summary>
+		/// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+		/// </summary>
+		public string XboxToken { get; set;}
+	}
+	
+	
+	
+	public class UnlinkXboxAccountResult
+	{   
+		public object Request { get; set; }
+		public object CustomData { get; set;  }
+		
+	}
+	
+	
+	
 	public class UnlockContainerItemRequest
 	{   
 		
@@ -4044,12 +4105,12 @@ namespace PlayFab.ClientModels
 		public string CharacterId { get; set;}
 		
 		/// <summary>
-		/// Data to be written to the user's character's custom data. Note that keys are trimmed of whitespace, are limited to 1024 characters, and may not begin with a '!' character.
+		/// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
 		/// </summary>
 		public Dictionary<string,string> Data { get; set;}
 		
 		/// <summary>
-		/// Optional list of Data-keys to remove from CharacterData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+		/// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
 		/// </summary>
 		public List<string> KeysToRemove { get; set;}
 		
@@ -4084,12 +4145,12 @@ namespace PlayFab.ClientModels
 		public string SharedGroupId { get; set;}
 		
 		/// <summary>
-		/// Key value pairs to be stored in the shared group - note that keys will be trimmed of whitespace, must not begin with a '!' character, and that null values will result in the removal of the key from the data set.
+		/// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
 		/// </summary>
 		public Dictionary<string,string> Data { get; set;}
 		
 		/// <summary>
-		/// Optional list of Data-keys to remove from GroupData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+		/// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
 		/// </summary>
 		public List<string> KeysToRemove { get; set;}
 		
@@ -4114,7 +4175,7 @@ namespace PlayFab.ClientModels
 	{   
 		
 		/// <summary>
-		/// Data to be written to the user's custom data. Note that keys are trimmed of whitespace, are limited to 1024 characters, and may not begin with a '!' character.
+		/// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
 		/// </summary>
 		public Dictionary<string,string> Data { get; set;}
 		
@@ -4307,7 +4368,8 @@ namespace PlayFab.ClientModels
 		Android,
 		PSN,
 		GameCenter,
-		CustomId
+		CustomId,
+		XboxLive
 	}
 	
 	
