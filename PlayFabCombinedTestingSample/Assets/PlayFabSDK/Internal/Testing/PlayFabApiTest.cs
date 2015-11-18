@@ -202,7 +202,6 @@ namespace PlayFab.UUnit
         public void UserDataApi()
         {
             int testCounterValueExpected, testCounterValueActual;
-            DateTime timeInitial, timeUpdated;
 
             var getRequest = new ClientModels.GetUserDataRequest();
             PlayFabClientAPI.GetUserData(getRequest, GetUserDataCallback, SharedErrorCallback);
@@ -210,7 +209,6 @@ namespace PlayFab.UUnit
 
             UUnitAssert.Equals("User Data Received", lastReceivedMessage);
             int.TryParse(testCounterReturn.Value, out testCounterValueExpected);
-            timeInitial = testCounterReturn.LastUpdated;
             testCounterValueExpected = (testCounterValueExpected + 1) % 100; // This test is about the expected value changing - but not testing more complicated issues like bounds
 
             var updateRequest = new ClientModels.UpdateUserDataRequest();
@@ -227,9 +225,12 @@ namespace PlayFab.UUnit
 
             UUnitAssert.Equals("User Data Received", lastReceivedMessage);
             int.TryParse(testCounterReturn.Value, out testCounterValueActual);
-            timeUpdated = testCounterReturn.LastUpdated;
             UUnitAssert.Equals(testCounterValueExpected, testCounterValueActual);
-            UUnitAssert.True(timeUpdated > timeInitial);
+
+            DateTime timeUpdated = testCounterReturn.LastUpdated;
+            DateTime minTest = DateTime.UtcNow - TimeSpan.FromMinutes(5);
+            DateTime maxTest = DateTime.UtcNow + TimeSpan.FromMinutes(5);
+            UUnitAssert.True(minTest <= timeUpdated && timeUpdated <= maxTest);
 
             // UnityEngine.Debug.Log((DateTime.UtcNow - timeUpdated).TotalSeconds);
             UUnitAssert.True(Math.Abs((DateTime.UtcNow - timeUpdated).TotalMinutes) < 5); // Make sure that this timestamp is recent - This must also account for the difference between local machine time and server time
