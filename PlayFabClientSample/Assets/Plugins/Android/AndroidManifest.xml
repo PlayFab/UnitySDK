@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.playfab.sdksamples"
-	android:installLocation="preferExternal"
-	android:theme="@android:style/Theme.NoTitleBar"
+    package="com.playfab.unityplugin"
+    android:installLocation="preferExternal"
+    android:theme="@android:style/Theme.NoTitleBar"
     android:versionCode="1"
     android:versionName="1.0">
-	
-	<uses-sdk android:minSdkVersion="10" android:targetSdkVersion="14"/>
-	
+
     <supports-screens
         android:smallScreens="true"
         android:normalScreens="true"
@@ -16,90 +14,87 @@
         android:xlargeScreens="true"
         android:anyDensity="true"/>
 
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="14"/>
+
     <!-- Android GCM Plugin -->
-    <!-- Change the following two lines to your package name (example: [packagename].permission.C2D_MESSAGE ) -->
-    <permission android:name="com.playfab.sdksamples.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="com.playfab.sdksamples.permission.C2D_MESSAGE" />
+    <permission android:name="com.playfab.unityplugin.permission.C2D_MESSAGE" android:protectionLevel="signature" /> <!-- //Change to your package name .permission.C2D_MESSAGE -->
+    <uses-permission android:name="com.playfab.unityplugin.permission.C2D_MESSAGE" /> <!-- //Change to your package name .permission.C2D_MESSAGE -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.INTERNET" /> 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <!-- Android GCM Plugin -->
 
     <application
-		android:icon="@drawable/app_icon"
-        android:banner="@drawable/app_icon"
+        android:allowBackup="true"
         android:label="@string/app_name"
-        android:debuggable="true"
         android:isGame="true">
 
+        <!-- Unity Activities -->
         <activity android:name="com.unity3d.player.UnityPlayerProxyActivity"
-                  android:launchMode="singleTask"
-                  android:label="@string/app_name"
-                  android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
+            android:launchMode="singleTask"
+            android:label="@string/app_name"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.unity3d.player.UnityPlayerActivity"
-                  android:launchMode="singleTask"
-                  android:label="@string/app_name"
-                  android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
+            android:launchMode="singleTask"
+            android:label="@string/app_name"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
         </activity>
         <activity android:name="com.unity3d.player.UnityPlayerNativeActivity"
-                  android:launchMode="singleTask"
-                  android:label="@string/app_name"
-                  android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
+            android:launchMode="singleTask"
+            android:label="@string/app_name"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen">
             <meta-data android:name="android.app.lib_name" android:value="unity" />
             <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
         </activity>
+        <!-- End Unity Activities -->
 
+        <!-- Begin GCM -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- for Gingerbread GSF backward compat -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.playfab.unityplugin" />  <!-- //Change to your package name -->
+            </intent-filter>
+        </receiver>
 
-      <!-- Begin GCM -->
-      <receiver
-          android:name="com.google.android.gms.gcm.GcmReceiver"
-          android:permission="com.google.android.c2dm.permission.SEND" 
-          android:exported="true">
-        <intent-filter>
-          <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-          <!-- for Gingerbread GSF backward compat -->
-          <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-          <!-- Change to your package name -->
-          <category android:name="com.playfab.unicornbattle" />
-        </intent-filter>
-      </receiver>
+        <service android:name=".GCM.PlayFabGcmListenerService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            </intent-filter>
+        </service>
 
-      <service android:name="com.playfab.unityplugin.GCM.PlayFabGcmListenerService" android:exported="false">
-        <intent-filter>
-          <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-        </intent-filter>
-      </service>
+        <service
+            android:name=".GCM.PlayFabInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".GCM.PlayFabRegistrationIntentService"
+            android:exported="false">
+        </service>
+        <service
+            android:name="com.playfab.unityplugin.PlayFabUnityAndroidPlugin"
+            android:exported="false"
+            android:stopWithTask="true">
+        </service>
+        <!-- End GCM -->
 
-      <service
-          android:name="com.playfab.unityplugin.GCM.PlayFabInstanceIDListenerService"
-          android:exported="false">
-        <intent-filter>
-          <action android:name="com.google.android.gms.iid.InstanceID"/>
-        </intent-filter>
-      </service>
+        <!-- Begin IAP -->
 
-      <service
-          android:name="com.playfab.unityplugin.GCM.PlayFabRegistrationIntentService"
-          android:exported="false">
-      </service>
-      
-      <service
-          android:name="com.playfab.unityplugin.PlayFabUnityAndroidPlugin"
-          android:exported="false">
-      </service> 
-      
-      <!-- End GCM -->
-      <meta-data
-          android:name="com.google.android.gms.version"
-          android:value="@integer/google_play_services_version" />
-        <!-- Android GCM Plugin -->
-
+        <!-- End IAP -->
     </application>
+
 </manifest>
