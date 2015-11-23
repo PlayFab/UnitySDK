@@ -2443,26 +2443,6 @@ namespace PlayFab.ClientModels
 	
 	
 	
-	public class LinkXboxAccountRequest
-	{   
-		
-		/// <summary>
-		/// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
-		/// </summary>
-		public string XboxToken { get; set;}
-	}
-	
-	
-	
-	public class LinkXboxAccountResult
-	{   
-		public object Request { get; set; }
-		public object CustomData { get; set;  }
-		
-	}
-	
-	
-	
 	public class ListUsersCharactersRequest
 	{   
 		
@@ -2785,27 +2765,6 @@ namespace PlayFab.ClientModels
 		
 		/// <summary>
 		/// Automatically create a PlayFab account if one is not currently linked to this Steam account.
-		/// </summary>
-		public bool? CreateAccount { get; set;}
-	}
-	
-	
-	
-	public class LoginWithXboxRequest
-	{   
-		
-		/// <summary>
-		/// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
-		/// </summary>
-		public string TitleId { get; set;}
-		
-		/// <summary>
-		/// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
-		/// </summary>
-		public string XboxToken { get; set;}
-		
-		/// <summary>
-		/// Automatically create a PlayFab account if one is not currently linked to this Xbox Live account.
 		/// </summary>
 		public bool? CreateAccount { get; set;}
 	}
@@ -4018,26 +3977,6 @@ namespace PlayFab.ClientModels
 	
 	
 	public class UnlinkSteamAccountResult
-	{   
-		public object Request { get; set; }
-		public object CustomData { get; set;  }
-		
-	}
-	
-	
-	
-	public class UnlinkXboxAccountRequest
-	{   
-		
-		/// <summary>
-		/// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
-		/// </summary>
-		public string XboxToken { get; set;}
-	}
-	
-	
-	
-	public class UnlinkXboxAccountResult
 	{   
 		public object Request { get; set; }
 		public object CustomData { get; set;  }
