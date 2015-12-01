@@ -26,7 +26,6 @@ namespace PlayFab.Internal
 
         public void Awake()
         {
-
 #if !UNITY_WP8
             //These are performance Optimizations for HttpWebRequests.
             ServicePointManager.DefaultConnectionLimit = 10;
@@ -36,7 +35,6 @@ namespace PlayFab.Internal
             var rcvc = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications);
             ServicePointManager.ServerCertificateValidationCallback = rcvc;
 #endif
-
         }
 
         #region Public API to call PlayFab API Calls.
@@ -46,7 +44,7 @@ namespace PlayFab.Internal
         public static void Post(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback)
         {
 #if PLAYFAB_IOS_PLUGIN
-			PlayFabiOSPlugin.Post(url, data, authType, authKey, PlayFabVersion.getVersionString(), callback);
+            PlayFabiOSPlugin.Post(url, data, authType, authKey, PlayFabVersion.getVersionString(), callback);
 #else
             PlayFabHTTP.instance.InstPost(url, data, authType, authKey, callback);
 #endif
@@ -64,7 +62,7 @@ namespace PlayFab.Internal
             else
             {
 #if PLAYFAB_IOS_PLUGIN
-			    PlayFabiOSPlugin.Post(url, data, authType, authKey, PlayFabVersion.getVersionString(), callback);
+                PlayFabiOSPlugin.Post(url, data, authType, authKey, PlayFabVersion.getVersionString(), callback);
 #else
                 PlayFabHTTP.instance.InstPost(url, data, authType, authKey, callback);
 #endif
@@ -230,8 +228,8 @@ namespace PlayFab.Internal
             byte[] bData = System.Text.Encoding.UTF8.GetBytes(data);
 
 #if UNITY_4_4 || UNITY_4_3 || UNITY_4_2 || UNITY_4_2 || UNITY_4_0 || UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
-			// Using hashtable for compatibility with Unity < 4.5
-			Hashtable headers = new Hashtable ();
+            // Using hashtable for compatibility with Unity < 4.5
+            Hashtable headers = new Hashtable ();
 #else
             Dictionary<string, string> headers = new Dictionary<string, string>();
 #endif
