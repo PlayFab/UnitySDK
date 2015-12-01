@@ -255,7 +255,7 @@ namespace PlayFab.UUnit
         /// Test a sequence of calls that modifies saved data,
         ///   and verifies that the next sequential API call contains updated data.
         /// Verify that the data is saved correctly, and that specific types are tested
-        /// Parameter types tested: Dictionary<string, int> 
+        /// Parameter types tested: Dictionary<string, int>
         /// </summary>
         [UUnitTest]
         public void UserStatisticsApi()
