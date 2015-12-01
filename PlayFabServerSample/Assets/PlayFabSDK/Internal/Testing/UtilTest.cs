@@ -129,7 +129,7 @@ namespace PlayFab.Internal
         /// Test that enum lists json-serialize and de-serialize correctly
         /// </summary>
         [UUnitTest]
-        void EnumConversionTest()
+        void EnumConversionTest_Serialize()
         {
             string expectedJson, actualJson;
             EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj = new EnumConversionTestClass();
@@ -143,6 +143,22 @@ namespace PlayFab.Internal
             actualJson = JsonConvert.SerializeObject(actualObj, Util.JsonFormatting, Util.JsonSettings);
 
             UUnitAssert.Equals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
+            UUnitAssert.ObjEquals(expectedObj, actualObj);
+        }
+
+        /// <summary>
+        /// Test that enum lists json-serialize and de-serialize correctly
+        /// </summary>
+        [UUnitTest]
+        void EnumConversionTest_Deserialize()
+        {
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj = new EnumConversionTestClass();
+            expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumValue = testRegion.Australia;
+
+            string inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
+            JsonConvert.PopulateObject(inputJson, actualObj, Util.JsonSettings);
             UUnitAssert.ObjEquals(expectedObj, actualObj);
         }
     }
