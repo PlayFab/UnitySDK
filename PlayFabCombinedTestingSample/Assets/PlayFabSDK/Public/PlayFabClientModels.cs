@@ -198,6 +198,33 @@ namespace PlayFab.ClientModels
     
     
     
+    public class AttributeInstallRequest
+    {   
+        
+        /// <summary>
+        /// The IdentifierForAdvertisers for iOS Devices.
+        /// </summary>
+        public string Idfa { get; set;}
+        
+        /// <summary>
+        /// The Android Id for this Android device.
+        /// </summary>
+        public string Android_Id { get; set;}
+    }
+
+    
+    
+    
+    public class AttributeInstallResult
+    {   
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
+        
+    }
+
+    
+    
+    
     public class CancelTradeRequest
     {   
         

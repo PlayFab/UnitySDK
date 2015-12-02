@@ -112,6 +112,7 @@ namespace PlayFab
         public delegate void GetPlayerTradesCallback(GetPlayerTradesResponse result);
         public delegate void GetTradeStatusCallback(GetTradeStatusResponse result);
         public delegate void OpenTradeCallback(OpenTradeResponse result);
+        public delegate void AttributeInstallCallback(AttributeInstallResult result);
 
 
         /// <summary>
@@ -3194,6 +3195,36 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/OpenTrade", serializedJSON, "X-Authorization", AuthKey, callback);
+        }
+
+        /// <summary>
+        /// Attributes an install for advertisment.
+        /// </summary>
+        public static void AttributeInstall(AttributeInstallRequest request, AttributeInstallCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (AuthKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                AttributeInstallResult result = null;
+                ResultContainer<AttributeInstallResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AttributeInstall", serializedJSON, "X-Authorization", AuthKey, callback);
         }
 
         private static string AuthKey = null;
