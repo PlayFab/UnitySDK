@@ -19,17 +19,16 @@ namespace PlayFab
 
     public class PlayFabSettings
     {
+        public static ErrorCallback GlobalErrorHandler { get; set; }
+
         public static string ProductionEnvironmentURL = ".playfabapi.com";
-        public static string LogicServerURL = null;
-        public static string TitleId = null;
+        public static string TitleId = null; // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
         public static PlayFabLogLevel LogLevel = PlayFabLogLevel.Warning | PlayFabLogLevel.Error;
         public static bool IsTesting = false;
         public static WebRequestType RequestType = WebRequestType.UnityWWW;
         public static int RequestTimeout = 2000;
         public static bool RequestKeepAlive = true;
-        public static string DeveloperSecretKey = null;
-
-        public static ErrorCallback GlobalErrorHandler { get; set; }
+        public static string DeveloperSecretKey = null; // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
 
         public static string GetURL()
         {
@@ -44,11 +43,6 @@ namespace PlayFab
             {
                 return "http://localhost:11289/";
             }
-        }
-
-        public static string GetLogicURL()
-        {
-            return LogicServerURL;
         }
     }
 }
