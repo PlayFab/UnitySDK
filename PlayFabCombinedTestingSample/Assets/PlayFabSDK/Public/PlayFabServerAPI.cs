@@ -14,6 +14,7 @@ namespace PlayFab
         public delegate void GetPlayFabIDsFromFacebookIDsCallback(GetPlayFabIDsFromFacebookIDsResult result);
         public delegate void GetUserAccountInfoCallback(GetUserAccountInfoResult result);
         public delegate void SendPushNotificationCallback(SendPushNotificationResult result);
+        public delegate void DeleteUsersCallback(DeleteUsersResult result);
         public delegate void GetLeaderboardCallback(GetLeaderboardResult result);
         public delegate void GetLeaderboardAroundUserCallback(GetLeaderboardAroundUserResult result);
         public delegate void GetUserDataCallback(GetUserDataResult result);
@@ -199,6 +200,36 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/SendPushNotification", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+        }
+
+        /// <summary>
+        /// Deletes the users for the provided game. Deletes custom data, all account linkages, and statistics.
+        /// </summary>
+        public static void DeleteUsers(DeleteUsersRequest request, DeleteUsersCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                DeleteUsersResult result = null;
+                ResultContainer<DeleteUsersResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/DeleteUsers", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
