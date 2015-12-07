@@ -3870,6 +3870,9 @@ namespace PlayFab.ClientModels
     public class UserSettings
     {
 
+        /// <summary>
+        /// Boolean for whether this player is eligible for ad tracking.
+        /// </summary>
         public bool NeedsAttribution { get; set;}
     }
 
