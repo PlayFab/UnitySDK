@@ -8,7 +8,7 @@ namespace PlayFab
     /// <summary>
     /// Enables the use of an external match-making service in conjunction with PlayFab hosted Game Server instances
     /// </summary>
-    public class PlayFabMatchmakerAPI
+    public static class PlayFabMatchmakerAPI
     {
         public delegate void AuthUserCallback(AuthUserResponse result);
         public delegate void PlayerJoinedCallback(PlayerJoinedResponse result);
@@ -24,10 +24,10 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
             {
-                AuthUserResponse result = null;
+                AuthUserResponse result;
                 ResultContainer<AuthUserResponse>.HandleResults(responseStr, ref pfError, out result);
                 if(pfError != null && errorCallback != null)
                 {
@@ -44,7 +44,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/AuthUser", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/AuthUser", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -54,10 +54,10 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
             {
-                PlayerJoinedResponse result = null;
+                PlayerJoinedResponse result;
                 ResultContainer<PlayerJoinedResponse>.HandleResults(responseStr, ref pfError, out result);
                 if(pfError != null && errorCallback != null)
                 {
@@ -74,7 +74,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/PlayerJoined", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/PlayerJoined", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -84,10 +84,10 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
             {
-                PlayerLeftResponse result = null;
+                PlayerLeftResponse result;
                 ResultContainer<PlayerLeftResponse>.HandleResults(responseStr, ref pfError, out result);
                 if(pfError != null && errorCallback != null)
                 {
@@ -104,7 +104,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/PlayerLeft", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/PlayerLeft", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -114,10 +114,10 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
             {
-                StartGameResponse result = null;
+                StartGameResponse result;
                 ResultContainer<StartGameResponse>.HandleResults(responseStr, ref pfError, out result);
                 if(pfError != null && errorCallback != null)
                 {
@@ -134,7 +134,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/StartGame", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/StartGame", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -144,10 +144,10 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            string serializedJSON = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
             {
-                UserInfoResponse result = null;
+                UserInfoResponse result;
                 ResultContainer<UserInfoResponse>.HandleResults(responseStr, ref pfError, out result);
                 if(pfError != null && errorCallback != null)
                 {
@@ -164,10 +164,9 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/UserInfo", serializedJSON, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/UserInfo", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
 
     }
 }
-

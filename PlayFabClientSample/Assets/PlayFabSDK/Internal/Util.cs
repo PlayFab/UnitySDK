@@ -28,6 +28,5 @@ namespace PlayFab.Internal
         };
 
         public static Formatting JsonFormatting = Formatting.None;
-
     }
 }
