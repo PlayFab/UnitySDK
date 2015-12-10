@@ -115,8 +115,10 @@ namespace PlayFab.UUnit
         {
             lastReceivedMessage = null;
             while (PlayFabHTTP.instance.GetPendingMessages() != 0)
+            {
                 Thread.Sleep(1); // Wait for the threaded call to be executed
-            PlayFabHTTP.instance.Update(); // Invoke the callbacks for any threaded messages
+                PlayFabHTTP.instance.Update(); // Invoke the callbacks for any threaded messages
+            }
             UUnitAssert.NotNull(lastReceivedMessage);
         }
 
@@ -189,6 +191,26 @@ namespace PlayFab.UUnit
         {
             playFabId = result.PlayFabId;
             lastReceivedMessage = "User Registration Successful";
+        }
+
+        /// <summary>
+        /// CLIENT API
+        /// Test that the login call sequence sends the AdvertisingId when set
+        /// </summary>
+        [UUnitTest]
+        public void LoginWithAdvertisingId()
+        {
+            PlayFabSettings.AdvertisingIdType = PlayFabSettings.AD_TYPE_ANDROID_ID;
+            PlayFabSettings.AdvertisingIdValue = "PlayFabTestId";
+
+            var loginRequest = new ClientModels.LoginWithEmailAddressRequest();
+            loginRequest.Email = USER_EMAIL;
+            loginRequest.Password = USER_PASSWORD;
+            loginRequest.TitleId = PlayFabSettings.TitleId;
+            PlayFabClientAPI.LoginWithEmailAddress(loginRequest, LoginCallback, SharedErrorCallback);
+            WaitForApiCalls();
+
+            UUnitAssert.Equals(PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful", PlayFabSettings.AdvertisingIdType);
         }
 
         /// <summary>
