@@ -194,7 +194,9 @@ namespace PlayFab
         NotAuthorizedByTitle = 1191,
         NoPartnerEnabled = 1192,
         InvalidPartnerResponse = 1193,
-        APINotEnabledForGameServerAccess = 1194
+        APINotEnabledForGameServerAccess = 1194,
+        StatisticNotFound = 1195,
+        StatisticNameConflict = 1196
     }
 
     public class PlayFabError

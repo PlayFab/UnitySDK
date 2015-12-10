@@ -1080,6 +1080,36 @@ namespace PlayFab.ServerModels
         public object CustomData { get; set;  }
     }
 
+    public class GetPlayerStatisticsRequest
+    {
+
+        /// <summary>
+        /// user for whom statistics are being requested
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// statistics to return
+        /// </summary>
+        public List<string> StatisticNames { get; set;}
+    }
+
+    public class GetPlayerStatisticsResult
+    {
+
+        /// <summary>
+        /// PlayFab unique identifier of the user whose statistics are being returned
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// User statistics for the requested user.
+        /// </summary>
+        public List<StatisticValue> Statistics { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
+    }
+
     public class GetPlayFabIDsFromFacebookIDsRequest
     {
 
@@ -2141,6 +2171,44 @@ namespace PlayFab.ServerModels
         public UserDataPermission? Permission { get; set;}
     }
 
+    public class StatisticUpdate
+    {
+
+        /// <summary>
+        /// unique name of the statistic
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// for updates to an existing statistic value for a player, the version of the statistic when it was loaded. Null when setting the statistic value for the first time.
+        /// </summary>
+        public string Version { get; set;}
+
+        /// <summary>
+        /// statistic value for the player
+        /// </summary>
+        public int Value { get; set;}
+    }
+
+    public class StatisticValue
+    {
+
+        /// <summary>
+        /// unique name of the statistic
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// statistic value for the player
+        /// </summary>
+        public int Value { get; set;}
+
+        /// <summary>
+        /// for updates to an existing statistic value for a player, the version of the statistic when it was loaded
+        /// </summary>
+        public string Version { get; set;}
+    }
+
     public class SubtractCharacterVirtualCurrencyRequest
     {
 
@@ -2277,6 +2345,26 @@ namespace PlayFab.ServerModels
     }
 
     public class UpdateCharacterStatisticsResult
+    {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
+    }
+
+    public class UpdatePlayerStatisticsRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Statistics to be updated with the provided values
+        /// </summary>
+        public List<StatisticUpdate> Statistics { get; set;}
+    }
+
+    public class UpdatePlayerStatisticsResult
     {
         public object Request { get; set; }
         public object CustomData { get; set;  }

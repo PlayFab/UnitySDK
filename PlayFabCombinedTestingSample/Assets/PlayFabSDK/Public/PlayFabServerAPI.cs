@@ -8,7 +8,7 @@ namespace PlayFab
     /// <summary>
     /// Provides functionality to allow external (developer-controlled) servers to interact with user inventories and data in a trusted manner, and to handle matchmaking and client connection orchestration
     /// </summary>
-    public class PlayFabServerAPI
+    public static class PlayFabServerAPI
     {
         public delegate void AuthenticateSessionTicketCallback(AuthenticateSessionTicketResult result);
         public delegate void GetPlayFabIDsFromFacebookIDsCallback(GetPlayFabIDsFromFacebookIDsResult result);

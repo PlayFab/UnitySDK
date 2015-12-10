@@ -8,7 +8,7 @@ namespace PlayFab
     /// <summary>
     /// Enables the use of an external match-making service in conjunction with PlayFab hosted Game Server instances
     /// </summary>
-    public class PlayFabMatchmakerAPI
+    public static class PlayFabMatchmakerAPI
     {
         public delegate void AuthUserCallback(AuthUserResponse result);
         public delegate void PlayerJoinedCallback(PlayerJoinedResponse result);

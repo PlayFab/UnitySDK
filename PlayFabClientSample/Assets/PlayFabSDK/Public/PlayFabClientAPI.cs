@@ -8,7 +8,7 @@ namespace PlayFab
     /// <summary>
     /// APIs which provide the full range of PlayFab features available to the client - authentication, account and data management, inventory, friends, matchmaking, reporting, and platform-specific functionality
     /// </summary>
-    public class PlayFabClientAPI
+    public static class PlayFabClientAPI
     {
         public delegate void GetPhotonAuthenticationTokenCallback(GetPhotonAuthenticationTokenResult result);
         public delegate void LoginWithAndroidDeviceIDCallback(LoginResult result);
@@ -20,13 +20,16 @@ namespace PlayFab
         public delegate void LoginWithIOSDeviceIDCallback(LoginResult result);
         public delegate void LoginWithKongregateCallback(LoginResult result);
         public delegate void LoginWithPlayFabCallback(LoginResult result);
+        public delegate void LoginWithPSNCallback(LoginResult result);
         public delegate void LoginWithSteamCallback(LoginResult result);
+        public delegate void LoginWithXboxCallback(LoginResult result);
         public delegate void RegisterPlayFabUserCallback(RegisterPlayFabUserResult result);
         public delegate void AddUsernamePasswordCallback(AddUsernamePasswordResult result);
         public delegate void GetAccountInfoCallback(GetAccountInfoResult result);
         public delegate void GetPlayFabIDsFromFacebookIDsCallback(GetPlayFabIDsFromFacebookIDsResult result);
         public delegate void GetPlayFabIDsFromGameCenterIDsCallback(GetPlayFabIDsFromGameCenterIDsResult result);
         public delegate void GetPlayFabIDsFromGoogleIDsCallback(GetPlayFabIDsFromGoogleIDsResult result);
+        public delegate void GetPlayFabIDsFromPSNAccountIDsCallback(GetPlayFabIDsFromPSNAccountIDsResult result);
         public delegate void GetPlayFabIDsFromSteamIDsCallback(GetPlayFabIDsFromSteamIDsResult result);
         public delegate void GetUserCombinedInfoCallback(GetUserCombinedInfoResult result);
         public delegate void LinkAndroidDeviceIDCallback(LinkAndroidDeviceIDResult result);
@@ -36,7 +39,9 @@ namespace PlayFab
         public delegate void LinkGoogleAccountCallback(LinkGoogleAccountResult result);
         public delegate void LinkIOSDeviceIDCallback(LinkIOSDeviceIDResult result);
         public delegate void LinkKongregateCallback(LinkKongregateAccountResult result);
+        public delegate void LinkPSNAccountCallback(LinkPSNAccountResult result);
         public delegate void LinkSteamAccountCallback(LinkSteamAccountResult result);
+        public delegate void LinkXboxAccountCallback(LinkXboxAccountResult result);
         public delegate void SendAccountRecoveryEmailCallback(SendAccountRecoveryEmailResult result);
         public delegate void UnlinkAndroidDeviceIDCallback(UnlinkAndroidDeviceIDResult result);
         public delegate void UnlinkCustomIDCallback(UnlinkCustomIDResult result);
@@ -45,7 +50,9 @@ namespace PlayFab
         public delegate void UnlinkGoogleAccountCallback(UnlinkGoogleAccountResult result);
         public delegate void UnlinkIOSDeviceIDCallback(UnlinkIOSDeviceIDResult result);
         public delegate void UnlinkKongregateCallback(UnlinkKongregateAccountResult result);
+        public delegate void UnlinkPSNAccountCallback(UnlinkPSNAccountResult result);
         public delegate void UnlinkSteamAccountCallback(UnlinkSteamAccountResult result);
+        public delegate void UnlinkXboxAccountCallback(UnlinkXboxAccountResult result);
         public delegate void UpdateUserTitleDisplayNameCallback(UpdateUserTitleDisplayNameResult result);
         public delegate void GetFriendLeaderboardCallback(GetLeaderboardResult result);
         public delegate void GetFriendLeaderboardAroundCurrentUserCallback(GetFriendLeaderboardAroundCurrentUserResult result);
@@ -96,6 +103,8 @@ namespace PlayFab
         public delegate void GetSharedGroupDataCallback(GetSharedGroupDataResult result);
         public delegate void RemoveSharedGroupMembersCallback(RemoveSharedGroupMembersResult result);
         public delegate void UpdateSharedGroupDataCallback(UpdateSharedGroupDataResult result);
+        public delegate void ConsumePSNEntitlementsCallback(ConsumePSNEntitlementsResult result);
+        public delegate void RefreshPSNAuthTokenCallback(EmptyResult result);
         public delegate void GetCloudScriptUrlCallback(GetCloudScriptUrlResult result);
         public delegate void RunCloudScriptCallback(RunCloudScriptResult result);
         public delegate void GetContentDownloadUrlCallback(GetContentDownloadUrlResult result);
@@ -107,6 +116,7 @@ namespace PlayFab
         public delegate void GetCharacterDataCallback(GetCharacterDataResult result);
         public delegate void GetCharacterReadOnlyDataCallback(GetCharacterDataResult result);
         public delegate void UpdateCharacterDataCallback(UpdateCharacterDataResult result);
+        public delegate void ValidateAmazonIAPReceiptCallback(ValidateAmazonReceiptResult result);
         public delegate void AcceptTradeCallback(AcceptTradeResponse result);
         public delegate void CancelTradeCallback(CancelTradeResponse result);
         public delegate void GetPlayerTradesCallback(GetPlayerTradesResponse result);
@@ -443,6 +453,39 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using a PlayStation Network authentication code, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// </summary>
+        public static void LoginWithPSN(LoginWithPSNRequest request, LoginWithPSNCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                LoginResult result;
+                ResultContainer<LoginResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    _authKey = result.SessionTicket ?? _authKey;
+                    MultiStepClientLogin(result.SettingsForUser.NeedsAttribution);
+
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithPSN", serializedJson, null, null, callback);
+        }
+
+        /// <summary>
         /// Signs the user in using a Steam authentication ticket, returning a session identifier that can subsequently be used for API calls which require an authenticated user
         /// </summary>
         public static void LoginWithSteam(LoginWithSteamRequest request, LoginWithSteamCallback resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -473,6 +516,39 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithSteam", serializedJson, null, null, callback);
+        }
+
+        /// <summary>
+        /// Signs the user in using a Xbox Live Token, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// </summary>
+        public static void LoginWithXbox(LoginWithXboxRequest request, LoginWithXboxCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+            if (request.TitleId == null) throw new Exception ("Must be have PlayFabSettings.TitleId set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                LoginResult result;
+                ResultContainer<LoginResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    _authKey = result.SessionTicket ?? _authKey;
+                    MultiStepClientLogin(result.SettingsForUser.NeedsAttribution);
+
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithXbox", serializedJson, null, null, callback);
         }
 
         /// <summary>
@@ -656,6 +732,36 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromGoogleIDs", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of PlayStation Network identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromPSNAccountIDs(GetPlayFabIDsFromPSNAccountIDsRequest request, GetPlayFabIDsFromPSNAccountIDsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                GetPlayFabIDsFromPSNAccountIDsResult result;
+                ResultContainer<GetPlayFabIDsFromPSNAccountIDsResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromPSNAccountIDs", serializedJson, "X-Authorization", _authKey, callback);
         }
 
         /// <summary>
@@ -929,6 +1035,36 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Links the PlayStation Network account associated with the provided access code to the user's PlayFab account
+        /// </summary>
+        public static void LinkPSNAccount(LinkPSNAccountRequest request, LinkPSNAccountCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                LinkPSNAccountResult result;
+                ResultContainer<LinkPSNAccountResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkPSNAccount", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
         /// Links the Steam account associated with the provided Steam authentication ticket to the user's PlayFab account
         /// </summary>
         public static void LinkSteamAccount(LinkSteamAccountRequest request, LinkSteamAccountCallback resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -956,6 +1092,36 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
+        /// Links the Xbox Live account associated with the provided access code to the user's PlayFab account
+        /// </summary>
+        public static void LinkXboxAccount(LinkXboxAccountRequest request, LinkXboxAccountCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                LinkXboxAccountResult result;
+                ResultContainer<LinkXboxAccountResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkXboxAccount", serializedJson, "X-Authorization", _authKey, callback);
         }
 
         /// <summary>
@@ -1198,6 +1364,36 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Unlinks the related PSN account from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkPSNAccount(UnlinkPSNAccountRequest request, UnlinkPSNAccountCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                UnlinkPSNAccountResult result;
+                ResultContainer<UnlinkPSNAccountResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkPSNAccount", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
         /// Unlinks the related Steam account from the user's PlayFab account
         /// </summary>
         public static void UnlinkSteamAccount(UnlinkSteamAccountRequest request, UnlinkSteamAccountCallback resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -1225,6 +1421,36 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
+        /// Unlinks the related Xbox Live account from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkXboxAccount(UnlinkXboxAccountRequest request, UnlinkXboxAccountCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                UnlinkXboxAccountResult result;
+                ResultContainer<UnlinkXboxAccountResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkXboxAccount", serializedJson, "X-Authorization", _authKey, callback);
         }
 
         /// <summary>
@@ -2728,6 +2954,66 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Checks for any new consumable entitlements. If any are found, they are consumed and added as PlayFab items
+        /// </summary>
+        public static void ConsumePSNEntitlements(ConsumePSNEntitlementsRequest request, ConsumePSNEntitlementsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                ConsumePSNEntitlementsResult result;
+                ResultContainer<ConsumePSNEntitlementsResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ConsumePSNEntitlements", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
+        /// Uses the supplied OAuth code to refresh the internally cached player PSN auth token
+        /// </summary>
+        public static void RefreshPSNAuthToken(RefreshPSNAuthTokenRequest request, RefreshPSNAuthTokenCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                EmptyResult result;
+                ResultContainer<EmptyResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RefreshPSNAuthToken", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
         /// Retrieves the title-specific URL for Cloud Script servers. This must be queried once, prior  to making any calls to RunCloudScript.
         /// </summary>
         public static void GetCloudScriptUrl(GetCloudScriptUrlRequest request, GetCloudScriptUrlCallback resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -3059,6 +3345,36 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Validates with Amazon that the receipt for an Amazon App Store in-app purchase is valid and that it matches the purchased catalog item
+        /// </summary>
+        public static void ValidateAmazonIAPReceipt(ValidateAmazonReceiptRequest request, ValidateAmazonIAPReceiptCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                ValidateAmazonReceiptResult result;
+                ResultContainer<ValidateAmazonReceiptResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ValidateAmazonIAPReceipt", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        /// <summary>
         /// Accepts an open trade. If the call is successful, the offered and accepted items will be swapped between the two players' inventories.
         /// </summary>
         public static void AcceptTrade(AcceptTradeRequest request, AcceptTradeCallback resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -3226,7 +3542,8 @@ namespace PlayFab
                 }
                 if(result != null)
                 {
-                    
+                    PlayFabSettings.AdvertisingIdType += "_Successful";
+
                     result.CustomData = customData;
                     result.Request = request;
                     if(resultCallback != null)
@@ -3245,7 +3562,7 @@ namespace PlayFab
             return !string.IsNullOrEmpty(_authKey);
         }
 
-        public static void MultiStepClientLogin(bool needsAttribution)
+        private static void MultiStepClientLogin(bool needsAttribution)
         {
             if (needsAttribution && !PlayFab.PlayFabSettings.DisableAdvertising && !string.IsNullOrEmpty(PlayFab.PlayFabSettings.AdvertisingIdType) && !string.IsNullOrEmpty(PlayFab.PlayFabSettings.AdvertisingIdValue))
             {

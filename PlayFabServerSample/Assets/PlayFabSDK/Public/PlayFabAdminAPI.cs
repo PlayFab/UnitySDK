@@ -8,7 +8,7 @@ namespace PlayFab
     /// <summary>
     /// APIs for managing title configurations, uploaded Game Server code executables, and user data
     /// </summary>
-    public class PlayFabAdminAPI
+    public static class PlayFabAdminAPI
     {
         public delegate void GetUserAccountInfoCallback(LookupUserAccountInfoResult result);
         public delegate void ResetUsersCallback(BlankResult result);
