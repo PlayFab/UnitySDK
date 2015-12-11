@@ -2,6 +2,7 @@ using System;
 using PlayFab.Json;
 using PlayFab.ClientModels;
 using PlayFab.Internal;
+using UnityEngine;
 
 namespace PlayFab
 {
@@ -3564,6 +3565,11 @@ namespace PlayFab
 
         private static void MultiStepClientLogin(bool needsAttribution)
         {
+            // Automatically try to fetch the ID
+            if (needsAttribution && !PlayFab.PlayFabSettings.DisableAdvertising && string.IsNullOrEmpty(PlayFab.PlayFabSettings.AdvertisingIdType) && string.IsNullOrEmpty(PlayFab.PlayFabSettings.AdvertisingIdValue))
+                GetAdvertisingId(out PlayFab.PlayFabSettings.AdvertisingIdType, out PlayFab.PlayFabSettings.AdvertisingIdValue, ref PlayFab.PlayFabSettings.DisableAdvertising);
+
+            // Send the ID when appropriate
             if (needsAttribution && !PlayFab.PlayFabSettings.DisableAdvertising && !string.IsNullOrEmpty(PlayFab.PlayFabSettings.AdvertisingIdType) && !string.IsNullOrEmpty(PlayFab.PlayFabSettings.AdvertisingIdValue))
             {
                 AttributeInstallRequest request = new AttributeInstallRequest();
@@ -3574,6 +3580,43 @@ namespace PlayFab
                 else
                     return;
                 AttributeInstall(request, null, null);
+            }
+        }
+
+        public static void GetAdvertisingId(out string advertisingIdType, out string advertisingIdValue, ref bool disableAdvertising)
+        {
+            advertisingIdType = "undefined";
+            advertisingIdValue = "";
+
+            try
+            {
+#if UNITY_ANDROID && !UNITY_EDITOR
+                AndroidJavaClass advertIdGetter = new AndroidJavaClass("com.playfab.unityplugin.PlayFabGetAdvertId");
+
+                AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"); 
+                AndroidJavaObject context = jc.GetStatic<AndroidJavaObject>("currentActivity");
+
+                AndroidJavaObject adInfo = null;
+                adInfo = advertIdGetter.CallStatic<AndroidJavaObject>("getAdvertisingIdInfo", context);
+
+                if (adInfo != null)
+                {
+                    advertisingIdType = PlayFab.PlayFabSettings.AD_TYPE_ANDROID_ID;
+                    advertisingIdValue = adInfo.Get<string>("advertisingId");
+                    disableAdvertising = adInfo.Get<bool>("limitAdTrackingEnabled");
+                }
+#elif UNITY_IOS && !UNITY_EDITOR
+                    advertisingIdType = PlayFab.PlayFabSettings.AD_TYPE_IDFA;
+                    advertisingIdValue = PlayFabiOSPlugin.getIdfa();
+                    disableAdvertising = PlayFabiOSPlugin.getAdvertisingDisabled();
+#endif
+            }
+            catch (Exception e)
+            {
+                advertisingIdType = "error";
+                advertisingIdValue = "";
+                disableAdvertising = true;
+                Debug.LogException(e);
             }
         }
     }

@@ -2,6 +2,7 @@ using System;
 using PlayFab.Json;
 using PlayFab.AdminModels;
 using PlayFab.Internal;
+using UnityEngine;
 
 namespace PlayFab
 {
