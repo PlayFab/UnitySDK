@@ -4,11 +4,15 @@ using System.Runtime.InteropServices;
 
 namespace PlayFab
 {
-    public class PlayFabiOSPlugin
+    public static class PlayFabiOSPlugin
     {
 #if UNITY_IOS
 		[DllImport("__Internal")]
 		private static extern void pf_make_http_request(string url, string method, int numHeaders, string[] headers, string[] headerValues, string body, int requestId);
+		[DllImport("__Internal")]
+		public static extern string getIdfa();
+		[DllImport("__Internal")]
+		public static extern bool getAdvertisingDisabled();
 
 		private static int NextRequestId=1;
 
