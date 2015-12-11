@@ -1,4 +1,5 @@
-﻿
+#import <AdSupport/ASIdentifierManager.h>
+
 static NSString* ToNSString(const char* c_string)
 {
     return c_string == NULL ? nil : [NSString stringWithUTF8String:c_string];
@@ -39,6 +40,20 @@ static const char* MakeDataCopy(NSData *data)
 
 extern "C"
 {
+    const char* getIdfa()
+    {
+        if([[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled])
+        {
+             NSString* idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+             return MakeStringCopy([idfa UTF8String]); // You have to copy the array before you can return it to Unity/C#
+        }
+        return nil;
+    }
+
+    bool getAdvertisingDisabled()
+    {
+        return ![[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
+    }
 
     void pf_make_http_request(const char* url, const char* method, int numHeaders, const char* headers[], const char* headerValues[], const char* postBody, int requestId)
     {
@@ -68,7 +83,7 @@ extern "C"
                 if(connectionError)
                 {
                     const char* errDesc = connectionError.description.UTF8String;
-                    int maxLen = strlen(errDesc) + 32;
+                    unsigned long maxLen = strlen(errDesc) + 32;
                     char* replyBuffer = (char*)malloc(maxLen+1);
                     snprintf(replyBuffer, maxLen, "%i:%s", requestId, errDesc);
                     replyBuffer[maxLen] = '\0';
@@ -76,7 +91,7 @@ extern "C"
                     return;
                 }
                 
-                int maxLen = data.length + 32;
+                unsigned long maxLen = data.length + 32;
                 char* replyBuffer = (char*)malloc(maxLen+1);
                 int written = snprintf(replyBuffer, maxLen, "%i:", requestId);
                 memcpy(replyBuffer+written, data.bytes, data.length);

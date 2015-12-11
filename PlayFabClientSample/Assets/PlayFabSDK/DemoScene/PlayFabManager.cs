@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 
 #elif UNITY_ANDROID
 #define PLAYFAB_ANDROID
@@ -42,9 +42,15 @@ public class PlayFabManager : MonoBehaviour {
 	
 	private void onLoginSuccess(LoginResult result)
 	{
-		this.callStatus = string.Format("PlayFab Authentication Successful! -- Player ID:{0}", result.PlayFabId);
-		Debug.Log(callStatus);
-		
+	    string advertisingIdType, advertisingIdValue;
+	    bool disableAdvertising = false;
+        PlayFabClientAPI.GetAdvertisingId(out advertisingIdType, out advertisingIdValue, ref disableAdvertising);
+	    this.callStatus = string.Format("PlayFab Authentication Successful!\n"
+	        + "Player ID: " + result.PlayFabId) + "\n"
+	        + "advertisingIdType: " + advertisingIdType + "\n"
+	        + "advertisingIdValue: " + advertisingIdValue + "\n"
+	        + "disableAdvertising: " + disableAdvertising;
+        Debug.Log(callStatus);
 	}
 	
 	private void onLoginError(PlayFabError error)
