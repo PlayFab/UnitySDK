@@ -59,11 +59,13 @@ namespace PlayFab
         public delegate void GetFriendLeaderboardAroundCurrentUserCallback(GetFriendLeaderboardAroundCurrentUserResult result);
         public delegate void GetLeaderboardCallback(GetLeaderboardResult result);
         public delegate void GetLeaderboardAroundCurrentUserCallback(GetLeaderboardAroundCurrentUserResult result);
+        public delegate void GetPlayerStatisticsCallback(GetPlayerStatisticsResult result);
         public delegate void GetUserDataCallback(GetUserDataResult result);
         public delegate void GetUserPublisherDataCallback(GetUserDataResult result);
         public delegate void GetUserPublisherReadOnlyDataCallback(GetUserDataResult result);
         public delegate void GetUserReadOnlyDataCallback(GetUserDataResult result);
         public delegate void GetUserStatisticsCallback(GetUserStatisticsResult result);
+        public delegate void UpdatePlayerStatisticsCallback(UpdatePlayerStatisticsResult result);
         public delegate void UpdateUserDataCallback(UpdateUserDataResult result);
         public delegate void UpdateUserPublisherDataCallback(UpdateUserDataResult result);
         public delegate void UpdateUserStatisticsCallback(UpdateUserStatisticsResult result);
@@ -1604,6 +1606,33 @@ namespace PlayFab
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetLeaderboardAroundCurrentUser", serializedJson, "X-Authorization", _authKey, callback);
         }
 
+        public static void GetPlayerStatistics(GetPlayerStatisticsRequest request, GetPlayerStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                GetPlayerStatisticsResult result;
+                ResultContainer<GetPlayerStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayerStatistics", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
         /// <summary>
         /// Retrieves the title-specific custom data for the user which is readable and writable by the client
         /// </summary>
@@ -1752,6 +1781,33 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserStatistics", serializedJson, "X-Authorization", _authKey, callback);
+        }
+
+        public static void UpdatePlayerStatistics(UpdatePlayerStatisticsRequest request, UpdatePlayerStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception ("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                UpdatePlayerStatisticsResult result;
+                ResultContainer<UpdatePlayerStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdatePlayerStatistics", serializedJson, "X-Authorization", _authKey, callback);
         }
 
         /// <summary>

@@ -16,8 +16,10 @@ namespace PlayFab
         public delegate void GetUserAccountInfoCallback(GetUserAccountInfoResult result);
         public delegate void SendPushNotificationCallback(SendPushNotificationResult result);
         public delegate void DeleteUsersCallback(DeleteUsersResult result);
+        public delegate void GetFriendLeaderboardCallback(GetLeaderboardResult result);
         public delegate void GetLeaderboardCallback(GetLeaderboardResult result);
         public delegate void GetLeaderboardAroundUserCallback(GetLeaderboardAroundUserResult result);
+        public delegate void GetPlayerStatisticsCallback(GetPlayerStatisticsResult result);
         public delegate void GetUserDataCallback(GetUserDataResult result);
         public delegate void GetUserInternalDataCallback(GetUserDataResult result);
         public delegate void GetUserPublisherDataCallback(GetUserDataResult result);
@@ -25,6 +27,7 @@ namespace PlayFab
         public delegate void GetUserPublisherReadOnlyDataCallback(GetUserDataResult result);
         public delegate void GetUserReadOnlyDataCallback(GetUserDataResult result);
         public delegate void GetUserStatisticsCallback(GetUserStatisticsResult result);
+        public delegate void UpdatePlayerStatisticsCallback(UpdatePlayerStatisticsResult result);
         public delegate void UpdateUserDataCallback(UpdateUserDataResult result);
         public delegate void UpdateUserInternalDataCallback(UpdateUserDataResult result);
         public delegate void UpdateUserPublisherDataCallback(UpdateUserDataResult result);
@@ -54,6 +57,9 @@ namespace PlayFab
         public delegate void SubtractCharacterVirtualCurrencyCallback(ModifyCharacterVirtualCurrencyResult result);
         public delegate void SubtractUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
         public delegate void UpdateUserInventoryItemCustomDataCallback(UpdateUserInventoryItemDataResult result);
+        public delegate void AddFriendCallback(EmptyResult result);
+        public delegate void GetFriendsListCallback(GetFriendsListResult result);
+        public delegate void RemoveFriendCallback(EmptyResult result);
         public delegate void NotifyMatchmakerPlayerLeftCallback(NotifyMatchmakerPlayerLeftResult result);
         public delegate void RedeemMatchmakerTicketCallback(RedeemMatchmakerTicketResult result);
         public delegate void AwardSteamAchievementCallback(AwardSteamAchievementResult result);
@@ -234,6 +240,36 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves a list of ranked friends of the given player for the given statistic, starting from the indicated point in the leaderboard
+        /// </summary>
+        public static void GetFriendLeaderboard(GetFriendLeaderboardRequest request, GetFriendLeaderboardCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                GetLeaderboardResult result;
+                ResultContainer<GetLeaderboardResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetFriendLeaderboard", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+        }
+
+        /// <summary>
         /// Retrieves a list of ranked users for the given statistic, starting from the indicated point in the leaderboard
         /// </summary>
         public static void GetLeaderboard(GetLeaderboardRequest request, GetLeaderboardCallback resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -291,6 +327,33 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetLeaderboardAroundUser", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+        }
+
+        public static void GetPlayerStatistics(GetPlayerStatisticsRequest request, GetPlayerStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                GetPlayerStatisticsResult result;
+                ResultContainer<GetPlayerStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetPlayerStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -501,6 +564,33 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetUserStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+        }
+
+        public static void UpdatePlayerStatistics(UpdatePlayerStatisticsRequest request, UpdatePlayerStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                UpdatePlayerStatisticsResult result;
+                ResultContainer<UpdatePlayerStatisticsResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/UpdatePlayerStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -1371,6 +1461,96 @@ namespace PlayFab
                 }
             };
             PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/UpdateUserInventoryItemCustomData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+        }
+
+        /// <summary>
+        /// Adds the Friend user to the friendlist of the user with PlayFabId. At least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized.
+        /// </summary>
+        public static void AddFriend(AddFriendRequest request, AddFriendCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                EmptyResult result;
+                ResultContainer<EmptyResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/AddFriend", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+        }
+
+        /// <summary>
+        /// Retrieves the current friends for the user with PlayFabId, constrained to users who have PlayFab accounts. Friends from linked accounts (Facebook, Steam) are also included. You may optionally exclude some linked services' friends.
+        /// </summary>
+        public static void GetFriendsList(GetFriendsListRequest request, GetFriendsListCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                GetFriendsListResult result;
+                ResultContainer<GetFriendsListResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/GetFriendsList", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+        }
+
+        /// <summary>
+        /// Removes the specified friend from the the user's friend list
+        /// </summary>
+        public static void RemoveFriend(RemoveFriendRequest request, RemoveFriendCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception ("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<string,PlayFabError> callback = delegate(string responseStr, PlayFabError pfError)
+            {
+                EmptyResult result;
+                ResultContainer<EmptyResult>.HandleResults(responseStr, ref pfError, out result);
+                if(pfError != null && errorCallback != null)
+                {
+                    errorCallback(pfError);
+                }
+                if(result != null)
+                {
+                    
+                    result.CustomData = customData;
+                    result.Request = request;
+                    if(resultCallback != null)
+                    {
+                        resultCallback(result);
+                    }
+                }
+            };
+            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Server/RemoveFriend", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
