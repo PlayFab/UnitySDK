@@ -20,6 +20,7 @@ namespace PlayFab.Examples.Server
         {
             GetTitleData();
             GetTitleInternalData();
+            GetPublisherData();
         }
         #endregion Controller Event Handling
 
@@ -50,7 +51,7 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action SetTitleData(string titleDataKey, string titleDataValue, bool internalData = false)
+        public static Action SetTitleData(string titleDataKey, string titleDataValue)
         {
             if (string.IsNullOrEmpty(titleDataValue))
                 titleDataValue = null; // Ensure that this field is removed
@@ -63,10 +64,7 @@ namespace PlayFab.Examples.Server
                 updateRequest.Key = titleDataKey;
                 updateRequest.Value = titleDataValue;
 
-                if (internalData)
-                    PlayFabServerAPI.SetTitleInternalData(updateRequest, SetInternalTitleDataCallback, PfSharedControllerEx.FailCallback("SetTitleInternalData"));
-                else
-                    PlayFabServerAPI.SetTitleData(updateRequest, SetTitleDataCallback, PfSharedControllerEx.FailCallback("SetTitleData"));
+                PlayFabServerAPI.SetTitleData(updateRequest, SetTitleDataCallback, PfSharedControllerEx.FailCallback("SetTitleData"));
             };
             return output;
         }
@@ -76,15 +74,29 @@ namespace PlayFab.Examples.Server
             string dataValue = ((ServerModels.SetTitleDataRequest)result.Request).Value;
 
             if (string.IsNullOrEmpty(dataValue))
-            {
                 PfSharedModelEx.titleData.Remove(dataKey);
-            }
             else
-            {
                 PfSharedModelEx.titleData[dataKey] = dataValue;
-            }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataChanged, null, null, PfSharedControllerEx.Api.Server, false);
+        }
+
+        public static Action SetTitleInternalData(string titleDataKey, string titleDataValue)
+        {
+            if (string.IsNullOrEmpty(titleDataValue))
+                titleDataValue = null; // Ensure that this field is removed
+
+            Action output = () =>
+            {
+                // This api-call updates one titleData key at a time.
+                // You can remove a key by setting the value to null.
+                var updateRequest = new ServerModels.SetTitleDataRequest();
+                updateRequest.Key = titleDataKey;
+                updateRequest.Value = titleDataValue;
+
+                PlayFabServerAPI.SetTitleInternalData(updateRequest, SetInternalTitleDataCallback, PfSharedControllerEx.FailCallback("SetTitleInternalData"));
+            };
+            return output;
         }
         private static void SetInternalTitleDataCallback(ServerModels.SetTitleDataResult result)
         {
@@ -104,7 +116,7 @@ namespace PlayFab.Examples.Server
         public static void GetPublisherData()
         {
             var getRequest = new ServerModels.GetPublisherDataRequest();
-            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            getRequest.Keys = PfSharedModelEx.defaultPublisherKeys; // TODO: Temporary - keys are mandatory, and we don't know what keys already exist.
             PlayFabServerAPI.GetPublisherData(getRequest, GetPublisherDataCallback, PfSharedControllerEx.FailCallback("GetPublisherData"));
         }
         private static void GetPublisherDataCallback(ServerModels.GetPublisherDataResult result)
@@ -114,18 +126,21 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action SetPublisherData(string PublisherDataKey, string PublisherDataValue)
+        public static Action SetPublisherData(string publisherDataKey, string publisherDataValue)
         {
-            if (string.IsNullOrEmpty(PublisherDataValue))
-                PublisherDataValue = null; // Ensure that this field is removed
+            if (string.IsNullOrEmpty(publisherDataValue))
+                publisherDataValue = null; // Ensure that this field is removed
 
             Action output = () =>
             {
+                if (!PfSharedModelEx.defaultPublisherKeys.Contains(publisherDataKey))
+                    throw new Exception("TEMPORARY LIMITATION: Add this key to defaultPublisherKeys:" + publisherDataKey + ".  You must keep track of the keys you create, because GetPublisherData won't return keys you don't explicitly ask for.");
+
                 // This api-call updates one PublisherData key at a time.
                 // You can remove a key by setting the value to null.
                 var updateRequest = new ServerModels.SetPublisherDataRequest();
-                updateRequest.Key = PublisherDataKey;
-                updateRequest.Value = PublisherDataValue;
+                updateRequest.Key = publisherDataKey;
+                updateRequest.Value = publisherDataValue;
 
                 PlayFabServerAPI.SetPublisherData(updateRequest, SetPublisherDataCallback, PfSharedControllerEx.FailCallback("SetPublisherData"));
             };

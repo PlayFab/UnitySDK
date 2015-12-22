@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 namespace PlayFab.Examples.Client
@@ -17,17 +18,21 @@ namespace PlayFab.Examples.Client
             if (!isLoggedIn)
                 return;
 
-            Button(true, rowIndex, 0, "Refresh TitleData", TitleDataExample.GetTitleData);
-            rowIndex++;
+            DisplayReadOnlyDataHelper(ref rowIndex, "TitleData", PfSharedModelEx.titleData, TitleDataExample.GetTitleData);
+            DisplayReadOnlyDataHelper(ref rowIndex, "PublisherData", PfSharedModelEx.publisherData, TitleDataExample.GetPublisherData);
+        }
 
-            // Display each of the existing keys - Title Data
-            foreach (var titlePair in PfSharedModelEx.titleData)
+        private void DisplayReadOnlyDataHelper(ref int rowIndex, string dataDescription, Dictionary<string, string> data, Action refreshAction)
+        {
+            Button(true, rowIndex, 0, dataDescription, refreshAction);
+            rowIndex++;
+            // Display each of the existing keys
+            foreach (var userPair in data)
             {
-                // The client cannot modify title data
-                TextField(true, rowIndex, 0, titlePair.Key);
-                TextField(true, rowIndex, 1, titlePair.Value);
+                TextField(true, rowIndex, 0, userPair.Key);
+                TextField(true, rowIndex, 1, userPair.Value);
                 rowIndex++;
-            };
+            }
         }
         #endregion Unity GUI
     }

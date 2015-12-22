@@ -14,6 +14,7 @@ namespace PlayFab.Examples
 
         public const string SWILL_NAME = "swill"; // TODO: This is global information specific to 1 title - Resolve this
         public static string swillItemId; // TODO: This is global information specific to 1 title - Resolve this
+        public static readonly List<string> defaultPublisherKeys = new List<string>() { "publisherName", "establishmentDate" };
 
         #region Title information
         public static Dictionary<string, string> titleData = new Dictionary<string, string>();
