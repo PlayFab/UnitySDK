@@ -25,6 +25,9 @@ namespace PlayFab.ClientModels
     public class AcceptTradeResponse
     {
 
+        /// <summary>
+        /// Details about trade which was just accepted.
+        /// </summary>
         public TradeInfo Trade { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -186,6 +189,9 @@ namespace PlayFab.ClientModels
     public class CancelTradeResponse
     {
 
+        /// <summary>
+        /// Details about trade which was just canceled.
+        /// </summary>
         public TradeInfo Trade { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -429,10 +435,19 @@ namespace PlayFab.ClientModels
     public class CharacterResult
     {
 
+        /// <summary>
+        /// The id for this character on this player.
+        /// </summary>
         public string CharacterId { get; set;}
 
+        /// <summary>
+        /// The name of this character.
+        /// </summary>
         public string CharacterName { get; set;}
 
+        /// <summary>
+        /// The type-string that was given to this character on creation.
+        /// </summary>
         public string CharacterType { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -1358,12 +1373,18 @@ namespace PlayFab.ClientModels
     public class GetPhotonAuthenticationTokenRequest
     {
 
+        /// <summary>
+        /// The Photon applicationId for the game you wish to log into.
+        /// </summary>
         public string PhotonApplicationId { get; set;}
     }
 
     public class GetPhotonAuthenticationTokenResult
     {
 
+        /// <summary>
+        /// The Photon authentication token for this game-session.
+        /// </summary>
         public string PhotonCustomAuthenticationToken { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -1401,8 +1422,14 @@ namespace PlayFab.ClientModels
     public class GetPlayerTradesResponse
     {
 
+        /// <summary>
+        /// The trades for this player which are currently available to be accepted.
+        /// </summary>
         public List<TradeInfo> OpenedTrades { get; set;}
 
+        /// <summary>
+        /// History of trades which this player has accepted.
+        /// </summary>
         public List<TradeInfo> AcceptedTrades { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -1695,6 +1722,9 @@ namespace PlayFab.ClientModels
     public class GetTradeStatusResponse
     {
 
+        /// <summary>
+        /// Information about the requested trade.
+        /// </summary>
         public TradeInfo Trade { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -1931,6 +1961,9 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string CharacterType { get; set;}
 
+        /// <summary>
+        /// Indicates whether this character was created successfully.
+        /// </summary>
         public bool Result { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -1992,6 +2025,9 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string BundleParent { get; set;}
 
+        /// <summary>
+        /// CatalogItem.DisplayName at the time this item was purchased.
+        /// </summary>
         public string DisplayName { get; set;}
 
         /// <summary>
@@ -2241,6 +2277,9 @@ namespace PlayFab.ClientModels
     public class ListUsersCharactersResult
     {
 
+        /// <summary>
+        /// The requested list of characters.
+        /// </summary>
         public List<CharacterResult> Characters { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -2425,6 +2464,9 @@ namespace PlayFab.ClientModels
         /// </summary>
         public bool? CreateAccount { get; set;}
 
+        /// <summary>
+        /// Deprecated - unused
+        /// </summary>
         public string PublisherId { get; set;}
     }
 
@@ -2702,6 +2744,9 @@ namespace PlayFab.ClientModels
     public class OpenTradeResponse
     {
 
+        /// <summary>
+        /// The information about the trade that was just opened.
+        /// </summary>
         public TradeInfo Trade { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -3110,8 +3155,14 @@ namespace PlayFab.ClientModels
     public class ReportPlayerClientResult
     {
 
+        /// <summary>
+        /// Indicates whether this action completed successfully.
+        /// </summary>
         public bool Updated { get; set;}
 
+        /// <summary>
+        /// The number of remaining reports which may be filed today.
+        /// </summary>
         public int SubmissionsRemaining { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -3205,6 +3256,9 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string TitleId { get; set;}
 
+        /// <summary>
+        /// Deprecated - unused
+        /// </summary>
         public string PublisherId { get; set;}
     }
 
@@ -3497,30 +3551,69 @@ namespace PlayFab.ClientModels
     public class TradeInfo
     {
 
+        /// <summary>
+        /// Describes the current state of this trade.
+        /// </summary>
         public TradeStatus? Status { get; set;}
 
+        /// <summary>
+        /// The identifier for this trade.
+        /// </summary>
         public string TradeId { get; set;}
 
+        /// <summary>
+        /// The PlayFabId for the offering player.
+        /// </summary>
         public string OfferingPlayerId { get; set;}
 
+        /// <summary>
+        /// The itemInstance Ids that are being offered.
+        /// </summary>
         public List<string> OfferedInventoryInstanceIds { get; set;}
 
+        /// <summary>
+        /// The catalogItem Ids of the item instances being offered.
+        /// </summary>
         public List<string> OfferedCatalogItemIds { get; set;}
 
+        /// <summary>
+        /// The catalogItem Ids requested in exchange.
+        /// </summary>
         public List<string> RequestedCatalogItemIds { get; set;}
 
+        /// <summary>
+        /// An optional list of players allowed to complete this trade.  If null, anybody can complete the trade.
+        /// </summary>
         public List<string> AllowedPlayerIds { get; set;}
 
+        /// <summary>
+        /// The PlayFab ID of the player who accepted the trade. If null, no one has accepted the trade.
+        /// </summary>
         public string AcceptedPlayerId { get; set;}
 
+        /// <summary>
+        /// Item instances from the accepting player that are used to fulfill the trade. If null, no one has accepted the trade.
+        /// </summary>
         public List<string> AcceptedInventoryInstanceIds { get; set;}
 
+        /// <summary>
+        /// The UTC time when this trade was created.
+        /// </summary>
         public DateTime? OpenedAt { get; set;}
 
+        /// <summary>
+        /// If set, The UTC time when this trade was fulfilled.
+        /// </summary>
         public DateTime? FilledAt { get; set;}
 
+        /// <summary>
+        /// If set, The UTC time when this trade was canceled.
+        /// </summary>
         public DateTime? CancelledAt { get; set;}
 
+        /// <summary>
+        /// If set, The UTC time when this trade was made invalid.
+        /// </summary>
         public DateTime? InvalidatedAt { get; set;}
     }
 

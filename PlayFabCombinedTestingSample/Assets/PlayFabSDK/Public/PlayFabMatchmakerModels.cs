@@ -84,6 +84,9 @@ namespace PlayFab.MatchmakerModels
         /// </summary>
         public string BundleParent { get; set;}
 
+        /// <summary>
+        /// CatalogItem.DisplayName at the time this item was purchased.
+        /// </summary>
         public string DisplayName { get; set;}
 
         /// <summary>
