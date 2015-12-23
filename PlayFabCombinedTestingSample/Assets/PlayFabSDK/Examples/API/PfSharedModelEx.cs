@@ -35,8 +35,7 @@ namespace PlayFab.Examples
     {
         #region General User Information
         public string playFabId;
-        public List<string> characterIds = new List<string>();
-        public List<string> characterNames = new List<string>();
+        public Dictionary<string, int> userStatistics = new Dictionary<string, int>();
         public Dictionary<string, string> userData = new Dictionary<string, string>();
         public Dictionary<string, string> userReadOnlyData = new Dictionary<string, string>();
         public Dictionary<string, string> userInternalData = new Dictionary<string, string>();
@@ -251,6 +250,7 @@ namespace PlayFab.Examples
         public string characterId;
         public string characterName;
 
+        public Dictionary<string, int> characterStatistics = new Dictionary<string, int>();
         public Dictionary<string, string> characterData = new Dictionary<string, string>();
         public Dictionary<string, string> characterReadOnlyData = new Dictionary<string, string>();
         public Dictionary<string, string> characterInternalData = new Dictionary<string, string>();
@@ -268,7 +268,7 @@ namespace PlayFab.Examples
         public abstract void RemoveItems(HashSet<string> itemInstanceIds);
     }
 
-    public class ServerCharacterModel : CharacterModel
+    public abstract class ServerCharacterModel : CharacterModel
     {
         public List<ServerModels.ItemInstance> inventory; // We don't currently have a shared-model between client and server
 
@@ -283,7 +283,7 @@ namespace PlayFab.Examples
         }
     }
 
-    public class ClientCharacterModel : CharacterModel
+    public abstract class ClientCharacterModel : CharacterModel
     {
         public List<ClientModels.ItemInstance> inventory; // We don't currently have a shared-model between client and server
 

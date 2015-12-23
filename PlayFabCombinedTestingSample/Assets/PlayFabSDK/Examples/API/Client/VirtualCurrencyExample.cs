@@ -31,8 +31,8 @@ namespace PlayFab.Examples.Client
 
         private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            for (int i = 0; i < PfSharedModelEx.globalClientUser.characterIds.Count; i++)
-                GetCharacterVc(PfSharedModelEx.globalClientUser.characterIds[i])();
+            if (eventSourceApi == PfSharedControllerEx.Api.Client)
+                GetCharacterVc(characterId)();
         }
 
         private static void OnVcChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)

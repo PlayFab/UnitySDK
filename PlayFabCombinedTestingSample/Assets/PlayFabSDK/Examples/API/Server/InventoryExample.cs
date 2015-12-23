@@ -34,16 +34,12 @@ namespace PlayFab.Examples.Server
 
         private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            UserModel updatedUser;
-            if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+            if (eventSourceApi != PfSharedControllerEx.Api.Server)
                 return;
 
-            updatedUser.serverCharacterModels.Clear();
-            for (int i = 0; i < updatedUser.characterIds.Count; i++)
-            {
-                var newCharInv = new PfInvServerChar(playFabId, updatedUser.characterIds[i], updatedUser.characterNames[i]);
-                updatedUser.serverCharacterModels[updatedUser.characterIds[i]] = newCharInv;
-            }
+            UserModel updatedUser; CharacterModel charModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser) && updatedUser.serverCharacterModels.TryGetValue(characterId, out charModel))
+                ((PfInvServerChar)charModel).GetInventory();
         }
 
         private static void GetCatalogCallback(ServerModels.GetCatalogItemsResult catalogResult)
@@ -79,7 +75,7 @@ namespace PlayFab.Examples.Server
             else
             {
                 // Reload the character inventory
-                if (updatedUser.characterIds.IndexOf(characterId) == -1 || !updatedUser.serverCharacterModels.TryGetValue(characterId, out tempCharacter))
+                if (!updatedUser.serverCharacterModels.TryGetValue(characterId, out tempCharacter))
                     return;
 
                 PfInvServerChar eachCharacter = tempCharacter as PfInvServerChar;
@@ -180,7 +176,6 @@ namespace PlayFab.Examples.Server
         public PfInvServerChar(string playFabId, string characterId, string characterName)
             : base(playFabId, characterId, characterName)
         {
-            GetInventory();
         }
 
         public Action GrantCharacterItem(string itemId)

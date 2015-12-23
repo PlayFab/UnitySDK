@@ -14,7 +14,7 @@ namespace PlayFab.Examples.Client
         public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
-            bool charsValid = isLoggedIn && PfSharedModelEx.globalClientUser.characterIds.Count > 0;
+            bool charsValid = isLoggedIn && PfSharedModelEx.globalClientUser.clientCharacterModels.Count > 0;
             int colIndex, temp;
 
             // User Owned Currency

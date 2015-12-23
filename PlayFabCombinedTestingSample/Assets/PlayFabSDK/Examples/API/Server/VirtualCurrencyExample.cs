@@ -31,12 +31,12 @@ namespace PlayFab.Examples.Server
 
         private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            UserModel updatedUser;
-            if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+            if (eventSourceApi != PfSharedControllerEx.Api.Server)
                 return;
 
-            for (int i = 0; i < updatedUser.characterIds.Count; i++)
-                GetCharacterVc(playFabId, updatedUser.characterIds[i])();
+            UserModel updatedUser;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+                GetCharacterVc(playFabId, characterId)();
         }
 
         private static void OnVcChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
@@ -48,7 +48,7 @@ namespace PlayFab.Examples.Server
             if (characterId == null)
                 // Reload the user VC
                 GetUserVc(playFabId)();
-            else if (updatedUser.characterIds.IndexOf(characterId) != -1)
+            else
                 // Reload the character VC
                 GetCharacterVc(playFabId, characterId)();
         }

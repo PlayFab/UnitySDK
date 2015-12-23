@@ -23,7 +23,7 @@ namespace PlayFab.Examples.Server
 
             foreach (var userPair in PfSharedModelEx.serverUsers)
             {
-                bool charsValid = isLoggedIn && userPair.Value.characterIds.Count > 0;
+                bool charsValid = isLoggedIn && userPair.Value.serverCharacterModels.Count > 0;
                 int colIndex;
 
                 Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", InventoryExample.GetUserInventory(userPair.Key));
@@ -39,13 +39,9 @@ namespace PlayFab.Examples.Server
                 }
                 rowIndex++;
                 // Move User Items to characters
-                for (int charIndex = 0; userPair.Value.serverUserItems != null && charIndex < userPair.Value.characterIds.Count; charIndex++)
+                foreach (var charPair in userPair.Value.serverCharacterModels)
                 {
-                    string eachCharacterId = userPair.Value.characterIds[charIndex];
-                    CharacterModel tempCharacter;
-                    if (!userPair.Value.serverCharacterModels.TryGetValue(eachCharacterId, out tempCharacter))
-                        continue;
-                    PfInvServerChar eachCharacter = tempCharacter as PfInvServerChar;
+                    PfInvServerChar eachCharacter = charPair.Value as PfInvServerChar;
                     if (eachCharacter == null || eachCharacter.inventory == null)
                         continue;
 
@@ -62,13 +58,9 @@ namespace PlayFab.Examples.Server
                 rowIndex++;
                 rowIndex++;
 
-                for (int charIndex = 0; charIndex < userPair.Value.characterIds.Count; charIndex++)
+                foreach (var charPair in userPair.Value.serverCharacterModels)
                 {
-                    string eachCharacterId = userPair.Value.characterIds[charIndex];
-                    CharacterModel tempCharacter;
-                    if (!userPair.Value.serverCharacterModels.TryGetValue(eachCharacterId, out tempCharacter))
-                        continue;
-                    PfInvServerChar eachCharacter = tempCharacter as PfInvServerChar;
+                    PfInvServerChar eachCharacter = charPair.Value as PfInvServerChar;
                     if (eachCharacter == null || eachCharacter.inventory == null)
                         continue;
 
