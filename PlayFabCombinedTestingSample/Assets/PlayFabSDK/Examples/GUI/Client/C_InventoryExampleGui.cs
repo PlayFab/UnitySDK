@@ -20,7 +20,7 @@ namespace PlayFab.Examples.Client
         public override void OnExampleGUI(ref int rowIndex)
         {
             bool isLoggedIn = PlayFabClientAPI.IsClientLoggedIn();
-            bool charsValid = isLoggedIn && PfSharedModelEx.globalClientUser.characterIds.Count > 0;
+            bool charsValid = isLoggedIn && PfSharedModelEx.globalClientUser.clientCharacterModels.Count > 0;
             int colIndex;
 
             Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", InventoryExample.GetUserInventory);
@@ -57,22 +57,20 @@ namespace PlayFab.Examples.Client
             rowIndex++;
             rowIndex++;
 
-            for (int charIndex = 0; charIndex < PfSharedModelEx.globalClientUser.characterIds.Count; charIndex++)
+            foreach (var charPair in PfSharedModelEx.globalClientUser.clientCharacterModels)
             {
-                string eachCharacterId = PfSharedModelEx.globalClientUser.characterIds[charIndex];
-                string eachCharacterName = PfSharedModelEx.globalClientUser.characterNames[charIndex];
                 CharacterModel tempCharacter;
-                if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(eachCharacterId, out tempCharacter))
+                if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(charPair.Value.characterId, out tempCharacter))
                     continue;
                 PfInvClientChar eachCharacter = tempCharacter as PfInvClientChar;
                 if (eachCharacter == null || eachCharacter.inventory == null)
                     continue;
 
-                Button(charsValid, rowIndex, 0, "Refresh " + eachCharacterName + " Inv", eachCharacter.GetInventory);
+                Button(charsValid, rowIndex, 0, "Refresh " + charPair.Value.characterName + " Inv", eachCharacter.GetInventory);
                 TextField(charsValid, rowIndex, 1, eachCharacter.inventoryDisplay);
                 rowIndex++;
                 // Grant Char Items
-                TextField(charsValid, rowIndex, 0, "Purchase " + eachCharacterName + " Item:");
+                TextField(charsValid, rowIndex, 0, "Purchase " + charPair.Value.characterName + " Item:");
                 if (PfSharedModelEx.clientCatalog != null)
                 {
                     colIndex = 1;

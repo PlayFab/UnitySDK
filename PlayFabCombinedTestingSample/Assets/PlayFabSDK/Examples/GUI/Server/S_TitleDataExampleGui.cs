@@ -51,7 +51,7 @@ namespace PlayFab.Examples.Server
 
                 TextField(true, rowIndex, 0, eachKey); // Existing keys cannot be modified
                 existingValuesCache[eachKey] = eachValue = TextField(true, rowIndex, 1, eachValue);
-                Button(true, rowIndex, 2, string.IsNullOrEmpty(eachValue) ? "Delete key" : "Update",
+                Button(eachValue != userPair.Value, rowIndex, 2, string.IsNullOrEmpty(eachValue) ? "Delete key" : "Update",
                     updateDelegate(eachKey, eachValue));
                 Button(eachValue != userPair.Value, rowIndex, 3, "Undo", () => { existingValuesCache.Remove(eachKey); });
                 rowIndex++;

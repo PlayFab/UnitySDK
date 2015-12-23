@@ -27,19 +27,19 @@ namespace PlayFab.Examples.Client
 
         private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
+            GetUserInventory();
             var catalogRequest = new ClientModels.GetCatalogItemsRequest();
             PlayFabClientAPI.GetCatalogItems(catalogRequest, GetCatalogCallback, PfSharedControllerEx.FailCallback("GetCatalogItems"));
         }
 
         private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            GetUserInventory();
-            PfSharedModelEx.globalClientUser.clientCharacterModels.Clear();
-            for (int i = 0; i < PfSharedModelEx.globalClientUser.characterIds.Count; i++)
-            {
-                var newInv = new PfInvClientChar(PfSharedModelEx.globalClientUser.playFabId, PfSharedModelEx.globalClientUser.characterIds[i], PfSharedModelEx.globalClientUser.characterNames[i]);
-                PfSharedModelEx.globalClientUser.clientCharacterModels[PfSharedModelEx.globalClientUser.characterIds[i]] = newInv;
-            }
+            if (eventSourceApi != PfSharedControllerEx.Api.Client)
+                return;
+
+            CharacterModel charModel;
+            if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out charModel))
+                ((PfInvClientChar)charModel).GetInventory();
         }
 
         private static void GetCatalogCallback(ClientModels.GetCatalogItemsResult catalogResult)
@@ -197,7 +197,6 @@ namespace PlayFab.Examples.Client
         public PfInvClientChar(string playFabId, string characterId, string characterName)
             : base(playFabId, characterId, characterName)
         {
-            GetInventory();
         }
 
         public Action PurchaseCharacterItem(string itemId)

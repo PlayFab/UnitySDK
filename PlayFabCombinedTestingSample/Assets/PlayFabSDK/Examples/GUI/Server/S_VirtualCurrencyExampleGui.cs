@@ -17,7 +17,7 @@ namespace PlayFab.Examples.Server
 
             foreach (var userPair in PfSharedModelEx.serverUsers)
             {
-                bool charsValid = isLoggedIn && userPair.Value.characterIds.Count > 0;
+                bool charsValid = isLoggedIn && userPair.Value.serverCharacterModels.Count > 0;
                 int colIndex, temp;
 
                 // User Owned Currency
@@ -31,22 +31,19 @@ namespace PlayFab.Examples.Server
                 rowIndex++;
                 rowIndex++;
 
-                for (int charIndex = 0; charIndex < userPair.Value.characterIds.Count; charIndex++)
+                foreach (var charPair in userPair.Value.serverCharacterModels)
                 {
-                    string eachCharacterId = userPair.Value.characterIds[charIndex];
-                    string eachCharacterName = userPair.Value.characterNames[charIndex];
-
-                    CharacterModel tempCharacter;
-                    if (!userPair.Value.serverCharacterModels.TryGetValue(eachCharacterId, out tempCharacter) || tempCharacter.characterVC== null)
+                    PfInvServerChar eachCharacter = charPair.Value as PfInvServerChar;
+                    if (eachCharacter == null || eachCharacter.characterVC == null)
                         continue;
 
                     // User Owned Currency
-                    Button(charsValid, rowIndex, 0, "Refresh " + eachCharacterName + " VC:", VirtualCurrencyExample.GetCharacterVc(userPair.Key, eachCharacterId));
+                    Button(charsValid, rowIndex, 0, "Refresh " + eachCharacter.characterName + " VC:", VirtualCurrencyExample.GetCharacterVc(userPair.Key, eachCharacter.characterId));
                     colIndex = 1;
                     foreach (var vcKey in PfSharedModelEx.virutalCurrencyTypes)
                     {
-                        tempCharacter.characterVC.TryGetValue(vcKey, out temp);
-                        CounterField(charsValid, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddCharacterVirtualCurrency(userPair.Key, eachCharacterId, vcKey, 1), VirtualCurrencyExample.SubtractCharacterVirtualCurrency(userPair.Key, eachCharacterId, vcKey, 1));
+                        eachCharacter.characterVC.TryGetValue(vcKey, out temp);
+                        CounterField(charsValid, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddCharacterVirtualCurrency(userPair.Key, eachCharacter.characterId, vcKey, 1), VirtualCurrencyExample.SubtractCharacterVirtualCurrency(userPair.Key, eachCharacter.characterId, vcKey, 1));
                     }
                     rowIndex++;
                     rowIndex++;
