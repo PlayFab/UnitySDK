@@ -348,10 +348,19 @@ namespace PlayFab.ServerModels
     public class CharacterResult
     {
 
+        /// <summary>
+        /// The id for this character on this player.
+        /// </summary>
         public string CharacterId { get; set;}
 
+        /// <summary>
+        /// The name of this character.
+        /// </summary>
         public string CharacterName { get; set;}
 
+        /// <summary>
+        /// The type-string that was given to this character on creation.
+        /// </summary>
         public string CharacterType { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -1446,6 +1455,9 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string BundleParent { get; set;}
 
+        /// <summary>
+        /// CatalogItem.DisplayName at the time this item was purchased.
+        /// </summary>
         public string DisplayName { get; set;}
 
         /// <summary>
@@ -1649,6 +1661,9 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string BundleParent { get; set;}
 
+        /// <summary>
+        /// CatalogItem.DisplayName at the time this item was purchased.
+        /// </summary>
         public string DisplayName { get; set;}
 
         /// <summary>
@@ -1684,6 +1699,9 @@ namespace PlayFab.ServerModels
     public class ListUsersCharactersResult
     {
 
+        /// <summary>
+        /// The requested list of characters.
+        /// </summary>
         public List<CharacterResult> Characters { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }
@@ -2075,8 +2093,14 @@ namespace PlayFab.ServerModels
     public class ReportPlayerServerResult
     {
 
+        /// <summary>
+        /// Indicates whether this action completed successfully.
+        /// </summary>
         public bool Updated { get; set;}
 
+        /// <summary>
+        /// The number of remaining reports which may be filed today by this reporting player.
+        /// </summary>
         public int SubmissionsRemaining { get; set;}
         public object Request { get; set; }
         public object CustomData { get; set;  }

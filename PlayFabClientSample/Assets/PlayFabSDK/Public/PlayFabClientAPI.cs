@@ -3543,6 +3543,7 @@ namespace PlayFab
                 }
                 if(result != null)
                 {
+                    // Modify AdvertisingIdType:  Prevents us from sending the id multiple times, and allows automated tests to determine id was sent successfully
                     PlayFabSettings.AdvertisingIdType += "_Successful";
 
                     result.CustomData = customData;
