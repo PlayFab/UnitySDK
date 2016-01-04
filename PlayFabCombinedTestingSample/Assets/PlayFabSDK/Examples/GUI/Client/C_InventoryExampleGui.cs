@@ -1,4 +1,4 @@
-using UnityEngine;
+using System.Reflection;
 
 namespace PlayFab.Examples.Client
 {
@@ -11,7 +11,15 @@ namespace PlayFab.Examples.Client
     /// </summary>
     public class C_InventoryExampleGui : PfExampleGui
     {
-        void Awake()
+        private static readonly MethodInfo InventoryExample_PurchaseUserItem = typeof(InventoryExample).GetMethod("PurchaseUserItem", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo InventoryExample_GetUserInventory = typeof(InventoryExample).GetMethod("GetUserInventory", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo InventoryExample_ConsumeUserItem = typeof(InventoryExample).GetMethod("ConsumeUserItem", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo InventoryExample_UnlockUserContainer = typeof(InventoryExample).GetMethod("UnlockUserContainer", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo PfInvClientChar_PurchaseCharacterItem = typeof(PfInvClientChar).GetMethod("PurchaseCharacterItem", BindingFlags.Instance | BindingFlags.Public);
+        private static readonly MethodInfo PfInvClientChar_ConsumeItem = typeof(PfInvClientChar).GetMethod("ConsumeItem", BindingFlags.Instance | BindingFlags.Public);
+        private static readonly MethodInfo PfInvClientChar_UnlockContainer = typeof(PfInvClientChar).GetMethod("UnlockContainer", BindingFlags.Instance | BindingFlags.Public);
+
+        public void Awake()
         {
             InventoryExample.SetUp();
         }
@@ -23,7 +31,7 @@ namespace PlayFab.Examples.Client
             bool charsValid = isLoggedIn && PfSharedModelEx.globalClientUser.clientCharacterModels.Count > 0;
             int colIndex;
 
-            Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", InventoryExample.GetUserInventory);
+            Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", null, InventoryExample_GetUserInventory);
             TextField(isLoggedIn, rowIndex, 1, ref PfSharedModelEx.globalClientUser.userInvDisplay);
             rowIndex++;
             // Purchase Items
@@ -32,7 +40,7 @@ namespace PlayFab.Examples.Client
             {
                 colIndex = 1;
                 foreach (var catalogPair in PfSharedModelEx.clientCatalog)
-                    Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, InventoryExample.PurchaseUserItem(catalogPair.Key));
+                    Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, null, InventoryExample_PurchaseUserItem, catalogPair.Key);
             }
             rowIndex++;
             // Consume Appropriate User Items
@@ -42,7 +50,7 @@ namespace PlayFab.Examples.Client
                 colIndex = 1;
                 for (int i = 0; i < PfSharedModelEx.globalClientUser.clientUserItems.Count; i++)
                     if (PfSharedModelEx.consumableItemIds.Contains(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemId))
-                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, InventoryExample.ConsumeUserItem(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemInstanceId));
+                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, null, InventoryExample_ConsumeUserItem, PfSharedModelEx.globalClientUser.clientUserItems[i].ItemInstanceId);
             }
             rowIndex++;
             // Open Appropriate User Containers
@@ -52,7 +60,7 @@ namespace PlayFab.Examples.Client
                 colIndex = 1;
                 for (int i = 0; i < PfSharedModelEx.globalClientUser.clientUserItems.Count; i++)
                     if (PfSharedModelEx.containerItemIds.Contains(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemId))
-                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, InventoryExample.UnlockUserContainer(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemId));
+                        Button(isLoggedIn, rowIndex, colIndex++, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, null, InventoryExample_UnlockUserContainer, PfSharedModelEx.globalClientUser.clientUserItems[i].ItemId);
             }
             rowIndex++;
             rowIndex++;
@@ -75,7 +83,7 @@ namespace PlayFab.Examples.Client
                 {
                     colIndex = 1;
                     foreach (var catalogPair in PfSharedModelEx.clientCatalog)
-                        Button(charsValid, rowIndex, colIndex++, catalogPair.Value.DisplayName, eachCharacter.PurchaseCharacterItem(catalogPair.Key));
+                        Button(charsValid, rowIndex, colIndex++, catalogPair.Value.DisplayName, eachCharacter, PfInvClientChar_PurchaseCharacterItem, catalogPair.Key);
                 }
                 rowIndex++;
                 // Consume Appropriate Character Items
@@ -83,7 +91,7 @@ namespace PlayFab.Examples.Client
                 colIndex = 1;
                 for (int i = 0; i < eachCharacter.inventory.Count; i++)
                     if (PfSharedModelEx.consumableItemIds.Contains(eachCharacter.inventory[i].ItemId))
-                        Button(charsValid, rowIndex, colIndex++, eachCharacter.inventory[i].DisplayName, eachCharacter.ConsumeItem(eachCharacter.inventory[i].ItemInstanceId));
+                        Button(charsValid, rowIndex, colIndex++, eachCharacter.inventory[i].DisplayName, eachCharacter, PfInvClientChar_ConsumeItem, eachCharacter.inventory[i].ItemInstanceId);
 
                 rowIndex++;
                 // Open Appropriate Character Containers
@@ -91,7 +99,7 @@ namespace PlayFab.Examples.Client
                 colIndex = 1;
                 for (int i = 0; i < eachCharacter.inventory.Count; i++)
                     if (PfSharedModelEx.containerItemIds.Contains(eachCharacter.inventory[i].ItemId))
-                        Button(charsValid, rowIndex, colIndex++, eachCharacter.inventory[i].DisplayName, eachCharacter.UnlockContainer(eachCharacter.inventory[i].ItemId));
+                        Button(charsValid, rowIndex, colIndex++, eachCharacter.inventory[i].DisplayName, eachCharacter, PfInvClientChar_UnlockContainer, eachCharacter.inventory[i].ItemId);
                 rowIndex++;
                 rowIndex++;
             }

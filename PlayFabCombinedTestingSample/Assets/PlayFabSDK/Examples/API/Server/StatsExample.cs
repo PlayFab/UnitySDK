@@ -1,5 +1,4 @@
 using PlayFab.ServerModels;
-using System;
 using System.Collections.Generic;
 
 namespace PlayFab.Examples.Server
@@ -20,27 +19,23 @@ namespace PlayFab.Examples.Server
 
         private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            GetUserStatistics(playFabId)();
+            GetUserStatistics(playFabId);
         }
 
         private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             if (eventSourceApi == PfSharedControllerEx.Api.Server)
-                GetCharacterStatistics(playFabId, characterId)();
+                GetCharacterStatistics(playFabId, characterId);
         }
         #endregion Controller Event Handling
 
         #region User stats API
-        public static Action GetUserStatistics(string playFabId)
+        public static void GetUserStatistics(string playFabId)
         {
-            Action output = () =>
-            {
-                var request = new GetUserStatisticsRequest();
-                request.PlayFabId = playFabId;
-                PlayFabServerAPI.GetUserStatistics(request, GetUserStatisticsCallback,
-                    PfSharedControllerEx.FailCallback("GetUserStatistics"));
-            };
-            return output;
+            var request = new GetUserStatisticsRequest();
+            request.PlayFabId = playFabId;
+            PlayFabServerAPI.GetUserStatistics(request, GetUserStatisticsCallback,
+                PfSharedControllerEx.FailCallback("GetUserStatistics"));
         }
         private static void GetUserStatisticsCallback(GetUserStatisticsResult result)
         {
@@ -51,17 +46,13 @@ namespace PlayFab.Examples.Server
                 userModel.userStatistics = result.UserStatistics;
         }
 
-        public static Action UpdateUserStatistics(string playFabId, string key, int value)
+        public static void UpdateUserStatistics(string playFabId, string key, int value)
         {
-            Action output = () =>
-            {
-                var request = new UpdateUserStatisticsRequest();
-                request.PlayFabId = playFabId;
-                request.UserStatistics = new Dictionary<string, int>();
-                request.UserStatistics[key] = value;
-                PlayFabServerAPI.UpdateUserStatistics(request, UpdateUserStatisticsCallback, PfSharedControllerEx.FailCallback("UpdateUserStatistics"));
-            };
-            return output;
+            var request = new UpdateUserStatisticsRequest();
+            request.PlayFabId = playFabId;
+            request.UserStatistics = new Dictionary<string, int>();
+            request.UserStatistics[key] = value;
+            PlayFabServerAPI.UpdateUserStatistics(request, UpdateUserStatisticsCallback, PfSharedControllerEx.FailCallback("UpdateUserStatistics"));
         }
 
         private static void UpdateUserStatisticsCallback(UpdateUserStatisticsResult result)
@@ -77,16 +68,12 @@ namespace PlayFab.Examples.Server
         #endregion User stats API
 
         #region Character stats API
-        public static Action GetCharacterStatistics(string playFabId, string characterId)
+        public static void GetCharacterStatistics(string playFabId, string characterId)
         {
-            Action output = () =>
-            {
-                var request = new GetCharacterStatisticsRequest();
-                request.PlayFabId = playFabId;
-                request.CharacterId = characterId;
-                PlayFabServerAPI.GetCharacterStatistics(request, GetCharacterStatisticsCallback, PfSharedControllerEx.FailCallback("GetCharacterStatistics"));
-            };
-            return output;
+            var request = new GetCharacterStatisticsRequest();
+            request.PlayFabId = playFabId;
+            request.CharacterId = characterId;
+            PlayFabServerAPI.GetCharacterStatistics(request, GetCharacterStatisticsCallback, PfSharedControllerEx.FailCallback("GetCharacterStatistics"));
         }
         private static void GetCharacterStatisticsCallback(GetCharacterStatisticsResult result)
         {
@@ -98,18 +85,14 @@ namespace PlayFab.Examples.Server
                 characterModel.characterStatistics = result.CharacterStatistics;
         }
 
-        public static Action UpdateCharacterStatistics(string playFabId, string characterId, string key, int value)
+        public static void UpdateCharacterStatistics(string playFabId, string characterId, string key, int value)
         {
-            Action output = () =>
-            {
-                var request = new UpdateCharacterStatisticsRequest();
-                request.CharacterStatistics = new Dictionary<string, int>();
-                request.PlayFabId = playFabId;
-                request.CharacterId = characterId;
-                request.CharacterStatistics[key] = value;
-                PlayFabServerAPI.UpdateCharacterStatistics(request, UpdateCharacterStatisticsCallback, PfSharedControllerEx.FailCallback("UpdateCharacterStatistics"));
-            };
-            return output;
+            var request = new UpdateCharacterStatisticsRequest();
+            request.CharacterStatistics = new Dictionary<string, int>();
+            request.PlayFabId = playFabId;
+            request.CharacterId = characterId;
+            request.CharacterStatistics[key] = value;
+            PlayFabServerAPI.UpdateCharacterStatistics(request, UpdateCharacterStatisticsCallback, PfSharedControllerEx.FailCallback("UpdateCharacterStatistics"));
         }
 
         private static void UpdateCharacterStatisticsCallback(UpdateCharacterStatisticsResult result)

@@ -1,4 +1,4 @@
-using UnityEngine;
+using System.Reflection;
 
 namespace PlayFab.Examples.Server
 {
@@ -11,7 +11,15 @@ namespace PlayFab.Examples.Server
     /// </summary>
     public class S_InventoryExampleGui : PfExampleGui
     {
-        void Awake()
+        private static readonly MethodInfo InventoryExample_GetUserInventory = typeof(InventoryExample).GetMethod("GetUserInventory", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo InventoryExample_GrantUserItem = typeof(InventoryExample).GetMethod("GrantUserItem", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo InventoryExample_RevokeUserItem = typeof(InventoryExample).GetMethod("RevokeUserItem", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo PfInvServerChar_MoveToCharFromUser = typeof(PfInvServerChar).GetMethod("MoveToCharFromUser", BindingFlags.Instance | BindingFlags.Public);
+        private static readonly MethodInfo PfInvServerChar_GrantCharacterItem = typeof(PfInvServerChar).GetMethod("GrantCharacterItem", BindingFlags.Instance | BindingFlags.Public);
+        private static readonly MethodInfo PfInvServerChar_MoveToUser = typeof(PfInvServerChar).GetMethod("MoveToUser", BindingFlags.Instance | BindingFlags.Public);
+        private static readonly MethodInfo PfInvServerChar_RevokeItem = typeof(PfInvServerChar).GetMethod("RevokeItem", BindingFlags.Instance | BindingFlags.Public);
+
+        public void Awake()
         {
             InventoryExample.SetUp();
         }
@@ -26,7 +34,7 @@ namespace PlayFab.Examples.Server
                 bool charsValid = isLoggedIn && userPair.Value.serverCharacterModels.Count > 0;
                 int colIndex;
 
-                Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", InventoryExample.GetUserInventory(userPair.Key));
+                Button(isLoggedIn, rowIndex, 0, "Refresh User Inv", null, InventoryExample_GetUserInventory, userPair.Key);
                 TextField(isLoggedIn, rowIndex, 1, ref userPair.Value.userInvDisplay);
                 rowIndex++;
                 // Purchase Items
@@ -35,7 +43,7 @@ namespace PlayFab.Examples.Server
                 {
                     colIndex = 1;
                     foreach (var catalogPair in PfSharedModelEx.serverCatalog)
-                        Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, InventoryExample.GrantUserItem(userPair.Key, catalogPair.Key));
+                        Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, null, InventoryExample_GrantUserItem, userPair.Key, catalogPair.Key);
                 }
                 rowIndex++;
                 // Move User Items to characters
@@ -47,14 +55,14 @@ namespace PlayFab.Examples.Server
 
                     TextField(eachCharacter != null, rowIndex, 0, "Move to " + eachCharacter.characterName + ":");
                     for (int i = 0; i < userPair.Value.serverUserItems.Count; i++)
-                        Button(eachCharacter != null, rowIndex, i + 1, userPair.Value.serverUserItems[i].DisplayName, eachCharacter.MoveToCharFromUser(userPair.Value.serverUserItems[i].ItemInstanceId));
+                        Button(eachCharacter != null, rowIndex, i + 1, userPair.Value.serverUserItems[i].DisplayName, eachCharacter, PfInvServerChar_MoveToCharFromUser, userPair.Value.serverUserItems[i].ItemInstanceId);
                     rowIndex++;
                 }
                 // Revoke User Items
                 TextField(isLoggedIn, rowIndex, 0, "Revoke:");
                 if (userPair.Value.serverUserItems != null)
                     for (int i = 0; i < userPair.Value.serverUserItems.Count; i++)
-                        Button(isLoggedIn, rowIndex, i + 1, userPair.Value.serverUserItems[i].DisplayName, InventoryExample.RevokeUserItem(userPair.Key, userPair.Value.serverUserItems[i].ItemInstanceId));
+                        Button(isLoggedIn, rowIndex, i + 1, userPair.Value.serverUserItems[i].DisplayName, null, InventoryExample_RevokeUserItem, userPair.Key, userPair.Value.serverUserItems[i].ItemInstanceId);
                 rowIndex++;
                 rowIndex++;
 
@@ -73,18 +81,18 @@ namespace PlayFab.Examples.Server
                     {
                         colIndex = 1;
                         foreach (var catalogPair in PfSharedModelEx.serverCatalog)
-                            Button(charsValid, rowIndex, colIndex++, catalogPair.Value.DisplayName, eachCharacter.GrantCharacterItem(catalogPair.Key));
+                            Button(charsValid, rowIndex, colIndex++, catalogPair.Value.DisplayName, eachCharacter, PfInvServerChar_GrantCharacterItem, catalogPair.Key);
                     }
                     rowIndex++;
                     // Move Character Items to User
                     TextField(charsValid, rowIndex, 0, "Move to User:");
                     for (int i = 0; i < eachCharacter.inventory.Count; i++)
-                        Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter.MoveToUser(eachCharacter.inventory[i].ItemInstanceId));
+                        Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter, PfInvServerChar_MoveToUser, eachCharacter.inventory[i].ItemInstanceId);
                     rowIndex++;
                     // Revoke Character Items
                     TextField(charsValid, rowIndex, 0, "Revoke:");
                     for (int i = 0; i < eachCharacter.inventory.Count; i++)
-                        Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter.RevokeItem(eachCharacter.inventory[i].ItemInstanceId));
+                        Button(charsValid, rowIndex, i + 1, eachCharacter.inventory[i].DisplayName, eachCharacter, PfInvServerChar_RevokeItem, eachCharacter.inventory[i].ItemInstanceId);
                     rowIndex++;
                     rowIndex++;
                 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,23 +50,19 @@ namespace PlayFab.Examples.Client
             PfSharedModelEx.globalClientUser.openTrades = result.OpenedTrades;
         }
 
-        public static Action OpenTrade(params string[] offeredInventoryInstanceIds)
+        public static void OpenTrade(params string[] offeredInventoryInstanceIds)
         {
-            Action output = () =>
-            {
-                var openRequest = new ClientModels.OpenTradeRequest();
-                // Optional field: null is anybody, alternately if specified, this is a targeted trade request
-                //   In this example, we restrict the trade to ourselves (because I don't have multiple clients for this example)
-                //   A normal trade process would use all the same steps, but would interact between multliple clients
-                openRequest.AllowedPlayerIds = new List<string>() { PfSharedModelEx.globalClientUser.playFabId };
-                // Offering the items you have
-                openRequest.OfferedInventoryInstanceIds = new List<string>();
-                openRequest.OfferedInventoryInstanceIds.AddRange(offeredInventoryInstanceIds);
-                // Listing the items you want
-                openRequest.RequestedCatalogItemIds = new List<string>() { PfSharedModelEx.swillItemId };
-                PlayFabClientAPI.OpenTrade(openRequest, OpenTradeCallback, PfSharedControllerEx.FailCallback("OpenTrade"));
-            };
-            return output;
+            var openRequest = new ClientModels.OpenTradeRequest();
+            // Optional field: null is anybody, alternately if specified, this is a targeted trade request
+            //   In this example, we restrict the trade to ourselves (because I don't have multiple clients for this example)
+            //   A normal trade process would use all the same steps, but would interact between multliple clients
+            openRequest.AllowedPlayerIds = new List<string>() { PfSharedModelEx.globalClientUser.playFabId };
+            // Offering the items you have
+            openRequest.OfferedInventoryInstanceIds = new List<string>();
+            openRequest.OfferedInventoryInstanceIds.AddRange(offeredInventoryInstanceIds);
+            // Listing the items you want
+            openRequest.RequestedCatalogItemIds = new List<string>() { PfSharedModelEx.swillItemId };
+            PlayFabClientAPI.OpenTrade(openRequest, OpenTradeCallback, PfSharedControllerEx.FailCallback("OpenTrade"));
         }
         private static void OpenTradeCallback(ClientModels.OpenTradeResponse result)
         {
@@ -81,15 +76,11 @@ namespace PlayFab.Examples.Client
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action CancelTrade(string tradeId)
+        public static void CancelTrade(string tradeId)
         {
-            Action output = () =>
-            {
-                var cancelRequest = new ClientModels.CancelTradeRequest();
-                cancelRequest.TradeId = tradeId;
-                PlayFabClientAPI.CancelTrade(cancelRequest, CancelTradeCallback, PfSharedControllerEx.FailCallback("CancelTrade"));
-            };
-            return output;
+            var cancelRequest = new ClientModels.CancelTradeRequest();
+            cancelRequest.TradeId = tradeId;
+            PlayFabClientAPI.CancelTrade(cancelRequest, CancelTradeCallback, PfSharedControllerEx.FailCallback("CancelTrade"));
         }
         private static void CancelTradeCallback(ClientModels.CancelTradeResponse result)
         {
@@ -100,17 +91,13 @@ namespace PlayFab.Examples.Client
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, true);
         }
 
-        public static Action AcceptTrade(string tradeId, string offeringPlayerId, List<string> acceptedInventoryInstanceIds)
+        public static void AcceptTrade(string tradeId, string offeringPlayerId, List<string> acceptedInventoryInstanceIds)
         {
-            Action output = () =>
-            {
-                var acceptRequest = new ClientModels.AcceptTradeRequest();
-                acceptRequest.TradeId = tradeId;
-                acceptRequest.OfferingPlayerId = offeringPlayerId;
-                acceptRequest.AcceptedInventoryInstanceIds = acceptedInventoryInstanceIds;
-                PlayFabClientAPI.AcceptTrade(acceptRequest, AcceptTradeCallback, PfSharedControllerEx.FailCallback("CancelTrade"));
-            };
-            return output;
+            var acceptRequest = new ClientModels.AcceptTradeRequest();
+            acceptRequest.TradeId = tradeId;
+            acceptRequest.OfferingPlayerId = offeringPlayerId;
+            acceptRequest.AcceptedInventoryInstanceIds = acceptedInventoryInstanceIds;
+            PlayFabClientAPI.AcceptTrade(acceptRequest, AcceptTradeCallback, PfSharedControllerEx.FailCallback("CancelTrade"));
         }
         private static void AcceptTradeCallback(ClientModels.AcceptTradeResponse result)
         {

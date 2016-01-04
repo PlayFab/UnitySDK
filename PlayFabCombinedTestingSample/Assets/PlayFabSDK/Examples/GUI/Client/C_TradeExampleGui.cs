@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEngine;
+using System.Reflection;
 
 namespace PlayFab.Examples.Client
 {
@@ -13,7 +13,11 @@ namespace PlayFab.Examples.Client
     /// </summary>
     public class C_TradeExampleGui : PfExampleGui
     {
-        void Awake()
+        private static readonly MethodInfo TradeExample_OpenTrade = typeof(TradeExample).GetMethod("OpenTrade", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo TradeExample_CancelTrade = typeof(TradeExample).GetMethod("CancelTrade", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo TradeExample_AcceptTrade = typeof(TradeExample).GetMethod("AcceptTrade", BindingFlags.Static | BindingFlags.Public);
+
+        public void Awake()
         {
             TradeExample.SetUp();
         }
@@ -29,7 +33,7 @@ namespace PlayFab.Examples.Client
             TextField(isLoggedIn, rowIndex, 0, "Offer (for swill):");
             if (PfSharedModelEx.globalClientUser.clientUserItems != null)
                 for (int i = 0; i < PfSharedModelEx.globalClientUser.clientUserItems.Count; i++)
-                    Button(isLoggedIn, rowIndex, i + 1, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, TradeExample.OpenTrade(PfSharedModelEx.globalClientUser.clientUserItems[i].ItemInstanceId));
+                    Button(isLoggedIn, rowIndex, i + 1, PfSharedModelEx.globalClientUser.clientUserItems[i].DisplayName, null, TradeExample_OpenTrade, PfSharedModelEx.globalClientUser.clientUserItems[i].ItemInstanceId);
             rowIndex++;
             rowIndex++;
 
@@ -43,7 +47,7 @@ namespace PlayFab.Examples.Client
                 if (PfSharedModelEx.globalClientUser.openTrades[i].Status != ClientModels.TradeStatus.Open)
                     continue;
 
-                Button(true, rowIndex, 0, "Cancel", TradeExample.CancelTrade(PfSharedModelEx.globalClientUser.openTrades[i].TradeId));
+                Button(true, rowIndex, 0, "Cancel", null, TradeExample_CancelTrade, PfSharedModelEx.globalClientUser.openTrades[i].TradeId);
                 rowIndex++;
 
                 TextField(isLoggedIn, rowIndex, 0, "Offered Items:");
@@ -59,7 +63,7 @@ namespace PlayFab.Examples.Client
                 if (GetAcceptOptions(PfSharedModelEx.globalClientUser.openTrades[i], out tradeInstances, out displayItems))
                 {
                     TextField(isLoggedIn, rowIndex, 0, "Accept With:");
-                    Button(true, rowIndex, 1, displayItems, TradeExample.AcceptTrade(PfSharedModelEx.globalClientUser.openTrades[i].TradeId, PfSharedModelEx.globalClientUser.openTrades[i].OfferingPlayerId, tradeInstances));
+                    Button(true, rowIndex, 1, displayItems, null, TradeExample_AcceptTrade, PfSharedModelEx.globalClientUser.openTrades[i].TradeId, PfSharedModelEx.globalClientUser.openTrades[i].OfferingPlayerId, tradeInstances);
                 }
                 rowIndex++;
                 rowIndex++;

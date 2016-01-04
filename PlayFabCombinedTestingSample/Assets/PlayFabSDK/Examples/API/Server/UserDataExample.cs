@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace PlayFab.Examples.Server
@@ -18,28 +17,24 @@ namespace PlayFab.Examples.Server
 
         private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            GetUserData(playFabId)();
-            GetUserReadOnlyData(playFabId)();
-            GetUserInternalData(playFabId)();
+            GetUserData(playFabId);
+            GetUserReadOnlyData(playFabId);
+            GetUserInternalData(playFabId);
 
-            GetUserPublisherData(playFabId)();
-            GetUserPublisherReadOnlyData(playFabId)();
-            GetUserPublisherInternalData(playFabId)();
+            GetUserPublisherData(playFabId);
+            GetUserPublisherReadOnlyData(playFabId);
+            GetUserPublisherInternalData(playFabId);
         }
         #endregion Controller Event Handling
 
         #region UserData - Data attached directly to the user for this title
-        public static Action GetUserData(string playFabId)
+        public static void GetUserData(string playFabId)
         {
-            Action output = () =>
-            {
-                var getRequest = new ServerModels.GetUserDataRequest();
-                getRequest.PlayFabId = playFabId;
-                // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-                PlayFabServerAPI.GetUserData(getRequest, GetUserDataCallback,
-                    PfSharedControllerEx.FailCallback("GetUserData"));
-            };
-            return output;
+            var getRequest = new ServerModels.GetUserDataRequest();
+            getRequest.PlayFabId = playFabId;
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabServerAPI.GetUserData(getRequest, GetUserDataCallback,
+                PfSharedControllerEx.FailCallback("GetUserData"));
         }
         private static void GetUserDataCallback(ServerModels.GetUserDataResult result)
         {
@@ -50,16 +45,12 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, null, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action GetUserReadOnlyData(string playFabId)
+        public static void GetUserReadOnlyData(string playFabId)
         {
-            Action output = () =>
-            {
-                var getRequest = new ServerModels.GetUserDataRequest();
-                getRequest.PlayFabId = playFabId;
-                // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-                PlayFabServerAPI.GetUserReadOnlyData(getRequest, GetUserReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserReadOnlyData"));
-            };
-            return output;
+            var getRequest = new ServerModels.GetUserDataRequest();
+            getRequest.PlayFabId = playFabId;
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabServerAPI.GetUserReadOnlyData(getRequest, GetUserReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserReadOnlyData"));
         }
         private static void GetUserReadOnlyDataCallback(ServerModels.GetUserDataResult result)
         {
@@ -70,16 +61,12 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, null, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action GetUserInternalData(string playFabId)
+        public static void GetUserInternalData(string playFabId)
         {
-            Action output = () =>
-            {
-                var getRequest = new ServerModels.GetUserDataRequest();
-                getRequest.PlayFabId = playFabId;
-                // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-                PlayFabServerAPI.GetUserInternalData(getRequest, GetInternalUserDataCallback, PfSharedControllerEx.FailCallback("GetUserInternalData"));
-            };
-            return output;
+            var getRequest = new ServerModels.GetUserDataRequest();
+            getRequest.PlayFabId = playFabId;
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabServerAPI.GetUserInternalData(getRequest, GetInternalUserDataCallback, PfSharedControllerEx.FailCallback("GetUserInternalData"));
         }
         private static void GetInternalUserDataCallback(ServerModels.GetUserDataResult result)
         {
@@ -90,21 +77,17 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, null, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdateUserData(string playFabId, string userDataKey, string userDataValue)
+        public static void UpdateUserData(string playFabId, string userDataKey, string userDataValue)
         {
             if (string.IsNullOrEmpty(userDataValue))
                 userDataValue = null; // Ensure that this field is removed
 
-            Action output = () =>
-            {
-                var updateRequest = new ServerModels.UpdateUserDataRequest();
-                updateRequest.PlayFabId = playFabId;
-                updateRequest.Data = new Dictionary<string, string>();
-                updateRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
+            var updateRequest = new ServerModels.UpdateUserDataRequest();
+            updateRequest.PlayFabId = playFabId;
+            updateRequest.Data = new Dictionary<string, string>();
+            updateRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
 
-                PlayFabServerAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserData"));
-            };
-            return output;
+            PlayFabServerAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserData"));
         }
         private static void UpdateUserDataCallback(ServerModels.UpdateUserDataResult result)
         {
@@ -122,21 +105,17 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdateReadOnlyUserData(string playFabId, string userDataKey, string userDataValue)
+        public static void UpdateReadOnlyUserData(string playFabId, string userDataKey, string userDataValue)
         {
             if (string.IsNullOrEmpty(userDataValue))
                 userDataValue = null; // Ensure that this field is removed
 
-            Action output = () =>
-            {
-                var updateReadOnlyRequest = new ServerModels.UpdateUserDataRequest();
-                updateReadOnlyRequest.PlayFabId = playFabId;
-                updateReadOnlyRequest.Data = new Dictionary<string, string>();
-                updateReadOnlyRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
+            var updateReadOnlyRequest = new ServerModels.UpdateUserDataRequest();
+            updateReadOnlyRequest.PlayFabId = playFabId;
+            updateReadOnlyRequest.Data = new Dictionary<string, string>();
+            updateReadOnlyRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
 
-                PlayFabServerAPI.UpdateUserReadOnlyData(updateReadOnlyRequest, UpdateReadOnlyUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserReadOnlyData"));
-            };
-            return output;
+            PlayFabServerAPI.UpdateUserReadOnlyData(updateReadOnlyRequest, UpdateReadOnlyUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserReadOnlyData"));
         }
         private static void UpdateReadOnlyUserDataCallback(ServerModels.UpdateUserDataResult result)
         {
@@ -154,21 +133,17 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdateInternalUserData(string playFabId, string userDataKey, string userDataValue)
+        public static void UpdateInternalUserData(string playFabId, string userDataKey, string userDataValue)
         {
             if (string.IsNullOrEmpty(userDataValue))
                 userDataValue = null; // Ensure that this field is removed
 
-            Action output = () =>
-            {
-                var updateInternalRequest = new ServerModels.UpdateUserInternalDataRequest();
-                updateInternalRequest.PlayFabId = playFabId;
-                updateInternalRequest.Data = new Dictionary<string, string>();
-                updateInternalRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
+            var updateInternalRequest = new ServerModels.UpdateUserInternalDataRequest();
+            updateInternalRequest.PlayFabId = playFabId;
+            updateInternalRequest.Data = new Dictionary<string, string>();
+            updateInternalRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
 
-                PlayFabServerAPI.UpdateUserInternalData(updateInternalRequest, UpdateInternalUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserInternalData"));
-            };
-            return output;
+            PlayFabServerAPI.UpdateUserInternalData(updateInternalRequest, UpdateInternalUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserInternalData"));
         }
         private static void UpdateInternalUserDataCallback(ServerModels.UpdateUserDataResult result)
         {
@@ -188,16 +163,12 @@ namespace PlayFab.Examples.Server
         #endregion UserData - Data attached directly to the user for this title
 
         #region UserPublisherData - Data attached directly to the user across all titles for this publisher
-        public static Action GetUserPublisherData(string playFabId)
+        public static void GetUserPublisherData(string playFabId)
         {
-            Action output = () =>
-            {
-                var getRequest = new ServerModels.GetUserDataRequest();
-                getRequest.PlayFabId = playFabId;
-                // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-                PlayFabServerAPI.GetUserPublisherData(getRequest, GetUserPublisherDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherData"));
-            };
-            return output;
+            var getRequest = new ServerModels.GetUserDataRequest();
+            getRequest.PlayFabId = playFabId;
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabServerAPI.GetUserPublisherData(getRequest, GetUserPublisherDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherData"));
         }
         private static void GetUserPublisherDataCallback(ServerModels.GetUserDataResult result)
         {
@@ -208,16 +179,12 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, null, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action GetUserPublisherReadOnlyData(string playFabId)
+        public static void GetUserPublisherReadOnlyData(string playFabId)
         {
-            Action output = () =>
-            {
-                var getRequest = new ServerModels.GetUserDataRequest();
-                getRequest.PlayFabId = playFabId;
-                // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-                PlayFabServerAPI.GetUserPublisherReadOnlyData(getRequest, GetUserPublisherReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherReadOnlyData"));
-            };
-            return output;
+            var getRequest = new ServerModels.GetUserDataRequest();
+            getRequest.PlayFabId = playFabId;
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabServerAPI.GetUserPublisherReadOnlyData(getRequest, GetUserPublisherReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherReadOnlyData"));
         }
         private static void GetUserPublisherReadOnlyDataCallback(ServerModels.GetUserDataResult result)
         {
@@ -228,16 +195,12 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, null, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action GetUserPublisherInternalData(string playFabId)
+        public static void GetUserPublisherInternalData(string playFabId)
         {
-            Action output = () =>
-            {
-                var getRequest = new ServerModels.GetUserDataRequest();
-                getRequest.PlayFabId = playFabId;
-                // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-                PlayFabServerAPI.GetUserPublisherInternalData(getRequest, GetInternalUserPublisherDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherInternalData"));
-            };
-            return output;
+            var getRequest = new ServerModels.GetUserDataRequest();
+            getRequest.PlayFabId = playFabId;
+            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            PlayFabServerAPI.GetUserPublisherInternalData(getRequest, GetInternalUserPublisherDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherInternalData"));
         }
         private static void GetInternalUserPublisherDataCallback(ServerModels.GetUserDataResult result)
         {
@@ -248,21 +211,17 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, null, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdateUserPublisherData(string playFabId, string userPublisherDataKey, string userPublisherDataValue)
+        public static void UpdateUserPublisherData(string playFabId, string userPublisherDataKey, string userPublisherDataValue)
         {
             if (string.IsNullOrEmpty(userPublisherDataValue))
                 userPublisherDataValue = null; // Ensure that this field is removed
 
-            Action output = () =>
-            {
-                var updateRequest = new ServerModels.UpdateUserDataRequest();
-                updateRequest.PlayFabId = playFabId;
-                updateRequest.Data = new Dictionary<string, string>();
-                updateRequest.Data[userPublisherDataKey] = userPublisherDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
+            var updateRequest = new ServerModels.UpdateUserDataRequest();
+            updateRequest.PlayFabId = playFabId;
+            updateRequest.Data = new Dictionary<string, string>();
+            updateRequest.Data[userPublisherDataKey] = userPublisherDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
 
-                PlayFabServerAPI.UpdateUserPublisherData(updateRequest, UpdateUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherData"));
-            };
-            return output;
+            PlayFabServerAPI.UpdateUserPublisherData(updateRequest, UpdateUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherData"));
         }
         private static void UpdateUserPublisherDataCallback(ServerModels.UpdateUserDataResult result)
         {
@@ -280,21 +239,17 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdateReadOnlyUserPublisherData(string playFabId, string userPublisherDataKey, string userPublisherDataValue)
+        public static void UpdateReadOnlyUserPublisherData(string playFabId, string userPublisherDataKey, string userPublisherDataValue)
         {
             if (string.IsNullOrEmpty(userPublisherDataValue))
                 userPublisherDataValue = null; // Ensure that this field is removed
 
-            Action output = () =>
-            {
-                var updateReadOnlyRequest = new ServerModels.UpdateUserDataRequest();
-                updateReadOnlyRequest.PlayFabId = playFabId;
-                updateReadOnlyRequest.Data = new Dictionary<string, string>();
-                updateReadOnlyRequest.Data[userPublisherDataKey] = userPublisherDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
+            var updateReadOnlyRequest = new ServerModels.UpdateUserDataRequest();
+            updateReadOnlyRequest.PlayFabId = playFabId;
+            updateReadOnlyRequest.Data = new Dictionary<string, string>();
+            updateReadOnlyRequest.Data[userPublisherDataKey] = userPublisherDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
 
-                PlayFabServerAPI.UpdateUserPublisherReadOnlyData(updateReadOnlyRequest, UpdateReadOnlyUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherReadOnlyData"));
-            };
-            return output;
+            PlayFabServerAPI.UpdateUserPublisherReadOnlyData(updateReadOnlyRequest, UpdateReadOnlyUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherReadOnlyData"));
         }
         private static void UpdateReadOnlyUserPublisherDataCallback(ServerModels.UpdateUserDataResult result)
         {
@@ -312,21 +267,17 @@ namespace PlayFab.Examples.Server
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdateInternalUserPublisherData(string playFabId, string userPublisherDataKey, string userPublisherDataValue)
+        public static void UpdateInternalUserPublisherData(string playFabId, string userPublisherDataKey, string userPublisherDataValue)
         {
             if (string.IsNullOrEmpty(userPublisherDataValue))
                 userPublisherDataValue = null; // Ensure that this field is removed
 
-            Action output = () =>
-            {
-                var updateInternalRequest = new ServerModels.UpdateUserInternalDataRequest();
-                updateInternalRequest.PlayFabId = playFabId;
-                updateInternalRequest.Data = new Dictionary<string, string>();
-                updateInternalRequest.Data[userPublisherDataKey] = userPublisherDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
+            var updateInternalRequest = new ServerModels.UpdateUserInternalDataRequest();
+            updateInternalRequest.PlayFabId = playFabId;
+            updateInternalRequest.Data = new Dictionary<string, string>();
+            updateInternalRequest.Data[userPublisherDataKey] = userPublisherDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
 
-                PlayFabServerAPI.UpdateUserPublisherInternalData(updateInternalRequest, UpdateInternalUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherInternalData"));
-            };
-            return output;
+            PlayFabServerAPI.UpdateUserPublisherInternalData(updateInternalRequest, UpdateInternalUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherInternalData"));
         }
         private static void UpdateInternalUserPublisherDataCallback(ServerModels.UpdateUserDataResult result)
         {

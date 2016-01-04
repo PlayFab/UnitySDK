@@ -1,4 +1,3 @@
-using UnityEngine;
 
 namespace PlayFab.Examples.Client
 {

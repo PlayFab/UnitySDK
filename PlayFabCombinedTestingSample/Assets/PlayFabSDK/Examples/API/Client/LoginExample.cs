@@ -41,7 +41,7 @@ namespace PlayFab.Examples.Client
         }
         public static void ServerCharCallBack(ServerModels.ListUsersCharactersResult charResult)
         {
-            string playFabId = ((ServerModels.ListUsersCharactersRequest) charResult.Request).PlayFabId;
+            string playFabId = ((ServerModels.ListUsersCharactersRequest)charResult.Request).PlayFabId;
 
             UserModel userModel;
             if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
