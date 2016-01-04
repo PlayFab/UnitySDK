@@ -2053,12 +2053,12 @@ namespace PlayFab.AdminModels
     {
 
         /// <summary>
-        /// which catalog is being updated
+        /// Which catalog is being updated
         /// </summary>
         public string CatalogVersion { get; set;}
 
         /// <summary>
-        /// array of catalog items to be submitted
+        /// Array of catalog items to be submitted. Note that while CatalogItem has a parameter for CatalogVersion, it is not required and ignored in this call.
         /// </summary>
         public List<CatalogItem> Catalog { get; set;}
     }
