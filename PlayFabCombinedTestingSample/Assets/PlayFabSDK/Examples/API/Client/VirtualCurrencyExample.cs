@@ -35,6 +35,9 @@ namespace PlayFab.Examples.Client
 
         private static void OnVcChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
+            if (!requiresFullRefresh)
+                return;
+
             if (characterId == null) // Reload the user inventory
                 GetUserVc();
             else // Reload the character inventory

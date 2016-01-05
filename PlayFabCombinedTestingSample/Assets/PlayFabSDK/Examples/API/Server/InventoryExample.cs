@@ -61,12 +61,15 @@ namespace PlayFab.Examples.Server
 
         private static void OnInventoryChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
+            if (!requiresFullRefresh && (eventSourceApi & PfSharedControllerEx.Api.Server) == PfSharedControllerEx.Api.Server)
+                return; // Don't need to handle this event
+
             UserModel updatedUser;
             CharacterModel tempCharacter;
             if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
                 return;
 
-            if (characterId == null)
+            if (string.IsNullOrEmpty(characterId))
             {
                 // Reload the user inventory
                 GetUserInventory(playFabId);
@@ -115,19 +118,11 @@ namespace PlayFab.Examples.Server
         public static void GetUserItemsCallback(ServerModels.GetUserInventoryResult getResult)
         {
             string playFabId = ((ServerModels.GetUserInventoryRequest)getResult.Request).PlayFabId;
-            PfSharedControllerEx.sb.Length = 0;
-            for (int i = 0; i < getResult.Inventory.Count; i++)
-            {
-                if (i != 0)
-                    PfSharedControllerEx.sb.Append(", ");
-                PfSharedControllerEx.sb.Append(getResult.Inventory[i].DisplayName);
-            }
-
             UserModel userModel;
             if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
             {
-                userModel.userInvDisplay = PfSharedControllerEx.sb.ToString();
                 userModel.serverUserItems = getResult.Inventory;
+                userModel.UpdateInvDisplay(PfSharedControllerEx.Api.Server);
             }
         }
 
@@ -147,7 +142,10 @@ namespace PlayFab.Examples.Server
 
             UserModel userModel;
             if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            {
                 userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
+                userModel.UpdateInvDisplay(PfSharedControllerEx.Api.Server);
+            }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
@@ -217,23 +215,26 @@ namespace PlayFab.Examples.Server
             string characterId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).CharacterId;
             string movedItemInstanceId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).ItemInstanceId;
 
+            bool requiresRefresh = true;
             UserModel userModel;
             CharacterModel tempModel;
-            ServerCharacterModel characterModel;
-            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel)
-            && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
+            PfInvServerChar characterModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel) && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
             {
-                characterModel = tempModel as ServerCharacterModel;
-                var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
+                characterModel = tempModel as PfInvServerChar;
+                var movedItem = userModel.GetServerItem(null, movedItemInstanceId); // Do not provide characterId, because we're extracting the item from the user
                 if (movedItem != null)
                 {
-                    userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
+                    userModel.RemoveItems(null, new HashSet<string>() { movedItemInstanceId }); // Do not provide characterId, because we're extracting the item from the user
                     characterModel.inventory.Add(movedItem);
+                    requiresRefresh = false;
                 }
+                userModel.UpdateInvDisplay(PfSharedControllerEx.Api.Server);
+                characterModel.UpdateInvDisplay();
             }
 
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, requiresRefresh);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, requiresRefresh);
         }
 
         public void MoveToUser(string itemInstanceId)
@@ -250,19 +251,26 @@ namespace PlayFab.Examples.Server
             string characterId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).CharacterId;
             string movedItemInstanceId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).ItemInstanceId;
 
+            bool requiresRefresh = true;
             UserModel userModel;
-            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            CharacterModel tempModel;
+            PfInvServerChar characterModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel) && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
             {
+                characterModel = tempModel as PfInvServerChar;
                 var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
                 if (movedItem != null)
                 {
                     userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
                     userModel.serverUserItems.Add(movedItem);
+                    requiresRefresh = false;
                 }
+                userModel.UpdateInvDisplay(PfSharedControllerEx.Api.Server);
+                characterModel.UpdateInvDisplay();
             }
 
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, requiresRefresh);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, requiresRefresh);
         }
 
         public void RevokeItem(string itemInstanceId)
@@ -280,8 +288,12 @@ namespace PlayFab.Examples.Server
             string revokedItemInstanceId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).ItemInstanceId;
 
             UserModel userModel;
-            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            CharacterModel characterModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel) && userModel.serverCharacterModels.TryGetValue(characterId, out characterModel))
+            {
                 userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
+                characterModel.UpdateInvDisplay();
+            }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
