@@ -1,5 +1,4 @@
 using PlayFab.ClientModels;
-using System;
 using System.Collections.Generic;
 
 namespace PlayFab.Examples.Client
@@ -43,21 +42,17 @@ namespace PlayFab.Examples.Client
             PfSharedModelEx.globalClientUser.userStatistics = result.UserStatistics;
         }
 
-        public static Action UpdateUserStatistics(string key, int value)
+        public static void UpdateUserStatistics(string key, int value)
         {
-            Action output = () =>
-            {
-                var request = new UpdateUserStatisticsRequest();
-                request.UserStatistics = new Dictionary<string, int>();
-                request.UserStatistics[key] = value;
-                PlayFabClientAPI.UpdateUserStatistics(request, UpdateUserStatisticsCallback, PfSharedControllerEx.FailCallback("UpdateUserStatistics"));
-            };
-            return output;
+            var request = new UpdateUserStatisticsRequest();
+            request.UserStatistics = new Dictionary<string, int>();
+            request.UserStatistics[key] = value;
+            PlayFabClientAPI.UpdateUserStatistics(request, UpdateUserStatisticsCallback, PfSharedControllerEx.FailCallback("UpdateUserStatistics"));
         }
 
         private static void UpdateUserStatisticsCallback(UpdateUserStatisticsResult result)
         {
-            var updatedStats = ((UpdateUserStatisticsRequest) result.Request).UserStatistics;
+            var updatedStats = ((UpdateUserStatisticsRequest)result.Request).UserStatistics;
 
             foreach (var statPair in updatedStats)
                 PfSharedModelEx.globalClientUser.userStatistics[statPair.Key] = statPair.Value;
