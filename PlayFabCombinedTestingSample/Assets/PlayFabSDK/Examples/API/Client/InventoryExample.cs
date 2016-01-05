@@ -61,6 +61,10 @@ namespace PlayFab.Examples.Client
 
         private static void OnInventoryChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
+            var wtf = (eventSourceApi & PfSharedControllerEx.Api.Client);
+            if (!requiresFullRefresh && wtf == PfSharedControllerEx.Api.Client)
+                return; // Don't need to handle this event
+
             if (characterId == null)
             {
                 // Reload the user inventory
@@ -118,15 +122,7 @@ namespace PlayFab.Examples.Client
         public static void GetUserItemsCallback(ClientModels.GetUserInventoryResult getResult)
         {
             PfSharedModelEx.globalClientUser.clientUserItems = getResult.Inventory;
-            PfSharedControllerEx.sb.Length = 0;
-            for (int i = 0; i < getResult.Inventory.Count; i++)
-            {
-                if (i != 0)
-                    PfSharedControllerEx.sb.Append(", ");
-                PfSharedControllerEx.sb.Append(getResult.Inventory[i].DisplayName);
-            }
-            PfSharedModelEx.globalClientUser.userInvDisplay = PfSharedControllerEx.sb.ToString();
-            PfSharedModelEx.globalClientUser.clientUserItems = getResult.Inventory;
+            PfSharedModelEx.globalClientUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
         }
 
         public static void ConsumeUserItem(string itemInstanceId)
@@ -170,7 +166,7 @@ namespace PlayFab.Examples.Client
 
             bool needsFullRefresh = (unlockedItem == null); // If we couldn't find our unlocked item, we're stuck and we need a full refresh
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, needsFullRefresh);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, true);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, true); // unlockResult contains no information about potential currency we may have gained
         }
         #endregion Example Implementation of PlayFab Inventory APIs
     }
@@ -211,7 +207,7 @@ namespace PlayFab.Examples.Client
             CharacterModel tempModel;
             if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out tempModel))
             {
-                ClientCharacterModel characterModel = tempModel as ClientCharacterModel;
+                PfInvClientChar characterModel = tempModel as PfInvClientChar;
                 if (tempModel != null)
                     characterModel.inventory.AddRange(purchaseResult.Items);
             }
@@ -252,7 +248,6 @@ namespace PlayFab.Examples.Client
         }
         public void ConsumeItemCallback(ClientModels.ConsumeItemResult consumeResult)
         {
-            string characterId = ((ClientModels.ConsumeItemRequest)consumeResult.Request).CharacterId;
             if (consumeResult.RemainingUses == 0)
                 PfSharedModelEx.globalClientUser.RemoveItems(characterId, new HashSet<string>() { consumeResult.ItemInstanceId });
             else
@@ -266,18 +261,16 @@ namespace PlayFab.Examples.Client
             var unlockRequest = new ClientModels.UnlockContainerItemRequest();
             unlockRequest.CharacterId = characterId;
             unlockRequest.ContainerItemId = itemId;
-            PlayFabClientAPI.UnlockContainerItem(unlockRequest, UnlockContainerallback, PfSharedControllerEx.FailCallback("UnlockContainerItem"));
+            PlayFabClientAPI.UnlockContainerItem(unlockRequest, UnlockContainerCallback, PfSharedControllerEx.FailCallback("UnlockContainerItem"));
         }
-        public void UnlockContainerallback(ClientModels.UnlockContainerItemResult unlockResult)
+        public void UnlockContainerCallback(ClientModels.UnlockContainerItemResult unlockResult)
         {
-            string characterId = ((ClientModels.UnlockContainerItemRequest)unlockResult.Request).CharacterId;
-
             // Merge the items we bought with the items we know we have
             CharacterModel tempModel;
             if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out tempModel))
             {
-                ClientCharacterModel characterModel = tempModel as ClientCharacterModel;
-                if (tempModel != null)
+                PfInvClientChar characterModel = tempModel as PfInvClientChar;
+                if (characterModel != null)
                     characterModel.inventory.AddRange(unlockResult.GrantedItems);
             }
 
@@ -292,7 +285,7 @@ namespace PlayFab.Examples.Client
 
             bool needsFullRefresh = (unlockedItem == null); // If we couldn't find our unlocked item, we're stuck and we need a full refresh
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, needsFullRefresh);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, true);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, true); // unlockResult contains no information about potential currency we may have gained
         }
     }
 }

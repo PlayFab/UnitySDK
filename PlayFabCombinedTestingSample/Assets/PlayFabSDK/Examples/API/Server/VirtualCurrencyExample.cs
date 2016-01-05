@@ -39,7 +39,7 @@ namespace PlayFab.Examples.Server
         private static void OnVcChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             UserModel updatedUser;
-            if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
+            if (!requiresFullRefresh || !PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
                 return;
 
             if (characterId == null)
