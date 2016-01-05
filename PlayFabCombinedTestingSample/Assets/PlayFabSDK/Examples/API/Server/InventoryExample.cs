@@ -69,7 +69,7 @@ namespace PlayFab.Examples.Server
             if (!PfSharedModelEx.serverUsers.TryGetValue(playFabId, out updatedUser))
                 return;
 
-            if (characterId == null)
+            if (string.IsNullOrEmpty(characterId))
             {
                 // Reload the user inventory
                 GetUserInventory(playFabId);

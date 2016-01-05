@@ -64,7 +64,7 @@ namespace PlayFab.Examples.Client
             if (!requiresFullRefresh && (eventSourceApi & PfSharedControllerEx.Api.Client) == PfSharedControllerEx.Api.Client)
                 return; // Don't need to handle this event
 
-            if (characterId == null)
+            if (string.IsNullOrEmpty(characterId))
             {
                 // Reload the user inventory
                 GetUserInventory();
