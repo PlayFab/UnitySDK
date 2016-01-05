@@ -133,6 +133,8 @@ namespace PlayFab.Examples
             TextField(true, rowIndex, 1, ref eachValue);
             canParse = int.TryParse(eachValue, out temp);
             Button(canParse, rowIndex, 2, "Add", null, updateAction, newKey, temp);
+            if (canParse)
+                newValue = temp;
             rowIndex++;
         }
 
@@ -212,6 +214,8 @@ namespace PlayFab.Examples
                 Button(canParse, rowIndex, 2, "Add", null, updateAction, playFabId, characterId, newKey, temp);
             else
                 Button(canParse, rowIndex, 2, "Add", null, updateAction, playFabId, newKey, temp);
+            if (canParse)
+                newValue = temp;
             rowIndex++;
         }
 
