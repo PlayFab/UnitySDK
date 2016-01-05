@@ -1,11 +1,14 @@
-using System.Collections.Generic;
-using UnityEngine;
+using System.Reflection;
 
 namespace PlayFab.Examples.Client
 {
     public class C_VirtualCurrencyExampleGui : PfExampleGui
     {
-        void Awake()
+        private static readonly MethodInfo VirtualCurrencyExample_AddUserVirtualCurrency = typeof(VirtualCurrencyExample).GetMethod("AddUserVirtualCurrency", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo VirtualCurrencyExample_SubtractUserVirtualCurrency = typeof(VirtualCurrencyExample).GetMethod("SubtractUserVirtualCurrency", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo VirtualCurrencyExample_GetCharacterVc = typeof(VirtualCurrencyExample).GetMethod("GetCharacterVc", BindingFlags.Static | BindingFlags.Public);
+
+        public void Awake()
         {
             VirtualCurrencyExample.SetUp();
         }
@@ -23,7 +26,7 @@ namespace PlayFab.Examples.Client
             foreach (var vcKey in PfSharedModelEx.virutalCurrencyTypes)
             {
                 PfSharedModelEx.globalClientUser.userVC.TryGetValue(vcKey, out temp);
-                CounterField(isLoggedIn, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample.AddUserVirtualCurrency(vcKey, 1), VirtualCurrencyExample.SubtractUserVirtualCurrency(vcKey, 1));
+                CounterField(isLoggedIn, rowIndex, colIndex++, vcKey + "=" + temp, VirtualCurrencyExample_AddUserVirtualCurrency, VirtualCurrencyExample_SubtractUserVirtualCurrency, vcKey, 1);
             }
             rowIndex++;
             rowIndex++;
@@ -34,7 +37,7 @@ namespace PlayFab.Examples.Client
                     continue;
 
                 // User Owned Currency
-                Button(charsValid, rowIndex, 0, "Refresh " + charPair.Value.characterName + " VC:", VirtualCurrencyExample.GetCharacterVc(charPair.Key));
+                Button(charsValid, rowIndex, 0, "Refresh " + charPair.Value.characterName + " VC:", null, VirtualCurrencyExample_GetCharacterVc, charPair.Key);
                 colIndex = 1;
                 foreach (var vcKey in PfSharedModelEx.virutalCurrencyTypes)
                 {

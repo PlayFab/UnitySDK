@@ -1,11 +1,14 @@
-using System;
-using UnityEngine;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace PlayFab.Examples.Server
 {
     public class S_TitleDataExampleGui : PfExampleGui
     {
+        private static readonly MethodInfo TitleDataExample_SetTitleData = typeof(TitleDataExample).GetMethod("SetTitleData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo TitleDataExample_SetTitleInternalData = typeof(TitleDataExample).GetMethod("SetTitleInternalData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo TitleDataExample_SetPublisherData = typeof(TitleDataExample).GetMethod("SetPublisherData", BindingFlags.Static | BindingFlags.Public);
+
         private string _newTitleDataKey = "<new key>";
         private string _newTitleDataValue = "";
         private string _newTitleInternalDataKey = "<new key>";
@@ -18,9 +21,7 @@ namespace PlayFab.Examples.Server
         private readonly Dictionary<string, string> _existingInternalValues = new Dictionary<string, string>();
         private readonly Dictionary<string, string> _existingPublisherValues = new Dictionary<string, string>();
 
-        private delegate Action UpdateDelegate(string key, string value);
-
-        void Awake()
+        public void Awake()
         {
             TitleDataExample.SetUp();
         }
@@ -33,35 +34,9 @@ namespace PlayFab.Examples.Server
             if (!isLoggedIn)
                 return;
 
-            DisplayDataHelper(ref rowIndex, "TitleData", PfSharedModelEx.titleData, TitleDataExample.GetTitleData, TitleDataExample.SetTitleData, _existingTitleValues, ref _newTitleDataKey, ref _newTitleDataValue);
-            DisplayDataHelper(ref rowIndex, "InternalTitleData", PfSharedModelEx.titleInternalData, TitleDataExample.GetTitleInternalData, TitleDataExample.SetTitleInternalData, _existingInternalValues, ref _newTitleInternalDataKey, ref _newTitleInternalDataValue);
-            DisplayDataHelper(ref rowIndex, "PublisherData", PfSharedModelEx.publisherData, TitleDataExample.GetPublisherData, TitleDataExample.SetPublisherData, _existingPublisherValues, ref _newPubDataKey, ref _newPubDataValue);
-        }
-
-        private void DisplayDataHelper(ref int rowIndex, string dataDescription, Dictionary<string, string> data, Action refreshAction, UpdateDelegate updateDelegate, Dictionary<string, string> existingValuesCache, ref string newKey, ref string newValue)
-        {
-            Button(true, rowIndex, 0, dataDescription, refreshAction);
-            rowIndex++;
-            // Display each of the existing keys
-            foreach (var userPair in data)
-            {
-                string eachKey = userPair.Key, eachValue;
-                if (!existingValuesCache.TryGetValue(eachKey, out eachValue))
-                    eachValue = userPair.Value;
-
-                TextField(true, rowIndex, 0, eachKey); // Existing keys cannot be modified
-                existingValuesCache[eachKey] = eachValue = TextField(true, rowIndex, 1, eachValue);
-                Button(eachValue != userPair.Value, rowIndex, 2, string.IsNullOrEmpty(eachValue) ? "Delete key" : "Update",
-                    updateDelegate(eachKey, eachValue));
-                Button(eachValue != userPair.Value, rowIndex, 3, "Undo", () => { existingValuesCache.Remove(eachKey); });
-                rowIndex++;
-            }
-            // Display a field to add new keys - User Data
-            TextField(true, rowIndex, 0, ref newKey);
-            TextField(true, rowIndex, 1, ref newValue);
-            Button(true, rowIndex, 2, "Add",
-                updateDelegate(newKey, newValue));
-            rowIndex++;
+            DisplayDataHelper(ref rowIndex, "TitleData", PfSharedModelEx.titleData, TitleDataExample.GetTitleData, TitleDataExample_SetTitleData, _existingTitleValues, ref _newTitleDataKey, ref _newTitleDataValue);
+            DisplayDataHelper(ref rowIndex, "InternalTitleData", PfSharedModelEx.titleInternalData, TitleDataExample.GetTitleInternalData, TitleDataExample_SetTitleInternalData, _existingInternalValues, ref _newTitleInternalDataKey, ref _newTitleInternalDataValue);
+            DisplayDataHelper(ref rowIndex, "PublisherData", PfSharedModelEx.publisherData, TitleDataExample.GetPublisherData, TitleDataExample_SetPublisherData, _existingPublisherValues, ref _newPubDataKey, ref _newPubDataValue);
         }
         #endregion Unity GUI
     }

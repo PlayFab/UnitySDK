@@ -1,11 +1,24 @@
-using UnityEngine;
-using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace PlayFab.Examples.Server
 {
     public class S_UserDataExampleGui : PfExampleGui
     {
+        private static readonly MethodInfo UserDataExample_GetUserData = typeof(UserDataExample).GetMethod("GetUserData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_UpdateUserData = typeof(UserDataExample).GetMethod("UpdateUserData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_GetUserReadOnlyData = typeof(UserDataExample).GetMethod("GetUserReadOnlyData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_UpdateReadOnlyUserData = typeof(UserDataExample).GetMethod("UpdateReadOnlyUserData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_GetUserInternalData = typeof(UserDataExample).GetMethod("GetUserInternalData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_UpdateInternalUserData = typeof(UserDataExample).GetMethod("UpdateInternalUserData", BindingFlags.Static | BindingFlags.Public);
+
+        private static readonly MethodInfo UserDataExample_GetUserPublisherData = typeof(UserDataExample).GetMethod("GetUserPublisherData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_UpdateUserPublisherData = typeof(UserDataExample).GetMethod("UpdateUserPublisherData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_GetUserPublisherReadOnlyData = typeof(UserDataExample).GetMethod("GetUserPublisherReadOnlyData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_UpdateReadOnlyUserPublisherData = typeof(UserDataExample).GetMethod("UpdateReadOnlyUserPublisherData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_GetUserPublisherInternalData = typeof(UserDataExample).GetMethod("GetUserPublisherInternalData", BindingFlags.Static | BindingFlags.Public);
+        private static readonly MethodInfo UserDataExample_UpdateInternalUserPublisherData = typeof(UserDataExample).GetMethod("UpdateInternalUserPublisherData", BindingFlags.Static | BindingFlags.Public);
+
         private string _newUserDataKey = "<new key>";
         private string _newUserDataValue = "";
         private string _newUserReadOnlyDataKey = "<new key>";
@@ -26,8 +39,6 @@ namespace PlayFab.Examples.Server
         private readonly Dictionary<string, string> _existingPubValues = new Dictionary<string, string>();
         private readonly Dictionary<string, string> _existingReadOnlyPubValues = new Dictionary<string, string>();
         private readonly Dictionary<string, string> _existingInternalPubValues = new Dictionary<string, string>();
-
-        private delegate Action UpdateDelegate(string playFabId, string key, string value);
 
         public void Awake()
         {
@@ -51,43 +62,16 @@ namespace PlayFab.Examples.Server
                 rowIndex++;
                 rowIndex++;
 
-                DisplayDataHelper(ref rowIndex, "UserData", playFabId, eachUser.userData, UserDataExample.GetUserData(playFabId), UserDataExample.UpdateUserData, _existingUserValues, ref _newUserDataKey, ref _newUserDataValue);
-                DisplayDataHelper(ref rowIndex, "RO-UserData", playFabId, eachUser.userReadOnlyData, UserDataExample.GetUserReadOnlyData(playFabId), UserDataExample.UpdateReadOnlyUserData, _existingReadOnlyUserValues, ref _newUserReadOnlyDataKey, ref _newUserReadOnlyDataValue);
-                DisplayDataHelper(ref rowIndex, "InternalData", playFabId, eachUser.userInternalData, UserDataExample.GetUserInternalData(playFabId), UserDataExample.UpdateInternalUserData, _existingInternalUserValues, ref _newUserInternalDataKey, ref _newUserInternalDataValue);
+                DisplayDataHelper(ref rowIndex, "UserData", playFabId, null, eachUser.userData, UserDataExample_GetUserData, UserDataExample_UpdateUserData, _existingUserValues, ref _newUserDataKey, ref _newUserDataValue);
+                DisplayDataHelper(ref rowIndex, "RO-UserData", playFabId, null, eachUser.userReadOnlyData, UserDataExample_GetUserReadOnlyData, UserDataExample_UpdateReadOnlyUserData, _existingReadOnlyUserValues, ref _newUserReadOnlyDataKey, ref _newUserReadOnlyDataValue);
+                DisplayDataHelper(ref rowIndex, "InternalData", playFabId, null, eachUser.userInternalData, UserDataExample_GetUserInternalData, UserDataExample_UpdateInternalUserData, _existingInternalUserValues, ref _newUserInternalDataKey, ref _newUserInternalDataValue);
                 rowIndex++;
 
-                DisplayDataHelper(ref rowIndex, "UserPubData", playFabId, eachUser.userPublisherData, UserDataExample.GetUserPublisherData(playFabId), UserDataExample.UpdateUserPublisherData, _existingPubValues, ref _newUserPubDataKey, ref _newUserPubDataValue);
-                DisplayDataHelper(ref rowIndex, "RO-UserPubData", playFabId, eachUser.userPublisherReadOnlyData, UserDataExample.GetUserPublisherReadOnlyData(playFabId), UserDataExample.UpdateReadOnlyUserPublisherData, _existingReadOnlyPubValues, ref _newUserReadOnlyPubDataKey, ref _newUserReadOnlyPubDataValue);
-                DisplayDataHelper(ref rowIndex, "InternalPubData", playFabId, eachUser.userPublisherInternalData, UserDataExample.GetUserInternalData(playFabId), UserDataExample.UpdateInternalUserPublisherData, _existingInternalPubValues, ref _newUserInternalPubDataKey, ref _newUserInternalPubDataValue);
+                DisplayDataHelper(ref rowIndex, "UserPubData", playFabId, null, eachUser.userPublisherData, UserDataExample_GetUserPublisherData, UserDataExample_UpdateUserPublisherData, _existingPubValues, ref _newUserPubDataKey, ref _newUserPubDataValue);
+                DisplayDataHelper(ref rowIndex, "RO-UserPubData", playFabId, null, eachUser.userPublisherReadOnlyData, UserDataExample_GetUserPublisherReadOnlyData, UserDataExample_UpdateReadOnlyUserPublisherData, _existingReadOnlyPubValues, ref _newUserReadOnlyPubDataKey, ref _newUserReadOnlyPubDataValue);
+                DisplayDataHelper(ref rowIndex, "InternalPubData", playFabId, null, eachUser.userPublisherInternalData, UserDataExample_GetUserPublisherInternalData, UserDataExample_UpdateInternalUserPublisherData, _existingInternalPubValues, ref _newUserInternalPubDataKey, ref _newUserInternalPubDataValue);
             }
         }
-
-        private void DisplayDataHelper(ref int rowIndex, string dataDescription, string playFabId, Dictionary<string, string> data, Action refreshAction, UpdateDelegate updateDelegate, Dictionary<string, string> existingValuesCache, ref string newKey, ref string newValue)
-        {
-            Button(true, rowIndex, 0, dataDescription, refreshAction);
-            rowIndex++;
-            // Display each of the existing keys
-            foreach (var userPair in data)
-            {
-                string eachKey = userPair.Key, eachValue;
-                if (!existingValuesCache.TryGetValue(eachKey, out eachValue))
-                    eachValue = userPair.Value;
-
-                TextField(true, rowIndex, 0, eachKey); // Existing keys cannot be modified
-                existingValuesCache[eachKey] = eachValue = TextField(true, rowIndex, 1, eachValue);
-                Button(eachValue != userPair.Value, rowIndex, 2, string.IsNullOrEmpty(eachValue) ? "Delete key" : "Update",
-                    updateDelegate(playFabId, eachKey, eachValue));
-                Button(eachValue != userPair.Value, rowIndex, 3, "Undo", () => { existingValuesCache.Remove(eachKey); });
-                rowIndex++;
-            }
-            // Display a field to add new keys - User Data
-            TextField(true, rowIndex, 0, ref newKey);
-            TextField(true, rowIndex, 1, ref newValue);
-            Button(true, rowIndex, 2, "Add",
-                updateDelegate(playFabId, newKey, newValue));
-            rowIndex++;
-        }
-
         #endregion Unity GUI
     }
 }

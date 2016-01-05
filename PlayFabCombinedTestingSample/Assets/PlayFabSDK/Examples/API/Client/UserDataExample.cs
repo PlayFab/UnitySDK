@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using PlayFab.ClientModels;
 
@@ -57,20 +56,16 @@ namespace PlayFab.Examples.Client
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdateUserData(string userDataKey, string userDataValue)
+        public static void UpdateUserData(string userDataKey, string userDataValue)
         {
             if (string.IsNullOrEmpty(userDataValue))
                 userDataValue = null; // Ensure that this field is removed
 
-            Action output = () =>
-            {
-                var updateRequest = new ClientModels.UpdateUserDataRequest();
-                updateRequest.Data = new Dictionary<string, string>();
-                updateRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
+            var updateRequest = new ClientModels.UpdateUserDataRequest();
+            updateRequest.Data = new Dictionary<string, string>();
+            updateRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
 
-                PlayFabClientAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserData"));
-            };
-            return output;
+            PlayFabClientAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserData"));
         }
         private static void UpdateUserDataCallback(ClientModels.UpdateUserDataResult result)
         {
@@ -117,16 +112,12 @@ namespace PlayFab.Examples.Client
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
-        public static Action UpdatePublisherdata(string userDataKey, string userDataValue)
+        public static void UpdatePublisherdata(string userDataKey, string userDataValue)
         {
-            Action output = () =>
-            {
-                var request = new UpdateUserDataRequest();
-                request.Data = new Dictionary<string, string>();
-                request.Data[userDataKey] = userDataValue;
-                PlayFabClientAPI.UpdateUserPublisherData(request, UpdateUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherData"));
-            };
-            return output;
+            var request = new UpdateUserDataRequest();
+            request.Data = new Dictionary<string, string>();
+            request.Data[userDataKey] = userDataValue;
+            PlayFabClientAPI.UpdateUserPublisherData(request, UpdateUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherData"));
         }
 
         private static void UpdateUserPublisherDataCallback(ClientModels.UpdateUserDataResult result)
