@@ -242,7 +242,7 @@ namespace PlayFab.Examples
         public void UpdateInvDisplay(PfSharedControllerEx.Api inv)
         {
             PfSharedControllerEx.sb.Length = 0;
-            if (inv == PfSharedControllerEx.Api.Client)
+            if (inv == PfSharedControllerEx.Api.Client && clientUserItems != null)
             {
                 for (int i = 0; i < clientUserItems.Count; i++)
                 {
@@ -251,13 +251,13 @@ namespace PlayFab.Examples
                     PfSharedControllerEx.sb.Append(clientUserItems[i].DisplayName);
                 }
             }
-            else
+            else if (serverUserItems != null)
             {
-                for (int i = 0; i < clientUserItems.Count; i++)
+                for (int i = 0; i < serverUserItems.Count; i++)
                 {
                     if (i != 0)
                         PfSharedControllerEx.sb.Append(", ");
-                    PfSharedControllerEx.sb.Append(clientUserItems[i].DisplayName);
+                    PfSharedControllerEx.sb.Append(serverUserItems[i].DisplayName);
                 }
             }
             userInvDisplay = PfSharedControllerEx.sb.ToString();

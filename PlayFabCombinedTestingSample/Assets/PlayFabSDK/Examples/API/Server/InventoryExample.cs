@@ -227,6 +227,8 @@ namespace PlayFab.Examples.Server
                     characterModel.inventory.Add(movedItem);
                     requiresRefresh = false;
                 }
+                userModel.UpdateInvDisplay(PfSharedControllerEx.Api.Server);
+                characterModel.UpdateInvDisplay();
             }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, requiresRefresh);
@@ -249,8 +251,11 @@ namespace PlayFab.Examples.Server
 
             bool requiresRefresh = true;
             UserModel userModel;
-            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            CharacterModel tempModel;
+            PfInvServerChar characterModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel) && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
             {
+                characterModel = tempModel as PfInvServerChar;
                 var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
                 if (movedItem != null)
                 {
@@ -258,6 +263,8 @@ namespace PlayFab.Examples.Server
                     userModel.serverUserItems.Add(movedItem);
                     requiresRefresh = false;
                 }
+                userModel.UpdateInvDisplay(PfSharedControllerEx.Api.Server);
+                characterModel.UpdateInvDisplay();
             }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, requiresRefresh);
