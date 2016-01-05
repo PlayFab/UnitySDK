@@ -109,6 +109,7 @@ namespace PlayFab.Examples.Client
             int cost = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).Price;
             PfSharedModelEx.globalClientUser.ModifyVcBalance(null, vcKey, -cost);
 
+            PfSharedModelEx.globalClientUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
@@ -140,6 +141,7 @@ namespace PlayFab.Examples.Client
             else
                 PfSharedModelEx.globalClientUser.UpdateRemainingUses(characterId, consumeResult.ItemInstanceId, consumeResult.RemainingUses);
 
+            PfSharedModelEx.globalClientUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
@@ -163,6 +165,7 @@ namespace PlayFab.Examples.Client
                     PfSharedModelEx.globalClientUser.RemoveItems(characterId, new HashSet<string>() { unlockResult.UnlockedItemInstanceId });
             }
 
+            PfSharedModelEx.globalClientUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
             bool needsFullRefresh = (unlockedItem == null); // If we couldn't find our unlocked item, we're stuck and we need a full refresh
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, needsFullRefresh);
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, true); // unlockResult contains no information about potential currency we may have gained
@@ -207,8 +210,9 @@ namespace PlayFab.Examples.Client
             if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out tempModel))
             {
                 PfInvClientChar characterModel = tempModel as PfInvClientChar;
-                if (tempModel != null)
+                if (characterModel != null)
                     characterModel.inventory.AddRange(purchaseResult.Items);
+                tempModel.UpdateInvDisplay();
             }
             string vcKey = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).VirtualCurrency;
             int cost = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).Price;
@@ -252,6 +256,10 @@ namespace PlayFab.Examples.Client
             else
                 PfSharedModelEx.globalClientUser.UpdateRemainingUses(characterId, consumeResult.ItemInstanceId, consumeResult.RemainingUses);
 
+            CharacterModel tempModel;
+            if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out tempModel))
+                tempModel.UpdateInvDisplay();
+
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
@@ -281,6 +289,9 @@ namespace PlayFab.Examples.Client
                 if (unlockedItem.RemainingUses <= 0)
                     PfSharedModelEx.globalClientUser.RemoveItems(characterId, new HashSet<string>() { unlockResult.UnlockedItemInstanceId });
             }
+
+            if (tempModel != null)
+                tempModel.UpdateInvDisplay();
 
             bool needsFullRefresh = (unlockedItem == null); // If we couldn't find our unlocked item, we're stuck and we need a full refresh
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, needsFullRefresh);

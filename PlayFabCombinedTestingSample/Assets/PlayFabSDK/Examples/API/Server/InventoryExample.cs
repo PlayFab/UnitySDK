@@ -142,7 +142,10 @@ namespace PlayFab.Examples.Server
 
             UserModel userModel;
             if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            {
                 userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
+                userModel.UpdateInvDisplay(PfSharedControllerEx.Api.Server);
+            }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
@@ -285,8 +288,12 @@ namespace PlayFab.Examples.Server
             string revokedItemInstanceId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).ItemInstanceId;
 
             UserModel userModel;
-            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+            CharacterModel characterModel;
+            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel) && userModel.serverCharacterModels.TryGetValue(characterId, out characterModel))
+            {
                 userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
+                characterModel.UpdateInvDisplay();
+            }
 
             PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
