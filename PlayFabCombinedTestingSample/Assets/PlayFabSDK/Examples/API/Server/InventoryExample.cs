@@ -222,10 +222,10 @@ namespace PlayFab.Examples.Server
             if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel) && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
             {
                 characterModel = tempModel as PfInvServerChar;
-                var movedItem = userModel.GetServerItem(null, movedItemInstanceId);
+                var movedItem = userModel.GetServerItem(null, movedItemInstanceId); // Do not provide characterId, because we're extracting the item from the user
                 if (movedItem != null)
                 {
-                    userModel.RemoveItems(null, new HashSet<string>() { movedItemInstanceId });
+                    userModel.RemoveItems(null, new HashSet<string>() { movedItemInstanceId }); // Do not provide characterId, because we're extracting the item from the user
                     characterModel.inventory.Add(movedItem);
                     requiresRefresh = false;
                 }
