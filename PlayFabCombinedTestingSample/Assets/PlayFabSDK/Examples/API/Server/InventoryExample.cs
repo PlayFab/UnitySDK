@@ -61,8 +61,7 @@ namespace PlayFab.Examples.Server
 
         private static void OnInventoryChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
-            var wtf = (eventSourceApi & PfSharedControllerEx.Api.Server);
-            if (!requiresFullRefresh && wtf == PfSharedControllerEx.Api.Server)
+            if (!requiresFullRefresh && (eventSourceApi & PfSharedControllerEx.Api.Server) == PfSharedControllerEx.Api.Server)
                 return; // Don't need to handle this event
 
             UserModel updatedUser;
