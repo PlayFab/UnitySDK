@@ -24,10 +24,10 @@ namespace PlayFab.Examples.Client
             PlayFabClientAPI.GetAllUsersCharacters(clientRequest, ClientCharCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
 
             // SERVER
-            PfSharedModelEx.serverUsers.Add(loginResult.PlayFabId, PfSharedModelEx.globalClientUser); // Ensure that they share the same object reference
-            var serverRequest = new ServerModels.ListUsersCharactersRequest();
-            serverRequest.PlayFabId = loginResult.PlayFabId;
-            PlayFabServerAPI.GetAllUsersCharacters(serverRequest, ServerCharCallBack, PfSharedControllerEx.FailCallback("S_GetAllUsersCharacters"));
+           // PfSharedModelEx.serverUsers.Add(loginResult.PlayFabId, PfSharedModelEx.globalClientUser); // Ensure that they share the same object reference
+           // var serverRequest = new ServerModels.ListUsersCharactersRequest();
+           // serverRequest.PlayFabId = loginResult.PlayFabId;
+           // PlayFabServerAPI.GetAllUsersCharacters(serverRequest, ServerCharCallBack, PfSharedControllerEx.FailCallback("S_GetAllUsersCharacters"));
         }
         public static void ClientCharCallBack(ListUsersCharactersResult charResult)
         {
