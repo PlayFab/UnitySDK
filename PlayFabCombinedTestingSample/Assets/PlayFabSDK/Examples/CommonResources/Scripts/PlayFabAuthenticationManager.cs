@@ -412,9 +412,5 @@ namespace PlayFab
 			}
 		}
 		
-		public static string GetTestModeGuid()
-		{
-			return _CustomGuid;
-		}
 	}
 }

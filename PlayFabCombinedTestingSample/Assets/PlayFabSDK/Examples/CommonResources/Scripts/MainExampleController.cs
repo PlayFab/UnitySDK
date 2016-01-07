@@ -37,7 +37,7 @@ public class MainExampleController : MonoBehaviour {
 	void AfterLogin(RegistrationLinkType linkType, LoginResult result)
 	{
 		this.activeUserInfo.Init(result);
-		PlayFab.Examples.Client.LoginExample.LoginCallBack(result);
+		PlayFab.Examples.Client.InventoryExample.LoginCallBack(result);
 		
 		// load any ExampleSectionController found at the root of any Resources directory
 		ExampleSectionController[] sections = Resources.LoadAll<ExampleSectionController>("");

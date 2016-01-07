@@ -39,6 +39,48 @@ public class ActiveUserInfoController : MonoBehaviour {
 		this.DisplayName.text =  string.IsNullOrEmpty(PlayFabAuthenticationManager.AccountInfo.TitleInfo.DisplayName) ? this._blank : PlayFabAuthenticationManager.AccountInfo.TitleInfo.DisplayName;
 	}
 	
+		// CLIENT
+		//			PfSharedModelEx.globalClientUser.playFabId = loginResult.PlayFabId;
+		//			PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, loginResult.PlayFabId, null, PfSharedControllerEx.Api.Client, false);
+		//			var clientRequest = new ListUsersCharactersRequest();
+		//			PlayFabClientAPI.GetAllUsersCharacters(clientRequest, ClientCharCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
+		
+	//		
+	//		public static void ClientCharCallBack(ListUsersCharactersResult charResult)
+	//		{
+	//			CharacterModel temp;
+	//			foreach (var character in charResult.Characters)
+	//			{
+	//				if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(character.CharacterId, out temp))
+	//					PfSharedModelEx.globalClientUser.clientCharacterModels[character.CharacterId] = new PfInvClientChar(PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, character.CharacterName);
+	//				PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, PfSharedControllerEx.Api.Client, false);
+	//			}
+	//		}
+	
+	
+	public void GetUserCharacters()
+	{
+		if(PfSharedModelEx.globalClientUser.playFabId == null)
+			return;
+			
+		PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
+		var clientRequest = new ListUsersCharactersRequest();
+		PlayFabClientAPI.GetAllUsersCharacters(clientRequest, ClientCharCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
+	}
+	
+	
+	public static void ClientCharCallBack(ListUsersCharactersResult charResult)
+	{
+		CharacterModel temp;
+		foreach (var character in charResult.Characters)
+		{
+			if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(character.CharacterId, out temp))
+				PfSharedModelEx.globalClientUser.clientCharacterModels[character.CharacterId] = new PfInvClientChar(PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, character.CharacterName);
+		}
+		// send event here...
+		//PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, PfSharedControllerEx.Api.Client, false);
+	}
+	
 	public void OnToggleActiveAccountClicked()
 	{
 		Debug.Log("User to Character switching not yet enabled.");
