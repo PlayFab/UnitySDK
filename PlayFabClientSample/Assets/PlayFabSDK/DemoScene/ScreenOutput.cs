@@ -54,7 +54,7 @@ public class ScreenOutput : MonoBehaviour {
 	public void GetCloudScriptEndpoint(UnityAction callback = null)
 	{
 		// quick check to verify that we have an endpoint. This should only need to be ran once.
-		if(string.IsNullOrEmpty(PlayFabSettings.LogicServerURL))
+		if(string.IsNullOrEmpty(PlayFabSettings.LogicServerUrl))
 		{
 			PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), (GetCloudScriptUrlResult result) => 
 			{ 
