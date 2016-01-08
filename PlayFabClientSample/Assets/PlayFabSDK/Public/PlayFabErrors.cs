@@ -196,7 +196,9 @@ namespace PlayFab
         InvalidPartnerResponse = 1193,
         APINotEnabledForGameServerAccess = 1194,
         StatisticNotFound = 1195,
-        StatisticNameConflict = 1196
+        StatisticNameConflict = 1196,
+        StatisticVersionClosedForWrites = 1197,
+        StatisticVersionInvalid = 1198
     }
 
     public class PlayFabError
