@@ -114,12 +114,14 @@ namespace PlayFab.UUnit
         private void WaitForApiCalls()
         {
             lastReceivedMessage = null;
-            while (PlayFabHTTP.instance.GetPendingMessages() != 0)
+            DateTime expireTime = DateTime.UtcNow + TimeSpan.FromSeconds(3);
+            while (PlayFabHTTP.GetPendingMessages() != 0 && DateTime.UtcNow < expireTime)
             {
                 Thread.Sleep(1); // Wait for the threaded call to be executed
                 PlayFabHTTP.instance.Update(); // Invoke the callbacks for any threaded messages
             }
-            UUnitAssert.NotNull(lastReceivedMessage);
+            UUnitAssert.True(DateTime.UtcNow < expireTime, "Request timed out");
+            UUnitAssert.NotNull(lastReceivedMessage, "Unexpected internal error within PlayFab api, or test suite");
         }
 
         private void SharedErrorCallback(PlayFabError error)
@@ -455,7 +457,7 @@ namespace PlayFab.UUnit
         [UUnitTest]
         private void CloudScript()
         {
-            if (string.IsNullOrEmpty(PlayFabSettings.LogicServerURL))
+            if (string.IsNullOrEmpty(PlayFabSettings.LogicServerUrl))
             {
                 PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), CloudScriptUrlCallback, SharedErrorCallback);
                 WaitForApiCalls();

@@ -7,16 +7,16 @@ namespace PlayFab
     public static class PlayFabiOSPlugin
     {
 #if UNITY_IOS
-		[DllImport("__Internal")]
-		private static extern void pf_make_http_request(string url, string method, int numHeaders, string[] headers, string[] headerValues, string body, int requestId);
-		[DllImport("__Internal")]
-		public static extern string getIdfa();
-		[DllImport("__Internal")]
-		public static extern bool getAdvertisingDisabled();
+        [DllImport("__Internal")]
+        private static extern void pf_make_http_request(string url, string method, int numHeaders, string[] headers, string[] headerValues, string body, int requestId);
+        [DllImport("__Internal")]
+        public static extern string getIdfa();
+        [DllImport("__Internal")]
+        public static extern bool getAdvertisingDisabled();
 
-		private static int NextRequestId=1;
+        private static int NextRequestId=1;
 
-		public static bool isAvailable() { return true; }
+        public static bool isAvailable() { return true; }
 
 #else
 
@@ -32,25 +32,32 @@ namespace PlayFab
         }
 
 #if UNITY_IOS
-		public static void Post(string url, string data, string authType, string authKey, string sdkVersion, Action<string,PlayFabError> callback)
-		{
+        public static void Post(string url, string data, string authType, string authKey, string sdkVersion, Action<string,PlayFabError> callback)
+        {
 
-			string[] headers = new string[4];
-			string[] headerValues = new string[4];
+            string[] headers = new string[4];
+            string[] headerValues = new string[4];
 
-			int h=0;
-			headers[h] = "Content-Type"; headerValues[h++] = "application/json";
-			if(authType != null)
-			{
-				headers[h] = authType; headerValues[h++] = authKey;
-			}
-			headers[h] = "X-ReportErrorAsSuccess"; headerValues[h++] = "true";
-			headers[h] = "X-PlayFabSDK"; headerValues[h++] = sdkVersion;
+            int h=0;
+            headers[h] = "Content-Type"; headerValues[h++] = "application/json";
+            if(authType != null)
+            {
+                headers[h] = authType; headerValues[h++] = authKey;
+            }
+            headers[h] = "X-ReportErrorAsSuccess"; headerValues[h++] = "true";
+            headers[h] = "X-PlayFabSDK"; headerValues[h++] = sdkVersion;
 
-			int reqId = NextRequestId++;
-			PlayFabPluginEventHandler.addHttpDelegate(reqId, callback);
+            int reqId = NextRequestId++;
+            PlayFabPluginEventHandler.addHttpDelegate(reqId, callback);
 
-			pf_make_http_request(url, "POST", h, headers, headerValues, data, reqId);
+            MethodInfo methodInfo;
+            object[] globalCallbackParams = new object[] { request.Url, request.Request, request.Result, request.Error, request.CustomData };
+            if (PlayFabSettings.GlobalApiRequestHandlers.TryGetValue(request.Url, out methodInfo))
+                methodInfo.Invoke(null, globalCallbackParams);
+            if (PlayFabSettings.GlobalApiRequestHandlers.TryGetValue(null, out methodInfo))
+                methodInfo.Invoke(null, globalCallbackParams);
+
+            pf_make_http_request(url, "POST", h, headers, headerValues, data, reqId);
 #else
         //This will never get used and is to prevent editor compile errors.
         public static void Post(string url, string data, string authType, string authKey, string sdkVersion, Action<string, string> callback)

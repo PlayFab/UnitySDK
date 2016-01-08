@@ -45,7 +45,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/AuthUser", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post("/Matchmaker/AuthUser", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/PlayerJoined", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post("/Matchmaker/PlayerJoined", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/PlayerLeft", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post("/Matchmaker/PlayerLeft", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/StartGame", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post("/Matchmaker/StartGame", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Matchmaker/UserInfo", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
+            PlayFabHTTP.Post("/Matchmaker/UserInfo", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback);
         }
 
 

@@ -100,6 +100,13 @@ namespace PlayFab.Internal
 			        callback(null, cbError);
 			    }
 
+                MethodInfo methodInfo;
+                object[] globalCallbackParams = new object[] { request.Url, request.Request, request.Result, request.Error, request.CustomData };
+                if (PlayFabSettings.GlobalApiResponseHandlers.TryGetValue(request.Url, out methodInfo))
+                    methodInfo.Invoke(null, globalCallbackParams);
+                if (PlayFabSettings.GlobalApiResponseHandlers.TryGetValue(null, out methodInfo))
+                    methodInfo.Invoke(null, globalCallbackParams);
+
 #else
                 Action<string,string> callback = HttpHandlers[reqId];
                 if (callback != null) {
@@ -123,6 +130,13 @@ namespace PlayFab.Internal
 				int reqId = int.Parse(args[0]);
 #if UNITY_IOS
                 Action<string,PlayFabError> callback = HttpHandlers[reqId];
+
+                MethodInfo methodInfo;
+                object[] globalCallbackParams = new object[] { request.Url, request.Request, request.Result, request.Error, request.CustomData };
+                if (PlayFabSettings.GlobalApiResponseHandlers.TryGetValue(request.Url, out methodInfo))
+                    methodInfo.Invoke(null, globalCallbackParams);
+                if (PlayFabSettings.GlobalApiResponseHandlers.TryGetValue(null, out methodInfo))
+                    methodInfo.Invoke(null, globalCallbackParams);
 #else
                 Action<string,string> callback = HttpHandlers[reqId];
 #endif

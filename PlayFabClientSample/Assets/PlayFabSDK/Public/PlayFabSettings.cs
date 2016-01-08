@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace PlayFab
 {
+    [Flags]
     public enum PlayFabLogLevel
     {
         None = 0,
@@ -13,48 +17,54 @@ namespace PlayFab
 
     public enum WebRequestType
     {
-        UnityWWW,
-        HttpWebRequest
+        UnityWww, // High compatability Unity api calls
+        HttpWebRequest // High performance multi-threaded api calls
     }
 
-    public class PlayFabSettings
+    public static class PlayFabSettings
     {
-        public static ErrorCallback GlobalErrorHandler { get; set; }
+        public static ErrorCallback GlobalErrorHandler;
+        internal static readonly Dictionary<string, MethodInfo> GlobalApiRequestHandlers = new Dictionary<string, MethodInfo>(); /* string:url, object:request, object:customData  */
+        internal static readonly Dictionary<string, MethodInfo> GlobalApiResponseHandlers = new Dictionary<string, MethodInfo>(); /* string:url, object:request, object:result, object:customData  */
 
-        public static string ProductionEnvironmentURL = ".playfabapi.com";
+        public static string ProductionEnvironmentUrl = ".playfabapi.com";
         public static string TitleId = null; // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
         public static PlayFabLogLevel LogLevel = PlayFabLogLevel.Warning | PlayFabLogLevel.Error;
         public static bool IsTesting = false;
-        public static WebRequestType RequestType = WebRequestType.UnityWWW;
+        public static WebRequestType RequestType = WebRequestType.UnityWww;
         public static int RequestTimeout = 2000;
         public static bool RequestKeepAlive = true;
-        internal static string LogicServerURL = null; // Assigned by GetCloudScriptUrl, used by RunCloudScript
+        internal static string LogicServerUrl = null; // Assigned by GetCloudScriptUrl, used by RunCloudScript
         public static string AdvertisingIdType = null; // Set this to the appropriate AD_TYPE_X constant below
         public static string AdvertisingIdValue = null; // Set this to corresponding device value
 
         // DisableAdvertising is provided for completeness, but changing it is not suggested
         // Disabling this may prevent your advertising-related PlayFab marketplace partners from working correctly
         public static bool DisableAdvertising = false;
-        public static readonly string AD_TYPE_IDFA = "Idfa";
-        public static readonly string AD_TYPE_ANDROID_ID = "Android_Id";
+        public const string AD_TYPE_IDFA = "Idfa";
+        public const string AD_TYPE_ANDROID_ID = "Android_Id";
 
-        public static string GetLogicURL()
+        private static string GetLogicUrl(string apiCall)
         {
-            return LogicServerURL;
+            return LogicServerUrl + apiCall;
         }
 
-        public static string GetURL()
+        public static string GetFullUrl(string apiCall)
         {
-            if (!IsTesting)
+            if (apiCall == "/Client/RunCloudScript")
             {
-                string baseUrl = ProductionEnvironmentURL;
+                return GetLogicUrl(apiCall);
+            }
+            else if (!IsTesting)
+            {
+                string baseUrl = ProductionEnvironmentUrl;
                 if (baseUrl.StartsWith("http"))
                     return baseUrl;
-                return "https://" + TitleId + baseUrl;
+                return "https://" + TitleId + baseUrl + apiCall;
             }
             else
             {
-                return "http://localhost:11289/";
+                return "http://localhost:11289/" + apiCall;
             }
         }
     }
