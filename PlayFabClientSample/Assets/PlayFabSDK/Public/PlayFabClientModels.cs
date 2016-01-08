@@ -2620,7 +2620,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// region to match make against
         /// </summary>
-        public Region? Region { get; set;}
+        public Region Region { get; set;}
 
         /// <summary>
         /// game mode to match make against
