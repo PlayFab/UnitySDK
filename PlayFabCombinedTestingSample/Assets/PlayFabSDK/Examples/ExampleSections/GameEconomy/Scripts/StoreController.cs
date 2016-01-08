@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
@@ -8,8 +8,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class StoreController : MonoBehaviour {
-	
-	
 	public enum StoreControllerStates { GetCatalog, GetStore }
 	public StoreControllerStates DisplayState;
 	public bool useCachedItems = false;
@@ -62,7 +60,7 @@ public class StoreController : MonoBehaviour {
 		// 
 		if(this.DisplayState == StoreControllerStates.GetStore)
 		{
-			UnityAction<string> afterInput = (string response) =>
+			System.Action<string> afterInput = (string response) =>
 			{
 				if(!string.IsNullOrEmpty(response))
 				{
@@ -97,21 +95,21 @@ public class StoreController : MonoBehaviour {
 		}
 		else if(DisplayState == StoreControllerStates.GetCatalog)
 		{
-			UnityAction<string> afterInput = (string response) =>
+			System.Action<string> afterInput = (string response) =>
 			{
 				if(!string.IsNullOrEmpty(response))
 				{
-					if(string.Equals(response, this.catalogName) && this.useCachedItems == true && PlayFab.Examples.PfSharedModelEx.clientCatalog.Count > 0)
-					{
-						// store already retrived, draw it
-						ShowCatalog();
-					}
-					else
-					{
-						// need to wait on store to load before drawing it
-						this.catalogName = response;
-						//PlayFab.Examples.Client.InventoryExample.GetCatalogItems(response); 
-					}
+//					if(string.Equals(response, this.catalogName) && this.useCachedItems == true && PlayFab.Examples.PfSharedModelEx.titleCatalog.Count > 0)
+//					{
+//						// store already retrived, draw it
+//						ShowCatalog();
+//					}
+//					else
+//					{
+//						// need to wait on store to load before drawing it
+//						this.catalogName = response;
+//						//PlayFab.Examples.Client.InventoryExample.GetCatalogItems(response); 
+//					}
 				}
 				else
 				{
@@ -141,28 +139,28 @@ public class StoreController : MonoBehaviour {
 	
 	public void InitStore(List<StoreItem> stock = null)
 	{
-		if(stock != null && PlayFab.Examples.PfSharedModelEx.clientCatalog.Count > 0)
-		{
-			AdjustItemPrefabs(stock.Count);
-			
-			int counter = 0;
-			foreach(var item in stock)
-			{
-				StoreItemController itemController = this.itemSceneObjects[counter].GetComponent<StoreItemController>();
-				//this.itemSceneObjects[counter].gameObject.SetActive(true);
-				
-				CatalogItem cItem = null;
-				PlayFab.Examples.PfSharedModelEx.clientCatalog.TryGetValue(item.ItemId, out cItem);
-				if(cItem != null)
-				{
-					// swap our catalog prices with the selected store prices.
-					cItem.VirtualCurrencyPrices = item.VirtualCurrencyPrices;
-					cItem.RealCurrencyPrices = item.RealCurrencyPrices;
-					itemController.Init(cItem, this);
-				}
-				counter++;
-			}
-		}
+//		if(stock != null && PlayFab.Examples.PfSharedModelEx.titleCatalog.Count > 0)
+//		{
+//			AdjustItemPrefabs(stock.Count);
+//			
+//			int counter = 0;
+//			foreach(var item in stock)
+//			{
+//				StoreItemController itemController = this.itemSceneObjects[counter].GetComponent<StoreItemController>();
+//				//this.itemSceneObjects[counter].gameObject.SetActive(true);
+//				
+//				CatalogItem cItem = null;
+//				PlayFab.Examples.PfSharedModelEx.titleCatalog.TryGetValue(item.ItemId, out cItem);
+//				if(cItem != null)
+//				{
+//					// swap our catalog prices with the selected store prices.
+//					cItem.VirtualCurrencyPrices = item.VirtualCurrencyPrices;
+//					cItem.RealCurrencyPrices = item.RealCurrencyPrices;
+//					itemController.Init(cItem, this);
+//				}
+//				counter++;
+//			}
+//		}
 	}
 	
 	public void InitCatalog(Dictionary<string, CatalogItem> stock = null)
@@ -266,7 +264,7 @@ public class StoreController : MonoBehaviour {
 		this.panelTitleBar.text = string.Format("Catalog: \"{0}\"", this.catalogName);
 		this.overlayTint.SetActive(true);
 		this.storePanel.SetActive(true);
-		InitCatalog(PlayFab.Examples.PfSharedModelEx.clientCatalog);
+		//InitCatalog(PlayFab.Examples.PfSharedModelEx.titleCatalog);
 		//var count = PlayFab.Examples.PfSharedModelEx.clientCatalog.Count;
 
 	}

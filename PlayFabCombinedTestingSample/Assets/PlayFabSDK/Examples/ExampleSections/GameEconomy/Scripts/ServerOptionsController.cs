@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,15 +65,15 @@ public class ServerOptionsController : MonoBehaviour {
 	public void OnGrantItemClicked()
 	{
 		Dictionary<string, string> items = new Dictionary<string, string>();
-		foreach(var item in PlayFab.Examples.PfSharedModelEx.clientCatalog)
-		{
-			items.Add (item.Key, item.Value.DisplayName);
-		}
+//		foreach(var item in PlayFab.Examples.PfSharedModelEx.titleCatalog)
+//		{
+//			items.Add (item.Key, item.Value.DisplayName);
+//		}
 		
-		UnityAction<int> afterSelect = (int index) => 
+		System.Action<int> afterSelect = (int index) => 
 		{
 			string idToGive = items.ElementAt(index).Key;
-			System.Action grant = PlayFab.Examples.Server.InventoryExample.GrantUserItem(PlayFab.Examples.PfSharedModelEx.globalClientUser.playFabId, idToGive);
+			System.Action grant = PlayFab.Examples.Server.InventoryExample.GrantUserItem(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, idToGive);
 			grant();
 		};
 		
@@ -83,15 +83,15 @@ public class ServerOptionsController : MonoBehaviour {
 	public void OnRevokeItemClicked()
 	{
 		Dictionary<string, string> items = new Dictionary<string, string>();
-		foreach(var item in PlayFab.Examples.PfSharedModelEx.globalClientUser.clientUserItems)
+		foreach(var item in PlayFab.Examples.PfSharedModelEx.currentUser.userInventory)
 		{
 			items.Add (item.ItemInstanceId, item.DisplayName);
 		}
 		
-		UnityAction<int> afterSelect = (int index) => 
+		System.Action<int> afterSelect = (int index) => 
 		{
 			string idToGive = items.ElementAt(index).Key;
-			System.Action revoke = PlayFab.Examples.Server.InventoryExample.RevokeUserItem(PlayFab.Examples.PfSharedModelEx.globalClientUser.playFabId, idToGive);
+			System.Action revoke = PlayFab.Examples.Server.InventoryExample.RevokeUserItem(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, idToGive);
 			revoke();
 		};
 		

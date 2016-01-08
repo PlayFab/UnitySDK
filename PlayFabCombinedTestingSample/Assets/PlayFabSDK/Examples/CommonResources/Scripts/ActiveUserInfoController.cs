@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
-using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
 using PlayFab.Examples;
@@ -15,15 +15,18 @@ public class ActiveUserInfoController : MonoBehaviour {
 	public Text DisplayName;
 	public Text PFID;
 	public Button AccountInfo;
-	public Button ToggleActiveAccount;
+	public Button ToggleCharacter;
 	
-	private string _blank = "__________"; 
+	private const string _blank = "__________"; 
 	
 	// pick character // toggel // swap
 	
 	// Use this for initialization
 	void Start () {
-		PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnGetCharacterList);
+		
+		this.ToggleCharacter.onClick.AddListener(() => { OnToggleCharacterClick(); });
+		
+		//PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnGetCharacterList);
 	}
 	
 	// Update is called once per frame
@@ -32,52 +35,37 @@ public class ActiveUserInfoController : MonoBehaviour {
 	}
 	
 	public void Init(LoginResult loginResult)
-	{
-		this.ActiveLogin = loginResult;
-		
+	{		
 		this.PFID.text = loginResult.PlayFabId;
-		this.DisplayName.text =  string.IsNullOrEmpty(PlayFabAuthenticationManager.AccountInfo.TitleInfo.DisplayName) ? this._blank : PlayFabAuthenticationManager.AccountInfo.TitleInfo.DisplayName;
+		this.DisplayName.text =  string.IsNullOrEmpty(PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName) ? _blank : PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName;
+		GetUserCharacters();
 	}
-	
-		// CLIENT
-		//			PfSharedModelEx.globalClientUser.playFabId = loginResult.PlayFabId;
-		//			PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, loginResult.PlayFabId, null, PfSharedControllerEx.Api.Client, false);
-		//			var clientRequest = new ListUsersCharactersRequest();
-		//			PlayFabClientAPI.GetAllUsersCharacters(clientRequest, ClientCharCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
-		
-	//		
-	//		public static void ClientCharCallBack(ListUsersCharactersResult charResult)
-	//		{
-	//			CharacterModel temp;
-	//			foreach (var character in charResult.Characters)
-	//			{
-	//				if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(character.CharacterId, out temp))
-	//					PfSharedModelEx.globalClientUser.clientCharacterModels[character.CharacterId] = new PfInvClientChar(PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, character.CharacterName);
-	//				PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, PfSharedControllerEx.Api.Client, false);
-	//			}
-	//		}
-	
 	
 	public void GetUserCharacters()
 	{
-		if(PfSharedModelEx.globalClientUser.playFabId == null)
+		if(PfSharedModelEx.currentUser.playFabId == null)
 			return;
 			
-		PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
+		PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
 		var clientRequest = new ListUsersCharactersRequest();
-		PlayFabClientAPI.GetAllUsersCharacters(clientRequest, ClientCharCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
+		PlayFabClientAPI.GetAllUsersCharacters(clientRequest, GetUserCharactersCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
 	}
 	
-	
-	public static void ClientCharCallBack(ListUsersCharactersResult charResult)
+	public void GetUserCharactersCallBack(ListUsersCharactersResult charResult)
 	{
 		CharacterModel temp;
 		foreach (var character in charResult.Characters)
 		{
-			if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(character.CharacterId, out temp))
-				PfSharedModelEx.globalClientUser.clientCharacterModels[character.CharacterId] = new PfInvClientChar(PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, character.CharacterName);
+			if (!PfSharedModelEx.currentUser.userCharacters.TryGetValue(character.CharacterId, out temp))
+			{
+				PfSharedModelEx.currentUser.userCharacters[character.CharacterId] = new CharacterModel(character);
+			}
 		}
-		// send event here...
+		
+		this.ToggleCharacter.interactable = true;
+		
+		// TODO send event here...
+		Debug.Log("All characters loaded. (" + charResult.Characters.Count + ")");
 		//PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, PfSharedControllerEx.Api.Client, false);
 	}
 	
@@ -86,11 +74,53 @@ public class ActiveUserInfoController : MonoBehaviour {
 		Debug.Log("User to Character switching not yet enabled.");
 	}
 	
-	public void OnGetCharacterList(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
+	public void OnToggleCharacterClick()
 	{
-		Debug.Log("!!!!!");
+		Dictionary<string, CharacterModel> idToNameMap = new Dictionary<string, CharacterModel>();
+		
+		// Add base account as an option if we have a character enabled
+		if(PfSharedModelEx.activeMode != PfSharedModelEx.ModelModes.User)
+		{
+			string currentUserText = PfSharedModelEx.currentUser.accountInfo != null && !string.IsNullOrEmpty(PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName) ? PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName : PfSharedModelEx.currentUser.accountInfo.PlayFabId;
+			idToNameMap.Add(string.Format("[User] - {0}", currentUserText), null);
+		}
+		
+		
+		foreach(var character in PfSharedModelEx.currentUser.userCharacters)
+		{
+			// no need to list the active character
+			if(character.Value != PfSharedModelEx.currentCharacter)
+			{
+				idToNameMap.Add(string.Format("[Char] - {0}", character.Value.details.CharacterName), character.Value);
+			}
+		}
+		
+		// run after user makes a selection
+		System.Action<int> afterInput = (int index) => 
+		{
+			UpdateActiveModel(idToNameMap.ElementAt(index).Value);
+		};
+		
+		SharedDialogController.RequestSelectorPrompt("Select an account:", idToNameMap.Keys.ToList(), afterInput);
 	}
 	
-	
-	
+	public void UpdateActiveModel(CharacterModel cm = null )
+	{
+		// switch to character
+		if(cm != null)
+		{
+			PfSharedModelEx.activeMode = PfSharedModelEx.ModelModes.Character;
+			PfSharedModelEx.currentCharacter = cm;
+			this.PFID.text = cm.details.CharacterId;
+			this.DisplayName.text = cm.details.CharacterName;
+		}
+		else
+		{
+			// switch back to user
+			PfSharedModelEx.activeMode = PfSharedModelEx.ModelModes.User;
+			PfSharedModelEx.currentCharacter = null;
+			this.PFID.text = PfSharedModelEx.currentUser.accountInfo.PlayFabId;
+			this.DisplayName.text = string.IsNullOrEmpty(PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName) ? _blank : PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName;
+		}
+	}
 }

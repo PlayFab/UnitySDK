@@ -10,10 +10,10 @@ public class SharedDialogController : MonoBehaviour {
 	public SelectorPromptController selectorPrompt;
 	
 	
-	public delegate void TextInputPromptHandler(string title, string message, UnityAction<string> responseCallback, string defaultValue = null);
+	public delegate void TextInputPromptHandler(string title, string message, System.Action<string> responseCallback, string defaultValue = null);
 	public static event TextInputPromptHandler RaiseTextInputPromptRequest;
 	
-	public delegate void SelectorPromptHandler(string title, List<string> options, UnityAction<int> responseCallback);
+	public delegate void SelectorPromptHandler(string title, List<string> options, System.Action<int> responseCallback);
 	public static event SelectorPromptHandler RaiseSelectorPromptRequest;
 	
 	
@@ -78,7 +78,7 @@ public class SharedDialogController : MonoBehaviour {
 		//		RaiseOfferRequest -= HandleOfferPromptRequest;
 	}
 	
-	public static void RequestTextInputPrompt(string title, string message, UnityAction<string> responseCallback, string defaultValue = null)
+	public static void RequestTextInputPrompt(string title, string message, System.Action<string> responseCallback, string defaultValue = null)
 	{
 		if(RaiseTextInputPromptRequest != null)
 		{
@@ -86,19 +86,19 @@ public class SharedDialogController : MonoBehaviour {
 		}
 	}
 	
-	public void HandleTextInputRequest(string title, string message, UnityAction<string> responseCallback, string defaultValue)
+	public void HandleTextInputRequest(string title, string message, System.Action<string> responseCallback, string defaultValue)
 	{
 		//this.ShowTint();
 		this.textInputPrompt.ShowTextInputPrompt(title, message, responseCallback, defaultValue);
 	}
 	
-	public void HandleSelectorPromptRequest (string title, List<string> options, UnityAction<int> responseCallback)
+	public void HandleSelectorPromptRequest (string title, List<string> options, System.Action<int> responseCallback)
 	{
 		this.selectorPrompt.gameObject.SetActive (true);
 		this.selectorPrompt.InitSelector (title, options, responseCallback);
 	}
 
-	public static void RequestSelectorPrompt(string title, List<string> options, UnityAction<int> responseCallback)
+	public static void RequestSelectorPrompt(string title, List<string> options, System.Action<int> responseCallback)
 	{
 		if(RaiseSelectorPromptRequest != null)
 		{

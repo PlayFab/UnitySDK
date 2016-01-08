@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,14 +59,14 @@ public class InventoryController : MonoBehaviour {
 	
 	public void Init()
 	{
-		if(PlayFab.Examples.PfSharedModelEx.globalClientUser.clientUserItems != null && PlayFab.Examples.PfSharedModelEx.clientCatalog != null)
+		if(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory != null && PlayFab.Examples.PfSharedModelEx.titleCatalogs != null)
 		 {
-			AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.globalClientUser.clientUserItems.Count);
+			AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count);
 			InventoryItemController first = null;
-			for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.globalClientUser.clientUserItems.Count; z++)
+			for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count; z++)
 			{
 				InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
-				item.Init(this, PlayFab.Examples.PfSharedModelEx.globalClientUser.clientUserItems[z]);
+				item.Init(this, PlayFab.Examples.PfSharedModelEx.currentUser.userInventory[z]);
 				
 				if(z == 0)
 				{

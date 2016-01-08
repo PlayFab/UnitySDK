@@ -14,9 +14,9 @@ public class SelectorPromptController : MonoBehaviour {
     public Transform ListView;
     public Button closeButton;
 
-	private UnityAction<int> callback;
+	private System.Action<int> callback;
 
-	public void InitSelector(string title, List<string> options, UnityAction<int> callback = null)
+	public void InitSelector(string title, List<string> options, System.Action<int> callback = null)
 	{
 		this.title.text = title;
 		this.options = options;

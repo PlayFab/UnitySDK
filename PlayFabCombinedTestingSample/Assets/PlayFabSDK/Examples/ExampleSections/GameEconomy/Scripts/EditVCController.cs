@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +39,10 @@ public class EditVCController : MonoBehaviour {
 		RemoveVCItems();
 		yield return new WaitForEndOfFrame();
 		
-		if(PlayFab.Examples.PfSharedModelEx.globalClientUser.userVC != null && PlayFab.Examples.PfSharedModelEx.globalClientUser.userVC.Count > 0)
+		if(PlayFab.Examples.PfSharedModelEx.currentUser.userVC != null && PlayFab.Examples.PfSharedModelEx.currentUser.userVC.Count > 0)
 		{
 			int counter = 0;
-			foreach(var item in PlayFab.Examples.PfSharedModelEx.globalClientUser.userVC)
+			foreach(var item in PlayFab.Examples.PfSharedModelEx.currentUser.userVC)
 			{
 				Transform trans = Instantiate(this.vcItemPrefab);
 				trans.SetParent(this.listView, false);

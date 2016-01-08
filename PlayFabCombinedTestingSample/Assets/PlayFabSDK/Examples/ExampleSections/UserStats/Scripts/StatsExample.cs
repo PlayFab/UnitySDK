@@ -39,7 +39,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetUserStatisticsCallback(GetUserStatisticsResult result)
         {
-            PfSharedModelEx.globalClientUser.userStatistics = result.UserStatistics;
+            PfSharedModelEx.currentUser.userStatistics = result.UserStatistics;
         }
 
         public static void UpdateUserStatistics(string key, int value)
@@ -55,7 +55,7 @@ namespace PlayFab.Examples.Client
             var updatedStats = ((UpdateUserStatisticsRequest)result.Request).UserStatistics;
 
             foreach (var statPair in updatedStats)
-                PfSharedModelEx.globalClientUser.userStatistics[statPair.Key] = statPair.Value;
+                PfSharedModelEx.currentUser.userStatistics[statPair.Key] = statPair.Value;
         }
         #endregion User/Character stats API
     }

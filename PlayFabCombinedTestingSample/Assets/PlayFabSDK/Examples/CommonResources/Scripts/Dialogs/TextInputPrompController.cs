@@ -11,7 +11,7 @@ public class TextInputPrompController : MonoBehaviour {
 	public Text title;
 	public InputField userInput;
 	
-	private UnityAction<string> responseCallback;
+	private System.Action<string> responseCallback;
 	//public Action runOnClose; // will generally be used for hiding the overlay tint.
 	
 	
@@ -36,7 +36,7 @@ public class TextInputPrompController : MonoBehaviour {
 		responseCallback(null);
 	}
 	
-	public void ShowTextInputPrompt(string title, string message, UnityAction<string> callback, string defaultValue)
+	public void ShowTextInputPrompt(string title, string message, System.Action<string> callback, string defaultValue)
 	{
 		this.message.text = message;
 		this.title.text = title;

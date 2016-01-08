@@ -171,153 +171,153 @@ namespace PlayFab.Examples.Server
         #endregion Example Implementation of PlayFab Inventory APIs
     }
 
-    /// <summary>
-    /// A wrapper for inventory related, character centric, API calls and info
-    /// This mostly exists because the characterId needs to be available at all steps in the process, and a class-wrapper avoids most of the Lambda-hell
-    /// </summary>
-    public class PfInvServerChar : ServerCharacterModel
-    {
-        public PfInvServerChar(string playFabId, string characterId, string characterName)
-            : base(playFabId, characterId, characterName)
-        {
-            GetInventory();
-        }
-
-        public Action GrantCharacterItem(string itemId)
-        {
-            Action output = () =>
-            {
-                var grantRequest = new ServerModels.GrantItemsToCharacterRequest();
-                grantRequest.PlayFabId = playFabId;
-                grantRequest.CharacterId = characterId;
-                grantRequest.ItemIds = new List<string>() { itemId };
-                PlayFabServerAPI.GrantItemsToCharacter(grantRequest, GrantCharacterItemCallback, PfSharedControllerEx.FailCallback("GrantItemsToCharacter"));
-            };
-            return output;
-        }
-        public void GrantCharacterItemCallback(ServerModels.GrantItemsToCharacterResult grantResult)
-        {
-            // Merge the items we received with the items we know we have
-            //UserModel userModel;
-            //if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
-            //    userModel.serverUserItems.AddRange(grantResult.ItemGrantResults); // TODO: Type mismatch makes this too complicated for now
-
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, true);
-        }
-
-        public void GetInventory()
-        {
-            var getRequest = new ServerModels.GetCharacterInventoryRequest();
-            getRequest.PlayFabId = playFabId;
-            getRequest.CharacterId = characterId;
-            PlayFabServerAPI.GetCharacterInventory(getRequest, GetInventoryCallback, PfSharedControllerEx.FailCallback("GetCharacterInventory"));
-        }
-        public void GetInventoryCallback(ServerModels.GetCharacterInventoryResult getResult)
-        {
-            PfSharedControllerEx.sb.Length = 0;
-            for (int i = 0; i < getResult.Inventory.Count; i++)
-            {
-                if (i != 0)
-                    PfSharedControllerEx.sb.Append(", ");
-                PfSharedControllerEx.sb.Append(getResult.Inventory[i].DisplayName);
-            }
-            inventoryDisplay = PfSharedControllerEx.sb.ToString();
-            inventory = getResult.Inventory;
-        }
-
-        public Action MoveToCharFromUser(string itemInstanceId)
-        {
-            Action output = () =>
-            {
-                var moveRequest = new ServerModels.MoveItemToCharacterFromUserRequest();
-                moveRequest.PlayFabId = playFabId;
-                moveRequest.CharacterId = characterId;
-                moveRequest.ItemInstanceId = itemInstanceId;
-                PlayFabServerAPI.MoveItemToCharacterFromUser(moveRequest, MoveToCharCallback, PfSharedControllerEx.FailCallback("MoveItemToCharacterFromUser"));
-            };
-            return output;
-        }
-        public void MoveToCharCallback(ServerModels.MoveItemToCharacterFromUserResult moveResult)
-        {
-            string playFabId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).PlayFabId;
-            string characterId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).CharacterId;
-            string movedItemInstanceId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).ItemInstanceId;
-
-            UserModel userModel;
-            CharacterModel tempModel;
-            ServerCharacterModel characterModel;
-//            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel)
-//            && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
+//    /// <summary>
+//    /// A wrapper for inventory related, character centric, API calls and info
+//    /// This mostly exists because the characterId needs to be available at all steps in the process, and a class-wrapper avoids most of the Lambda-hell
+//    /// </summary>
+//    public class PfInvServerChar : ServerCharacterModel
+//    {
+//        public PfInvServerChar(string playFabId, string characterId, string characterName)
+//            : base(playFabId, characterId, characterName)
+//        {
+//            GetInventory();
+//        }
+//
+//        public Action GrantCharacterItem(string itemId)
+//        {
+//            Action output = () =>
 //            {
-//                characterModel = tempModel as ServerCharacterModel;
-//                var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
-//                if (movedItem != null)
-//                {
-//                    userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
-//                    characterModel.inventory.Add(movedItem);
-//                }
-//            }
-
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
-        }
-
-        public Action MoveToUser(string itemInstanceId)
-        {
-            Action output = () =>
-            {
-                var moveRequest = new ServerModels.MoveItemToUserFromCharacterRequest();
-                moveRequest.PlayFabId = playFabId;
-                moveRequest.CharacterId = characterId;
-                moveRequest.ItemInstanceId = itemInstanceId;
-                PlayFabServerAPI.MoveItemToUserFromCharacter(moveRequest, MoveToUserCallback, PfSharedControllerEx.FailCallback("MoveItemToUserFromCharacter"));
-            };
-            return output;
-        }
-        public void MoveToUserCallback(ServerModels.MoveItemToUserFromCharacterResult moveResult)
-        {
-            string playFabId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).PlayFabId;
-            string characterId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).CharacterId;
-            string movedItemInstanceId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).ItemInstanceId;
-
-            UserModel userModel;
-//            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+//                var grantRequest = new ServerModels.GrantItemsToCharacterRequest();
+//                grantRequest.PlayFabId = playFabId;
+//                grantRequest.CharacterId = characterId;
+//                grantRequest.ItemIds = new List<string>() { itemId };
+//                PlayFabServerAPI.GrantItemsToCharacter(grantRequest, GrantCharacterItemCallback, PfSharedControllerEx.FailCallback("GrantItemsToCharacter"));
+//            };
+//            return output;
+//        }
+//        public void GrantCharacterItemCallback(ServerModels.GrantItemsToCharacterResult grantResult)
+//        {
+//            // Merge the items we received with the items we know we have
+//            //UserModel userModel;
+//            //if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+//            //    userModel.serverUserItems.AddRange(grantResult.ItemGrantResults); // TODO: Type mismatch makes this too complicated for now
+//
+//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, true);
+//        }
+//
+//        public void GetInventory()
+//        {
+//            var getRequest = new ServerModels.GetCharacterInventoryRequest();
+//            getRequest.PlayFabId = playFabId;
+//            getRequest.CharacterId = characterId;
+//            PlayFabServerAPI.GetCharacterInventory(getRequest, GetInventoryCallback, PfSharedControllerEx.FailCallback("GetCharacterInventory"));
+//        }
+//        public void GetInventoryCallback(ServerModels.GetCharacterInventoryResult getResult)
+//        {
+//            PfSharedControllerEx.sb.Length = 0;
+//            for (int i = 0; i < getResult.Inventory.Count; i++)
 //            {
-//                var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
-//                if (movedItem != null)
-//                {
-//                    userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
-//                    userModel.serverUserItems.Add(movedItem);
-//                }
+//                if (i != 0)
+//                    PfSharedControllerEx.sb.Append(", ");
+//                PfSharedControllerEx.sb.Append(getResult.Inventory[i].DisplayName);
 //            }
-
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
-        }
-
-        public Action RevokeItem(string itemInstanceId)
-        {
-            Action output = () =>
-            {
-                var revokeRequest = new AdminModels.RevokeInventoryItemRequest();
-                revokeRequest.PlayFabId = playFabId;
-                revokeRequest.CharacterId = characterId;
-                revokeRequest.ItemInstanceId = itemInstanceId;
-                PlayFabAdminAPI.RevokeInventoryItem(revokeRequest, RevokeItemCallback, PfSharedControllerEx.FailCallback("RevokeInventoryItem"));
-            };
-            return output;
-        }
-        public void RevokeItemCallback(AdminModels.RevokeInventoryResult revokeResult)
-        {
-            string playFabId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).PlayFabId;
-            string characterId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).CharacterId;
-            string revokedItemInstanceId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).ItemInstanceId;
-
-            UserModel userModel;
-//            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
-//                userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
-
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
-        }
-    }
+//            inventoryDisplay = PfSharedControllerEx.sb.ToString();
+//            inventory = getResult.Inventory;
+//        }
+//
+//        public Action MoveToCharFromUser(string itemInstanceId)
+//        {
+//            Action output = () =>
+//            {
+//                var moveRequest = new ServerModels.MoveItemToCharacterFromUserRequest();
+//                moveRequest.PlayFabId = playFabId;
+//                moveRequest.CharacterId = characterId;
+//                moveRequest.ItemInstanceId = itemInstanceId;
+//                PlayFabServerAPI.MoveItemToCharacterFromUser(moveRequest, MoveToCharCallback, PfSharedControllerEx.FailCallback("MoveItemToCharacterFromUser"));
+//            };
+//            return output;
+//        }
+//        public void MoveToCharCallback(ServerModels.MoveItemToCharacterFromUserResult moveResult)
+//        {
+//            string playFabId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).PlayFabId;
+//            string characterId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).CharacterId;
+//            string movedItemInstanceId = ((ServerModels.MoveItemToCharacterFromUserRequest)moveResult.Request).ItemInstanceId;
+//
+//            UserModel userModel;
+//            CharacterModel tempModel;
+//            ServerCharacterModel characterModel;
+////            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel)
+////            && userModel.serverCharacterModels.TryGetValue(characterId, out tempModel))
+////            {
+////                characterModel = tempModel as ServerCharacterModel;
+////                var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
+////                if (movedItem != null)
+////                {
+////                    userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
+////                    characterModel.inventory.Add(movedItem);
+////                }
+////            }
+//
+//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
+//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
+//        }
+//
+//        public Action MoveToUser(string itemInstanceId)
+//        {
+//            Action output = () =>
+//            {
+//                var moveRequest = new ServerModels.MoveItemToUserFromCharacterRequest();
+//                moveRequest.PlayFabId = playFabId;
+//                moveRequest.CharacterId = characterId;
+//                moveRequest.ItemInstanceId = itemInstanceId;
+//                PlayFabServerAPI.MoveItemToUserFromCharacter(moveRequest, MoveToUserCallback, PfSharedControllerEx.FailCallback("MoveItemToUserFromCharacter"));
+//            };
+//            return output;
+//        }
+//        public void MoveToUserCallback(ServerModels.MoveItemToUserFromCharacterResult moveResult)
+//        {
+//            string playFabId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).PlayFabId;
+//            string characterId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).CharacterId;
+//            string movedItemInstanceId = ((ServerModels.MoveItemToUserFromCharacterRequest)moveResult.Request).ItemInstanceId;
+//
+//            UserModel userModel;
+////            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+////            {
+////                var movedItem = userModel.GetServerItem(characterId, movedItemInstanceId);
+////                if (movedItem != null)
+////                {
+////                    userModel.RemoveItems(characterId, new HashSet<string>() { movedItemInstanceId });
+////                    userModel.serverUserItems.Add(movedItem);
+////                }
+////            }
+//
+//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, null, PfSharedControllerEx.Api.Server, false);
+//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Server, false);
+//        }
+//
+//        public Action RevokeItem(string itemInstanceId)
+//        {
+//            Action output = () =>
+//            {
+//                var revokeRequest = new AdminModels.RevokeInventoryItemRequest();
+//                revokeRequest.PlayFabId = playFabId;
+//                revokeRequest.CharacterId = characterId;
+//                revokeRequest.ItemInstanceId = itemInstanceId;
+//                PlayFabAdminAPI.RevokeInventoryItem(revokeRequest, RevokeItemCallback, PfSharedControllerEx.FailCallback("RevokeInventoryItem"));
+//            };
+//            return output;
+//        }
+//        public void RevokeItemCallback(AdminModels.RevokeInventoryResult revokeResult)
+//        {
+//            string playFabId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).PlayFabId;
+//            string characterId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).CharacterId;
+//            string revokedItemInstanceId = ((AdminModels.RevokeInventoryItemRequest)revokeResult.Request).ItemInstanceId;
+//
+//            UserModel userModel;
+////            if (PfSharedModelEx.serverUsers.TryGetValue(playFabId, out userModel))
+////                userModel.RemoveItems(characterId, new HashSet<string>() { revokedItemInstanceId });
+//
+//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+//        }
+//    }
 }

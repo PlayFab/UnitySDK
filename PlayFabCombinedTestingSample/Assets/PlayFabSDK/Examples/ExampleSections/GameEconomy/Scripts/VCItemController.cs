@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
@@ -62,13 +62,13 @@ public class VCItemController : MonoBehaviour {
 		int net = _balance - _initialBalance;
 		if(net > 0)
 		{
-			System.Action add = PlayFab.Examples.Server.VirtualCurrencyExample.AddUserVirtualCurrency(PlayFab.Examples.PfSharedModelEx.globalClientUser.playFabId, this.vc_code.text, net);
+			System.Action add = PlayFab.Examples.Server.VirtualCurrencyExample.AddUserVirtualCurrency(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, this.vc_code.text, net);
 			add();
 		}
 		else if (net < 0)
 		{
 			// multiply by -1 to get back in the black
-			System.Action sub = PlayFab.Examples.Server.VirtualCurrencyExample.SubtractUserVirtualCurrency(PlayFab.Examples.PfSharedModelEx.globalClientUser.playFabId, this.vc_code.text, net * -1);
+			System.Action sub = PlayFab.Examples.Server.VirtualCurrencyExample.SubtractUserVirtualCurrency(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, this.vc_code.text, net * -1);
 			sub();
 		}
 	}

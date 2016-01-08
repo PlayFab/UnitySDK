@@ -367,13 +367,15 @@ namespace PlayFab
 		private void HandleLoginResult(LoginResult result, RegistrationLinkType linkType)
 		{
 			_playFabId = result.PlayFabId;
-			PlayFab.Examples.PfSharedModelEx.globalClientUser.playFabId = result.PlayFabId;
+			PlayFab.Examples.PfSharedModelEx.currentUser.playFabId = result.PlayFabId;
+			
 			
 			//Get player Account info and store it.
 			PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest(), (accountInfoResult) =>
 			{
 				Debug.Log("Account Info Received Succesfully!");
 				AccountInfo = accountInfoResult.AccountInfo;
+				PlayFab.Examples.PfSharedModelEx.currentUser.accountInfo = accountInfoResult.AccountInfo;
 				
 				//We make this call here to ensure that Account Info is available after login.
 				if (OnLoggedIn != null)

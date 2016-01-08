@@ -52,7 +52,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetUserVcCallback(ClientModels.GetUserInventoryResult getResult)
         {
-            PfSharedModelEx.globalClientUser.userVC = getResult.VirtualCurrency;
+            PfSharedModelEx.currentUser.userVC = getResult.VirtualCurrency;
 //            foreach (var pair in getResult.VirtualCurrency)
 //                PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
         }
@@ -68,7 +68,7 @@ namespace PlayFab.Examples.Client
             string characterId = ((ClientModels.GetCharacterInventoryRequest)getResult.Request).CharacterId;
 
             CharacterModel characterModel;
-            if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out characterModel))
+            if (PfSharedModelEx.currentUser.userCharacters.TryGetValue(characterId, out characterModel))
                 characterModel.characterVC = getResult.VirtualCurrency;
 //            foreach (var pair in getResult.VirtualCurrency)
 //                PfSharedModelEx.virutalCurrencyTypes.Add(pair.Key);
@@ -92,9 +92,9 @@ namespace PlayFab.Examples.Client
 
         private static void ModifyUserVcCallback(ClientModels.ModifyUserVirtualCurrencyResult modResult)
         {
-            PfSharedModelEx.globalClientUser.SetVcBalance(null, modResult.VirtualCurrency, modResult.Balance);
-
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+//            PfSharedModelEx.currentUser.SetVcBalance(null, modResult.VirtualCurrency, modResult.Balance);
+//
+//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
         #endregion Example Implementation of PlayFab Inventory APIs
     }

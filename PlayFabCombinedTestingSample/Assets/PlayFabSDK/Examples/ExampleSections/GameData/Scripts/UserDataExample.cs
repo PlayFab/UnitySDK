@@ -29,7 +29,7 @@ namespace PlayFab.Examples.Client
         public static void GetUserData()
         {
             var getRequest = new ClientModels.GetUserDataRequest();
-            getRequest.PlayFabId = PfSharedModelEx.globalClientUser.playFabId; // You may ask for yourself specifically, any other playFabId you're aware of, or null to default to yourself
+            getRequest.PlayFabId = PfSharedModelEx.currentUser.playFabId; // You may ask for yourself specifically, any other playFabId you're aware of, or null to default to yourself
             // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
             PlayFabClientAPI.GetUserData(getRequest, GetUserDataCallback, PfSharedControllerEx.FailCallback("GetUserData"));
         }
@@ -37,14 +37,14 @@ namespace PlayFab.Examples.Client
         private static void GetUserDataCallback(ClientModels.GetUserDataResult result)
         {
             foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.globalClientUser.userData[eachDataEntry.Key] = eachDataEntry.Value.Value;
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+                PfSharedModelEx.currentUser.userData[eachDataEntry.Key] = eachDataEntry.Value.Value;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         public static void GetUserReadOnlyData()
         {
             var getRequest = new ClientModels.GetUserDataRequest();
-            getRequest.PlayFabId = PfSharedModelEx.globalClientUser.playFabId; // You may ask for yourself specifically, any other playFabId you're aware of, or null to default to yourself
+            getRequest.PlayFabId = PfSharedModelEx.currentUser.playFabId; // You may ask for yourself specifically, any other playFabId you're aware of, or null to default to yourself
             // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
             PlayFabClientAPI.GetUserReadOnlyData(getRequest, GetUserDataCallback, PfSharedControllerEx.FailCallback("GetUserReadOnlyData"));
         }
@@ -52,8 +52,8 @@ namespace PlayFab.Examples.Client
         private static void GetUserReadOnlyDataCallback(ClientModels.GetUserDataResult result)
         {
             foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.globalClientUser.userReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value.Value;
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+                PfSharedModelEx.currentUser.userReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value.Value;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         public static void UpdateUserData(string userDataKey, string userDataValue)
@@ -74,12 +74,12 @@ namespace PlayFab.Examples.Client
             foreach (var dataPair in dataUpdated)
             {
                 if (string.IsNullOrEmpty(dataPair.Value))
-                    PfSharedModelEx.globalClientUser.userData.Remove(dataPair.Key);
+                    PfSharedModelEx.currentUser.userData.Remove(dataPair.Key);
                 else
-                    PfSharedModelEx.globalClientUser.userData[dataPair.Key] = dataPair.Value;
+                    PfSharedModelEx.currentUser.userData[dataPair.Key] = dataPair.Value;
             }
 
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
         #endregion UserData - Data attached directly to the user for this title
 
@@ -94,8 +94,8 @@ namespace PlayFab.Examples.Client
         private static void GetUserPublisherDataCallback(ClientModels.GetUserDataResult result)
         {
             foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.globalClientUser.userPublisherData[eachDataEntry.Key] = eachDataEntry.Value.Value;
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+                PfSharedModelEx.currentUser.userPublisherData[eachDataEntry.Key] = eachDataEntry.Value.Value;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         public static void GetUserPublisherReadOnlyData()
@@ -108,8 +108,8 @@ namespace PlayFab.Examples.Client
         private static void GetUserPublisherReadOnlyDataCallback(ClientModels.GetUserDataResult result)
         {
             foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.globalClientUser.userPublisherReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value.Value;
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+                PfSharedModelEx.currentUser.userPublisherReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value.Value;
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         public static void UpdatePublisherdata(string userDataKey, string userDataValue)
@@ -127,12 +127,12 @@ namespace PlayFab.Examples.Client
             foreach (var dataPair in dataUpdated)
             {
                 if (string.IsNullOrEmpty(dataPair.Value))
-                    PfSharedModelEx.globalClientUser.userPublisherData.Remove(dataPair.Key);
+                    PfSharedModelEx.currentUser.userPublisherData.Remove(dataPair.Key);
                 else
-                    PfSharedModelEx.globalClientUser.userPublisherData[dataPair.Key] = dataPair.Value;
+                    PfSharedModelEx.currentUser.userPublisherData[dataPair.Key] = dataPair.Value;
             }
 
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, PfSharedModelEx.globalClientUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
         }
 
         #endregion UserPublisherData - Data attached directly to the user across all titles for this publisher

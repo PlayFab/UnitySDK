@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -26,9 +26,9 @@ public class WalletController : MonoBehaviour {
 		yield return new WaitForEndOfFrame();	
 		
 		// need to show player balances, not character
-		if(PlayFab.Examples.PfSharedModelEx.globalClientUser.userVC.Count > 0)
+		if(PlayFab.Examples.PfSharedModelEx.currentUser.userVC.Count > 0)
 		{	
-			foreach(var kvp in PlayFab.Examples.PfSharedModelEx.globalClientUser.userVC)
+			foreach(var kvp in PlayFab.Examples.PfSharedModelEx.currentUser.userVC)
 			{
 				Transform go = Instantiate(this.CurrencyDisplayItemPrefab);
 				go.SetParent(DisplayContainer, false);

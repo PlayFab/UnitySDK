@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
@@ -32,7 +32,7 @@ public class InventoryItemController : MonoBehaviour {
 		this.mainController = controller;
 		this.itemId.text = item.ItemId;
 		
-		PlayFab.Examples.PfSharedModelEx.clientCatalog.TryGetValue(item.ItemId, out this.catlogItem);
+		//PlayFab.Examples.PfSharedModelEx.titleCatalogs.TryGetValue(item.ItemId, out this.catlogItem);
 		
 		this.selectButton.onClick.RemoveAllListeners();
 		
