@@ -61,6 +61,7 @@ namespace PlayFab.Examples
         #region Shared Virtual Currency
         // NOTE: There is no way to request all vc types presently, so the knowledge must be hard coded
         public Dictionary<string, int> userVC = new Dictionary<string, int>();
+        public Dictionary<string, ClientModels.VirtualCurrencyRechargeTime> userVcRechargeTimes = new Dictionary<string, PlayFab.ClientModels.VirtualCurrencyRechargeTime>();
         #endregion Virtual Currency
 
 //        #region Client Trade
@@ -279,7 +280,7 @@ namespace PlayFab.Examples
         public Dictionary<string, string> characterReadOnlyData = new Dictionary<string, string>();
         public List<ClientModels.ItemInstance> characterInventory = new List<PlayFab.ClientModels.ItemInstance>();
         public Dictionary<string, int> characterVC = new Dictionary<string, int>();
-        
+		public Dictionary<string, ClientModels.VirtualCurrencyRechargeTime> characterVcRechargeTimes = new Dictionary<string, PlayFab.ClientModels.VirtualCurrencyRechargeTime>();
 		public CharacterModel(ClientModels.CharacterResult cr)
 		{
 			this.details = cr;

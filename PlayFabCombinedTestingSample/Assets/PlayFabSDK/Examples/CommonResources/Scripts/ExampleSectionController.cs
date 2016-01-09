@@ -11,11 +11,31 @@ public class ExampleSectionController : MonoBehaviour {
 	
 	public List<AssociatedButtons> Buttons = new List<AssociatedButtons>();
 	
+	public UnityEvent RunOnEnable; 		// methods to run when this module is opened
+	public UnityEvent RunOnDisable; 	// methods to run when this module is closed
 
 	// Use this for initialization
 	void Start () {
 	
 	}
+	
+	void OnEnable()
+	{
+		if(RunOnEnable != null)
+		{
+		 	RunOnEnable.Invoke();
+		}
+	}
+	
+	void OnDisable()
+	{
+		if(RunOnDisable != null)
+		{
+			RunOnDisable.Invoke();
+		}
+	}
+	
+	
 	
 	// Update is called once per frame
 	void Update () {
@@ -25,12 +45,8 @@ public class ExampleSectionController : MonoBehaviour {
 	public void InitSection() // callback param?
 	{
 		// callback can send back a list of subsection buttons -- text / onClick
-		
+		// LOOP through delegates and fire ones registered
 	}
-	
-	
-	
-	
 }
 
 

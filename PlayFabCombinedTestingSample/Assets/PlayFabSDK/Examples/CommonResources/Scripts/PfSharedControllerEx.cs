@@ -18,6 +18,9 @@ namespace PlayFab.Examples
         ///         This is only particularly relevant to the server/client keeping similar data in separate containers with different datatypes (inventory).
         /// </param>
         public delegate void PfControllerDelegate(string playFabId, string characterId, Api eventSourceApi, bool requiresFullRefresh);
+		
+		// temp function for debug output
+		public delegate void DebugOutputDelegate(string message);
 
         [Flags]
         public enum Api
@@ -85,5 +88,9 @@ namespace PlayFab.Examples
             };
             return output;
         }
+        
+        
+        
+        
     }
 }

@@ -27,6 +27,8 @@ public class ActiveUserInfoController : MonoBehaviour {
 		this.ToggleCharacter.onClick.AddListener(() => { OnToggleCharacterClick(); });
 		
 		//PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnGetCharacterList);
+		
+	
 	}
 	
 	// Update is called once per frame

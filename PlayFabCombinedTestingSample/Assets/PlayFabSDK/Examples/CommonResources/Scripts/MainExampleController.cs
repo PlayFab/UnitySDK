@@ -37,7 +37,6 @@ public class MainExampleController : MonoBehaviour {
 	void AfterLogin(RegistrationLinkType linkType, LoginResult result)
 	{
 		this.activeUserInfo.Init(result);
-		PlayFab.Examples.Client.InventoryExample.LoginCallBack(result);
 		
 		// load any ExampleSectionController found at the root of any Resources directory
 		ExampleSectionController[] sections = Resources.LoadAll<ExampleSectionController>("");
@@ -63,7 +62,6 @@ public class MainExampleController : MonoBehaviour {
 			
 			ShowExamplesMenu();
 			this.examplesMenu.Init(this.Sections, InstantiateOrActivateSection);
-			
 		}
 		else
 		{
@@ -157,6 +155,11 @@ public class MainExampleController : MonoBehaviour {
 	public void ShowExamplesSubMenu()
 	{
 		this.examplesSubMenu.gameObject.SetActive(true);
+	}
+	
+	public static void DebugOutput(string msg)
+	{
+		Debug.Log("DebugOut: " + msg);
 	}
 }
 

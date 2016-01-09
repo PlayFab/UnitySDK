@@ -15,9 +15,9 @@ namespace PlayFab.Examples.Client
         #region Controller Event Handling
         static InventoryExample()
         {
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, OnInventoryChanged);
+           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
+           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
+           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, OnInventoryChanged);
         }
 
         public static void SetUp()
@@ -25,341 +25,354 @@ namespace PlayFab.Examples.Client
             // The static constructor is called as a by-product of this call
         }
 
-        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-        {
-            /*
-            	get catalog
-            	get user inv
-            	
-            */
-            
-            GetUserInventory();
-            var catalogRequest = new ClientModels.GetCatalogItemsRequest();
-            PlayFabClientAPI.GetCatalogItems(catalogRequest, GetCatalogCallback, PfSharedControllerEx.FailCallback("GetCatalogItems"));
-        }
 
-		// OnCharacterListLoaded.
-			// getinventory
-			
-		//On activeCharacterToggle
-		
-		//On ExampleStart
-		
-		
-
-//
-		public static void LoginCallBack(LoginResult loginResult)
+		public static void LoadInventoryFromPlayFab()
 		{
-			// CLIENT
-//			PfSharedModelEx.globalClientUser.playFabId = loginResult.PlayFabId;
-//			PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, loginResult.PlayFabId, null, PfSharedControllerEx.Api.Client, false);
-//			var clientRequest = new ListUsersCharactersRequest();
-//			PlayFabClientAPI.GetAllUsersCharacters(clientRequest, ClientCharCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
-			
+			if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+			{
+				var getRequest = new ClientModels.GetUserInventoryRequest();
+				PlayFabClientAPI.GetUserInventory(getRequest, LoadUserInventoryCallback, PfSharedControllerEx.FailCallback("GetUserInventory"));
+			}
+			else
+			{
+	            var getRequest = new ClientModels.GetCharacterInventoryRequest();
+				getRequest.CharacterId = PlayFab.Examples.PfSharedModelEx.currentCharacter.details.CharacterId;
+				PlayFabClientAPI.GetCharacterInventory(getRequest, LoadCharacterInventoryCallback, PfSharedControllerEx.FailCallback("GetCharacterInventory"));
+			}
 		}
-//		
-//		public static void ClientCharCallBack(ListUsersCharactersResult charResult)
-//		{
-//			CharacterModel temp;
-//			foreach (var character in charResult.Characters)
-//			{
-//				if (!PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(character.CharacterId, out temp))
-//					PfSharedModelEx.globalClientUser.clientCharacterModels[character.CharacterId] = new PfInvClientChar(PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, character.CharacterName);
-//				PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, PfSharedControllerEx.Api.Client, false);
-//			}
-//		}
+		
+		public static void LoadUserInventoryCallback(ClientModels.GetUserInventoryResult result)
+		{
+			PlayFab.Examples.PfSharedModelEx.currentUser.userInventory = result.Inventory;
+			PlayFab.Examples.PfSharedModelEx.currentUser.userVC = result.VirtualCurrency;
+			PlayFab.Examples.PfSharedModelEx.currentUser.userVcRechargeTimes = result.VirtualCurrencyRechargeTimes;
+			
+			MainExampleController.DebugOutput("User Inventory Loaded.");
+		}
+		
+		
+		public static void LoadCharacterInventoryCallback(ClientModels.GetCharacterInventoryResult result)
+		{
+			PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory = result.Inventory;
+			PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC = result.VirtualCurrency;
+			PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVcRechargeTimes = result.VirtualCurrencyRechargeTimes;
+			
+			MainExampleController.DebugOutput("Character Inventory Loaded.");
+		}
+		
+
+		public static void LoadCatalogFromPlayFab(string catalogVersion = null)
+		{
+			var catalogRequest = new ClientModels.GetCatalogItemsRequest();
+			if(!string.IsNullOrEmpty(catalogVersion))
+			{
+				catalogRequest.CatalogVersion = catalogVersion;
+			}
+			PlayFabClientAPI.GetCatalogItems(catalogRequest, LoadCatalogFromPlayFabCallback, PfSharedControllerEx.FailCallback("GetCatalogItems"));
+		}
 
 
-        private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
+		public static void LoadCatalogFromPlayFabCallback(ClientModels.GetCatalogItemsResult catalogResult)
         {
-//            if (eventSourceApi != PfSharedControllerEx.Api.Client)
-//                return;
-//
-//            CharacterModel charModel;
-//            if (PfSharedModelEx.currentUser.userCharacters.TryGetValue(characterId, out charModel))
-//                ((PfInvClientChar)charModel).GetInventory();
+			ClientModels.GetCatalogItemsRequest request = (ClientModels.GetCatalogItemsRequest)catalogResult.Request;
+			
+			if(!string.IsNullOrEmpty(request.CatalogVersion))
+			{ 
+				PfSharedModelEx.titleCatalogs[request.CatalogVersion] = catalogResult.Catalog;
+			}
+			else
+			{
+				PfSharedModelEx.titleCatalogs["primary"] = catalogResult.Catalog;
+			}
+			
+			MainExampleController.DebugOutput("Title Catalog Loaded.");
+			// fire catalog loaded event (supply catalog version)
+            // PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null, null, PfSharedControllerEx.Api.Client, false);
         }
 
-        private static void GetCatalogCallback(ClientModels.GetCatalogItemsResult catalogResult)
-        {
-//            PfSharedModelEx.titleCatalog.Clear();
-//            foreach (var catalogItem in catalogResult.Catalog)
-//                PfSharedModelEx.titleCatalog[catalogItem.ItemId] = catalogItem;
-            //PfSharedModelEx.consumableItemIds.Clear();
-            //PfSharedModelEx.containerItemIds.Clear();
-
-//            foreach (var each in catalogResult.Catalog)
-//            {
-//                if (each.Container != null)
-//                    PfSharedModelEx.containerItemIds.Add(each.ItemId);
-//                else if (each.Consumable != null && each.Consumable.UsageCount > 0)
-//                    PfSharedModelEx.consumableItemIds.Add(each.ItemId);
-//            }
-            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null, null, PfSharedControllerEx.Api.Client, false);
-        }
-
-        private static void OnInventoryChanged(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-        {
-            if (!requiresFullRefresh && (eventSourceApi & PfSharedControllerEx.Api.Client) == PfSharedControllerEx.Api.Client)
-                return; // Don't need to handle this event
-
-            if (string.IsNullOrEmpty(characterId))
-            {
-                // Reload the user inventory
-                GetUserInventory();
-            }
-            else
-            {
-                // Reload the character inventory
-//                CharacterModel tempCharacter;
-//                if (!PfSharedModelEx.currentUser.userCharacters.TryGetValue(characterId, out tempCharacter))
-//                    return;
-//                PfInvClientChar eachCharacter = tempCharacter as PfInvClientChar;
-//                if (eachCharacter == null || eachCharacter.inventory == null)
-//                    return;
-//
-//                eachCharacter.GetInventory();
-            }
-        }
+		public static void LoadStoreFromPlayFab(string storeId, string catalogVersion = null)
+		{
+			if(!string.IsNullOrEmpty(storeId))
+			{
+				var storeRequest = new ClientModels.GetStoreItemsRequest();
+				storeRequest.StoreId = storeId;
+				
+				if(!string.IsNullOrEmpty(catalogVersion))
+				{
+					storeRequest.CatalogVersion = catalogVersion;
+				}
+				PlayFabClientAPI.GetStoreItems(storeRequest, LoadStoreFromPlayFabCallback, PfSharedControllerEx.FailCallback("GetStoreItems"));
+			}
+		}
+		
+		public static void LoadStoreFromPlayFabCallback(ClientModels.GetStoreItemsResult storeResult)
+		{
+			ClientModels.GetStoreItemsRequest request = (ClientModels.GetStoreItemsRequest)storeResult.Request;
+			PfSharedModelEx.titleStores[request.StoreId] = storeResult.Store;
+			
+			MainExampleController.DebugOutput("Store Loaded.");
+			// fire catalog loaded event (supply catalog version)
+			// PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null, null, PfSharedControllerEx.Api.Client, false);
+		}
         #endregion Controller Event Handling
 
 
 #region PlayFab Economy Methiods
-	public static void PurchaseItemFromStore()
+	public static void PurchaseItem(string itemId, string vc, int price, string storeId = null, string catalogVersion = null)
 	{
+		ClientModels.PurchaseItemRequest request = new ClientModels.PurchaseItemRequest();
+		request.ItemId = itemId;
+		request.VirtualCurrency = vc;
+		request.Price = price;
 		
-	}
-	
-	public static void PurchaseItemFromCatalog()
-	{
+		if(!string.IsNullOrEmpty(catalogVersion))
+		{
+			request.CatalogVersion = catalogVersion;	
+		}
 		
-	}
-	
-	public static void UpdateItemUses()
-	{
+		if(!string.IsNullOrEmpty(storeId))
+		{
+			request.StoreId = storeId;
+		}
 		
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.Character)
+		{
+			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;
+		}
+		
+		PlayFabClientAPI.PurchaseItem(request, PurchaseItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
 	}
 	
-	public static void UpdateVcBalance()
+	public static void PurchaseItemCallback(ClientModels.PurchaseItemResult result)
 	{
-	
+		ClientModels.PurchaseItemRequest request = (ClientModels.PurchaseItemRequest)result.Request;
+		
+		// process the diff so that we do not have to fetch the entire inventory again.
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		{
+			// add newly purchased items to inventory
+			PfSharedModelEx.currentUser.userInventory.AddRange(result.Items);
+			
+			// make VC adjustments
+			PfSharedModelEx.currentUser.userVC[request.VirtualCurrency] -= request.Price;
+		}
+		else
+		{
+			// add newly purchased items to inventory
+			PfSharedModelEx.currentCharacter.characterInventory.AddRange(result.Items);
+			
+			// make VC adjustments
+			PfSharedModelEx.currentCharacter.characterVC[request.VirtualCurrency] -= request.Price;
+		}
+		
+		MainExampleController.DebugOutput("Purchase Complete.");
 	}
+	
+	
+	public static void ConsumeItem(string instanceId, int count)
+	{
+		ClientModels.ConsumeItemRequest request = new ClientModels.ConsumeItemRequest();
+		request.ItemInstanceId = instanceId;
+		request.ConsumeCount = count;
+		
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.Character)
+		{
+			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;				
+		}
+
+		PlayFabClientAPI.ConsumeItem(request, ConsumeItemCallback, PfSharedControllerEx.FailCallback("ConsumeItem"));
+	}
+	
+	public static void ConsumeItemCallback(ClientModels.ConsumeItemResult result)
+	{
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		{
+			for(int z = 0; z < PfSharedModelEx.currentUser.userInventory.Count; z++)
+			{
+				if(PfSharedModelEx.currentUser.userInventory[z].ItemInstanceId == result.ItemInstanceId)
+				{
+					// shouln't be less than 0, but in either event this item is completely consumed.
+					if(result.RemainingUses <= 0)
+					{
+						PfSharedModelEx.currentUser.userInventory.RemoveAt(z);
+					}
+					else
+					{
+						PfSharedModelEx.currentUser.userInventory[z].RemainingUses = result.RemainingUses;
+					}
+				}
+			}
+		}
+		else
+		{
+			for(int z = 0; z < PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+			{
+				if(PfSharedModelEx.currentCharacter.characterInventory[z].ItemInstanceId == result.ItemInstanceId)
+				{
+					// shouln't be less than 0, but in either event this item is completely consumed.
+					if(result.RemainingUses <= 0)
+					{
+						PfSharedModelEx.currentCharacter.characterInventory.RemoveAt(z);
+					}
+					else
+					{
+						PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses = result.RemainingUses;
+					}
+				}
+			}
+		}
+		
+		MainExampleController.DebugOutput("Consume Item Complete.");
+	}
+	
+	
+	public static void UnlockContainer(string containerItemId, string catalogVersion = null)
+	{
+		ClientModels.UnlockContainerItemRequest request = new ClientModels.UnlockContainerItemRequest();
+		request.ContainerItemId = containerItemId;
+		
+		if(!string.IsNullOrEmpty(catalogVersion))
+		{
+			request.CatalogVersion = catalogVersion;
+		}
+		
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.Character)
+		{
+			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;
+		}
+		
+		PlayFabClientAPI.UnlockContainerItem(request, UnlockContainerCallback, PfSharedControllerEx.FailCallback("UnlockContainerItem"));
+	}
+	
+	public static void UnlockContainerCallback(ClientModels.UnlockContainerItemResult result)
+	{
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		{
+			// add items to the inventory
+			PfSharedModelEx.currentUser.userInventory.AddRange(result.GrantedItems);
+			
+			// if consumable, decrement remaining uses on container
+			for(int z = 0; z < PfSharedModelEx.currentUser.userInventory.Count; z++)
+			{
+				if(PfSharedModelEx.currentUser.userInventory[z].ItemInstanceId == result.UnlockedItemInstanceId)
+				{
+					if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses != null)
+					{
+						if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses > 1)
+						{
+							PfSharedModelEx.currentUser.userInventory[z].RemainingUses -= 1;
+						}
+						else
+						{
+							PfSharedModelEx.currentUser.userInventory.RemoveAt(z);
+						}
+					}
+				}
+			}
+			
+			// if a key was used and is consumable, decrement remaining uses on key
+			if(!string.IsNullOrEmpty(result.UnlockedWithItemInstanceId))
+			{
+				for(int z = 0; z < PfSharedModelEx.currentUser.userInventory.Count; z++)
+				{
+					if(PfSharedModelEx.currentUser.userInventory[z].ItemInstanceId == result.UnlockedWithItemInstanceId)
+					{
+						if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses != null)
+						{
+							if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses > 1)
+							{
+								PfSharedModelEx.currentUser.userInventory[z].RemainingUses -= 1;
+							}
+							else
+							{
+								PfSharedModelEx.currentUser.userInventory.RemoveAt(z);
+							}
+						}
+					}
+				}
+			}
+			
+			// if VC was obtained, add them
+			foreach(var item in result.VirtualCurrency)
+			{
+				int currentValue;
+				PfSharedModelEx.currentUser.userVC.TryGetValue(item.Key, out currentValue);
+				PfSharedModelEx.currentUser.userVC[item.Key] = currentValue + (int)item.Value;
+			}
+		}
+		else
+		{
+			// add items to the inventory
+			PfSharedModelEx.currentCharacter.characterInventory.AddRange(result.GrantedItems);
+			
+			// if consumable, decrement remaining uses on container
+			for(int z = 0; z < PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+			{
+				if(PfSharedModelEx.currentCharacter.characterInventory[z].ItemInstanceId == result.UnlockedItemInstanceId)
+				{
+					if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses != null)
+					{
+						if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses > 1)
+						{
+							PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses -= 1;
+						}
+						else
+						{
+							PfSharedModelEx.currentCharacter.characterInventory.RemoveAt(z);
+						}
+					}
+				}
+			}
+			
+			// if a key was used and is consumable, decrement remaining uses on key
+			if(!string.IsNullOrEmpty(result.UnlockedWithItemInstanceId))
+			{
+				for(int z = 0; z < PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+				{
+					if(PfSharedModelEx.currentCharacter.characterInventory[z].ItemInstanceId == result.UnlockedWithItemInstanceId)
+					{
+						if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses != null)
+						{
+							if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses > 1)
+							{
+								PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses -= 1;
+							}
+							else
+							{
+								PfSharedModelEx.currentCharacter.characterInventory.RemoveAt(z);
+							}
+						}
+					}
+				}
+			}
+			
+			// if VC was obtained, add them
+			foreach(var item in result.VirtualCurrency)
+			{
+				int currentValue;
+				PfSharedModelEx.currentCharacter.characterVC.TryGetValue(item.Key, out currentValue);
+				PfSharedModelEx.currentCharacter.characterVC[item.Key] = currentValue + (int)item.Value;
+			}
+		}
+		
+		MainExampleController.DebugOutput("Unlock Container Complete.");
+	}
+	
+	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
+	private static void ModifyVcBalance()
+	{}
+	
+	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
+	private static void GrantItem()
+	{}
+	
+	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
+	private static void RevokeItem()
+	{
+		// waiting on Siva to complete moving this API over to Server/
+	}
+	
 	
 #endregion
-
-
-        #region Example Implementation of PlayFab Inventory APIs
-        public static void PurchaseUserItem(string itemId)
-        {
-//            string vcKey; int cost;
-//            if (PfSharedModelEx.currentUser.GetClientItemPrice(null, itemId, out vcKey, out cost))
-//            {
-//                var purchaseRequest = new ClientModels.PurchaseItemRequest();
-//                purchaseRequest.ItemId = itemId;
-//                purchaseRequest.VirtualCurrency = vcKey;
-//                purchaseRequest.Price = cost;
-//                PlayFabClientAPI.PurchaseItem(purchaseRequest, PurchaseUserItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
-//            }
-//            else
-//            {
-//                UnityEngine.Debug.LogWarning("You cannot afford this item");
-//            }
-        }
-        public static void PurchaseUserItemCallback(ClientModels.PurchaseItemResult purchaseResult)
-        {
-            // Merge the items we bought with the items we know we have
-//            PfSharedModelEx.currentUser.clientUserItems.AddRange(purchaseResult.Items);
-//            string vcKey = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).VirtualCurrency;
-//            int cost = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).Price;
-//            PfSharedModelEx.currentUser.ModifyVcBalance(null, vcKey, -cost);
-//
-//            PfSharedModelEx.currentUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
-        }
-
-        public static void GetUserInventory()
-        {
-            var getRequest = new ClientModels.GetUserInventoryRequest();
-            PlayFabClientAPI.GetUserInventory(getRequest, GetUserItemsCallback, PfSharedControllerEx.FailCallback("GetUserInventory"));
-        }
-        public static void GetUserItemsCallback(ClientModels.GetUserInventoryResult getResult)
-        {
-//            PfSharedModelEx.currentUser.clientUserItems = getResult.Inventory;
-//            PfSharedModelEx.currentUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
-        }
-
-        public static void ConsumeUserItem(string itemInstanceId)
-        {
-            var consumeRequest = new ClientModels.ConsumeItemRequest();
-            consumeRequest.ConsumeCount = 1;
-            consumeRequest.CharacterId = null; // To indicate user inventory
-            consumeRequest.ItemInstanceId = itemInstanceId;
-            PlayFabClientAPI.ConsumeItem(consumeRequest, ConsumeItemCallback, PfSharedControllerEx.FailCallback("ConsumeItem"));
-        }
-        public static void ConsumeItemCallback(ClientModels.ConsumeItemResult consumeResult)
-        {
-//            string characterId = ((ClientModels.ConsumeItemRequest)consumeResult.Request).CharacterId;
-//            //if (consumeResult.RemainingUses == 0)
-//                //PfSharedModelEx.globalClientUser.RemoveItems(characterId, new HashSet<string>() { consumeResult.ItemInstanceId });
-//           // else
-//                PfSharedModelEx.currentUser.UpdateRemainingUses(characterId, consumeResult.ItemInstanceId, consumeResult.RemainingUses);
-//
-//            PfSharedModelEx.currentUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.currentUser.playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
-        }
-
-        public static void UnlockUserContainer(string itemId)
-        {
-            var unlockRequest = new ClientModels.UnlockContainerItemRequest();
-            unlockRequest.CharacterId = null; // To indicate user inventory
-            unlockRequest.ContainerItemId = itemId;
-            PlayFabClientAPI.UnlockContainerItem(unlockRequest, UnlockUserContainerCallback, PfSharedControllerEx.FailCallback("UnlockContainerItem"));
-        }
-        public static void UnlockUserContainerCallback(ClientModels.UnlockContainerItemResult unlockResult)
-        {
-//            string characterId = ((ClientModels.UnlockContainerItemRequest)unlockResult.Request).CharacterId;
-//
-//            PfSharedModelEx.currentUser.clientUserItems.AddRange(unlockResult.GrantedItems);
-//            var unlockedItem = PfSharedModelEx.currentUser.GetClientItem(characterId, unlockResult.UnlockedItemInstanceId);
-//            if (unlockedItem != null && unlockedItem.RemainingUses > 0)
-//            {
-//                unlockedItem.RemainingUses -= 1;
-////                if (unlockedItem.RemainingUses <= 0)
-////                    PfSharedModelEx.globalClientUser.RemoveItems(characterId, new HashSet<string>() { unlockResult.UnlockedItemInstanceId });
-//            }
-//
-//            PfSharedModelEx.currentUser.UpdateInvDisplay(PfSharedControllerEx.Api.Client);
-//            bool needsFullRefresh = (unlockedItem == null); // If we couldn't find our unlocked item, we're stuck and we need a full refresh
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.currentUser.playFabId, characterId, PfSharedControllerEx.Api.Client, needsFullRefresh);
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.currentUser.playFabId, characterId, PfSharedControllerEx.Api.Client, true); // unlockResult contains no information about potential currency we may have gained
-        }
-        #endregion Example Implementation of PlayFab Inventory APIs
-    }
-
-//    /// <summary>
-//    /// A wrapper for inventory related, character centric, API calls and info
-//    /// This mostly exists because the characterId needs to be available at all steps in the process, and a class-wrapper avoids most of the Lambda-hell
-//    /// </summary>
-//    public class PfInvClientChar : ClientCharacterModel
-//    {
-//        public PfInvClientChar(string playFabId, string characterId, string characterName)
-//            : base(playFabId, characterId, characterName)
-//        {
-//        }
-//
-//        public void PurchaseCharacterItem(string itemId)
-//        {
-//            string vcKey; int cost;
-//            if (PfSharedModelEx.globalClientUser.GetClientItemPrice(null, itemId, out vcKey, out cost))
-//            {
-//                var purchaseRequest = new ClientModels.PurchaseItemRequest();
-//                purchaseRequest.CharacterId = characterId;
-//                purchaseRequest.ItemId = itemId;
-//                purchaseRequest.VirtualCurrency = vcKey;
-//                purchaseRequest.Price = cost;
-//                PlayFabClientAPI.PurchaseItem(purchaseRequest, PurchaseItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
-//            }
-//            else
-//            {
-//                UnityEngine.Debug.LogWarning("You cannot afford this item");
-//            }
-//        }
-//        public void PurchaseItemCallback(ClientModels.PurchaseItemResult purchaseResult)
-//        {
-//            string characterId = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).CharacterId;
-//
-//            // Merge the items we bought with the items we know we have
-//            CharacterModel tempModel;
-//            if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out tempModel))
-//            {
-//                PfInvClientChar characterModel = tempModel as PfInvClientChar;
-//                if (characterModel != null)
-//                    characterModel.inventory.AddRange(purchaseResult.Items);
-//                tempModel.UpdateInvDisplay();
-//            }
-//            string vcKey = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).VirtualCurrency;
-//            int cost = ((ClientModels.PurchaseItemRequest)purchaseResult.Request).Price;
-//            PfSharedModelEx.globalClientUser.ModifyVcBalance(characterId, vcKey, -cost);
-//
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, false);
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
-//        }
-//
-//        public void GetInventory()
-//        {
-//            var getRequest = new ClientModels.GetCharacterInventoryRequest();
-//            getRequest.CharacterId = characterId;
-//            PlayFabClientAPI.GetCharacterInventory(getRequest, GetInventoryCallback, PfSharedControllerEx.FailCallback("GetCharacterInventory"));
-//        }
-//        public void GetInventoryCallback(ClientModels.GetCharacterInventoryResult getResult)
-//        {
-//            PfSharedControllerEx.sb.Length = 0;
-//            for (int i = 0; i < getResult.Inventory.Count; i++)
-//            {
-//                if (i != 0)
-//                    PfSharedControllerEx.sb.Append(", ");
-//                PfSharedControllerEx.sb.Append(getResult.Inventory[i].DisplayName);
-//            }
-//            //inventoryDisplay = PfSharedControllerEx.sb.ToString();
-//            inventory = getResult.Inventory;
-//        }
-//
-//        public void ConsumeItem(string itemInstanceId)
-//        {
-//            var consumeRequest = new ClientModels.ConsumeItemRequest();
-//            consumeRequest.ConsumeCount = 1;
-//            consumeRequest.CharacterId = characterId;
-//            consumeRequest.ItemInstanceId = itemInstanceId;
-//            PlayFabClientAPI.ConsumeItem(consumeRequest, ConsumeItemCallback, PfSharedControllerEx.FailCallback("ConsumeItem"));
-//        }
-//        public void ConsumeItemCallback(ClientModels.ConsumeItemResult consumeResult)
-//        {
-//           // if (consumeResult.RemainingUses == 0)
-//            //    PfSharedModelEx.globalClientUser.RemoveItems(characterId, new HashSet<string>() { consumeResult.ItemInstanceId });
-////            else
-//                PfSharedModelEx.globalClientUser.UpdateRemainingUses(characterId, consumeResult.ItemInstanceId, consumeResult.RemainingUses);
-//
-//            CharacterModel tempModel;
-//            if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out tempModel))
-//                tempModel.UpdateInvDisplay();
-//
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
-//        }
-//
-//        public void UnlockContainer(string itemId)
-//        {
-//            var unlockRequest = new ClientModels.UnlockContainerItemRequest();
-//            unlockRequest.CharacterId = characterId;
-//            unlockRequest.ContainerItemId = itemId;
-//            PlayFabClientAPI.UnlockContainerItem(unlockRequest, UnlockContainerCallback, PfSharedControllerEx.FailCallback("UnlockContainerItem"));
-//        }
-//        public void UnlockContainerCallback(ClientModels.UnlockContainerItemResult unlockResult)
-//        {
-//            // Merge the items we bought with the items we know we have
-//            CharacterModel tempModel;
-//            if (PfSharedModelEx.globalClientUser.clientCharacterModels.TryGetValue(characterId, out tempModel))
-//            {
-//                PfInvClientChar characterModel = tempModel as PfInvClientChar;
-//                if (characterModel != null)
-//                    characterModel.inventory.AddRange(unlockResult.GrantedItems);
-//            }
-//
-//            // Get the unlocked item before we remove it (we need info from it later)
-//            var unlockedItem = PfSharedModelEx.globalClientUser.GetClientItem(characterId, unlockResult.UnlockedItemInstanceId);
-//            if (unlockedItem != null && unlockedItem.RemainingUses > 0)
-//            {
-//                unlockedItem.RemainingUses -= 1;
-//             //   if (unlockedItem.RemainingUses <= 0)
-//              //      PfSharedModelEx.globalClientUser.RemoveItems(characterId, new HashSet<string>() { unlockResult.UnlockedItemInstanceId });
-//            }
-//
-//            if (tempModel != null)
-//                tempModel.UpdateInvDisplay();
-//
-//            bool needsFullRefresh = (unlockedItem == null); // If we couldn't find our unlocked item, we're stuck and we need a full refresh
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, needsFullRefresh);
-//            PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnVcChanged, PfSharedModelEx.globalClientUser.playFabId, characterId, PfSharedControllerEx.Api.Client, true); // unlockResult contains no information about potential currency we may have gained
-//        }
-//    }
+	}
 }
