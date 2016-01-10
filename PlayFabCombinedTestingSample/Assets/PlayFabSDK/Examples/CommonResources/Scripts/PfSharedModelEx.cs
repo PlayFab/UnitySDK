@@ -30,6 +30,44 @@ namespace PlayFab.Examples
         // public static Dictionary<string, ServerModels.CatalogItem> serverCatalog = new Dictionary<string, ServerModels.CatalogItem>();
         public static Dictionary<string, List<ClientModels.CatalogItem>> titleCatalogs = new Dictionary<string, List<ClientModels.CatalogItem>>();
 		public static Dictionary<string, List<ClientModels.StoreItem>> titleStores = new Dictionary<string, List<ClientModels.StoreItem>>();
+		
+		public static List<ClientModels.CatalogItem> GetPrimaryCatalog()
+		{
+			List<ClientModels.CatalogItem> primary = null;
+			titleCatalogs.TryGetValue("primary", out primary);
+			return primary;
+		}
+		
+		public static List<ClientModels.CatalogItem> GetCatalog(string catalogVersion)
+		{
+			List<ClientModels.CatalogItem> version = null;
+			titleCatalogs.TryGetValue(catalogVersion, out version);
+			return version;
+		}
+		
+		public static List<ClientModels.StoreItem> GetStore(string storeId)
+		{
+			List<ClientModels.StoreItem> store = null;
+			titleStores.TryGetValue(storeId, out store);
+			return store;
+		}
+		
+		public static bool isCatalogCached(string catalogVersion = null)
+		{
+			if(!string.IsNullOrEmpty(catalogVersion))
+			{
+				return titleCatalogs.ContainsKey(catalogVersion);
+			}
+			else
+			{
+				return titleCatalogs.ContainsKey("primary");
+			}
+		}
+		
+		public static bool isStoreCached(string storeId)
+		{
+			return titleStores.ContainsKey(storeId);
+		}
 		#endregion Title information
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using PlayFab.ClientModels;
+using PlayFab.Examples;
 
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -27,9 +28,10 @@ public class StoreController : MonoBehaviour {
 	// SET catalog and store name defaults here.
 	public string storeName = "default";
 	public string catalogName = "1";
+	public string lastCatalogUsed = string.Empty;
+	public string lastStoreUsed = string.Empty;
 	
-	private bool hasInitialCatalogLoaded = false;
-	
+	private bool usePrimaryCatalog = true;
 	
 	void Awake()
 	{
@@ -95,39 +97,54 @@ public class StoreController : MonoBehaviour {
 		}
 		else if(DisplayState == StoreControllerStates.GetCatalog)
 		{
-			System.Action<string> afterInput = (string response) =>
+
+			if(this.usePrimaryCatalog == true && PfSharedModelEx.isCatalogCached())
 			{
-				if(!string.IsNullOrEmpty(response))
-				{
-//					if(string.Equals(response, this.catalogName) && this.useCachedItems == true && PlayFab.Examples.PfSharedModelEx.titleCatalog.Count > 0)
-//					{
-//						// store already retrived, draw it
-//						ShowCatalog();
-//					}
-//					else
-//					{
-//						// need to wait on store to load before drawing it
-//						this.catalogName = response;
-//						//PlayFab.Examples.Client.InventoryExample.GetCatalogItems(response); 
-//					}
-				}
-				else
-				{
-					this.gameObject.SetActive(false);
-				}
-			};
-			
-			
-			if(!string.IsNullOrEmpty(this.storeName))
+				ShowCatalog();
+			}
+			else if(PfSharedModelEx.isCatalogCached(lastCatalogUsed))
 			{
-				SharedDialogController.RequestTextInputPrompt("Catalog Mode:","Enter the name of the catalog you wish to retrieve.", afterInput, this.catalogName);
+				ShowCatalog();
 			}
 			else
 			{
-				SharedDialogController.RequestTextInputPrompt("title","msg", afterInput);
+				// TODO request & wait on a new catalog?
+				
+				this.gameObject.SetActive(false);
 			}
 		}
+
+	}
 	
+	
+	public void ChangeCatalog()
+	{
+		System.Action<string> afterInput = (string response) =>
+		{
+			if(!string.IsNullOrEmpty(response))
+			{
+				if(PfSharedModelEx.isCatalogCached(response))
+				{
+					// store already retrived, draw it
+					ShowCatalog();
+				}
+				else
+				{
+					// need to wait on store to load before drawing it
+					this.catalogName = response;
+					//PlayFab.Examples.Client.InventoryExample.GetCatalogItems(response); 
+				}
+			}
+		};
+		
+		if(!string.IsNullOrEmpty(this.storeName))
+		{
+			SharedDialogController.RequestTextInputPrompt("Catalog Mode:","Enter the name of the catalog you wish to retrieve.", afterInput, this.catalogName);
+		}
+		else
+		{
+			SharedDialogController.RequestTextInputPrompt("title","msg", afterInput);
+		}
 	}
 	
 	public void OnDisable()
@@ -163,7 +180,7 @@ public class StoreController : MonoBehaviour {
 //		}
 	}
 	
-	public void InitCatalog(Dictionary<string, CatalogItem> stock = null)
+	public void InitCatalog(List<CatalogItem> stock = null)
 	{
 		
 		//adjust item prefabs (ensure the correct # of preabs exist)
@@ -172,15 +189,14 @@ public class StoreController : MonoBehaviour {
 			AdjustItemPrefabs(stock.Count);
 			
 			int counter = 0;
-			foreach(var kvp in stock)
+			foreach(var item in stock)
 			{
-				// only show items that can be purchases, i.e. ones that have a price
-				
-				if( (kvp.Value.VirtualCurrencyPrices != null && kvp.Value.VirtualCurrencyPrices.Count > 0) || (kvp.Value.RealCurrencyPrices != null && kvp.Value.RealCurrencyPrices.Count > 0))
+				// only show items that can be purchases, i.e. ones that have a price			
+				if( (item.VirtualCurrencyPrices != null && item.VirtualCurrencyPrices.Count > 0) || (item.RealCurrencyPrices != null && item.RealCurrencyPrices.Count > 0))
 				{
 					StoreItemController itemController = this.itemSceneObjects[counter].GetComponent<StoreItemController>();
 					//this.itemSceneObjects[counter].gameObject.SetActive(true);
-					itemController.Init(kvp.Value, this);
+					itemController.Init(item, this);
 					counter++;
 				}
 			}
@@ -223,7 +239,7 @@ public class StoreController : MonoBehaviour {
 	
 	public void HandleOnStoreLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
 	{
-		if(this.DisplayState == StoreControllerStates.GetStore && this.hasInitialCatalogLoaded == true)
+		if(this.DisplayState == StoreControllerStates.GetStore)
 		{
 			StartCoroutine(this.wallet.Init());
 			ShowStore();
@@ -232,15 +248,12 @@ public class StoreController : MonoBehaviour {
 	
 	public void HandleOnCatalogLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
 	{
-		if(this.DisplayState == StoreControllerStates.GetCatalog && this.hasInitialCatalogLoaded == true)
+		if(this.DisplayState == StoreControllerStates.GetCatalog)
 		{
 			StartCoroutine(this.wallet.Init());
 			ShowCatalog();
 		}
-		else
-		{
-			this.hasInitialCatalogLoaded = true;
-		}
+
 	}		
 		
 	public void ShowStore()
@@ -248,7 +261,7 @@ public class StoreController : MonoBehaviour {
 		this.panelTitleBar.text = string.Format("Store: \"{0}\"", this.storeName);
 		this.overlayTint.SetActive(true);
 		this.storePanel.SetActive(true);
-		//InitStore(PlayFab.Examples.PfSharedModelEx.cachedStoreItems);
+		InitStore(PfSharedModelEx.GetStore(lastStoreUsed));
 		//var count = PlayFab.Examples.PfSharedModelEx.cachedStoreItems.Count;
 	}
 		
@@ -264,19 +277,16 @@ public class StoreController : MonoBehaviour {
 		this.panelTitleBar.text = string.Format("Catalog: \"{0}\"", this.catalogName);
 		this.overlayTint.SetActive(true);
 		this.storePanel.SetActive(true);
-		//InitCatalog(PlayFab.Examples.PfSharedModelEx.titleCatalog);
-		//var count = PlayFab.Examples.PfSharedModelEx.clientCatalog.Count;
+		if(usePrimaryCatalog == true)
+		{
+			InitCatalog(PfSharedModelEx.GetPrimaryCatalog());
+		}
+		else
+		{
+			InitCatalog(PfSharedModelEx.GetCatalog(lastCatalogUsed));
+		}
 
 	}
-	
-	// probably dont need this
-//	public void HideCatalog()
-//	{
-//		this.selectedItem = null;
-//		this.overlayTint.SetActive(false);
-//		this.storePanel.SetActive(false);
-//	}
-	
 	
 //	public void AfterStoreRetrieved(GetStoreItemsRequest request)
 //	{
