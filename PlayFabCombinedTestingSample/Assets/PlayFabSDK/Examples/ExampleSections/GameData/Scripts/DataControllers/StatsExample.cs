@@ -8,8 +8,8 @@ namespace PlayFab.Examples.Client
         #region Controller Event Handling
         static StatsExample()
         {
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-            PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
+           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
+           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
         }
 
         public static void SetUp()
@@ -17,18 +17,6 @@ namespace PlayFab.Examples.Client
             // The static constructor is called as a by-product of this call
         }
 
-        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-        {
-            GetUserStatistics();
-        }
-
-        private static void OnUserCharactersLoaded(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-        {
-            if (eventSourceApi != PfSharedControllerEx.Api.Client)
-                return;
-
-            // Cannot get character statistics on the client right now
-        }
         #endregion Controller Event Handling
 
         #region User/Character stats API
@@ -40,6 +28,7 @@ namespace PlayFab.Examples.Client
         private static void GetUserStatisticsCallback(GetUserStatisticsResult result)
         {
             PfSharedModelEx.currentUser.userStatistics = result.UserStatistics;
+			MainExampleController.DebugOutput("User Statistics Loaded.");
         }
 
         public static void UpdateUserStatistics(string key, int value)
@@ -56,7 +45,15 @@ namespace PlayFab.Examples.Client
 
             foreach (var statPair in updatedStats)
                 PfSharedModelEx.currentUser.userStatistics[statPair.Key] = statPair.Value;
+                
+			MainExampleController.DebugOutput("User Statistics Updated.");
         }
+        
+        
+        // character apis ----
+        //TODO get a way for the client to get character statistics
         #endregion User/Character stats API
+        
+        
     }
 }

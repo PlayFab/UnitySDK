@@ -10,7 +10,7 @@ using PlayFab.ClientModels;
 /// </summary>
 public class MainExampleController : MonoBehaviour {
 
-	public ModuleCanvasController moduleCanvas;			// scene reference to the module canvas, all samples will be loaded within this canvas
+	public Transform moduleCanvas;			// scene reference to the module canvas, all samples will be loaded within this canvas
 	public SharedDialogController dialogCanvas;			// scene reference to the dialog canvas, this supports common dialogs used across several modules
 	public ExamplesMenuController examplesMenu;			// scene reference to the examples menu. This menu should have a button to start up any samples that are within the PlayFabExamples/ExampleSections
 	public ExampleSubMenuController examplesSubMenu;	// scene reference to the examples sub menu. This will contain buttons that toggle sample sub sections on and off

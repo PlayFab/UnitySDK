@@ -38,11 +38,13 @@ public class GameDataExampleController : MonoBehaviour {
 		{
 			PlayFab.Examples.Client.UserDataExample.GetUserData();
 			PlayFab.Examples.Client.UserDataExample.GetUserReadOnlyData();
+			PlayFab.Examples.Client.StatsExample.GetUserStatistics();
 		}
 		else
 		{
 			PlayFab.Examples.Client.UserDataExample.GetActiveCharacterData();
 			PlayFab.Examples.Client.UserDataExample.GetActiveCharacterReadOnlyData();
+			//PlayFab.Examples.Client.StatsExample.GetActiveCharacterStatistics();
 		}
 		
 		// TODO find a way to check for a publisher first?
