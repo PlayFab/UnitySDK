@@ -37,6 +37,7 @@ public class MainExampleController : MonoBehaviour {
 	void AfterLogin(RegistrationLinkType linkType, LoginResult result)
 	{
 		this.activeUserInfo.Init(result);
+		FetchCloudScriptEndpoint();
 		
 		// load any ExampleSectionController found at the root of any Resources directory
 		ExampleSectionController[] sections = Resources.LoadAll<ExampleSectionController>("");
@@ -69,6 +70,11 @@ public class MainExampleController : MonoBehaviour {
 		}	
 	}
 	
+	
+	public void FetchCloudScriptEndpoint()
+	{
+		PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), null, null);
+	}
 	
 	/// <summary>
 	/// Instantiates a new section or reactivates already loaded objects. 

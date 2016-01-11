@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using PlayFab.Examples.Client;
 using PlayFab.Examples.Server;
+using System.Linq;
 
 namespace PlayFab.Examples
 {
@@ -9,6 +10,7 @@ namespace PlayFab.Examples
         public enum ModelModes { User, Character }
         public static ModelModes activeMode = ModelModes.User;
 		public static CharacterModel currentCharacter = null;
+        public static string primaryCatalogVersion = string.Empty;
         
         #region Character Storage
         // Index of data keyed for each user - a server process may need to keep many players in memory
@@ -34,12 +36,24 @@ namespace PlayFab.Examples
 		public static List<ClientModels.CatalogItem> GetPrimaryCatalog()
 		{
 			List<ClientModels.CatalogItem> primary = null;
-			titleCatalogs.TryGetValue("primary", out primary);
+			titleCatalogs.TryGetValue(PfSharedModelEx.primaryCatalogVersion, out primary);
+			
+			// if we do not have a primary, use the first catalog we got.
+			if(primary == null && titleCatalogs.Count > 0)
+			{
+				primary = titleCatalogs.First().Value;
+			}
+			
 			return primary;
 		}
 		
 		public static List<ClientModels.CatalogItem> GetCatalog(string catalogVersion)
 		{
+			if(string.IsNullOrEmpty(catalogVersion))
+			{
+				return GetPrimaryCatalog();
+			}
+			
 			List<ClientModels.CatalogItem> version = null;
 			titleCatalogs.TryGetValue(catalogVersion, out version);
 			return version;
@@ -52,6 +66,30 @@ namespace PlayFab.Examples
 			return store;
 		}
 		
+		public static ClientModels.CatalogItem GetCatalogItemById(string id, string catalogVersion)
+		{
+			List<ClientModels.CatalogItem> catalog = GetCatalog(catalogVersion);
+			if(catalog != null)
+			{
+				return catalog.Find((item) => { return item.ItemId == id; } );
+			}
+			
+			// catalog not found,
+			return null;
+		}
+		
+		public static ClientModels.StoreItem GetStoreItemById(string id, string storeId)
+		{
+			List<ClientModels.StoreItem> store = GetStore(storeId);
+			if(store != null)
+			{
+				return store.Find( (item) => { return item.ItemId == id; });
+			}
+			
+			// store not found,
+			return null;
+		}
+		
 		public static bool isCatalogCached(string catalogVersion = null)
 		{
 			if(!string.IsNullOrEmpty(catalogVersion))
@@ -60,7 +98,7 @@ namespace PlayFab.Examples
 			}
 			else
 			{
-				return titleCatalogs.ContainsKey("primary");
+				return titleCatalogs.ContainsKey(PfSharedModelEx.primaryCatalogVersion);
 			}
 		}
 		

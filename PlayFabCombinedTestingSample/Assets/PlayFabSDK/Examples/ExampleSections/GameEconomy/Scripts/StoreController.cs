@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.Events;
 using PlayFab.ClientModels;
 using PlayFab.Examples;
@@ -11,7 +12,6 @@ using UnityEngine.EventSystems;
 public class StoreController : MonoBehaviour {
 	public enum StoreControllerStates { GetCatalog, GetStore }
 	public StoreControllerStates DisplayState;
-	public bool useCachedItems = false;
 
 	public GameObject storePanel;
 	public GameObject overlayTint;
@@ -26,22 +26,14 @@ public class StoreController : MonoBehaviour {
 	public StoreItemController selectedItem;
 
 	// SET catalog and store name defaults here.
-	public string storeName = "default";
-	public string catalogName = "1";
-	public string lastCatalogUsed = string.Empty;
-	public string lastStoreUsed = string.Empty;
-	
-	private bool usePrimaryCatalog = true;
-	
-	void Awake()
-	{
-		//PlayFab.Examples.Client.VirtualCurrencyExample.SetUp();
-		//PlayFab.Examples.Client.InventoryExample.SetUp();
-	}
+	public static string activeCatalog = string.Empty;
+	public static string activeStore = string.Empty;
+	public static string pendingCatalog = string.Empty;
+	public static string pendingStore = string.Empty;
 	
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+		activeCatalog = PfSharedModelEx.primaryCatalogVersion;
 	}
 	
 	// Update is called once per frame
@@ -51,69 +43,30 @@ public class StoreController : MonoBehaviour {
 	
 	void OnEnable()
 	{
-		HideStore();
-		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnStoreLoaded, HandleOnStoreLoad);
-		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, HandleOnCatalogLoad);
-		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, HandleOnInventoryLoaded);
+		HideStorePane();
 		
-		
-		// based on settings, we want to fetch new store / catalog and build our store view.
-		// if we are using alt catalog or store, we should prompt for what store / catalog to load.
-		// 
-		if(this.DisplayState == StoreControllerStates.GetStore)
+		if(this.DisplayState == StoreControllerStates.GetCatalog)
 		{
-			System.Action<string> afterInput = (string response) =>
-			{
-				if(!string.IsNullOrEmpty(response))
-				{
-//					if(response == this.storeName && this.useCachedItems == true && PlayFab.Examples.PfSharedModelEx.cachedStoreItems.Count > 0)
-//					{
-//						// store already retrived, draw it
-//						ShowStore();
-//					}
-//					else
-//					{
-//						// need to wait on store to load before drawing it
-//						this.storeName = response;
-//						PlayFab.Examples.Client.InventoryExample.GetStoreItems(response); 
-//					}
-				}
-				else
-				{
-					this.gameObject.SetActive(false);
-				}
-			};
-			
-			
-			if(!string.IsNullOrEmpty(this.storeName))
-			{
-				SharedDialogController.RequestTextInputPrompt("Store Mode:","Enter the name of the store you wish to retrieve.", afterInput, this.storeName);
-			}
-			else
-			{
-				SharedDialogController.RequestTextInputPrompt("title","msg", afterInput);
-			}
-			
-		}
-		else if(DisplayState == StoreControllerStates.GetCatalog)
-		{
-
-			if(this.usePrimaryCatalog == true && PfSharedModelEx.isCatalogCached())
-			{
-				ShowCatalog();
-			}
-			else if(PfSharedModelEx.isCatalogCached(lastCatalogUsed))
+			if(PfSharedModelEx.isCatalogCached(activeCatalog))
 			{
 				ShowCatalog();
 			}
 			else
 			{
-				// TODO request & wait on a new catalog?
-				
-				this.gameObject.SetActive(false);
+				ChangeCatalog();
 			}
 		}
-
+		else
+		{
+			if(PfSharedModelEx.isStoreCached(activeStore))
+			{
+				ShowStore();
+			}
+			else
+			{
+				ChangeStore();
+			}
+		}
 	}
 	
 	
@@ -126,26 +79,63 @@ public class StoreController : MonoBehaviour {
 				if(PfSharedModelEx.isCatalogCached(response))
 				{
 					// store already retrived, draw it
+					activeCatalog = response;
 					ShowCatalog();
 				}
 				else
 				{
 					// need to wait on store to load before drawing it
-					this.catalogName = response;
-					//PlayFab.Examples.Client.InventoryExample.GetCatalogItems(response); 
+					pendingCatalog = response;
+					PlayFab.Examples.Client.InventoryExample.LoadCatalogFromPlayFab(response);  
+				}
+			}
+			else
+			{
+				activeCatalog = PfSharedModelEx.primaryCatalogVersion;
+				ShowCatalog();
+				
+			}
+		};
+		
+
+		SharedDialogController.RequestTextInputPrompt("Catalog Mode:","Enter the name of the catalog you wish to retrieve. (Leave blank for the primary catalog)", afterInput, pendingCatalog);
+
+	}
+	
+	public void ChangeStore()
+	{
+		System.Action<string> afterInput = (string response) =>
+		{
+			if(!string.IsNullOrEmpty(response))
+			{
+				if(PfSharedModelEx.isStoreCached(response))
+				{
+					// store already retrived, draw it
+					activeStore = response;
+					ShowStore();
+				}
+				else
+				{
+					// need to wait on store to load before drawing it
+					pendingStore = response;
+					PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(response, activeCatalog); 
+					// enables recovery of state while call spins
+					this.gameObject.SetActive(false);
+				}
+			}
+			else
+			{
+				// enables recovery of state on the first try if the dialog is canceled
+				if(this.storePanel.gameObject.activeInHierarchy == false)
+				{
+					this.gameObject.SetActive(false);
 				}
 			}
 		};
 		
-		if(!string.IsNullOrEmpty(this.storeName))
-		{
-			SharedDialogController.RequestTextInputPrompt("Catalog Mode:","Enter the name of the catalog you wish to retrieve.", afterInput, this.catalogName);
-		}
-		else
-		{
-			SharedDialogController.RequestTextInputPrompt("title","msg", afterInput);
-		}
+		SharedDialogController.RequestTextInputPrompt("Store Mode:","Enter the name of the store you wish to retrieve.", afterInput, pendingStore);
 	}
+	
 	
 	public void OnDisable()
 	{
@@ -154,35 +144,40 @@ public class StoreController : MonoBehaviour {
 //		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, HandleOnInventoryLoaded);
 	}
 	
+	
+	/// <summary>
+	/// This is a decent store system. This will not scale well with larger catalogs.
+	/// </summary>
+	/// <param name="stock">Stock.</param>
 	public void InitStore(List<StoreItem> stock = null)
 	{
-//		if(stock != null && PlayFab.Examples.PfSharedModelEx.titleCatalog.Count > 0)
-//		{
-//			AdjustItemPrefabs(stock.Count);
-//			
-//			int counter = 0;
-//			foreach(var item in stock)
-//			{
-//				StoreItemController itemController = this.itemSceneObjects[counter].GetComponent<StoreItemController>();
-//				//this.itemSceneObjects[counter].gameObject.SetActive(true);
-//				
-//				CatalogItem cItem = null;
-//				PlayFab.Examples.PfSharedModelEx.titleCatalog.TryGetValue(item.ItemId, out cItem);
-//				if(cItem != null)
-//				{
-//					// swap our catalog prices with the selected store prices.
-//					cItem.VirtualCurrencyPrices = item.VirtualCurrencyPrices;
-//					cItem.RealCurrencyPrices = item.RealCurrencyPrices;
-//					itemController.Init(cItem, this);
-//				}
-//				counter++;
-//			}
-//		}
+		if(stock != null && stock.Count > 0)
+		{
+			AdjustItemPrefabs(stock.Count);
+			
+			int counter = 0;
+			foreach(var item in stock)
+			{
+				StoreItemController itemController = this.itemSceneObjects[counter].GetComponent<StoreItemController>();
+				
+				// need to look at the corresponding catalogItem, as it has more details to display.
+				CatalogItem cItem = PlayFab.Examples.PfSharedModelEx.GetCatalogItemById(item.ItemId, activeCatalog);
+				
+				if(cItem != null)
+				{
+					// swap our catalog prices with the selected store prices, because our store could have a discount or penalty.
+					cItem.VirtualCurrencyPrices = item.VirtualCurrencyPrices;
+					cItem.RealCurrencyPrices = item.RealCurrencyPrices;
+					itemController.Init(cItem, this);
+				}
+				counter++;
+			}
+			
+		}
 	}
 	
 	public void InitCatalog(List<CatalogItem> stock = null)
 	{
-		
 		//adjust item prefabs (ensure the correct # of preabs exist)
 		if(stock != null)
 		{
@@ -191,14 +186,9 @@ public class StoreController : MonoBehaviour {
 			int counter = 0;
 			foreach(var item in stock)
 			{
-				// only show items that can be purchases, i.e. ones that have a price			
-				if( (item.VirtualCurrencyPrices != null && item.VirtualCurrencyPrices.Count > 0) || (item.RealCurrencyPrices != null && item.RealCurrencyPrices.Count > 0))
-				{
-					StoreItemController itemController = this.itemSceneObjects[counter].GetComponent<StoreItemController>();
-					//this.itemSceneObjects[counter].gameObject.SetActive(true);
-					itemController.Init(item, this);
-					counter++;
-				}
+				StoreItemController itemController = this.itemSceneObjects[counter].GetComponent<StoreItemController>();
+				itemController.Init(item, this);
+				counter++;
 			}
 		}
 	}
@@ -213,7 +203,7 @@ public class StoreController : MonoBehaviour {
 			int numToRemove = this.itemSceneObjects.Count - itemCount;
 			for(int z = 0; z < numToRemove; z++)
 			{
-				Destroy(this.itemSceneObjects[z].gameObject);
+				DestroyImmediate(this.itemSceneObjects[z].gameObject);
 			}
 			this.itemSceneObjects.RemoveRange(0, numToRemove);
 		}
@@ -231,41 +221,45 @@ public class StoreController : MonoBehaviour {
 	}
 	
 	
-	public void HandleOnInventoryLoaded(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-	{
-		StartCoroutine(this.wallet.Init());
-	}
+//	public void HandleOnInventoryLoaded(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
+//	{
+//		StartCoroutine(this.wallet.Init());
+//	}
+//	
+//	
+//	public void HandleOnStoreLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
+//	{
+//		if(this.DisplayState == StoreControllerStates.GetStore)
+//		{
+//			StartCoroutine(this.wallet.Init());
+//			ShowStore();
+//		}
+//	}
+//	
+//	public void HandleOnCatalogLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
+//	{
+//		if(this.DisplayState == StoreControllerStates.GetCatalog)
+//		{
+//			StartCoroutine(this.wallet.Init());
+//			ShowCatalog();
+//		}
+//	}		
 	
 	
-	public void HandleOnStoreLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-	{
-		if(this.DisplayState == StoreControllerStates.GetStore)
-		{
-			StartCoroutine(this.wallet.Init());
-			ShowStore();
-		}
-	}
-	
-	public void HandleOnCatalogLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-	{
-		if(this.DisplayState == StoreControllerStates.GetCatalog)
-		{
-			StartCoroutine(this.wallet.Init());
-			ShowCatalog();
-		}
-
-	}		
-		
 	public void ShowStore()
 	{
-		this.panelTitleBar.text = string.Format("Store: \"{0}\"", this.storeName);
+		this.panelTitleBar.text = string.Format("Store: \"{0}\"", activeStore);
 		this.overlayTint.SetActive(true);
 		this.storePanel.SetActive(true);
-		InitStore(PfSharedModelEx.GetStore(lastStoreUsed));
-		//var count = PlayFab.Examples.PfSharedModelEx.cachedStoreItems.Count;
+		InitStore(PfSharedModelEx.GetStore(activeStore));
+		
+		if(wallet.gameObject.activeInHierarchy)
+		{
+			StartCoroutine(wallet.Init());
+		}
 	}
 		
-	public void HideStore()
+	public void HideStorePane()
 	{
 		this.selectedItem = null;
 		this.overlayTint.SetActive(false);
@@ -274,18 +268,11 @@ public class StoreController : MonoBehaviour {
 	
 	public void ShowCatalog()
 	{
-		this.panelTitleBar.text = string.Format("Catalog: \"{0}\"", this.catalogName);
+		this.panelTitleBar.text = string.Format("Catalog: \"{0}\"", activeCatalog);
 		this.overlayTint.SetActive(true);
 		this.storePanel.SetActive(true);
-		if(usePrimaryCatalog == true)
-		{
-			InitCatalog(PfSharedModelEx.GetPrimaryCatalog());
-		}
-		else
-		{
-			InitCatalog(PfSharedModelEx.GetCatalog(lastCatalogUsed));
-		}
-
+		InitCatalog(PfSharedModelEx.GetCatalog(activeCatalog));
+		StartCoroutine(wallet.Init());
 	}
 	
 //	public void AfterStoreRetrieved(GetStoreItemsRequest request)
@@ -317,16 +304,16 @@ public class StoreController : MonoBehaviour {
 	public void BuyItem(CatalogItem item)
 	{
 		Debug.Log("Buying: " + item.ItemId);
+		var vcKvp = item.VirtualCurrencyPrices.First(); 
 		
+		// TODO file bug on the VC price info being a uint rather than an int.		
 		if(this.DisplayState == StoreControllerStates.GetStore)
 		{
-			//System.Action buyAction = PlayFab.Examples.Client.InventoryExample.PurchaseUserItem(item.ItemId);
-			//buyAction();
+			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, activeStore, activeCatalog);
 		}
 		else if(this.DisplayState == StoreControllerStates.GetCatalog)
 		{
-			//System.Action buyAction = PlayFab.Examples.Client.InventoryExample.PurchaseUserItem(item.ItemId);
-			//buyAction();
+			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, null, activeCatalog);
 		}
 	}
 	
@@ -334,5 +321,29 @@ public class StoreController : MonoBehaviour {
 	public void CloseStore()
 	{
 		this.gameObject.SetActive(false);
+	}
+	
+	public void Refresh()
+	{
+		if(this.DisplayState == StoreControllerStates.GetCatalog)
+		{
+			PlayFab.Examples.Client.InventoryExample.LoadCatalogFromPlayFab(activeCatalog);
+		}
+		else
+		{
+			PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(activeStore, activeCatalog);	
+		}
+	}
+	
+	public void Change()
+	{
+		if(this.DisplayState == StoreControllerStates.GetCatalog)
+		{
+			ChangeCatalog();
+		}
+		else
+		{
+			ChangeStore();	
+		}
 	}
 }

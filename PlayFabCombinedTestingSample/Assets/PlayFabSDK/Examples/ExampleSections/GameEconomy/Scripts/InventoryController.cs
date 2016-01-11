@@ -59,41 +59,86 @@ public class InventoryController : MonoBehaviour {
 	
 	public void Init()
 	{
-		if(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory != null && PlayFab.Examples.PfSharedModelEx.titleCatalogs != null)
-		 {
-			AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count);
-			InventoryItemController first = null;
-			for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count; z++)
-			{
-				InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
-				item.Init(this, PlayFab.Examples.PfSharedModelEx.currentUser.userInventory[z]);
-				
-				if(z == 0)
+		ClearDetails();
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		{
+			if(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory != null && PlayFab.Examples.PfSharedModelEx.titleCatalogs.Count > 0)
+			 {
+				AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count);
+				InventoryItemController first = null;
+				for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count; z++)
 				{
-					first = item;
+					InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
+					
+					
+					item.Init(this, PlayFab.Examples.PfSharedModelEx.currentUser.userInventory[z]);
+					
+					if(z == 0)
+					{
+						first = item;
+					}
 				}
-			}
-			ShowPanel();
-			
-			if(this.activeItem == null && first != null)
+				ShowPanel();
+				
+				if(this.activeItem == null && first != null)
+				{
+					ItemClicked(first);
+				}
+				else if(this.activeItem != null);
+				{
+					ItemClicked(this.activeItem);
+				}
+				
+				//Wallet Code
+				StartCoroutine(wallet.Init());
+			 }
+			 else
+			 {
+			 	// close dialog, no items found?
+			 	Debug.Log("No user inventory items were found. Closing dialog.");
+			 	CloseInventory();
+			 	
+			 }
+		}
+		else // show character inventory
+		{
+			if(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory != null && PlayFab.Examples.PfSharedModelEx.titleCatalogs.Count > 0)
 			{
-				ItemClicked(first);
+				AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory.Count);
+				InventoryItemController first = null;
+				for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+				{
+					InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
+					
+					
+					item.Init(this, PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory[z]);
+					
+					if(z == 0)
+					{
+						first = item;
+					}
+				}
+				ShowPanel();
+				
+				if(this.activeItem == null && first != null)
+				{
+					ItemClicked(first);
+				}
+				else if(this.activeItem != null);
+				{
+					ItemClicked(this.activeItem);
+				}
+				
+				//Wallet Code
+				StartCoroutine(wallet.Init());
 			}
-			else if(this.activeItem != null);
+			else
 			{
-				ItemClicked(this.activeItem);
+				// close dialog, no items found?
+				Debug.Log("No charcter inventory items were found. Closing dialog.");
+				CloseInventory();
 			}
-			
-			
-			StartCoroutine(wallet.Init());
-		 }
-		 else
-		 {
-		 	// close dialog, no items found?
-		 	Debug.Log("No inventory items were found. Closing dialog.");
-		 	CloseInventory();
-		 	
-		 }
+		}
 	}
 	
 	public void ShowPanel()
@@ -159,7 +204,9 @@ public class InventoryController : MonoBehaviour {
 	
 	public void UpdateDetails()
 	{
-		
+		if(activeItem.catlogItem == null)
+		 return;
+		 
 		this.active_itemUses.transform.parent.gameObject.SetActive(true);   // by default enable uses field
 		this.active_expiration.transform.parent.gameObject.SetActive(false); // by default disable expire field				
 		
@@ -207,7 +254,12 @@ public class InventoryController : MonoBehaviour {
 	{
 		this.actionButton.onClick.RemoveAllListeners();
 		this.actionButton.interactable = false;
-		this.actionButton.GetComponentInChildren<Text>().text = string.Empty;
+		
+		Text btnText = this.actionButton.GetComponentInChildren<Text>();
+		if(btnText != null)
+		{
+			btnText.text = string.Empty;
+		}
 
 		this.active_icon.overrideSprite = null;
 		this.active_itemType.text = string.Empty;
@@ -246,18 +298,21 @@ public class InventoryController : MonoBehaviour {
 		this.gameObject.SetActive(false);
 	}
 	
+	public void Refresh()
+	{
+		PlayFab.Examples.Client.InventoryExample.LoadInventoryFromPlayFab();
+	}
+	
 	public void ConsumeItem()
 	{
 		Debug.Log("Consume Item: " + this.activeItem.catlogItem.ItemId);
-		//System.Action consume = PlayFab.Examples.Client.InventoryExample.ConsumeUserItem(this.activeItem.itemInstance.ItemInstanceId);
-		//consume();
-		
+		PlayFab.Examples.Client.InventoryExample.ConsumeItem(this.activeItem.itemInstance.ItemInstanceId, 1);
 	}
 	
 	public void UnlockContainer()
 	{
 		Debug.Log("Unlocking Container: " + this.activeItem.catlogItem.ItemId);
-		//System.Action unlock = PlayFab.Examples.Client.InventoryExample.UnlockUserContainer(this.activeItem.catlogItem.ItemId);
+		PlayFab.Examples.Client.InventoryExample.UnlockContainer(this.activeItem.itemInstance.ItemId, this.activeItem.itemInstance.CatalogVersion);
 		//unlock();
 	}
 }

@@ -31,6 +31,13 @@ public class InventoryItemController : MonoBehaviour {
 		this.itemInstance = item;
 		this.mainController = controller;
 		this.itemId.text = item.ItemId;
+		this.catlogItem = PlayFab.Examples.PfSharedModelEx.GetCatalogItemById(item.ItemId, item.CatalogVersion);
+		
+		
+		if(this.catlogItem == null)  // TODO determine what to do here. try to find the item in the default catalog?
+		{
+			this.catlogItem = PlayFab.Examples.PfSharedModelEx.GetCatalogItemById(item.ItemId, null);
+		}
 		
 		//PlayFab.Examples.PfSharedModelEx.titleCatalogs.TryGetValue(item.ItemId, out this.catlogItem);
 		

@@ -60,17 +60,8 @@ public class VCItemController : MonoBehaviour {
 	public void SetBalance()
 	{
 		int net = _balance - _initialBalance;
-		if(net > 0)
-		{
-			System.Action add = PlayFab.Examples.Server.VirtualCurrencyExample.AddUserVirtualCurrency(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, this.vc_code.text, net);
-			add();
-		}
-		else if (net < 0)
-		{
-			// multiply by -1 to get back in the black
-			System.Action sub = PlayFab.Examples.Server.VirtualCurrencyExample.SubtractUserVirtualCurrency(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, this.vc_code.text, net * -1);
-			sub();
-		}
+		
+		PlayFab.Examples.Client.InventoryExample.ModifyVcBalance(this.vc_code.text, net);
 	}
 	
 	// END EDIT STRING EVENT()
@@ -78,7 +69,7 @@ public class VCItemController : MonoBehaviour {
 	public void OnBalanceEdited(string update)
 	{
 		int parsed;
-		if(System.Int32.TryParse(update, out parsed) && parsed > 0)
+		if(System.Int32.TryParse(update, out parsed))
 		{
 			this._balance = parsed;
 			this.vc_balance.text = string.Format("{0:n0}", this._balance);

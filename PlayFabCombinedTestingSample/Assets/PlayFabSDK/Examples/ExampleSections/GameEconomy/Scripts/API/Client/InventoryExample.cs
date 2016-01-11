@@ -64,7 +64,7 @@ namespace PlayFab.Examples.Client
 		public static void LoadCatalogFromPlayFab(string catalogVersion = null)
 		{
 			var catalogRequest = new ClientModels.GetCatalogItemsRequest();
-			if(!string.IsNullOrEmpty(catalogVersion))
+			if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.primaryCatalogVersion )
 			{
 				catalogRequest.CatalogVersion = catalogVersion;
 			}
@@ -82,7 +82,7 @@ namespace PlayFab.Examples.Client
 			}
 			else
 			{
-				PfSharedModelEx.titleCatalogs["primary"] = catalogResult.Catalog;
+				PfSharedModelEx.titleCatalogs[PfSharedModelEx.primaryCatalogVersion] = catalogResult.Catalog;
 			}
 			
 			MainExampleController.DebugOutput("Title Catalog Loaded.");
@@ -90,7 +90,8 @@ namespace PlayFab.Examples.Client
             // PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null, null, PfSharedControllerEx.Api.Client, false);
         }
 
-		public static void LoadStoreFromPlayFab(string storeId, string catalogVersion = null)
+		// TODO address bug where catalog version is required.
+		public static void LoadStoreFromPlayFab(string storeId, string catalogVersion)
 		{
 			if(!string.IsNullOrEmpty(storeId))
 			{
@@ -125,7 +126,7 @@ namespace PlayFab.Examples.Client
 		request.VirtualCurrency = vc;
 		request.Price = price;
 		
-		if(!string.IsNullOrEmpty(catalogVersion))
+		if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.primaryCatalogVersion )
 		{
 			request.CatalogVersion = catalogVersion;	
 		}
@@ -231,7 +232,7 @@ namespace PlayFab.Examples.Client
 		ClientModels.UnlockContainerItemRequest request = new ClientModels.UnlockContainerItemRequest();
 		request.ContainerItemId = containerItemId;
 		
-		if(!string.IsNullOrEmpty(catalogVersion))
+		if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.primaryCatalogVersion)
 		{
 			request.CatalogVersion = catalogVersion;
 		}
@@ -293,11 +294,14 @@ namespace PlayFab.Examples.Client
 			}
 			
 			// if VC was obtained, add them
-			foreach(var item in result.VirtualCurrency)
+			if(result.VirtualCurrency != null)
 			{
-				int currentValue;
-				PfSharedModelEx.currentUser.userVC.TryGetValue(item.Key, out currentValue);
-				PfSharedModelEx.currentUser.userVC[item.Key] = currentValue + (int)item.Value;
+				foreach(var item in result.VirtualCurrency)
+				{
+					int currentValue;
+					PfSharedModelEx.currentUser.userVC.TryGetValue(item.Key, out currentValue);
+					PfSharedModelEx.currentUser.userVC[item.Key] = currentValue + (int)item.Value;
+				}
 			}
 		}
 		else
@@ -347,11 +351,14 @@ namespace PlayFab.Examples.Client
 			}
 			
 			// if VC was obtained, add them
-			foreach(var item in result.VirtualCurrency)
+			if(result.VirtualCurrency != null)
 			{
-				int currentValue;
-				PfSharedModelEx.currentCharacter.characterVC.TryGetValue(item.Key, out currentValue);
-				PfSharedModelEx.currentCharacter.characterVC[item.Key] = currentValue + (int)item.Value;
+				foreach(var item in result.VirtualCurrency)
+				{
+					int currentValue;
+					PfSharedModelEx.currentCharacter.characterVC.TryGetValue(item.Key, out currentValue);
+					PfSharedModelEx.currentCharacter.characterVC[item.Key] = currentValue + (int)item.Value;
+				}
 			}
 		}
 		
@@ -359,20 +366,224 @@ namespace PlayFab.Examples.Client
 	}
 	
 	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
-	private static void ModifyVcBalance()
-	{}
-	
-	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
-	private static void GrantItem()
-	{}
-	
-	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
-	private static void RevokeItem()
+	public static void ModifyVcBalance(string vcCode, int vcAmount)
 	{
-		// waiting on Siva to complete moving this API over to Server/
+		if(vcAmount != 0)
+		{
+			RunCloudScriptRequest request = new RunCloudScriptRequest();
+			if(PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+			{
+				request.ActionId = "UpdateUserVcBalance";
+				request.Params = new { vc = vcCode, amount = vcAmount};
+				PlayFabClientAPI.RunCloudScript(request, ModifyUserVcCallback, PfSharedControllerEx.FailCallback("ModifyUserVcBalance"));
+			}
+			else
+			{
+				request.ActionId = "UpdateCharacterVcBalance";
+				request.Params = new {characterId = PfSharedModelEx.currentCharacter.details.CharacterId, vc = vcCode, amount = vcAmount};
+				PlayFabClientAPI.RunCloudScript(request, ModifyCharacterVcCallback, PfSharedControllerEx.FailCallback("ModifyCharacterVcBalance"));
+			}
+		}
+	}
+	
+	public static void ModifyCharacterVcCallback(ClientModels.RunCloudScriptResult result)
+	{
+		ModifyUserVirtualCurrencyResult csResult = null;
+		try
+		{
+			csResult = PlayFab.Json.JsonConvert.DeserializeObject<ModifyUserVirtualCurrencyResult>(result.ResultsEncoded);
+			MainExampleController.DebugOutput("Successful Cast with ModifyCharacterVcCallback -- " + csResult.VirtualCurrency + " : " + csResult.Balance);
+			PfSharedModelEx.currentCharacter.characterVC[csResult.VirtualCurrency] = csResult.Balance;
+		}
+		catch (System.Exception ex)
+		{
+			MainExampleController.DebugOutput("Cast error after ModifyCharacterVcCallback -- " + ex.Message);
+		}
+	}
+	
+	public static void ModifyUserVcCallback(ClientModels.RunCloudScriptResult result)
+	{
+		ModifyUserVirtualCurrencyResult csResult = null;
+		try
+		{
+			csResult = PlayFab.Json.JsonConvert.DeserializeObject<ModifyUserVirtualCurrencyResult>(result.ResultsEncoded);
+			MainExampleController.DebugOutput("Successful Cast with ModifyUserVcCallback -- " + csResult.VirtualCurrency + " : " + csResult.Balance);
+			PfSharedModelEx.currentUser.userVC[csResult.VirtualCurrency] = csResult.Balance;
+			
+		}
+		catch (System.Exception ex)
+		{
+			MainExampleController.DebugOutput("Cast error after ModifyUserVcCallback -- " + ex.Message);
+		}
+	}
+	
+	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
+	public static void GrantItem(string id, string catalogVer)
+	{
+		RunCloudScriptRequest request = new RunCloudScriptRequest();
+		if(PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		{
+			request.ActionId = "GrantItemToUser";
+			request.Params = new { itemId = id, catalogVersion = catalogVer};
+			PlayFabClientAPI.RunCloudScript(request, GrantItemToUserCallback, PfSharedControllerEx.FailCallback("GrantItemToUser"));
+		}
+		else
+		{
+			request.ActionId = "GrantItemToCharacter";
+			request.Params = new {characterId = PfSharedModelEx.currentCharacter.details.CharacterId, itemId = id, catalogVersion = catalogVer };
+			PlayFabClientAPI.RunCloudScript(request, GrantItemToCharacterCallback, PfSharedControllerEx.FailCallback("GrantItemToCharacter"));
+		}
+	}
+	
+	public static void GrantItemToUserCallback(ClientModels.RunCloudScriptResult result)
+	{
+		GrantItemsResult csResult = null;
+		try
+		{
+			csResult = PlayFab.Json.JsonConvert.DeserializeObject<GrantItemsResult>(result.ResultsEncoded);
+			MainExampleController.DebugOutput("Successful Cast with GrantUserItem -- (" + csResult.ItemGrantResults.Count + ")");
+			PfSharedModelEx.currentUser.userInventory.AddRange(csResult.ItemGrantResults);
+		}
+		catch (System.Exception ex)
+		{
+			MainExampleController.DebugOutput("Cast error after GrantUserItemCallback -- " + ex.Message);
+		}
+	}
+	
+	public static void GrantItemToCharacterCallback(ClientModels.RunCloudScriptResult result)
+	{
+		GrantItemsResult csResult = null;
+		try
+		{
+			csResult = PlayFab.Json.JsonConvert.DeserializeObject<GrantItemsResult>(result.ResultsEncoded);
+			MainExampleController.DebugOutput("Successful Cast with GrantCharacterItem -- (" + csResult.ItemGrantResults.Count + ")");
+			PfSharedModelEx.currentCharacter.characterInventory.AddRange(csResult.ItemGrantResults);
+		}
+		catch (System.Exception ex)
+		{
+			MainExampleController.DebugOutput("Cast error after GrantCharacterItem -- " + ex.Message);
+		}
+	}
+	
+	
+	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
+	public static void RevokeItem()
+	{
+		throw new System.NotImplementedException();
+			// waiting on Siva to move this API over to Server/ from Admin/
 	}
 	
 	
 #endregion
 	}
 }
+
+
+// moved over from severAPI models
+public class GrantItemsResult
+{
+	/// <summary>
+	/// Array of items granted to users.
+	/// </summary>
+	public List<ItemInstance> ItemGrantResults { get; set;}
+	public object Request { get; set; }
+	public object CustomData { get; set;  }
+}
+
+/// <summary>
+/// Result of granting an item to a user
+/// </summary>
+public class GrantedItemInstance
+{
+	
+	/// <summary>
+	/// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+	/// </summary>
+	public string PlayFabId { get; set;}
+	
+	/// <summary>
+	/// Unique PlayFab assigned ID for a specific character owned by a user
+	/// </summary>
+	public string CharacterId { get; set;}
+	
+	/// <summary>
+	/// Result of this operation.
+	/// </summary>
+	public bool Result { get; set;}
+	
+	/// <summary>
+	/// Unique identifier for the inventory item, as defined in the catalog.
+	/// </summary>
+	public string ItemId { get; set;}
+	
+	/// <summary>
+	/// Unique item identifier for this specific instance of the item.
+	/// </summary>
+	public string ItemInstanceId { get; set;}
+	
+	/// <summary>
+	/// Class name for the inventory item, as defined in the catalog.
+	/// </summary>
+	public string ItemClass { get; set;}
+	
+	/// <summary>
+	/// Timestamp for when this instance was purchased.
+	/// </summary>
+	public System.DateTime? PurchaseDate { get; set;}
+	
+	/// <summary>
+	/// Timestamp for when this instance will expire.
+	/// </summary>
+	public System.DateTime? Expiration { get; set;}
+	
+	/// <summary>
+	/// Total number of remaining uses, if this is a consumable item.
+	/// </summary>
+	public int? RemainingUses { get; set;}
+	
+	/// <summary>
+	/// The number of uses that were added or removed to this item in this call.
+	/// </summary>
+	public int? UsesIncrementedBy { get; set;}
+	
+	/// <summary>
+	/// Game specific comment associated with this instance when it was added to the user inventory.
+	/// </summary>
+	public string Annotation { get; set;}
+	
+	/// <summary>
+	/// Catalog version for the inventory item, when this instance was created.
+	/// </summary>
+	public string CatalogVersion { get; set;}
+	
+	/// <summary>
+	/// Unique identifier for the parent inventory item, as defined in the catalog, for object which were added from a bundle or container.
+	/// </summary>
+	public string BundleParent { get; set;}
+	
+	/// <summary>
+	/// CatalogItem.DisplayName at the time this item was purchased.
+	/// </summary>
+	public string DisplayName { get; set;}
+	
+	/// <summary>
+	/// Currency type for the cost of the catalog item.
+	/// </summary>
+	public string UnitCurrency { get; set;}
+	
+	/// <summary>
+	/// Cost of the catalog item in the given currency.
+	/// </summary>
+	public uint UnitPrice { get; set;}
+	
+	/// <summary>
+	/// Array of unique items that were awarded when this catalog item was purchased.
+	/// </summary>
+	public List<string> BundleContents { get; set;}
+	
+	/// <summary>
+	/// A set of custom key-value pairs on the inventory item.
+	/// </summary>
+	public Dictionary<string,string> CustomData { get; set;}
+}
+

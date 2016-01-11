@@ -45,6 +45,13 @@ public class StoreItemController : MonoBehaviour {
 		this.itemDescription.text = item.Description;
 		this.itemUses.text = item.Consumable != null ? ""+item.Consumable.UsageCount : "0";
 		
+		if(item.Consumable != null && item.Consumable.UsageCount > 0)
+		{
+			this.itemUses.transform.parent.gameObject.SetActive(true); // hide uses field
+		}
+		
+		this.itemUses.transform.parent.gameObject.SetActive(true);
+		
 		if(this.itemRef.Bundle != null)
 		{
 			this.itemType.text = "Bundle";
@@ -56,10 +63,12 @@ public class StoreItemController : MonoBehaviour {
 		else if(this.itemRef.Consumable.UsageCount > 0 && this.itemRef.Consumable.UsagePeriod == null)
 		{
 			this.itemType.text = "Consumable";
+			
 		}
 		else if(this.itemRef.Consumable.UsageCount > 0 && this.itemRef.Consumable.UsagePeriod != null)
 		{
 			this.itemType.text = "Time Bound";
+			 // show uses field
 		}
 		else 
 		{
@@ -75,9 +84,41 @@ public class StoreItemController : MonoBehaviour {
 		this.itemClickArea.onClick.RemoveAllListeners();
 		this.itemClickArea.onClick.AddListener(() => { sc.SelectItem(this); });
 		
-		string price = ""+this.itemRef.VirtualCurrencyPrices.First().Value;
-		string vc = this.itemRef.VirtualCurrencyPrices.First().Key;
-		string buyText = string.Format("Buy for ({0} {1})", price, vc); 
-		this.buyButton.GetComponentInChildren<Text>().text = buyText;
+		
+		//item not for sale
+		if(this.itemRef.VirtualCurrencyPrices == null || this.itemRef.VirtualCurrencyPrices.Count == 0)
+		{
+			this.buyButton.interactable = false;
+			
+			Text obj = this.buyButton.GetComponentInChildren<Text>();
+			if(obj != null)
+			{
+				obj.text = "Not For Sale";
+			}
+			
+			this.buyButton.onClick.RemoveAllListeners();
+		}
+		else
+		{
+			string price, vc = string.Empty;
+			if(this.itemRef.VirtualCurrencyPrices.ContainsKey("RM"))
+			{
+				price = string.Format ("{0:C}", (float)this.itemRef.VirtualCurrencyPrices["RM"] / 100f);
+			}
+			else
+			{
+			 	price = ""+this.itemRef.VirtualCurrencyPrices.FirstOrDefault().Value;
+				vc = this.itemRef.VirtualCurrencyPrices.FirstOrDefault().Key;
+			}
+			string buyText = string.Format("Buy for ({0} {1})", price, vc);
+			
+			Text obj = this.buyButton.GetComponentInChildren<Text>();
+			if(obj != null)
+			{
+				obj.text = buyText;
+			}
+			this.buyButton.interactable = true;
+		}
+
 	}	
 }

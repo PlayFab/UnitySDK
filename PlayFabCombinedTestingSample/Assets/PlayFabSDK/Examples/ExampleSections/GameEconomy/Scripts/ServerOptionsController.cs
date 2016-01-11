@@ -65,16 +65,16 @@ public class ServerOptionsController : MonoBehaviour {
 	public void OnGrantItemClicked()
 	{
 		Dictionary<string, string> items = new Dictionary<string, string>();
-//		foreach(var item in PlayFab.Examples.PfSharedModelEx.titleCatalog)
-//		{
-//			items.Add (item.Key, item.Value.DisplayName);
-//		}
+		List<CatalogItem> catalog = PlayFab.Examples.PfSharedModelEx.GetCatalog(StoreController.activeCatalog);
+		for(int z = 0; z < catalog.Count; z++)
+		{
+			items.Add(catalog[z].ItemId, catalog[z].DisplayName);
+		}
 		
 		System.Action<int> afterSelect = (int index) => 
 		{
 			string idToGive = items.ElementAt(index).Key;
-			System.Action grant = PlayFab.Examples.Server.InventoryExample.GrantUserItem(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, idToGive);
-			grant();
+			PlayFab.Examples.Client.InventoryExample.GrantItem(idToGive, StoreController.activeCatalog);
 		};
 		
 		SharedDialogController.RequestSelectorPrompt("Select an item to grant", items.Values.ToList(), afterSelect);
@@ -82,22 +82,35 @@ public class ServerOptionsController : MonoBehaviour {
 	
 	public void OnRevokeItemClicked()
 	{
+		System.Action<int> afterSelect;
 		Dictionary<string, string> items = new Dictionary<string, string>();
-		foreach(var item in PlayFab.Examples.PfSharedModelEx.currentUser.userInventory)
+		
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
-			items.Add (item.ItemInstanceId, item.DisplayName);
+			foreach(var item in PlayFab.Examples.PfSharedModelEx.currentUser.userInventory)
+			{
+				items.Add (item.ItemInstanceId, item.DisplayName);
+			}
+			
+			afterSelect = (int index) => 
+			{
+				string idToGive = items.ElementAt(index).Key;
+				PlayFab.Examples.Client.InventoryExample.RevokeItem();
+			};
 		}
-		
-		System.Action<int> afterSelect = (int index) => 
+		else
 		{
-			string idToGive = items.ElementAt(index).Key;
-			System.Action revoke = PlayFab.Examples.Server.InventoryExample.RevokeUserItem(PlayFab.Examples.PfSharedModelEx.currentUser.playFabId, idToGive);
-			revoke();
-		};
-		
+			foreach(var item in PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory)
+			{
+				items.Add (item.ItemInstanceId, item.DisplayName);
+			}
+			
+			afterSelect = (int index) => 
+			{
+				string idToGive = items.ElementAt(index).Key;
+				PlayFab.Examples.Client.InventoryExample.RevokeItem();
+			};
+		}
 		SharedDialogController.RequestSelectorPrompt("Select an item to revoke", items.Values.ToList(), afterSelect);
 	}
-	
-	
-	
 }

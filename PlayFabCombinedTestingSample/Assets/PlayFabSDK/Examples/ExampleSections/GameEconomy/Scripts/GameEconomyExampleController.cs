@@ -3,10 +3,11 @@ using System.Collections;
 using PlayFab.Examples;
 
 public class GameEconomyExampleController : MonoBehaviour {
-
+	public string primaryCatalog = string.Empty;
+	
 	// Use this for initialization
 	void Start () {
-	
+		PfSharedModelEx.primaryCatalogVersion = this.primaryCatalog;
 	}
 	
 	// Update is called once per frame
@@ -34,6 +35,10 @@ public class GameEconomyExampleController : MonoBehaviour {
 		}
 	} 
 	
+	public void FetchCloudScriptEndpoint()
+	{
+		
+	}
 	//public void 
 	
 }

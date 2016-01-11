@@ -38,20 +38,40 @@ public class EditVCController : MonoBehaviour {
 	{
 		RemoveVCItems();
 		yield return new WaitForEndOfFrame();
-		
-		if(PlayFab.Examples.PfSharedModelEx.currentUser.userVC != null && PlayFab.Examples.PfSharedModelEx.currentUser.userVC.Count > 0)
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
-			int counter = 0;
-			foreach(var item in PlayFab.Examples.PfSharedModelEx.currentUser.userVC)
+			if(PlayFab.Examples.PfSharedModelEx.currentUser.userVC != null && PlayFab.Examples.PfSharedModelEx.currentUser.userVC.Count > 0)
 			{
-				Transform trans = Instantiate(this.vcItemPrefab);
-				trans.SetParent(this.listView, false);
-				
-				VCItemController itemController = trans.GetComponent<VCItemController>();
-				
-				itemController.Init (item, this, counter % 2 == 0 ? true : false );
-				this.vcItems.Add(itemController); 
-				counter++;
+				int counter = 0;
+				foreach(var item in PlayFab.Examples.PfSharedModelEx.currentUser.userVC)
+				{
+					Transform trans = Instantiate(this.vcItemPrefab);
+					trans.SetParent(this.listView, false);
+					
+					VCItemController itemController = trans.GetComponent<VCItemController>();
+					
+					itemController.Init (item, this, counter % 2 == 0 ? true : false );
+					this.vcItems.Add(itemController); 
+					counter++;
+				}
+			}
+		}
+		else
+		{
+			if(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC != null && PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC.Count > 0)
+			{
+				int counter = 0;
+				foreach(var item in PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC)
+				{
+					Transform trans = Instantiate(this.vcItemPrefab);
+					trans.SetParent(this.listView, false);
+					
+					VCItemController itemController = trans.GetComponent<VCItemController>();
+					
+					itemController.Init (item, this, counter % 2 == 0 ? true : false );
+					this.vcItems.Add(itemController); 
+					counter++;
+				}
 			}
 		}
 	}
