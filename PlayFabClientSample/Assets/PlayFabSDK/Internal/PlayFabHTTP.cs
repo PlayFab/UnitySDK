@@ -50,7 +50,7 @@ namespace PlayFab.Internal
             if (!isBlocking)
             {
 #if PLAYFAB_IOS_PLUGIN
-                PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(url), url, requestContainer.CallId, data, authType, authKey, PlayFabVersion.getVersionString(), request, customData, callback);
+                PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(url), url, requestContainer.CallId, data, authType, authKey, PlayFabVersion.getVersionString(), request, customData, callback, PlayFabSettings.InvokeRequest, PlayFabSettings.InvokeResponse);
 #elif UNITY_WP8
                 instance.StartCoroutine(instance.MakeRequestViaUnity(url, requestContainer.CallId, data, authType, authKey, callback));
 #else

@@ -47,13 +47,13 @@ namespace PlayFab.Internal
             PlayFabGoogleCloudMessaging.MessageReceived(message);
         }
 
-        public static void AddHttpDelegate(string url, int callId, object request, object customData, Action<string, PlayFabError> callback)
+        public static void AddHttpDelegate(string url, int callId, object request, object customData, Action<string, PlayFabError> callback, PlayFabiOSPlugin.InvokeResponseDelegate invokeResponse)
         {
             Init();
-            HttpHandlers.Add(callId, new CallRequestContainer { Url = url, CallId = callId, Callback = callback, Error = null, Result = null, Request = request, CustomData = customData });
+            HttpHandlers.Add(callId, new CallRequestContainer { Url = url, CallId = callId, Callback = callback, Error = null, Result = null, Request = request, CustomData = customData, InvokeResponse = invokeResponse});
         }
 
-        public static void OnHttpError(string response)
+        public void OnHttpError(string response) // This cannot be static because it's called from IOS: UnitySendMessage(EventHandler, "OnHttpError", replyBuffer);
         {
             //Debug.Log ("Got HTTP error response: "+response);
             try
@@ -78,7 +78,7 @@ namespace PlayFab.Internal
             }
         }
 
-        public static void OnHttpResponse(string response)
+        public void OnHttpResponse(string response) // This cannot be static because it's called from IOS: UnitySendMessage(EventHandler, "OnHttpError", replyBuffer);
         {
             //Debug.Log ("Got HTTP success response: "+response);
             try
@@ -116,10 +116,11 @@ namespace PlayFab.Internal
         public object CustomData;
         public PlayFabError Error;
         public Action<string, PlayFabError> Callback;
+        public PlayFabiOSPlugin.InvokeResponseDelegate InvokeResponse;
 
         public void InvokeCallback()
         {
-            PlayFabiOSPlugin.InvokeResponse(Url, CallId, Request, Result, Error, CustomData); // Do the globalMessage callback
+            InvokeResponse(Url, CallId, Request, Result, Error, CustomData); // Do the globalMessage callback
             if (Callback != null)
                 Callback(Result, Error); // Do the specific callback
         }

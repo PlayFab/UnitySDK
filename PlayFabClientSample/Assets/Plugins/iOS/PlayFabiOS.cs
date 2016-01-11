@@ -9,8 +9,6 @@ namespace PlayFab
     {
         public delegate void InvokeRequestDelegate(string url, int callId, object request, object customData);
         public delegate void InvokeResponseDelegate(string url, int callId, object request, object result, PlayFabError error, object customData);
-        public static InvokeRequestDelegate InvokeRequest;
-        public static InvokeResponseDelegate InvokeResponse;
 
 #if UNITY_IOS
         [DllImport("__Internal")]
@@ -33,7 +31,7 @@ namespace PlayFab
         }
 
 #if UNITY_IOS
-        public static void Post(string fullUrl, string url, int callId, string data, string authType, string authKey, string sdkVersion, object request, object customData, Action<string, PlayFabError> callback)
+        public static void Post(string fullUrl, string url, int callId, string data, string authType, string authKey, string sdkVersion, object request, object customData, Action<string, PlayFabError> callback, InvokeRequestDelegate invokeRequest, InvokeResponseDelegate invokeResponse)
         {
             string[] headers = new string[4];
             string[] headerValues = new string[4];
@@ -47,9 +45,9 @@ namespace PlayFab
             headers[h] = "X-ReportErrorAsSuccess"; headerValues[h++] = "true";
             headers[h] = "X-PlayFabSDK"; headerValues[h++] = sdkVersion;
 
-            PlayFabPluginEventHandler.AddHttpDelegate(url, callId, request, customData, callback);
+            PlayFabPluginEventHandler.AddHttpDelegate(url, callId, request, customData, callback, invokeResponse);
 
-            InvokeRequest(url, callId, request, customData);
+            invokeRequest(url, callId, request, customData);
 
             pf_make_http_request(fullUrl, "POST", h, headers, headerValues, data, callId);
 #else
