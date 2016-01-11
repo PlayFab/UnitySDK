@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using PlayFab.Examples.Client;
-using PlayFab.Examples.Server;
 using System.Linq;
 
 namespace PlayFab.Examples
