@@ -15,23 +15,25 @@ namespace PlayFab.Examples
 
         public void Awake()
         {
-            PlayFabSettings.RegisterForRequests(null,
-                GetType().GetMethod("OnApiRequest_StGl", BindingFlags.Static | BindingFlags.NonPublic), null);
-            PlayFabSettings.RegisterForResponses(null,
-                GetType().GetMethod("OnApiResponse_StGl", BindingFlags.Static | BindingFlags.NonPublic), null);
-            PlayFabSettings.RegisterForRequests(null,
-                GetType().GetMethod("OnApiRequest_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
-            PlayFabSettings.RegisterForResponses(null,
-                GetType().GetMethod("OnApiResponse_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
+            PlayFabSettings.RegisterForRequests(null, GetType().GetMethod("OnApiRequest_StGl", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnApiResponse_StGl", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForRequests(null, GetType().GetMethod("OnApiRequest_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
+            PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnApiResponse_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
 
-            PlayFabSettings.RegisterForRequests("/Client/LoginWithEmailAddress",
-                GetType().GetMethod("OnApiRequest_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
-            PlayFabSettings.RegisterForResponses("/Client/LoginWithEmailAddress",
-                GetType().GetMethod("OnApiResponse_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
-            PlayFabSettings.RegisterForRequests("/Client/LoginWithEmailAddress",
-                GetType().GetMethod("OnApiRequest_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
-            PlayFabSettings.RegisterForResponses("/Client/LoginWithEmailAddress",
-                GetType().GetMethod("OnApiResponse_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
+            PlayFabSettings.RegisterForRequests("/Client/LoginWithEmailAddress", GetType().GetMethod("OnApiRequest_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForResponses("/Client/LoginWithEmailAddress", GetType().GetMethod("OnApiResponse_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForRequests("/Client/LoginWithEmailAddress", GetType().GetMethod("OnApiRequest_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
+            PlayFabSettings.RegisterForResponses("/Client/LoginWithEmailAddress", GetType().GetMethod("OnApiResponse_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
+
+            PlayFabSettings.RegisterForRequests("/Client/LoginWithAndroidDeviceID", GetType().GetMethod("OnApiRequest_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForResponses("/Client/LoginWithAndroidDeviceID", GetType().GetMethod("OnApiResponse_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForRequests("/Client/LoginWithAndroidDeviceID", GetType().GetMethod("OnApiRequest_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
+            PlayFabSettings.RegisterForResponses("/Client/LoginWithAndroidDeviceID", GetType().GetMethod("OnApiResponse_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
+
+            PlayFabSettings.RegisterForRequests("/Client/LoginWithIOSDeviceID", GetType().GetMethod("OnApiRequest_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForResponses("/Client/LoginWithIOSDeviceID", GetType().GetMethod("OnApiResponse_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
+            PlayFabSettings.RegisterForRequests("/Client/LoginWithIOSDeviceID", GetType().GetMethod("OnApiRequest_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
+            PlayFabSettings.RegisterForResponses("/Client/LoginWithIOSDeviceID", GetType().GetMethod("OnApiResponse_InstLogin", BindingFlags.Instance | BindingFlags.NonPublic), this);
         }
 
         private static void OnApiRequest_StGl(string url, int callId, object request, object customData)
