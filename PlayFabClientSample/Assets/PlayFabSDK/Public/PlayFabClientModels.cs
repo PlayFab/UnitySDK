@@ -2620,7 +2620,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// region to match make against
         /// </summary>
-        public Region? Region { get; set;}
+        public Region Region { get; set;}
 
         /// <summary>
         /// game mode to match make against
@@ -3438,7 +3438,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// for updates to an existing statistic value for a player, the version of the statistic when it was loaded. Null when setting the statistic value for the first time.
         /// </summary>
-        public string Version { get; set;}
+        public uint? Version { get; set;}
 
         /// <summary>
         /// statistic value for the player
