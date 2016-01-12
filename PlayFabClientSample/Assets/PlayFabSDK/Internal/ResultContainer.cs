@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using PlayFab.Json;
-using PlayFab;
 using System;
 using System.Net;
 
@@ -10,7 +9,6 @@ namespace PlayFab.Internal
     {
         public int code;
         public string status;
-        public string error;
         public int? errorCode;
         public string errorMessage;
         public Dictionary<string, List<string>> errorDetails;

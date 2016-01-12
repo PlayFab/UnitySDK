@@ -1602,7 +1602,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// current active version of the statistic, incremented each time the statistic resets
         /// </summary>
-        public string CurrentVersion { get; set;}
+        public uint CurrentVersion { get; set;}
 
         /// <summary>
         /// interval at which the values of the statistic for all players are reset
@@ -1621,27 +1621,37 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// version of the statistic
         /// </summary>
-        public string Version { get; set;}
+        public uint Version { get; set;}
 
         /// <summary>
-        /// time for which the statistic version was scheduled to become active, based on the configured ResetInterval
+        /// time at which the statistic version was scheduled to become active, based on the configured ResetInterval
         /// </summary>
-        public DateTime? ScheduledVersionChangeIntervalTime { get; set;}
+        public DateTime? ScheduledActivationTime { get; set;}
 
         /// <summary>
         /// time when the statistic version became active
         /// </summary>
-        public DateTime CreatedTime { get; set;}
+        public DateTime ActivationTime { get; set;}
 
         /// <summary>
-        /// status of the process of saving player statistic values of the previous version to a downloadable archive, if configured
+        /// time at which the statistic version was scheduled to become inactive, based on the configured ResetInterval
+        /// </summary>
+        public DateTime? ScheduledDeactivationTime { get; set;}
+
+        /// <summary>
+        /// time when the statistic version became inactive due to statistic version incrementing
+        /// </summary>
+        public DateTime? DeactivationTime { get; set;}
+
+        /// <summary>
+        /// status of the process of saving player statistic values of the previous version to a downloadable archive
         /// </summary>
         public StatisticVersionArchivalStatus? ArchivalStatus { get; set;}
 
         /// <summary>
-        /// reset interval that triggered the version to become active, if configured
+        /// URL for the downloadable archive of player statistic values, if available
         /// </summary>
-        public Interval? ResetInterval { get; set;}
+        public string ArchiveDownloadUrl { get; set;}
     }
 
     public class RandomResultTable
@@ -1994,8 +2004,8 @@ namespace PlayFab.AdminModels
     {
         NotScheduled,
         Scheduled,
+        Queued,
         InProgress,
-        Failed,
         Complete
     }
 
