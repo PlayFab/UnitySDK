@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace PlayFab
 {
+#if !UNITY_IOS
     /// <summary>
     /// Error codes returned by PlayFabAPIs
     /// </summary>
@@ -204,8 +205,10 @@ namespace PlayFab
         public string HttpStatus;
         public PlayFabErrorCode Error;
         public string ErrorMessage;
-        public Dictionary<string, List<string>> ErrorDetails;
+        public Dictionary<string, List<string> > ErrorDetails;
     };
 
     public delegate void ErrorCallback(PlayFabError error);
+
+#endif
 }
