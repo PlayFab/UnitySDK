@@ -351,8 +351,8 @@ namespace PlayFab.Examples
     {
         public ClientModels.CharacterResult details;
         public Dictionary<string, int> characterStatistics = new Dictionary<string, int>();
-        public Dictionary<string, string> characterData = new Dictionary<string, string>();
-        public Dictionary<string, string> characterReadOnlyData = new Dictionary<string, string>();
+		public Dictionary<string, ClientModels.UserDataRecord> characterData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> characterReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
         public List<ClientModels.ItemInstance> characterInventory = new List<PlayFab.ClientModels.ItemInstance>();
         public Dictionary<string, int> characterVC = new Dictionary<string, int>();
 		public Dictionary<string, ClientModels.VirtualCurrencyRechargeTime> characterVcRechargeTimes = new Dictionary<string, PlayFab.ClientModels.VirtualCurrencyRechargeTime>();

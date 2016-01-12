@@ -159,7 +159,7 @@ namespace PlayFab.Examples.Client
 		private static void GetActiveCharacterDataCallback(ClientModels.GetCharacterDataResult result)
 		{
 			foreach (var eachDataEntry in result.Data)
-				PfSharedModelEx.currentCharacter.characterData[eachDataEntry.Key] = eachDataEntry.Value.Value;
+				PfSharedModelEx.currentCharacter.characterData[eachDataEntry.Key].Value = eachDataEntry.Value.Value;
 			//PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
 			MainExampleController.DebugOutput("Character Data Loaded.");
 		}
@@ -174,7 +174,7 @@ namespace PlayFab.Examples.Client
 		private static void GetActiveCharacterReadOnlyDataCallback(ClientModels.GetCharacterDataResult result)
 		{
 			foreach (var eachDataEntry in result.Data)
-				PfSharedModelEx.currentCharacter.characterReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value.Value;
+				PfSharedModelEx.currentCharacter.characterReadOnlyData[eachDataEntry.Key].Value = eachDataEntry.Value.Value;
 			//PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
 			MainExampleController.DebugOutput("Character Read-Only Data Loaded.");
 		}
