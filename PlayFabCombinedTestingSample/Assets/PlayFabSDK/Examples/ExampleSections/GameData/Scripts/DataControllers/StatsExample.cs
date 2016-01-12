@@ -52,6 +52,25 @@ namespace PlayFab.Examples.Client
         
         // character apis ----
         //TODO get a way for the client to get character statistics
+        
+		public static void GetCharacterStatistics()
+		{
+			throw new System.NotImplementedException();
+		}
+		private static void GetCharacterStatisticsCallback(object result)
+		{
+			throw new System.NotImplementedException();
+		}
+		
+		public static void UpdateCharacterStatistics(string key, int value)
+		{
+			throw new System.NotImplementedException();
+		}
+		
+		private static void UpdateCharacterStatisticsCallback(object result)
+		{
+			throw new System.NotImplementedException();
+		}
         #endregion User/Character stats API
         
         

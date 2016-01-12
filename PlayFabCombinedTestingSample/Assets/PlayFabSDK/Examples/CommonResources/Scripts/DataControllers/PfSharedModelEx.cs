@@ -114,10 +114,10 @@ namespace PlayFab.Examples
         public string playFabId;
         public ClientModels.UserAccountInfo accountInfo;
         public Dictionary<string, int> userStatistics = new Dictionary<string, int>();
-        public Dictionary<string, string> userData = new Dictionary<string, string>();
-        public Dictionary<string, string> userReadOnlyData = new Dictionary<string, string>();
-        public Dictionary<string, string> userPublisherData = new Dictionary<string, string>();
-        public Dictionary<string, string> userPublisherReadOnlyData = new Dictionary<string, string>();
+		public Dictionary<string, ClientModels.UserDataRecord> userData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> userReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> userPublisherData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> userPublisherReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
         //public Dictionary<string, string> userPublisherInternalData = new Dictionary<string, string>();
 		//public Dictionary<string, string> userInternalData = new Dictionary<string, string>();
 		#endregion Login

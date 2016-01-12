@@ -4,6 +4,8 @@ using System.Collections;
 public class GameDataExampleController : MonoBehaviour {
 	public string[] publisherKeys;
 	
+	//public bool CanClientUpdateStats = false;
+	
 	// Use this for initialization
 	void Start () {
 	
