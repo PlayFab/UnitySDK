@@ -20,7 +20,6 @@ namespace PlayFab.UUnit
     {
         private const int TEST_STAT_BASE = 10;
         private const string TEST_STAT_NAME = "str";
-        private const string CHAR_TEST_TYPE = "Test";
         private const string TEST_DATA_KEY = "testCounter";
 
 
@@ -37,13 +36,12 @@ namespace PlayFab.UUnit
 
         // Information fetched by appropriate API calls
         private static string playFabId;
-        private static string characterId;
 
         // This test operates multi-threaded, so keep some thread-transfer varaibles
         private string lastReceivedMessage;
         private ClientModels.UserDataRecord testCounterReturn;
         private int testStatReturn;
-        ServerModels.CharacterResult targetCharacter = null;
+        CharacterResult targetCharacter = null;
 
         /// <summary>
         /// PlayFab Title cannot be created from SDK tests, so you must provide your titleId to run unit tests.
@@ -61,8 +59,6 @@ namespace PlayFab.UUnit
             // Parse all the inputs
             TITLE_INFO_SET &= testInputs.TryGetValue("titleId", out eachValue);
             PlayFabSettings.TitleId = eachValue;
-            TITLE_INFO_SET &= testInputs.TryGetValue("developerSecretKey", out eachValue);
-            PlayFabSettings.DeveloperSecretKey = eachValue;
 
             TITLE_INFO_SET &= testInputs.TryGetValue("titleCanUpdateSettings", out eachValue);
             TITLE_INFO_SET &= bool.TryParse(eachValue, out TITLE_CAN_UPDATE_SETTINGS);
@@ -75,7 +71,6 @@ namespace PlayFab.UUnit
 
             // Verify all the inputs won't cause crashes in the tests
             TITLE_INFO_SET &= !string.IsNullOrEmpty(PlayFabSettings.TitleId)
-                && !string.IsNullOrEmpty(PlayFabSettings.DeveloperSecretKey)
                 && !string.IsNullOrEmpty(USER_NAME)
                 && !string.IsNullOrEmpty(USER_EMAIL)
                 && !string.IsNullOrEmpty(USER_PASSWORD)
@@ -90,9 +85,9 @@ namespace PlayFab.UUnit
                 if (File.Exists(filename))
                 {
                     string testInputsFile = File.ReadAllText(filename);
-                    var serializer = JsonSerializer.Create(PlayFab.Internal.Util.JsonSettings);
+                    var serializer = JsonSerializer.Create(Util.JsonSettings);
                     var testInputs = serializer.Deserialize<Dictionary<string, string>>(new JsonTextReader(new StringReader(testInputsFile)));
-                    PlayFabApiTest.SetTitleInfo(testInputs);
+                    SetTitleInfo(testInputs);
                 }
                 else
                 {
@@ -338,47 +333,20 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void UserCharacter()
         {
-            var request = new ServerModels.ListUsersCharactersRequest();
+            var request = new ListUsersCharactersRequest();
             request.PlayFabId = playFabId; // Received from client upon login
-            PlayFabServerAPI.GetAllUsersCharacters(request, GetCharsCallback, SharedErrorCallback);
+            PlayFabClientAPI.GetAllUsersCharacters(request, GetCharsCallback, SharedErrorCallback);
             WaitForApiCalls();
 
             UUnitAssert.Equals("Get Chars Successful", lastReceivedMessage);
-            // The target character may not exist, but we don't fail, since we can create it below
-
-            if (targetCharacter == null)
-            {
-                // Create the targetCharacter since it doesn't exist
-                var grantRequest = new ServerModels.GrantCharacterToUserRequest();
-                grantRequest.PlayFabId = playFabId;
-                grantRequest.CharacterName = CHAR_NAME;
-                grantRequest.CharacterType = CHAR_TEST_TYPE;
-                PlayFabServerAPI.GrantCharacterToUser(grantRequest, GrantCharCallback, SharedErrorCallback);
-                WaitForApiCalls();
-
-                UUnitAssert.Equals("Grant Char Successful", lastReceivedMessage);
-
-                // Attempt to get characters again
-                PlayFabServerAPI.GetAllUsersCharacters(request, GetCharsCallback, SharedErrorCallback);
-                WaitForApiCalls();
-
-                UUnitAssert.Equals("Get Chars Successful", lastReceivedMessage);
-            }
-
-            // Save the requested character
-            UUnitAssert.NotNull(targetCharacter, "The test character did not exist, and was not successfully created");
-            characterId = targetCharacter.CharacterId;
+            UUnitAssert.NotNull(targetCharacter, "The test character did not exist");
         }
-        private void GetCharsCallback(PlayFab.ServerModels.ListUsersCharactersResult result)
+        private void GetCharsCallback(ListUsersCharactersResult result)
         {
             lastReceivedMessage = "Get Chars Successful";
             foreach (var eachCharacter in result.Characters)
                 if (eachCharacter.CharacterName == CHAR_NAME)
                     targetCharacter = eachCharacter;
-        }
-        private void GrantCharCallback(PlayFab.ServerModels.GrantCharacterToUserResult result)
-        {
-            lastReceivedMessage = "Grant Char Successful";
         }
 
         /// <summary>
@@ -397,16 +365,6 @@ namespace PlayFab.UUnit
 
             UUnitAssert.Equals("Get Client Leaderboard Successful", lastReceivedMessage);
             // Testing anything more would be testing actual functionality of the Leaderboard, which is outside the scope of this test.
-
-            var serverRequest = new ServerModels.GetLeaderboardAroundCharacterRequest();
-            serverRequest.MaxResultsCount = 3;
-            serverRequest.StatisticName = TEST_STAT_NAME;
-            serverRequest.CharacterId = characterId;
-            serverRequest.PlayFabId = playFabId;
-            PlayFabServerAPI.GetLeaderboardAroundCharacter(serverRequest, GetServerLbCallback, SharedErrorCallback);
-            WaitForApiCalls();
-
-            UUnitAssert.Equals("Get Server Leaderboard Successful", lastReceivedMessage);
         }
         public void GetClientLbCallback(PlayFab.ClientModels.GetLeaderboardAroundCurrentUserResult result)
         {
@@ -414,13 +372,6 @@ namespace PlayFab.UUnit
                 lastReceivedMessage = "Get Client Leaderboard Successful";
             else
                 lastReceivedMessage = "Get Client Leaderboard, empty";
-        }
-        public void GetServerLbCallback(PlayFab.ServerModels.GetLeaderboardAroundCharacterResult result)
-        {
-            if (result.Leaderboard.Count > 0)
-                lastReceivedMessage = "Get Server Leaderboard Successful";
-            else
-                lastReceivedMessage = "Get Server Leaderboard, empty";
         }
 
         /// <summary>

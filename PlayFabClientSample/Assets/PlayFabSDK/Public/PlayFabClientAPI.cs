@@ -153,7 +153,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPhotonAuthenticationToken", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPhotonAuthenticationToken", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithAndroidDeviceID", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithAndroidDeviceID", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithCustomID", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithCustomID", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithEmailAddress", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithEmailAddress", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithFacebook", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithFacebook", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -318,7 +318,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithGameCenter", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithGameCenter", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithGoogleAccount", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithGoogleAccount", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithIOSDeviceID", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithIOSDeviceID", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -417,7 +417,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithKongregate", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithKongregate", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -450,7 +450,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithPlayFab", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithPlayFab", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -483,7 +483,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithPSN", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithPSN", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -516,7 +516,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithSteam", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithSteam", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -549,7 +549,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LoginWithXbox", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/LoginWithXbox", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -582,7 +582,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RegisterPlayFabUser", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/RegisterPlayFabUser", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -612,7 +612,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddUsernamePassword", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/AddUsernamePassword", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -642,7 +642,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetAccountInfo", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetAccountInfo", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -672,7 +672,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromFacebookIDs", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPlayFabIDsFromFacebookIDs", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -702,7 +702,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromGameCenterIDs", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPlayFabIDsFromGameCenterIDs", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -732,7 +732,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromGoogleIDs", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPlayFabIDsFromGoogleIDs", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -762,7 +762,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromPSNAccountIDs", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPlayFabIDsFromPSNAccountIDs", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -792,7 +792,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayFabIDsFromSteamIDs", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPlayFabIDsFromSteamIDs", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -822,7 +822,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserCombinedInfo", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetUserCombinedInfo", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -852,7 +852,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkAndroidDeviceID", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkAndroidDeviceID", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -882,7 +882,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkCustomID", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkCustomID", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -912,7 +912,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkFacebookAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkFacebookAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -942,7 +942,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkGameCenterAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkGameCenterAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -972,7 +972,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkGoogleAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkGoogleAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1002,7 +1002,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkIOSDeviceID", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkIOSDeviceID", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1032,7 +1032,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkKongregate", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkKongregate", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1062,7 +1062,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkPSNAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkPSNAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1092,7 +1092,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1122,7 +1122,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LinkXboxAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LinkXboxAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1151,7 +1151,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/SendAccountRecoveryEmail", serializedJson, null, null, callback);
+            PlayFabHTTP.Post("/Client/SendAccountRecoveryEmail", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
@@ -1181,7 +1181,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkAndroidDeviceID", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkAndroidDeviceID", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1211,7 +1211,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkCustomID", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkCustomID", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1241,7 +1241,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkFacebookAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkFacebookAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1271,7 +1271,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkGameCenterAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkGameCenterAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1301,7 +1301,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkGoogleAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkGoogleAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1331,7 +1331,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkIOSDeviceID", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkIOSDeviceID", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1361,7 +1361,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkKongregate", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkKongregate", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1391,7 +1391,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkPSNAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkPSNAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1421,7 +1421,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1451,7 +1451,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlinkXboxAccount", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlinkXboxAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1481,7 +1481,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateUserTitleDisplayName", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UpdateUserTitleDisplayName", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1511,7 +1511,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetFriendLeaderboard", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetFriendLeaderboard", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1541,7 +1541,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetFriendLeaderboardAroundCurrentUser", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetFriendLeaderboardAroundCurrentUser", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1571,7 +1571,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetLeaderboard", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetLeaderboard", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1601,7 +1601,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetLeaderboardAroundCurrentUser", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetLeaderboardAroundCurrentUser", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1631,7 +1631,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetUserData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1661,7 +1661,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserPublisherData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetUserPublisherData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1691,7 +1691,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserPublisherReadOnlyData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetUserPublisherReadOnlyData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1721,7 +1721,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserReadOnlyData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetUserReadOnlyData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1751,7 +1751,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserStatistics", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetUserStatistics", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1781,7 +1781,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateUserData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UpdateUserData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1811,7 +1811,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateUserPublisherData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UpdateUserPublisherData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1841,7 +1841,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateUserStatistics", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UpdateUserStatistics", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1871,7 +1871,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCatalogItems", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetCatalogItems", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1901,7 +1901,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetStoreItems", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetStoreItems", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1931,7 +1931,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetTitleData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetTitleData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1961,7 +1961,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetTitleNews", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetTitleNews", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1991,7 +1991,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddUserVirtualCurrency", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/AddUserVirtualCurrency", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2021,7 +2021,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ConfirmPurchase", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/ConfirmPurchase", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2051,7 +2051,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ConsumeItem", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/ConsumeItem", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2081,7 +2081,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCharacterInventory", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetCharacterInventory", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2111,7 +2111,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPurchase", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPurchase", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2141,7 +2141,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetUserInventory", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetUserInventory", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2171,7 +2171,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/PayForPurchase", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/PayForPurchase", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2201,7 +2201,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/PurchaseItem", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/PurchaseItem", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2231,7 +2231,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RedeemCoupon", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/RedeemCoupon", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2261,7 +2261,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ReportPlayer", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/ReportPlayer", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2291,7 +2291,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/StartPurchase", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/StartPurchase", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2321,7 +2321,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/SubtractUserVirtualCurrency", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/SubtractUserVirtualCurrency", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2351,7 +2351,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UnlockContainerItem", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UnlockContainerItem", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2381,7 +2381,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddFriend", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/AddFriend", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2411,7 +2411,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetFriendsList", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetFriendsList", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2441,7 +2441,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RemoveFriend", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/RemoveFriend", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2471,7 +2471,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/SetFriendTags", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/SetFriendTags", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2501,7 +2501,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RegisterForIOSPushNotification", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/RegisterForIOSPushNotification", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2531,7 +2531,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RestoreIOSPurchases", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/RestoreIOSPurchases", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2561,7 +2561,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ValidateIOSReceipt", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/ValidateIOSReceipt", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2591,7 +2591,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCurrentGames", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetCurrentGames", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2621,7 +2621,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetGameServerRegions", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetGameServerRegions", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2651,7 +2651,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/Matchmake", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/Matchmake", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2681,7 +2681,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/StartGame", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/StartGame", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2711,7 +2711,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AndroidDevicePushNotificationRegistration", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/AndroidDevicePushNotificationRegistration", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2741,7 +2741,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ValidateGooglePlayPurchase", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/ValidateGooglePlayPurchase", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2771,7 +2771,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/LogEvent", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/LogEvent", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2801,7 +2801,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AddSharedGroupMembers", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/AddSharedGroupMembers", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2831,7 +2831,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/CreateSharedGroup", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/CreateSharedGroup", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2861,7 +2861,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPublisherData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPublisherData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2891,7 +2891,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetSharedGroupData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetSharedGroupData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2921,7 +2921,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RemoveSharedGroupMembers", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/RemoveSharedGroupMembers", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2951,7 +2951,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateSharedGroupData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UpdateSharedGroupData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -2981,7 +2981,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ConsumePSNEntitlements", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/ConsumePSNEntitlements", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3011,7 +3011,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/RefreshPSNAuthToken", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/RefreshPSNAuthToken", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3032,7 +3032,7 @@ namespace PlayFab
                 }
                 if(result != null)
                 {
-                    PlayFabSettings.LogicServerURL = result.Url;
+                    PlayFabSettings.LogicServerUrl = result.Url;
 
                     result.CustomData = customData;
                     result.Request = request;
@@ -3042,7 +3042,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCloudScriptUrl", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetCloudScriptUrl", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3072,7 +3072,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetLogicURL()+"/Client/RunCloudScript", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/RunCloudScript", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3102,7 +3102,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetContentDownloadUrl", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetContentDownloadUrl", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3132,7 +3132,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetAllUsersCharacters", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetAllUsersCharacters", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3162,7 +3162,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCharacterLeaderboard", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetCharacterLeaderboard", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3192,7 +3192,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetLeaderboardAroundCharacter", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetLeaderboardAroundCharacter", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3222,7 +3222,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetLeaderboardForUserCharacters", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetLeaderboardForUserCharacters", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3252,7 +3252,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GrantCharacterToUser", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GrantCharacterToUser", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3282,7 +3282,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCharacterData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetCharacterData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3312,7 +3312,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetCharacterReadOnlyData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetCharacterReadOnlyData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3342,7 +3342,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/UpdateCharacterData", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/UpdateCharacterData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3372,7 +3372,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/ValidateAmazonIAPReceipt", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/ValidateAmazonIAPReceipt", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3402,7 +3402,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AcceptTrade", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/AcceptTrade", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3432,7 +3432,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/CancelTrade", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/CancelTrade", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3462,7 +3462,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetPlayerTrades", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetPlayerTrades", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3492,7 +3492,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/GetTradeStatus", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/GetTradeStatus", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3522,7 +3522,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/OpenTrade", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/OpenTrade", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -3554,7 +3554,7 @@ namespace PlayFab
                     }
                 }
             };
-            PlayFabHTTP.Post(PlayFabSettings.GetURL()+"/Client/AttributeInstall", serializedJson, "X-Authorization", _authKey, callback);
+            PlayFabHTTP.Post("/Client/AttributeInstall", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         private static string _authKey = null;
