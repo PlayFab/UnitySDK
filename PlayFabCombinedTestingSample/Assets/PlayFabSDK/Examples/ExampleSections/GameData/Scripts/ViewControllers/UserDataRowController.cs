@@ -4,21 +4,29 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 using PlayFab.ClientModels;
-public class UserDataRowController : MonoBehaviour {
+public class UserDataRowController : MonoBehaviour, ISelectHandler {
 
 	public InputField keyField;
 	public InputField valueField;
 	public Toggle permissionToggle;
 	public Toggle deleteToggle;
+	public Image banding;
 	
 	private UserDataController controller;
-	private KeyValuePair<string, UserDataRecord> original = new KeyValuePair<string, UserDataRecord>();
-
-	// Use this for initialization
-	void Start () {
+	private KeyValuePair<string, UserDataRecord> original_udr = new KeyValuePair<string, UserDataRecord>();
+	private KeyValuePair<string, string> original_string = new KeyValuePair<string, string>();
+	private KeyValuePair<string, int> original_stat = new KeyValuePair<string, int>();
 	
+	private bool isBanded = false;
+	
+	// Use this for initialization
+	void Start () 
+	{
+		deleteToggle.onValueChanged.AddListener((bool value) => { OnDeleteClicked(value); });
+		permissionToggle.onValueChanged.AddListener((bool value) => { OnPermissionClicked(value); });
 	}
 	
 	// Update is called once per frame
@@ -28,6 +36,7 @@ public class UserDataRowController : MonoBehaviour {
 	
 	public void Init(KeyValuePair<string, UserDataRecord> kvp, UserDataController controller, bool useBanding = false, bool isReadOnly = false, bool usePermissions = false, bool canDelete = true)
 	{
+		this.original_udr = kvp;
 		this.keyField.text = kvp.Key;
 		this.valueField.text = string.Format("{0}", kvp.Value.Value);
 		
@@ -61,26 +70,183 @@ public class UserDataRowController : MonoBehaviour {
 			this.keyField.interactable = true;
 			this.valueField.interactable = true;
 		}
+				
+		this.controller = controller;
 		
-//		this._balance = kvp.Value;
-//		this._initialBalance = this._balance;
-//		
-//		this.controller = controller;
-//		
-//		this.vc_balance.onEndEdit.RemoveAllListeners();
-//		this.vc_balance.onEndEdit.AddListener((string input) => { 
-//			OnBalanceEdited(this.vc_balance.text);
-//		});
-//		
-//		if(useBanding == true)
-//		{
-//			this.banding.enabled = true;
-//		}
-//		else
-//		{
-//			this.banding.enabled = false;
-//		}
+		if(useBanding == true)
+		{
+			this.banding.enabled = true;
+			this.isBanded = true;
+		}
+		else
+		{
+			this.banding.enabled = false;
+			this.isBanded = false;
+		}
+	}
+	
+	public void Init(KeyValuePair<string, string> kvp, UserDataController controller, bool useBanding = false, bool isReadOnly = false, bool usePermissions = false, bool canDelete = true)
+	{
+		this.original_string = kvp;
+		this.keyField.text = kvp.Key.Length > 256 ? kvp.Key.Substring(0, 256) : kvp.Key;
+		this.valueField.text = string.Format("{0}", kvp.Value.Length > 256 ? kvp.Value.Substring(0, 256) : kvp.Value);
+		
+		if(usePermissions == true)
+		{
+			this.permissionToggle.gameObject.SetActive(true);
+			//this.permissionToggle.isOn = kvp.Value.Permission != null && kvp.Value.Permission == UserDataPermission.Private ? true : false;
+		}
+		else
+		{
+			this.permissionToggle.gameObject.SetActive(false);
+		}
+		
+		if(canDelete == true)
+		{
+			this.deleteToggle.gameObject.SetActive(true);
+			this.deleteToggle.isOn =  false;
+		}
+		else
+		{
+			this.deleteToggle.gameObject.SetActive(false);
+		}
+		
+		if(isReadOnly)
+		{
+			this.keyField.interactable = false;
+			this.valueField.interactable = false;
+		}
+		else
+		{
+			this.keyField.interactable = true;
+			this.valueField.interactable = true;
+		}
+		
+		this.controller = controller;
+		
+		if(useBanding == true)
+		{
+			this.banding.enabled = true;
+			this.isBanded = true;
+		}
+		else
+		{
+			this.banding.enabled = false;
+			this.isBanded = false;
+		}
+	}
+	
+	public void Init(KeyValuePair<string, int> kvp, UserDataController controller, bool useBanding = false, bool isReadOnly = false, bool usePermissions = false, bool canDelete = true)
+	{
+		this.original_stat = kvp;
+		this.keyField.text = kvp.Key;
+		this.valueField.text = string.Format("{0}", kvp.Value);
+		
+		if(usePermissions == true)
+		{
+			this.permissionToggle.gameObject.SetActive(true);
+			//this.permissionToggle.isOn = kvp.Value.Permission != null && kvp.Value.Permission == UserDataPermission.Private ? true : false;
+		}
+		else
+		{
+			this.permissionToggle.gameObject.SetActive(false);
+		}
+		
+		if(canDelete == true)
+		{
+			this.deleteToggle.gameObject.SetActive(true);
+			this.deleteToggle.isOn =  false;
+		}
+		else
+		{
+			this.deleteToggle.gameObject.SetActive(false);
+		}
+		
+		if(isReadOnly)
+		{
+			this.keyField.interactable = false;
+			this.valueField.interactable = false;
+		}
+		else
+		{
+			this.keyField.interactable = true;
+			this.valueField.interactable = true;
+		}
+		
+		this.controller = controller;
+		
+		if(useBanding == true)
+		{
+			this.banding.enabled = true;
+			this.isBanded = true;
+		}
+		else
+		{
+			this.banding.enabled = false;
+			this.isBanded = false;
+		}
 	}
 	
 	
+	public void OnSelect(BaseEventData eventData)
+	{
+		Debug.Log(eventData.selectedObject.name);
+	}
+	
+	
+	
+	public void OnKeyFocusGained()
+	{
+	
+	}
+	
+	public void OnValueFocusGained()
+	{
+		
+	}
+	
+	public void OnKeyFocusLost()
+	{
+		
+	}
+	
+	public void OnValueFocusLost()
+	{
+		
+	}
+	
+	public void OnPermissionClicked( bool value)
+	{
+		Debug.Log("Permission clicked...");
+	}
+	
+	public void OnDeleteClicked(bool value)
+	{
+		if(value == false)
+		{
+			this.banding.color = Color.gray;
+			this.banding.enabled = this.isBanded;
+			ActivateRow();
+		}
+		else
+		{
+			DeactivateRow();
+			this.banding.enabled = true;
+			this.banding.color = Color.red;	
+		}
+	}
+	
+	public void DeactivateRow()
+	{
+		this.keyField.interactable = false;
+		this.valueField.interactable = false;
+		this.permissionToggle.interactable = false;
+	}
+	
+	public void ActivateRow()
+	{
+		this.keyField.interactable = true;
+		this.valueField.interactable = true;
+		this.permissionToggle.interactable = true;
+	}
 }

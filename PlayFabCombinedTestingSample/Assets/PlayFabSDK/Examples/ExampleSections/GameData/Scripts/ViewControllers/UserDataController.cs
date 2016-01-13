@@ -8,9 +8,14 @@ using UnityEngine.Events;
 using PlayFab.ClientModels;
 
 public class UserDataController : MonoBehaviour {
+	public Color defaultButtonColor;
+	public Color selectedButtonColor;
+	public Color activeFieldBorderColor;
+	
 	public Button UI_Add;
 	public Text UI_PrivateLabel;
 	public Text UI_DeleteLabel;
+	public Text UI_PanelTitle;
 	
 	public Transform rowPrefab;
 	public Transform listView;
@@ -25,7 +30,7 @@ public class UserDataController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
+		
 	}
 	
 	// Update is called once per frame
@@ -35,7 +40,7 @@ public class UserDataController : MonoBehaviour {
 	
 	public void OnEnable()
 	{
-		StartCoroutine(Init ());
+		OnTabClicked(0);
 		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, OnVCChangedEvent);
 	}
 	
@@ -77,8 +82,23 @@ public class UserDataController : MonoBehaviour {
 
 	public void OnTabClicked(int index)
 	{
+		ResetTabs();
 		this.CurrentState = (UserDataStates)index;
+		
+		tabs[index].GetComponent<Image>().color = this.selectedButtonColor;
+		Debug.Log("Tab: " + index);
+		
+		this.UI_PanelTitle.text = tabs[index].GetComponentInChildren<Text>().text;
+		
 		StartCoroutine(Init ());
+	}
+	
+	public void ResetTabs()
+	{
+		foreach(var tab in tabs)
+		{
+			tab.GetComponent<Image>().color = this.defaultButtonColor;
+		}
 	}
 	
 	void DrawData()
@@ -274,6 +294,22 @@ public class UserDataController : MonoBehaviour {
 		this.UI_DeleteLabel.gameObject.SetActive(false);
 		this.UI_PrivateLabel.gameObject.SetActive(false);
 		
+		if(PlayFab.Examples.PfSharedModelEx.titleData != null && PlayFab.Examples.PfSharedModelEx.titleData.Count > 0)
+		{
+			int counter = 0;
+			foreach(var item in PlayFab.Examples.PfSharedModelEx.titleData)
+			{
+				Transform trans = Instantiate(this.rowPrefab);
+				trans.SetParent(this.listView, false);
+				
+				UserDataRowController itemController = trans.GetComponent<UserDataRowController>();
+				
+				itemController.Init (item, this, counter % 2 == 0 ? true : false, true, false, false);
+				this.rows.Add(itemController); 
+				counter++;
+			}
+		}
+		
 //		// only a user variant of this data
 //		//		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 //		//		{
@@ -423,7 +459,7 @@ public class UserDataController : MonoBehaviour {
 	
 	public void RefreshActiveData()
 	{
-		this.gameObject.SetActive(false);
+		//this.gameObject.SetActive(false);
 	}
 	
 	public void AddRowToData()
