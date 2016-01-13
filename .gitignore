@@ -1,6 +1,8 @@
 PluginSource/Android/release/bin
 PluginSource/Android/libs/UnityPlayerClasses.jar
 
+# Ignore internal testing directories
+_ClientTesting/
 
 */[Ll]ibrary/
 */[Tt]emp/
