@@ -8,7 +8,6 @@ namespace PlayFab
     public static class PlayFabiOSPlugin
     {
         public delegate void InvokeRequestDelegate(string url, int callId, object request, object customData);
-        public delegate void InvokeResponseDelegate(string url, int callId, object request, object result, PlayFabError error, object customData);
 
 #if UNITY_IOS
         [DllImport("__Internal")]
@@ -31,25 +30,25 @@ namespace PlayFab
         }
 
 #if UNITY_IOS
-        public static void Post(string fullUrl, string url, int callId, string data, string authType, string authKey, string sdkVersion, object request, object customData, Action<string, PlayFabError> callback, InvokeRequestDelegate invokeRequest, InvokeResponseDelegate invokeResponse)
+        public static void Post(string fullUrl, string sdkVersion, CallRequestContainer requestContainer, InvokeRequestDelegate invokeRequest)
         {
             string[] headers = new string[4];
             string[] headerValues = new string[4];
 
             int h = 0;
             headers[h] = "Content-Type"; headerValues[h++] = "application/json";
-            if (authType != null)
+            if (requestContainer.AuthType != null)
             {
-                headers[h] = authType; headerValues[h++] = authKey;
+                headers[h] = requestContainer.AuthType; headerValues[h++] = requestContainer.AuthKey;
             }
             headers[h] = "X-ReportErrorAsSuccess"; headerValues[h++] = "true";
             headers[h] = "X-PlayFabSDK"; headerValues[h++] = sdkVersion;
 
-            PlayFabPluginEventHandler.AddHttpDelegate(url, callId, request, customData, callback, invokeResponse);
+            PlayFabPluginEventHandler.AddHttpDelegate(requestContainer);
 
-            invokeRequest(url, callId, request, customData);
+            invokeRequest(requestContainer.Url, requestContainer.CallId, requestContainer.Request, requestContainer.CustomData);
 
-            pf_make_http_request(fullUrl, "POST", h, headers, headerValues, data, callId);
+            pf_make_http_request(fullUrl, "POST", h, headers, headerValues, requestContainer.Data, requestContainer.CallId);
 #else
         //This will never get used and is to prevent editor compile errors.
         public static void Post(string url, int callId, string data, string authType, string authKey, string sdkVersion, Action<string, string> callback)
