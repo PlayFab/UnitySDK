@@ -47,10 +47,10 @@ namespace PlayFab.Internal
             PlayFabGoogleCloudMessaging.MessageReceived(message);
         }
 
-        public static void AddHttpDelegate(string url, int callId, object request, object customData, Action<string, PlayFabError> callback, PlayFabiOSPlugin.InvokeResponseDelegate invokeResponse)
+        public static void AddHttpDelegate(CallRequestContainer requestContainer)
         {
             Init();
-            HttpHandlers.Add(callId, new CallRequestContainer { Url = url, CallId = callId, Callback = callback, Error = null, Result = null, Request = request, CustomData = customData, InvokeResponse = invokeResponse});
+            HttpHandlers.Add(requestContainer.CallId, requestContainer);
         }
 
         public void OnHttpError(string response) // This cannot be static because it's called from IOS: UnitySendMessage(EventHandler, "OnHttpError", replyBuffer);
@@ -93,7 +93,7 @@ namespace PlayFab.Internal
                     return;
                 }
 
-                request.Result = args[1];
+                request.ResultStr = args[1];
                 request.InvokeCallback();
                 HttpHandlers.Remove(callId);
             }
@@ -101,28 +101,6 @@ namespace PlayFab.Internal
             {
                 Debug.LogError("Error handling HTTP request: " + e);
             }
-        }
-    }
-
-    /// <summary>
-    /// This is a callback class for use with IOS - HttpWebRequest.
-    /// </summary>
-    internal class CallRequestContainer
-    {
-        public string Url;
-        public int CallId;
-        public object Request;
-        public string Result;
-        public object CustomData;
-        public PlayFabError Error;
-        public Action<string, PlayFabError> Callback;
-        public PlayFabiOSPlugin.InvokeResponseDelegate InvokeResponse;
-
-        public void InvokeCallback()
-        {
-            InvokeResponse(Url, CallId, Request, Result, Error, CustomData); // Do the globalMessage callback
-            if (Callback != null)
-                Callback(Result, Error); // Do the specific callback
         }
     }
 }
