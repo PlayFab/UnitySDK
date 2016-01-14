@@ -1,3 +1,4 @@
+using PlayFab.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -22,15 +23,13 @@ namespace PlayFab.ClientModels
         public List<string> AcceptedInventoryInstanceIds { get; set;}
     }
 
-    public class AcceptTradeResponse
+    public class AcceptTradeResponse : PlayFabResultCommon
     {
 
         /// <summary>
         /// Details about trade which was just accepted.
         /// </summary>
         public TradeInfo Trade { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class AddFriendRequest
@@ -57,15 +56,13 @@ namespace PlayFab.ClientModels
         public string FriendTitleDisplayName { get; set;}
     }
 
-    public class AddFriendResult
+    public class AddFriendResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// True if the friend request was processed successfully.
         /// </summary>
         public bool Created { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class AddSharedGroupMembersRequest
@@ -82,10 +79,8 @@ namespace PlayFab.ClientModels
         public List<string> PlayFabIds { get; set;}
     }
 
-    public class AddSharedGroupMembersResult
+    public class AddSharedGroupMembersResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class AddUsernamePasswordRequest
@@ -107,15 +102,13 @@ namespace PlayFab.ClientModels
         public string Password { get; set;}
     }
 
-    public class AddUsernamePasswordResult
+    public class AddUsernamePasswordResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// PlayFab unique user name.
         /// </summary>
         public string Username { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class AddUserVirtualCurrencyRequest
@@ -151,10 +144,8 @@ namespace PlayFab.ClientModels
         public string ConfirmationMessege { get; set;}
     }
 
-    public class AndroidDevicePushNotificationRegistrationResult
+    public class AndroidDevicePushNotificationRegistrationResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class AttributeInstallRequest
@@ -171,10 +162,8 @@ namespace PlayFab.ClientModels
         public string Android_Id { get; set;}
     }
 
-    public class AttributeInstallResult
+    public class AttributeInstallResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class CancelTradeRequest
@@ -186,15 +175,13 @@ namespace PlayFab.ClientModels
         public string TradeId { get; set;}
     }
 
-    public class CancelTradeResponse
+    public class CancelTradeResponse : PlayFabResultCommon
     {
 
         /// <summary>
         /// Details about trade which was just canceled.
         /// </summary>
         public TradeInfo Trade { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class CartItem
@@ -432,7 +419,7 @@ namespace PlayFab.ClientModels
         public int Position { get; set;}
     }
 
-    public class CharacterResult
+    public class CharacterResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -449,8 +436,6 @@ namespace PlayFab.ClientModels
         /// The type-string that was given to this character on creation.
         /// </summary>
         public string CharacterType { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class ConfirmPurchaseRequest
@@ -462,7 +447,7 @@ namespace PlayFab.ClientModels
         public string OrderId { get; set;}
     }
 
-    public class ConfirmPurchaseResult
+    public class ConfirmPurchaseResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -479,8 +464,6 @@ namespace PlayFab.ClientModels
         /// Array of items purchased.
         /// </summary>
         public List<ItemInstance> Items { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class ConsumeItemRequest
@@ -502,7 +485,7 @@ namespace PlayFab.ClientModels
         public string CharacterId { get; set;}
     }
 
-    public class ConsumeItemResult
+    public class ConsumeItemResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -514,8 +497,6 @@ namespace PlayFab.ClientModels
         /// Number of uses remaining on the item.
         /// </summary>
         public int RemainingUses { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class ConsumePSNEntitlementsRequest
@@ -532,15 +513,13 @@ namespace PlayFab.ClientModels
         public int ServiceLabel { get; set;}
     }
 
-    public class ConsumePSNEntitlementsResult
+    public class ConsumePSNEntitlementsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Array of items granted to the player as a result of consuming entitlements.
         /// </summary>
         public List<ItemInstance> ItemsGranted { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class CreateSharedGroupRequest
@@ -552,15 +531,13 @@ namespace PlayFab.ClientModels
         public string SharedGroupId { get; set;}
     }
 
-    public class CreateSharedGroupResult
+    public class CreateSharedGroupResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Unique identifier for the shared group.
         /// </summary>
         public string SharedGroupId { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public enum Currency
@@ -753,7 +730,7 @@ namespace PlayFab.ClientModels
         public string StatisticName { get; set;}
     }
 
-    public class CurrentGamesResult
+    public class CurrentGamesResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -770,14 +747,10 @@ namespace PlayFab.ClientModels
         /// number of games running
         /// </summary>
         public int GameCount { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
-    public class EmptyResult
+    public class EmptyResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class FacebookPlayFabIdPair
@@ -915,15 +888,13 @@ namespace PlayFab.ClientModels
         public string TitleId { get; set;}
     }
 
-    public class GameServerRegionsResult
+    public class GameServerRegionsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// array of regions found matching the request parameters
         /// </summary>
         public List<RegionInfo> Regions { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetAccountInfoRequest
@@ -950,15 +921,13 @@ namespace PlayFab.ClientModels
         public string TitleDisplayName { get; set;}
     }
 
-    public class GetAccountInfoResult
+    public class GetAccountInfoResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Account information for the local user.
         /// </summary>
         public UserAccountInfo AccountInfo { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetCatalogItemsRequest
@@ -970,15 +939,13 @@ namespace PlayFab.ClientModels
         public string CatalogVersion { get; set;}
     }
 
-    public class GetCatalogItemsResult
+    public class GetCatalogItemsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Array of inventory objects.
         /// </summary>
         public List<CatalogItem> Catalog { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetCharacterDataRequest
@@ -1005,7 +972,7 @@ namespace PlayFab.ClientModels
         public int? IfChangedFromDataVersion { get; set;}
     }
 
-    public class GetCharacterDataResult
+    public class GetCharacterDataResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1022,8 +989,6 @@ namespace PlayFab.ClientModels
         /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
         /// </summary>
         public uint DataVersion { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetCharacterInventoryRequest
@@ -1045,7 +1010,7 @@ namespace PlayFab.ClientModels
         public string CatalogVersion { get; set;}
     }
 
-    public class GetCharacterInventoryResult
+    public class GetCharacterInventoryResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1072,8 +1037,6 @@ namespace PlayFab.ClientModels
         /// Array of remaining times and timestamps for virtual currencies.
         /// </summary>
         public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetCharacterLeaderboardRequest
@@ -1095,20 +1058,18 @@ namespace PlayFab.ClientModels
         public int StartPosition { get; set;}
 
         /// <summary>
-        /// Maximum number of entries to retrieve.
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
         /// </summary>
-        public int MaxResultsCount { get; set;}
+        public int? MaxResultsCount { get; set;}
     }
 
-    public class GetCharacterLeaderboardResult
+    public class GetCharacterLeaderboardResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetCloudScriptUrlRequest
@@ -1125,15 +1086,13 @@ namespace PlayFab.ClientModels
         public bool? Testing { get; set;}
     }
 
-    public class GetCloudScriptUrlResult
+    public class GetCloudScriptUrlResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// URL of the Cloud Script logic server.
         /// </summary>
         public string Url { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetContentDownloadUrlRequest
@@ -1155,15 +1114,13 @@ namespace PlayFab.ClientModels
         public bool? ThruCDN { get; set;}
     }
 
-    public class GetContentDownloadUrlResult
+    public class GetContentDownloadUrlResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// URL for downloading content via HTTP GET or HEAD method. The URL will expire in 1 hour.
         /// </summary>
         public string URL { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetFriendLeaderboardAroundCurrentUserRequest
@@ -1175,9 +1132,9 @@ namespace PlayFab.ClientModels
         public string StatisticName { get; set;}
 
         /// <summary>
-        /// Maximum number of entries to retrieve.
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
         /// </summary>
-        public int MaxResultsCount { get; set;}
+        public int? MaxResultsCount { get; set;}
 
         /// <summary>
         /// Indicates whether Steam service friends should be included in the response. Default is true.
@@ -1190,15 +1147,51 @@ namespace PlayFab.ClientModels
         public bool? IncludeFacebookFriends { get; set;}
     }
 
-    public class GetFriendLeaderboardAroundCurrentUserResult
+    public class GetFriendLeaderboardAroundCurrentUserResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Ordered listing of users and their positions in the requested leaderboard.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
+    }
+
+    public class GetFriendLeaderboardAroundPlayerRequest
+    {
+
+        /// <summary>
+        /// Statistic used to rank players for this leaderboard.
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
+        /// </summary>
+        public int? MaxResultsCount { get; set;}
+
+        /// <summary>
+        /// PlayFab unique identifier of the user to center the leaderboard around. If null will center on the logged in user.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Indicates whether Steam service friends should be included in the response. Default is true.
+        /// </summary>
+        public bool? IncludeSteamFriends { get; set;}
+
+        /// <summary>
+        /// Indicates whether Facebook friends should be included in the response. Default is true.
+        /// </summary>
+        public bool? IncludeFacebookFriends { get; set;}
+    }
+
+    public class GetFriendLeaderboardAroundPlayerResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Ordered listing of users and their positions in the requested leaderboard.
+        /// </summary>
+        public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
     }
 
     public class GetFriendLeaderboardRequest
@@ -1215,9 +1208,9 @@ namespace PlayFab.ClientModels
         public int StartPosition { get; set;}
 
         /// <summary>
-        /// Maximum number of entries to retrieve.
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
         /// </summary>
-        public int MaxResultsCount { get; set;}
+        public int? MaxResultsCount { get; set;}
 
         /// <summary>
         /// Indicates whether Steam service friends should be included in the response. Default is true.
@@ -1244,15 +1237,13 @@ namespace PlayFab.ClientModels
         public bool? IncludeFacebookFriends { get; set;}
     }
 
-    public class GetFriendsListResult
+    public class GetFriendsListResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Array of friends found.
         /// </summary>
         public List<FriendInfo> Friends { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetLeaderboardAroundCharacterRequest
@@ -1264,7 +1255,7 @@ namespace PlayFab.ClientModels
         public string StatisticName { get; set;}
 
         /// <summary>
-        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// Unique PlayFab assigned ID for a specific character on which to center the leaderboard.
         /// </summary>
         public string CharacterId { get; set;}
 
@@ -1274,20 +1265,18 @@ namespace PlayFab.ClientModels
         public string CharacterType { get; set;}
 
         /// <summary>
-        /// Maximum number of entries to retrieve.
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
         /// </summary>
-        public int MaxResultsCount { get; set;}
+        public int? MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardAroundCharacterResult
+    public class GetLeaderboardAroundCharacterResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetLeaderboardAroundCurrentUserRequest
@@ -1299,20 +1288,46 @@ namespace PlayFab.ClientModels
         public string StatisticName { get; set;}
 
         /// <summary>
-        /// Maximum number of entries to retrieve.
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
         /// </summary>
-        public int MaxResultsCount { get; set;}
+        public int? MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardAroundCurrentUserResult
+    public class GetLeaderboardAroundCurrentUserResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Ordered listing of users and their positions in the requested leaderboard.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
+    }
+
+    public class GetLeaderboardAroundPlayerRequest
+    {
+
+        /// <summary>
+        /// PlayFab unique identifier of the user to center the leaderboard around. If null will center on the logged in user.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Statistic used to rank players for this leaderboard.
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
+        /// </summary>
+        public int? MaxResultsCount { get; set;}
+    }
+
+    public class GetLeaderboardAroundPlayerResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Ordered listing of users and their positions in the requested leaderboard.
+        /// </summary>
+        public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
     }
 
     public class GetLeaderboardForUsersCharactersRequest
@@ -1329,15 +1344,13 @@ namespace PlayFab.ClientModels
         public int MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardForUsersCharactersResult
+    public class GetLeaderboardForUsersCharactersResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetLeaderboardRequest
@@ -1354,20 +1367,18 @@ namespace PlayFab.ClientModels
         public int StartPosition { get; set;}
 
         /// <summary>
-        /// Maximum number of entries to retrieve.
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
         /// </summary>
-        public int MaxResultsCount { get; set;}
+        public int? MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardResult
+    public class GetLeaderboardResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Ordered listing of users and their positions in the requested leaderboard.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPhotonAuthenticationTokenRequest
@@ -1379,15 +1390,13 @@ namespace PlayFab.ClientModels
         public string PhotonApplicationId { get; set;}
     }
 
-    public class GetPhotonAuthenticationTokenResult
+    public class GetPhotonAuthenticationTokenResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// The Photon authentication token for this game-session.
         /// </summary>
         public string PhotonCustomAuthenticationToken { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPlayerStatisticsRequest
@@ -1399,15 +1408,13 @@ namespace PlayFab.ClientModels
         public List<string> StatisticNames { get; set;}
     }
 
-    public class GetPlayerStatisticsResult
+    public class GetPlayerStatisticsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// User statistics for the requested user.
         /// </summary>
         public List<StatisticValue> Statistics { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPlayerTradesRequest
@@ -1419,7 +1426,7 @@ namespace PlayFab.ClientModels
         public TradeStatus? StatusFilter { get; set;}
     }
 
-    public class GetPlayerTradesResponse
+    public class GetPlayerTradesResponse : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1431,8 +1438,6 @@ namespace PlayFab.ClientModels
         /// History of trades which this player has accepted.
         /// </summary>
         public List<TradeInfo> AcceptedTrades { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPlayFabIDsFromFacebookIDsRequest
@@ -1444,15 +1449,13 @@ namespace PlayFab.ClientModels
         public List<string> FacebookIDs { get; set;}
     }
 
-    public class GetPlayFabIDsFromFacebookIDsResult
+    public class GetPlayFabIDsFromFacebookIDsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Mapping of Facebook identifiers to PlayFab identifiers.
         /// </summary>
         public List<FacebookPlayFabIdPair> Data { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPlayFabIDsFromGameCenterIDsRequest
@@ -1464,15 +1467,13 @@ namespace PlayFab.ClientModels
         public List<string> GameCenterIDs { get; set;}
     }
 
-    public class GetPlayFabIDsFromGameCenterIDsResult
+    public class GetPlayFabIDsFromGameCenterIDsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Mapping of Game Center identifiers to PlayFab identifiers.
         /// </summary>
         public List<GameCenterPlayFabIdPair> Data { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPlayFabIDsFromGoogleIDsRequest
@@ -1484,15 +1485,13 @@ namespace PlayFab.ClientModels
         public List<string> GoogleIDs { get; set;}
     }
 
-    public class GetPlayFabIDsFromGoogleIDsResult
+    public class GetPlayFabIDsFromGoogleIDsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Mapping of Google identifiers to PlayFab identifiers.
         /// </summary>
         public List<GooglePlayFabIdPair> Data { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPlayFabIDsFromPSNAccountIDsRequest
@@ -1509,15 +1508,13 @@ namespace PlayFab.ClientModels
         public int? IssuerId { get; set;}
     }
 
-    public class GetPlayFabIDsFromPSNAccountIDsResult
+    public class GetPlayFabIDsFromPSNAccountIDsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Mapping of PlayStation Network identifiers to PlayFab identifiers.
         /// </summary>
         public List<PSNAccountPlayFabIdPair> Data { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPlayFabIDsFromSteamIDsRequest
@@ -1529,15 +1526,13 @@ namespace PlayFab.ClientModels
         public List<ulong> SteamIDs { get; set;}
     }
 
-    public class GetPlayFabIDsFromSteamIDsResult
+    public class GetPlayFabIDsFromSteamIDsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Mapping of Steam identifiers to PlayFab identifiers.
         /// </summary>
         public List<SteamPlayFabIdPair> Data { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPublisherDataRequest
@@ -1549,15 +1544,13 @@ namespace PlayFab.ClientModels
         public List<string> Keys { get; set;}
     }
 
-    public class GetPublisherDataResult
+    public class GetPublisherDataResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// a dictionary object of key / value pairs
         /// </summary>
         public Dictionary<string,string> Data { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetPurchaseRequest
@@ -1569,7 +1562,7 @@ namespace PlayFab.ClientModels
         public string OrderId { get; set;}
     }
 
-    public class GetPurchaseResult
+    public class GetPurchaseResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1601,8 +1594,6 @@ namespace PlayFab.ClientModels
         /// Array of items purchased.
         /// </summary>
         public List<ItemInstance> Items { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetSharedGroupDataRequest
@@ -1624,7 +1615,7 @@ namespace PlayFab.ClientModels
         public bool? GetMembers { get; set;}
     }
 
-    public class GetSharedGroupDataResult
+    public class GetSharedGroupDataResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1636,8 +1627,6 @@ namespace PlayFab.ClientModels
         /// List of PlayFabId identifiers for the members of this group, if requested.
         /// </summary>
         public List<string> Members { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetStoreItemsRequest
@@ -1654,15 +1643,13 @@ namespace PlayFab.ClientModels
         public string CatalogVersion { get; set;}
     }
 
-    public class GetStoreItemsResult
+    public class GetStoreItemsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Array of store items.
         /// </summary>
         public List<StoreItem> Store { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetTitleDataRequest
@@ -1674,15 +1661,13 @@ namespace PlayFab.ClientModels
         public List<string> Keys { get; set;}
     }
 
-    public class GetTitleDataResult
+    public class GetTitleDataResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// a dictionary object of key / value pairs
         /// </summary>
         public Dictionary<string,string> Data { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetTitleNewsRequest
@@ -1694,15 +1679,13 @@ namespace PlayFab.ClientModels
         public int? Count { get; set;}
     }
 
-    public class GetTitleNewsResult
+    public class GetTitleNewsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Array of news items.
         /// </summary>
         public List<TitleNewsItem> News { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetTradeStatusRequest
@@ -1719,15 +1702,13 @@ namespace PlayFab.ClientModels
         public string TradeId { get; set;}
     }
 
-    public class GetTradeStatusResponse
+    public class GetTradeStatusResponse : PlayFabResultCommon
     {
 
         /// <summary>
         /// Information about the requested trade.
         /// </summary>
         public TradeInfo Trade { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetUserCombinedInfoRequest
@@ -1789,7 +1770,7 @@ namespace PlayFab.ClientModels
         public List<string> ReadOnlyDataKeys { get; set;}
     }
 
-    public class GetUserCombinedInfoResult
+    public class GetUserCombinedInfoResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1836,8 +1817,6 @@ namespace PlayFab.ClientModels
         /// The version of the Read-Only UserData that was returned.
         /// </summary>
         public uint ReadOnlyDataVersion { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetUserDataRequest
@@ -1859,7 +1838,7 @@ namespace PlayFab.ClientModels
         public int? IfChangedFromDataVersion { get; set;}
     }
 
-    public class GetUserDataResult
+    public class GetUserDataResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1871,15 +1850,13 @@ namespace PlayFab.ClientModels
         /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
         /// </summary>
         public uint DataVersion { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetUserInventoryRequest
     {
     }
 
-    public class GetUserInventoryResult
+    public class GetUserInventoryResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1896,23 +1873,19 @@ namespace PlayFab.ClientModels
         /// Array of remaining times and timestamps for virtual currencies.
         /// </summary>
         public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GetUserStatisticsRequest
     {
     }
 
-    public class GetUserStatisticsResult
+    public class GetUserStatisticsResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// User statistics for the active title.
         /// </summary>
         public Dictionary<string,int> UserStatistics { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class GooglePlayFabIdPair
@@ -1948,7 +1921,7 @@ namespace PlayFab.ClientModels
         public string CharacterName { get; set;}
     }
 
-    public class GrantCharacterToUserResult
+    public class GrantCharacterToUserResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -1965,8 +1938,6 @@ namespace PlayFab.ClientModels
         /// Indicates whether this character was created successfully.
         /// </summary>
         public bool Result { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     /// <summary>
@@ -2094,10 +2065,8 @@ namespace PlayFab.ClientModels
         public string AndroidDevice { get; set;}
     }
 
-    public class LinkAndroidDeviceIDResult
+    public class LinkAndroidDeviceIDResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkCustomIDRequest
@@ -2109,10 +2078,8 @@ namespace PlayFab.ClientModels
         public string CustomId { get; set;}
     }
 
-    public class LinkCustomIDResult
+    public class LinkCustomIDResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkFacebookAccountRequest
@@ -2129,10 +2096,8 @@ namespace PlayFab.ClientModels
         public bool? ForceLink { get; set;}
     }
 
-    public class LinkFacebookAccountResult
+    public class LinkFacebookAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkGameCenterAccountRequest
@@ -2144,10 +2109,8 @@ namespace PlayFab.ClientModels
         public string GameCenterId { get; set;}
     }
 
-    public class LinkGameCenterAccountResult
+    public class LinkGameCenterAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkGoogleAccountRequest
@@ -2159,10 +2122,8 @@ namespace PlayFab.ClientModels
         public string AccessToken { get; set;}
     }
 
-    public class LinkGoogleAccountResult
+    public class LinkGoogleAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkIOSDeviceIDRequest
@@ -2184,10 +2145,8 @@ namespace PlayFab.ClientModels
         public string DeviceModel { get; set;}
     }
 
-    public class LinkIOSDeviceIDResult
+    public class LinkIOSDeviceIDResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkKongregateAccountRequest
@@ -2204,10 +2163,8 @@ namespace PlayFab.ClientModels
         public string AuthTicket { get; set;}
     }
 
-    public class LinkKongregateAccountResult
+    public class LinkKongregateAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkPSNAccountRequest
@@ -2229,10 +2186,8 @@ namespace PlayFab.ClientModels
         public int? IssuerId { get; set;}
     }
 
-    public class LinkPSNAccountResult
+    public class LinkPSNAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkSteamAccountRequest
@@ -2244,10 +2199,8 @@ namespace PlayFab.ClientModels
         public string SteamTicket { get; set;}
     }
 
-    public class LinkSteamAccountResult
+    public class LinkSteamAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LinkXboxAccountRequest
@@ -2259,10 +2212,8 @@ namespace PlayFab.ClientModels
         public string XboxToken { get; set;}
     }
 
-    public class LinkXboxAccountResult
+    public class LinkXboxAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class ListUsersCharactersRequest
@@ -2274,15 +2225,13 @@ namespace PlayFab.ClientModels
         public string PlayFabId { get; set;}
     }
 
-    public class ListUsersCharactersResult
+    public class ListUsersCharactersResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// The requested list of characters.
         /// </summary>
         public List<CharacterResult> Characters { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LogEventRequest
@@ -2309,13 +2258,11 @@ namespace PlayFab.ClientModels
         public bool ProfileSetEvent { get; set;}
     }
 
-    public class LogEventResult
+    public class LogEventResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
-    public class LoginResult
+    public class LoginResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -2337,8 +2284,6 @@ namespace PlayFab.ClientModels
         /// Settings specific to this user.
         /// </summary>
         public UserSettings SettingsForUser { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class LoginWithAndroidDeviceIDRequest
@@ -2613,17 +2558,17 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// build version to match against
+        /// build version to match against [Note: Required if LobbyId is not specified]
         /// </summary>
         public string BuildVersion { get; set;}
 
         /// <summary>
-        /// region to match make against
+        /// region to match make against [Note: Required if LobbyId is not specified]
         /// </summary>
-        public Region Region { get; set;}
+        public Region? Region { get; set;}
 
         /// <summary>
-        /// game mode to match make against
+        /// game mode to match make against [Note: Required if LobbyId is not specified]
         /// </summary>
         public string GameMode { get; set;}
 
@@ -2648,7 +2593,7 @@ namespace PlayFab.ClientModels
         public bool? EnableQueue { get; set;}
     }
 
-    public class MatchmakeResult
+    public class MatchmakeResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -2685,8 +2630,6 @@ namespace PlayFab.ClientModels
         /// result of match making process
         /// </summary>
         public MatchmakeStatus? Status { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public enum MatchmakeStatus
@@ -2696,7 +2639,7 @@ namespace PlayFab.ClientModels
         GameNotFound
     }
 
-    public class ModifyUserVirtualCurrencyResult
+    public class ModifyUserVirtualCurrencyResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -2718,8 +2661,6 @@ namespace PlayFab.ClientModels
         /// Balance of the virtual currency after modification.
         /// </summary>
         public int Balance { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class OpenTradeRequest
@@ -2741,15 +2682,13 @@ namespace PlayFab.ClientModels
         public List<string> AllowedPlayerIds { get; set;}
     }
 
-    public class OpenTradeResponse
+    public class OpenTradeResponse : PlayFabResultCommon
     {
 
         /// <summary>
         /// The information about the trade that was just opened.
         /// </summary>
         public TradeInfo Trade { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class PayForPurchaseRequest
@@ -2776,7 +2715,7 @@ namespace PlayFab.ClientModels
         public string ProviderTransactionId { get; set;}
     }
 
-    public class PayForPurchaseResult
+    public class PayForPurchaseResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -2823,8 +2762,6 @@ namespace PlayFab.ClientModels
         /// Current virtual currency totals for the user.
         /// </summary>
         public Dictionary<string,int> VirtualCurrency { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class PaymentOption
@@ -2923,15 +2860,13 @@ namespace PlayFab.ClientModels
         public string CharacterId { get; set;}
     }
 
-    public class PurchaseItemResult
+    public class PurchaseItemResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Details for the items purchased.
         /// </summary>
         public List<ItemInstance> Items { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class RedeemCouponRequest
@@ -2948,15 +2883,13 @@ namespace PlayFab.ClientModels
         public string CatalogVersion { get; set;}
     }
 
-    public class RedeemCouponResult
+    public class RedeemCouponResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Items granted to the player as a result of redeeming the coupon.
         /// </summary>
         public List<ItemInstance> GrantedItems { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class RefreshPSNAuthTokenRequest
@@ -3032,10 +2965,8 @@ namespace PlayFab.ClientModels
         public string ConfirmationMessage { get; set;}
     }
 
-    public class RegisterForIOSPushNotificationResult
+    public class RegisterForIOSPushNotificationResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class RegisterPlayFabUserRequest
@@ -3077,7 +3008,7 @@ namespace PlayFab.ClientModels
         public string Origination { get; set;}
     }
 
-    public class RegisterPlayFabUserResult
+    public class RegisterPlayFabUserResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -3099,8 +3030,6 @@ namespace PlayFab.ClientModels
         /// Settings specific to this user.
         /// </summary>
         public UserSettings SettingsForUser { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class RemoveFriendRequest
@@ -3112,10 +3041,8 @@ namespace PlayFab.ClientModels
         public string FriendPlayFabId { get; set;}
     }
 
-    public class RemoveFriendResult
+    public class RemoveFriendResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class RemoveSharedGroupMembersRequest
@@ -3132,10 +3059,8 @@ namespace PlayFab.ClientModels
         public List<string> PlayFabIds { get; set;}
     }
 
-    public class RemoveSharedGroupMembersResult
+    public class RemoveSharedGroupMembersResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class ReportPlayerClientRequest
@@ -3152,7 +3077,7 @@ namespace PlayFab.ClientModels
         public string Comment { get; set;}
     }
 
-    public class ReportPlayerClientResult
+    public class ReportPlayerClientResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -3164,8 +3089,6 @@ namespace PlayFab.ClientModels
         /// The number of remaining reports which may be filed today.
         /// </summary>
         public int SubmissionsRemaining { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class RestoreIOSPurchasesRequest
@@ -3177,10 +3100,8 @@ namespace PlayFab.ClientModels
         public string ReceiptData { get; set;}
     }
 
-    public class RestoreIOSPurchasesResult
+    public class RestoreIOSPurchasesResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class RunCloudScriptRequest
@@ -3202,7 +3123,7 @@ namespace PlayFab.ClientModels
         public string ParamsEncoded { get; set;}
     }
 
-    public class RunCloudScriptResult
+    public class RunCloudScriptResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -3239,8 +3160,6 @@ namespace PlayFab.ClientModels
         /// time this script took to run, in seconds
         /// </summary>
         public double ExecutionTime { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class SendAccountRecoveryEmailRequest
@@ -3262,10 +3181,8 @@ namespace PlayFab.ClientModels
         public string PublisherId { get; set;}
     }
 
-    public class SendAccountRecoveryEmailResult
+    public class SendAccountRecoveryEmailResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class SetFriendTagsRequest
@@ -3282,10 +3199,8 @@ namespace PlayFab.ClientModels
         public List<string> Tags { get; set;}
     }
 
-    public class SetFriendTagsResult
+    public class SetFriendTagsResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class SharedGroupDataRecord
@@ -3346,7 +3261,7 @@ namespace PlayFab.ClientModels
         public string CustomCommandLineData { get; set;}
     }
 
-    public class StartGameResult
+    public class StartGameResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -3378,8 +3293,6 @@ namespace PlayFab.ClientModels
         /// password required to log into the server
         /// </summary>
         public string Password { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class StartPurchaseRequest
@@ -3401,7 +3314,7 @@ namespace PlayFab.ClientModels
         public List<ItemPuchaseRequest> Items { get; set;}
     }
 
-    public class StartPurchaseResult
+    public class StartPurchaseResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -3423,8 +3336,6 @@ namespace PlayFab.ClientModels
         /// Current virtual currency totals for the user.
         /// </summary>
         public Dictionary<string,int> VirtualCurrencyBalances { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class StatisticUpdate
@@ -3661,10 +3572,8 @@ namespace PlayFab.ClientModels
         public string AndroidDeviceId { get; set;}
     }
 
-    public class UnlinkAndroidDeviceIDResult
+    public class UnlinkAndroidDeviceIDResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkCustomIDRequest
@@ -3676,40 +3585,32 @@ namespace PlayFab.ClientModels
         public string CustomId { get; set;}
     }
 
-    public class UnlinkCustomIDResult
+    public class UnlinkCustomIDResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkFacebookAccountRequest
     {
     }
 
-    public class UnlinkFacebookAccountResult
+    public class UnlinkFacebookAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkGameCenterAccountRequest
     {
     }
 
-    public class UnlinkGameCenterAccountResult
+    public class UnlinkGameCenterAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkGoogleAccountRequest
     {
     }
 
-    public class UnlinkGoogleAccountResult
+    public class UnlinkGoogleAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkIOSDeviceIDRequest
@@ -3721,40 +3622,32 @@ namespace PlayFab.ClientModels
         public string DeviceId { get; set;}
     }
 
-    public class UnlinkIOSDeviceIDResult
+    public class UnlinkIOSDeviceIDResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkKongregateAccountRequest
     {
     }
 
-    public class UnlinkKongregateAccountResult
+    public class UnlinkKongregateAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkPSNAccountRequest
     {
     }
 
-    public class UnlinkPSNAccountResult
+    public class UnlinkPSNAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkSteamAccountRequest
     {
     }
 
-    public class UnlinkSteamAccountResult
+    public class UnlinkSteamAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlinkXboxAccountRequest
@@ -3766,10 +3659,8 @@ namespace PlayFab.ClientModels
         public string XboxToken { get; set;}
     }
 
-    public class UnlinkXboxAccountResult
+    public class UnlinkXboxAccountResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UnlockContainerItemRequest
@@ -3791,7 +3682,7 @@ namespace PlayFab.ClientModels
         public string CharacterId { get; set;}
     }
 
-    public class UnlockContainerItemResult
+    public class UnlockContainerItemResult : PlayFabResultCommon
     {
 
         /// <summary>
@@ -3813,8 +3704,6 @@ namespace PlayFab.ClientModels
         /// Virtual currency granted to the player as a result of unlocking the container.
         /// </summary>
         public Dictionary<string,uint> VirtualCurrency { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UpdateCharacterDataRequest
@@ -3841,15 +3730,13 @@ namespace PlayFab.ClientModels
         public UserDataPermission? Permission { get; set;}
     }
 
-    public class UpdateCharacterDataResult
+    public class UpdateCharacterDataResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
         /// </summary>
         public uint DataVersion { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UpdatePlayerStatisticsRequest
@@ -3861,10 +3748,8 @@ namespace PlayFab.ClientModels
         public List<StatisticUpdate> Statistics { get; set;}
     }
 
-    public class UpdatePlayerStatisticsResult
+    public class UpdatePlayerStatisticsResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UpdateSharedGroupDataRequest
@@ -3891,10 +3776,8 @@ namespace PlayFab.ClientModels
         public UserDataPermission? Permission { get; set;}
     }
 
-    public class UpdateSharedGroupDataResult
+    public class UpdateSharedGroupDataResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UpdateUserDataRequest
@@ -3916,15 +3799,13 @@ namespace PlayFab.ClientModels
         public UserDataPermission? Permission { get; set;}
     }
 
-    public class UpdateUserDataResult
+    public class UpdateUserDataResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
         /// </summary>
         public uint DataVersion { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UpdateUserStatisticsRequest
@@ -3936,10 +3817,8 @@ namespace PlayFab.ClientModels
         public Dictionary<string,int> UserStatistics { get; set;}
     }
 
-    public class UpdateUserStatisticsResult
+    public class UpdateUserStatisticsResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UpdateUserTitleDisplayNameRequest
@@ -3951,15 +3830,13 @@ namespace PlayFab.ClientModels
         public string DisplayName { get; set;}
     }
 
-    public class UpdateUserTitleDisplayNameResult
+    public class UpdateUserTitleDisplayNameResult : PlayFabResultCommon
     {
 
         /// <summary>
         /// Current title display name for the user (this will be the original display name if the rename attempt failed).
         /// </summary>
         public string DisplayName { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UserAccountInfo
@@ -4178,10 +4055,8 @@ namespace PlayFab.ClientModels
         public int PurchasePrice { get; set;}
     }
 
-    public class ValidateAmazonReceiptResult
+    public class ValidateAmazonReceiptResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class ValidateGooglePlayPurchaseRequest
@@ -4208,10 +4083,8 @@ namespace PlayFab.ClientModels
         public uint? PurchasePrice { get; set;}
     }
 
-    public class ValidateGooglePlayPurchaseResult
+    public class ValidateGooglePlayPurchaseResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class ValidateIOSReceiptRequest
@@ -4233,10 +4106,8 @@ namespace PlayFab.ClientModels
         public int PurchasePrice { get; set;}
     }
 
-    public class ValidateIOSReceiptResult
+    public class ValidateIOSReceiptResult : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class VirtualCurrencyRechargeTime

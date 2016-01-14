@@ -5,71 +5,72 @@ using System.Net;
 
 namespace PlayFab.Internal
 {
-    public class ResultContainer<ResultType> where ResultType : class, new()
+    public class PlayFabResultCommon
+    {
+        public object Request;
+        public object CustomData;
+    }
+
+    internal class ResultContainer<TResultType> where TResultType : PlayFabResultCommon
     {
         public int code;
         public string status;
         public int? errorCode;
         public string errorMessage;
         public Dictionary<string, List<string>> errorDetails;
-        public ResultType data;
+        public TResultType data;
 
-        public static void HandleResults(string responseStr, ref PlayFabError pfError, out ResultType result)
+        private static readonly object[] _invokeParams = new object[1];
+        public static TResultType HandleResults(CallRequestContainer callRequest, Delegate resultCallback, ErrorCallback errorCallback)
         {
-            result = null;
-
-            if (pfError != null)
+            if (callRequest.Error == null) // Some other error earlier in the process, just report it below
             {
-                if (PlayFabSettings.GlobalErrorHandler != null)
-                    PlayFabSettings.GlobalErrorHandler(pfError);
-                return;
-            }
-
-            ResultContainer<ResultType> resultEnvelope = new ResultContainer<ResultType>();
-            try
-            {
-                JsonConvert.PopulateObject(responseStr, resultEnvelope, Util.JsonSettings);
-            }
-            catch (Exception e)
-            {
-                pfError = new PlayFabError();
-                pfError.HttpCode = (int)HttpStatusCode.OK; // Technically we did get a result from the server
-                pfError.HttpStatus = "Client failed to parse response from server";
-                pfError.Error = PlayFabErrorCode.Unknown;
-                pfError.ErrorMessage = e.ToString();
-                pfError.ErrorDetails = null;
-                if (PlayFabSettings.GlobalErrorHandler != null)
-                    PlayFabSettings.GlobalErrorHandler(pfError);
-                return;
-            }
-
-            if (resultEnvelope.errorCode.HasValue)
-            {
-                PlayFabErrorCode errorEnum;
                 try
                 {
-                    errorEnum = (PlayFabErrorCode)resultEnvelope.errorCode.Value;
-                }
-                catch
-                {
-                    errorEnum = PlayFabErrorCode.Unknown;
-                }
+                    ResultContainer<TResultType> resultEnvelope = new ResultContainer<TResultType>();
+                    JsonConvert.PopulateObject(callRequest.ResultStr, resultEnvelope, Util.JsonSettings);
+                    if (!resultEnvelope.errorCode.HasValue || resultEnvelope.errorCode.Value == (int)PlayFabErrorCode.Success)
+                    {
+                        resultEnvelope.data.Request = callRequest.Request;
+                        resultEnvelope.data.CustomData = callRequest.CustomData;
+                        if (resultCallback != null)
+                        {
+                            _invokeParams[0] = resultEnvelope.data;
+                            resultCallback.DynamicInvoke(_invokeParams);
+                            PlayFabSettings.InvokeResponse(callRequest.Url, callRequest.CallId, callRequest.Request, resultEnvelope.data, callRequest.Error, callRequest.CustomData); // Do the globalMessage callback
+                        }
+                        return resultEnvelope.data; // This is the expected output path for successful api call
+                    }
 
-                pfError = new PlayFabError
+                    // Successful HTTP interaction, but PlayFab server returned an error
+                    callRequest.Error = new PlayFabError
+                    {
+                        HttpCode = resultEnvelope.code,
+                        HttpStatus = resultEnvelope.status,
+                        Error = (PlayFabErrorCode)resultEnvelope.errorCode.Value,
+                        ErrorMessage = resultEnvelope.errorMessage,
+                        ErrorDetails = resultEnvelope.errorDetails
+                    };
+                }
+                catch (Exception e)
                 {
-                    HttpCode = resultEnvelope.code,
-                    HttpStatus = resultEnvelope.status,
-                    Error = errorEnum,
-                    ErrorMessage = resultEnvelope.errorMessage,
-                    ErrorDetails = resultEnvelope.errorDetails
-                };
-                if (PlayFabSettings.GlobalErrorHandler != null)
-                    PlayFabSettings.GlobalErrorHandler(pfError);
-
-                return;
+                    // Failed to decode the result
+                    callRequest.Error = new PlayFabError
+                    {
+                        HttpCode = (int)HttpStatusCode.OK, // Technically the server returned a result, the sdk just didn't parse it correctly
+                        HttpStatus = "Client failed to parse response from server",
+                        Error = PlayFabErrorCode.Unknown,
+                        ErrorMessage = e.ToString(),
+                        ErrorDetails = null
+                    };
+                }
             }
 
-            result = resultEnvelope.data;
+            if (errorCallback != null)
+                errorCallback(callRequest.Error);
+            if (PlayFabSettings.GlobalErrorHandler != null)
+                PlayFabSettings.GlobalErrorHandler(callRequest.Error);
+            return null;
         }
     }
 }
