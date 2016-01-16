@@ -44,15 +44,15 @@ namespace PlayFab.Internal
         /// <summary>
         /// Sends a POST HTTP request
         /// </summary>
-        public static void Post(string url, string data, string authType, string authKey, Action<string, PlayFabError> callback, object request, object customData, bool isBlocking = false)
+        public static void Post(string url, string data, string authType, string authKey, Action<CallRequestContainer> callback, object request, object customData, bool isBlocking = false)
         {
             var requestContainer = new CallRequestContainer { RequestType = PlayFabSettings.RequestType, CallId = callIdGen++, AuthKey = authKey, AuthType = authType, Callback = callback, Data = data, Url = url, Request = request, CustomData = customData };
             if (!isBlocking)
             {
 #if PLAYFAB_IOS_PLUGIN
-                PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(url), url, requestContainer.CallId, data, authType, authKey, PlayFabVersion.getVersionString(), request, customData, callback, PlayFabSettings.InvokeRequest, PlayFabSettings.InvokeResponse);
+                PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(url), PlayFabVersion.getVersionString(), requestContainer, PlayFabSettings.InvokeRequest);
 #elif UNITY_WP8
-                instance.StartCoroutine(instance.MakeRequestViaUnity(url, requestContainer.CallId, data, authType, authKey, callback));
+                instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
 #else
                 if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
                 {
@@ -62,14 +62,14 @@ namespace PlayFab.Internal
                     _ActivateWorkerThread();
                 }
                 else
-                    instance.StartCoroutine(instance.MakeRequestViaUnity(url, requestContainer.CallId, data, authType, authKey, request, customData, callback));
+                    instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
 #endif
             }
             else
             {
                 StartHttpWebRequest(requestContainer);
                 ProcessHttpWebResult(requestContainer, true);
-                callback(requestContainer.Result, requestContainer.Error);
+                callback(requestContainer);
             }
         }
         #endregion
@@ -195,7 +195,7 @@ namespace PlayFab.Internal
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     using (var stream = new System.IO.StreamReader(response.GetResponseStream()))
-                        request.Result = stream.ReadToEnd();
+                        request.ResultStr = stream.ReadToEnd();
                 }
                 else
                 {
@@ -219,11 +219,11 @@ namespace PlayFab.Internal
         }
 
         // This is the old Unity WWW class call.
-        private IEnumerator MakeRequestViaUnity(string url, int callId, string data, string authType, string authKey, object request, object customData, Action<string, PlayFabError> callback)
+        private IEnumerator MakeRequestViaUnity(CallRequestContainer requestContainer)
         {
             _pendingWwwMessages += 1;
-            string fullUrl = PlayFabSettings.GetFullUrl(url);
-            byte[] bData = Encoding.UTF8.GetBytes(data);
+            string fullUrl = PlayFabSettings.GetFullUrl(requestContainer.Url);
+            byte[] bData = Encoding.UTF8.GetBytes(requestContainer.Data);
 
 #if UNITY_4_4 || UNITY_4_3 || UNITY_4_2 || UNITY_4_2 || UNITY_4_0 || UNITY_3_0 || UNITY_3_1 || UNITY_3_2 || UNITY_3_3 || UNITY_3_4 || UNITY_3_5
             // Using hashtable for compatibility with Unity < 4.5
@@ -232,25 +232,24 @@ namespace PlayFab.Internal
             Dictionary<string, string> headers = new Dictionary<string, string>();
 #endif
             headers.Add("Content-Type", "application/json");
-            if (authType != null)
-                headers.Add(authType, authKey);
+            if (requestContainer.AuthType != null)
+                headers.Add(requestContainer.AuthType, requestContainer.AuthKey);
             headers.Add("X-ReportErrorAsSuccess", "true");
             headers.Add("X-PlayFabSDK", PlayFabVersion.getVersionString());
             WWW www = new WWW(fullUrl, bData, headers);
 
-            PlayFabSettings.InvokeRequest(url, callId, request, customData);
+            PlayFabSettings.InvokeRequest(requestContainer.Url, requestContainer.CallId, requestContainer.Request, requestContainer.CustomData);
 
             yield return www;
 
-            string result = null;
-            PlayFabError error = null;
+            requestContainer.ResultStr = null;
+            requestContainer.Error = null;
             if (!String.IsNullOrEmpty(www.error))
-                error = GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, www.error);
+                requestContainer.Error = GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, www.error);
             else
-                result = www.text;
+                requestContainer.ResultStr = www.text;
 
-            callback(result, error);
-            PlayFabSettings.InvokeResponse(url, callId, request, result, error, customData);
+            requestContainer.InvokeCallback();
 
             _pendingWwwMessages -= 1;
         }
@@ -327,34 +326,5 @@ namespace PlayFab.Internal
             return count;
         }
         #endregion
-    }
-
-    /// <summary>
-    /// This is a callback class for use with HttpWebRequest.
-    /// </summary>
-    internal class CallRequestContainer
-    {
-        public enum RequestState { Unstarted, RequestSent, RequestReceived, Error };
-
-        public WebRequestType RequestType;
-        public RequestState State = RequestState.Unstarted;
-        public string Url;
-        public int CallId;
-        public string Data;
-        public string AuthType;
-        public string AuthKey;
-        public object Request;
-        public string Result;
-        public object CustomData;
-        public HttpWebRequest HttpRequest;
-        public PlayFabError Error;
-        public Action<string, PlayFabError> Callback;
-
-        public void InvokeCallback()
-        {
-            PlayFabSettings.InvokeResponse(Url, CallId, Request, Result, Error, CustomData); // Do the globalMessage callback
-            if (Callback != null)
-                Callback(Result, Error); // Do the specific callback
-        }
     }
 }

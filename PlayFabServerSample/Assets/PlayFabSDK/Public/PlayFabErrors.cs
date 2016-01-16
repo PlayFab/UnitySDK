@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace PlayFab
 {
-#if !UNITY_IOS
     /// <summary>
     /// Error codes returned by PlayFabAPIs
     /// </summary>
@@ -198,8 +199,11 @@ namespace PlayFab
         StatisticNotFound = 1195,
         StatisticNameConflict = 1196,
         StatisticVersionClosedForWrites = 1197,
-        StatisticVersionInvalid = 1198
+        StatisticVersionInvalid = 1198,
+        APIClientRequestRateLimitExceeded = 1199
     }
+
+    public delegate void ErrorCallback(PlayFabError error);
 
     public class PlayFabError
     {
@@ -208,9 +212,40 @@ namespace PlayFab
         public PlayFabErrorCode Error;
         public string ErrorMessage;
         public Dictionary<string, List<string> > ErrorDetails;
-    };
+    }
 
-    public delegate void ErrorCallback(PlayFabError error);
+    public enum WebRequestType
+    {
+        UnityWww, // High compatability Unity api calls
+        HttpWebRequest // High performance multi-threaded api calls
+    }
 
-#endif
+    /// <summary>
+    /// This is a callback class for use with HttpWebRequest.
+    /// </summary>
+    public class CallRequestContainer
+    {
+        public enum RequestState { Unstarted, RequestSent, RequestReceived, Error };
+
+        public WebRequestType RequestType;
+        public RequestState State = RequestState.Unstarted;
+        public string Url;
+        public int CallId;
+        public string Data;
+        public string AuthType;
+        public string AuthKey;
+        public object Request;
+        public string ResultStr;
+        public object CustomData;
+        public HttpWebRequest HttpRequest;
+        public PlayFabError Error;
+        public Action<CallRequestContainer> Callback;
+
+        public void InvokeCallback()
+        {
+            // It is expected that the specific callback needs to process the change before the less specific global callback
+            if (Callback != null)
+                Callback(this); // Do the specific callback
+        }
+    }
 }

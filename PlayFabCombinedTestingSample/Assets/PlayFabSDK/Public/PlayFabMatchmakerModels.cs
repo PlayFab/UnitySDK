@@ -1,3 +1,4 @@
+using PlayFab.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ namespace PlayFab.MatchmakerModels
         public string AuthorizationTicket { get; set;}
     }
 
-    public class AuthUserResponse
+    public class AuthUserResponse : PlayFabResultCommon
     {
 
         /// <summary>
@@ -24,8 +25,6 @@ namespace PlayFab.MatchmakerModels
         /// PlayFab unique identifier of the account that has been authorized.
         /// </summary>
         public string PlayFabId { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     /// <summary>
@@ -124,10 +123,8 @@ namespace PlayFab.MatchmakerModels
         public string PlayFabId { get; set;}
     }
 
-    public class PlayerJoinedResponse
+    public class PlayerJoinedResponse : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class PlayerLeftRequest
@@ -144,10 +141,8 @@ namespace PlayFab.MatchmakerModels
         public string PlayFabId { get; set;}
     }
 
-    public class PlayerLeftResponse
+    public class PlayerLeftResponse : PlayFabResultCommon
     {
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public enum Region
@@ -190,7 +185,7 @@ namespace PlayFab.MatchmakerModels
         public string ExternalMatchmakerEventEndpoint { get; set;}
     }
 
-    public class StartGameResponse
+    public class StartGameResponse : PlayFabResultCommon
     {
 
         /// <summary>
@@ -207,8 +202,6 @@ namespace PlayFab.MatchmakerModels
         /// Port number for communication with the Game Server Instance.
         /// </summary>
         public uint ServerPort { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class UserInfoRequest
@@ -225,7 +218,7 @@ namespace PlayFab.MatchmakerModels
         public int MinCatalogVersion { get; set;}
     }
 
-    public class UserInfoResponse
+    public class UserInfoResponse : PlayFabResultCommon
     {
 
         /// <summary>
@@ -267,8 +260,6 @@ namespace PlayFab.MatchmakerModels
         /// Steam unique identifier, if the user has an associated Steam account.
         /// </summary>
         public string SteamId { get; set;}
-        public object Request { get; set; }
-        public object CustomData { get; set;  }
     }
 
     public class VirtualCurrencyRechargeTime

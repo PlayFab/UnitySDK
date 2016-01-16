@@ -15,12 +15,6 @@ namespace PlayFab
         All = Debug | Info | Warning | Error,
     }
 
-    public enum WebRequestType
-    {
-        UnityWww, // High compatability Unity api calls
-        HttpWebRequest // High performance multi-threaded api calls
-    }
-
     public static class PlayFabSettings
     {
         private const string GLOBAL_KEY = "GLOBAL";
