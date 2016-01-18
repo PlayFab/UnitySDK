@@ -10,6 +10,7 @@ namespace PlayFab.Examples
         public static ModelModes activeMode = ModelModes.User;
 		public static CharacterModel currentCharacter = null;
         public static string primaryCatalogVersion = string.Empty;
+        public static bool usePublisher = false;
         
         #region Character Storage
         // Index of data keyed for each user - a server process may need to keep many players in memory
@@ -50,7 +51,9 @@ namespace PlayFab.Examples
 		{
 			if(string.IsNullOrEmpty(catalogVersion))
 			{
-				return GetPrimaryCatalog();
+				List<ClientModels.CatalogItem> items = GetPrimaryCatalog();
+				
+				return items;
 			}
 			
 			List<ClientModels.CatalogItem> version = null;

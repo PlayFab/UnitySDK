@@ -15,14 +15,7 @@ namespace PlayFab.Examples.Client
         {
             // The static constructor is called as a by-product of this call
         }
-        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-        {
-//            GetUserData();
-//            GetUserReadOnlyData();
-//
-//            GetUserPublisherData();
-//            GetUserPublisherReadOnlyData();
-        }
+
         #endregion Controller Event Handling
 
         #region UserData - Data attached directly to the user for this title
@@ -58,28 +51,44 @@ namespace PlayFab.Examples.Client
 			MainExampleController.DebugOutput("User Read-Only Data Loaded.");
         }
 
-        public static void UpdateUserData(string userDataKey, string userDataValue)
+
+		public static void UpdateUserData(Dictionary<string, string> data, bool makePrivate = false, List<string> deleteKeys = null)
         {
-            if (string.IsNullOrEmpty(userDataValue))
-                userDataValue = null; // Ensure that this field is removed
-
-            var updateRequest = new ClientModels.UpdateUserDataRequest();
-            updateRequest.Data = new Dictionary<string, string>();
-            updateRequest.Data[userDataKey] = userDataValue; // Multiple keys accepted, unlike this example, best-use-case modifies all keys at once when possible.
-
-            PlayFabClientAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserData"));
+            if(data.Count > 0 || (deleteKeys != null && deleteKeys.Count > 0))
+            {
+	            var updateRequest = new ClientModels.UpdateUserDataRequest();
+	            updateRequest.Data = data;
+	            updateRequest.KeysToRemove = deleteKeys;
+				updateRequest.Permission = makePrivate == true ? UserDataPermission.Private : UserDataPermission.Public;
+			
+           		PlayFabClientAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, PfSharedControllerEx.FailCallback("UpdateUserData"));
+			}
         }
+        
         private static void UpdateUserDataCallback(ClientModels.UpdateUserDataResult result)
         {
-           // weird work-around for not providing the updated data in the result object
-             Dictionary<string, string> dataUpdated = ((ClientModels.UpdateUserDataRequest)result.Request).Data;
-
+            // weird work-around for not providing the updated data in the result object
+            Dictionary<string, string> dataUpdated = ((ClientModels.UpdateUserDataRequest)result.Request).Data;
+			List<string> deleted = ((ClientModels.UpdateUserDataRequest)result.Request).KeysToRemove;
+			UserDataPermission? p = ((ClientModels.UpdateUserDataRequest)result.Request).Permission;
+			
+			foreach(var item in deleted)
+			{
+				PfSharedModelEx.currentUser.userData.Remove(item);
+			}
+			
             foreach (var dataPair in dataUpdated)
             {
-                if (string.IsNullOrEmpty(dataPair.Value))
-                    PfSharedModelEx.currentUser.userData.Remove(dataPair.Key);
+				if(PfSharedModelEx.currentUser.userData.ContainsKey(dataPair.Key))
+                {
+                	PfSharedModelEx.currentUser.userData[dataPair.Key].Value = dataPair.Value;
+					PfSharedModelEx.currentUser.userData[dataPair.Key].Permission = p;
+					PfSharedModelEx.currentUser.userData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
+                }
                 else
-                    PfSharedModelEx.currentUser.userData[dataPair.Key].Value = dataPair.Value;
+                {
+					PfSharedModelEx.currentUser.userData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow  });
+                }
             }
 
            // PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
@@ -90,24 +99,33 @@ namespace PlayFab.Examples.Client
         #region UserPublisherData - Data attached directly to the user across all titles for this publisher
         public static void GetUserPublisherData()
         {
-            var request = new GetUserDataRequest();
-            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-            //PlayFabClientAPI.GetUserPublisherData(request, GetUserPublisherDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherDataCallback"));
+			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			{
+				 var request = new GetUserDataRequest();
+           	 	// getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            	PlayFabClientAPI.GetUserPublisherData(request, GetUserPublisherDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherData"));
+            }
         }
 
         private static void GetUserPublisherDataCallback(ClientModels.GetUserDataResult result)
         {
-            foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.currentUser.userPublisherData[eachDataEntry.Key] = eachDataEntry.Value;
-            //PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
-			MainExampleController.DebugOutput("User Publisher Data Loaded.");
+	            foreach (var eachDataEntry in result.Data)
+	            {
+	                PfSharedModelEx.currentUser.userPublisherData[eachDataEntry.Key] = eachDataEntry.Value;
+	            }
+	            //PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
+				MainExampleController.DebugOutput("User Publisher Data Loaded.");
+
         }
 
         public static void GetUserPublisherReadOnlyData()
         {
-            var request = new GetUserDataRequest();
-            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-            //PlayFabClientAPI.GetUserPublisherReadOnlyData(request, GetUserPublisherReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherReadOnlyDataCallback"));
+			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			{
+	            var request = new GetUserDataRequest();
+	            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+	            PlayFabClientAPI.GetUserPublisherReadOnlyData(request, GetUserPublisherReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherReadOnlyDataCallback"));
+	        }
         }
 
         private static void GetUserPublisherReadOnlyDataCallback(ClientModels.GetUserDataResult result)
@@ -118,25 +136,46 @@ namespace PlayFab.Examples.Client
 			MainExampleController.DebugOutput("User Publisher Read-Only Data Loaded.");
         }
 
-        public static void UpdateUserPublisherData(string userDataKey, string userDataValue)
+		public static void UpdateUserPublisherData(Dictionary<string, string> data, bool makePrivate = false, List<string> deleteKeys = null)
         {
-            var request = new UpdateUserDataRequest();
-            request.Data = new Dictionary<string, string>();
-            request.Data[userDataKey] = userDataValue;
-            //PlayFabClientAPI.UpdateUserPublisherData(request, UpdateUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherData"));
+			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			{
+				if(data.Count > 0 || (deleteKeys != null && deleteKeys.Count > 0))
+				{
+					var request = new UpdateUserDataRequest();
+		            request.Data = data;
+		            request.KeysToRemove = deleteKeys;
+					request.Permission = makePrivate == true ? UserDataPermission.Private : UserDataPermission.Public;
+				
+	           	 	PlayFabClientAPI.UpdateUserPublisherData(request, UpdateUserPublisherDataCallback, PfSharedControllerEx.FailCallback("UpdateUserPublisherData"));
+	           	}
+	        }
         }
 
         private static void UpdateUserPublisherDataCallback(ClientModels.UpdateUserDataResult result)
         {
 			// weird work-around for not providing the updated data in the result object
             Dictionary<string, string> dataUpdated = ((ClientModels.UpdateUserDataRequest)result.Request).Data;
-
+			List<string> deleted = ((ClientModels.UpdateUserDataRequest)result.Request).KeysToRemove;
+			UserDataPermission? p = ((ClientModels.UpdateUserDataRequest)result.Request).Permission;
+			
+			foreach(var item in deleted)
+			{
+				PfSharedModelEx.currentUser.userPublisherData.Remove(item);
+			}
+			
             foreach (var dataPair in dataUpdated)
             {
-                if (string.IsNullOrEmpty(dataPair.Value))
-                    PfSharedModelEx.currentUser.userPublisherData.Remove(dataPair.Key);
-                else
-                    PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].Value = dataPair.Value;
+				if(PfSharedModelEx.currentUser.userPublisherData.ContainsKey(dataPair.Key))
+				{
+					PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].Value = dataPair.Value;
+					PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].Permission = p;
+					PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
+				}
+				else
+				{
+					PfSharedModelEx.currentUser.userPublisherData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow });
+				}
             }
 
            // PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
@@ -167,40 +206,63 @@ namespace PlayFab.Examples.Client
 		public static void GetActiveCharacterReadOnlyData()
 		{
 			var request = new GetCharacterDataRequest();
+			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;
+			
 			// getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
-			PlayFabClientAPI.GetCharacterReadOnlyData(request, GetActiveCharacterReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherReadOnlyDataCallback"));
+			PlayFabClientAPI.GetCharacterReadOnlyData(request, GetActiveCharacterReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetCharacterReadOnlyDataCallback"));
 		}
 		
 		private static void GetActiveCharacterReadOnlyDataCallback(ClientModels.GetCharacterDataResult result)
 		{
 			foreach (var eachDataEntry in result.Data)
-				PfSharedModelEx.currentCharacter.characterReadOnlyData[eachDataEntry.Key].Value = eachDataEntry.Value.Value;
+			{
+				
+				PfSharedModelEx.currentCharacter.characterReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value;
+			}
 			//PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataLoaded, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
 			MainExampleController.DebugOutput("Character Read-Only Data Loaded.");
 		}
 		
 		//TODO update this to work with a list rather than a single key.
-		public static void UpdateActiveCharacterData(string userDataKey, string userDataValue)
+		public static void UpdateActiveCharacterData(Dictionary<string, string> data, bool makePrivate = false, List<string> deleteKeys = null)
 		{
-			var request = new UpdateCharacterDataRequest();
-			request.Data = new Dictionary<string, string>();
-			request.Data[userDataKey] = userDataValue;
-			PlayFabClientAPI.UpdateCharacterData(request, UpdateActiveCharacterDataCallback, PfSharedControllerEx.FailCallback("UpdateCharacterData"));
+			if(data.Count > 0 || (deleteKeys != null && deleteKeys.Count > 0))
+			{
+				var request = new UpdateCharacterDataRequest();
+				request.Data = data;
+				request.KeysToRemove = deleteKeys;
+				request.Permission = makePrivate == true ? UserDataPermission.Private : UserDataPermission.Public;
+				
+				PlayFabClientAPI.UpdateCharacterData(request, UpdateActiveCharacterDataCallback, PfSharedControllerEx.FailCallback("UpdateCharacterData"));
+			}
 		}
 		
 		private static void UpdateActiveCharacterDataCallback(ClientModels.UpdateCharacterDataResult result)
 		{
 			// weird work-around for not providing the updated data in the result object
 			Dictionary<string, string> dataUpdated = ((ClientModels.UpdateUserDataRequest)result.Request).Data;
+			List<string> deleted = ((ClientModels.UpdateUserDataRequest)result.Request).KeysToRemove;
+			UserDataPermission? p = ((ClientModels.UpdateUserDataRequest)result.Request).Permission;
+			
+			foreach(var item in deleted)
+			{
+				PfSharedModelEx.currentCharacter.characterData.Remove(item);
+			}
 			
 			foreach (var dataPair in dataUpdated)
 			{
-				if (string.IsNullOrEmpty(dataPair.Value))
-					PfSharedModelEx.currentUser.userPublisherData.Remove(dataPair.Key);
+				if(PfSharedModelEx.currentCharacter.characterData.ContainsKey(dataPair.Key))
+				{
+					PfSharedModelEx.currentCharacter.characterData[dataPair.Key].Value = dataPair.Value;
+					PfSharedModelEx.currentCharacter.characterData[dataPair.Key].Permission = p;
+					PfSharedModelEx.currentCharacter.characterData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
+				}
 				else
-					PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].Value = dataPair.Value;
+				{
+					PfSharedModelEx.currentCharacter.characterData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow });
+				}
 			}
-			
+
 			//PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserDataChanged, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client | PfSharedControllerEx.Api.Server, false);
 			MainExampleController.DebugOutput("Character Data Updated.");
 		}

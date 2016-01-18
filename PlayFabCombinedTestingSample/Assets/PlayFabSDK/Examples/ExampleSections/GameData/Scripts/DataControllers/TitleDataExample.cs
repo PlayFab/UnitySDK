@@ -37,9 +37,12 @@ namespace PlayFab.Examples.Client
         }
         public static void GetPublisherData()
         {
-            var getRequest = new ClientModels.GetPublisherDataRequest();
-            getRequest.Keys = new System.Collections.Generic.List<string>();// PfSharedModelEx.defaultPublisherKeys; // TODO: Temporary - keys are mandatory, and we don't know what keys already exist.
-           // PlayFabClientAPI.GetPublisherData(getRequest, GetPublisherDataCallback, PfSharedControllerEx.FailCallback("GetPublisherData"));
+			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			{
+			 	var getRequest = new ClientModels.GetPublisherDataRequest();
+            	getRequest.Keys = new System.Collections.Generic.List<string>();// PfSharedModelEx.defaultPublisherKeys; // TODO: Temporary - keys are mandatory, and we don't know what keys already exist.
+            	PlayFabClientAPI.GetPublisherData(getRequest, GetPublisherDataCallback, PfSharedControllerEx.FailCallback("GetPublisherData"));
+            }
         }
 
         private static void GetPublisherDataCallback(ClientModels.GetPublisherDataResult result)

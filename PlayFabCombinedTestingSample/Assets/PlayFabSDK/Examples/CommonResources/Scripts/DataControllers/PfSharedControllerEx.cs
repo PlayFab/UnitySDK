@@ -88,9 +88,6 @@ namespace PlayFab.Examples
             };
             return output;
         }
-        
-        
-        
-        
+ 
     }
 }

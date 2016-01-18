@@ -18,16 +18,49 @@ public class MainExampleController : MonoBehaviour {
 	
 	public List<ExampleSection> Sections = new List<ExampleSection>();	// scene reference to the various examples in the project
 	
+	private static readonly Dictionary<int, System.DateTime> CallTimes_InstGl = new Dictionary<int, System.DateTime>();
 	
 	void OnEnable()
 	{
 		PlayFabAuthenticationManager.OnLoggedIn += AfterLogin;
+		//PlayFabSettings.RegisterForRequests("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDRequest", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
+		//PlayFabSettings.RegisterForResponses("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDResponse", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
 	}
 	
 	void OnDisable()
 	{
+		//PlayFabSettings.UnregisterForRequests("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDRequest", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
+		//PlayFabSettings.UnregisterForResponses("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDResponse", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
 		PlayFabAuthenticationManager.OnLoggedIn -= AfterLogin;
 	}
+	
+	private void OnLoginWithCustomIDRequest(string url, int callId, object request, object customData)
+	{
+		CallTimes_InstGl[callId] = System.DateTime.UtcNow;
+	}
+	
+	private void OnLoginWithCustomIDResponse(string url, int callId, object request, object result, PlayFabError error, object customData)
+	{
+		LoginResult lr = null;
+		try
+		{
+			lr = PlayFab.Json.JsonConvert.DeserializeObject<LoginResult>((string)result);
+		}
+		catch(System.Exception)
+		{
+			Debug.Log("Cast Error on LoginResult");
+			return;
+		}
+		
+		var delta = System.DateTime.UtcNow - CallTimes_InstGl[callId];
+		Debug.Log(url + " completed in " + delta.TotalMilliseconds + ", " + lr.SessionTicket);
+		CallTimes_InstGl.Remove(callId);
+	}
+
+	
+	
+	
+	
 	
 	/// <summary>
 	/// Called after a successful login, will parse the resources directories and load all ExampleSectionController's found
@@ -161,6 +194,15 @@ public class MainExampleController : MonoBehaviour {
 	public void ShowExamplesSubMenu()
 	{
 		this.examplesSubMenu.gameObject.SetActive(true);
+	}
+	
+	
+	public static void OpenWebBrowser(string url)
+	{
+		if(!string.IsNullOrEmpty(url))
+		{
+			Application.OpenURL(url);
+		}
 	}
 	
 	public static void DebugOutput(string msg)

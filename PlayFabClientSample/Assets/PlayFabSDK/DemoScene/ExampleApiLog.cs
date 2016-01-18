@@ -17,8 +17,8 @@ namespace PlayFab.Examples
         {
             PlayFabSettings.RegisterForRequests(null, GetType().GetMethod("OnApiRequest_StGl", BindingFlags.Static | BindingFlags.NonPublic), null);
             PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnApiResponse_StGl", BindingFlags.Static | BindingFlags.NonPublic), null);
-            PlayFabSettings.RegisterForRequests(null, GetType().GetMethod("OnApiRequest_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
-            PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnApiResponse_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
+			PlayFabSettings.RegisterForRequests(null, GetType().GetMethod("OnApiRequest_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
+			PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnApiResponse_InstGl", BindingFlags.Instance | BindingFlags.NonPublic), this);
 
             PlayFabSettings.RegisterForRequests("/Client/LoginWithEmailAddress", GetType().GetMethod("OnApiRequest_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);
             PlayFabSettings.RegisterForResponses("/Client/LoginWithEmailAddress", GetType().GetMethod("OnApiResponse_StLogin", BindingFlags.Static | BindingFlags.NonPublic), null);

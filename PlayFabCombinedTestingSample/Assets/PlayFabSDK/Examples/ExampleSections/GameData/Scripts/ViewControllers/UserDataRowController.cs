@@ -15,12 +15,18 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 	public Toggle deleteToggle;
 	public Image banding;
 	
-	private UserDataController controller;
-	private KeyValuePair<string, UserDataRecord> original_udr = new KeyValuePair<string, UserDataRecord>();
-	private KeyValuePair<string, string> original_string = new KeyValuePair<string, string>();
-	private KeyValuePair<string, int> original_stat = new KeyValuePair<string, int>();
+	public bool isNewRecord = false;
+	
+	public UserDataController controller;
+	public string originalKey { get { return _originalKey; } }
+	private string _originalKey = string.Empty;
+	
+	//private KeyValuePair<string, UserDataRecord> original_udr = new KeyValuePair<string, UserDataRecord>();
+	//private KeyValuePair<string, string> original_string = new KeyValuePair<string, string>();
+	//private KeyValuePair<string, int> original_stat = new KeyValuePair<string, int>();
 	
 	private bool isBanded = false;
+	
 	
 	// Use this for initialization
 	void Start () 
@@ -36,7 +42,12 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 	
 	public void Init(KeyValuePair<string, UserDataRecord> kvp, UserDataController controller, bool useBanding = false, bool isReadOnly = false, bool usePermissions = false, bool canDelete = true)
 	{
-		this.original_udr = kvp;
+		//this.original_udr = kvp;
+		if(string.IsNullOrEmpty(kvp.Key))
+		{
+			this.isNewRecord = true;
+		} 
+		this._originalKey = kvp.Key;
 		this.keyField.text = kvp.Key;
 		this.valueField.text = string.Format("{0}", kvp.Value.Value);
 		
@@ -69,6 +80,8 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 		{
 			this.keyField.interactable = true;
 			this.valueField.interactable = true;
+			this.permissionToggle.interactable = true;
+			this.deleteToggle.interactable = true;
 		}
 				
 		this.controller = controller;
@@ -87,7 +100,7 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 	
 	public void Init(KeyValuePair<string, string> kvp, UserDataController controller, bool useBanding = false, bool isReadOnly = false, bool usePermissions = false, bool canDelete = true)
 	{
-		this.original_string = kvp;
+		this._originalKey = kvp.Key;
 		this.keyField.text = kvp.Key.Length > 256 ? kvp.Key.Substring(0, 256) : kvp.Key;
 		this.valueField.text = string.Format("{0}", kvp.Value.Length > 256 ? kvp.Value.Substring(0, 256) : kvp.Value);
 		
@@ -138,14 +151,14 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 	
 	public void Init(KeyValuePair<string, int> kvp, UserDataController controller, bool useBanding = false, bool isReadOnly = false, bool usePermissions = false, bool canDelete = true)
 	{
-		this.original_stat = kvp;
+		this._originalKey = kvp.Key;
 		this.keyField.text = kvp.Key;
 		this.valueField.text = string.Format("{0}", kvp.Value);
+	
 		
 		if(usePermissions == true)
 		{
 			this.permissionToggle.gameObject.SetActive(true);
-			//this.permissionToggle.isOn = kvp.Value.Permission != null && kvp.Value.Permission == UserDataPermission.Private ? true : false;
 		}
 		else
 		{
@@ -166,11 +179,13 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 		{
 			this.keyField.interactable = false;
 			this.valueField.interactable = false;
+			DeactivateRow();
 		}
 		else
 		{
 			this.keyField.interactable = true;
 			this.valueField.interactable = true;
+			ActivateRow();
 		}
 		
 		this.controller = controller;
@@ -217,7 +232,7 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 	
 	public void OnPermissionClicked( bool value)
 	{
-		Debug.Log("Permission clicked...");
+		//Debug.Log("Permission clicked...");
 	}
 	
 	public void OnDeleteClicked(bool value)
@@ -248,5 +263,18 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 		this.keyField.interactable = true;
 		this.valueField.interactable = true;
 		this.permissionToggle.interactable = true;
+	}
+	
+	public void ResetRow()
+	{
+		this.keyField.text = string.Empty;
+		this._originalKey = string.Empty;
+		this.valueField.text = string.Empty;
+		this.permissionToggle.isOn = false;
+		this.deleteToggle.isOn = false;
+		
+		this.keyField.interactable = false;
+		this.valueField.interactable = false;
+		this.permissionToggle.interactable = false;
 	}
 }
