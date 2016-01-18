@@ -1,5 +1,6 @@
-using System;
 using System.Collections.Generic;
+using PlayFab.Examples.Client;
+using PlayFab.Examples.Server;
 
 namespace PlayFab.Examples
 {
@@ -14,6 +15,7 @@ namespace PlayFab.Examples
 
         public const string SWILL_NAME = "swill"; // TODO: This is global information specific to 1 title - Resolve this
         public static string swillItemId; // TODO: This is global information specific to 1 title - Resolve this
+        public static readonly List<string> defaultPublisherKeys = new List<string>() { "publisherName", "establishmentDate" };
 
         #region Title information
         public static Dictionary<string, string> titleData = new Dictionary<string, string>();
@@ -34,8 +36,7 @@ namespace PlayFab.Examples
     {
         #region General User Information
         public string playFabId;
-        public List<string> characterIds = new List<string>();
-        public List<string> characterNames = new List<string>();
+        public Dictionary<string, int> userStatistics = new Dictionary<string, int>();
         public Dictionary<string, string> userData = new Dictionary<string, string>();
         public Dictionary<string, string> userReadOnlyData = new Dictionary<string, string>();
         public Dictionary<string, string> userInternalData = new Dictionary<string, string>();
@@ -112,7 +113,7 @@ namespace PlayFab.Examples
             if (characterId == null)
                 tempClientInventory = clientUserItems;
             else if (clientCharacterModels.TryGetValue(characterId, out tempCharacter))
-                tempClientInventory = tempCharacter is ClientCharacterModel ? null : ((ClientCharacterModel)tempCharacter).inventory;
+                tempClientInventory = ((PfInvClientChar)tempCharacter).inventory;
 
             if (tempClientInventory != null)
                 for (int i = 0; i < tempClientInventory.Count; i++)
@@ -133,7 +134,7 @@ namespace PlayFab.Examples
             if (characterId == null)
                 tempServerInventory = serverUserItems;
             else if (serverCharacterModels.TryGetValue(characterId, out tempCharacter))
-                tempServerInventory = tempCharacter is ServerCharacterModel ? null : ((ServerCharacterModel)tempCharacter).inventory;
+                tempServerInventory = ((PfInvServerChar)tempCharacter).inventory;
 
             if (tempServerInventory != null)
                 for (int i = 0; i < tempServerInventory.Count; i++)
@@ -149,11 +150,11 @@ namespace PlayFab.Examples
             if (characterId == null)
             {
                 if (serverUserItems != null)
-                    for (int i = serverUserItems.Count - 1; i > 0; i--)
+                    for (int i = serverUserItems.Count - 1; i >= 0; i--)
                         if (itemInstanceIds.Contains(serverUserItems[i].ItemInstanceId))
                             serverUserItems.RemoveAt(i);
                 if (clientUserItems != null)
-                    for (int i = clientUserItems.Count - 1; i > 0; i--)
+                    for (int i = clientUserItems.Count - 1; i >= 0; i--)
                         if (itemInstanceIds.Contains(clientUserItems[i].ItemInstanceId))
                             clientUserItems.RemoveAt(i);
             }
@@ -237,6 +238,30 @@ namespace PlayFab.Examples
                 return;
             }
         }
+
+        public void UpdateInvDisplay(PfSharedControllerEx.Api inv)
+        {
+            PfSharedControllerEx.sb.Length = 0;
+            if (inv == PfSharedControllerEx.Api.Client && clientUserItems != null)
+            {
+                for (int i = 0; i < clientUserItems.Count; i++)
+                {
+                    if (i != 0)
+                        PfSharedControllerEx.sb.Append(", ");
+                    PfSharedControllerEx.sb.Append(clientUserItems[i].DisplayName);
+                }
+            }
+            else if (serverUserItems != null)
+            {
+                for (int i = 0; i < serverUserItems.Count; i++)
+                {
+                    if (i != 0)
+                        PfSharedControllerEx.sb.Append(", ");
+                    PfSharedControllerEx.sb.Append(serverUserItems[i].DisplayName);
+                }
+            }
+            userInvDisplay = PfSharedControllerEx.sb.ToString();
+        }
         #endregion Data Modification Functions
     }
 
@@ -250,6 +275,7 @@ namespace PlayFab.Examples
         public string characterId;
         public string characterName;
 
+        public Dictionary<string, int> characterStatistics = new Dictionary<string, int>();
         public Dictionary<string, string> characterData = new Dictionary<string, string>();
         public Dictionary<string, string> characterReadOnlyData = new Dictionary<string, string>();
         public Dictionary<string, string> characterInternalData = new Dictionary<string, string>();
@@ -265,9 +291,10 @@ namespace PlayFab.Examples
         }
 
         public abstract void RemoveItems(HashSet<string> itemInstanceIds);
+        public abstract void UpdateInvDisplay();
     }
 
-    public class ServerCharacterModel : CharacterModel
+    public abstract class ServerCharacterModel : CharacterModel
     {
         public List<ServerModels.ItemInstance> inventory; // We don't currently have a shared-model between client and server
 
@@ -276,13 +303,25 @@ namespace PlayFab.Examples
         public override void RemoveItems(HashSet<string> itemInstanceIds)
         {
             if (inventory != null)
-                for (int i = inventory.Count - 1; i > 0; i--)
+                for (int i = inventory.Count - 1; i >= 0; i--)
                     if (itemInstanceIds.Contains(inventory[i].ItemInstanceId))
                         inventory.RemoveAt(i);
         }
+
+        public override void UpdateInvDisplay()
+        {
+            PfSharedControllerEx.sb.Length = 0;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (i != 0)
+                    PfSharedControllerEx.sb.Append(", ");
+                PfSharedControllerEx.sb.Append(inventory[i].DisplayName);
+            }
+            inventoryDisplay = PfSharedControllerEx.sb.ToString();
+        }
     }
 
-    public class ClientCharacterModel : CharacterModel
+    public abstract class ClientCharacterModel : CharacterModel
     {
         public List<ClientModels.ItemInstance> inventory; // We don't currently have a shared-model between client and server
 
@@ -291,9 +330,21 @@ namespace PlayFab.Examples
         public override void RemoveItems(HashSet<string> itemInstanceIds)
         {
             if (inventory != null)
-                for (int i = inventory.Count - 1; i > 0; i--)
+                for (int i = inventory.Count - 1; i >= 0; i--)
                     if (itemInstanceIds.Contains(inventory[i].ItemInstanceId))
                         inventory.RemoveAt(i);
+        }
+
+        public override void UpdateInvDisplay()
+        {
+            PfSharedControllerEx.sb.Length = 0;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (i != 0)
+                    PfSharedControllerEx.sb.Append(", ");
+                PfSharedControllerEx.sb.Append(inventory[i].DisplayName);
+            }
+            inventoryDisplay = PfSharedControllerEx.sb.ToString();
         }
     }
 }

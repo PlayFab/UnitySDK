@@ -1,140 +1,106 @@
-#if UNITY_EDITOR
-
-#elif UNITY_ANDROID
-#define PLAYFAB_ANDROID_PLUGIN
-#elif UNITY_IOS
-#define PLAYFAB_IOS_PLUGIN
-#endif
-
 using System;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 namespace PlayFab.Internal
 {
-	public class PlayFabPluginEventHandler : MonoBehaviour
-	{
-		private static PlayFabPluginEventHandler PlayFabGO;
+    public class PlayFabPluginEventHandler : MonoBehaviour
+    {
+        private static PlayFabPluginEventHandler _playFabEvtHandler;
+        private static readonly Dictionary<int, CallRequestContainer> HttpHandlers = new Dictionary<int, CallRequestContainer>();
 
-#if UNITY_IOS
-		private Dictionary<int, Action<string,PlayFabError>> HttpHandlers = new Dictionary<int, Action<string,PlayFabError>>();
-#else
-        private Dictionary<int, Action<string, string>> HttpHandlers = new Dictionary<int, Action<string, string>>();
-#endif
+        public static void Init()
+        {
+            if (_playFabEvtHandler != null)
+                return;
 
-		public static void Init()
-		{
-			if (PlayFabGO != null)
-				return;
-			
-			GameObject playfabHolder = GameObject.Find ("_PlayFabGO");
-			if(playfabHolder == null)
-				playfabHolder = new GameObject ("_PlayFabGO");
-			UnityEngine.Object.DontDestroyOnLoad(playfabHolder);
-			
-			PlayFabGO = playfabHolder.GetComponent<PlayFabPluginEventHandler> ();
-			if(PlayFabGO == null)
-				PlayFabGO = playfabHolder.AddComponent<PlayFabPluginEventHandler> ();
+            GameObject playfabGo = GameObject.Find("_PlayFabGO");
+            if (playfabGo == null)
+                playfabGo = new GameObject("_PlayFabGO");
+            DontDestroyOnLoad(playfabGo);
 
-		}
+            _playFabEvtHandler = playfabGo.GetComponent<PlayFabPluginEventHandler>();
+            if (_playFabEvtHandler == null)
+                _playFabEvtHandler = playfabGo.AddComponent<PlayFabPluginEventHandler>();
+        }
 
-
-	    public void GCMRegistrationReady(string status)
-	    {
-	        bool statusParam; 
-            bool.TryParse(status,out statusParam);
+        public void GCMRegistrationReady(string status)
+        {
+            bool statusParam;
+            bool.TryParse(status, out statusParam);
             PlayFabGoogleCloudMessaging.RegistrationReady(statusParam);
-	    }
+        }
 
-		public void GCMRegistered(string token)
-		{
+        public void GCMRegistered(string token)
+        {
             var error = (string.IsNullOrEmpty(token)) ? token : null;
-		    PlayFabGoogleCloudMessaging.RegistrationComplete(token, error);
-		}
+            PlayFabGoogleCloudMessaging.RegistrationComplete(token, error);
+        }
 
-		public void GCMRegisterError(string error)
-		{
-		    PlayFabGoogleCloudMessaging.RegistrationComplete(null, error);
-		}
+        public void GCMRegisterError(string error)
+        {
+            PlayFabGoogleCloudMessaging.RegistrationComplete(null, error);
+        }
 
-		public void GCMMessageReceived(string message)
-		{
-		    PlayFabGoogleCloudMessaging.MessageReceived(message);
-		}
+        public void GCMMessageReceived(string message)
+        {
+            PlayFabGoogleCloudMessaging.MessageReceived(message);
+        }
 
-#if UNITY_IOS
-		public static void addHttpDelegate(int id, Action<string,PlayFabError> callback)
-		{
-		    Init();
+        public static void AddHttpDelegate(CallRequestContainer requestContainer)
+        {
+            Init();
+            HttpHandlers.Add(requestContainer.CallId, requestContainer);
+        }
 
-		    if (callback != null)
-		        PlayFabGO.HttpHandlers.Add(id, callback);
-		}
+        public void OnHttpError(string response) // This cannot be static because it's called from IOS: UnitySendMessage(EventHandler, "OnHttpError", replyBuffer);
+        {
+            //Debug.Log ("Got HTTP error response: "+response);
+            try
+            {
+                string[] args = response.Split(":".ToCharArray(), 2);
+                int callId = int.Parse(args[0]);
 
-#else
-		public static void addHttpDelegate(int id, Action<string,string> callback)
-		{
-		    Init();
-
-		    if (callback != null)
-		        PlayFabGO.HttpHandlers.Add(id, callback);
-		}
-#endif
-        public void OnHttpError(string response)
-		{
-			//Debug.Log ("Got HTTP error response: "+response);
-			try
-			{
-				string[] args = response.Split(":".ToCharArray(), 2);
-				int reqId = int.Parse(args[0]);
-#if UNITY_IOS
-				Action<string,PlayFabError> callback = HttpHandlers[reqId];
-			    if (callback != null)
-			    {
-			        var cbError = new PlayFabError()
-			        {
-                        HttpStatus = "200",
-			            ErrorMessage = args[1],
-			        };
-			        callback(null, cbError);
-			    }
-
-#else
-                Action<string,string> callback = HttpHandlers[reqId];
-                if (callback != null) {
-					callback(null, args[1]);
+                CallRequestContainer request;
+                if (!HttpHandlers.TryGetValue(callId, out request))
+                {
+                    Debug.LogWarning(string.Format("PlayFab call returned an error, but could not find the request.  Id:{0}, Error:{1}", args[0], args[1]));
+                    return;
                 }
-#endif
-				HttpHandlers.Remove(reqId);
-			}
-			catch(Exception e)
-			{
-				Debug.LogError("Error handling HTTP Error: "+e);
-			}
-		}
 
-		public void OnHttpResponse(string response)
-		{
-			//Debug.Log ("Got HTTP success response: "+response);
-			try
-			{
-				string[] args = response.Split(":".ToCharArray(), 2);
-				int reqId = int.Parse(args[0]);
-#if UNITY_IOS
-                Action<string,PlayFabError> callback = HttpHandlers[reqId];
-#else
-                Action<string,string> callback = HttpHandlers[reqId];
-#endif
-                if (callback != null)
-					callback(args[1], null);
-				HttpHandlers.Remove(reqId);
-			}
-			catch(Exception e)
-			{
-				Debug.LogError("Error handling HTTP request: "+e);
-			}
-		}
-	}
+                request.Error = new PlayFabError { HttpStatus = "200", ErrorMessage = args[1] };
+                request.InvokeCallback();
+                HttpHandlers.Remove(callId);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error handling HTTP Error: " + e);
+            }
+        }
 
+        public void OnHttpResponse(string response) // This cannot be static because it's called from IOS: UnitySendMessage(EventHandler, "OnHttpError", replyBuffer);
+        {
+            //Debug.Log ("Got HTTP success response: "+response);
+            try
+            {
+                string[] args = response.Split(":".ToCharArray(), 2);
+                int callId = int.Parse(args[0]);
+
+                CallRequestContainer request;
+                if (!HttpHandlers.TryGetValue(callId, out request))
+                {
+                    Debug.LogWarning(string.Format("PlayFab call returned a result, but could not find the request.  Id:{0}, Result:{1}", args[0], args[1]));
+                    return;
+                }
+
+                request.ResultStr = args[1];
+                request.InvokeCallback();
+                HttpHandlers.Remove(callId);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error handling HTTP request: " + e);
+            }
+        }
+    }
 }

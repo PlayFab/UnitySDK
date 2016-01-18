@@ -1,4 +1,3 @@
-using UnityEngine;
 
 namespace PlayFab.Examples.Client
 {
@@ -18,6 +17,7 @@ namespace PlayFab.Examples.Client
         private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
         {
             GetTitleData();
+            GetPublisherData();
         }
         #endregion Controller Event Handling
 
@@ -37,7 +37,7 @@ namespace PlayFab.Examples.Client
         public static void GetPublisherData()
         {
             var getRequest = new ClientModels.GetPublisherDataRequest();
-            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
+            getRequest.Keys = PfSharedModelEx.defaultPublisherKeys; // TODO: Temporary - keys are mandatory, and we don't know what keys already exist.
             PlayFabClientAPI.GetPublisherData(getRequest, GetPublisherDataCallback, PfSharedControllerEx.FailCallback("GetPublisherData"));
         }
 

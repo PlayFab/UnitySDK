@@ -1,11 +1,9 @@
-using UnityEngine;
-using System.Collections.Generic;
 
 namespace PlayFab.Examples.Client
 {
     public class C_TitleDataExampleGui : PfExampleGui
     {
-        void Awake()
+        public void Awake()
         {
             TitleDataExample.SetUp();
         }
@@ -17,17 +15,8 @@ namespace PlayFab.Examples.Client
             if (!isLoggedIn)
                 return;
 
-            Button(true, rowIndex, 0, "Refresh TitleData", TitleDataExample.GetTitleData);
-            rowIndex++;
-
-            // Display each of the existing keys - Title Data
-            foreach (var titlePair in PfSharedModelEx.titleData)
-            {
-                // The client cannot modify title data
-                TextField(true, rowIndex, 0, titlePair.Key);
-                TextField(true, rowIndex, 1, titlePair.Value);
-                rowIndex++;
-            };
+            DisplayReadOnlyDataHelper(ref rowIndex, "TitleData", PfSharedModelEx.titleData, TitleDataExample.GetTitleData);
+            DisplayReadOnlyDataHelper(ref rowIndex, "PublisherData", PfSharedModelEx.publisherData, TitleDataExample.GetPublisherData);
         }
         #endregion Unity GUI
     }
