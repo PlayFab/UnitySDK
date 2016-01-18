@@ -80,11 +80,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                LookupUserAccountInfoResult result = ResultContainer<LookupUserAccountInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<LookupUserAccountInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserAccountInfo", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -99,11 +95,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                BlankResult result = ResultContainer<BlankResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<BlankResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ResetUsers", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -118,11 +110,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                SendAccountRecoveryEmailResult result = ResultContainer<SendAccountRecoveryEmailResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<SendAccountRecoveryEmailResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SendAccountRecoveryEmail", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -137,11 +125,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateUserTitleDisplayNameResult result = ResultContainer<UpdateUserTitleDisplayNameResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateUserTitleDisplayNameResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateUserTitleDisplayName", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -156,11 +140,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                DeleteUsersResult result = ResultContainer<DeleteUsersResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<DeleteUsersResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/DeleteUsers", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -175,11 +155,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetDataReportResult result = ResultContainer<GetDataReportResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetDataReportResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetDataReport", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -194,11 +170,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetUserDataResult result = ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -213,11 +185,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetUserDataResult result = ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -232,11 +200,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetUserDataResult result = ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -251,11 +215,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetUserDataResult result = ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserPublisherInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -270,11 +230,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetUserDataResult result = ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserPublisherReadOnlyData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -289,11 +245,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetUserDataResult result = ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserReadOnlyData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -308,11 +260,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ResetUserStatisticsResult result = ResultContainer<ResetUserStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ResetUserStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ResetUserStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -327,11 +275,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateUserDataResult result = ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateUserData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -346,11 +290,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateUserDataResult result = ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateUserInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -365,11 +305,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateUserDataResult result = ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateUserPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -384,11 +320,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateUserDataResult result = ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateUserPublisherInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -403,11 +335,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateUserDataResult result = ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateUserPublisherReadOnlyData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -422,11 +350,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateUserDataResult result = ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateUserDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateUserReadOnlyData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -441,11 +365,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                AddNewsResult result = ResultContainer<AddNewsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<AddNewsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/AddNews", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -460,11 +380,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                BlankResult result = ResultContainer<BlankResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<BlankResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/AddVirtualCurrencyTypes", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -479,11 +395,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetCatalogItemsResult result = ResultContainer<GetCatalogItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetCatalogItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetCatalogItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -498,11 +410,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetRandomResultTablesResult result = ResultContainer<GetRandomResultTablesResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetRandomResultTablesResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetRandomResultTables", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -517,11 +425,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetStoreItemsResult result = ResultContainer<GetStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetStoreItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -536,11 +440,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetTitleDataResult result = ResultContainer<GetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetTitleData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -555,11 +455,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ListVirtualCurrencyTypesResult result = ResultContainer<ListVirtualCurrencyTypesResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ListVirtualCurrencyTypesResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ListVirtualCurrencyTypes", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -574,11 +470,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateCatalogItemsResult result = ResultContainer<UpdateCatalogItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateCatalogItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetCatalogItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -593,11 +485,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateStoreItemsResult result = ResultContainer<UpdateStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetStoreItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -612,11 +500,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                SetTitleDataResult result = ResultContainer<SetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<SetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetTitleData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -631,11 +515,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                SetupPushNotificationResult result = ResultContainer<SetupPushNotificationResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<SetupPushNotificationResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetupPushNotification", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -650,11 +530,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateCatalogItemsResult result = ResultContainer<UpdateCatalogItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateCatalogItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateCatalogItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -669,11 +545,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateRandomResultTablesResult result = ResultContainer<UpdateRandomResultTablesResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateRandomResultTablesResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateRandomResultTables", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -688,11 +560,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateStoreItemsResult result = ResultContainer<UpdateStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateStoreItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -707,11 +575,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ModifyUserVirtualCurrencyResult result = ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/AddUserVirtualCurrency", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -726,11 +590,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetUserInventoryResult result = ResultContainer<GetUserInventoryResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetUserInventoryResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetUserInventory", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -745,11 +605,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GrantItemsToUsersResult result = ResultContainer<GrantItemsToUsersResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GrantItemsToUsersResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GrantItemsToUsers", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -764,11 +620,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                RevokeInventoryResult result = ResultContainer<RevokeInventoryResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<RevokeInventoryResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/RevokeInventoryItem", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -783,11 +635,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ModifyUserVirtualCurrencyResult result = ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SubtractUserVirtualCurrency", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -802,11 +650,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetMatchmakerGameInfoResult result = ResultContainer<GetMatchmakerGameInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetMatchmakerGameInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetMatchmakerGameInfo", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -821,11 +665,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetMatchmakerGameModesResult result = ResultContainer<GetMatchmakerGameModesResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetMatchmakerGameModesResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetMatchmakerGameModes", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -840,11 +680,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ModifyMatchmakerGameModesResult result = ResultContainer<ModifyMatchmakerGameModesResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ModifyMatchmakerGameModesResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ModifyMatchmakerGameModes", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -859,11 +695,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                AddServerBuildResult result = ResultContainer<AddServerBuildResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<AddServerBuildResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/AddServerBuild", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -877,11 +709,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetServerBuildInfoResult result = ResultContainer<GetServerBuildInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetServerBuildInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetServerBuildInfo", serializedJson, null, null, callback, request, customData);
         }
@@ -896,11 +724,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetServerBuildUploadURLResult result = ResultContainer<GetServerBuildUploadURLResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetServerBuildUploadURLResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetServerBuildUploadUrl", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -915,11 +739,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ListBuildsResult result = ResultContainer<ListBuildsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ListBuildsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ListServerBuilds", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -934,11 +754,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ModifyServerBuildResult result = ResultContainer<ModifyServerBuildResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ModifyServerBuildResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ModifyServerBuild", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -953,11 +769,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                RemoveServerBuildResult result = ResultContainer<RemoveServerBuildResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<RemoveServerBuildResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/RemoveServerBuild", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -972,11 +784,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetPublisherDataResult result = ResultContainer<GetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -991,11 +799,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                SetPublisherDataResult result = ResultContainer<SetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<SetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1010,11 +814,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetCloudScriptRevisionResult result = ResultContainer<GetCloudScriptRevisionResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetCloudScriptRevisionResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetCloudScriptRevision", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1029,11 +829,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetCloudScriptVersionsResult result = ResultContainer<GetCloudScriptVersionsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetCloudScriptVersionsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetCloudScriptVersions", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1048,11 +844,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                SetPublishedRevisionResult result = ResultContainer<SetPublishedRevisionResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<SetPublishedRevisionResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetPublishedRevision", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1067,11 +859,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                UpdateCloudScriptResult result = ResultContainer<UpdateCloudScriptResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<UpdateCloudScriptResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/UpdateCloudScript", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1086,11 +874,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                BlankResult result = ResultContainer<BlankResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<BlankResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/DeleteContent", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1105,11 +889,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetContentListResult result = ResultContainer<GetContentListResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetContentListResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetContentList", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1124,11 +904,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                GetContentUploadUrlResult result = ResultContainer<GetContentUploadUrlResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<GetContentUploadUrlResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetContentUploadUrl", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
@@ -1143,11 +919,7 @@ namespace PlayFab
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
-                ResetCharacterStatisticsResult result = ResultContainer<ResetCharacterStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback);
-                if (result != null)
-                {
-
-                }
+                ResultContainer<ResetCharacterStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ResetCharacterStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }

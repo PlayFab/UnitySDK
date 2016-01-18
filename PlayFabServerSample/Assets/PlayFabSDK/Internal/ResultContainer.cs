@@ -20,8 +20,22 @@ namespace PlayFab.Internal
         public Dictionary<string, List<string>> errorDetails;
         public TResultType data;
 
+        private static ResultContainer<TResultType> KillWarnings()
+        {
+            // Unity doesn't recognize decoding json as assigning variables, so we have to assign them here
+            return new ResultContainer<TResultType>
+            {
+                code = (int)HttpStatusCode.OK,
+                status = "",
+                errorCode = (int)PlayFabErrorCode.Success,
+                errorMessage = "",
+                errorDetails = null,
+                data = null
+            };
+        }
+
         private static readonly object[] _invokeParams = new object[1];
-        public static TResultType HandleResults(CallRequestContainer callRequest, Delegate resultCallback, ErrorCallback errorCallback)
+        public static TResultType HandleResults(CallRequestContainer callRequest, Delegate resultCallback, ErrorCallback errorCallback, Action<TResultType, CallRequestContainer> resultAction)
         {
             if (callRequest.Error == null) // Some other error earlier in the process, just report it below
             {
@@ -33,6 +47,8 @@ namespace PlayFab.Internal
                     {
                         resultEnvelope.data.Request = callRequest.Request;
                         resultEnvelope.data.CustomData = callRequest.CustomData;
+                        if (resultAction != null)
+                            resultAction(resultEnvelope.data, callRequest);
                         if (resultCallback != null)
                         {
                             _invokeParams[0] = resultEnvelope.data;
