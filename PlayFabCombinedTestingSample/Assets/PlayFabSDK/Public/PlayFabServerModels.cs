@@ -2015,6 +2015,29 @@ namespace PlayFab.ServerModels
         public int SubmissionsRemaining { get; set;}
     }
 
+    public class RevokeInventoryItemRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned instance identifier of the item
+        /// </summary>
+        public string ItemInstanceId { get; set;}
+    }
+
+    public class RevokeInventoryResult : PlayFabResultCommon
+    {
+    }
+
     public class SendPushNotificationRequest
     {
 

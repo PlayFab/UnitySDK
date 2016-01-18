@@ -1785,7 +1785,7 @@ namespace PlayFab.AdminModels
     {
 
         /// <summary>
-        /// unique PlayFab identifier for the user account which is to have the specified item removed
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
         /// </summary>
         public string PlayFabId { get; set;}
 
@@ -1795,7 +1795,7 @@ namespace PlayFab.AdminModels
         public string CharacterId { get; set;}
 
         /// <summary>
-        /// unique PlayFab identifier for the item instance to be removed
+        /// Unique PlayFab assigned instance identifier of the item
         /// </summary>
         public string ItemInstanceId { get; set;}
     }

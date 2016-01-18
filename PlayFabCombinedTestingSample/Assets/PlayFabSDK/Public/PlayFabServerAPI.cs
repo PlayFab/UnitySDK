@@ -51,6 +51,7 @@ namespace PlayFab
         public delegate void MoveItemToUserFromCharacterCallback(MoveItemToUserFromCharacterResult result);
         public delegate void RedeemCouponCallback(RedeemCouponResult result);
         public delegate void ReportPlayerCallback(ReportPlayerServerResult result);
+        public delegate void RevokeInventoryItemCallback(RevokeInventoryResult result);
         public delegate void SubtractCharacterVirtualCurrencyCallback(ModifyCharacterVirtualCurrencyResult result);
         public delegate void SubtractUserVirtualCurrencyCallback(ModifyUserVirtualCurrencyResult result);
         public delegate void UpdateUserInventoryItemCustomDataCallback(UpdateUserInventoryItemDataResult result);
@@ -681,6 +682,21 @@ namespace PlayFab
                 ResultContainer<ReportPlayerServerResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/ReportPlayer", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Revokes access to an item in a user's inventory
+        /// </summary>
+        public static void RevokeInventoryItem(RevokeInventoryItemRequest request, RevokeInventoryItemCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<RevokeInventoryResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/RevokeInventoryItem", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
