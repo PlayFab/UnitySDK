@@ -76,14 +76,29 @@ namespace PlayFab.Examples.Client
         {
 			ClientModels.GetCatalogItemsRequest request = (ClientModels.GetCatalogItemsRequest)catalogResult.Request;
 			
-			if(!string.IsNullOrEmpty(request.CatalogVersion))
-			{ 
-				PfSharedModelEx.titleCatalogs[request.CatalogVersion] = catalogResult.Catalog;
+			string catalogVersion = "";
+			
+			// if request is null, then we are using the primary catalog
+			if(string.IsNullOrEmpty(request.CatalogVersion))
+			{
+				// if we have items, use the catalog from the first item 
+				if(catalogResult.Catalog != null && catalogResult.Catalog.Count > 0)
+				{
+					PfSharedModelEx.primaryCatalogVersion = catalogResult.Catalog[0].CatalogVersion;
+					catalogVersion = catalogResult.Catalog[0].CatalogVersion;
+				}
+				else
+				{
+					//Even if this is null, we dont have items, so something esle may be wrong.
+					catalogVersion = PfSharedModelEx.primaryCatalogVersion;
+				}
 			}
 			else
 			{
-				PfSharedModelEx.titleCatalogs[PfSharedModelEx.primaryCatalogVersion] = catalogResult.Catalog;
+				catalogVersion = request.CatalogVersion;
 			}
+			
+			PfSharedModelEx.titleCatalogs[catalogVersion] = catalogResult.Catalog;
 			
 			MainExampleController.DebugOutput("Title Catalog Loaded.");
 			// fire catalog loaded event (supply catalog version)

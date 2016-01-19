@@ -22,6 +22,8 @@ public class UserDataController : MonoBehaviour {
 	public Text UI_PanelDesc;
 	public Text UI_EmptySet;
 	
+	public string activeHelpUrl;
+	
 	public Transform rowPrefab;
 	public Transform listView;
 	
@@ -184,11 +186,19 @@ public class UserDataController : MonoBehaviour {
 		ResetTabs();
 		this.CurrentState = (UserDataStates)index;
 		
+		DataTabInfo info = tabs[index].GetComponent<DataTabInfo>();
+		this.UI_PanelTitle.text = info.Title + " Description";
+		this.UI_PanelDesc.text = info.Description;
+		this.activeHelpUrl = info.HelpURL;
+		
 		tabs[index].GetComponent<Image>().color = this.selectedButtonColor;
 		//Debug.Log("Tab: " + index);
 		
 		Text btnTxt =  tabs[index].GetComponentInChildren<Text>();
-		this.UI_PanelTitle.text = btnTxt == null ? "Description" :  btnTxt.text + " Description";
+
+		
+		
+		//this.ui
 		
 		StartCoroutine(Init ());
 	}
@@ -585,6 +595,11 @@ public class UserDataController : MonoBehaviour {
 			
 			PlayFab.Examples.Client.UserDataExample.UpdateUserPublisherData(publicData, false, deleteKeys);
 		}
+	}
+	
+	public void GetHelp()
+	{
+		PlayFab.Examples.PfSharedControllerEx.OpenHelpUrl(this.activeHelpUrl);
 	}
 	
 	//

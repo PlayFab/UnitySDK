@@ -88,6 +88,13 @@ namespace PlayFab.Examples
             };
             return output;
         }
- 
+        
+        public static void OpenHelpUrl(string url)
+        {
+        	if(!string.IsNullOrEmpty(url))
+        	{
+        		UnityEngine.Application.OpenURL(url);
+        	}
+        }
     }
 }

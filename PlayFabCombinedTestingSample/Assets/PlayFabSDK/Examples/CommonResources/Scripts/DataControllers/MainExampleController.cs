@@ -15,6 +15,7 @@ public class MainExampleController : MonoBehaviour {
 	public ExamplesMenuController examplesMenu;			// scene reference to the examples menu. This menu should have a button to start up any samples that are within the PlayFabExamples/ExampleSections
 	public ExampleSubMenuController examplesSubMenu;	// scene reference to the examples sub menu. This will contain buttons that toggle sample sub sections on and off
 	public ActiveUserInfoController activeUserInfo;		// scene reference to the details pane in the bottom left of the canvas. Player details and other options will be found here.
+	public Transform welcomeWindow;
 	
 	public List<ExampleSection> Sections = new List<ExampleSection>();	// scene reference to the various examples in the project
 	
@@ -23,14 +24,10 @@ public class MainExampleController : MonoBehaviour {
 	void OnEnable()
 	{
 		PlayFabAuthenticationManager.OnLoggedIn += AfterLogin;
-		//PlayFabSettings.RegisterForRequests("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDRequest", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
-		//PlayFabSettings.RegisterForResponses("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDResponse", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
 	}
 	
 	void OnDisable()
 	{
-		//PlayFabSettings.UnregisterForRequests("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDRequest", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
-		//PlayFabSettings.UnregisterForResponses("/Client/LoginWithCustomID", GetType().GetMethod("OnLoginWithCustomIDResponse", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic), this);
 		PlayFabAuthenticationManager.OnLoggedIn -= AfterLogin;
 	}
 	
@@ -205,9 +202,21 @@ public class MainExampleController : MonoBehaviour {
 		}
 	}
 	
+	// non-static version to be hooked up to from unity 
+	public void OpenWebBrowserViaInstance(string url)
+	{
+		MainExampleController.OpenWebBrowser(url);
+	}
+	
+	// temp function to output generic information
 	public static void DebugOutput(string msg)
 	{
 		Debug.Log("DebugOut: " + msg);
+	}
+	
+	public void CloseWelcomeWindow()
+	{
+		this.welcomeWindow.gameObject.SetActive(false);
 	}
 }
 

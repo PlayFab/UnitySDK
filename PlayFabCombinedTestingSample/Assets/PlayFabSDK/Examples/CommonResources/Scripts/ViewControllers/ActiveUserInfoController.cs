@@ -23,12 +23,7 @@ public class ActiveUserInfoController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
 		this.ToggleCharacter.onClick.AddListener(() => { OnToggleCharacterClick(); });
-		
-		//PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnGetCharacterList);
-		
-	
 	}
 	
 	// Update is called once per frame
@@ -66,9 +61,7 @@ public class ActiveUserInfoController : MonoBehaviour {
 		
 		this.ToggleCharacter.interactable = true;
 		
-		// TODO send event here...
 		Debug.Log("All characters loaded. (" + charResult.Characters.Count + ")");
-		//PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, PfSharedModelEx.globalClientUser.playFabId, character.CharacterId, PfSharedControllerEx.Api.Client, false);
 	}
 	
 	public void OnToggleActiveAccountClicked()

@@ -11,6 +11,7 @@ public class ServerOptionsController : MonoBehaviour {
 
 	public EditVCController vcController;
 	public Transform serverOptionsPanel;
+	public string activeHelpUrl;
 	
 	void Awake()
 	{
@@ -112,5 +113,10 @@ public class ServerOptionsController : MonoBehaviour {
 			};
 		}
 		SharedDialogController.RequestSelectorPrompt("Select an item to revoke", items.Values.ToList(), afterSelect);
+	}
+	
+	public void OpenHelpUrl()
+	{
+		MainExampleController.OpenWebBrowser(this.activeHelpUrl);
 	}
 }

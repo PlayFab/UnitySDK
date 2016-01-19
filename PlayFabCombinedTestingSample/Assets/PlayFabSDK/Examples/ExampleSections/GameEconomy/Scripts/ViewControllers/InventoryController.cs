@@ -21,6 +21,7 @@ public class InventoryController : MonoBehaviour {
 	public Text active_itemType;
 	public Image active_icon;
 	public Text active_expiration;
+	public string activeHelpUrl;
 	
 	public Transform listView;
 	public Transform invItemPrefab;
@@ -39,7 +40,9 @@ public class InventoryController : MonoBehaviour {
 
 	public void OnEnable()
 	{
+		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		HidePanel();
+		
 //		PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, CheckToContinue);
 //		PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, CheckToContinue);
 		
@@ -53,8 +56,54 @@ public class InventoryController : MonoBehaviour {
 	
 	public void OnDisable()
 	{
+		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 //		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, CheckToContinue);
 //		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, CheckToContinue);
+	}
+	
+	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
+	{
+		//"/Client/LoginWithCustomID"
+		if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		{
+			switch(url)
+			{
+				case "/Client/GetUserInventory":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					Init();
+					break;
+					
+				case "/Client/ConsumeItem":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					Init();
+					break;
+					
+				case "/Client/UnlockContainerItem":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					Init();
+					break;
+			}
+		}
+		else if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.Character)
+		{
+			switch(url)
+			{
+				case "/Client/GetCharacterInventory":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					Init();
+					break;
+					
+				case "/Client/ConsumeItem":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					Init();
+					break;
+					
+				case "/Client/UnlockContainerItem":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					Init();
+					break;
+			}
+		}
 	}
 	
 	public void Init()
@@ -66,8 +115,9 @@ public class InventoryController : MonoBehaviour {
 			 {
 				AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count);
 				InventoryItemController first = null;
+				
 				for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count; z++)
-				{
+				{	
 					InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
 					
 					
@@ -80,14 +130,14 @@ public class InventoryController : MonoBehaviour {
 				}
 				ShowPanel();
 				
-				if(this.activeItem == null && first != null)
-				{
+//				if(this.activeItem == null && first != null)
+//				{
 					ItemClicked(first);
-				}
-				else if(this.activeItem != null);
-				{
-					ItemClicked(this.activeItem);
-				}
+//				}
+//				else if(this.activeItem != null);
+//				{
+//					ItemClicked(this.activeItem);
+//				}
 				
 				//Wallet Code
 				StartCoroutine(wallet.Init());
@@ -314,5 +364,10 @@ public class InventoryController : MonoBehaviour {
 		Debug.Log("Unlocking Container: " + this.activeItem.catlogItem.ItemId);
 		PlayFab.Examples.Client.InventoryExample.UnlockContainer(this.activeItem.itemInstance.ItemId, this.activeItem.itemInstance.CatalogVersion);
 		//unlock();
+	}
+	
+	public void OpenHelpUrl()
+	{
+		MainExampleController.OpenWebBrowser(this.activeHelpUrl);
 	}
 }

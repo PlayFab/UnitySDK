@@ -20,6 +20,8 @@ public class StoreController : MonoBehaviour {
 	private List<Transform> itemSceneObjects = new List<Transform>();
 	public Transform panelListView;
 	public Transform itemPrefab;
+	public string activeHelpUrl;
+	
 	
 	public WalletController wallet;
 
@@ -43,6 +45,8 @@ public class StoreController : MonoBehaviour {
 	
 	void OnEnable()
 	{
+		
+		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		HideStorePane();
 		
 		if(this.DisplayState == StoreControllerStates.GetCatalog)
@@ -69,6 +73,46 @@ public class StoreController : MonoBehaviour {
 		}
 	}
 	
+	public void OnDisable()
+	{
+		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
+	}
+	
+	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
+	{
+		if(this.gameObject.activeInHierarchy == true && this.DisplayState == StoreControllerStates.GetCatalog)
+		{
+			switch(url)
+			{
+				case "/Client/GetCatalogItems":
+					Debug.Log("Catalog Viewer: GotData:" + url);
+					
+					if(!string.IsNullOrEmpty(pendingCatalog))
+					{
+						activeCatalog = pendingCatalog;
+						pendingCatalog = string.Empty;
+					}
+					ShowCatalog();
+					break;
+			}
+		}
+		else if(this.gameObject.activeInHierarchy == true && this.DisplayState == StoreControllerStates.GetStore)
+		{
+			switch(url)
+			{
+				case "/Client/GetStoreItems":
+					Debug.Log("Store Viewer: GotData:" + url);
+					
+					if(!string.IsNullOrEmpty(pendingStore))
+					{
+						activeStore = pendingStore;
+						pendingStore = string.Empty;
+					}
+					ShowStore();
+					break;
+			}
+		}
+	}
 	
 	public void ChangeCatalog()
 	{
@@ -93,7 +137,6 @@ public class StoreController : MonoBehaviour {
 			{
 				activeCatalog = PfSharedModelEx.primaryCatalogVersion;
 				ShowCatalog();
-				
 			}
 		};
 		
@@ -137,12 +180,7 @@ public class StoreController : MonoBehaviour {
 	}
 	
 	
-	public void OnDisable()
-	{
-//		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnStoreLoaded, HandleOnStoreLoad);
-//		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, HandleOnCatalogLoad);
-//		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, HandleOnInventoryLoaded);
-	}
+
 	
 	
 	/// <summary>
@@ -268,6 +306,11 @@ public class StoreController : MonoBehaviour {
 	
 	public void ShowCatalog()
 	{
+		if(string.IsNullOrEmpty(activeCatalog))
+		{
+			activeCatalog = PfSharedModelEx.primaryCatalogVersion; 
+		}
+		
 		this.panelTitleBar.text = string.Format("Catalog: \"{0}\"", activeCatalog);
 		this.overlayTint.SetActive(true);
 		this.storePanel.SetActive(true);
@@ -317,6 +360,11 @@ public class StoreController : MonoBehaviour {
 		}
 	}
 	
+
+	public void OpenHelpUrl()
+	{
+		MainExampleController.OpenWebBrowser(this.activeHelpUrl);
+	}
 	
 	public void CloseStore()
 	{

@@ -19,6 +19,7 @@ public class StoreItemController : MonoBehaviour {
 	public Text itemUses;
 	public Text itemType;
 	public Text itemId;
+	public Text itemExp;
 	public Image icon; 
 	
 	private CatalogItem itemRef;
@@ -47,10 +48,12 @@ public class StoreItemController : MonoBehaviour {
 		
 		if(item.Consumable != null && item.Consumable.UsageCount > 0)
 		{
-			this.itemUses.transform.parent.gameObject.SetActive(true); // hide uses field
+			this.itemUses.transform.parent.gameObject.SetActive(true); // show uses field
 		}
 		
-		this.itemUses.transform.parent.gameObject.SetActive(true);
+		// hide the expiration field
+		this.itemExp.transform.parent.gameObject.SetActive(false);
+		
 		
 		if(this.itemRef.Bundle != null)
 		{
@@ -68,12 +71,12 @@ public class StoreItemController : MonoBehaviour {
 		else if(this.itemRef.Consumable.UsageCount > 0 && this.itemRef.Consumable.UsagePeriod != null)
 		{
 			this.itemType.text = "Time Bound";
-			 // show uses field
+			this.itemExp.transform.parent.gameObject.SetActive(true);
 		}
 		else 
 		{
 			this.itemType.text = "Durable";
-			this.itemUses.transform.parent.gameObject.SetActive(false); // hide uses field
+			//this.itemUses.transform.parent.gameObject.SetActive(false); // hide uses field
 		}
 		
 		

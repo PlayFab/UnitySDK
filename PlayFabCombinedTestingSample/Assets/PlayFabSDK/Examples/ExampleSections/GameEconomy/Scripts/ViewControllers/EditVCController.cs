@@ -25,14 +25,42 @@ public class EditVCController : MonoBehaviour {
 	
 	public void OnEnable()
 	{
+		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		Init ();
 		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, OnVCChangedEvent);
 	}
 	
 	public void OnDisable()
 	{
+		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, OnVCChangedEvent);
 	}
+	
+	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
+	{
+		//"/Client/LoginWithCustomID"
+		if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		{
+			switch(url)
+			{
+				case "/Client/GetUserInventory":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					StartCoroutine (Init());
+					break;
+			}
+		}
+		else if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.Character)
+		{
+			switch(url)
+			{
+				case "/Client/GetCharacterInventory":
+					Debug.Log("InventoryViewer: GotData:" + url);
+					StartCoroutine (Init());
+					break;
+			}
+		}
+	}
+	
 	
 	public IEnumerator Init()
 	{
