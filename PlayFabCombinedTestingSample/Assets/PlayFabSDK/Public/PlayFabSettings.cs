@@ -15,6 +15,12 @@ namespace PlayFab
         All = Debug | Info | Warning | Error,
     }
 
+    public enum WebRequestType
+    {
+        UnityWww, // High compatability Unity api calls
+        HttpWebRequest // High performance multi-threaded api calls
+    }
+
     public static class PlayFabSettings
     {
         private const string GLOBAL_KEY = "GLOBAL";
@@ -71,7 +77,7 @@ namespace PlayFab
         /// <param name="urlPath">Use null to bind to every api call.  Uniquely identifies the api-call.  Formatted as "/api/function".  Corresponds to the url path, as described by:  https://developer.mozilla.org/en-US/Learn/Understanding_URLs </param>
         /// <param name="methodInfo">methodInfo object for the callback that should be invoked when the api call is requested.</param>
         /// <param name="instance">optional: if methodInfo is an instance method, provide the instance associated with that call.  Use null for static method</param>
-        private static void RegisterForRequests(string urlPath, MethodInfo methodInfo, object instance = null) // Set as private to temporarilly disable this system until a cleaner interface is developed next week
+        public static void RegisterForRequests(string urlPath, MethodInfo methodInfo, object instance = null)
         {
             CheckMethod(ref urlPath, methodInfo, instance);
             HashSet<MethodInfo> methodInfos;
@@ -93,7 +99,7 @@ namespace PlayFab
         /// <param name="urlPath">Use null to bind to every api call.  Uniquely identifies the api-call.  Formatted as "/api/function".  Corresponds to the url path, as described by:  https://developer.mozilla.org/en-US/Learn/Understanding_URLs </param>
         /// <param name="methodInfo">methodInfo object for the callback that should be invoked when the api call is requested.</param>
         /// <param name="instance">optional: if methodInfo is an instance method, provide the instance associated with that call.  Use null for static method</param>
-        private static void RegisterForResponses(string urlPath, MethodInfo methodInfo, object instance = null) // Set as private to temporarilly disable this system until a cleaner interface is developed next week
+        public static void RegisterForResponses(string urlPath, MethodInfo methodInfo, object instance = null)
         {
             CheckMethod(ref urlPath, methodInfo, instance);
             HashSet<MethodInfo> methodInfos;
