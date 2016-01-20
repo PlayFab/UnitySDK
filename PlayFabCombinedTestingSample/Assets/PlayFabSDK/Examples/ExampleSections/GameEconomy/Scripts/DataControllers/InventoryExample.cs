@@ -15,9 +15,7 @@ namespace PlayFab.Examples.Client
         #region Controller Event Handling
         static InventoryExample()
         {
-           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
-           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnInventoryChanged, OnInventoryChanged);
+
         }
 
         public static void SetUp()
@@ -482,7 +480,7 @@ namespace PlayFab.Examples.Client
 	
 	
 	// SERVER CALLS WILL BE MOVED TO CLOUD SCRIPT
-	public static void RevokeItem()
+	public static void RevokeItem(string id)
 	{
 		throw new System.NotImplementedException();
 			// waiting on Siva to move this API over to Server/ from Admin/

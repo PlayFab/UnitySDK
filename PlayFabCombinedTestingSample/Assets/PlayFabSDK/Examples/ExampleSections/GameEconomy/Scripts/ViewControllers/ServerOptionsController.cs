@@ -14,10 +14,7 @@ public class ServerOptionsController : MonoBehaviour {
 	public string activeHelpUrl;
 	
 	void Awake()
-	{
-		//PlayFab.Examples.Client.VirtualCurrencyExample.SetUp();
-		//PlayFab.Examples.Client.InventoryExample.SetUp();
-	}
+	{}
 	
 	// Use this for initialization
 	void Start () {
@@ -30,28 +27,15 @@ public class ServerOptionsController : MonoBehaviour {
 	}
 	
 	public void OnEnable()
-	{
-		
-		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, CheckToContinue);
-		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, CheckToContinue);
-		
-		// not currenty fetching a new inv.
-		//Init();
-
-			
-	}
+	{}
 	
 	
 	
 	public void OnDisable()
-	{
-		//PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, CheckToContinue);
-		//PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, CheckToContinue);
-	}
+	{}
 	
 	public void CloseOptionsPrompt()
 	{
-		//this.serverOptionsPanel.gameObject.SetActive(false);
 		this.gameObject.SetActive(false);
 	}
 	
@@ -95,8 +79,8 @@ public class ServerOptionsController : MonoBehaviour {
 			
 			afterSelect = (int index) => 
 			{
-				string idToGive = items.ElementAt(index).Key;
-				PlayFab.Examples.Client.InventoryExample.RevokeItem();
+				string idToRevoke = items.ElementAt(index).Key;
+				PlayFab.Examples.Client.InventoryExample.RevokeItem(idToRevoke);
 			};
 		}
 		else
@@ -108,8 +92,8 @@ public class ServerOptionsController : MonoBehaviour {
 			
 			afterSelect = (int index) => 
 			{
-				string idToGive = items.ElementAt(index).Key;
-				PlayFab.Examples.Client.InventoryExample.RevokeItem();
+				string idToRevoke = items.ElementAt(index).Key;
+				PlayFab.Examples.Client.InventoryExample.RevokeItem(idToRevoke);
 			};
 		}
 		SharedDialogController.RequestSelectorPrompt("Select an item to revoke", items.Values.ToList(), afterSelect);

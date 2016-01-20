@@ -4,8 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SharedDialogController : MonoBehaviour {
-	//public ErrorPromptController errorPrompt;
-
 	public TextInputPrompController textInputPrompt;
 	public SelectorPromptController selectorPrompt;
 	public Transform loadingPrompt;
@@ -16,10 +14,6 @@ public class SharedDialogController : MonoBehaviour {
 	public delegate void SelectorPromptHandler(string title, List<string> options, System.Action<int> responseCallback);
 	public static event SelectorPromptHandler RaiseSelectorPromptRequest;
 	
-	public delegate void LoadingPromptHandler(string api);
-	public static event LoadingPromptHandler RaiseLoadingPromptRequest;
-	
-	//private List<string> waitingOnRequests = new List<string>();
 	private readonly Dictionary<int, System.DateTime> activeCalls = new Dictionary<int, System.DateTime>();
 	private float timeOutAfter = 0;
 	
@@ -41,23 +35,8 @@ public class SharedDialogController : MonoBehaviour {
 	
 	void OnEnable()
 	{
-				//PF_Bridge.OnPlayFabCallbackError += HandleCallbackError;
-				//PF_Bridge.OnPlayfabCallbackSuccess += HandleCallbackSuccess;
-		//		
-		//		PF_Authentication.OnLoginFail += HandleOnLoginFail;
-		//		PF_Authentication.OnLoginSuccess += HandleOnLoginSuccess;
-		//		
-				//RaiseLoadingPromptRequest += HandleLoadingPromptRequest;
-		//		RaiseConfirmationPromptRequest += HandleConfirmationPromptRequest;
-				RaiseTextInputPromptRequest += HandleTextInputRequest; 
-		//		RaiseInterstitialRequest += HandleInterstitialRequest;
-		//		RaiseStoreRequest += HandleStoreRequest;
-		//		RaiseItemViewRequest += HandleItemViewerRequest;
-		//		RaiseInventoryPromptRequest += HandleInventoryRequest;
-		//		RaiseAccountSettingsRequest += HandleRaiseAccountSettingsRequest;
-				RaiseSelectorPromptRequest += HandleSelectorPromptRequest;
-		//		RaiseSocialRequest += HandleSocialRequest;
-		//		RaiseOfferRequest += HandleOfferPromptRequest;
+		RaiseTextInputPromptRequest += HandleTextInputRequest; 
+		RaiseSelectorPromptRequest += HandleSelectorPromptRequest;
 		
 		PlayFab.PlayFabSettings.RegisterForRequests(null, GetType().GetMethod("OnOutgoingApi", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnIncomingApi", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
@@ -72,23 +51,8 @@ public class SharedDialogController : MonoBehaviour {
 	
 	void OnDisable()
 	{
-				//PF_Bridge.OnPlayFabCallbackError -= HandleCallbackError;	
-				//PF_Bridge.OnPlayfabCallbackSuccess -= HandleCallbackSuccess;
-		//		
-		//		PF_Authentication.OnLoginFail -= HandleOnLoginFail;
-		//		PF_Authentication.OnLoginSuccess -= HandleOnLoginSuccess;
-		//		
-				//RaiseLoadingPromptRequest -= HandleLoadingPromptRequest;
-		//		RaiseConfirmationPromptRequest -= HandleConfirmationPromptRequest;
-				RaiseTextInputPromptRequest -= HandleTextInputRequest; 
-		//		RaiseInterstitialRequest -= HandleInterstitialRequest;
-		//		RaiseStoreRequest -= HandleStoreRequest;
-		//		RaiseItemViewRequest -= HandleItemViewerRequest;
-		//		RaiseInventoryPromptRequest -= HandleInventoryRequest;
-		//		RaiseAccountSettingsRequest -= HandleRaiseAccountSettingsRequest;
-				RaiseSelectorPromptRequest -= HandleSelectorPromptRequest;
-		//		RaiseSocialRequest -= HandleSocialRequest;
-		//		RaiseOfferRequest -= HandleOfferPromptRequest;
+		RaiseTextInputPromptRequest -= HandleTextInputRequest; 
+		RaiseSelectorPromptRequest -= HandleSelectorPromptRequest;
 		
 		PlayFab.PlayFabSettings.UnregisterForRequests(null, GetType().GetMethod("OnOutgoingApi", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("OnIncomingApi", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
@@ -104,7 +68,6 @@ public class SharedDialogController : MonoBehaviour {
 	
 	public void HandleTextInputRequest(string title, string message, System.Action<string> responseCallback, string defaultValue)
 	{
-		//this.ShowTint();
 		this.textInputPrompt.ShowTextInputPrompt(title, message, responseCallback, defaultValue);
 	}
 	
@@ -121,24 +84,6 @@ public class SharedDialogController : MonoBehaviour {
 			RaiseSelectorPromptRequest(title, options, responseCallback);
 		}
 	}
-	
-//	public static void RequestLoadingPrompt(string api)
-//	{
-//		if(RaiseLoadingPromptRequest != null)
-//		{
-//			RaiseLoadingPromptRequest(api);
-//		}
-//	}
-//	
-//	public void HandleLoadingPromptRequest(string api)
-//	{
-//		loadingPrompt.gameObject.SetActive(true);
-//	}
-//	
-//	public void CloseLoadingPrompt(string api)
-//	{
-//		loadingPrompt.gameObject.SetActive(false);
-//	}
 	
 	public void CloseLoadingPromptAfterError()
 	{
@@ -173,50 +118,4 @@ public class SharedDialogController : MonoBehaviour {
 		}
 	}
 	
-	
-	
-	
-	//	void HandleOnLoginSuccess(string message, MessageDisplayStyle style)
-	//	{
-	//		HandleCallbackSuccess(message, PlayFabAPIMethods.GenericLogin, style);
-	//	}
-	//	
-	//	void HandleOnLoginFail(string message, MessageDisplayStyle style)
-	//	{
-	//		HandleCallbackError(message, PlayFabAPIMethods.GenericLogin, style);
-	//	}
-	//	
-	//
-	//	public void HandleCallbackError(string details, PlayFabAPIMethods method, MessageDisplayStyle style)
-	//	{
-	//		switch(style)
-	//		{
-	//			case MessageDisplayStyle.error:
-	//				string errorMessage = string.Format("CALLBACK ERROR: {0}: {1}", method, details);
-	//				//ShowTint();
-	//				this.errorPrompt.RaiseErrorDialog(errorMessage);
-	//				CloseLoadingPromptAfterError();
-	//			break;
-	//			
-	//			default:
-	//				CloseLoadingPrompt(method);
-	//				Debug.Log(string.Format("CALLBACK ERROR: {0}: {1}", method, details));
-	//				break;
-	//			
-	//		}
-	//		
-	//	}
-	//	
-	//	public void HandleCallbackSuccess(string details, PlayFabAPIMethods method, MessageDisplayStyle style)
-	//	{
-	//		CloseLoadingPrompt(method);
-	//		//Debug.Log(string.Format("{0} completed successfully.", method.ToString()));
-	//	}
-	//	
-	//	
-	//	public void CloseErrorDialog()
-	//	{	
-	//		this.errorPrompt.CloseErrorDialog();
-	//		
-	//	}
 }

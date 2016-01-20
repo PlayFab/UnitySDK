@@ -17,8 +17,6 @@ public class GameEconomyExampleController : MonoBehaviour {
 	
 	public void RunOnStart()
 	{
-		//PlayFab.Examples.PfSharedModelEx
-		//PlayFab.Examples.Client.InventoryExample.GetUserInventory;
 		Debug.Log("Running game economy start sequence");
 		
 		//TODO add logic here to conditionally get new data based on cached info.
@@ -39,6 +37,4 @@ public class GameEconomyExampleController : MonoBehaviour {
 	{
 		
 	}
-	//public void 
-	
 }

@@ -12,8 +12,7 @@ public class VCItemController : MonoBehaviour {
 	public Button add50Btn;
 	public Button setBtn;
 	public Image banding;
-	
-	private EditVCController controller;
+
 	public int _balance;
 	public int _initialBalance;
 	
@@ -28,18 +27,14 @@ public class VCItemController : MonoBehaviour {
 	{
 		this._balance = this._balance - amt >= 0 ? this._balance - amt : 0;
 		this.vc_balance.text = string.Format("{0:n0}", this._balance);
-		
-		
 	}
 	
-	public void Init(KeyValuePair<string, int> kvp, EditVCController controller, bool useBanding = false)
+	public void Init(KeyValuePair<string, int> kvp, bool useBanding = false)
 	{
 		this.vc_code.text = kvp.Key;
 		this.vc_balance.text = string.Format("{0:n0}", kvp.Value);
 		this._balance = kvp.Value;
 		this._initialBalance = this._balance;
-		
-		this.controller = controller;
 		
 		this.vc_balance.onEndEdit.RemoveAllListeners();
 		this.vc_balance.onEndEdit.AddListener((string input) => { 
@@ -64,8 +59,6 @@ public class VCItemController : MonoBehaviour {
 		PlayFab.Examples.Client.InventoryExample.ModifyVcBalance(this.vc_code.text, net);
 	}
 	
-	// END EDIT STRING EVENT()
-	// called after the input field has been manually updated
 	public void OnBalanceEdited(string update)
 	{
 		int parsed;

@@ -23,12 +23,14 @@ public class MainExampleController : MonoBehaviour {
 	
 	void OnEnable()
 	{
-		PlayFabAuthenticationManager.OnLoggedIn += AfterLogin;
+		//PlayFabAuthenticationManager.OnLoggedIn += AfterLogin;
+		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	
 	void OnDisable()
 	{
-		PlayFabAuthenticationManager.OnLoggedIn -= AfterLogin;
+		//PlayFabAuthenticationManager.OnLoggedIn -= AfterLogin;
+		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	
 	private void OnLoginWithCustomIDRequest(string url, int callId, object request, object customData)
@@ -53,20 +55,23 @@ public class MainExampleController : MonoBehaviour {
 		Debug.Log(url + " completed in " + delta.TotalMilliseconds + ", " + lr.SessionTicket);
 		CallTimes_InstGl.Remove(callId);
 	}
-
-	
-	
-	
-	
 	
 	/// <summary>
 	/// Called after a successful login, will parse the resources directories and load all ExampleSectionController's found
 	/// </summary>
 	/// <param name="linkType">The login pathway used </param>
 	/// <param name="result">Result the PlayFab model returned from the login request</param>
-	void AfterLogin(RegistrationLinkType linkType, LoginResult result)
+	public void AfterLogin(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
 	{
-		this.activeUserInfo.Init(result);
+		try
+		{
+			this.activeUserInfo.Init((PlayFab.ClientModels.LoginResult)result);
+		}
+		catch(System.Exception ex)
+		{
+			Debug.LogError(ex.Message);
+		}
+		
 		FetchCloudScriptEndpoint();
 		
 		// load any ExampleSectionController found at the root of any Resources directory

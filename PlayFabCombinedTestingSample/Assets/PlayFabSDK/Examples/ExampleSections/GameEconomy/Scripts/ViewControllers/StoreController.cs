@@ -162,8 +162,6 @@ public class StoreController : MonoBehaviour {
 					// need to wait on store to load before drawing it
 					pendingStore = response;
 					PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(response, activeCatalog); 
-					// enables recovery of state while call spins
-					//this.gameObject.SetActive(false);
 				}
 			}
 			else
@@ -258,32 +256,6 @@ public class StoreController : MonoBehaviour {
 		}
 	}
 	
-	
-//	public void HandleOnInventoryLoaded(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-//	{
-//		StartCoroutine(this.wallet.Init());
-//	}
-//	
-//	
-//	public void HandleOnStoreLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-//	{
-//		if(this.DisplayState == StoreControllerStates.GetStore)
-//		{
-//			StartCoroutine(this.wallet.Init());
-//			ShowStore();
-//		}
-//	}
-//	
-//	public void HandleOnCatalogLoad(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-//	{
-//		if(this.DisplayState == StoreControllerStates.GetCatalog)
-//		{
-//			StartCoroutine(this.wallet.Init());
-//			ShowCatalog();
-//		}
-//	}		
-	
-	
 	public void ShowStore()
 	{
 		this.panelTitleBar.text = string.Format("Store: \"{0}\"", activeStore);
@@ -317,11 +289,6 @@ public class StoreController : MonoBehaviour {
 		InitCatalog(PfSharedModelEx.GetCatalog(activeCatalog));
 		StartCoroutine(wallet.Init());
 	}
-	
-//	public void AfterStoreRetrieved(GetStoreItemsRequest request)
-//	{
-//		
-//	}
 	
 	public void SelectItem(StoreItemController item)
 	{

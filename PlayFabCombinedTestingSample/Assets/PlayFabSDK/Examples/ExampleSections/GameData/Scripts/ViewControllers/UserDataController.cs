@@ -62,7 +62,6 @@ public class UserDataController : MonoBehaviour {
 	
 	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFabError error, object customData)
 	{
-		//"/Client/LoginWithCustomID"
 		if(this.gameObject.activeInHierarchy == true)
 		{
 			switch(url)
@@ -120,7 +119,6 @@ public class UserDataController : MonoBehaviour {
 	{
 		yield return new WaitForEndOfFrame();
 		
-		int number;
 		switch(this.CurrentState)
 		{
 			case UserDataStates.Data:
@@ -192,13 +190,6 @@ public class UserDataController : MonoBehaviour {
 		this.activeHelpUrl = info.HelpURL;
 		
 		tabs[index].GetComponent<Image>().color = this.selectedButtonColor;
-		//Debug.Log("Tab: " + index);
-		
-		Text btnTxt =  tabs[index].GetComponentInChildren<Text>();
-
-		
-		
-		//this.ui
 		
 		StartCoroutine(Init ());
 	}

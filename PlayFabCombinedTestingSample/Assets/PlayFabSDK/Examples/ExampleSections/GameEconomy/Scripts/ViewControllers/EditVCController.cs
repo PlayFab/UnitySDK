@@ -8,32 +8,19 @@ using UnityEngine.Events;
 using PlayFab.ClientModels;
 
 public class EditVCController : MonoBehaviour {
-	
 	public Transform vcItemPrefab;
 	public Transform listView;
 	public List<VCItemController> vcItems = new List<VCItemController>();
-	  
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	
 	public void OnEnable()
 	{
 		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		Init ();
-		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, OnVCChangedEvent);
 	}
 	
 	public void OnDisable()
 	{
 		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
-		//PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, OnVCChangedEvent);
 	}
 	
 	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
@@ -78,7 +65,7 @@ public class EditVCController : MonoBehaviour {
 					
 					VCItemController itemController = trans.GetComponent<VCItemController>();
 					
-					itemController.Init (item, this, counter % 2 == 0 ? true : false );
+					itemController.Init (item, counter % 2 == 0 ? true : false );
 					this.vcItems.Add(itemController); 
 					counter++;
 				}
@@ -96,7 +83,7 @@ public class EditVCController : MonoBehaviour {
 					
 					VCItemController itemController = trans.GetComponent<VCItemController>();
 					
-					itemController.Init (item, this, counter % 2 == 0 ? true : false );
+					itemController.Init (item, counter % 2 == 0 ? true : false );
 					this.vcItems.Add(itemController); 
 					counter++;
 				}
@@ -104,7 +91,6 @@ public class EditVCController : MonoBehaviour {
 		}
 	}
 	
-	//public delegate void PfControllerDelegate(string playFabId, string characterId, Api eventSourceApi, bool requiresFullRefresh);
 	public void OnVCChangedEvent(string playFabId, string characterId, PlayFab.Examples.PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh )
 	{
 		StartCoroutine(Init ());

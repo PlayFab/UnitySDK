@@ -34,18 +34,12 @@ public class InventoryController : MonoBehaviour {
 	
 	void Awake()
 	{
-//		PlayFab.Examples.Client.VirtualCurrencyExample.SetUp();
-//		PlayFab.Examples.Client.InventoryExample.SetUp();
 	}
 
 	public void OnEnable()
 	{
 		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		HidePanel();
-		
-//		PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, CheckToContinue);
-//		PlayFab.Examples.PfSharedControllerEx.RegisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, CheckToContinue);
-		
 		Init();	
 	}
 	
@@ -57,13 +51,10 @@ public class InventoryController : MonoBehaviour {
 	public void OnDisable()
 	{
 		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
-//		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnInventoryLoaded, CheckToContinue);
-//		PlayFab.Examples.PfSharedControllerEx.UnregisterEventMessage(PlayFab.Examples.PfSharedControllerEx.EventType.OnCatalogLoaded, CheckToContinue);
 	}
 	
 	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
 	{
-		//"/Client/LoginWithCustomID"
 		if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
 			switch(url)
@@ -130,14 +121,8 @@ public class InventoryController : MonoBehaviour {
 				}
 				ShowPanel();
 				
-//				if(this.activeItem == null && first != null)
-//				{
-					ItemClicked(first);
-//				}
-//				else if(this.activeItem != null);
-//				{
-//					ItemClicked(this.activeItem);
-//				}
+				ItemClicked(first);
+
 				
 				//Wallet Code
 				StartCoroutine(wallet.Init());
@@ -160,7 +145,6 @@ public class InventoryController : MonoBehaviour {
 				{
 					InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
 					
-					
 					item.Init(this, PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory[z]);
 					
 					if(z == 0)
@@ -174,7 +158,7 @@ public class InventoryController : MonoBehaviour {
 				{
 					ItemClicked(first);
 				}
-				else if(this.activeItem != null);
+				else if(this.activeItem != null)
 				{
 					ItemClicked(this.activeItem);
 				}
@@ -203,7 +187,6 @@ public class InventoryController : MonoBehaviour {
 	
 	public void AdjustItemPrefabs(int itemCount)
 	{
-		//DeselectItems();
 		if(this.itemSceneObjects.Count > itemCount)
 		{
 			int numToRemove = this.itemSceneObjects.Count - itemCount;
