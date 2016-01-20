@@ -1,4 +1,3 @@
-using PlayFab.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -71,8 +70,10 @@ namespace PlayFab.ServerModels
         public List<string> PlayFabIds { get; set;}
     }
 
-    public class AddSharedGroupMembersResult : PlayFabResultCommon
+    public class AddSharedGroupMembersResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class AddUserVirtualCurrencyRequest
@@ -103,13 +104,15 @@ namespace PlayFab.ServerModels
         public string SessionTicket { get; set;}
     }
 
-    public class AuthenticateSessionTicketResult : PlayFabResultCommon
+    public class AuthenticateSessionTicketResult
     {
 
         /// <summary>
         /// Account info for the user whose session ticket was supplied.
         /// </summary>
         public UserAccountInfo UserInfo { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class AwardSteamAchievementItem
@@ -140,13 +143,15 @@ namespace PlayFab.ServerModels
         public List<AwardSteamAchievementItem> Achievements { get; set;}
     }
 
-    public class AwardSteamAchievementResult : PlayFabResultCommon
+    public class AwardSteamAchievementResult
     {
 
         /// <summary>
         /// Array of achievements granted.
         /// </summary>
         public List<AwardSteamAchievementItem> AchievementResults { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     /// <summary>
@@ -340,7 +345,7 @@ namespace PlayFab.ServerModels
         public int Position { get; set;}
     }
 
-    public class CharacterResult : PlayFabResultCommon
+    public class CharacterResult
     {
 
         /// <summary>
@@ -357,6 +362,8 @@ namespace PlayFab.ServerModels
         /// The type-string that was given to this character on creation.
         /// </summary>
         public string CharacterType { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class CreateSharedGroupRequest
@@ -368,13 +375,15 @@ namespace PlayFab.ServerModels
         public string SharedGroupId { get; set;}
     }
 
-    public class CreateSharedGroupResult : PlayFabResultCommon
+    public class CreateSharedGroupResult
     {
 
         /// <summary>
         /// Unique identifier for the shared group.
         /// </summary>
         public string SharedGroupId { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public enum Currency
@@ -562,8 +571,10 @@ namespace PlayFab.ServerModels
         public bool SaveCharacterInventory { get; set;}
     }
 
-    public class DeleteCharacterFromUserResult : PlayFabResultCommon
+    public class DeleteCharacterFromUserResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class DeleteSharedGroupRequest
@@ -589,12 +600,16 @@ namespace PlayFab.ServerModels
         public string TitleId { get; set;}
     }
 
-    public class DeleteUsersResult : PlayFabResultCommon
+    public class DeleteUsersResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
-    public class EmptyResult : PlayFabResultCommon
+    public class EmptyResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class FacebookPlayFabIdPair
@@ -664,13 +679,15 @@ namespace PlayFab.ServerModels
         public string CatalogVersion { get; set;}
     }
 
-    public class GetCatalogItemsResult : PlayFabResultCommon
+    public class GetCatalogItemsResult
     {
 
         /// <summary>
         /// Array of items which can be purchased.
         /// </summary>
         public List<CatalogItem> Catalog { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetCharacterDataRequest
@@ -697,7 +714,7 @@ namespace PlayFab.ServerModels
         public int? IfChangedFromDataVersion { get; set;}
     }
 
-    public class GetCharacterDataResult : PlayFabResultCommon
+    public class GetCharacterDataResult
     {
 
         /// <summary>
@@ -719,6 +736,8 @@ namespace PlayFab.ServerModels
         /// Unique PlayFab assigned ID for a specific character owned by a user
         /// </summary>
         public string CharacterId { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetCharacterInventoryRequest
@@ -740,7 +759,7 @@ namespace PlayFab.ServerModels
         public string CatalogVersion { get; set;}
     }
 
-    public class GetCharacterInventoryResult : PlayFabResultCommon
+    public class GetCharacterInventoryResult
     {
 
         /// <summary>
@@ -767,6 +786,8 @@ namespace PlayFab.ServerModels
         /// Array of remaining times and timestamps for virtual currencies.
         /// </summary>
         public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetCharacterLeaderboardRequest
@@ -798,13 +819,15 @@ namespace PlayFab.ServerModels
         public int MaxResultsCount { get; set;}
     }
 
-    public class GetCharacterLeaderboardResult : PlayFabResultCommon
+    public class GetCharacterLeaderboardResult
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetCharacterStatisticsRequest
@@ -821,7 +844,7 @@ namespace PlayFab.ServerModels
         public string CharacterId { get; set;}
     }
 
-    public class GetCharacterStatisticsResult : PlayFabResultCommon
+    public class GetCharacterStatisticsResult
     {
 
         /// <summary>
@@ -838,6 +861,8 @@ namespace PlayFab.ServerModels
         /// Character statistics for the requested user.
         /// </summary>
         public Dictionary<string,int> CharacterStatistics { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetContentDownloadUrlRequest
@@ -859,13 +884,15 @@ namespace PlayFab.ServerModels
         public bool? ThruCDN { get; set;}
     }
 
-    public class GetContentDownloadUrlResult : PlayFabResultCommon
+    public class GetContentDownloadUrlResult
     {
 
         /// <summary>
         /// URL for downloading content via HTTP GET or HEAD method. The URL will expire in 1 hour.
         /// </summary>
         public string URL { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetFriendLeaderboardRequest
@@ -921,13 +948,15 @@ namespace PlayFab.ServerModels
         public bool? IncludeFacebookFriends { get; set;}
     }
 
-    public class GetFriendsListResult : PlayFabResultCommon
+    public class GetFriendsListResult
     {
 
         /// <summary>
         /// Array of friends found.
         /// </summary>
         public List<FriendInfo> Friends { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetLeaderboardAroundCharacterRequest
@@ -959,13 +988,15 @@ namespace PlayFab.ServerModels
         public int MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardAroundCharacterResult : PlayFabResultCommon
+    public class GetLeaderboardAroundCharacterResult
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetLeaderboardAroundUserRequest
@@ -987,13 +1018,15 @@ namespace PlayFab.ServerModels
         public int MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardAroundUserResult : PlayFabResultCommon
+    public class GetLeaderboardAroundUserResult
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetLeaderboardForUsersCharactersRequest
@@ -1015,13 +1048,15 @@ namespace PlayFab.ServerModels
         public int MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardForUsersCharactersResult : PlayFabResultCommon
+    public class GetLeaderboardForUsersCharactersResult
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetLeaderboardRequest
@@ -1043,13 +1078,15 @@ namespace PlayFab.ServerModels
         public int MaxResultsCount { get; set;}
     }
 
-    public class GetLeaderboardResult : PlayFabResultCommon
+    public class GetLeaderboardResult
     {
 
         /// <summary>
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetPlayerStatisticsRequest
@@ -1066,7 +1103,7 @@ namespace PlayFab.ServerModels
         public List<string> StatisticNames { get; set;}
     }
 
-    public class GetPlayerStatisticsResult : PlayFabResultCommon
+    public class GetPlayerStatisticsResult
     {
 
         /// <summary>
@@ -1078,6 +1115,8 @@ namespace PlayFab.ServerModels
         /// User statistics for the requested user.
         /// </summary>
         public List<StatisticValue> Statistics { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetPlayFabIDsFromFacebookIDsRequest
@@ -1089,13 +1128,15 @@ namespace PlayFab.ServerModels
         public List<string> FacebookIDs { get; set;}
     }
 
-    public class GetPlayFabIDsFromFacebookIDsResult : PlayFabResultCommon
+    public class GetPlayFabIDsFromFacebookIDsResult
     {
 
         /// <summary>
         /// Mapping of Facebook identifiers to PlayFab identifiers.
         /// </summary>
         public List<FacebookPlayFabIdPair> Data { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetPublisherDataRequest
@@ -1107,13 +1148,15 @@ namespace PlayFab.ServerModels
         public List<string> Keys { get; set;}
     }
 
-    public class GetPublisherDataResult : PlayFabResultCommon
+    public class GetPublisherDataResult
     {
 
         /// <summary>
         /// a dictionary object of key / value pairs
         /// </summary>
         public Dictionary<string,string> Data { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetSharedGroupDataRequest
@@ -1135,7 +1178,7 @@ namespace PlayFab.ServerModels
         public bool? GetMembers { get; set;}
     }
 
-    public class GetSharedGroupDataResult : PlayFabResultCommon
+    public class GetSharedGroupDataResult
     {
 
         /// <summary>
@@ -1147,6 +1190,8 @@ namespace PlayFab.ServerModels
         /// List of PlayFabId identifiers for the members of this group, if requested.
         /// </summary>
         public List<string> Members { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetTitleDataRequest
@@ -1158,13 +1203,15 @@ namespace PlayFab.ServerModels
         public List<string> Keys { get; set;}
     }
 
-    public class GetTitleDataResult : PlayFabResultCommon
+    public class GetTitleDataResult
     {
 
         /// <summary>
         /// a dictionary object of key / value pairs
         /// </summary>
         public Dictionary<string,string> Data { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetTitleNewsRequest
@@ -1176,13 +1223,15 @@ namespace PlayFab.ServerModels
         public int? Count { get; set;}
     }
 
-    public class GetTitleNewsResult : PlayFabResultCommon
+    public class GetTitleNewsResult
     {
 
         /// <summary>
         /// Array of news items.
         /// </summary>
         public List<TitleNewsItem> News { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetUserAccountInfoRequest
@@ -1194,13 +1243,15 @@ namespace PlayFab.ServerModels
         public string PlayFabId { get; set;}
     }
 
-    public class GetUserAccountInfoResult : PlayFabResultCommon
+    public class GetUserAccountInfoResult
     {
 
         /// <summary>
         /// Account info for the user whose information was requested.
         /// </summary>
         public UserAccountInfo UserInfo { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetUserDataRequest
@@ -1222,7 +1273,7 @@ namespace PlayFab.ServerModels
         public int? IfChangedFromDataVersion { get; set;}
     }
 
-    public class GetUserDataResult : PlayFabResultCommon
+    public class GetUserDataResult
     {
 
         /// <summary>
@@ -1239,6 +1290,8 @@ namespace PlayFab.ServerModels
         /// User specific data for this title.
         /// </summary>
         public Dictionary<string,UserDataRecord> Data { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetUserInventoryRequest
@@ -1250,7 +1303,7 @@ namespace PlayFab.ServerModels
         public string PlayFabId { get; set;}
     }
 
-    public class GetUserInventoryResult : PlayFabResultCommon
+    public class GetUserInventoryResult
     {
 
         /// <summary>
@@ -1272,6 +1325,8 @@ namespace PlayFab.ServerModels
         /// Array of remaining times and timestamps for virtual currencies.
         /// </summary>
         public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GetUserStatisticsRequest
@@ -1283,7 +1338,7 @@ namespace PlayFab.ServerModels
         public string PlayFabId { get; set;}
     }
 
-    public class GetUserStatisticsResult : PlayFabResultCommon
+    public class GetUserStatisticsResult
     {
 
         /// <summary>
@@ -1295,6 +1350,8 @@ namespace PlayFab.ServerModels
         /// User statistics for the requested user.
         /// </summary>
         public Dictionary<string,int> UserStatistics { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GrantCharacterToUserRequest
@@ -1316,13 +1373,15 @@ namespace PlayFab.ServerModels
         public string CharacterType { get; set;}
     }
 
-    public class GrantCharacterToUserResult : PlayFabResultCommon
+    public class GrantCharacterToUserResult
     {
 
         /// <summary>
         /// Unique identifier tagged to this character.
         /// </summary>
         public string CharacterId { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     /// <summary>
@@ -1451,13 +1510,15 @@ namespace PlayFab.ServerModels
         public List<string> ItemIds { get; set;}
     }
 
-    public class GrantItemsToCharacterResult : PlayFabResultCommon
+    public class GrantItemsToCharacterResult
     {
 
         /// <summary>
         /// Array of items granted to users.
         /// </summary>
         public List<GrantedItemInstance> ItemGrantResults { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GrantItemsToUserRequest
@@ -1484,13 +1545,15 @@ namespace PlayFab.ServerModels
         public List<string> ItemIds { get; set;}
     }
 
-    public class GrantItemsToUserResult : PlayFabResultCommon
+    public class GrantItemsToUserResult
     {
 
         /// <summary>
         /// Array of items granted to users.
         /// </summary>
         public List<GrantedItemInstance> ItemGrantResults { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class GrantItemsToUsersRequest
@@ -1507,13 +1570,15 @@ namespace PlayFab.ServerModels
         public List<ItemGrant> ItemGrants { get; set;}
     }
 
-    public class GrantItemsToUsersResult : PlayFabResultCommon
+    public class GrantItemsToUsersResult
     {
 
         /// <summary>
         /// Array of items granted to users.
         /// </summary>
         public List<GrantedItemInstance> ItemGrantResults { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class ItemGrant
@@ -1631,13 +1696,15 @@ namespace PlayFab.ServerModels
         public string PlayFabId { get; set;}
     }
 
-    public class ListUsersCharactersResult : PlayFabResultCommon
+    public class ListUsersCharactersResult
     {
 
         /// <summary>
         /// The requested list of characters.
         /// </summary>
         public List<CharacterResult> Characters { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class LogEventRequest
@@ -1679,11 +1746,13 @@ namespace PlayFab.ServerModels
         public bool ProfileSetEvent { get; set;}
     }
 
-    public class LogEventResult : PlayFabResultCommon
+    public class LogEventResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
-    public class ModifyCharacterVirtualCurrencyResult : PlayFabResultCommon
+    public class ModifyCharacterVirtualCurrencyResult
     {
 
         /// <summary>
@@ -1695,6 +1764,8 @@ namespace PlayFab.ServerModels
         /// Balance of the virtual currency after modification.
         /// </summary>
         public int Balance { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class ModifyItemUsesRequest
@@ -1716,7 +1787,7 @@ namespace PlayFab.ServerModels
         public int UsesToAdd { get; set;}
     }
 
-    public class ModifyItemUsesResult : PlayFabResultCommon
+    public class ModifyItemUsesResult
     {
 
         /// <summary>
@@ -1728,9 +1799,11 @@ namespace PlayFab.ServerModels
         /// Number of uses remaining on the item.
         /// </summary>
         public int RemainingUses { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
-    public class ModifyUserVirtualCurrencyResult : PlayFabResultCommon
+    public class ModifyUserVirtualCurrencyResult
     {
 
         /// <summary>
@@ -1752,6 +1825,8 @@ namespace PlayFab.ServerModels
         /// Balance of the virtual currency after modification.
         /// </summary>
         public int Balance { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class MoveItemToCharacterFromCharacterRequest
@@ -1778,8 +1853,10 @@ namespace PlayFab.ServerModels
         public string ItemInstanceId { get; set;}
     }
 
-    public class MoveItemToCharacterFromCharacterResult : PlayFabResultCommon
+    public class MoveItemToCharacterFromCharacterResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class MoveItemToCharacterFromUserRequest
@@ -1801,8 +1878,10 @@ namespace PlayFab.ServerModels
         public string ItemInstanceId { get; set;}
     }
 
-    public class MoveItemToCharacterFromUserResult : PlayFabResultCommon
+    public class MoveItemToCharacterFromUserResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class MoveItemToUserFromCharacterRequest
@@ -1824,8 +1903,10 @@ namespace PlayFab.ServerModels
         public string ItemInstanceId { get; set;}
     }
 
-    public class MoveItemToUserFromCharacterResult : PlayFabResultCommon
+    public class MoveItemToUserFromCharacterResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class NotifyMatchmakerPlayerLeftRequest
@@ -1842,13 +1923,15 @@ namespace PlayFab.ServerModels
         public string PlayFabId { get; set;}
     }
 
-    public class NotifyMatchmakerPlayerLeftResult : PlayFabResultCommon
+    public class NotifyMatchmakerPlayerLeftResult
     {
 
         /// <summary>
         /// State of user leaving the Game Server Instance.
         /// </summary>
         public PlayerConnectionState? PlayerState { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public enum PlayerConnectionState
@@ -1903,13 +1986,15 @@ namespace PlayFab.ServerModels
         public string CatalogVersion { get; set;}
     }
 
-    public class RedeemCouponResult : PlayFabResultCommon
+    public class RedeemCouponResult
     {
 
         /// <summary>
         /// Items granted to the player as a result of redeeming the coupon.
         /// </summary>
         public List<ItemInstance> GrantedItems { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class RedeemMatchmakerTicketRequest
@@ -1926,7 +2011,7 @@ namespace PlayFab.ServerModels
         public string LobbyId { get; set;}
     }
 
-    public class RedeemMatchmakerTicketResult : PlayFabResultCommon
+    public class RedeemMatchmakerTicketResult
     {
 
         /// <summary>
@@ -1943,6 +2028,8 @@ namespace PlayFab.ServerModels
         /// User account information for the user validated.
         /// </summary>
         public UserAccountInfo UserInfo { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class RemoveFriendRequest
@@ -1973,8 +2060,10 @@ namespace PlayFab.ServerModels
         public List<string> PlayFabIds { get; set;}
     }
 
-    public class RemoveSharedGroupMembersResult : PlayFabResultCommon
+    public class RemoveSharedGroupMembersResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class ReportPlayerServerRequest
@@ -2001,7 +2090,7 @@ namespace PlayFab.ServerModels
         public string Comment { get; set;}
     }
 
-    public class ReportPlayerServerResult : PlayFabResultCommon
+    public class ReportPlayerServerResult
     {
 
         /// <summary>
@@ -2013,6 +2102,8 @@ namespace PlayFab.ServerModels
         /// The number of remaining reports which may be filed today by this reporting player.
         /// </summary>
         public int SubmissionsRemaining { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class SendPushNotificationRequest
@@ -2034,8 +2125,10 @@ namespace PlayFab.ServerModels
         public string Subject { get; set;}
     }
 
-    public class SendPushNotificationResult : PlayFabResultCommon
+    public class SendPushNotificationResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class SetPublisherDataRequest
@@ -2052,8 +2145,10 @@ namespace PlayFab.ServerModels
         public string Value { get; set;}
     }
 
-    public class SetPublisherDataResult : PlayFabResultCommon
+    public class SetPublisherDataResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class SetTitleDataRequest
@@ -2070,8 +2165,10 @@ namespace PlayFab.ServerModels
         public string Value { get; set;}
     }
 
-    public class SetTitleDataResult : PlayFabResultCommon
+    public class SetTitleDataResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class SharedGroupDataRecord
@@ -2241,13 +2338,15 @@ namespace PlayFab.ServerModels
         public UserDataPermission? Permission { get; set;}
     }
 
-    public class UpdateCharacterDataResult : PlayFabResultCommon
+    public class UpdateCharacterDataResult
     {
 
         /// <summary>
         /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
         /// </summary>
         public uint DataVersion { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class UpdateCharacterStatisticsRequest
@@ -2269,8 +2368,10 @@ namespace PlayFab.ServerModels
         public Dictionary<string,int> CharacterStatistics { get; set;}
     }
 
-    public class UpdateCharacterStatisticsResult : PlayFabResultCommon
+    public class UpdateCharacterStatisticsResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class UpdatePlayerStatisticsRequest
@@ -2287,8 +2388,10 @@ namespace PlayFab.ServerModels
         public List<StatisticUpdate> Statistics { get; set;}
     }
 
-    public class UpdatePlayerStatisticsResult : PlayFabResultCommon
+    public class UpdatePlayerStatisticsResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class UpdateSharedGroupDataRequest
@@ -2315,8 +2418,10 @@ namespace PlayFab.ServerModels
         public UserDataPermission? Permission { get; set;}
     }
 
-    public class UpdateSharedGroupDataResult : PlayFabResultCommon
+    public class UpdateSharedGroupDataResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class UpdateUserDataRequest
@@ -2343,13 +2448,15 @@ namespace PlayFab.ServerModels
         public UserDataPermission? Permission { get; set;}
     }
 
-    public class UpdateUserDataResult : PlayFabResultCommon
+    public class UpdateUserDataResult
     {
 
         /// <summary>
         /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
         /// </summary>
         public uint DataVersion { get; set;}
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class UpdateUserInternalDataRequest
@@ -2400,8 +2507,10 @@ namespace PlayFab.ServerModels
         public List<string> KeysToRemove { get; set;}
     }
 
-    public class UpdateUserInventoryItemDataResult : PlayFabResultCommon
+    public class UpdateUserInventoryItemDataResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class UpdateUserStatisticsRequest
@@ -2418,8 +2527,10 @@ namespace PlayFab.ServerModels
         public Dictionary<string,int> UserStatistics { get; set;}
     }
 
-    public class UpdateUserStatisticsResult : PlayFabResultCommon
+    public class UpdateUserStatisticsResult
     {
+        public object Request { get; set; }
+        public object CustomData { get; set;  }
     }
 
     public class UserAccountInfo
