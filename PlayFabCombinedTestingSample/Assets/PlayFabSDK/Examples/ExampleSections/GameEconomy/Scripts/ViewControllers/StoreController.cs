@@ -163,7 +163,7 @@ public class StoreController : MonoBehaviour {
 					pendingStore = response;
 					PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(response, activeCatalog); 
 					// enables recovery of state while call spins
-					this.gameObject.SetActive(false);
+					//this.gameObject.SetActive(false);
 				}
 			}
 			else
