@@ -113,9 +113,11 @@ namespace PlayFab
         public delegate void GetContentDownloadUrlCallback(GetContentDownloadUrlResult result);
         public delegate void GetAllUsersCharactersCallback(ListUsersCharactersResult result);
         public delegate void GetCharacterLeaderboardCallback(GetCharacterLeaderboardResult result);
+        public delegate void GetCharacterStatisticsCallback(GetCharacterStatisticsResult result);
         public delegate void GetLeaderboardAroundCharacterCallback(GetLeaderboardAroundCharacterResult result);
         public delegate void GetLeaderboardForUserCharactersCallback(GetLeaderboardForUsersCharactersResult result);
         public delegate void GrantCharacterToUserCallback(GrantCharacterToUserResult result);
+        public delegate void UpdateCharacterStatisticsCallback(UpdateCharacterStatisticsResult result);
         public delegate void GetCharacterDataCallback(GetCharacterDataResult result);
         public delegate void GetCharacterReadOnlyDataCallback(GetCharacterDataResult result);
         public delegate void UpdateCharacterDataCallback(UpdateCharacterDataResult result);
@@ -1754,6 +1756,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the details of all title-specific statistics for the user
+        /// </summary>
+        public static void GetCharacterStatistics(GetCharacterStatisticsRequest request, GetCharacterStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetCharacterStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/GetCharacterStatistics", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// Retrieves a list of ranked characters for the given statistic, centered on the requested Character ID
         /// </summary>
         public static void GetLeaderboardAroundCharacter(GetLeaderboardAroundCharacterRequest request, GetLeaderboardAroundCharacterCallback resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -1796,6 +1813,20 @@ namespace PlayFab
                 ResultContainer<GrantCharacterToUserResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Client/GrantCharacterToUser", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Updates the values of the specified title-specific statistics for the specific character
+        /// </summary>
+        public static void UpdateCharacterStatistics(UpdateCharacterStatisticsRequest request, UpdateCharacterStatisticsCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<UpdateCharacterStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/UpdateCharacterStatistics", serializedJson, null, null, callback, request, customData);
         }
 
         /// <summary>
