@@ -27,7 +27,21 @@ public class UserDataController : MonoBehaviour {
 	public Transform rowPrefab;
 	public Transform listView;
 	
-	public enum UserDataStates { Deactivated = -1, TitleData = 0, Data = 1, DataRO = 2, Statistics = 3, PublisherData = 4, UserPubData = 5, UserPubDataRO = 6}
+	public enum UserDataStates 
+	{ 
+		Deactivated = -1, 
+		TitleData = 0,
+		UserData = 1, 
+		CharData = 2,
+		UserDataRO = 3,
+		CharDataRO = 4,
+		UserStatistics = 5,
+		CharStatistics = 6,
+		PublisherData = 7, 
+		UserPubData = 8, 
+		UserPubDataRO = 9
+	}
+	
 	public UserDataStates CurrentState = UserDataStates.Deactivated;
 	
 	public List<Button> tabs = new List<Button>();
@@ -36,16 +50,6 @@ public class UserDataController : MonoBehaviour {
 	public bool isListDirty = false; // for use when knowing to update or not.
 	private int minRows = 5;
 	
-	
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	
 	public void OnEnable()
 	{
@@ -121,68 +125,105 @@ public class UserDataController : MonoBehaviour {
 		
 		switch(this.CurrentState)
 		{
-			case UserDataStates.Data:
-				if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
-				{
-					yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userData.Count));
-					DrawData(PlayFab.Examples.PfSharedModelEx.currentUser.userData);
-				}
-				else
-				{
-					yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterData.Count));
-					DrawData(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterData);
-				}
+			case UserDataStates.UserData:
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userData.Count));
+				DrawData(PlayFab.Examples.PfSharedModelEx.currentUser.userData);
 				break;
-			case UserDataStates.DataRO:
-				if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
-				{
-					yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userReadOnlyData.Count));
-					DrawDataRo(PlayFab.Examples.PfSharedModelEx.currentUser.userReadOnlyData);
-				}
-				else
-				{
-					yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterReadOnlyData.Count));
-					DrawDataRo(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterReadOnlyData);
-				}
+				
+			case UserDataStates.CharData:
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterData.Count));
+				DrawData(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterData);
 				break;
+				
+			case UserDataStates.UserDataRO:
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userReadOnlyData.Count));
+				DrawDataRo(PlayFab.Examples.PfSharedModelEx.currentUser.userReadOnlyData);
+				break;
+			
+			case UserDataStates.CharDataRO:	
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterReadOnlyData.Count));
+				DrawDataRo(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterReadOnlyData);
+				break;
+				
 			case UserDataStates.UserPubData:
 				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherData.Count));
 				DrawPubData(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherData);
 				break;
+				
 			case UserDataStates.UserPubDataRO:
 				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherReadOnlyData.Count));
 			    DrawPubDataRo(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherReadOnlyData);
 				break;
+				
 			case UserDataStates.TitleData:
 				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.titleData.Count));
 			    DrawTitleData(PlayFab.Examples.PfSharedModelEx.titleData);
 				break;
+				
 			case UserDataStates.PublisherData:
 				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.publisherData.Count));
 			    DrawPublisherData(PlayFab.Examples.PfSharedModelEx.publisherData);
 				break;
-			case UserDataStates.Statistics:
-				if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
-				{
-					yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userStatistics.Count));
-					DrawStatistics(PlayFab.Examples.PfSharedModelEx.currentUser.userStatistics);
-				}
-				else
-				{
-					yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterStatistics.Count));
-					DrawStatistics(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterStatistics);
-				}
+				
+			case UserDataStates.UserStatistics:
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userStatistics.Count));
+				DrawStatistics(PlayFab.Examples.PfSharedModelEx.currentUser.userStatistics);
 				break;
-		}
+			
+			case UserDataStates.CharStatistics:
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterStatistics.Count));
+				DrawStatistics(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterStatistics);
+				break;
+		 }
 	}
 
 	public void OnTabClicked(int index)
 	{
-		if(index == (int)this.CurrentState)
-			return;
-			
 		ResetTabs();
-		this.CurrentState = (UserDataStates)index;
+		
+		bool useCharacter = false;
+		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.Character)
+		{
+			useCharacter = true;
+		}
+		
+		switch(index)
+		{
+			//TitleData
+			case 0:
+				this.CurrentState = UserDataStates.TitleData;
+			break;
+			
+			//UserData
+			case 1:
+				this.CurrentState = useCharacter ? UserDataStates.CharData : UserDataStates.UserData;
+			break;
+			
+			//UserDataRO
+			case 2:
+				this.CurrentState = useCharacter ? UserDataStates.CharDataRO : UserDataStates.UserDataRO;
+			break;		
+			
+			//Statistics
+			case 3:
+				this.CurrentState = useCharacter ? UserDataStates.CharStatistics : UserDataStates.UserStatistics;
+			break;
+			
+			//PublisherData
+			case 4:
+				this.CurrentState = UserDataStates.PublisherData;
+			break;
+			
+			//UserPublisherData
+			case 5:
+				this.CurrentState = UserDataStates.UserPubData;
+			break;
+			
+			//UserPublisherDataRO
+			case 6:
+				this.CurrentState = UserDataStates.UserPubDataRO;
+			break;
+		}	
 		
 		DataTabInfo info = tabs[index].GetComponent<DataTabInfo>();
 		this.UI_PanelTitle.text = info.Title + " Description";
@@ -348,6 +389,10 @@ public class UserDataController : MonoBehaviour {
 		this.UI_DeleteLabel.gameObject.SetActive(false);
 		this.UI_PrivateLabel.gameObject.SetActive(false);
 		
+//		bool hideObj = (data == null || data.Count == 0);
+//		this.UI_EmptySet.gameObject.SetActive(!hideObj);
+//		if (hideObj) return;
+		
 		if(data == null|| data.Count == 0)
 		{
 			this.UI_EmptySet.gameObject.SetActive(true);
@@ -413,25 +458,17 @@ public class UserDataController : MonoBehaviour {
 	{
 		switch(this.CurrentState)
 		{
-			case UserDataStates.Data:
-				if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
-				{
-					PlayFab.Examples.Client.UserDataExample.GetUserData();
-				}
-				else
-				{
-					PlayFab.Examples.Client.UserDataExample.GetActiveCharacterData();
-				}
+			case UserDataStates.UserData:
+				PlayFab.Examples.Client.UserDataExample.GetUserData();
 				break;
-			case UserDataStates.DataRO:
-				if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
-				{
-					PlayFab.Examples.Client.UserDataExample.GetUserReadOnlyData();
-				}
-				else
-				{
-					PlayFab.Examples.Client.UserDataExample.GetActiveCharacterReadOnlyData();
-				}
+			case UserDataStates.CharData:
+				PlayFab.Examples.Client.UserDataExample.GetActiveCharacterData();
+				break;
+			case UserDataStates.UserDataRO:
+				PlayFab.Examples.Client.UserDataExample.GetUserReadOnlyData();
+				break;
+			case UserDataStates.CharDataRO:
+				PlayFab.Examples.Client.UserDataExample.GetActiveCharacterReadOnlyData();
 				break;
 			case UserDataStates.UserPubData:
 				PlayFab.Examples.Client.UserDataExample.GetUserPublisherData();
@@ -445,15 +482,11 @@ public class UserDataController : MonoBehaviour {
 			case UserDataStates.PublisherData:
 				PlayFab.Examples.Client.TitleDataExample.GetPublisherData();
 				break;
-			case UserDataStates.Statistics:
-				if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
-				{
-					PlayFab.Examples.Client.StatsExample.GetUserStatistics();
-				}
-				else
-				{
-					PlayFab.Examples.Client.StatsExample.GetCharacterStatistics();
-				}
+			case UserDataStates.UserStatistics:
+				PlayFab.Examples.Client.StatsExample.GetUserStatistics();
+				break;
+			case UserDataStates.CharStatistics:
+				PlayFab.Examples.Client.StatsExample.GetCharacterStatistics();
 				break;
 		}
 	}
@@ -467,12 +500,12 @@ public class UserDataController : MonoBehaviour {
 		bool usePermissions = true;
 		bool enableDelete = true;
 		
-		if(this.CurrentState == UserDataStates.Statistics || this.CurrentState == UserDataStates.TitleData || this.CurrentState == UserDataStates.PublisherData )
+		if(this.CurrentState == UserDataStates.UserStatistics || this.CurrentState == UserDataStates.CharStatistics || this.CurrentState == UserDataStates.TitleData || this.CurrentState == UserDataStates.PublisherData )
 		{
 			enableDelete = false;
 			usePermissions = false;
 		}
-		else if(this.CurrentState == UserDataStates.DataRO || this.CurrentState == UserDataStates.UserPubDataRO)
+		else if(this.CurrentState == UserDataStates.UserDataRO || this.CurrentState == UserDataStates.CharDataRO || this.CurrentState == UserDataStates.UserPubDataRO)
 		{
 			enableDelete = false;
 		}
@@ -534,17 +567,18 @@ public class UserDataController : MonoBehaviour {
 			}
 		}
 		
-		switch(this.CurrentState)
+		
+		if(this.CurrentState == UserDataStates.UserData || this.CurrentState== UserDataStates.CharData)
 		{
-			case UserDataStates.Data:
-				SaveData(publicKeysToSave, privateKeysToSave, keysToDelete);
-				break;
-			case UserDataStates.UserPubData:
-				SavePubData(publicKeysToSave, privateKeysToSave, keysToDelete);
-				break;
-			case UserDataStates.Statistics:
-				SaveStatistics(publicKeysToSave, privateKeysToSave, keysToDelete);
-				break;
+			SaveData(publicKeysToSave, privateKeysToSave, keysToDelete);
+		}
+		else if(this.CurrentState == UserDataStates.UserPubData)
+		{
+			SavePubData(publicKeysToSave, privateKeysToSave, keysToDelete);
+		}
+		else if(this.CurrentState == UserDataStates.UserStatistics || this.CurrentState== UserDataStates.CharStatistics)
+		{
+			SaveStatistics(publicKeysToSave, privateKeysToSave, keysToDelete);
 		}
 	} 
 	
@@ -593,9 +627,11 @@ public class UserDataController : MonoBehaviour {
 		PlayFab.Examples.PfSharedControllerEx.OpenHelpUrl(this.activeHelpUrl);
 	}
 	
+	
 	//
 	public void SaveStatistics(Dictionary<string, string> publicData,  Dictionary<string, string> privateData, List<string> deleteKeys = null)
 	{
+		throw new System.NotImplementedException();
 		// not setting this up yet... but will take place in cloud script
 		//		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		//		{

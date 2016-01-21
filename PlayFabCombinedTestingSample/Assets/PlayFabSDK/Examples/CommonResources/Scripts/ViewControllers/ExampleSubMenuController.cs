@@ -6,21 +6,8 @@ using System.Collections.Generic;
 using System.Collections;
 
 public class ExampleSubMenuController : MonoBehaviour {
-
 	public Button BaseButton;
 	public Transform ListView;
-	
-	
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-	
 	
 	public void Init(ExampleSection section)
 	{

@@ -72,6 +72,4 @@ public class VCItemController : MonoBehaviour {
 			this.vc_balance.text = string.Format("{0:n0}", this._balance);
 		}
 	}
-	
-	
 }

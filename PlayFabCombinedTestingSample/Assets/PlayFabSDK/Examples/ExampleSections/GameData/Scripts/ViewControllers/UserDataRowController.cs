@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 using PlayFab.ClientModels;
-public class UserDataRowController : MonoBehaviour, ISelectHandler {
+public class UserDataRowController : MonoBehaviour {
 
 	public InputField keyField;
 	public InputField valueField;
@@ -16,28 +16,17 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 	public Image banding;
 	
 	public bool isNewRecord = false;
+	private bool isBanded = false;
 	
 	public UserDataController controller;
 	public string originalKey { get { return _originalKey; } }
 	private string _originalKey = string.Empty;
-	
-	//private KeyValuePair<string, UserDataRecord> original_udr = new KeyValuePair<string, UserDataRecord>();
-	//private KeyValuePair<string, string> original_string = new KeyValuePair<string, string>();
-	//private KeyValuePair<string, int> original_stat = new KeyValuePair<string, int>();
-	
-	private bool isBanded = false;
-	
 	
 	// Use this for initialization
 	void Start () 
 	{
 		deleteToggle.onValueChanged.AddListener((bool value) => { OnDeleteClicked(value); });
 		permissionToggle.onValueChanged.AddListener((bool value) => { OnPermissionClicked(value); });
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 	
 	public void Init(KeyValuePair<string, UserDataRecord> kvp, UserDataController controller, bool useBanding = false, bool isReadOnly = false, bool usePermissions = false, bool canDelete = true)
@@ -202,33 +191,32 @@ public class UserDataRowController : MonoBehaviour, ISelectHandler {
 		}
 	}
 	
-	
-	public void OnSelect(BaseEventData eventData)
-	{
-		Debug.Log(eventData.selectedObject.name);
-	}
-	
-	
-	
-	public void OnKeyFocusGained()
-	{
-	
-	}
-	
-	public void OnValueFocusGained()
-	{
-		
-	}
-	
-	public void OnKeyFocusLost()
-	{
-		
-	}
-	
-	public void OnValueFocusLost()
-	{
-		
-	}
+//	Commenting out for now, may use these to make better text input 	
+//	public void OnSelect(BaseEventData eventData)
+//	{
+//		Debug.Log(eventData.selectedObject.name);
+//	}
+//	
+//	
+//	public void OnKeyFocusGained()
+//	{
+//	
+//	}
+//	
+//	public void OnValueFocusGained()
+//	{
+//		
+//	}
+//	
+//	public void OnKeyFocusLost()
+//	{
+//		
+//	}
+//	
+//	public void OnValueFocusLost()
+//	{
+//		
+//	}
 	
 	public void OnPermissionClicked( bool value)
 	{

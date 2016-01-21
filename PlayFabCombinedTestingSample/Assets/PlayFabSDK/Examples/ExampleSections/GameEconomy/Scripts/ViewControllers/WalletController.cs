@@ -26,33 +26,26 @@ public class WalletController : MonoBehaviour {
 		yield return new WaitForEndOfFrame();	
 		
 		
+		Dictionary<string, int> vc = new Dictionary<string, int>();
 		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
-			// show player balances
-			foreach(var kvp in PlayFab.Examples.PfSharedModelEx.currentUser.userVC)
-			{
-				Transform go = Instantiate(this.CurrencyDisplayItemPrefab);
-				go.SetParent(DisplayContainer, false);
-				WalletItem item = go.GetComponent<WalletItem>();
-				item.Code.text = string.Format("{0}:", kvp.Key);
-				item.Value.text = string.Format("{0:n0}", kvp.Value);
-				
-				this.items.Add(item);
-			}
+			vc = PlayFab.Examples.PfSharedModelEx.currentUser.userVC;
 		}
 		else
 		{
-			// show character balances
-			foreach(var kvp in PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC)
-			{
-				Transform go = Instantiate(this.CurrencyDisplayItemPrefab);
-				go.SetParent(DisplayContainer, false);
-				WalletItem item = go.GetComponent<WalletItem>();
-				item.Code.text = string.Format("{0}:", kvp.Key);
-				item.Value.text = string.Format("{0:n0}", kvp.Value);
-				
-				this.items.Add(item);
-			}
+			vc = PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC;
+		}
+		
+		// show player balances
+		foreach(var kvp in vc)
+		{
+			Transform go = Instantiate(this.CurrencyDisplayItemPrefab);
+			go.SetParent(DisplayContainer, false);
+			WalletItem item = go.GetComponent<WalletItem>();
+			item.Code.text = string.Format("{0}:", kvp.Key);
+			item.Value.text = string.Format("{0:n0}", kvp.Value);
+			
+			this.items.Add(item);
 		}
 	}
 }

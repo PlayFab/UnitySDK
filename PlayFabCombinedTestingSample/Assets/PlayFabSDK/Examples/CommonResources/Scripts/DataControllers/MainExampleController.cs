@@ -9,8 +9,7 @@ using PlayFab.ClientModels;
 /// This class begins the demo project and provides the bridge for going between example modules. This behavior is activated and triggered after a successful login via the PlayFabAuthenticationManager
 /// </summary>
 public class MainExampleController : MonoBehaviour {
-
-	public Transform moduleCanvas;			// scene reference to the module canvas, all samples will be loaded within this canvas
+	public Transform moduleCanvas;						// scene reference to the module canvas, all samples will be loaded within this canvas
 	public SharedDialogController dialogCanvas;			// scene reference to the dialog canvas, this supports common dialogs used across several modules
 	public ExamplesMenuController examplesMenu;			// scene reference to the examples menu. This menu should have a button to start up any samples that are within the PlayFabExamples/ExampleSections
 	public ExampleSubMenuController examplesSubMenu;	// scene reference to the examples sub menu. This will contain buttons that toggle sample sub sections on and off
@@ -23,13 +22,11 @@ public class MainExampleController : MonoBehaviour {
 	
 	void OnEnable()
 	{
-		//PlayFabAuthenticationManager.OnLoggedIn += AfterLogin;
 		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	
 	void OnDisable()
 	{
-		//PlayFabAuthenticationManager.OnLoggedIn -= AfterLogin;
 		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	

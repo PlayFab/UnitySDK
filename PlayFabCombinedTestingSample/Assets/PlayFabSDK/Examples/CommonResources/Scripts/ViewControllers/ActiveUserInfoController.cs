@@ -8,7 +8,6 @@ using PlayFab.ClientModels;
 using PlayFab.Examples;
 
 public class ActiveUserInfoController : MonoBehaviour {
-	
 	public LoginResult ActiveLogin;
 	
 	//UI 
@@ -19,16 +18,9 @@ public class ActiveUserInfoController : MonoBehaviour {
 	
 	private const string _blank = "__________"; 
 	
-	// pick character // toggel // swap
-	
 	// Use this for initialization
 	void Start () {
 		this.ToggleCharacter.onClick.AddListener(() => { OnToggleCharacterClick(); });
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 	
 	public void Init(LoginResult loginResult)

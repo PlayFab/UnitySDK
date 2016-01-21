@@ -12,10 +12,6 @@ public class TextInputPrompController : MonoBehaviour {
 	public InputField userInput;
 	
 	private System.Action<string> responseCallback;
-	//public Action runOnClose; // will generally be used for hiding the overlay tint.
-	
-	
-	
 	
 	// Use this for initialization
 	void Start () 

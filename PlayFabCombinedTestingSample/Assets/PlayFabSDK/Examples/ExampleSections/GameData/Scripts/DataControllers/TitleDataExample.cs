@@ -5,26 +5,15 @@ namespace PlayFab.Examples.Client
     {
         #region Controller Event Handling
         static TitleDataExample()
-        {
-           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-        }
+        { }
 
         public static void SetUp()
-        {
-            // The static constructor is called as a by-product of this call
-        }
-
-//        private static void OnUserLogin(string playFabId, string characterId, PfSharedControllerEx.Api eventSourceApi, bool requiresFullRefresh)
-//        {
-//            GetTitleData();
-//            GetPublisherData();
-//        }
+        { }
         #endregion Controller Event Handling
 
         public static void GetTitleData()
         {
             var getRequest = new ClientModels.GetTitleDataRequest();
-            // getRequest.Keys = new System.Collections.Generic.List<string>() { filterKey };
             PlayFabClientAPI.GetTitleData(getRequest, GetTitleDataCallback, PfSharedControllerEx.FailCallback("GetTitleData"));
         }
 
@@ -32,15 +21,15 @@ namespace PlayFab.Examples.Client
         {
             foreach (var eachTitleEntry in result.Data)
                 PfSharedModelEx.titleData[eachTitleEntry.Key] = eachTitleEntry.Value;
-            //PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Client, false);
 			MainExampleController.DebugOutput("Title Data Loaded.");
         }
+        
         public static void GetPublisherData()
         {
 			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
 			{
 			 	var getRequest = new ClientModels.GetPublisherDataRequest();
-            	getRequest.Keys = new System.Collections.Generic.List<string>();// PfSharedModelEx.defaultPublisherKeys; // TODO: Temporary - keys are mandatory, and we don't know what keys already exist.
+            	getRequest.Keys = new System.Collections.Generic.List<string>();
             	PlayFabClientAPI.GetPublisherData(getRequest, GetPublisherDataCallback, PfSharedControllerEx.FailCallback("GetPublisherData"));
             }
         }
@@ -49,7 +38,6 @@ namespace PlayFab.Examples.Client
         {
             foreach (var eachPublisherEntry in result.Data)
                 PfSharedModelEx.publisherData[eachPublisherEntry.Key] = eachPublisherEntry.Value;
-            //PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnTitleDataLoaded, null, null, PfSharedControllerEx.Api.Client, false);
 			MainExampleController.DebugOutput("Publisher Data Loaded.");
         }
     }

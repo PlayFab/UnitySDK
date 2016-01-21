@@ -23,8 +23,7 @@ public class SelectorPromptController : MonoBehaviour {
 		this.callback = callback;
 		CreateItemsToMatchOptions ();
 	}
-
-
+	
 	public void ListItemClicked(int index)
 	{
 		if (this.callback != null) 

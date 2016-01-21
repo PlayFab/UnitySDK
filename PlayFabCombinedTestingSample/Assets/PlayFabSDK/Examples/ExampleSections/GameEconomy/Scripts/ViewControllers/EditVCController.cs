@@ -25,7 +25,6 @@ public class EditVCController : MonoBehaviour {
 	
 	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
 	{
-		//"/Client/LoginWithCustomID"
 		if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
 			switch(url)

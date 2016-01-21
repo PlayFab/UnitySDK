@@ -3,22 +3,9 @@ using System.Collections;
 
 public class GameDataExampleController : MonoBehaviour {
 	public string[] publisherKeys;
-	
-	//public bool CanClientUpdateStats = false;
-	
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
+
 	public void RunOnStart()
 	{
-		//GetTitleData();
 		GetPublisherData();
 		GetTitleData();
 		GetPlayerData();

@@ -7,16 +7,7 @@ namespace PlayFab.Examples.Client
     {
         #region Controller Event Handling
         static StatsExample()
-        {
-           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserLogin, OnUserLogin);
-           // PfSharedControllerEx.RegisterEventMessage(PfSharedControllerEx.EventType.OnUserCharactersLoaded, OnUserCharactersLoaded);
-        }
-
-        public static void SetUp()
-        {
-            // The static constructor is called as a by-product of this call
-        }
-
+        { }
         #endregion Controller Event Handling
 
         #region User/Character stats API
@@ -49,10 +40,6 @@ namespace PlayFab.Examples.Client
 			MainExampleController.DebugOutput("User Statistics Updated.");
         }
         
-        
-        // character apis ----
-        //TODO get a way for the client to get character statistics
-        
 		public static void GetCharacterStatistics()
 		{
 			throw new System.NotImplementedException();
@@ -72,7 +59,5 @@ namespace PlayFab.Examples.Client
 			throw new System.NotImplementedException();
 		}
         #endregion User/Character stats API
-        
-        
     }
 }

@@ -14,11 +14,6 @@ public class ExampleSectionController : MonoBehaviour {
 	public UnityEvent RunOnEnable; 		// methods to run when this module is opened
 	public UnityEvent RunOnDisable; 	// methods to run when this module is closed
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
 	void OnEnable()
 	{
 		if(RunOnEnable != null)
@@ -35,12 +30,6 @@ public class ExampleSectionController : MonoBehaviour {
 		}
 	}
 	
-	
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	
 	public void InitSection() // callback param?
 	{

@@ -38,11 +38,6 @@ public class StoreController : MonoBehaviour {
 		activeCatalog = PfSharedModelEx.primaryCatalogVersion;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	void OnEnable()
 	{
 		

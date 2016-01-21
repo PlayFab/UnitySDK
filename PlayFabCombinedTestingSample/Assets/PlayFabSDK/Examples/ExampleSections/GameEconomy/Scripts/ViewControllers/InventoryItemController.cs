@@ -52,8 +52,6 @@ public class InventoryItemController : MonoBehaviour {
 			this.catlogItem.Consumable = new CatalogItemConsumableInfo(){ UsageCount = (uint?)item.RemainingUses };
 		}
 		
-		//PlayFab.Examples.PfSharedModelEx.titleCatalogs.TryGetValue(item.ItemId, out this.catlogItem);
-		
 		this.selectButton.onClick.RemoveAllListeners();
 		
 		if(this.catlogItem != null)

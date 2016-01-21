@@ -10,11 +10,6 @@ public class GameEconomyExampleController : MonoBehaviour {
 		PfSharedModelEx.primaryCatalogVersion = this.primaryCatalog;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	public void RunOnStart()
 	{
 		Debug.Log("Running game economy start sequence");
@@ -24,7 +19,6 @@ public class GameEconomyExampleController : MonoBehaviour {
 		PlayFab.Examples.Client.InventoryExample.LoadInventoryFromPlayFab();
 	}
 	
-	
 	public void FetchCatalog()
 	{
 		if(PfSharedModelEx.titleCatalogs.Count == 0)
@@ -32,9 +26,4 @@ public class GameEconomyExampleController : MonoBehaviour {
 			PlayFab.Examples.Client.InventoryExample.LoadCatalogFromPlayFab();
 		}
 	} 
-	
-	public void FetchCloudScriptEndpoint()
-	{
-		
-	}
 }

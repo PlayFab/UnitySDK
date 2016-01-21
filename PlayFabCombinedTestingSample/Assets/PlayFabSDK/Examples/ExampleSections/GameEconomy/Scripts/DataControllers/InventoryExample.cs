@@ -23,7 +23,6 @@ namespace PlayFab.Examples.Client
             // The static constructor is called as a by-product of this call
         }
 
-
 		public static void LoadInventoryFromPlayFab()
 		{
 			if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
@@ -99,9 +98,7 @@ namespace PlayFab.Examples.Client
 			PfSharedModelEx.titleCatalogs[catalogVersion] = catalogResult.Catalog;
 			
 			MainExampleController.DebugOutput("Title Catalog Loaded.");
-			// fire catalog loaded event (supply catalog version)
-            // PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null, null, PfSharedControllerEx.Api.Client, false);
-        }
+		}
 
 		// TODO address bug where catalog version is required.
 		public static void LoadStoreFromPlayFab(string storeId, string catalogVersion)
@@ -125,8 +122,6 @@ namespace PlayFab.Examples.Client
 			PfSharedModelEx.titleStores[request.StoreId] = storeResult.Store;
 			
 			MainExampleController.DebugOutput("Store Loaded.");
-			// fire catalog loaded event (supply catalog version)
-			// PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnCatalogLoaded, null, null, PfSharedControllerEx.Api.Client, false);
 		}
         #endregion Controller Event Handling
 
@@ -483,7 +478,6 @@ namespace PlayFab.Examples.Client
 	public static void RevokeItem(string id)
 	{
 		throw new System.NotImplementedException();
-			// waiting on Siva to move this API over to Server/ from Admin/
 	}
 	
 	

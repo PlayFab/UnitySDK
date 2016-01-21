@@ -23,20 +23,10 @@ public class StoreItemController : MonoBehaviour {
 	public Image icon; 
 	
 	private CatalogItem itemRef;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	
 	// need to prevent items not sellable from getting created.
 	public void Init( CatalogItem item, StoreController sc)
 	{
-		
 		this.itemUses.transform.parent.gameObject.SetActive(true);					// enable uses field
 		this.itemRef = item;
 		this.mainController = sc;
@@ -76,7 +66,6 @@ public class StoreItemController : MonoBehaviour {
 		else 
 		{
 			this.itemType.text = "Durable";
-			//this.itemUses.transform.parent.gameObject.SetActive(false); // hide uses field
 		}
 		
 		
@@ -122,6 +111,5 @@ public class StoreItemController : MonoBehaviour {
 			}
 			this.buyButton.interactable = true;
 		}
-
 	}	
 }

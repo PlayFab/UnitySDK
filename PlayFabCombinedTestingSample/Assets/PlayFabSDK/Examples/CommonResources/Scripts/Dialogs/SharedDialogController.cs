@@ -42,13 +42,6 @@ public class SharedDialogController : MonoBehaviour {
 		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnIncomingApi", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	
-	void HandleRaiseOfferRequest ()
-	{
-		
-	}
-	
-	
-	
 	void OnDisable()
 	{
 		RaiseTextInputPromptRequest -= HandleTextInputRequest; 
@@ -116,6 +109,5 @@ public class SharedDialogController : MonoBehaviour {
 				loadingPrompt.gameObject.SetActive(false);
 			}
 		}
-	}
-	
+	}	
 }

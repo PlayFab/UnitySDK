@@ -13,32 +13,10 @@ public class ServerOptionsController : MonoBehaviour {
 	public Transform serverOptionsPanel;
 	public string activeHelpUrl;
 	
-	void Awake()
-	{}
-	
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-	
-	public void OnEnable()
-	{}
-	
-	
-	
-	public void OnDisable()
-	{}
-	
 	public void CloseOptionsPrompt()
 	{
 		this.gameObject.SetActive(false);
 	}
-	
 	
 	public void OnAdjustVCBalancesClicked()
 	{
