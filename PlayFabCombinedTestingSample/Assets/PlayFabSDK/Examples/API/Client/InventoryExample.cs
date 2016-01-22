@@ -109,8 +109,8 @@ namespace PlayFab.Examples.Client
             else
             {
                 var multiRequest = new StartPurchaseRequest();
-                multiRequest.Items = new List<ItemPuchaseRequest>();
-                multiRequest.Items.Add(new ItemPuchaseRequest { ItemId = itemId, Quantity = qty});
+                multiRequest.Items = new List<ItemPurchaseRequest>();
+                multiRequest.Items.Add(new ItemPurchaseRequest { ItemId = itemId, Quantity = qty});
                 PlayFabClientAPI.StartPurchase(multiRequest, StartPurchaseCallback, PfSharedControllerEx.FailCallback("StartPurchase"));
             }
         }
