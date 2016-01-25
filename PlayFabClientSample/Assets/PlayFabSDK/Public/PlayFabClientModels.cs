@@ -1512,6 +1512,24 @@ namespace PlayFab.ClientModels
         public List<GooglePlayFabIdPair> Data { get; set;}
     }
 
+    public class GetPlayFabIDsFromKongregateIDsRequest
+    {
+
+        /// <summary>
+        /// Array of unique Kongregate identifiers (Kongregate's user_id) for which the title needs to get PlayFab identifiers.
+        /// </summary>
+        public List<string> KongregateIDs { get; set;}
+    }
+
+    public class GetPlayFabIDsFromKongregateIDsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Mapping of Kongregate identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<KongregatePlayFabIdPair> Data { get; set;}
+    }
+
     public class GetPlayFabIDsFromPSNAccountIDsRequest
     {
 
@@ -2040,7 +2058,7 @@ namespace PlayFab.ClientModels
         public Dictionary<string,string> CustomData { get; set;}
     }
 
-    public class ItemPuchaseRequest
+    public class ItemPurchaseRequest
     {
 
         /// <summary>
@@ -2062,6 +2080,20 @@ namespace PlayFab.ClientModels
         /// Items to be upgraded as a result of this purchase (upgraded items are hidden, as they are "replaced" by the new items).
         /// </summary>
         public List<string> UpgradeFromItems { get; set;}
+    }
+
+    public class KongregatePlayFabIdPair
+    {
+
+        /// <summary>
+        /// Unique Kongregate identifier for a user.
+        /// </summary>
+        public string KongregateId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Kongregate identifier.
+        /// </summary>
+        public string PlayFabId { get; set;}
     }
 
     public class LinkAndroidDeviceIDRequest
@@ -3334,7 +3366,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Array of items to purchase.
         /// </summary>
-        public List<ItemPuchaseRequest> Items { get; set;}
+        public List<ItemPurchaseRequest> Items { get; set;}
     }
 
     public class StartPurchaseResult : PlayFabResultCommon
