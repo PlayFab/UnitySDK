@@ -40,7 +40,7 @@ namespace PlayFab.Examples.Client
             {
                 colIndex = 1;
                 foreach (var catalogPair in PfSharedModelEx.clientCatalog)
-                    Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, null, InventoryExample_PurchaseUserItem, catalogPair.Key);
+                    Button(isLoggedIn, rowIndex, colIndex++, catalogPair.Value.DisplayName, null, InventoryExample_PurchaseUserItem, catalogPair.Key, (uint)1);
             }
             rowIndex++;
             // Consume Appropriate User Items
