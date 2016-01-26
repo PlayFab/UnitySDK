@@ -71,6 +71,8 @@ namespace PlayFab
         public delegate void AddCharacterVirtualCurrencyResponseCallback(string urlPath, int callId, AddCharacterVirtualCurrencyRequest request, ModifyCharacterVirtualCurrencyResult result, PlayFabError error, object customData);
         public delegate void AddUserVirtualCurrencyRequestCallback(string urlPath, int callId, AddUserVirtualCurrencyRequest request, object customData);
         public delegate void AddUserVirtualCurrencyResponseCallback(string urlPath, int callId, AddUserVirtualCurrencyRequest request, ModifyUserVirtualCurrencyResult result, PlayFabError error, object customData);
+        public delegate void ConsumeItemRequestCallback(string urlPath, int callId, ConsumeItemRequest request, object customData);
+        public delegate void ConsumeItemResponseCallback(string urlPath, int callId, ConsumeItemRequest request, ConsumeItemResult result, PlayFabError error, object customData);
         public delegate void GetCharacterInventoryRequestCallback(string urlPath, int callId, GetCharacterInventoryRequest request, object customData);
         public delegate void GetCharacterInventoryResponseCallback(string urlPath, int callId, GetCharacterInventoryRequest request, GetCharacterInventoryResult result, PlayFabError error, object customData);
         public delegate void GetUserInventoryRequestCallback(string urlPath, int callId, GetUserInventoryRequest request, object customData);
@@ -589,6 +591,21 @@ namespace PlayFab
                 ResultContainer<ModifyUserVirtualCurrencyResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/AddUserVirtualCurrency", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Consume uses of a consumable item. When all uses are consumed, it will be removed from the player's inventory.
+        /// </summary>
+        public static void ConsumeItem(ConsumeItemRequest request, ProcessApiCallback<ConsumeItemResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<ConsumeItemResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/ConsumeItem", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>

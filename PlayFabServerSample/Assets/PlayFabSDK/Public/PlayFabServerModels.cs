@@ -359,6 +359,44 @@ namespace PlayFab.ServerModels
         public string CharacterType { get; set;}
     }
 
+    public class ConsumeItemRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Unique instance identifier of the item to be consumed.
+        /// </summary>
+        public string ItemInstanceId { get; set;}
+
+        /// <summary>
+        /// Number of uses to consume from the item.
+        /// </summary>
+        public int ConsumeCount { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+    }
+
+    public class ConsumeItemResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Unique instance identifier of the item with uses consumed.
+        /// </summary>
+        public string ItemInstanceId { get; set;}
+
+        /// <summary>
+        /// Number of uses remaining on the item.
+        /// </summary>
+        public int RemainingUses { get; set;}
+    }
+
     public class CreateSharedGroupRequest
     {
 
