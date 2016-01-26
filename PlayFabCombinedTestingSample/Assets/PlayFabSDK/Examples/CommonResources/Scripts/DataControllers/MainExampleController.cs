@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -9,12 +7,12 @@ using PlayFab.ClientModels;
 /// This class begins the demo project and provides the bridge for going between example modules. This behavior is activated and triggered after a successful login via the PlayFabAuthenticationManager
 /// </summary>
 public class MainExampleController : MonoBehaviour {
-	public Transform moduleCanvas;						// scene reference to the module canvas, all samples will be loaded within this canvas
-	public SharedDialogController dialogCanvas;			// scene reference to the dialog canvas, this supports common dialogs used across several modules
-	public ExamplesMenuController examplesMenu;			// scene reference to the examples menu. This menu should have a button to start up any samples that are within the PlayFabExamples/ExampleSections
-	public ExampleSubMenuController examplesSubMenu;	// scene reference to the examples sub menu. This will contain buttons that toggle sample sub sections on and off
-	public ActiveUserInfoController activeUserInfo;		// scene reference to the details pane in the bottom left of the canvas. Player details and other options will be found here.
-	public Transform welcomeWindow;
+	public Transform ModuleCanvas;						// scene reference to the module canvas, all samples will be loaded within this canvas
+	public SharedDialogController DialogCanvas;			// scene reference to the dialog canvas, this supports common dialogs used across several modules
+	public ExamplesMenuController ExamplesMenu;			// scene reference to the examples menu. This menu should have a button to start up any samples that are within the PlayFabExamples/ExampleSections
+	public ExampleSubMenuController ExamplesSubMenu;	// scene reference to the examples sub menu. This will contain buttons that toggle sample sub sections on and off
+	public ActiveUserInfoController ActiveUserInfo;		// scene reference to the details pane in the bottom left of the canvas. Player details and other options will be found here.
+	public Transform WelcomeWindow;
 	
 	public List<ExampleSection> Sections = new List<ExampleSection>();	// scene reference to the various examples in the project
 	
@@ -22,12 +20,12 @@ public class MainExampleController : MonoBehaviour {
 	
 	void OnEnable()
 	{
-		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
+        PlayFab.PlayFabSettings.RegisterForResponses("/Client/LoginWithCustomID", GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	
 	void OnDisable()
 	{
-		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
+        PlayFab.PlayFabSettings.UnregisterForResponses("/Client/LoginWithCustomID", GetType().GetMethod("AfterLogin", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	
 	private void OnLoginWithCustomIDRequest(string url, int callId, object request, object customData)
@@ -62,7 +60,7 @@ public class MainExampleController : MonoBehaviour {
 	{
 		try
 		{
-			this.activeUserInfo.Init((PlayFab.ClientModels.LoginResult)result);
+			this.ActiveUserInfo.Init((LoginResult)result);
 		}
 		catch(System.Exception ex)
 		{
@@ -94,7 +92,7 @@ public class MainExampleController : MonoBehaviour {
 			this.Sections.Sort((x, y) => x.SectionOrder.CompareTo(y.SectionOrder));
 			
 			ShowExamplesMenu();
-			this.examplesMenu.Init(this.Sections, InstantiateOrActivateSection);
+			this.ExamplesMenu.Init(this.Sections, InstantiateOrActivateSection);
 		}
 		else
 		{
@@ -105,7 +103,7 @@ public class MainExampleController : MonoBehaviour {
 	
 	public void FetchCloudScriptEndpoint()
 	{
-		PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), null, null);
+		PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), result => { }, null);
 	}
 	
 	/// <summary>
@@ -127,7 +125,7 @@ public class MainExampleController : MonoBehaviour {
 				{
 					var instance = GameObject.Instantiate(this.Sections[index].SectionController.gameObject);
 					
-					instance.transform.SetParent(this.moduleCanvas.transform, false);
+					instance.transform.SetParent(this.ModuleCanvas.transform, false);
 					instance.SetActive(true);
 					
 					this.Sections[index].IsInstantiated = true;
@@ -135,7 +133,7 @@ public class MainExampleController : MonoBehaviour {
 				}
 			}
 			HideExamplesMenu();
-			this.examplesSubMenu.Init(this.Sections[index]);
+			this.ExamplesSubMenu.Init(this.Sections[index]);
 		}
 		else
 		{
@@ -157,12 +155,12 @@ public class MainExampleController : MonoBehaviour {
 	
 	public void ClearLoadedAssets()
 	{
-		var children = this.moduleCanvas.transform.GetComponentsInChildren<Transform>();
+		var children = this.ModuleCanvas.transform.GetComponentsInChildren<Transform>();
 		
 		for( int z = 0; z < children.Length; z++)
 		{
 			// dont delete the parent
-			if(children[z] != this.moduleCanvas.transform)
+			if(children[z] != this.ModuleCanvas.transform)
 			{
 				Destroy(children[z].gameObject);
 			}
@@ -175,24 +173,24 @@ public class MainExampleController : MonoBehaviour {
 	
 	public void HideExamplesMenu()
 	{
-		this.examplesMenu.gameObject.SetActive(false);
+		this.ExamplesMenu.gameObject.SetActive(false);
 		ShowExamplesSubMenu();
 	}
 	
 	public void ShowExamplesMenu()
 	{
-		this.examplesMenu.gameObject.SetActive(true);
+		this.ExamplesMenu.gameObject.SetActive(true);
 		HideExamplesSubMenu();
 	}
 	
 	public void HideExamplesSubMenu()
 	{
-		this.examplesSubMenu.gameObject.SetActive(false);
+		this.ExamplesSubMenu.gameObject.SetActive(false);
 	}
 	
 	public void ShowExamplesSubMenu()
 	{
-		this.examplesSubMenu.gameObject.SetActive(true);
+		this.ExamplesSubMenu.gameObject.SetActive(true);
 	}
 	
 	
@@ -218,7 +216,7 @@ public class MainExampleController : MonoBehaviour {
 	
 	public void CloseWelcomeWindow()
 	{
-		this.welcomeWindow.gameObject.SetActive(false);
+		this.WelcomeWindow.gameObject.SetActive(false);
 	}
 }
 

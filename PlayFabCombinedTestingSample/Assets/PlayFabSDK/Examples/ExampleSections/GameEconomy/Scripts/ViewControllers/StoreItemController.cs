@@ -1,115 +1,114 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Linq;
 using PlayFab.ClientModels;
 
 
 public class StoreItemController : MonoBehaviour {
-	public StoreController mainController;
+	public StoreController MainController;
 	
-	public Outline panelOutline;
-	public Color32 selectedColor;
-	public Color32 unselectedColor;
+	public Outline PanelOutline;
+	public Color32 SelectedColor;
+	public Color32 UnselectedColor;
 	
-	public Button itemClickArea;
-	public Button buyButton;
-	public Text itemName;
-	public Text itemDescription;
-	public Text itemUses;
-	public Text itemType;
-	public Text itemId;
-	public Text itemExp;
-	public Image icon; 
+	public Button ItemClickArea;
+	public Button BuyButton;
+	public Text ItemName;
+	public Text ItemDescription;
+	public Text ItemUses;
+	public Text ItemType;
+	public Text ItemId;
+	public Text ItemExp;
+	public Image Icon; 
 	
-	private CatalogItem itemRef;
+	private CatalogItem _itemRef;
 	
 	// need to prevent items not sellable from getting created.
 	public void Init( CatalogItem item, StoreController sc)
 	{
-		this.itemUses.transform.parent.gameObject.SetActive(true);					// enable uses field
-		this.itemRef = item;
-		this.mainController = sc;
-		this.itemId.text = item.ItemId;
+		this.ItemUses.transform.parent.gameObject.SetActive(true);					// enable uses field
+		this._itemRef = item;
+		this.MainController = sc;
+		this.ItemId.text = item.ItemId;
 		
-		this.itemName.text = item.DisplayName;
-		this.itemDescription.text = item.Description;
-		this.itemUses.text = item.Consumable != null ? ""+item.Consumable.UsageCount : "0";
+		this.ItemName.text = item.DisplayName;
+		this.ItemDescription.text = item.Description;
+		this.ItemUses.text = item.Consumable != null ? ""+item.Consumable.UsageCount : "0";
 		
 		if(item.Consumable != null && item.Consumable.UsageCount > 0)
 		{
-			this.itemUses.transform.parent.gameObject.SetActive(true); // show uses field
+			this.ItemUses.transform.parent.gameObject.SetActive(true); // show uses field
 		}
 		
 		// hide the expiration field
-		this.itemExp.transform.parent.gameObject.SetActive(false);
+		this.ItemExp.transform.parent.gameObject.SetActive(false);
 		
 		
-		if(this.itemRef.Bundle != null)
+		if(this._itemRef.Bundle != null)
 		{
-			this.itemType.text = "Bundle";
+			this.ItemType.text = "Bundle";
 		}
-		else if(this.itemRef.Container != null)
+		else if(this._itemRef.Container != null)
 		{
-			this.itemType.text = "Container";
+			this.ItemType.text = "Container";
 		}
-		else if(this.itemRef.Consumable.UsageCount > 0 && this.itemRef.Consumable.UsagePeriod == null)
+		else if(this._itemRef.Consumable.UsageCount > 0 && this._itemRef.Consumable.UsagePeriod == null)
 		{
-			this.itemType.text = "Consumable";
+			this.ItemType.text = "Consumable";
 			
 		}
-		else if(this.itemRef.Consumable.UsageCount > 0 && this.itemRef.Consumable.UsagePeriod != null)
+		else if(this._itemRef.Consumable.UsageCount > 0 && this._itemRef.Consumable.UsagePeriod != null)
 		{
-			this.itemType.text = "Time Bound";
-			this.itemExp.transform.parent.gameObject.SetActive(true);
+			this.ItemType.text = "Time Bound";
+			this.ItemExp.transform.parent.gameObject.SetActive(true);
 		}
 		else 
 		{
-			this.itemType.text = "Durable";
+			this.ItemType.text = "Durable";
 		}
 		
 		
-		// set icon (eventually)
-		this.buyButton.onClick.RemoveAllListeners();
-		this.buyButton.onClick.AddListener(() => { sc.BuyItem(this.itemRef); });
+		// set Icon (eventually)
+		this.BuyButton.onClick.RemoveAllListeners();
+		this.BuyButton.onClick.AddListener(() => { sc.BuyItem(this._itemRef); });
 		
-		this.itemClickArea.onClick.RemoveAllListeners();
-		this.itemClickArea.onClick.AddListener(() => { sc.SelectItem(this); });
+		this.ItemClickArea.onClick.RemoveAllListeners();
+		this.ItemClickArea.onClick.AddListener(() => { sc.SelectItem(this); });
 		
 		
 		//item not for sale
-		if(this.itemRef.VirtualCurrencyPrices == null || this.itemRef.VirtualCurrencyPrices.Count == 0)
+		if(this._itemRef.VirtualCurrencyPrices == null || this._itemRef.VirtualCurrencyPrices.Count == 0)
 		{
-			this.buyButton.interactable = false;
+			this.BuyButton.interactable = false;
 			
-			Text obj = this.buyButton.GetComponentInChildren<Text>();
+			Text obj = this.BuyButton.GetComponentInChildren<Text>();
 			if(obj != null)
 			{
 				obj.text = "Not For Sale";
 			}
 			
-			this.buyButton.onClick.RemoveAllListeners();
+			this.BuyButton.onClick.RemoveAllListeners();
 		}
 		else
 		{
 			string price, vc = string.Empty;
-			if(this.itemRef.VirtualCurrencyPrices.ContainsKey("RM"))
+			if(this._itemRef.VirtualCurrencyPrices.ContainsKey("RM"))
 			{
-				price = string.Format ("{0:C}", (float)this.itemRef.VirtualCurrencyPrices["RM"] / 100f);
+				price = string.Format ("{0:C}", (float)this._itemRef.VirtualCurrencyPrices["RM"] / 100f);
 			}
 			else
 			{
-			 	price = ""+this.itemRef.VirtualCurrencyPrices.FirstOrDefault().Value;
-				vc = this.itemRef.VirtualCurrencyPrices.FirstOrDefault().Key;
+			 	price = ""+this._itemRef.VirtualCurrencyPrices.FirstOrDefault().Value;
+				vc = this._itemRef.VirtualCurrencyPrices.FirstOrDefault().Key;
 			}
 			string buyText = string.Format("Buy for ({0} {1})", price, vc);
 			
-			Text obj = this.buyButton.GetComponentInChildren<Text>();
+			Text obj = this.BuyButton.GetComponentInChildren<Text>();
 			if(obj != null)
 			{
 				obj.text = buyText;
 			}
-			this.buyButton.interactable = true;
+			this.BuyButton.interactable = true;
 		}
 	}	
 }

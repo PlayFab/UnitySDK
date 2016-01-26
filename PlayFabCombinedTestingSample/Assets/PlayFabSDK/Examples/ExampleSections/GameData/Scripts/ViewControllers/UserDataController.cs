@@ -1,14 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.UI;
-using UnityEngine.Events;
-
-
 using PlayFab;
 using PlayFab.ClientModels;
-using System.Reflection;
 
 public class UserDataController : MonoBehaviour {
 	public Color defaultButtonColor;
@@ -126,53 +121,53 @@ public class UserDataController : MonoBehaviour {
 		switch(this.CurrentState)
 		{
 			case UserDataStates.UserData:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userData.Count));
-				DrawData(PlayFab.Examples.PfSharedModelEx.currentUser.userData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserData.Count));
+				DrawData(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserData);
 				break;
 				
 			case UserDataStates.CharData:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterData.Count));
-				DrawData(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterData.Count));
+				DrawData(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterData);
 				break;
 				
 			case UserDataStates.UserDataRO:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userReadOnlyData.Count));
-				DrawDataRo(PlayFab.Examples.PfSharedModelEx.currentUser.userReadOnlyData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserReadOnlyData.Count));
+				DrawDataRo(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserReadOnlyData);
 				break;
 			
 			case UserDataStates.CharDataRO:	
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterReadOnlyData.Count));
-				DrawDataRo(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterReadOnlyData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterReadOnlyData.Count));
+				DrawDataRo(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterReadOnlyData);
 				break;
 				
 			case UserDataStates.UserPubData:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherData.Count));
-				DrawPubData(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserPublisherData.Count));
+				DrawPubData(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserPublisherData);
 				break;
 				
 			case UserDataStates.UserPubDataRO:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherReadOnlyData.Count));
-			    DrawPubDataRo(PlayFab.Examples.PfSharedModelEx.currentUser.userPublisherReadOnlyData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserPublisherReadOnlyData.Count));
+			    DrawPubDataRo(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserPublisherReadOnlyData);
 				break;
 				
 			case UserDataStates.TitleData:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.titleData.Count));
-			    DrawTitleData(PlayFab.Examples.PfSharedModelEx.titleData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.TitleData.Count));
+			    DrawTitleData(PlayFab.Examples.PfSharedModelEx.TitleData);
 				break;
 				
 			case UserDataStates.PublisherData:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.publisherData.Count));
-			    DrawPublisherData(PlayFab.Examples.PfSharedModelEx.publisherData);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.PublisherData.Count));
+			    DrawPublisherData(PlayFab.Examples.PfSharedModelEx.PublisherData);
 				break;
 				
 			case UserDataStates.UserStatistics:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentUser.userStatistics.Count));
-				DrawStatistics(PlayFab.Examples.PfSharedModelEx.currentUser.userStatistics);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserStatistics.Count));
+				DrawStatistics(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserStatistics);
 				break;
 			
 			case UserDataStates.CharStatistics:
-				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterStatistics.Count));
-				DrawStatistics(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterStatistics);
+				yield return StartCoroutine(AdjustItems(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterStatistics.Count));
+				DrawStatistics(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterStatistics);
 				break;
 		 }
 	}
@@ -182,7 +177,7 @@ public class UserDataController : MonoBehaviour {
 		ResetTabs();
 		
 		bool useCharacter = false;
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.Character)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.Character)
 		{
 			useCharacter = true;
 		}
@@ -228,7 +223,7 @@ public class UserDataController : MonoBehaviour {
 		DataTabInfo info = tabs[index].GetComponent<DataTabInfo>();
 		this.UI_PanelTitle.text = info.Title + " Description";
 		this.UI_PanelDesc.text = info.Description;
-		this.activeHelpUrl = info.HelpURL;
+		this.activeHelpUrl = info.HelpUrl;
 		
 		tabs[index].GetComponent<Image>().color = this.selectedButtonColor;
 		
@@ -585,7 +580,7 @@ public class UserDataController : MonoBehaviour {
 	//
 	public void SaveData(Dictionary<string, string> publicData,  Dictionary<string, string> privateData, List<string> deleteKeys = null)
 	{
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
 			if(privateData.Count > 0)
 			{
@@ -610,7 +605,7 @@ public class UserDataController : MonoBehaviour {
 	//
 	public void SavePubData(Dictionary<string, string> publicData,  Dictionary<string, string> privateData, List<string> deleteKeys = null)
 	{
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
 			if(privateData.Count > 0)
 			{

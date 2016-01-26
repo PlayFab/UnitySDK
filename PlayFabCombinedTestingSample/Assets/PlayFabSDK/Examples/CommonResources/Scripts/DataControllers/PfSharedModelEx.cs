@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-//using PlayFab.Examples.Client;
 using System.Linq;
 
 namespace PlayFab.Examples
@@ -7,22 +6,22 @@ namespace PlayFab.Examples
     public static class PfSharedModelEx
     {
         public enum ModelModes { User, Character }
-        public static ModelModes activeMode = ModelModes.User;
-		public static CharacterModel currentCharacter = null;
-        public static string primaryCatalogVersion = string.Empty;
-        public static bool usePublisher = false;
+        public static ModelModes ActiveMode = ModelModes.User;
+		public static CharacterModel CurrentCharacter = null;
+        public static string PrimaryCatalogVersion = string.Empty;
+        public static bool UserPublisher = false;
         
         #region Character Storage
         // Index of data keyed for each user - a server process may need to keep many players in memory
         //public static Dictionary<string, UserModel> serverUsers = new Dictionary<string, UserModel>();
         // Reference to singleton global user - a client process cannot access more than 1 player's information directly
-        public static UserModel currentUser = new UserModel();
+        public static UserModel CurrentUser = new UserModel();
         #endregion Character Storage
 
 
         #region Title information
-        public static Dictionary<string, string> titleData = new Dictionary<string, string>();
-        public static Dictionary<string, string> publisherData = new Dictionary<string, string>(); // There is no non-user publisher internal data
+        public static Dictionary<string, string> TitleData = new Dictionary<string, string>();
+        public static Dictionary<string, string> PublisherData = new Dictionary<string, string>(); // There is no non-user publisher internal data
 
         //public static HashSet<string> virutalCurrencyTypes = new HashSet<string>() { "SS", "GS", "ST" }; // Set your vcKeys here
        // public static HashSet<string> consumableItemIds = new HashSet<string>();
@@ -30,18 +29,18 @@ namespace PlayFab.Examples
 
         // These will be identical, but they are currently different datatypes
         // public static Dictionary<string, ServerModels.CatalogItem> serverCatalog = new Dictionary<string, ServerModels.CatalogItem>();
-        public static Dictionary<string, List<ClientModels.CatalogItem>> titleCatalogs = new Dictionary<string, List<ClientModels.CatalogItem>>();
-		public static Dictionary<string, List<ClientModels.StoreItem>> titleStores = new Dictionary<string, List<ClientModels.StoreItem>>();
+        public static Dictionary<string, List<ClientModels.CatalogItem>> TitleCatalogs = new Dictionary<string, List<ClientModels.CatalogItem>>();
+		public static Dictionary<string, List<ClientModels.StoreItem>> TitleStores = new Dictionary<string, List<ClientModels.StoreItem>>();
 		
 		public static List<ClientModels.CatalogItem> GetPrimaryCatalog()
 		{
 			List<ClientModels.CatalogItem> primary = null;
-			titleCatalogs.TryGetValue(PfSharedModelEx.primaryCatalogVersion, out primary);
+			TitleCatalogs.TryGetValue(PfSharedModelEx.PrimaryCatalogVersion, out primary);
 			
 			// if we do not have a primary, use the first catalog we got.
-			if(primary == null && titleCatalogs.Count > 0)
+			if(primary == null && TitleCatalogs.Count > 0)
 			{
-				primary = titleCatalogs.First().Value;
+				primary = TitleCatalogs.First().Value;
 			}
 			
 			return primary;
@@ -57,14 +56,14 @@ namespace PlayFab.Examples
 			}
 			
 			List<ClientModels.CatalogItem> version = null;
-			titleCatalogs.TryGetValue(catalogVersion, out version);
+			TitleCatalogs.TryGetValue(catalogVersion, out version);
 			return version;
 		}
 		
 		public static List<ClientModels.StoreItem> GetStore(string storeId)
 		{
 			List<ClientModels.StoreItem> store = null;
-			titleStores.TryGetValue(storeId, out store);
+			TitleStores.TryGetValue(storeId, out store);
 			return store;
 		}
 		
@@ -92,21 +91,21 @@ namespace PlayFab.Examples
 			return null;
 		}
 		
-		public static bool isCatalogCached(string catalogVersion = null)
+		public static bool IsCatalogCached(string catalogVersion = null)
 		{
 			if(!string.IsNullOrEmpty(catalogVersion))
 			{
-				return titleCatalogs.ContainsKey(catalogVersion);
+				return TitleCatalogs.ContainsKey(catalogVersion);
 			}
 			else
 			{
-				return titleCatalogs.ContainsKey(PfSharedModelEx.primaryCatalogVersion);
+				return TitleCatalogs.ContainsKey(PfSharedModelEx.PrimaryCatalogVersion);
 			}
 		}
 		
-		public static bool isStoreCached(string storeId)
+		public static bool IsStoreCached(string storeId)
 		{
-			return titleStores.ContainsKey(storeId);
+			return TitleStores.ContainsKey(storeId);
 		}
 		#endregion Title information
     }
@@ -114,13 +113,13 @@ namespace PlayFab.Examples
     public class UserModel
     {
         #region General User Information
-        public string playFabId;
-        public ClientModels.UserAccountInfo accountInfo;
-        public Dictionary<string, int> userStatistics = new Dictionary<string, int>();
-		public Dictionary<string, ClientModels.UserDataRecord> userData = new Dictionary<string, ClientModels.UserDataRecord>();
-		public Dictionary<string, ClientModels.UserDataRecord> userReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
-		public Dictionary<string, ClientModels.UserDataRecord> userPublisherData = new Dictionary<string, ClientModels.UserDataRecord>();
-		public Dictionary<string, ClientModels.UserDataRecord> userPublisherReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
+        public string PlayFabId;
+        public ClientModels.UserAccountInfo AccountInfo = new ClientModels.UserAccountInfo();
+        public Dictionary<string, int> UserStatistics = new Dictionary<string, int>();
+		public Dictionary<string, ClientModels.UserDataRecord> UserData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> UserReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> UserPublisherData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> UserPublisherReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
         //public Dictionary<string, string> userPublisherInternalData = new Dictionary<string, string>();
 		//public Dictionary<string, string> userInternalData = new Dictionary<string, string>();
 		#endregion Login
@@ -132,14 +131,14 @@ namespace PlayFab.Examples
         //public List<ServerModels.ItemInstance> serverUserItems;
         //public Dictionary<string, CharacterModel> serverCharacterModels = new Dictionary<string, CharacterModel>();
         // Client
-        public List<ClientModels.ItemInstance> userInventory;
-        public Dictionary<string, CharacterModel> userCharacters = new Dictionary<string, CharacterModel>();
+        public List<ClientModels.ItemInstance> UserInventory;
+        public Dictionary<string, CharacterModel> UserCharacters = new Dictionary<string, CharacterModel>();
         #endregion Inventory
 
         #region Shared Virtual Currency
         // NOTE: There is no way to request all vc types presently, so the knowledge must be hard coded
-        public Dictionary<string, int> userVC = new Dictionary<string, int>();
-        public Dictionary<string, ClientModels.VirtualCurrencyRechargeTime> userVcRechargeTimes = new Dictionary<string, PlayFab.ClientModels.VirtualCurrencyRechargeTime>();
+        public Dictionary<string, int> UserVc = new Dictionary<string, int>();
+        public Dictionary<string, ClientModels.VirtualCurrencyRechargeTime> UserVcRechargeTimes = new Dictionary<string, PlayFab.ClientModels.VirtualCurrencyRechargeTime>();
         #endregion Virtual Currency
 
 //        #region Client Trade
@@ -156,21 +155,21 @@ namespace PlayFab.Examples
 //            vcKey = null;
 //            cost = 0;
 //
-//            Dictionary<string, int> wallet = userVC;
+//            Dictionary<string, int> Wallet = userVC;
 //            CharacterModel tempModel;
 //            if (characterId == null)
-//                wallet = userVC;
+//                Wallet = userVC;
 //            else if (clientCharacterModels.TryGetValue(characterId, out tempModel))
-//                wallet = tempModel.characterVC;
+//                Wallet = tempModel.characterVC;
 //            else
 //                return false;
 //
-//            if (PfSharedModelEx.clientCatalog.TryGetValue(catalogItemId, out catalogItem) && wallet != null)
+//            if (PfSharedModelEx.clientCatalog.TryGetValue(catalogItemId, out catalogItem) && Wallet != null)
 //            {
 //                foreach (var pair in catalogItem.VirtualCurrencyPrices)
 //                {
 //                    int curBalance;
-//                    if (wallet.TryGetValue(pair.Key, out curBalance) && curBalance > pair.Value)
+//                    if (Wallet.TryGetValue(pair.Key, out curBalance) && curBalance > pair.Value)
 //                    {
 //                        vcKey = pair.Key;
 //                        cost = (int)pair.Value;
@@ -352,16 +351,16 @@ namespace PlayFab.Examples
     /// </summary>
     public class CharacterModel
     {
-        public ClientModels.CharacterResult details;
-        public Dictionary<string, int> characterStatistics = new Dictionary<string, int>();
-		public Dictionary<string, ClientModels.UserDataRecord> characterData = new Dictionary<string, ClientModels.UserDataRecord>();
-		public Dictionary<string, ClientModels.UserDataRecord> characterReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
-        public List<ClientModels.ItemInstance> characterInventory = new List<PlayFab.ClientModels.ItemInstance>();
-        public Dictionary<string, int> characterVC = new Dictionary<string, int>();
-		public Dictionary<string, ClientModels.VirtualCurrencyRechargeTime> characterVcRechargeTimes = new Dictionary<string, PlayFab.ClientModels.VirtualCurrencyRechargeTime>();
+        public ClientModels.CharacterResult Details;
+        public Dictionary<string, int> CharacterStatistics = new Dictionary<string, int>();
+		public Dictionary<string, ClientModels.UserDataRecord> CharacterData = new Dictionary<string, ClientModels.UserDataRecord>();
+		public Dictionary<string, ClientModels.UserDataRecord> CharacterReadOnlyData = new Dictionary<string, ClientModels.UserDataRecord>();
+        public List<ClientModels.ItemInstance> CharacterInventory = new List<PlayFab.ClientModels.ItemInstance>();
+        public Dictionary<string, int> CharacterVc = new Dictionary<string, int>();
+		public Dictionary<string, ClientModels.VirtualCurrencyRechargeTime> CharacterVcRechargeTimes = new Dictionary<string, PlayFab.ClientModels.VirtualCurrencyRechargeTime>();
 		public CharacterModel(ClientModels.CharacterResult cr)
 		{
-			this.details = cr;
+			this.Details = cr;
 		}
 		
 		//public Dictionary<string, string> characterInternalData = new Dictionary<string, string>();

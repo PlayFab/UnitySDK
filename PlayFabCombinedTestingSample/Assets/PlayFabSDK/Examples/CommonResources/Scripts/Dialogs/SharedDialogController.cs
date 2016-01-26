@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
 using System.Collections.Generic;
 
 public class SharedDialogController : MonoBehaviour {
-	public TextInputPrompController textInputPrompt;
-	public SelectorPromptController selectorPrompt;
-	public Transform loadingPrompt;
+	public TextInputPrompController TextInputPrompController;
+	public SelectorPromptController SelectorPrompt;
+	public Transform LoadingPrompt;
 	
 	public delegate void TextInputPromptHandler(string title, string message, System.Action<string> responseCallback, string defaultValue = null);
 	public static event TextInputPromptHandler RaiseTextInputPromptRequest;
@@ -14,17 +12,17 @@ public class SharedDialogController : MonoBehaviour {
 	public delegate void SelectorPromptHandler(string title, List<string> options, System.Action<int> responseCallback);
 	public static event SelectorPromptHandler RaiseSelectorPromptRequest;
 	
-	private readonly Dictionary<int, System.DateTime> activeCalls = new Dictionary<int, System.DateTime>();
-	private float timeOutAfter = 0;
+	private readonly Dictionary<int, System.DateTime> _activeCalls = new Dictionary<int, System.DateTime>();
+	private float _timeOutAfter = 0;
 	
 	// Use this for initialization
 	void Start () 
 	{
-		if(Time.time > timeOutAfter && activeCalls.Count > 0)
+		if(Time.time > _timeOutAfter && _activeCalls.Count > 0)
 		{
 			//request timed out...
 			Debug.LogError("Request(s) Timed Out...");
-			activeCalls.Clear();
+			_activeCalls.Clear();
 		}
 	}
 	
@@ -61,13 +59,13 @@ public class SharedDialogController : MonoBehaviour {
 	
 	public void HandleTextInputRequest(string title, string message, System.Action<string> responseCallback, string defaultValue)
 	{
-		this.textInputPrompt.ShowTextInputPrompt(title, message, responseCallback, defaultValue);
+		this.TextInputPrompController.ShowTextInputPrompt(title, message, responseCallback, defaultValue);
 	}
 	
 	public void HandleSelectorPromptRequest (string title, List<string> options, System.Action<int> responseCallback)
 	{
-		this.selectorPrompt.gameObject.SetActive (true);
-		this.selectorPrompt.InitSelector (title, options, responseCallback);
+		this.SelectorPrompt.gameObject.SetActive (true);
+		this.SelectorPrompt.InitSelector (title, options, responseCallback);
 	}
 
 	public static void RequestSelectorPrompt(string title, List<string> options, System.Action<int> responseCallback)
@@ -80,33 +78,34 @@ public class SharedDialogController : MonoBehaviour {
 	
 	public void CloseLoadingPromptAfterError()
 	{
-		activeCalls.Clear();
-		this.loadingPrompt.gameObject.SetActive(true);
+		_activeCalls.Clear();
+		this.LoadingPrompt.gameObject.SetActive(true);
 	}
 	
 	
 	
 	public void OnOutgoingApi(string url, int callId, object request, object customData)
 	{
-		activeCalls[callId] = System.DateTime.UtcNow;
-		timeOutAfter = Time.time + 30;
-		loadingPrompt.gameObject.SetActive(true);
-		
+		_activeCalls[callId] = System.DateTime.UtcNow;
+		_timeOutAfter = Time.time + 30;
+		LoadingPrompt.gameObject.SetActive(true);
+
+        Debug.Log(url + " Out");
 	}
 	
 	
 	public void OnIncomingApi(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
 	{
-		if(activeCalls.ContainsKey(callId))
+		if(_activeCalls.ContainsKey(callId))
 		{
-			var delta = System.DateTime.UtcNow - activeCalls[callId];
+			var delta = System.DateTime.UtcNow - _activeCalls[callId];
 			Debug.Log(url + " completed in " + delta.TotalMilliseconds + " - _StGl");
-			activeCalls.Remove(callId);
+			_activeCalls.Remove(callId);
 			
-			if(this.activeCalls.Count == 0)
+			if(this._activeCalls.Count == 0)
 			{
 				//ShowTint();
-				loadingPrompt.gameObject.SetActive(false);
+				LoadingPrompt.gameObject.SetActive(false);
 			}
 		}
 	}	

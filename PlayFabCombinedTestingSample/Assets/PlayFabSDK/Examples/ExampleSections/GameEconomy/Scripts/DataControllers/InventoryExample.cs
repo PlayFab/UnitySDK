@@ -25,7 +25,7 @@ namespace PlayFab.Examples.Client
 
 		public static void LoadInventoryFromPlayFab()
 		{
-			if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+			if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.User)
 			{
 				var getRequest = new ClientModels.GetUserInventoryRequest();
 				PlayFabClientAPI.GetUserInventory(getRequest, LoadUserInventoryCallback, PfSharedControllerEx.FailCallback("GetUserInventory"));
@@ -33,16 +33,16 @@ namespace PlayFab.Examples.Client
 			else
 			{
 	            var getRequest = new ClientModels.GetCharacterInventoryRequest();
-				getRequest.CharacterId = PlayFab.Examples.PfSharedModelEx.currentCharacter.details.CharacterId;
+				getRequest.CharacterId = PlayFab.Examples.PfSharedModelEx.CurrentCharacter.Details.CharacterId;
 				PlayFabClientAPI.GetCharacterInventory(getRequest, LoadCharacterInventoryCallback, PfSharedControllerEx.FailCallback("GetCharacterInventory"));
 			}
 		}
 		
 		public static void LoadUserInventoryCallback(ClientModels.GetUserInventoryResult result)
 		{
-			PlayFab.Examples.PfSharedModelEx.currentUser.userInventory = result.Inventory;
-			PlayFab.Examples.PfSharedModelEx.currentUser.userVC = result.VirtualCurrency;
-			PlayFab.Examples.PfSharedModelEx.currentUser.userVcRechargeTimes = result.VirtualCurrencyRechargeTimes;
+			PlayFab.Examples.PfSharedModelEx.CurrentUser.UserInventory = result.Inventory;
+			PlayFab.Examples.PfSharedModelEx.CurrentUser.UserVc = result.VirtualCurrency;
+			PlayFab.Examples.PfSharedModelEx.CurrentUser.UserVcRechargeTimes = result.VirtualCurrencyRechargeTimes;
 			
 			MainExampleController.DebugOutput("User Inventory Loaded.");
 		}
@@ -50,9 +50,9 @@ namespace PlayFab.Examples.Client
 		
 		public static void LoadCharacterInventoryCallback(ClientModels.GetCharacterInventoryResult result)
 		{
-			PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory = result.Inventory;
-			PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC = result.VirtualCurrency;
-			PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVcRechargeTimes = result.VirtualCurrencyRechargeTimes;
+			PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterInventory = result.Inventory;
+			PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterVc = result.VirtualCurrency;
+			PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterVcRechargeTimes = result.VirtualCurrencyRechargeTimes;
 			
 			MainExampleController.DebugOutput("Character Inventory Loaded.");
 		}
@@ -61,7 +61,7 @@ namespace PlayFab.Examples.Client
 		public static void LoadCatalogFromPlayFab(string catalogVersion = null)
 		{
 			var catalogRequest = new ClientModels.GetCatalogItemsRequest();
-			if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.primaryCatalogVersion )
+			if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.PrimaryCatalogVersion )
 			{
 				catalogRequest.CatalogVersion = catalogVersion;
 			}
@@ -81,13 +81,13 @@ namespace PlayFab.Examples.Client
 				// if we have items, use the catalog from the first item 
 				if(catalogResult.Catalog != null && catalogResult.Catalog.Count > 0)
 				{
-					PfSharedModelEx.primaryCatalogVersion = catalogResult.Catalog[0].CatalogVersion;
+					PfSharedModelEx.PrimaryCatalogVersion = catalogResult.Catalog[0].CatalogVersion;
 					catalogVersion = catalogResult.Catalog[0].CatalogVersion;
 				}
 				else
 				{
 					//Even if this is null, we dont have items, so something esle may be wrong.
-					catalogVersion = PfSharedModelEx.primaryCatalogVersion;
+					catalogVersion = PfSharedModelEx.PrimaryCatalogVersion;
 				}
 			}
 			else
@@ -95,7 +95,7 @@ namespace PlayFab.Examples.Client
 				catalogVersion = request.CatalogVersion;
 			}
 			
-			PfSharedModelEx.titleCatalogs[catalogVersion] = catalogResult.Catalog;
+			PfSharedModelEx.TitleCatalogs[catalogVersion] = catalogResult.Catalog;
 			
 			MainExampleController.DebugOutput("Title Catalog Loaded.");
 		}
@@ -119,7 +119,7 @@ namespace PlayFab.Examples.Client
 		public static void LoadStoreFromPlayFabCallback(ClientModels.GetStoreItemsResult storeResult)
 		{
 			ClientModels.GetStoreItemsRequest request = (ClientModels.GetStoreItemsRequest)storeResult.Request;
-			PfSharedModelEx.titleStores[request.StoreId] = storeResult.Store;
+			PfSharedModelEx.TitleStores[request.StoreId] = storeResult.Store;
 			
 			MainExampleController.DebugOutput("Store Loaded.");
 		}
@@ -134,7 +134,7 @@ namespace PlayFab.Examples.Client
 		request.VirtualCurrency = vc;
 		request.Price = price;
 		
-		if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.primaryCatalogVersion )
+		if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.PrimaryCatalogVersion )
 		{
 			request.CatalogVersion = catalogVersion;	
 		}
@@ -144,9 +144,9 @@ namespace PlayFab.Examples.Client
 			request.StoreId = storeId;
 		}
 		
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.Character)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.Character)
 		{
-			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;
+			request.CharacterId = PfSharedModelEx.CurrentCharacter.Details.CharacterId;
 		}
 		
 		PlayFabClientAPI.PurchaseItem(request, PurchaseItemCallback, PfSharedControllerEx.FailCallback("PurchaseItem"));
@@ -157,21 +157,21 @@ namespace PlayFab.Examples.Client
 		ClientModels.PurchaseItemRequest request = (ClientModels.PurchaseItemRequest)result.Request;
 		
 		// process the diff so that we do not have to fetch the entire inventory again.
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.User)
 		{
 			// add newly purchased items to inventory
-			PfSharedModelEx.currentUser.userInventory.AddRange(result.Items);
+			PfSharedModelEx.CurrentUser.UserInventory.AddRange(result.Items);
 			
 			// make VC adjustments
-			PfSharedModelEx.currentUser.userVC[request.VirtualCurrency] -= request.Price;
+			PfSharedModelEx.CurrentUser.UserVc[request.VirtualCurrency] -= request.Price;
 		}
 		else
 		{
 			// add newly purchased items to inventory
-			PfSharedModelEx.currentCharacter.characterInventory.AddRange(result.Items);
+			PfSharedModelEx.CurrentCharacter.CharacterInventory.AddRange(result.Items);
 			
 			// make VC adjustments
-			PfSharedModelEx.currentCharacter.characterVC[request.VirtualCurrency] -= request.Price;
+			PfSharedModelEx.CurrentCharacter.CharacterVc[request.VirtualCurrency] -= request.Price;
 		}
 		
 		MainExampleController.DebugOutput("Purchase Complete.");
@@ -184,9 +184,9 @@ namespace PlayFab.Examples.Client
 		request.ItemInstanceId = instanceId;
 		request.ConsumeCount = count;
 		
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.Character)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.Character)
 		{
-			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;				
+			request.CharacterId = PfSharedModelEx.CurrentCharacter.Details.CharacterId;				
 		}
 
 		PlayFabClientAPI.ConsumeItem(request, ConsumeItemCallback, PfSharedControllerEx.FailCallback("ConsumeItem"));
@@ -194,38 +194,38 @@ namespace PlayFab.Examples.Client
 	
 	public static void ConsumeItemCallback(ClientModels.ConsumeItemResult result)
 	{
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.User)
 		{
-			for(int z = 0; z < PfSharedModelEx.currentUser.userInventory.Count; z++)
+			for(int z = 0; z < PfSharedModelEx.CurrentUser.UserInventory.Count; z++)
 			{
-				if(PfSharedModelEx.currentUser.userInventory[z].ItemInstanceId == result.ItemInstanceId)
+				if(PfSharedModelEx.CurrentUser.UserInventory[z].ItemInstanceId == result.ItemInstanceId)
 				{
 					// shouln't be less than 0, but in either event this item is completely consumed.
 					if(result.RemainingUses <= 0)
 					{
-						PfSharedModelEx.currentUser.userInventory.RemoveAt(z);
+						PfSharedModelEx.CurrentUser.UserInventory.RemoveAt(z);
 					}
 					else
 					{
-						PfSharedModelEx.currentUser.userInventory[z].RemainingUses = result.RemainingUses;
+						PfSharedModelEx.CurrentUser.UserInventory[z].RemainingUses = result.RemainingUses;
 					}
 				}
 			}
 		}
 		else
 		{
-			for(int z = 0; z < PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+			for(int z = 0; z < PfSharedModelEx.CurrentCharacter.CharacterInventory.Count; z++)
 			{
-				if(PfSharedModelEx.currentCharacter.characterInventory[z].ItemInstanceId == result.ItemInstanceId)
+				if(PfSharedModelEx.CurrentCharacter.CharacterInventory[z].ItemInstanceId == result.ItemInstanceId)
 				{
 					// shouln't be less than 0, but in either event this item is completely consumed.
 					if(result.RemainingUses <= 0)
 					{
-						PfSharedModelEx.currentCharacter.characterInventory.RemoveAt(z);
+						PfSharedModelEx.CurrentCharacter.CharacterInventory.RemoveAt(z);
 					}
 					else
 					{
-						PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses = result.RemainingUses;
+						PfSharedModelEx.CurrentCharacter.CharacterInventory[z].RemainingUses = result.RemainingUses;
 					}
 				}
 			}
@@ -240,14 +240,14 @@ namespace PlayFab.Examples.Client
 		ClientModels.UnlockContainerItemRequest request = new ClientModels.UnlockContainerItemRequest();
 		request.ContainerItemId = containerItemId;
 		
-		if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.primaryCatalogVersion)
+		if(!string.IsNullOrEmpty(catalogVersion) && catalogVersion != PfSharedModelEx.PrimaryCatalogVersion)
 		{
 			request.CatalogVersion = catalogVersion;
 		}
 		
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.Character)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.Character)
 		{
-			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;
+			request.CharacterId = PfSharedModelEx.CurrentCharacter.Details.CharacterId;
 		}
 		
 		PlayFabClientAPI.UnlockContainerItem(request, UnlockContainerCallback, PfSharedControllerEx.FailCallback("UnlockContainerItem"));
@@ -255,25 +255,25 @@ namespace PlayFab.Examples.Client
 	
 	public static void UnlockContainerCallback(ClientModels.UnlockContainerItemResult result)
 	{
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.User)
 		{
 			// add items to the inventory
-			PfSharedModelEx.currentUser.userInventory.AddRange(result.GrantedItems);
+			PfSharedModelEx.CurrentUser.UserInventory.AddRange(result.GrantedItems);
 			
 			// if consumable, decrement remaining uses on container
-			for(int z = 0; z < PfSharedModelEx.currentUser.userInventory.Count; z++)
+			for(int z = 0; z < PfSharedModelEx.CurrentUser.UserInventory.Count; z++)
 			{
-				if(PfSharedModelEx.currentUser.userInventory[z].ItemInstanceId == result.UnlockedItemInstanceId)
+				if(PfSharedModelEx.CurrentUser.UserInventory[z].ItemInstanceId == result.UnlockedItemInstanceId)
 				{
-					if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses != null)
+					if(PfSharedModelEx.CurrentUser.UserInventory[z].RemainingUses != null)
 					{
-						if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses > 1)
+						if(PfSharedModelEx.CurrentUser.UserInventory[z].RemainingUses > 1)
 						{
-							PfSharedModelEx.currentUser.userInventory[z].RemainingUses -= 1;
+							PfSharedModelEx.CurrentUser.UserInventory[z].RemainingUses -= 1;
 						}
 						else
 						{
-							PfSharedModelEx.currentUser.userInventory.RemoveAt(z);
+							PfSharedModelEx.CurrentUser.UserInventory.RemoveAt(z);
 						}
 					}
 				}
@@ -282,19 +282,19 @@ namespace PlayFab.Examples.Client
 			// if a key was used and is consumable, decrement remaining uses on key
 			if(!string.IsNullOrEmpty(result.UnlockedWithItemInstanceId))
 			{
-				for(int z = 0; z < PfSharedModelEx.currentUser.userInventory.Count; z++)
+				for(int z = 0; z < PfSharedModelEx.CurrentUser.UserInventory.Count; z++)
 				{
-					if(PfSharedModelEx.currentUser.userInventory[z].ItemInstanceId == result.UnlockedWithItemInstanceId)
+					if(PfSharedModelEx.CurrentUser.UserInventory[z].ItemInstanceId == result.UnlockedWithItemInstanceId)
 					{
-						if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses != null)
+						if(PfSharedModelEx.CurrentUser.UserInventory[z].RemainingUses != null)
 						{
-							if(PfSharedModelEx.currentUser.userInventory[z].RemainingUses > 1)
+							if(PfSharedModelEx.CurrentUser.UserInventory[z].RemainingUses > 1)
 							{
-								PfSharedModelEx.currentUser.userInventory[z].RemainingUses -= 1;
+								PfSharedModelEx.CurrentUser.UserInventory[z].RemainingUses -= 1;
 							}
 							else
 							{
-								PfSharedModelEx.currentUser.userInventory.RemoveAt(z);
+								PfSharedModelEx.CurrentUser.UserInventory.RemoveAt(z);
 							}
 						}
 					}
@@ -307,30 +307,30 @@ namespace PlayFab.Examples.Client
 				foreach(var item in result.VirtualCurrency)
 				{
 					int currentValue;
-					PfSharedModelEx.currentUser.userVC.TryGetValue(item.Key, out currentValue);
-					PfSharedModelEx.currentUser.userVC[item.Key] = currentValue + (int)item.Value;
+					PfSharedModelEx.CurrentUser.UserVc.TryGetValue(item.Key, out currentValue);
+					PfSharedModelEx.CurrentUser.UserVc[item.Key] = currentValue + (int)item.Value;
 				}
 			}
 		}
 		else
 		{
 			// add items to the inventory
-			PfSharedModelEx.currentCharacter.characterInventory.AddRange(result.GrantedItems);
+			PfSharedModelEx.CurrentCharacter.CharacterInventory.AddRange(result.GrantedItems);
 			
 			// if consumable, decrement remaining uses on container
-			for(int z = 0; z < PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+			for(int z = 0; z < PfSharedModelEx.CurrentCharacter.CharacterInventory.Count; z++)
 			{
-				if(PfSharedModelEx.currentCharacter.characterInventory[z].ItemInstanceId == result.UnlockedItemInstanceId)
+				if(PfSharedModelEx.CurrentCharacter.CharacterInventory[z].ItemInstanceId == result.UnlockedItemInstanceId)
 				{
-					if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses != null)
+					if(PfSharedModelEx.CurrentCharacter.CharacterInventory[z].RemainingUses != null)
 					{
-						if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses > 1)
+						if(PfSharedModelEx.CurrentCharacter.CharacterInventory[z].RemainingUses > 1)
 						{
-							PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses -= 1;
+							PfSharedModelEx.CurrentCharacter.CharacterInventory[z].RemainingUses -= 1;
 						}
 						else
 						{
-							PfSharedModelEx.currentCharacter.characterInventory.RemoveAt(z);
+							PfSharedModelEx.CurrentCharacter.CharacterInventory.RemoveAt(z);
 						}
 					}
 				}
@@ -339,19 +339,19 @@ namespace PlayFab.Examples.Client
 			// if a key was used and is consumable, decrement remaining uses on key
 			if(!string.IsNullOrEmpty(result.UnlockedWithItemInstanceId))
 			{
-				for(int z = 0; z < PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+				for(int z = 0; z < PfSharedModelEx.CurrentCharacter.CharacterInventory.Count; z++)
 				{
-					if(PfSharedModelEx.currentCharacter.characterInventory[z].ItemInstanceId == result.UnlockedWithItemInstanceId)
+					if(PfSharedModelEx.CurrentCharacter.CharacterInventory[z].ItemInstanceId == result.UnlockedWithItemInstanceId)
 					{
-						if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses != null)
+						if(PfSharedModelEx.CurrentCharacter.CharacterInventory[z].RemainingUses != null)
 						{
-							if(PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses > 1)
+							if(PfSharedModelEx.CurrentCharacter.CharacterInventory[z].RemainingUses > 1)
 							{
-								PfSharedModelEx.currentCharacter.characterInventory[z].RemainingUses -= 1;
+								PfSharedModelEx.CurrentCharacter.CharacterInventory[z].RemainingUses -= 1;
 							}
 							else
 							{
-								PfSharedModelEx.currentCharacter.characterInventory.RemoveAt(z);
+								PfSharedModelEx.CurrentCharacter.CharacterInventory.RemoveAt(z);
 							}
 						}
 					}
@@ -364,8 +364,8 @@ namespace PlayFab.Examples.Client
 				foreach(var item in result.VirtualCurrency)
 				{
 					int currentValue;
-					PfSharedModelEx.currentCharacter.characterVC.TryGetValue(item.Key, out currentValue);
-					PfSharedModelEx.currentCharacter.characterVC[item.Key] = currentValue + (int)item.Value;
+					PfSharedModelEx.CurrentCharacter.CharacterVc.TryGetValue(item.Key, out currentValue);
+					PfSharedModelEx.CurrentCharacter.CharacterVc[item.Key] = currentValue + (int)item.Value;
 				}
 			}
 		}
@@ -379,7 +379,7 @@ namespace PlayFab.Examples.Client
 		if(vcAmount != 0)
 		{
 			RunCloudScriptRequest request = new RunCloudScriptRequest();
-			if(PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+			if(PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.User)
 			{
 				request.ActionId = "UpdateUserVcBalance";
 				request.Params = new { vc = vcCode, amount = vcAmount};
@@ -388,7 +388,7 @@ namespace PlayFab.Examples.Client
 			else
 			{
 				request.ActionId = "UpdateCharacterVcBalance";
-				request.Params = new {characterId = PfSharedModelEx.currentCharacter.details.CharacterId, vc = vcCode, amount = vcAmount};
+				request.Params = new {characterId = PfSharedModelEx.CurrentCharacter.Details.CharacterId, vc = vcCode, amount = vcAmount};
 				PlayFabClientAPI.RunCloudScript(request, ModifyCharacterVcCallback, PfSharedControllerEx.FailCallback("ModifyCharacterVcBalance"));
 			}
 		}
@@ -401,7 +401,7 @@ namespace PlayFab.Examples.Client
 		{
 			csResult = PlayFab.Json.JsonConvert.DeserializeObject<ModifyUserVirtualCurrencyResult>(result.ResultsEncoded);
 			MainExampleController.DebugOutput("Successful Cast with ModifyCharacterVcCallback -- " + csResult.VirtualCurrency + " : " + csResult.Balance);
-			PfSharedModelEx.currentCharacter.characterVC[csResult.VirtualCurrency] = csResult.Balance;
+			PfSharedModelEx.CurrentCharacter.CharacterVc[csResult.VirtualCurrency] = csResult.Balance;
 		}
 		catch (System.Exception ex)
 		{
@@ -416,7 +416,7 @@ namespace PlayFab.Examples.Client
 		{
 			csResult = PlayFab.Json.JsonConvert.DeserializeObject<ModifyUserVirtualCurrencyResult>(result.ResultsEncoded);
 			MainExampleController.DebugOutput("Successful Cast with ModifyUserVcCallback -- " + csResult.VirtualCurrency + " : " + csResult.Balance);
-			PfSharedModelEx.currentUser.userVC[csResult.VirtualCurrency] = csResult.Balance;
+			PfSharedModelEx.CurrentUser.UserVc[csResult.VirtualCurrency] = csResult.Balance;
 			
 		}
 		catch (System.Exception ex)
@@ -429,7 +429,7 @@ namespace PlayFab.Examples.Client
 	public static void GrantItem(string id, string catalogVer)
 	{
 		RunCloudScriptRequest request = new RunCloudScriptRequest();
-		if(PfSharedModelEx.activeMode == PfSharedModelEx.ModelModes.User)
+		if(PfSharedModelEx.ActiveMode == PfSharedModelEx.ModelModes.User)
 		{
 			request.ActionId = "GrantItemToUser";
 			request.Params = new { itemId = id, catalogVersion = catalogVer};
@@ -438,7 +438,7 @@ namespace PlayFab.Examples.Client
 		else
 		{
 			request.ActionId = "GrantItemToCharacter";
-			request.Params = new {characterId = PfSharedModelEx.currentCharacter.details.CharacterId, itemId = id, catalogVersion = catalogVer };
+			request.Params = new {characterId = PfSharedModelEx.CurrentCharacter.Details.CharacterId, itemId = id, catalogVersion = catalogVer };
 			PlayFabClientAPI.RunCloudScript(request, GrantItemToCharacterCallback, PfSharedControllerEx.FailCallback("GrantItemToCharacter"));
 		}
 	}
@@ -450,7 +450,7 @@ namespace PlayFab.Examples.Client
 		{
 			csResult = PlayFab.Json.JsonConvert.DeserializeObject<GrantItemsResult>(result.ResultsEncoded);
 			MainExampleController.DebugOutput("Successful Cast with GrantUserItem -- (" + csResult.ItemGrantResults.Count + ")");
-			PfSharedModelEx.currentUser.userInventory.AddRange(csResult.ItemGrantResults);
+			PfSharedModelEx.CurrentUser.UserInventory.AddRange(csResult.ItemGrantResults);
 		}
 		catch (System.Exception ex)
 		{
@@ -465,7 +465,7 @@ namespace PlayFab.Examples.Client
 		{
 			csResult = PlayFab.Json.JsonConvert.DeserializeObject<GrantItemsResult>(result.ResultsEncoded);
 			MainExampleController.DebugOutput("Successful Cast with GrantCharacterItem -- (" + csResult.ItemGrantResults.Count + ")");
-			PfSharedModelEx.currentCharacter.characterInventory.AddRange(csResult.ItemGrantResults);
+			PfSharedModelEx.CurrentCharacter.CharacterInventory.AddRange(csResult.ItemGrantResults);
 		}
 		catch (System.Exception ex)
 		{

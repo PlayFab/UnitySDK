@@ -1,34 +1,30 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.Events;
-using System;
-using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 
 public class SelectorPromptController : MonoBehaviour {
-	public Text title;
-	public List<string> options = new List<string>();
-	public Transform optionItemPrefab;
+	public Text Title;
+	public List<string> Options = new List<string>();
+	public Transform OptionItemPrefab;
     public Transform ListView;
-    public Button closeButton;
+    public Button CloseButton;
 
-	private System.Action<int> callback;
+	private System.Action<int> _callback;
 
 	public void InitSelector(string title, List<string> options, System.Action<int> callback = null)
 	{
-		this.title.text = title;
-		this.options = options;
-		this.callback = callback;
+		this.Title.text = title;
+		this.Options = options;
+		this._callback = callback;
 		CreateItemsToMatchOptions ();
 	}
 	
 	public void ListItemClicked(int index)
 	{
-		if (this.callback != null) 
+		if (this._callback != null) 
 		{
-			callback(index);
+			_callback(index);
 		} 
 		this.gameObject.SetActive (false);
 	}
@@ -43,19 +39,19 @@ public class SelectorPromptController : MonoBehaviour {
 		Button[] items = this.ListView.GetComponentsInChildren<Button> (true);
 		List<Button> itemList = items.ToList ();
 
-		if (this.options.Count > itemList.Count) {
+		if (this.Options.Count > itemList.Count) {
 			// not enough buttons, create more
-			while (itemList.Count < this.options.Count) 
+			while (itemList.Count < this.Options.Count) 
 			{
-				Transform item = Instantiate (this.optionItemPrefab);
+				Transform item = Instantiate (this.OptionItemPrefab);
 				item.SetParent (this.ListView, false);
 				itemList.Add(item.GetComponent<Button>());
 			}
 
-		} else if(this.options.Count < items.Length) 
+		} else if(this.Options.Count < items.Length) 
 		{
 			// too many buttons, hide the extras.
-			for(int z = this.options.Count; z < items.Length; z++)
+			for(int z = this.Options.Count; z < items.Length; z++)
 			{
 				items[z].gameObject.SetActive(false);
 				if(z > 15)
@@ -65,10 +61,10 @@ public class SelectorPromptController : MonoBehaviour {
 			}
 		}
 
-		for(int z = 0; z < this.options.Count; z++)
+		for(int z = 0; z < this.Options.Count; z++)
 		{
 			itemList[z].gameObject.SetActive(true);
-			itemList[z].GetComponentInChildren<Text>().text = this.options[z];
+			itemList[z].GetComponentInChildren<Text>().text = this.Options[z];
 			itemList[z].onClick.RemoveAllListeners();
 			int capturedIndex = z;
 			itemList[z].onClick.AddListener(() => 

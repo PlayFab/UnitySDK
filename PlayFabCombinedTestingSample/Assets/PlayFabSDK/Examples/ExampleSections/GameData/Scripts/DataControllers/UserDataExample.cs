@@ -18,28 +18,28 @@ namespace PlayFab.Examples.Client
         public static void GetUserData()
         {
             var getRequest = new ClientModels.GetUserDataRequest();
-            getRequest.PlayFabId = PfSharedModelEx.currentUser.playFabId; 
+            getRequest.PlayFabId = PfSharedModelEx.CurrentUser.PlayFabId; 
             PlayFabClientAPI.GetUserData(getRequest, GetUserDataCallback, PfSharedControllerEx.FailCallback("GetUserData"));
         }
 
         private static void GetUserDataCallback(ClientModels.GetUserDataResult result)
         {
             foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.currentUser.userData[eachDataEntry.Key] = eachDataEntry.Value;
+                PfSharedModelEx.CurrentUser.UserData[eachDataEntry.Key] = eachDataEntry.Value;
             MainExampleController.DebugOutput("User Data Loaded.");
         }
 
         public static void GetUserReadOnlyData()
         {
             var getRequest = new ClientModels.GetUserDataRequest();
-            getRequest.PlayFabId = PfSharedModelEx.currentUser.playFabId;
+            getRequest.PlayFabId = PfSharedModelEx.CurrentUser.PlayFabId;
             PlayFabClientAPI.GetUserReadOnlyData(getRequest, GetUserReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserReadOnlyData"));
         }
 
         private static void GetUserReadOnlyDataCallback(ClientModels.GetUserDataResult result)
         {
             foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.currentUser.userReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value;
+                PfSharedModelEx.CurrentUser.UserReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value;
              MainExampleController.DebugOutput("User Read-Only Data Loaded.");
         }
 
@@ -66,20 +66,20 @@ namespace PlayFab.Examples.Client
 			
 			foreach(var item in deleted)
 			{
-				PfSharedModelEx.currentUser.userData.Remove(item);
+				PfSharedModelEx.CurrentUser.UserData.Remove(item);
 			}
 			
             foreach (var dataPair in dataUpdated)
             {
-				if(PfSharedModelEx.currentUser.userData.ContainsKey(dataPair.Key))
+				if(PfSharedModelEx.CurrentUser.UserData.ContainsKey(dataPair.Key))
                 {
-                	PfSharedModelEx.currentUser.userData[dataPair.Key].Value = dataPair.Value;
-					PfSharedModelEx.currentUser.userData[dataPair.Key].Permission = p;
-					PfSharedModelEx.currentUser.userData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
+                	PfSharedModelEx.CurrentUser.UserData[dataPair.Key].Value = dataPair.Value;
+					PfSharedModelEx.CurrentUser.UserData[dataPair.Key].Permission = p;
+					PfSharedModelEx.CurrentUser.UserData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
                 }
                 else
                 {
-					PfSharedModelEx.currentUser.userData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow  });
+					PfSharedModelEx.CurrentUser.UserData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow  });
                 }
             }
             
@@ -90,7 +90,7 @@ namespace PlayFab.Examples.Client
         #region UserPublisherData - Data attached directly to the user across all titles for this publisher
         public static void GetUserPublisherData()
         {
-			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			if(PlayFab.Examples.PfSharedModelEx.UserPublisher == true)
 			{
 				var request = new GetUserDataRequest();
            	 	PlayFabClientAPI.GetUserPublisherData(request, GetUserPublisherDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherData"));
@@ -101,7 +101,7 @@ namespace PlayFab.Examples.Client
         {
 	            foreach (var eachDataEntry in result.Data)
 	            {
-	                PfSharedModelEx.currentUser.userPublisherData[eachDataEntry.Key] = eachDataEntry.Value;
+	                PfSharedModelEx.CurrentUser.UserPublisherData[eachDataEntry.Key] = eachDataEntry.Value;
 	            }
 	            MainExampleController.DebugOutput("User Publisher Data Loaded.");
 
@@ -109,7 +109,7 @@ namespace PlayFab.Examples.Client
 
         public static void GetUserPublisherReadOnlyData()
         {
-			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			if(PlayFab.Examples.PfSharedModelEx.UserPublisher == true)
 			{
 	            var request = new GetUserDataRequest();
 	            PlayFabClientAPI.GetUserPublisherReadOnlyData(request, GetUserPublisherReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetUserPublisherReadOnlyDataCallback"));
@@ -119,13 +119,13 @@ namespace PlayFab.Examples.Client
         private static void GetUserPublisherReadOnlyDataCallback(ClientModels.GetUserDataResult result)
         {
             foreach (var eachDataEntry in result.Data)
-                PfSharedModelEx.currentUser.userPublisherReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value;
+                PfSharedModelEx.CurrentUser.UserPublisherReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value;
       		MainExampleController.DebugOutput("User Publisher Read-Only Data Loaded.");
         }
 
 		public static void UpdateUserPublisherData(Dictionary<string, string> data, bool makePrivate = false, List<string> deleteKeys = null)
         {
-			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			if(PlayFab.Examples.PfSharedModelEx.UserPublisher == true)
 			{
 				if(data.Count > 0 || (deleteKeys != null && deleteKeys.Count > 0))
 				{
@@ -148,20 +148,20 @@ namespace PlayFab.Examples.Client
 			
 			foreach(var item in deleted)
 			{
-				PfSharedModelEx.currentUser.userPublisherData.Remove(item);
+				PfSharedModelEx.CurrentUser.UserPublisherData.Remove(item);
 			}
 			
             foreach (var dataPair in dataUpdated)
             {
-				if(PfSharedModelEx.currentUser.userPublisherData.ContainsKey(dataPair.Key))
+				if(PfSharedModelEx.CurrentUser.UserPublisherData.ContainsKey(dataPair.Key))
 				{
-					PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].Value = dataPair.Value;
-					PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].Permission = p;
-					PfSharedModelEx.currentUser.userPublisherData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
+					PfSharedModelEx.CurrentUser.UserPublisherData[dataPair.Key].Value = dataPair.Value;
+					PfSharedModelEx.CurrentUser.UserPublisherData[dataPair.Key].Permission = p;
+					PfSharedModelEx.CurrentUser.UserPublisherData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
 				}
 				else
 				{
-					PfSharedModelEx.currentUser.userPublisherData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow });
+					PfSharedModelEx.CurrentUser.UserPublisherData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow });
 				}
             }
             
@@ -176,7 +176,7 @@ namespace PlayFab.Examples.Client
 		public static void GetActiveCharacterData()
 		{
 			var request = new GetCharacterDataRequest();
-			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;
+			request.CharacterId = PfSharedModelEx.CurrentCharacter.Details.CharacterId;
 			
 			PlayFabClientAPI.GetCharacterData(request, GetActiveCharacterDataCallback, PfSharedControllerEx.FailCallback("GetCharacterDataCallback"));
 		}
@@ -184,14 +184,14 @@ namespace PlayFab.Examples.Client
 		private static void GetActiveCharacterDataCallback(ClientModels.GetCharacterDataResult result)
 		{
 			foreach (var eachDataEntry in result.Data)
-				PfSharedModelEx.currentCharacter.characterData[eachDataEntry.Key].Value = eachDataEntry.Value.Value;
+				PfSharedModelEx.CurrentCharacter.CharacterData[eachDataEntry.Key].Value = eachDataEntry.Value.Value;
 			MainExampleController.DebugOutput("Character Data Loaded.");
 		}
 		
 		public static void GetActiveCharacterReadOnlyData()
 		{
 			var request = new GetCharacterDataRequest();
-			request.CharacterId = PfSharedModelEx.currentCharacter.details.CharacterId;
+			request.CharacterId = PfSharedModelEx.CurrentCharacter.Details.CharacterId;
 			
 			PlayFabClientAPI.GetCharacterReadOnlyData(request, GetActiveCharacterReadOnlyDataCallback, PfSharedControllerEx.FailCallback("GetCharacterReadOnlyDataCallback"));
 		}
@@ -201,7 +201,7 @@ namespace PlayFab.Examples.Client
 			foreach (var eachDataEntry in result.Data)
 			{
 				
-				PfSharedModelEx.currentCharacter.characterReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value;
+				PfSharedModelEx.CurrentCharacter.CharacterReadOnlyData[eachDataEntry.Key] = eachDataEntry.Value;
 			}
 			
 			MainExampleController.DebugOutput("Character Read-Only Data Loaded.");
@@ -230,20 +230,20 @@ namespace PlayFab.Examples.Client
 			
 			foreach(var item in deleted)
 			{
-				PfSharedModelEx.currentCharacter.characterData.Remove(item);
+				PfSharedModelEx.CurrentCharacter.CharacterData.Remove(item);
 			}
 			
 			foreach (var dataPair in dataUpdated)
 			{
-				if(PfSharedModelEx.currentCharacter.characterData.ContainsKey(dataPair.Key))
+				if(PfSharedModelEx.CurrentCharacter.CharacterData.ContainsKey(dataPair.Key))
 				{
-					PfSharedModelEx.currentCharacter.characterData[dataPair.Key].Value = dataPair.Value;
-					PfSharedModelEx.currentCharacter.characterData[dataPair.Key].Permission = p;
-					PfSharedModelEx.currentCharacter.characterData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
+					PfSharedModelEx.CurrentCharacter.CharacterData[dataPair.Key].Value = dataPair.Value;
+					PfSharedModelEx.CurrentCharacter.CharacterData[dataPair.Key].Permission = p;
+					PfSharedModelEx.CurrentCharacter.CharacterData[dataPair.Key].LastUpdated = System.DateTime.UtcNow;
 				}
 				else
 				{
-					PfSharedModelEx.currentCharacter.characterData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow });
+					PfSharedModelEx.CurrentCharacter.CharacterData.Add(dataPair.Key, new UserDataRecord(){ Value = dataPair.Value, Permission = p, LastUpdated = System.DateTime.UtcNow });
 				}
 			}
 

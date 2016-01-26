@@ -1,16 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEngine.Events;
-
-using PlayFab.ClientModels;
 
 /// <summary>
 /// Wallet controller, this displays all currencies for a given player.
 /// </summary>
 public class WalletController : MonoBehaviour {
-	public List<WalletItem> items = new List<WalletItem>();
+	public List<WalletItem> Items = new List<WalletItem>();
 	public Transform CurrencyDisplayItemPrefab;
 	public Transform DisplayContainer;
 	
@@ -21,19 +17,19 @@ public class WalletController : MonoBehaviour {
 			Transform go = this.DisplayContainer.transform.GetChild(i);
 			Destroy(go.gameObject);
 		}
-		this.items.Clear ();
+		this.Items.Clear ();
 		
 		yield return new WaitForEndOfFrame();	
 		
 		
 		Dictionary<string, int> vc = new Dictionary<string, int>();
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
-			vc = PlayFab.Examples.PfSharedModelEx.currentUser.userVC;
+			vc = PlayFab.Examples.PfSharedModelEx.CurrentUser.UserVc;
 		}
 		else
 		{
-			vc = PlayFab.Examples.PfSharedModelEx.currentCharacter.characterVC;
+			vc = PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterVc;
 		}
 		
 		// show player balances
@@ -45,7 +41,7 @@ public class WalletController : MonoBehaviour {
 			item.Code.text = string.Format("{0}:", kvp.Key);
 			item.Value.text = string.Format("{0:n0}", kvp.Value);
 			
-			this.items.Add(item);
+			this.Items.Add(item);
 		}
 	}
 }

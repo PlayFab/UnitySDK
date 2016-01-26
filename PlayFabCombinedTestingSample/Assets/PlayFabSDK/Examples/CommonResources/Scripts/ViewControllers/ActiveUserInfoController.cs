@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Linq;
 using System.Collections.Generic;
 using PlayFab;
@@ -12,11 +11,11 @@ public class ActiveUserInfoController : MonoBehaviour {
 	
 	//UI 
 	public Text DisplayName;
-	public Text PFID;
-	public Button AccountInfo;
+	public Text Pfid;
+	//public Button AccountInfo;
 	public Button ToggleCharacter;
 	
-	private const string _blank = "__________"; 
+	private const string Blank = "__________"; 
 	
 	// Use this for initialization
 	void Start () {
@@ -25,17 +24,17 @@ public class ActiveUserInfoController : MonoBehaviour {
 	
 	public void Init(LoginResult loginResult)
 	{		
-		this.PFID.text = loginResult.PlayFabId;
-		this.DisplayName.text =  string.IsNullOrEmpty(PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName) ? _blank : PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName;
+		this.Pfid.text = loginResult.PlayFabId;
+		this.DisplayName.text =  PfSharedModelEx.CurrentUser.AccountInfo.TitleInfo == null ? Blank : PfSharedModelEx.CurrentUser.AccountInfo.TitleInfo.DisplayName;
 		GetUserCharacters();
 	}
 	
 	public void GetUserCharacters()
 	{
-		if(PfSharedModelEx.currentUser.playFabId == null)
+		if(PfSharedModelEx.CurrentUser.PlayFabId == null)
 			return;
 			
-		PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, PfSharedModelEx.currentUser.playFabId, null, PfSharedControllerEx.Api.Client, false);
+		PfSharedControllerEx.PostEventMessage(PfSharedControllerEx.EventType.OnUserLogin, PfSharedModelEx.CurrentUser.PlayFabId, null, PfSharedControllerEx.Api.Client, false);
 		var clientRequest = new ListUsersCharactersRequest();
 		PlayFabClientAPI.GetAllUsersCharacters(clientRequest, GetUserCharactersCallBack, PfSharedControllerEx.FailCallback("C_GetAllUsersCharacters"));
 	}
@@ -45,9 +44,9 @@ public class ActiveUserInfoController : MonoBehaviour {
 		CharacterModel temp;
 		foreach (var character in charResult.Characters)
 		{
-			if (!PfSharedModelEx.currentUser.userCharacters.TryGetValue(character.CharacterId, out temp))
+			if (!PfSharedModelEx.CurrentUser.UserCharacters.TryGetValue(character.CharacterId, out temp))
 			{
-				PfSharedModelEx.currentUser.userCharacters[character.CharacterId] = new CharacterModel(character);
+				PfSharedModelEx.CurrentUser.UserCharacters[character.CharacterId] = new CharacterModel(character);
 			}
 		}
 		
@@ -66,19 +65,19 @@ public class ActiveUserInfoController : MonoBehaviour {
 		Dictionary<string, CharacterModel> idToNameMap = new Dictionary<string, CharacterModel>();
 		
 		// Add base account as an option if we have a character enabled
-		if(PfSharedModelEx.activeMode != PfSharedModelEx.ModelModes.User)
+		if(PfSharedModelEx.ActiveMode != PfSharedModelEx.ModelModes.User)
 		{
-			string currentUserText = PfSharedModelEx.currentUser.accountInfo != null && !string.IsNullOrEmpty(PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName) ? PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName : PfSharedModelEx.currentUser.accountInfo.PlayFabId;
+			string currentUserText = PfSharedModelEx.CurrentUser.AccountInfo != null && !string.IsNullOrEmpty(PfSharedModelEx.CurrentUser.AccountInfo.TitleInfo.DisplayName) ? PfSharedModelEx.CurrentUser.AccountInfo.TitleInfo.DisplayName : PfSharedModelEx.CurrentUser.AccountInfo.PlayFabId;
 			idToNameMap.Add(string.Format("[User] - {0}", currentUserText), null);
 		}
 		
 		
-		foreach(var character in PfSharedModelEx.currentUser.userCharacters)
+		foreach(var character in PfSharedModelEx.CurrentUser.UserCharacters)
 		{
 			// no need to list the active character
-			if(character.Value != PfSharedModelEx.currentCharacter)
+			if(character.Value != PfSharedModelEx.CurrentCharacter)
 			{
-				idToNameMap.Add(string.Format("[Char] - {0}", character.Value.details.CharacterName), character.Value);
+				idToNameMap.Add(string.Format("[Char] - {0}", character.Value.Details.CharacterName), character.Value);
 			}
 		}
 		
@@ -96,18 +95,18 @@ public class ActiveUserInfoController : MonoBehaviour {
 		// switch to character
 		if(cm != null)
 		{
-			PfSharedModelEx.activeMode = PfSharedModelEx.ModelModes.Character;
-			PfSharedModelEx.currentCharacter = cm;
-			this.PFID.text = cm.details.CharacterId;
-			this.DisplayName.text = cm.details.CharacterName;
+			PfSharedModelEx.ActiveMode = PfSharedModelEx.ModelModes.Character;
+			PfSharedModelEx.CurrentCharacter = cm;
+			this.Pfid.text = cm.Details.CharacterId;
+			this.DisplayName.text = cm.Details.CharacterName;
 		}
 		else
 		{
 			// switch back to user
-			PfSharedModelEx.activeMode = PfSharedModelEx.ModelModes.User;
-			PfSharedModelEx.currentCharacter = null;
-			this.PFID.text = PfSharedModelEx.currentUser.accountInfo.PlayFabId;
-			this.DisplayName.text = string.IsNullOrEmpty(PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName) ? _blank : PfSharedModelEx.currentUser.accountInfo.TitleInfo.DisplayName;
+			PfSharedModelEx.ActiveMode = PfSharedModelEx.ModelModes.User;
+			PfSharedModelEx.CurrentCharacter = null;
+			this.Pfid.text = PfSharedModelEx.CurrentUser.AccountInfo.PlayFabId;
+			this.DisplayName.text = string.IsNullOrEmpty(PfSharedModelEx.CurrentUser.AccountInfo.TitleInfo.DisplayName) ? Blank : PfSharedModelEx.CurrentUser.AccountInfo.TitleInfo.DisplayName;
 		}
 	}
 }

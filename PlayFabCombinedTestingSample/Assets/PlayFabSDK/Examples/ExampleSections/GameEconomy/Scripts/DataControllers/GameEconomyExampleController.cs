@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using PlayFab.Examples;
 
 public class GameEconomyExampleController : MonoBehaviour {
-	public string primaryCatalog = string.Empty;
+	public string PrimaryCatalog = string.Empty;
 	
 	// Use this for initialization
 	void Start () {
-		PfSharedModelEx.primaryCatalogVersion = this.primaryCatalog;
+		PfSharedModelEx.PrimaryCatalogVersion = this.PrimaryCatalog;
 	}
 	
 	public void RunOnStart()
@@ -21,7 +20,7 @@ public class GameEconomyExampleController : MonoBehaviour {
 	
 	public void FetchCatalog()
 	{
-		if(PfSharedModelEx.titleCatalogs.Count == 0)
+		if(PfSharedModelEx.TitleCatalogs.Count == 0)
 		{
 			PlayFab.Examples.Client.InventoryExample.LoadCatalogFromPlayFab();
 		}

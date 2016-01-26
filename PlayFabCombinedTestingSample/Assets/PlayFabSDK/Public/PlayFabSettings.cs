@@ -240,6 +240,7 @@ namespace PlayFab
             ResponseParams[4] = error;
             ResponseParams[5] = customData;
             HashSet<MethodInfo> methodInfos;
+
             if (ApiResponseHandlers.TryGetValue(urlPath, out methodInfos))
             {
                 foreach (var methodInfo in methodInfos)
@@ -253,6 +254,7 @@ namespace PlayFab
                                 methodInfo.Invoke(instance, ResponseParams);
                 }
             }
+
             if (ApiResponseHandlers.TryGetValue(GLOBAL_KEY, out methodInfos))
             {
                 foreach (var methodInfo in methodInfos)

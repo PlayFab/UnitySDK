@@ -1,11 +1,6 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.UI;
-using UnityEngine.Events;
-
-using PlayFab.ClientModels;
 
 /// <summary>
 /// Inventory controller that provides the base inventory calls to the shared controller and model
@@ -13,24 +8,24 @@ using PlayFab.ClientModels;
 public class InventoryController : MonoBehaviour {
 	
 	// references to UI components
-	public Button actionButton;
-	public Text active_itemId;
-	public Text active_itemName;
-	public Text active_itemDescription;
-	public Text active_itemUses;
-	public Text active_itemType;
-	public Image active_icon;
-	public Text active_expiration;
-	public string activeHelpUrl;
+	public Button ActionButton;
+	public Text ActiveItemId;
+	public Text ActiveItemName;
+	public Text ActiveItemDescription;
+	public Text ActiveItemUses;
+	public Text ActiveItemType;
+	public Image ActiveIcon;
+	public Text ActiveExpiration;
+	public string ActiveHelpUrl;
 	
-	public Transform listView;
-	public Transform invItemPrefab;
-	public Transform inventoryPanel;
+	public Transform ListView;
+	public Transform InvItemPrefab;
+	public Transform InventoryPanel;
 	
-	public WalletController wallet;
+	public WalletController Wallet;
 	
-	private InventoryItemController activeItem; 
-	private List<Transform> itemSceneObjects = new List<Transform>();
+	private InventoryItemController _activeItem; 
+	private readonly List<Transform> _itemSceneObjects = new List<Transform>();
 	
 	void Awake()
 	{
@@ -55,7 +50,7 @@ public class InventoryController : MonoBehaviour {
 	
 	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
 	{
-		if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
 			switch(url)
 			{
@@ -75,7 +70,7 @@ public class InventoryController : MonoBehaviour {
 					break;
 			}
 		}
-		else if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.Character)
+		else if(this.gameObject.activeInHierarchy == true && PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.Character)
 		{
 			switch(url)
 			{
@@ -100,19 +95,19 @@ public class InventoryController : MonoBehaviour {
 	public void Init()
 	{
 		ClearDetails();
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
-			if(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory != null && PlayFab.Examples.PfSharedModelEx.titleCatalogs.Count > 0)
+			if(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserInventory != null && PlayFab.Examples.PfSharedModelEx.TitleCatalogs.Count > 0)
 			 {
-				AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count);
+				AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.CurrentUser.UserInventory.Count);
 				InventoryItemController first = null;
 				
-				for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.currentUser.userInventory.Count; z++)
+				for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.CurrentUser.UserInventory.Count; z++)
 				{	
-					InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
+					InventoryItemController item = this._itemSceneObjects[z].GetComponent<InventoryItemController>();
 					
 					
-					item.Init(this, PlayFab.Examples.PfSharedModelEx.currentUser.userInventory[z]);
+					item.Init(this, PlayFab.Examples.PfSharedModelEx.CurrentUser.UserInventory[z]);
 					
 					if(z == 0)
 					{
@@ -125,7 +120,7 @@ public class InventoryController : MonoBehaviour {
 
 				
 				//Wallet Code
-				StartCoroutine(wallet.Init());
+				StartCoroutine(Wallet.Init());
 			 }
 			 else
 			 {
@@ -137,15 +132,15 @@ public class InventoryController : MonoBehaviour {
 		}
 		else // show character inventory
 		{
-			if(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory != null && PlayFab.Examples.PfSharedModelEx.titleCatalogs.Count > 0)
+			if(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterInventory != null && PlayFab.Examples.PfSharedModelEx.TitleCatalogs.Count > 0)
 			{
-				AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory.Count);
+				AdjustItemPrefabs(PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterInventory.Count);
 				InventoryItemController first = null;
-				for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory.Count; z++)
+				for(int z = 0; z < PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterInventory.Count; z++)
 				{
-					InventoryItemController item = this.itemSceneObjects[z].GetComponent<InventoryItemController>();
+					InventoryItemController item = this._itemSceneObjects[z].GetComponent<InventoryItemController>();
 					
-					item.Init(this, PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory[z]);
+					item.Init(this, PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterInventory[z]);
 					
 					if(z == 0)
 					{
@@ -154,17 +149,17 @@ public class InventoryController : MonoBehaviour {
 				}
 				ShowPanel();
 				
-				if(this.activeItem == null && first != null)
+				if(this._activeItem == null && first != null)
 				{
 					ItemClicked(first);
 				}
-				else if(this.activeItem != null)
+				else if(this._activeItem != null)
 				{
-					ItemClicked(this.activeItem);
+					ItemClicked(this._activeItem);
 				}
 				
 				//Wallet Code
-				StartCoroutine(wallet.Init());
+				StartCoroutine(Wallet.Init());
 			}
 			else
 			{
@@ -177,34 +172,34 @@ public class InventoryController : MonoBehaviour {
 	
 	public void ShowPanel()
 	{
-		this.inventoryPanel.gameObject.SetActive(true);
+		this.InventoryPanel.gameObject.SetActive(true);
 	}
 	
 	public void HidePanel()
 	{
-		this.inventoryPanel.gameObject.SetActive(false);
+		this.InventoryPanel.gameObject.SetActive(false);
 	}
 	
 	public void AdjustItemPrefabs(int itemCount)
 	{
-		if(this.itemSceneObjects.Count > itemCount)
+		if(this._itemSceneObjects.Count > itemCount)
 		{
-			int numToRemove = this.itemSceneObjects.Count - itemCount;
+			int numToRemove = this._itemSceneObjects.Count - itemCount;
 			for(int z = 0; z < numToRemove; z++)
 			{
-				Destroy(this.itemSceneObjects[z].gameObject);
+				Destroy(this._itemSceneObjects[z].gameObject);
 			}
-			this.itemSceneObjects.RemoveRange(0, numToRemove);
+			this._itemSceneObjects.RemoveRange(0, numToRemove);
 		}
-		else if(this.itemSceneObjects.Count < itemCount)
+		else if(this._itemSceneObjects.Count < itemCount)
 		{
-			int numToAdd = itemCount - this.itemSceneObjects.Count;
+			int numToAdd = itemCount - this._itemSceneObjects.Count;
 			for(int z = 0; z < numToAdd; z++)
 			{
-				Transform go = Instantiate(this.invItemPrefab);
-				go.SetParent(this.listView, false);
+				Transform go = Instantiate(this.InvItemPrefab);
+				go.SetParent(this.ListView, false);
 				
-				this.itemSceneObjects.Add(go);
+				this._itemSceneObjects.Add(go);
 			}
 		}
 	}
@@ -219,111 +214,111 @@ public class InventoryController : MonoBehaviour {
 		
 		DeselectItems();
 		
-		this.activeItem = item;
-		this.activeItem.panelOutline.effectColor = this.activeItem.selectedColor;
+		this._activeItem = item;
+		this._activeItem.PanelOutline.effectColor = this._activeItem.SelectedColor;
 		UpdateDetails();
 	}
 	
 
 	public void DeselectItems()
 	{
-		this.activeItem = null;
-		foreach(var item in this.itemSceneObjects)
+		this._activeItem = null;
+		foreach(var item in this._itemSceneObjects)
 		{
 			InventoryItemController iic = item.GetComponent<InventoryItemController>();
-			iic.panelOutline.effectColor = iic.unselectedColor;
+			iic.PanelOutline.effectColor = iic.UnselectedColor;
 		}
 	}
 	
 	public void UpdateDetails()
 	{
-		if(activeItem.catlogItem == null)
+		if(_activeItem.CatalogItem == null)
 		 return;
 		 
-		this.active_itemUses.transform.parent.gameObject.SetActive(true);   // by default enable uses field
-		this.active_expiration.transform.parent.gameObject.SetActive(false); // by default disable expire field				
+		this.ActiveItemUses.transform.parent.gameObject.SetActive(true);   // by default enable uses field
+		this.ActiveExpiration.transform.parent.gameObject.SetActive(false); // by default disable expire field				
 		
-		this.active_itemName.text = this.activeItem.catlogItem.ItemId;
-		this.active_itemDescription.text = this.activeItem.catlogItem.Description;
-		this.active_itemUses.text =  ""+this.activeItem.itemInstance.RemainingUses;
+		this.ActiveItemName.text = this._activeItem.CatalogItem.ItemId;
+		this.ActiveItemDescription.text = this._activeItem.CatalogItem.Description;
+		this.ActiveItemUses.text =  ""+this._activeItem.ItemInstance.RemainingUses;
 		
-		if(this.activeItem.catlogItem.Bundle != null)
+		if(this._activeItem.CatalogItem.Bundle != null)
 		{
-			this.active_itemType.text = "Bundle";
+			this.ActiveItemType.text = "Bundle";
 			EnableDurableButton();
 		}
-		else if(this.activeItem.catlogItem.Container != null)
+		else if(this._activeItem.CatalogItem.Container != null)
 		{
-			this.active_itemType.text = "Container";
+			this.ActiveItemType.text = "Container";
 			EnableOpenButton();
 		}
-		else if(this.activeItem.catlogItem.Consumable.UsageCount > 0 && this.activeItem.catlogItem.Consumable.UsagePeriod == null)
+		else if(this._activeItem.CatalogItem.Consumable.UsageCount > 0 && this._activeItem.CatalogItem.Consumable.UsagePeriod == null)
 		{
-			this.active_itemType.text = "Consumable";
+			this.ActiveItemType.text = "Consumable";
 			EnableUseButton();
 		}
-		else if(this.activeItem.catlogItem.Consumable.UsageCount > 0 && this.activeItem.catlogItem.Consumable.UsagePeriod != null)
+		else if(this._activeItem.CatalogItem.Consumable.UsageCount > 0 && this._activeItem.CatalogItem.Consumable.UsagePeriod != null)
 		{
-			this.active_itemType.text = "Time-limited";
-			this.active_expiration.text = string.Format("{0:g}", this.activeItem.itemInstance.Expiration);
-			this.active_expiration.transform.parent.gameObject.SetActive(true);
+			this.ActiveItemType.text = "Time-limited";
+			this.ActiveExpiration.text = string.Format("{0:g}", this._activeItem.ItemInstance.Expiration);
+			this.ActiveExpiration.transform.parent.gameObject.SetActive(true);
 			EnableUseButton();
 		}
 		else 
 		{
-			this.active_itemType.text = "Durable";
-			this.active_itemUses.transform.parent.gameObject.SetActive(false); // hide uses field
+			this.ActiveItemType.text = "Durable";
+			this.ActiveItemUses.transform.parent.gameObject.SetActive(false); // hide uses field
 			EnableDurableButton();
 		}
 		
-		this.active_itemName.text = this.activeItem.catlogItem.DisplayName;
-		this.active_itemDescription.text = this.activeItem.catlogItem.Description;
-		this.active_itemId.text = this.activeItem.catlogItem.ItemId;
+		this.ActiveItemName.text = this._activeItem.CatalogItem.DisplayName;
+		this.ActiveItemDescription.text = this._activeItem.CatalogItem.Description;
+		this.ActiveItemId.text = this._activeItem.CatalogItem.ItemId;
 		
-		this.active_icon.overrideSprite = null;
+		this.ActiveIcon.overrideSprite = null;
 	}
 	
 	public void ClearDetails()
 	{
-		this.actionButton.onClick.RemoveAllListeners();
-		this.actionButton.interactable = false;
+		this.ActionButton.onClick.RemoveAllListeners();
+		this.ActionButton.interactable = false;
 		
-		Text btnText = this.actionButton.GetComponentInChildren<Text>();
+		Text btnText = this.ActionButton.GetComponentInChildren<Text>();
 		if(btnText != null)
 		{
 			btnText.text = string.Empty;
 		}
 
-		this.active_icon.overrideSprite = null;
-		this.active_itemType.text = string.Empty;
-		this.active_itemUses.text = string.Empty;
-		this.active_expiration.text = string.Empty;
-		this.active_itemName.text = string.Empty;
-		this.active_itemDescription.text = string.Empty;
-		this.active_itemId.text = string.Empty;
+		this.ActiveIcon.overrideSprite = null;
+		this.ActiveItemType.text = string.Empty;
+		this.ActiveItemUses.text = string.Empty;
+		this.ActiveExpiration.text = string.Empty;
+		this.ActiveItemName.text = string.Empty;
+		this.ActiveItemDescription.text = string.Empty;
+		this.ActiveItemId.text = string.Empty;
 	}
 
 	public void EnableUseButton()
 	{
-		this.actionButton.onClick.RemoveAllListeners();
-		this.actionButton.onClick.AddListener(() => { ConsumeItem(); });
-		this.actionButton.interactable = true;
-		this.actionButton.GetComponentInChildren<Text>().text = "Use / Consume Item";
+		this.ActionButton.onClick.RemoveAllListeners();
+		this.ActionButton.onClick.AddListener(() => { ConsumeItem(); });
+		this.ActionButton.interactable = true;
+		this.ActionButton.GetComponentInChildren<Text>().text = "Use / Consume Item";
 	}
 	
 	public void EnableOpenButton()
 	{
-		this.actionButton.onClick.RemoveAllListeners();
-		this.actionButton.onClick.AddListener(() => { UnlockContainer(); });
-		this.actionButton.interactable = true;
-		this.actionButton.GetComponentInChildren<Text>().text = "Open Container";
+		this.ActionButton.onClick.RemoveAllListeners();
+		this.ActionButton.onClick.AddListener(() => { UnlockContainer(); });
+		this.ActionButton.interactable = true;
+		this.ActionButton.GetComponentInChildren<Text>().text = "Open Container";
 	}
 	
 	public void EnableDurableButton()
 	{
-		this.actionButton.onClick.RemoveAllListeners();
-		this.actionButton.interactable = false;
-		this.actionButton.GetComponentInChildren<Text>().text = "Durable - No Actions";
+		this.ActionButton.onClick.RemoveAllListeners();
+		this.ActionButton.interactable = false;
+		this.ActionButton.GetComponentInChildren<Text>().text = "Durable - No Actions";
 	}
 	
 	public void CloseInventory()
@@ -338,19 +333,19 @@ public class InventoryController : MonoBehaviour {
 	
 	public void ConsumeItem()
 	{
-		Debug.Log("Consume Item: " + this.activeItem.catlogItem.ItemId);
-		PlayFab.Examples.Client.InventoryExample.ConsumeItem(this.activeItem.itemInstance.ItemInstanceId, 1);
+		Debug.Log("Consume Item: " + this._activeItem.CatalogItem.ItemId);
+		PlayFab.Examples.Client.InventoryExample.ConsumeItem(this._activeItem.ItemInstance.ItemInstanceId, 1);
 	}
 	
 	public void UnlockContainer()
 	{
-		Debug.Log("Unlocking Container: " + this.activeItem.catlogItem.ItemId);
-		PlayFab.Examples.Client.InventoryExample.UnlockContainer(this.activeItem.itemInstance.ItemId, this.activeItem.itemInstance.CatalogVersion);
+		Debug.Log("Unlocking Container: " + this._activeItem.CatalogItem.ItemId);
+		PlayFab.Examples.Client.InventoryExample.UnlockContainer(this._activeItem.ItemInstance.ItemId, this._activeItem.ItemInstance.CatalogVersion);
 		//unlock();
 	}
 	
 	public void OpenHelpUrl()
 	{
-		MainExampleController.OpenWebBrowser(this.activeHelpUrl);
+		MainExampleController.OpenWebBrowser(this.ActiveHelpUrl);
 	}
 }

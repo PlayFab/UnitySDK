@@ -47,7 +47,7 @@ namespace PlayFab.Json
     /// Initializes a new instance of the <see cref="JsonSerializationException"/> class
     /// with a specified error message.
     /// </summary>
-    /// <param name="message">The error message that explains the reason for the exception.</param>
+    /// <param name="message">The error Message that explains the reason for the exception.</param>
     public JsonSerializationException(string message)
       : base(message)
     {
@@ -57,7 +57,7 @@ namespace PlayFab.Json
     /// Initializes a new instance of the <see cref="JsonSerializationException"/> class
     /// with a specified error message and a reference to the inner exception that is the cause of this exception.
     /// </summary>
-    /// <param name="message">The error message that explains the reason for the exception.</param>
+    /// <param name="message">The error Message that explains the reason for the exception.</param>
     /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
     public JsonSerializationException(string message, Exception innerException)
       : base(message, innerException)
@@ -76,7 +76,7 @@ namespace PlayFab.Json
 
     internal static JsonSerializationException Create(IJsonLineInfo lineInfo, string path, string message, Exception ex)
     {
-      message = JsonPosition.FormatMessage(lineInfo, path, message);
+      message = JsonPosition.FormatMessage(lineInfo, path, Message);
 
       return new JsonSerializationException(message, ex);
     }

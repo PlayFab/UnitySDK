@@ -1,62 +1,59 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Linq;
-using PlayFab.ClientModels;
 using System.Collections.Generic;
 
 public class VCItemController : MonoBehaviour {
-	public Text vc_code;
-	public Button sub50Btn;
-	public InputField vc_balance;
-	public Button add50Btn;
-	public Button setBtn;
-	public Image banding;
+	public Text VcCode;
+	public Button Sub50Btn;
+	public InputField VcBalance;
+	public Button Add50Btn;
+	public Button SetBtn;
+	public Image Banding;
 
-	public int _balance;
-	public int _initialBalance;
+	public int Balance;
+	public int InitialBalance;
 	
 	public void Add(int amt)
 	{
-		this._balance += amt;
-		this.vc_balance.text = string.Format("{0:n0}", this._balance);
+		this.Balance += amt;
+		this.VcBalance.text = string.Format("{0:n0}", this.Balance);
 
 	}
 	
 	public void Sub(int amt)
 	{
-		this._balance = this._balance - amt >= 0 ? this._balance - amt : 0;
-		this.vc_balance.text = string.Format("{0:n0}", this._balance);
+		this.Balance = this.Balance - amt >= 0 ? this.Balance - amt : 0;
+		this.VcBalance.text = string.Format("{0:n0}", this.Balance);
 	}
 	
 	public void Init(KeyValuePair<string, int> kvp, bool useBanding = false)
 	{
-		this.vc_code.text = kvp.Key;
-		this.vc_balance.text = string.Format("{0:n0}", kvp.Value);
-		this._balance = kvp.Value;
-		this._initialBalance = this._balance;
+		this.VcCode.text = kvp.Key;
+		this.VcBalance.text = string.Format("{0:n0}", kvp.Value);
+		this.Balance = kvp.Value;
+		this.InitialBalance = this.Balance;
 		
-		this.vc_balance.onEndEdit.RemoveAllListeners();
-		this.vc_balance.onEndEdit.AddListener((string input) => { 
-			OnBalanceEdited(this.vc_balance.text);
+		this.VcBalance.onEndEdit.RemoveAllListeners();
+		this.VcBalance.onEndEdit.AddListener((string input) => { 
+			OnBalanceEdited(this.VcBalance.text);
 		});
 		
 		if(useBanding == true)
 		{
-			this.banding.enabled = true;
+			this.Banding.enabled = true;
 		}
 		else
 		{
-			this.banding.enabled = false;
+			this.Banding.enabled = false;
 		}
 	}
 	
 	
 	public void SetBalance()
 	{
-		int net = _balance - _initialBalance;
+		int net = Balance - InitialBalance;
 		
-		PlayFab.Examples.Client.InventoryExample.ModifyVcBalance(this.vc_code.text, net);
+		PlayFab.Examples.Client.InventoryExample.ModifyVcBalance(this.VcCode.text, net);
 	}
 	
 	public void OnBalanceEdited(string update)
@@ -64,12 +61,12 @@ public class VCItemController : MonoBehaviour {
 		int parsed;
 		if(System.Int32.TryParse(update, out parsed))
 		{
-			this._balance = parsed;
-			this.vc_balance.text = string.Format("{0:n0}", this._balance);
+			this.Balance = parsed;
+			this.VcBalance.text = string.Format("{0:n0}", this.Balance);
 		}
 		else
 		{
-			this.vc_balance.text = string.Format("{0:n0}", this._balance);
+			this.VcBalance.text = string.Format("{0:n0}", this.Balance);
 		}
 	}
 }

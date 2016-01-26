@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using System.Collections.Generic;
-using System.Collections;
 
 public class ExampleSectionController : MonoBehaviour {
 	public string SectionName;

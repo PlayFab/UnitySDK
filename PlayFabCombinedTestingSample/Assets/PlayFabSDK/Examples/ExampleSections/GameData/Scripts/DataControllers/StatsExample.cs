@@ -18,7 +18,7 @@ namespace PlayFab.Examples.Client
         }
         private static void GetUserStatisticsCallback(GetUserStatisticsResult result)
         {
-            PfSharedModelEx.currentUser.userStatistics = result.UserStatistics;
+            PfSharedModelEx.CurrentUser.UserStatistics = result.UserStatistics;
 			MainExampleController.DebugOutput("User Statistics Loaded.");
         }
 
@@ -35,7 +35,7 @@ namespace PlayFab.Examples.Client
             var updatedStats = ((UpdateUserStatisticsRequest)result.Request).UserStatistics;
 
             foreach (var statPair in updatedStats)
-                PfSharedModelEx.currentUser.userStatistics[statPair.Key] = statPair.Value;
+                PfSharedModelEx.CurrentUser.UserStatistics[statPair.Key] = statPair.Value;
                 
 			MainExampleController.DebugOutput("User Statistics Updated.");
         }

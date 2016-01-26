@@ -20,13 +20,13 @@ namespace PlayFab.Examples.Client
         private static void GetTitleDataCallback(ClientModels.GetTitleDataResult result)
         {
             foreach (var eachTitleEntry in result.Data)
-                PfSharedModelEx.titleData[eachTitleEntry.Key] = eachTitleEntry.Value;
+                PfSharedModelEx.TitleData[eachTitleEntry.Key] = eachTitleEntry.Value;
 			MainExampleController.DebugOutput("Title Data Loaded.");
         }
         
         public static void GetPublisherData()
         {
-			if(PlayFab.Examples.PfSharedModelEx.usePublisher == true)
+			if(PlayFab.Examples.PfSharedModelEx.UserPublisher == true)
 			{
 			 	var getRequest = new ClientModels.GetPublisherDataRequest();
             	getRequest.Keys = new System.Collections.Generic.List<string>();
@@ -37,7 +37,7 @@ namespace PlayFab.Examples.Client
         private static void GetPublisherDataCallback(ClientModels.GetPublisherDataResult result)
         {
             foreach (var eachPublisherEntry in result.Data)
-                PfSharedModelEx.publisherData[eachPublisherEntry.Key] = eachPublisherEntry.Value;
+                PfSharedModelEx.PublisherData[eachPublisherEntry.Key] = eachPublisherEntry.Value;
 			MainExampleController.DebugOutput("Publisher Data Loaded.");
         }
     }

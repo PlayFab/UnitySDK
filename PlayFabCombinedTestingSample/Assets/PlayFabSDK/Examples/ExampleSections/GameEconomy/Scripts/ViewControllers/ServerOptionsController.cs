@@ -1,34 +1,30 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.UI;
-using UnityEngine.Events;
-
 using PlayFab.ClientModels;
 
 public class ServerOptionsController : MonoBehaviour {
 
-	public EditVCController vcController;
-	public Transform serverOptionsPanel;
-	public string activeHelpUrl;
+	public EditVCController VcController;
+	public Transform ServerOptionsPanel;
+	public string ActiveHelpUrl;
 	
 	public void CloseOptionsPrompt()
 	{
 		this.gameObject.SetActive(false);
 	}
 	
-	public void OnAdjustVCBalancesClicked()
+	public void OnAdjustVcBalancesClicked()
 	{
-		vcController.gameObject.SetActive(true);
+		VcController.gameObject.SetActive(true);
 		
-		StartCoroutine(vcController.Init());
+		StartCoroutine(VcController.Init());
 	}
 	
 	public void OnGrantItemClicked()
 	{
 		Dictionary<string, string> items = new Dictionary<string, string>();
-		List<CatalogItem> catalog = PlayFab.Examples.PfSharedModelEx.GetCatalog(StoreController.activeCatalog);
+		List<CatalogItem> catalog = PlayFab.Examples.PfSharedModelEx.GetCatalog(StoreController.ActiveCatalog);
 		for(int z = 0; z < catalog.Count; z++)
 		{
 			items.Add(catalog[z].ItemId, catalog[z].DisplayName);
@@ -37,7 +33,7 @@ public class ServerOptionsController : MonoBehaviour {
 		System.Action<int> afterSelect = (int index) => 
 		{
 			string idToGive = items.ElementAt(index).Key;
-			PlayFab.Examples.Client.InventoryExample.GrantItem(idToGive, StoreController.activeCatalog);
+			PlayFab.Examples.Client.InventoryExample.GrantItem(idToGive, StoreController.ActiveCatalog);
 		};
 		
 		SharedDialogController.RequestSelectorPrompt("Select an item to grant", items.Values.ToList(), afterSelect);
@@ -48,9 +44,9 @@ public class ServerOptionsController : MonoBehaviour {
 		System.Action<int> afterSelect;
 		Dictionary<string, string> items = new Dictionary<string, string>();
 		
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
-			foreach(var item in PlayFab.Examples.PfSharedModelEx.currentUser.userInventory)
+			foreach(var item in PlayFab.Examples.PfSharedModelEx.CurrentUser.UserInventory)
 			{
 				items.Add (item.ItemInstanceId, item.DisplayName);
 			}
@@ -63,7 +59,7 @@ public class ServerOptionsController : MonoBehaviour {
 		}
 		else
 		{
-			foreach(var item in PlayFab.Examples.PfSharedModelEx.currentCharacter.characterInventory)
+			foreach(var item in PlayFab.Examples.PfSharedModelEx.CurrentCharacter.CharacterInventory)
 			{
 				items.Add (item.ItemInstanceId, item.DisplayName);
 			}
@@ -79,6 +75,6 @@ public class ServerOptionsController : MonoBehaviour {
 	
 	public void OpenHelpUrl()
 	{
-		MainExampleController.OpenWebBrowser(this.activeHelpUrl);
+		MainExampleController.OpenWebBrowser(this.ActiveHelpUrl);
 	}
 }

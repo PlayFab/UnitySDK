@@ -105,7 +105,7 @@ namespace PlayFab.AdminModels
         public DateTime Timestamp { get; set;}
 
         /// <summary>
-        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a Title has been selected
         /// </summary>
         public string TitleId { get; set;}
 
@@ -209,7 +209,7 @@ namespace PlayFab.AdminModels
         public CatalogItemContainerInfo Container { get; set;}
 
         /// <summary>
-        /// defines the bundle properties for the item - bundles are items which contain other items, including random drop tables and virtual currencies
+        /// defines the bundle properties for the item - bundles are items which contain other Items, including random drop tables and virtual currencies
         /// </summary>
         public CatalogItemBundleInfo Bundle { get; set;}
 
@@ -273,7 +273,7 @@ namespace PlayFab.AdminModels
     }
 
     /// <summary>
-    /// Containers are inventory items that can hold other items defined in the catalog, as well as virtual currency, which is added to the player inventory when the container is unlocked, using the UnlockContainerItem API. The items can be anything defined in the catalog, as well as RandomResultTable objects which will be resolved when the container is unlocked. Containers and their keys should be defined as Consumable (having a limited number of uses) in their catalog defintiions, unless the intent is for the player to be able to re-use them infinitely.
+    /// Containers are inventory items that can hold other Items defined in the catalog, as well as virtual currency, which is added to the player inventory when the container is unlocked, using the UnlockContainerItem API. The Items can be anything defined in the catalog, as well as RandomResultTable objects which will be resolved when the container is unlocked. Containers and their keys should be defined as Consumable (having a limited number of uses) in their catalog defintiions, unless the intent is for the player to be able to re-use them infinitely.
     /// </summary>
     public class CatalogItemContainerInfo
     {
@@ -558,7 +558,7 @@ namespace PlayFab.AdminModels
         public List<string> PlayFabIds { get; set;}
 
         /// <summary>
-        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a Title has been selected
         /// </summary>
         public string TitleId { get; set;}
     }
@@ -682,7 +682,7 @@ namespace PlayFab.AdminModels
     {
 
         /// <summary>
-        /// Number of content items returned. We currently have a maximum of 1000 items limit.
+        /// Number of content items returned. We currently have a maximum of 1000 Items limit.
         /// </summary>
         public long ItemCount { get; set;}
 
@@ -942,7 +942,7 @@ namespace PlayFab.AdminModels
         public DateTime Timestamp { get; set;}
 
         /// <summary>
-        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a Title has been selected
         /// </summary>
         public string TitleId { get; set;}
 
@@ -1193,7 +1193,7 @@ namespace PlayFab.AdminModels
         public string CatalogVersion { get; set;}
 
         /// <summary>
-        /// Array of items to grant and the users to whom the items are to be granted.
+        /// Array of items to grant and the users to whom the Items are to be granted.
         /// </summary>
         public List<ItemGrant> ItemGrants { get; set;}
     }
@@ -1494,7 +1494,7 @@ namespace PlayFab.AdminModels
         public DateTime Timestamp { get; set;}
 
         /// <summary>
-        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a Title has been selected
         /// </summary>
         public string TitleId { get; set;}
 
@@ -2069,7 +2069,7 @@ namespace PlayFab.AdminModels
         public string StoreId { get; set;}
 
         /// <summary>
-        /// array of store items - references to catalog items, with specific pricing - to be added
+        /// array of store items - references to catalog Items, with specific pricing - to be added
         /// </summary>
         public List<StoreItem> Store { get; set;}
     }

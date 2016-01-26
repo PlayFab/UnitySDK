@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DataTabInfo : MonoBehaviour {
-	public string HelpURL;
+	public string HelpUrl;
 	public string Title;
 	public string Description;
 }

@@ -119,7 +119,7 @@ namespace PlayFab.Json.Serialization
 
         // add line information to non-json.net exception message
         if (!(ex is JsonException))
-          message = JsonPosition.FormatMessage(lineInfo, path, message);
+          message = JsonPosition.FormatMessage(lineInfo, path, Message);
 
         TraceWriter.Trace(TraceLevel.Error, message, ex);
       }

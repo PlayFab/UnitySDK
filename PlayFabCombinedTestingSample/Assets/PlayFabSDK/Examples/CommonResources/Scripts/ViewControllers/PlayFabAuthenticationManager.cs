@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using PlayFab.ClientModels;
 
@@ -51,7 +50,7 @@ namespace PlayFab
 		//private static bool _isRegistered = false;
 		//private static bool _isCustomDRM = false;
 		private static RegistrationLinkType _linkType = RegistrationLinkType.None;
-		private static string _CustomGuid = string.Empty;
+		private static string _customGuid = string.Empty;
 		
 		public static PlayFabAuthenticationManager Instance { get; private set; }
 		
@@ -60,7 +59,7 @@ namespace PlayFab
 			//Singleton behaviour
 			Instance = this;
 			//If test mode, then create a mini guid that will append to all player prefs.
-			_CustomGuid = TestMode ? Guid.NewGuid().ToString().Substring(0, 7) : string.Empty;
+			_customGuid = TestMode ? Guid.NewGuid().ToString().Substring(0, 7) : string.Empty;
 			
 			//Don't destroy this object
 			DontDestroyOnLoad(gameObject);
@@ -154,7 +153,7 @@ namespace PlayFab
 //				{
 					//This will link / login via CustomID Until another Link Type has been established
 					_linkType = RegistrationLinkType.Custom;
-					PlayerPrefs.SetInt(string.Format("{0}_PlayFabLinkType", _CustomGuid), (int)_linkType);
+					PlayerPrefs.SetInt(string.Format("{0}_PlayFabLinkType", _customGuid), (int)_linkType);
 					if (ShowDebug)
 					{
 						Debug.Log("Not Registered: Establishing LinkType Custom");
@@ -209,7 +208,7 @@ namespace PlayFab
 				var customId = SystemInfo.deviceUniqueIdentifier;
 				if (TestMode)
 				{
-					customId = string.Format("{0}{1}", customId, _CustomGuid);
+					customId = string.Format("{0}{1}", customId, _customGuid);
 				}
 				
 				PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest()
@@ -226,7 +225,7 @@ namespace PlayFab
 		private void HandleLoginResult(LoginResult result, RegistrationLinkType linkType)
 		{
 			//_playFabId = result.PlayFabId;
-			PlayFab.Examples.PfSharedModelEx.currentUser.playFabId = result.PlayFabId;
+			PlayFab.Examples.PfSharedModelEx.CurrentUser.PlayFabId = result.PlayFabId;
 			
 			
 			//Get player Account info and store it.
@@ -234,7 +233,7 @@ namespace PlayFab
 			{
 				Debug.Log("Account Info Received Succesfully!");
 				AccountInfo = accountInfoResult.AccountInfo;
-				PlayFab.Examples.PfSharedModelEx.currentUser.accountInfo = accountInfoResult.AccountInfo;
+				PlayFab.Examples.PfSharedModelEx.CurrentUser.AccountInfo = accountInfoResult.AccountInfo;
 				
 				//We make this call here to ensure that Account Info is available after login.
 //				if (OnLoggedIn != null)

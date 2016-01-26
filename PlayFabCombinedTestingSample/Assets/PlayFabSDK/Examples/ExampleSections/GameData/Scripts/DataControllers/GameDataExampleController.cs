@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class GameDataExampleController : MonoBehaviour {
-	public string[] publisherKeys;
+	public string[] PublisherKeys;
 
 	public void RunOnStart()
 	{
@@ -23,7 +22,7 @@ public class GameDataExampleController : MonoBehaviour {
 	
 	void GetPlayerData()
 	{
-		if(PlayFab.Examples.PfSharedModelEx.activeMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
+		if(PlayFab.Examples.PfSharedModelEx.ActiveMode == PlayFab.Examples.PfSharedModelEx.ModelModes.User)
 		{
 			PlayFab.Examples.Client.UserDataExample.GetUserData();
 			PlayFab.Examples.Client.UserDataExample.GetUserReadOnlyData();
