@@ -1242,6 +1242,8 @@ namespace PlayFab.AdminModels
 
     public enum Interval
     {
+        FiveMinutes,
+        FifteenMinutes,
         Hour,
         Day,
         Week,
