@@ -1072,6 +1072,24 @@ namespace PlayFab.ClientModels
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
     }
 
+    public class GetCharacterStatisticsRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+    }
+
+    public class GetCharacterStatisticsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// The requested character statistics.
+        /// </summary>
+        public Dictionary<string,int> CharacterStatistics { get; set;}
+    }
+
     public class GetCloudScriptUrlRequest
     {
 
@@ -1492,6 +1510,24 @@ namespace PlayFab.ClientModels
         /// Mapping of Google identifiers to PlayFab identifiers.
         /// </summary>
         public List<GooglePlayFabIdPair> Data { get; set;}
+    }
+
+    public class GetPlayFabIDsFromKongregateIDsRequest
+    {
+
+        /// <summary>
+        /// Array of unique Kongregate identifiers (Kongregate's user_id) for which the title needs to get PlayFab identifiers.
+        /// </summary>
+        public List<string> KongregateIDs { get; set;}
+    }
+
+    public class GetPlayFabIDsFromKongregateIDsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Mapping of Kongregate identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<KongregatePlayFabIdPair> Data { get; set;}
     }
 
     public class GetPlayFabIDsFromPSNAccountIDsRequest
@@ -2022,7 +2058,7 @@ namespace PlayFab.ClientModels
         public Dictionary<string,string> CustomData { get; set;}
     }
 
-    public class ItemPuchaseRequest
+    public class ItemPurchaseRequest
     {
 
         /// <summary>
@@ -2044,6 +2080,20 @@ namespace PlayFab.ClientModels
         /// Items to be upgraded as a result of this purchase (upgraded items are hidden, as they are "replaced" by the new items).
         /// </summary>
         public List<string> UpgradeFromItems { get; set;}
+    }
+
+    public class KongregatePlayFabIdPair
+    {
+
+        /// <summary>
+        /// Unique Kongregate identifier for a user.
+        /// </summary>
+        public string KongregateId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Kongregate identifier.
+        /// </summary>
+        public string PlayFabId { get; set;}
     }
 
     public class LinkAndroidDeviceIDRequest
@@ -2284,6 +2334,11 @@ namespace PlayFab.ClientModels
         /// Settings specific to this user.
         /// </summary>
         public UserSettings SettingsForUser { get; set;}
+
+        /// <summary>
+        /// The time of this user's previous login. If there was no previous login, then it's DateTime.MinValue
+        /// </summary>
+        public DateTime? LastLoginTime { get; set;}
     }
 
     public class LoginWithAndroidDeviceIDRequest
@@ -3311,7 +3366,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Array of items to purchase.
         /// </summary>
-        public List<ItemPuchaseRequest> Items { get; set;}
+        public List<ItemPurchaseRequest> Items { get; set;}
     }
 
     public class StartPurchaseResult : PlayFabResultCommon
@@ -3739,6 +3794,24 @@ namespace PlayFab.ClientModels
         public uint DataVersion { get; set;}
     }
 
+    public class UpdateCharacterStatisticsRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+
+        /// <summary>
+        /// Statistics to be updated with the provided values.
+        /// </summary>
+        public Dictionary<string,int> CharacterStatistics { get; set;}
+    }
+
+    public class UpdateCharacterStatisticsResult : PlayFabResultCommon
+    {
+    }
+
     public class UpdatePlayerStatisticsRequest
     {
 
@@ -3843,44 +3916,97 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// unique identifier for the user account
+        /// Unique identifier for the user account
         /// </summary>
         public string PlayFabId { get; set;}
 
         /// <summary>
-        /// timestamp indicating when the user account was created
+        /// Timestamp indicating when the user account was created
         /// </summary>
         public DateTime Created { get; set;}
 
         /// <summary>
-        /// user account name in the PlayFab service
+        /// User account name in the PlayFab service
         /// </summary>
         public string Username { get; set;}
 
         /// <summary>
-        /// title-specific information for the user account
+        /// Title-specific information for the user account
         /// </summary>
         public UserTitleInfo TitleInfo { get; set;}
 
         /// <summary>
-        /// personal information for the user which is considered more sensitive
+        /// Personal information for the user which is considered more sensitive
         /// </summary>
         public UserPrivateAccountInfo PrivateInfo { get; set;}
 
         /// <summary>
-        /// user Facebook information, if a Facebook account has been linked
+        /// User Facebook information, if a Facebook account has been linked
         /// </summary>
         public UserFacebookInfo FacebookInfo { get; set;}
 
         /// <summary>
-        /// user Steam information, if a Steam account has been linked
+        /// User Steam information, if a Steam account has been linked
         /// </summary>
         public UserSteamInfo SteamInfo { get; set;}
 
         /// <summary>
-        /// user Gamecenter information, if a Gamecenter account has been linked
+        /// User Gamecenter information, if a Gamecenter account has been linked
         /// </summary>
         public UserGameCenterInfo GameCenterInfo { get; set;}
+
+        /// <summary>
+        /// User iOS device information, if an iOS device has been linked
+        /// </summary>
+        public UserIosDeviceInfo IosDeviceInfo { get; set;}
+
+        /// <summary>
+        /// User Android device information, if an Android device has been linked
+        /// </summary>
+        public UserAndroidDeviceInfo AndroidDeviceInfo { get; set;}
+
+        /// <summary>
+        /// User Kongregate account information, if a Kongregate account has been linked
+        /// </summary>
+        public UserKongregateInfo KongregateInfo { get; set;}
+
+        /// <summary>
+        /// User PSN account information, if a PSN account has been linked
+        /// </summary>
+        public UserPsnInfo PsnInfo { get; set;}
+
+        /// <summary>
+        /// User Google account information, if a Google account has been linked
+        /// </summary>
+        public UserGoogleInfo GoogleInfo { get; set;}
+
+        /// <summary>
+        /// User XBox account information, if a XBox account has been linked
+        /// </summary>
+        public UserXboxInfo XboxInfo { get; set;}
+
+        /// <summary>
+        /// Custom ID information, if a custom ID has been assigned
+        /// </summary>
+        public UserCustomIdInfo CustomIdInfo { get; set;}
+    }
+
+    public class UserAndroidDeviceInfo
+    {
+
+        /// <summary>
+        /// Android device ID
+        /// </summary>
+        public string AndroidDeviceId { get; set;}
+    }
+
+    public class UserCustomIdInfo
+    {
+
+        /// <summary>
+        /// Custom ID
+        /// </summary>
+        public string CustomId { get; set;}
     }
 
     public enum UserDataPermission
@@ -3931,6 +4057,53 @@ namespace PlayFab.ClientModels
         public string GameCenterId { get; set;}
     }
 
+    public class UserGoogleInfo
+    {
+
+        /// <summary>
+        /// Google ID
+        /// </summary>
+        public string GoogleId { get; set;}
+
+        /// <summary>
+        /// Email address of the Google account
+        /// </summary>
+        public string GoogleEmail { get; set;}
+
+        /// <summary>
+        /// Locale of the Google account
+        /// </summary>
+        public string GoogleLocale { get; set;}
+
+        /// <summary>
+        /// Gender information of the Google account
+        /// </summary>
+        public string GoogleGender { get; set;}
+    }
+
+    public class UserIosDeviceInfo
+    {
+
+        /// <summary>
+        /// iOS device ID
+        /// </summary>
+        public string IosDeviceId { get; set;}
+    }
+
+    public class UserKongregateInfo
+    {
+
+        /// <summary>
+        /// Kongregate ID
+        /// </summary>
+        public string KongregateId { get; set;}
+
+        /// <summary>
+        /// Kongregate Username
+        /// </summary>
+        public string KongregateName { get; set;}
+    }
+
     public enum UserOrigination
     {
         Organic,
@@ -3957,6 +4130,20 @@ namespace PlayFab.ClientModels
         /// user email address
         /// </summary>
         public string Email { get; set;}
+    }
+
+    public class UserPsnInfo
+    {
+
+        /// <summary>
+        /// PSN account ID
+        /// </summary>
+        public string PsnAccountId { get; set;}
+
+        /// <summary>
+        /// PSN online ID
+        /// </summary>
+        public string PsnOnlineId { get; set;}
     }
 
     public class UserSettings
@@ -4024,6 +4211,15 @@ namespace PlayFab.ClientModels
         /// boolean indicating whether or not the user is currently banned for a title
         /// </summary>
         public bool? isBanned { get; set;}
+    }
+
+    public class UserXboxInfo
+    {
+
+        /// <summary>
+        /// XBox user ID
+        /// </summary>
+        public string XboxUserId { get; set;}
     }
 
     public class ValidateAmazonReceiptRequest

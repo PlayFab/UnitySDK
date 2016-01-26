@@ -11,17 +11,12 @@ namespace PlayFab
     /// </summary>
     public static class PlayFabMatchmakerAPI
     {
-        public delegate void AuthUserCallback(AuthUserResponse result);
-        public delegate void PlayerJoinedCallback(PlayerJoinedResponse result);
-        public delegate void PlayerLeftCallback(PlayerLeftResponse result);
-        public delegate void StartGameCallback(StartGameResponse result);
-        public delegate void UserInfoCallback(UserInfoResponse result);
-
+        public delegate void ProcessApiCallback<in TResult>(TResult result) where TResult : PlayFabResultCommon;
 
         /// <summary>
         /// Validates a user with the PlayFab service
         /// </summary>
-        public static void AuthUser(AuthUserRequest request, AuthUserCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        public static void AuthUser(AuthUserRequest request, ProcessApiCallback<AuthUserResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -36,7 +31,7 @@ namespace PlayFab
         /// <summary>
         /// Informs the PlayFab game server hosting service that the indicated user has joined the Game Server Instance specified
         /// </summary>
-        public static void PlayerJoined(PlayerJoinedRequest request, PlayerJoinedCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        public static void PlayerJoined(PlayerJoinedRequest request, ProcessApiCallback<PlayerJoinedResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -51,7 +46,7 @@ namespace PlayFab
         /// <summary>
         /// Informs the PlayFab game server hosting service that the indicated user has left the Game Server Instance specified
         /// </summary>
-        public static void PlayerLeft(PlayerLeftRequest request, PlayerLeftCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        public static void PlayerLeft(PlayerLeftRequest request, ProcessApiCallback<PlayerLeftResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -66,7 +61,7 @@ namespace PlayFab
         /// <summary>
         /// Instructs the PlayFab game server hosting service to instantiate a new Game Server Instance
         /// </summary>
-        public static void StartGame(StartGameRequest request, StartGameCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        public static void StartGame(StartGameRequest request, ProcessApiCallback<StartGameResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
@@ -81,7 +76,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves the relevant details for a specified user, which the external match-making service can then use to compute effective matches
         /// </summary>
-        public static void UserInfo(UserInfoRequest request, UserInfoCallback resultCallback, ErrorCallback errorCallback, object customData = null)
+        public static void UserInfo(UserInfoRequest request, ProcessApiCallback<UserInfoResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
