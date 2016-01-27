@@ -219,6 +219,17 @@ namespace PlayFab
                     ApiRequestHandlers.Remove(urlPath);
             }
         }
+
+        /// <summary>
+        /// Forcefully unregister all listeners
+        /// Used for testing or shutdown
+        /// </summary>
+        public static void ForceUnregisterAll()
+        {
+            ApiRequestHandlers.Clear();
+            ApiResponseHandlers.Clear();
+            CallbackInstances.Clear();
+        }
         #endregion Public Api Un-registration
 
         #region Internal Api Callback functionality
