@@ -200,7 +200,9 @@ namespace PlayFab
         StatisticNameConflict = 1196,
         StatisticVersionClosedForWrites = 1197,
         StatisticVersionInvalid = 1198,
-        APIClientRequestRateLimitExceeded = 1199
+        APIClientRequestRateLimitExceeded = 1199,
+        InvalidJSONContent = 1200,
+        InvalidDropTable = 1201
     }
 
     public delegate void ErrorCallback(PlayFabError error);
