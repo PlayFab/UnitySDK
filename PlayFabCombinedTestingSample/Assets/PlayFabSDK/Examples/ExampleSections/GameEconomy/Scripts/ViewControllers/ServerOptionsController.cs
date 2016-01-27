@@ -24,7 +24,7 @@ public class ServerOptionsController : MonoBehaviour {
 	public void OnGrantItemClicked()
 	{
 		Dictionary<string, string> items = new Dictionary<string, string>();
-		List<CatalogItem> catalog = PlayFab.Examples.PfSharedModelEx.GetCatalog(StoreController.ActiveCatalog);
+		List<CatalogItem> catalog = PlayFab.Examples.PfSharedModelEx.GetCatalog(StoreController.ActiveItems);
 		for(int z = 0; z < catalog.Count; z++)
 		{
 			items.Add(catalog[z].ItemId, catalog[z].DisplayName);
@@ -33,7 +33,7 @@ public class ServerOptionsController : MonoBehaviour {
 		System.Action<int> afterSelect = (int index) => 
 		{
 			string idToGive = items.ElementAt(index).Key;
-			PlayFab.Examples.Client.InventoryExample.GrantItem(idToGive, StoreController.ActiveCatalog);
+			PlayFab.Examples.Client.InventoryExample.GrantItem(idToGive, StoreController.ActiveItems);
 		};
 		
 		SharedDialogController.RequestSelectorPrompt("Select an item to grant", items.Values.ToList(), afterSelect);

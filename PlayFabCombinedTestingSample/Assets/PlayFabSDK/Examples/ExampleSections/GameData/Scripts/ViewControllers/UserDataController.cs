@@ -6,21 +6,21 @@ using PlayFab;
 using PlayFab.ClientModels;
 
 public class UserDataController : MonoBehaviour {
-	public Color defaultButtonColor;
-	public Color selectedButtonColor;
-	public Color activeFieldBorderColor;
+	public Color DefaultButtonColor;
+	public Color SelectedButtonColor;
+	public Color ActiveFieldBorderColor;
 	
-	public Button UI_Add;
-	public Text UI_PrivateLabel;
-	public Text UI_DeleteLabel;
-	public Text UI_PanelTitle;
-	public Text UI_PanelDesc;
-	public Text UI_EmptySet;
+	public Button AddButton;
+	public Text PrivateLabel;
+	public Text DeleteLabel;
+	public Text PanelTitle;
+	public Text PanelDesc;
+	public Text EmptySet;
 	
-	public string activeHelpUrl;
+	public string ActiveHelpUrl;
 	
-	public Transform rowPrefab;
-	public Transform listView;
+	public Transform RowPrefab;
+	public Transform ListView;
 	
 	public enum UserDataStates 
 	{ 
@@ -39,11 +39,11 @@ public class UserDataController : MonoBehaviour {
 	
 	public UserDataStates CurrentState = UserDataStates.Deactivated;
 	
-	public List<Button> tabs = new List<Button>();
-	public List<UserDataRowController> rows = new List<UserDataRowController>();
+	public List<Button> Tabs = new List<Button>();
+	public List<UserDataRowController> Rows = new List<UserDataRowController>();
 	
-	public bool isListDirty = false; // for use when knowing to update or not.
-	private int minRows = 5;
+	//public bool isListDirty = false; // for use when knowing to update or not.
+	private int _minRows = 5;
 	
 	
 	public void OnEnable()
@@ -51,7 +51,6 @@ public class UserDataController : MonoBehaviour {
 		OnTabClicked(0);
 		PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
-	
 	
 	public void OnDisable()
 	{
@@ -220,46 +219,40 @@ public class UserDataController : MonoBehaviour {
 			break;
 		}	
 		
-		DataTabInfo info = tabs[index].GetComponent<DataTabInfo>();
-		this.UI_PanelTitle.text = info.Title + " Description";
-		this.UI_PanelDesc.text = info.Description;
-		this.activeHelpUrl = info.HelpUrl;
+		DataTabInfo info = Tabs[index].GetComponent<DataTabInfo>();
+		this.PanelTitle.text = info.Title + " Description";
+		this.PanelDesc.text = info.Description;
+		this.ActiveHelpUrl = info.HelpUrl;
 		
-		tabs[index].GetComponent<Image>().color = this.selectedButtonColor;
+		Tabs[index].GetComponent<Image>().color = this.SelectedButtonColor;
 		
 		StartCoroutine(Init ());
 	}
 	
 	public void ResetTabs()
 	{
-		foreach(var tab in tabs)
+		foreach(var tab in Tabs)
 		{
-			tab.GetComponent<Image>().color = this.defaultButtonColor;
+			tab.GetComponent<Image>().color = this.DefaultButtonColor;
 		}
 	}
 	
 	void DrawData(Dictionary<string, UserDataRecord> data)
 	{
 		// setup button states (can add keys or not)
-		this.UI_Add.gameObject.SetActive(true);
-		this.UI_DeleteLabel.gameObject.SetActive(true);
-		this.UI_PrivateLabel.gameObject.SetActive(true);
+		this.AddButton.gameObject.SetActive(true);
+		this.DeleteLabel.gameObject.SetActive(true);
+		this.PrivateLabel.gameObject.SetActive(true);
 	
-		if(data == null || data.Count == 0)
-		{
-			this.UI_EmptySet.gameObject.SetActive(true);
-			return;
-		}
-		else
-		{
-			this.UI_EmptySet.gameObject.SetActive(false);
-		}
+		bool hideObj = (data == null || data.Count == 0);
+		this.EmptySet.gameObject.SetActive(hideObj);
+		if (hideObj) return;
 		
 		int counter = 0;
 		foreach(KeyValuePair<string, UserDataRecord> item in data)
 		{
-			this.rows[counter].gameObject.SetActive(true);
-			this.rows[counter].Init(item, this, counter % 2 == 0 ? true : false, false, true, true);
+			this.Rows[counter].gameObject.SetActive(true);
+			this.Rows[counter].Init(item, this, counter % 2 == 0 ? true : false, false, true, true);
 			counter++;
 		}
 	}
@@ -267,25 +260,19 @@ public class UserDataController : MonoBehaviour {
 	void DrawDataRo(Dictionary<string, UserDataRecord> data)
 	{
 		// setup button states (can add keys or not)
-		this.UI_Add.gameObject.SetActive(false);
-		this.UI_DeleteLabel.gameObject.SetActive(false);
-		this.UI_PrivateLabel.gameObject.SetActive(true);
+		this.AddButton.gameObject.SetActive(false);
+		this.DeleteLabel.gameObject.SetActive(false);
+		this.PrivateLabel.gameObject.SetActive(true);
 		
-		if(data == null|| data.Count == 0)
-		{
-			this.UI_EmptySet.gameObject.SetActive(true);
-			return;
-		}
-		else
-		{
-			this.UI_EmptySet.gameObject.SetActive(false);
-		}
+		bool hideObj = (data == null || data.Count == 0);
+		this.EmptySet.gameObject.SetActive(hideObj);
+		if (hideObj) return;
 		
 		int counter = 0;
 		foreach(KeyValuePair<string, UserDataRecord> item in data)
 		{
-			this.rows[counter].gameObject.SetActive(true);
-			this.rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, true, false);
+			this.Rows[counter].gameObject.SetActive(true);
+			this.Rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, true, false);
 			counter++;
 		}
 	}
@@ -293,25 +280,19 @@ public class UserDataController : MonoBehaviour {
 	void DrawPubData(Dictionary<string, UserDataRecord> data)
 	{
 		// setup button states (can add keys or not)
-		this.UI_Add.gameObject.SetActive(true);
-		this.UI_DeleteLabel.gameObject.SetActive(true);
-		this.UI_PrivateLabel.gameObject.SetActive(true);
+		this.AddButton.gameObject.SetActive(true);
+		this.DeleteLabel.gameObject.SetActive(true);
+		this.PrivateLabel.gameObject.SetActive(true);
 		
-		if(data == null|| data.Count == 0)
-		{
-			this.UI_EmptySet.gameObject.SetActive(true);
-			return;
-		}
-		else
-		{
-			this.UI_EmptySet.gameObject.SetActive(false);
-		}
+		bool hideObj = (data == null || data.Count == 0);
+		this.EmptySet.gameObject.SetActive(hideObj);
+		if (hideObj) return;
 		
 		int counter = 0;
 		foreach(KeyValuePair<string, UserDataRecord> item in data)
 		{
-			this.rows[counter].gameObject.SetActive(true);
-			this.rows[counter].Init(item, this, counter % 2 == 0 ? true : false, false, true, true);
+			this.Rows[counter].gameObject.SetActive(true);
+			this.Rows[counter].Init(item, this, counter % 2 == 0 ? true : false, false, true, true);
 			counter++;
 		}
 	}
@@ -319,25 +300,19 @@ public class UserDataController : MonoBehaviour {
 	void DrawPubDataRo(Dictionary<string, UserDataRecord> data)
 	{
 		// setup button states (can add keys or not)
-		this.UI_Add.gameObject.SetActive(false);
-		this.UI_DeleteLabel.gameObject.SetActive(false);
-		this.UI_PrivateLabel.gameObject.SetActive(true);
+		this.AddButton.gameObject.SetActive(false);
+		this.DeleteLabel.gameObject.SetActive(false);
+		this.PrivateLabel.gameObject.SetActive(true);
 		 
-		if(data == null|| data.Count == 0)
-		{
-			this.UI_EmptySet.gameObject.SetActive(true);
-			return;
-		}
-		else
-		{
-			this.UI_EmptySet.gameObject.SetActive(false);
-		}
+		bool hideObj = (data == null || data.Count == 0);
+		this.EmptySet.gameObject.SetActive(hideObj);
+		if (hideObj) return;
 		
 		int counter = 0;
 		foreach(KeyValuePair<string, UserDataRecord> item in data)
 		{
-			this.rows[counter].gameObject.SetActive(true);
-			this.rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, true, false);
+			this.Rows[counter].gameObject.SetActive(true);
+			this.Rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, true, false);
 			counter++;
 		}
 	}
@@ -345,25 +320,19 @@ public class UserDataController : MonoBehaviour {
 	void DrawTitleData(Dictionary<string, string> data)
 	{
 		// setup button states (can add keys or not)
-		this.UI_Add.gameObject.SetActive(false);
-		this.UI_DeleteLabel.gameObject.SetActive(false);
-		this.UI_PrivateLabel.gameObject.SetActive(false);
+		this.AddButton.gameObject.SetActive(false);
+		this.DeleteLabel.gameObject.SetActive(false);
+		this.PrivateLabel.gameObject.SetActive(false);
 		
-		if(data == null|| data.Count == 0)
-		{
-			this.UI_EmptySet.gameObject.SetActive(true);
-			return;
-		}
-		else
-		{
-			this.UI_EmptySet.gameObject.SetActive(false);
-		}
+		bool hideObj = (data == null || data.Count == 0);
+		this.EmptySet.gameObject.SetActive(hideObj);
+		if (hideObj) return;
 		
 		int counter = 0;
 		foreach(KeyValuePair<string, string> item in data)
 		{
-			this.rows[counter].gameObject.SetActive(true);
-			this.rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, false, false);
+			this.Rows[counter].gameObject.SetActive(true);
+			this.Rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, false, false);
 			counter++;
 		}
 	}
@@ -371,38 +340,28 @@ public class UserDataController : MonoBehaviour {
 	void DrawPublisherData(Dictionary<string, string> data)
 	{
 		// setup button states (can add keys or not)
-		this.UI_Add.gameObject.SetActive(false);
-		this.UI_DeleteLabel.gameObject.SetActive(false);
-		this.UI_PrivateLabel.gameObject.SetActive(false);
+		this.AddButton.gameObject.SetActive(false);
+		this.DeleteLabel.gameObject.SetActive(false);
+		this.PrivateLabel.gameObject.SetActive(false);
 	}
 	
 	
 	void DrawStatistics(Dictionary<string, int> data)
 	{
 		// setup button states (can add keys or not)
-		this.UI_Add.gameObject.SetActive(false);
-		this.UI_DeleteLabel.gameObject.SetActive(false);
-		this.UI_PrivateLabel.gameObject.SetActive(false);
+		this.AddButton.gameObject.SetActive(false);
+		this.DeleteLabel.gameObject.SetActive(false);
+		this.PrivateLabel.gameObject.SetActive(false);
 		
-//		bool hideObj = (data == null || data.Count == 0);
-//		this.UI_EmptySet.gameObject.SetActive(!hideObj);
-//		if (hideObj) return;
-		
-		if(data == null|| data.Count == 0)
-		{
-			this.UI_EmptySet.gameObject.SetActive(true);
-			return;
-		}
-		else
-		{
-			this.UI_EmptySet.gameObject.SetActive(false);
-		}
+		bool hideObj = (data == null || data.Count == 0);
+		this.EmptySet.gameObject.SetActive(hideObj);
+		if (hideObj) return;
 		
 		int counter = 0;
 		foreach(KeyValuePair<string, int> item in data)
 		{
-			this.rows[counter].gameObject.SetActive(true);
-			this.rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, false, false);
+			this.Rows[counter].gameObject.SetActive(true);
+			this.Rows[counter].Init(item, this, counter % 2 == 0 ? true : false, true, false, false);
 			counter++;
 		}
 	}
@@ -410,29 +369,29 @@ public class UserDataController : MonoBehaviour {
 	
 	IEnumerator AdjustItems(int count)
 	{
-		if(rows.Count > count)
+		if(Rows.Count > count)
 		{
-			for(int z = 0; z < this.rows.Count - count; z++)
+			for(int z = 0; z < this.Rows.Count - count; z++)
 			{
-				if(this.rows.Count > this.minRows)
+				if(this.Rows.Count > this._minRows)
 				{
-			   		Destroy(this.rows[z].gameObject);
-			   		this.rows.RemoveAt(z);
+			   		Destroy(this.Rows[z].gameObject);
+			   		this.Rows.RemoveAt(z);
 			   	}
 			}
 		}
-		else if (rows.Count < count)
+		else if (Rows.Count < count)
 		{
 			int rowsCreated = 0;
-			while(this.rows.Count < count)
+			while(this.Rows.Count < count)
 			{
-				Transform trans = Instantiate(this.rowPrefab);
-				trans.SetParent(this.listView, false);
+				Transform trans = Instantiate(this.RowPrefab);
+				trans.SetParent(this.ListView, false);
 				
 				UserDataRowController itemController = trans.GetComponent<UserDataRowController>();
 				
 				itemController.Init (new KeyValuePair<string, UserDataRecord>("____", new UserDataRecord()), this, rowsCreated % 2 == 0 ? true : false, false, false, false);
-				this.rows.Add(itemController); 
+				this.Rows.Add(itemController); 
 				rowsCreated++;
 				
 			}
@@ -440,10 +399,10 @@ public class UserDataController : MonoBehaviour {
 		}
 		
 		// hide objects, will turn on when they are needed
-		for(int z = 0; z < this.rows.Count; z++)
+		for(int z = 0; z < this.Rows.Count; z++)
 		{
-			this.rows[z].ResetRow();
-			this.rows[z].gameObject.SetActive(false);
+			this.Rows[z].ResetRow();
+			this.Rows[z].gameObject.SetActive(false);
 		}
 		yield break;
 	}
@@ -488,8 +447,8 @@ public class UserDataController : MonoBehaviour {
 	
 	public void AddRowToData()
 	{
-		Transform trans = Instantiate(this.rowPrefab);
-		trans.SetParent(this.listView, false);
+		Transform trans = Instantiate(this.RowPrefab);
+		trans.SetParent(this.ListView, false);
 		
 		UserDataRowController itemController = trans.GetComponent<UserDataRowController>();
 		bool usePermissions = true;
@@ -505,8 +464,8 @@ public class UserDataController : MonoBehaviour {
 			enableDelete = false;
 		}
 		
-		itemController.Init (new KeyValuePair<string, UserDataRecord>("",new UserDataRecord()), this, this.rows.Count % 2 == 0 ? true : false, false, usePermissions, enableDelete);
-		this.rows.Add(itemController); 
+		itemController.Init (new KeyValuePair<string, UserDataRecord>("",new UserDataRecord()), this, this.Rows.Count % 2 == 0 ? true : false, false, usePermissions, enableDelete);
+		this.Rows.Add(itemController); 
 	}
 	
 	public void SaveActiveData()
@@ -515,48 +474,48 @@ public class UserDataController : MonoBehaviour {
 		Dictionary<string, string> publicKeysToSave = new Dictionary<string, string>(); 
 		Dictionary<string, string> privateKeysToSave = new Dictionary<string, string>(); 
 		
-		for(var z = 0; z < this.rows.Count; z++)
+		for(var z = 0; z < this.Rows.Count; z++)
 		{
 			// get deletes
-			if(rows[z].deleteToggle.isOn)
+			if(Rows[z].deleteToggle.isOn)
 			{
-				keysToDelete.Add(rows[z].originalKey);
+				keysToDelete.Add(Rows[z].originalKey);
 				continue;
 			}
 			
 			//ignore deactivated rows
-			if(rows[z].gameObject.activeInHierarchy == false)
+			if(Rows[z].gameObject.activeInHierarchy == false)
 			{
 				continue;
 			}
 			
 			//remove blank keys & build the save dict
-			if(!string.IsNullOrEmpty(rows[z].keyField.text))
+			if(!string.IsNullOrEmpty(Rows[z].keyField.text))
 			{
-				if(rows[z].keyField.text != rows[z].originalKey && rows[z].isNewRecord != true)
+				if(Rows[z].keyField.text != Rows[z].originalKey && Rows[z].isNewRecord != true)
 				{
 					// the key has been changed, delete the old one and add new one.
-					Debug.Log(string.Format("Key:{0}, deleted due to mismatch, {1} added in it's place.", rows[z].originalKey, rows[z].keyField.text));
-					keysToDelete.Add(rows[z].originalKey);
+					Debug.Log(string.Format("Key:{0}, deleted due to mismatch, {1} added in it's place.", Rows[z].originalKey, Rows[z].keyField.text));
+					keysToDelete.Add(Rows[z].originalKey);
 					
-					if(rows[z].permissionToggle.isOn)
+					if(Rows[z].permissionToggle.isOn)
 					{
-						privateKeysToSave.Add(rows[z].keyField.text, rows[z].valueField.text);
+						privateKeysToSave.Add(Rows[z].keyField.text, Rows[z].valueField.text);
 					}
 					else
 					{
-						publicKeysToSave.Add(rows[z].keyField.text, rows[z].valueField.text);
+						publicKeysToSave.Add(Rows[z].keyField.text, Rows[z].valueField.text);
 					}
 				}
 				else
 				{
-					if(rows[z].permissionToggle.isOn)
+					if(Rows[z].permissionToggle.isOn)
 					{
-						privateKeysToSave.Add(rows[z].keyField.text, rows[z].valueField.text);
+						privateKeysToSave.Add(Rows[z].keyField.text, Rows[z].valueField.text);
 					}
 					else
 					{
-						publicKeysToSave.Add(rows[z].keyField.text, rows[z].valueField.text);
+						publicKeysToSave.Add(Rows[z].keyField.text, Rows[z].valueField.text);
 					}
 				}
 			}
@@ -619,7 +578,7 @@ public class UserDataController : MonoBehaviour {
 	
 	public void GetHelp()
 	{
-		PlayFab.Examples.PfSharedControllerEx.OpenHelpUrl(this.activeHelpUrl);
+		PlayFab.Examples.PfSharedControllerEx.OpenHelpUrl(this.ActiveHelpUrl);
 	}
 	
 	

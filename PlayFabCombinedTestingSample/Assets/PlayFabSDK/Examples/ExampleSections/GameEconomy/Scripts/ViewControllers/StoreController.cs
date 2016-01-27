@@ -25,25 +25,25 @@ public class StoreController : MonoBehaviour {
 	public StoreItemController SelectedItem;
 
 	// SET catalog and store name defaults here.
-	public static string ActiveCatalog = string.Empty;
-	public static string ActiveStore = string.Empty;
-	public static string PendingCatalog = string.Empty;
-	public static string PendingStore = string.Empty;
+	public static string ActiveItems = string.Empty;
+	public static string PendingItems = string.Empty;
+
 	
 	// Use this for initialization
 	void Awake () {
-		ActiveCatalog = PfSharedModelEx.PrimaryCatalogVersion;
+		ActiveItems = PfSharedModelEx.PrimaryCatalogVersion;
 	}
 	
 	void OnEnable()
 	{
+		PlayFab.PlayFabSettings.RegisterForResponses("/Client/GetCatalogItems", GetType().GetMethod("OnCatalogItemsRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
+		PlayFab.PlayFabSettings.RegisterForResponses("/Client/GetStoreItems", GetType().GetMethod("OnStoreItemsRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		
-		PlayFab.PlayFabSettings.RegisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 		HideStorePane();
 		
 		if(this.DisplayState == StoreControllerStates.GetCatalog)
 		{
-			if(PfSharedModelEx.IsCatalogCached(ActiveCatalog))
+			if(PfSharedModelEx.IsCatalogCached(ActiveItems))
 			{
 				ShowCatalog();
 			}
@@ -54,7 +54,7 @@ public class StoreController : MonoBehaviour {
 		}
 		else
 		{
-			if(PfSharedModelEx.IsStoreCached(ActiveStore))
+			if(PfSharedModelEx.IsStoreCached(ActiveItems))
 			{
 				ShowStore();
 			}
@@ -67,44 +67,35 @@ public class StoreController : MonoBehaviour {
 	
 	public void OnDisable()
 	{
-		PlayFab.PlayFabSettings.UnregisterForResponses(null, GetType().GetMethod("OnDataRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
+		PlayFab.PlayFabSettings.UnregisterForResponses("/Client/GetCatalogItems", GetType().GetMethod("OnCatalogItemsRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
+		PlayFab.PlayFabSettings.UnregisterForResponses("/Client/GetStoreItems", GetType().GetMethod("OnStoreItemsRetrieved", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public), this);
 	}
 	
-	public void OnDataRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
+	
+	public void OnStoreItemsRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
 	{
-		if(this.gameObject.activeInHierarchy == true && this.DisplayState == StoreControllerStates.GetCatalog)
+		Debug.Log("Store Viewer: GotData:" + url);
+		
+		if(!string.IsNullOrEmpty(PendingItems))
 		{
-			switch(url)
-			{
-				case "/Client/GetCatalogItems":
-					Debug.Log("Catalog Viewer: GotData:" + url);
-					
-					if(!string.IsNullOrEmpty(PendingCatalog))
-					{
-						ActiveCatalog = PendingCatalog;
-						PendingCatalog = string.Empty;
-					}
-					ShowCatalog();
-					break;
-			}
+			ActiveItems = PendingItems;
+			PendingItems = string.Empty;
 		}
-		else if(this.gameObject.activeInHierarchy == true && this.DisplayState == StoreControllerStates.GetStore)
+		ShowStore();
+	}	
+	
+	public void OnCatalogItemsRetrieved(string url, int callId, object request, object result, PlayFab.PlayFabError error, object customData)
+	{
+		Debug.Log("Catalog Viewer: GotData:" + url);
+		
+		if(!string.IsNullOrEmpty(PendingItems))
 		{
-			switch(url)
-			{
-				case "/Client/GetStoreItems":
-					Debug.Log("Store Viewer: GotData:" + url);
-					
-					if(!string.IsNullOrEmpty(PendingStore))
-					{
-						ActiveStore = PendingStore;
-						PendingStore = string.Empty;
-					}
-					ShowStore();
-					break;
-			}
+			ActiveItems = PendingItems;
+			PendingItems = string.Empty;
 		}
+		ShowCatalog();
 	}
+	
 	
 	public void ChangeCatalog()
 	{
@@ -115,25 +106,25 @@ public class StoreController : MonoBehaviour {
 				if(PfSharedModelEx.IsCatalogCached(response))
 				{
 					// store already retrived, draw it
-					ActiveCatalog = response;
+					ActiveItems = response;
 					ShowCatalog();
 				}
 				else
 				{
 					// need to wait on store to load before drawing it
-					PendingCatalog = response;
+					PendingItems = response;
 					PlayFab.Examples.Client.InventoryExample.LoadCatalogFromPlayFab(response);  
 				}
 			}
 			else
 			{
-				ActiveCatalog = PfSharedModelEx.PrimaryCatalogVersion;
+				ActiveItems = PfSharedModelEx.PrimaryCatalogVersion;
 				ShowCatalog();
 			}
 		};
 		
 
-		SharedDialogController.RequestTextInputPrompt("Catalog Mode:","Enter the name of the catalog you wish to retrieve. (Leave blank for the primary catalog)", afterInput, PendingCatalog);
+		SharedDialogController.RequestTextInputPrompt("Catalog Mode:","Enter the name of the catalog you wish to retrieve. (Leave blank for the primary catalog)", afterInput, PendingItems);
 
 	}
 	
@@ -146,14 +137,14 @@ public class StoreController : MonoBehaviour {
 				if(PfSharedModelEx.IsStoreCached(response))
 				{
 					// store already retrived, draw it
-					ActiveStore = response;
+					ActiveItems = response;
 					ShowStore();
 				}
 				else
 				{
 					// need to wait on store to load before drawing it
-					PendingStore = response;
-					PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(response, ActiveCatalog); 
+					PendingItems = response;
+					PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(response, ActiveItems); 
 				}
 			}
 			else
@@ -166,7 +157,7 @@ public class StoreController : MonoBehaviour {
 			}
 		};
 		
-		SharedDialogController.RequestTextInputPrompt("Store Mode:","Enter the name of the store you wish to retrieve.", afterInput, PendingStore);
+		SharedDialogController.RequestTextInputPrompt("Store Mode:","Enter the name of the store you wish to retrieve.", afterInput, PendingItems);
 	}
 	
 	
@@ -189,7 +180,7 @@ public class StoreController : MonoBehaviour {
 				StoreItemController itemController = this._itemSceneObjects[counter].GetComponent<StoreItemController>();
 				
 				// need to look at the corresponding catalogItem, as it has more details to display.
-				CatalogItem cItem = PlayFab.Examples.PfSharedModelEx.GetCatalogItemById(item.ItemId, ActiveCatalog);
+				CatalogItem cItem = PlayFab.Examples.PfSharedModelEx.GetCatalogItemById(item.ItemId, ActiveItems);
 				
 				if(cItem != null)
 				{
@@ -250,10 +241,10 @@ public class StoreController : MonoBehaviour {
 	
 	public void ShowStore()
 	{
-		this.PanelTitleBar.text = string.Format("Store: \"{0}\"", ActiveStore);
+		this.PanelTitleBar.text = string.Format("Store: \"{0}\"", ActiveItems);
 		this.OverlayTint.SetActive(true);
 		this.StorePanel.SetActive(true);
-		InitStore(PfSharedModelEx.GetStore(ActiveStore));
+		InitStore(PfSharedModelEx.GetStore(ActiveItems));
 		
 		if(Wallet.gameObject.activeInHierarchy)
 		{
@@ -270,15 +261,15 @@ public class StoreController : MonoBehaviour {
 	
 	public void ShowCatalog()
 	{
-		if(string.IsNullOrEmpty(ActiveCatalog))
+		if(string.IsNullOrEmpty(ActiveItems))
 		{
-			ActiveCatalog = PfSharedModelEx.PrimaryCatalogVersion; 
+			ActiveItems = PfSharedModelEx.PrimaryCatalogVersion; 
 		}
 		
-		this.PanelTitleBar.text = string.Format("Catalog: \"{0}\"", ActiveCatalog);
+		this.PanelTitleBar.text = string.Format("Catalog: \"{0}\"", ActiveItems);
 		this.OverlayTint.SetActive(true);
 		this.StorePanel.SetActive(true);
-		InitCatalog(PfSharedModelEx.GetCatalog(ActiveCatalog));
+		InitCatalog(PfSharedModelEx.GetCatalog(ActiveItems));
 		StartCoroutine(Wallet.Init());
 	}
 	
@@ -311,11 +302,11 @@ public class StoreController : MonoBehaviour {
 		// TODO file bug on the VC price info being a uint rather than an int.		
 		if(this.DisplayState == StoreControllerStates.GetStore)
 		{
-			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, ActiveStore, ActiveCatalog);
+			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, ActiveItems, ActiveItems);
 		}
 		else if(this.DisplayState == StoreControllerStates.GetCatalog)
 		{
-			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, null, ActiveCatalog);
+			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, null, ActiveItems);
 		}
 	}
 	
@@ -334,11 +325,11 @@ public class StoreController : MonoBehaviour {
 	{
 		if(this.DisplayState == StoreControllerStates.GetCatalog)
 		{
-			PlayFab.Examples.Client.InventoryExample.LoadCatalogFromPlayFab(ActiveCatalog);
+			PlayFab.Examples.Client.InventoryExample.LoadCatalogFromPlayFab(ActiveItems);
 		}
 		else
 		{
-			PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(ActiveStore, ActiveCatalog);	
+			PlayFab.Examples.Client.InventoryExample.LoadStoreFromPlayFab(ActiveItems, ActiveItems);	
 		}
 	}
 	
