@@ -126,12 +126,12 @@ namespace PlayFab.Internal
             PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, null, null);
             UUnitAssert.True(callbacks.Contains("OnRequest_InstGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnRequest_InstLogin"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             callbacks.Clear();
             WaitForApiCalls();
             UUnitAssert.True(callbacks.Contains("OnResponse_InstGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnResponse_InstLogin"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             listener.Unregister();
         }
 
@@ -143,12 +143,12 @@ namespace PlayFab.Internal
             PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, null, null);
             UUnitAssert.True(callbacks.Contains("OnRequest_StaticGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnRequest_StaticLogin"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             callbacks.Clear();
             WaitForApiCalls();
             UUnitAssert.True(callbacks.Contains("OnResponse_StaticGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnResponse_StaticLogin"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             EventStaticListener.Unregister();
         }
 
@@ -161,13 +161,13 @@ namespace PlayFab.Internal
             PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, OnSuccessLocal, null);
             UUnitAssert.True(callbacks.Contains("OnRequest_InstGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnRequest_InstLogin"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             callbacks.Clear();
             WaitForApiCalls();
             UUnitAssert.True(callbacks.Contains("OnResponse_InstGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnResponse_InstLogin"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnSuccessLocal"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(3, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(3, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             listener.Unregister();
         }
 
@@ -179,13 +179,13 @@ namespace PlayFab.Internal
             PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, OnSuccessLocal, null);
             UUnitAssert.True(callbacks.Contains("OnRequest_StaticGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnRequest_StaticLogin"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             callbacks.Clear();
             WaitForApiCalls();
             UUnitAssert.True(callbacks.Contains("OnResponse_StaticGl"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnResponse_StaticLogin"), string.Join(", ", callbacks.ToArray()));
             UUnitAssert.True(callbacks.Contains("OnSuccessLocal"), string.Join(", ", callbacks.ToArray()));
-            UUnitAssert.Equals(3, callbacks.Count, string.Join(", ", callbacks.ToArray()));
+            UUnitAssert.IntEquals(3, callbacks.Count, string.Join(", ", callbacks.ToArray()));
             EventStaticListener.Unregister();
         }
 

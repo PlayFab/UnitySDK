@@ -185,7 +185,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.RegisterPlayFabUser(registerRequest, RegisterCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Registration Successful", lastReceivedMessage); // If we get here, we definitely registered a new user, and we definitely want to verify success
+            UUnitAssert.StringEquals("User Registration Successful", lastReceivedMessage); // If we get here, we definitely registered a new user, and we definitely want to verify success
 
             UUnitAssert.True(PlayFabClientAPI.IsClientLoggedIn(), "User login failed");
         }
@@ -212,7 +212,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.LoginWithEmailAddress(loginRequest, LoginCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals(PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful", PlayFabSettings.AdvertisingIdType);
+            UUnitAssert.StringEquals(PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful", PlayFabSettings.AdvertisingIdType);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetUserData(getRequest, GetUserDataCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Data Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Data Received", lastReceivedMessage);
             int.TryParse(testCounterReturn.Value, out testCounterValueExpected);
             testCounterValueExpected = (testCounterValueExpected + 1) % 100; // This test is about the expected value changing - but not testing more complicated issues like bounds
 
@@ -241,15 +241,15 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Data Updated", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Data Updated", lastReceivedMessage);
 
             getRequest = new ClientModels.GetUserDataRequest();
             PlayFabClientAPI.GetUserData(getRequest, GetUserDataCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Data Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Data Received", lastReceivedMessage);
             int.TryParse(testCounterReturn.Value, out testCounterValueActual);
-            UUnitAssert.Equals(testCounterValueExpected, testCounterValueActual);
+            UUnitAssert.IntEquals(testCounterValueExpected, testCounterValueActual);
 
             DateTime timeUpdated = testCounterReturn.LastUpdated;
             DateTime minTest = DateTime.UtcNow - TimeSpan.FromMinutes(5);
@@ -290,7 +290,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetUserStatistics(getRequest, GetUserStatsCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Stats Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Stats Received", lastReceivedMessage);
             testStatExpected = ((testStatReturn + 1) % TEST_STAT_BASE) + TEST_STAT_BASE; // This test is about the expected value changing (incrementing through from TEST_STAT_BASE to TEST_STAT_BASE * 2 - 1)
 
             var updateRequest = new ClientModels.UpdateUserStatisticsRequest();
@@ -302,21 +302,21 @@ namespace PlayFab.UUnit
             // Test update result - no data returned, so error or no error, based on Title settings
             if (!TITLE_CAN_UPDATE_SETTINGS)
             {
-                UUnitAssert.Equals("error message from PlayFab", lastReceivedMessage);
+                UUnitAssert.StringEquals("error message from PlayFab", lastReceivedMessage);
                 return; // The rest of this tests changing settings - Which we verified we cannot do
             }
             else // if (CAN_UPDATE_SETTINGS)
             {
-                UUnitAssert.Equals("User Stats Updated", lastReceivedMessage);
+                UUnitAssert.StringEquals("User Stats Updated", lastReceivedMessage);
             }
 
             getRequest = new ClientModels.GetUserStatisticsRequest();
             PlayFabClientAPI.GetUserStatistics(getRequest, GetUserStatsCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Stats Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Stats Received", lastReceivedMessage);
             testStatActual = testStatReturn;
-            UUnitAssert.Equals(testStatExpected, testStatActual);
+            UUnitAssert.IntEquals(testStatExpected, testStatActual);
         }
         private void GetUserStatsCallback(GetUserStatisticsResult result)
         {
@@ -343,7 +343,7 @@ namespace PlayFab.UUnit
             PlayFabServerAPI.GetAllUsersCharacters(request, GetCharsCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("Get Chars Successful", lastReceivedMessage);
+            UUnitAssert.StringEquals("Get Chars Successful", lastReceivedMessage);
             // The target character may not exist, but we don't fail, since we can create it below
 
             if (targetCharacter == null)
@@ -356,13 +356,13 @@ namespace PlayFab.UUnit
                 PlayFabServerAPI.GrantCharacterToUser(grantRequest, GrantCharCallback, SharedErrorCallback);
                 WaitForApiCalls();
 
-                UUnitAssert.Equals("Grant Char Successful", lastReceivedMessage);
+                UUnitAssert.StringEquals("Grant Char Successful", lastReceivedMessage);
 
                 // Attempt to get characters again
                 PlayFabServerAPI.GetAllUsersCharacters(request, GetCharsCallback, SharedErrorCallback);
                 WaitForApiCalls();
 
-                UUnitAssert.Equals("Get Chars Successful", lastReceivedMessage);
+                UUnitAssert.StringEquals("Get Chars Successful", lastReceivedMessage);
             }
 
             // Save the requested character
@@ -395,7 +395,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetLeaderboardAroundCurrentUser(clientRequest, GetClientLbCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("Get Client Leaderboard Successful", lastReceivedMessage);
+            UUnitAssert.StringEquals("Get Client Leaderboard Successful", lastReceivedMessage);
             // Testing anything more would be testing actual functionality of the Leaderboard, which is outside the scope of this test.
 
             var serverRequest = new ServerModels.GetLeaderboardAroundCharacterRequest();
@@ -406,7 +406,7 @@ namespace PlayFab.UUnit
             PlayFabServerAPI.GetLeaderboardAroundCharacter(serverRequest, GetServerLbCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("Get Server Leaderboard Successful", lastReceivedMessage);
+            UUnitAssert.StringEquals("Get Server Leaderboard Successful", lastReceivedMessage);
         }
         public void GetClientLbCallback(PlayFab.ClientModels.GetLeaderboardAroundCurrentUserResult result)
         {
@@ -436,7 +436,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetAccountInfo(request, AcctInfoCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("Enums tested", lastReceivedMessage);
+            UUnitAssert.StringEquals("Enums tested", lastReceivedMessage);
         }
         private void AcctInfoCallback(GetAccountInfoResult result)
         {
@@ -467,8 +467,8 @@ namespace PlayFab.UUnit
             var request = new RunCloudScriptRequest();
             request.ActionId = "helloWorld";
             PlayFabClientAPI.RunCloudScript(request, CloudScriptHWCallback, SharedErrorCallback);
-                WaitForApiCalls();
-            UUnitAssert.Equals("Hello " + playFabId + "!", lastReceivedMessage);
+            WaitForApiCalls();
+            UUnitAssert.StringEquals("Hello " + playFabId + "!", lastReceivedMessage);
         }
         private void CloudScriptUrlCallback(GetCloudScriptUrlResult result)
         {
