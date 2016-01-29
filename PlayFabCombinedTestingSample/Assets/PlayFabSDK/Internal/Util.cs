@@ -1,10 +1,10 @@
-using PlayFab.Json;
-using PlayFab.Json.Converters;
 using System;
+using PlayFab.Json.Converters;
+using PlayFab.SimpleJson;
 
 namespace PlayFab.Internal
 {
-    internal class Util
+    internal static class Util
     {
         public static string timeStamp
         {
@@ -21,12 +21,25 @@ namespace PlayFab.Internal
             return args.Length > 0 ? string.Format(text, args) : text;
         }
 
-        public static JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
+        public static MyJsonSerializerStrategy ApiSerializerStrategy = new MyJsonSerializerStrategy();
+        public class MyJsonSerializerStrategy : PocoJsonSerializerStrategy
         {
-            NullValueHandling = NullValueHandling.Ignore,
-            Converters = { new IsoDateTimeConverter(), new StringEnumConverter() },
-        };
+            public override object DeserializeObject(object value, Type type)
+            {
+                if (type.IsEnum)
+                {
+                    if (value is string)
+                        return Enum.Parse(type, (string) value, true);
+                    return Enum.ToObject(type, value);
+                }
+                return base.DeserializeObject(value, type);
+            }
 
-        public static Formatting JsonFormatting = Formatting.None;
+            protected override bool TrySerializeKnownTypes(object input, out object output)
+            {
+                if (input.GetType().IsEnum) { output = input.ToString(); return true; }
+                return base.TrySerializeKnownTypes(input, out output);
+            }
+        }
     }
 }
