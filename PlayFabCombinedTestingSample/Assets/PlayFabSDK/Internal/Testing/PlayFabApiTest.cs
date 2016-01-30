@@ -132,7 +132,7 @@ namespace PlayFab.UUnit
         /// Try to deliberately log in with an inappropriate password,
         ///   and verify that the error displays as expected.
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void InvalidLogin()
         {
             // If the setup failed to log in a user, we need to create one.
@@ -156,7 +156,7 @@ namespace PlayFab.UUnit
         /// CLIENT API
         /// Log in or create a user, track their PlayFabId
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void LoginOrRegister()
         {
             if (!PlayFabClientAPI.IsClientLoggedIn()) // If we haven't already logged in...
@@ -197,7 +197,7 @@ namespace PlayFab.UUnit
         /// CLIENT API
         /// Test that the login call sequence sends the AdvertisingId when set
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void LoginWithAdvertisingId()
         {
             PlayFabSettings.AdvertisingIdType = PlayFabSettings.AD_TYPE_ANDROID_ID;
@@ -220,7 +220,7 @@ namespace PlayFab.UUnit
         /// Verify that the data is correctly modified on the next call.
         /// Parameter types tested: string, Dictionary<string, string>, DateTime
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void UserDataApi()
         {
             int testCounterValueExpected, testCounterValueActual;
@@ -279,7 +279,7 @@ namespace PlayFab.UUnit
         /// Verify that the data is saved correctly, and that specific types are tested
         /// Parameter types tested: Dictionary<string, int>
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void UserStatisticsApi()
         {
             int testStatExpected, testStatActual;
@@ -333,7 +333,7 @@ namespace PlayFab.UUnit
         /// Get or create the given test character for the given user
         /// Parameter types tested: Contained-Classes, string
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void UserCharacter()
         {
             var request = new ServerModels.ListUsersCharactersRequest();
@@ -384,7 +384,7 @@ namespace PlayFab.UUnit
         /// Test that leaderboard results can be requested
         /// Parameter types tested: List of contained-classes
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void LeaderBoard()
         {
             var clientRequest = new ClientModels.GetLeaderboardAroundCurrentUserRequest();
@@ -426,7 +426,7 @@ namespace PlayFab.UUnit
         /// Test that AccountInfo can be requested
         /// Parameter types tested: List of enum-as-strings converted to list of enums
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         public void AccountInfo()
         {
             GetAccountInfoRequest request = new GetAccountInfoRequest();
@@ -452,7 +452,7 @@ namespace PlayFab.UUnit
         /// CLIENT API
         /// Test that CloudScript can be properly set up and invoked
         /// </summary>
-        //[UUnitTest]
+        [UUnitTest]
         private void CloudScript()
         {
             if (string.IsNullOrEmpty(PlayFabSettings.LogicServerUrl))

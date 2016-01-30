@@ -2,8 +2,6 @@ using PlayFab.UUnit;
 using System;
 using System.Globalization;
 using System.Collections.Generic;
-using PlayFab.Json.Converters;
-using PlayFab.SimpleJson;
 
 namespace PlayFab.Internal
 {
@@ -41,7 +39,7 @@ namespace PlayFab.Internal
         void TimeStampHandlesAllFormats()
         {
             DateTime actualTime;
-            var formats = IsoDateTimeConverter._defaultDateTimeFormats;
+            var formats = Util._defaultDateTimeFormats;
 
             for (int i = 0; i < _examples.Length; i++)
             {
@@ -68,14 +66,14 @@ namespace PlayFab.Internal
             for (int i = 0; i < _examples.Length; i++)
             {
                 // Define the time deserialization expectation
-                UUnitAssert.True(DateTime.TryParseExact(_examples[i], IsoDateTimeConverter._defaultDateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out expectedTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i]);
+                UUnitAssert.True(DateTime.TryParseExact(_examples[i], Util._defaultDateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out expectedTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i]);
 
                 // De-serialize the time using json
                 expectedJson = "{\"timestamp\":\"" + _examples[i] + "\"}"; // We are provided a json string with every random time format
                 actualObj = SimpleJson.SimpleJson.DeserializeObject<ObjWithTimes>(expectedJson, Util.ApiSerializerStrategy);
                 actualJson = SimpleJson.SimpleJson.SerializeObject(actualObj, Util.ApiSerializerStrategy);
 
-                if (i == IsoDateTimeConverter.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
+                if (i == Util.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
                     UUnitAssert.Equals(expectedJson, actualJson);
 
                 // Verify that the times match
