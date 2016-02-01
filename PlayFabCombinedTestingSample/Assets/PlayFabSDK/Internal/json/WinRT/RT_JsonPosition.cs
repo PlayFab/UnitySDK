@@ -95,7 +95,7 @@ namespace PlayFab.Json
       // don't add a fullstop and space when message ends with a new line
       if (!message.EndsWith(Environment.NewLine))
       {
-        message = Message.Trim();
+        message = message.Trim();
 
         if (!message.EndsWith("."))
           message += ".";

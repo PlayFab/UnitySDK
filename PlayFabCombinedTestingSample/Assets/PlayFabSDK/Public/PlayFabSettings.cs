@@ -30,7 +30,6 @@ namespace PlayFab
         public static WebRequestType RequestType = WebRequestType.UnityWww;
         public static int RequestTimeout = 2000;
         public static bool RequestKeepAlive = true;
-        public static string DeveloperSecretKey = null; // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
         internal static string LogicServerUrl = null; // Assigned by GetCloudScriptUrl, used by RunCloudScript
         public static string AdvertisingIdType = null; // Set this to the appropriate AD_TYPE_X constant below
         public static string AdvertisingIdValue = null; // Set this to corresponding device value
@@ -71,7 +70,7 @@ namespace PlayFab
         /// <param name="urlPath">Use null to bind to every api call.  Uniquely identifies the api-call.  Formatted as "/api/function".  Corresponds to the url path, as described by:  https://developer.mozilla.org/en-US/Learn/Understanding_URLs </param>
         /// <param name="methodInfo">methodInfo object for the callback that should be invoked when the api call is requested.</param>
         /// <param name="instance">optional: if methodInfo is an instance method, provide the instance associated with that call.  Use null for static method</param>
-        public static void RegisterForRequests(string urlPath, MethodInfo methodInfo, object instance = null) // Set as private to temporarilly disable this system until a cleaner interface is developed next week
+        private static void RegisterForRequests(string urlPath, MethodInfo methodInfo, object instance = null) // Set as private to temporarilly disable this system until a cleaner interface is developed next week
         {
             CheckMethod(ref urlPath, methodInfo, instance);
             HashSet<MethodInfo> methodInfos;
@@ -93,7 +92,7 @@ namespace PlayFab
         /// <param name="urlPath">Use null to bind to every api call.  Uniquely identifies the api-call.  Formatted as "/api/function".  Corresponds to the url path, as described by:  https://developer.mozilla.org/en-US/Learn/Understanding_URLs </param>
         /// <param name="methodInfo">methodInfo object for the callback that should be invoked when the api call is requested.</param>
         /// <param name="instance">optional: if methodInfo is an instance method, provide the instance associated with that call.  Use null for static method</param>
-        public static void RegisterForResponses(string urlPath, MethodInfo methodInfo, object instance = null) // Set as private to temporarilly disable this system until a cleaner interface is developed next week
+        private static void RegisterForResponses(string urlPath, MethodInfo methodInfo, object instance = null) // Set as private to temporarilly disable this system until a cleaner interface is developed next week
         {
             CheckMethod(ref urlPath, methodInfo, instance);
             HashSet<MethodInfo> methodInfos;
@@ -240,7 +239,6 @@ namespace PlayFab
             ResponseParams[4] = error;
             ResponseParams[5] = customData;
             HashSet<MethodInfo> methodInfos;
-
             if (ApiResponseHandlers.TryGetValue(urlPath, out methodInfos))
             {
                 foreach (var methodInfo in methodInfos)
@@ -254,7 +252,6 @@ namespace PlayFab
                                 methodInfo.Invoke(instance, ResponseParams);
                 }
             }
-
             if (ApiResponseHandlers.TryGetValue(GLOBAL_KEY, out methodInfos))
             {
                 foreach (var methodInfo in methodInfos)
