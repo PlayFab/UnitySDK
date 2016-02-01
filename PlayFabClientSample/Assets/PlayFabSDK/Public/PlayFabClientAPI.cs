@@ -1955,13 +1955,14 @@ namespace PlayFab
         /// </summary>
         public static void UpdateCharacterStatistics(UpdateCharacterStatisticsRequest request, ProcessApiCallback<UpdateCharacterStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
-            
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
                 ResultContainer<UpdateCharacterStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
-            PlayFabHTTP.Post("/Client/UpdateCharacterStatistics", serializedJson, null, null, callback, request, customData);
+            PlayFabHTTP.Post("/Client/UpdateCharacterStatistics", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
