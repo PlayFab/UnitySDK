@@ -13,6 +13,17 @@ namespace PlayFab
     {
         public delegate void ProcessApiCallback<in TResult>(TResult result) where TResult : PlayFabResultCommon;
 
+        public delegate void AuthUserRequestCallback(string urlPath, int callId, AuthUserRequest request, object customData);
+        public delegate void AuthUserResponseCallback(string urlPath, int callId, AuthUserRequest request, AuthUserResponse result, PlayFabError error, object customData);
+        public delegate void PlayerJoinedRequestCallback(string urlPath, int callId, PlayerJoinedRequest request, object customData);
+        public delegate void PlayerJoinedResponseCallback(string urlPath, int callId, PlayerJoinedRequest request, PlayerJoinedResponse result, PlayFabError error, object customData);
+        public delegate void PlayerLeftRequestCallback(string urlPath, int callId, PlayerLeftRequest request, object customData);
+        public delegate void PlayerLeftResponseCallback(string urlPath, int callId, PlayerLeftRequest request, PlayerLeftResponse result, PlayFabError error, object customData);
+        public delegate void StartGameRequestCallback(string urlPath, int callId, StartGameRequest request, object customData);
+        public delegate void StartGameResponseCallback(string urlPath, int callId, StartGameRequest request, StartGameResponse result, PlayFabError error, object customData);
+        public delegate void UserInfoRequestCallback(string urlPath, int callId, UserInfoRequest request, object customData);
+        public delegate void UserInfoResponseCallback(string urlPath, int callId, UserInfoRequest request, UserInfoResponse result, PlayFabError error, object customData);
+
         /// <summary>
         /// Validates a user with the PlayFab service
         /// </summary>
