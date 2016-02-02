@@ -1559,7 +1559,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Array of unique Steam identifiers (Steam profile IDs) for which the title needs to get PlayFab identifiers.
         /// </summary>
-        public List<uint> SteamIDs { get; set;}
+        public List<ulong> SteamIDs { get; set;}
     }
 
     public class GetPlayFabIDsFromSteamIDsResult : PlayFabResultCommon
@@ -3437,7 +3437,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Unique Steam identifier for a user.
         /// </summary>
-        public uint SteamId { get; set;}
+        public ulong SteamId { get; set;}
 
         /// <summary>
         /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Steam identifier.
