@@ -13,6 +13,121 @@ namespace PlayFab
     {
         public delegate void ProcessApiCallback<in TResult>(TResult result) where TResult : PlayFabResultCommon;
 
+        public delegate void GetUserAccountInfoRequestCallback(string urlPath, int callId, LookupUserAccountInfoRequest request, object customData);
+        public delegate void GetUserAccountInfoResponseCallback(string urlPath, int callId, LookupUserAccountInfoRequest request, LookupUserAccountInfoResult result, PlayFabError error, object customData);
+        public delegate void ResetUsersRequestCallback(string urlPath, int callId, ResetUsersRequest request, object customData);
+        public delegate void ResetUsersResponseCallback(string urlPath, int callId, ResetUsersRequest request, BlankResult result, PlayFabError error, object customData);
+        public delegate void SendAccountRecoveryEmailRequestCallback(string urlPath, int callId, SendAccountRecoveryEmailRequest request, object customData);
+        public delegate void SendAccountRecoveryEmailResponseCallback(string urlPath, int callId, SendAccountRecoveryEmailRequest request, SendAccountRecoveryEmailResult result, PlayFabError error, object customData);
+        public delegate void UpdateUserTitleDisplayNameRequestCallback(string urlPath, int callId, UpdateUserTitleDisplayNameRequest request, object customData);
+        public delegate void UpdateUserTitleDisplayNameResponseCallback(string urlPath, int callId, UpdateUserTitleDisplayNameRequest request, UpdateUserTitleDisplayNameResult result, PlayFabError error, object customData);
+        public delegate void DeleteUsersRequestCallback(string urlPath, int callId, DeleteUsersRequest request, object customData);
+        public delegate void DeleteUsersResponseCallback(string urlPath, int callId, DeleteUsersRequest request, DeleteUsersResult result, PlayFabError error, object customData);
+        public delegate void GetDataReportRequestCallback(string urlPath, int callId, GetDataReportRequest request, object customData);
+        public delegate void GetDataReportResponseCallback(string urlPath, int callId, GetDataReportRequest request, GetDataReportResult result, PlayFabError error, object customData);
+        public delegate void GetUserDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
+        public delegate void GetUserDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
+        public delegate void GetUserInternalDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
+        public delegate void GetUserInternalDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
+        public delegate void GetUserPublisherDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
+        public delegate void GetUserPublisherDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
+        public delegate void GetUserPublisherInternalDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
+        public delegate void GetUserPublisherInternalDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
+        public delegate void GetUserPublisherReadOnlyDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
+        public delegate void GetUserPublisherReadOnlyDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
+        public delegate void GetUserReadOnlyDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
+        public delegate void GetUserReadOnlyDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
+        public delegate void ResetUserStatisticsRequestCallback(string urlPath, int callId, ResetUserStatisticsRequest request, object customData);
+        public delegate void ResetUserStatisticsResponseCallback(string urlPath, int callId, ResetUserStatisticsRequest request, ResetUserStatisticsResult result, PlayFabError error, object customData);
+        public delegate void UpdateUserDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
+        public delegate void UpdateUserDataResponseCallback(string urlPath, int callId, UpdateUserDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
+        public delegate void UpdateUserInternalDataRequestCallback(string urlPath, int callId, UpdateUserInternalDataRequest request, object customData);
+        public delegate void UpdateUserInternalDataResponseCallback(string urlPath, int callId, UpdateUserInternalDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
+        public delegate void UpdateUserPublisherDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
+        public delegate void UpdateUserPublisherDataResponseCallback(string urlPath, int callId, UpdateUserDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
+        public delegate void UpdateUserPublisherInternalDataRequestCallback(string urlPath, int callId, UpdateUserInternalDataRequest request, object customData);
+        public delegate void UpdateUserPublisherInternalDataResponseCallback(string urlPath, int callId, UpdateUserInternalDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
+        public delegate void UpdateUserPublisherReadOnlyDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
+        public delegate void UpdateUserPublisherReadOnlyDataResponseCallback(string urlPath, int callId, UpdateUserDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
+        public delegate void UpdateUserReadOnlyDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
+        public delegate void UpdateUserReadOnlyDataResponseCallback(string urlPath, int callId, UpdateUserDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
+        public delegate void AddNewsRequestCallback(string urlPath, int callId, AddNewsRequest request, object customData);
+        public delegate void AddNewsResponseCallback(string urlPath, int callId, AddNewsRequest request, AddNewsResult result, PlayFabError error, object customData);
+        public delegate void AddVirtualCurrencyTypesRequestCallback(string urlPath, int callId, AddVirtualCurrencyTypesRequest request, object customData);
+        public delegate void AddVirtualCurrencyTypesResponseCallback(string urlPath, int callId, AddVirtualCurrencyTypesRequest request, BlankResult result, PlayFabError error, object customData);
+        public delegate void GetCatalogItemsRequestCallback(string urlPath, int callId, GetCatalogItemsRequest request, object customData);
+        public delegate void GetCatalogItemsResponseCallback(string urlPath, int callId, GetCatalogItemsRequest request, GetCatalogItemsResult result, PlayFabError error, object customData);
+        public delegate void GetRandomResultTablesRequestCallback(string urlPath, int callId, GetRandomResultTablesRequest request, object customData);
+        public delegate void GetRandomResultTablesResponseCallback(string urlPath, int callId, GetRandomResultTablesRequest request, GetRandomResultTablesResult result, PlayFabError error, object customData);
+        public delegate void GetStoreItemsRequestCallback(string urlPath, int callId, GetStoreItemsRequest request, object customData);
+        public delegate void GetStoreItemsResponseCallback(string urlPath, int callId, GetStoreItemsRequest request, GetStoreItemsResult result, PlayFabError error, object customData);
+        public delegate void GetTitleDataRequestCallback(string urlPath, int callId, GetTitleDataRequest request, object customData);
+        public delegate void GetTitleDataResponseCallback(string urlPath, int callId, GetTitleDataRequest request, GetTitleDataResult result, PlayFabError error, object customData);
+        public delegate void ListVirtualCurrencyTypesRequestCallback(string urlPath, int callId, ListVirtualCurrencyTypesRequest request, object customData);
+        public delegate void ListVirtualCurrencyTypesResponseCallback(string urlPath, int callId, ListVirtualCurrencyTypesRequest request, ListVirtualCurrencyTypesResult result, PlayFabError error, object customData);
+        public delegate void SetCatalogItemsRequestCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, object customData);
+        public delegate void SetCatalogItemsResponseCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, UpdateCatalogItemsResult result, PlayFabError error, object customData);
+        public delegate void SetStoreItemsRequestCallback(string urlPath, int callId, UpdateStoreItemsRequest request, object customData);
+        public delegate void SetStoreItemsResponseCallback(string urlPath, int callId, UpdateStoreItemsRequest request, UpdateStoreItemsResult result, PlayFabError error, object customData);
+        public delegate void SetTitleDataRequestCallback(string urlPath, int callId, SetTitleDataRequest request, object customData);
+        public delegate void SetTitleDataResponseCallback(string urlPath, int callId, SetTitleDataRequest request, SetTitleDataResult result, PlayFabError error, object customData);
+        public delegate void SetupPushNotificationRequestCallback(string urlPath, int callId, SetupPushNotificationRequest request, object customData);
+        public delegate void SetupPushNotificationResponseCallback(string urlPath, int callId, SetupPushNotificationRequest request, SetupPushNotificationResult result, PlayFabError error, object customData);
+        public delegate void UpdateCatalogItemsRequestCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, object customData);
+        public delegate void UpdateCatalogItemsResponseCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, UpdateCatalogItemsResult result, PlayFabError error, object customData);
+        public delegate void UpdateRandomResultTablesRequestCallback(string urlPath, int callId, UpdateRandomResultTablesRequest request, object customData);
+        public delegate void UpdateRandomResultTablesResponseCallback(string urlPath, int callId, UpdateRandomResultTablesRequest request, UpdateRandomResultTablesResult result, PlayFabError error, object customData);
+        public delegate void UpdateStoreItemsRequestCallback(string urlPath, int callId, UpdateStoreItemsRequest request, object customData);
+        public delegate void UpdateStoreItemsResponseCallback(string urlPath, int callId, UpdateStoreItemsRequest request, UpdateStoreItemsResult result, PlayFabError error, object customData);
+        public delegate void AddUserVirtualCurrencyRequestCallback(string urlPath, int callId, AddUserVirtualCurrencyRequest request, object customData);
+        public delegate void AddUserVirtualCurrencyResponseCallback(string urlPath, int callId, AddUserVirtualCurrencyRequest request, ModifyUserVirtualCurrencyResult result, PlayFabError error, object customData);
+        public delegate void GetUserInventoryRequestCallback(string urlPath, int callId, GetUserInventoryRequest request, object customData);
+        public delegate void GetUserInventoryResponseCallback(string urlPath, int callId, GetUserInventoryRequest request, GetUserInventoryResult result, PlayFabError error, object customData);
+        public delegate void GrantItemsToUsersRequestCallback(string urlPath, int callId, GrantItemsToUsersRequest request, object customData);
+        public delegate void GrantItemsToUsersResponseCallback(string urlPath, int callId, GrantItemsToUsersRequest request, GrantItemsToUsersResult result, PlayFabError error, object customData);
+        public delegate void RevokeInventoryItemRequestCallback(string urlPath, int callId, RevokeInventoryItemRequest request, object customData);
+        public delegate void RevokeInventoryItemResponseCallback(string urlPath, int callId, RevokeInventoryItemRequest request, RevokeInventoryResult result, PlayFabError error, object customData);
+        public delegate void SubtractUserVirtualCurrencyRequestCallback(string urlPath, int callId, SubtractUserVirtualCurrencyRequest request, object customData);
+        public delegate void SubtractUserVirtualCurrencyResponseCallback(string urlPath, int callId, SubtractUserVirtualCurrencyRequest request, ModifyUserVirtualCurrencyResult result, PlayFabError error, object customData);
+        public delegate void GetMatchmakerGameInfoRequestCallback(string urlPath, int callId, GetMatchmakerGameInfoRequest request, object customData);
+        public delegate void GetMatchmakerGameInfoResponseCallback(string urlPath, int callId, GetMatchmakerGameInfoRequest request, GetMatchmakerGameInfoResult result, PlayFabError error, object customData);
+        public delegate void GetMatchmakerGameModesRequestCallback(string urlPath, int callId, GetMatchmakerGameModesRequest request, object customData);
+        public delegate void GetMatchmakerGameModesResponseCallback(string urlPath, int callId, GetMatchmakerGameModesRequest request, GetMatchmakerGameModesResult result, PlayFabError error, object customData);
+        public delegate void ModifyMatchmakerGameModesRequestCallback(string urlPath, int callId, ModifyMatchmakerGameModesRequest request, object customData);
+        public delegate void ModifyMatchmakerGameModesResponseCallback(string urlPath, int callId, ModifyMatchmakerGameModesRequest request, ModifyMatchmakerGameModesResult result, PlayFabError error, object customData);
+        public delegate void AddServerBuildRequestCallback(string urlPath, int callId, AddServerBuildRequest request, object customData);
+        public delegate void AddServerBuildResponseCallback(string urlPath, int callId, AddServerBuildRequest request, AddServerBuildResult result, PlayFabError error, object customData);
+        public delegate void GetServerBuildInfoRequestCallback(string urlPath, int callId, GetServerBuildInfoRequest request, object customData);
+        public delegate void GetServerBuildInfoResponseCallback(string urlPath, int callId, GetServerBuildInfoRequest request, GetServerBuildInfoResult result, PlayFabError error, object customData);
+        public delegate void GetServerBuildUploadUrlRequestCallback(string urlPath, int callId, GetServerBuildUploadURLRequest request, object customData);
+        public delegate void GetServerBuildUploadUrlResponseCallback(string urlPath, int callId, GetServerBuildUploadURLRequest request, GetServerBuildUploadURLResult result, PlayFabError error, object customData);
+        public delegate void ListServerBuildsRequestCallback(string urlPath, int callId, ListBuildsRequest request, object customData);
+        public delegate void ListServerBuildsResponseCallback(string urlPath, int callId, ListBuildsRequest request, ListBuildsResult result, PlayFabError error, object customData);
+        public delegate void ModifyServerBuildRequestCallback(string urlPath, int callId, ModifyServerBuildRequest request, object customData);
+        public delegate void ModifyServerBuildResponseCallback(string urlPath, int callId, ModifyServerBuildRequest request, ModifyServerBuildResult result, PlayFabError error, object customData);
+        public delegate void RemoveServerBuildRequestCallback(string urlPath, int callId, RemoveServerBuildRequest request, object customData);
+        public delegate void RemoveServerBuildResponseCallback(string urlPath, int callId, RemoveServerBuildRequest request, RemoveServerBuildResult result, PlayFabError error, object customData);
+        public delegate void GetPublisherDataRequestCallback(string urlPath, int callId, GetPublisherDataRequest request, object customData);
+        public delegate void GetPublisherDataResponseCallback(string urlPath, int callId, GetPublisherDataRequest request, GetPublisherDataResult result, PlayFabError error, object customData);
+        public delegate void SetPublisherDataRequestCallback(string urlPath, int callId, SetPublisherDataRequest request, object customData);
+        public delegate void SetPublisherDataResponseCallback(string urlPath, int callId, SetPublisherDataRequest request, SetPublisherDataResult result, PlayFabError error, object customData);
+        public delegate void GetCloudScriptRevisionRequestCallback(string urlPath, int callId, GetCloudScriptRevisionRequest request, object customData);
+        public delegate void GetCloudScriptRevisionResponseCallback(string urlPath, int callId, GetCloudScriptRevisionRequest request, GetCloudScriptRevisionResult result, PlayFabError error, object customData);
+        public delegate void GetCloudScriptVersionsRequestCallback(string urlPath, int callId, GetCloudScriptVersionsRequest request, object customData);
+        public delegate void GetCloudScriptVersionsResponseCallback(string urlPath, int callId, GetCloudScriptVersionsRequest request, GetCloudScriptVersionsResult result, PlayFabError error, object customData);
+        public delegate void SetPublishedRevisionRequestCallback(string urlPath, int callId, SetPublishedRevisionRequest request, object customData);
+        public delegate void SetPublishedRevisionResponseCallback(string urlPath, int callId, SetPublishedRevisionRequest request, SetPublishedRevisionResult result, PlayFabError error, object customData);
+        public delegate void UpdateCloudScriptRequestCallback(string urlPath, int callId, UpdateCloudScriptRequest request, object customData);
+        public delegate void UpdateCloudScriptResponseCallback(string urlPath, int callId, UpdateCloudScriptRequest request, UpdateCloudScriptResult result, PlayFabError error, object customData);
+        public delegate void DeleteContentRequestCallback(string urlPath, int callId, DeleteContentRequest request, object customData);
+        public delegate void DeleteContentResponseCallback(string urlPath, int callId, DeleteContentRequest request, BlankResult result, PlayFabError error, object customData);
+        public delegate void GetContentListRequestCallback(string urlPath, int callId, GetContentListRequest request, object customData);
+        public delegate void GetContentListResponseCallback(string urlPath, int callId, GetContentListRequest request, GetContentListResult result, PlayFabError error, object customData);
+        public delegate void GetContentUploadUrlRequestCallback(string urlPath, int callId, GetContentUploadUrlRequest request, object customData);
+        public delegate void GetContentUploadUrlResponseCallback(string urlPath, int callId, GetContentUploadUrlRequest request, GetContentUploadUrlResult result, PlayFabError error, object customData);
+        public delegate void ResetCharacterStatisticsRequestCallback(string urlPath, int callId, ResetCharacterStatisticsRequest request, object customData);
+        public delegate void ResetCharacterStatisticsResponseCallback(string urlPath, int callId, ResetCharacterStatisticsRequest request, ResetCharacterStatisticsResult result, PlayFabError error, object customData);
+
         /// <summary>
         /// Retrieves the relevant details for a specified user, based upon a match against a supplied unique identifier
         /// </summary>
@@ -648,13 +763,14 @@ namespace PlayFab
         /// </summary>
         public static void GetServerBuildInfo(GetServerBuildInfoRequest request, ProcessApiCallback<GetServerBuildInfoResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
-            
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
             string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
                 ResultContainer<GetServerBuildInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
-            PlayFabHTTP.Post("/Admin/GetServerBuildInfo", serializedJson, null, null, callback, request, customData);
+            PlayFabHTTP.Post("/Admin/GetServerBuildInfo", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>

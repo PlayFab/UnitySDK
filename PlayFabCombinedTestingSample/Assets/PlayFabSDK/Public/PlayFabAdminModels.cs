@@ -353,7 +353,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// Size of the content in bytes
         /// </summary>
-        public long Size { get; set;}
+        public uint Size { get; set;}
 
         /// <summary>
         /// Last modified time
@@ -694,12 +694,12 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// Number of content items returned. We currently have a maximum of 1000 items limit.
         /// </summary>
-        public long ItemCount { get; set;}
+        public int ItemCount { get; set;}
 
         /// <summary>
         /// The total size of listed contents in bytes.
         /// </summary>
-        public long TotalSize { get; set;}
+        public uint TotalSize { get; set;}
 
         /// <summary>
         /// List of content items.
@@ -1242,6 +1242,8 @@ namespace PlayFab.AdminModels
 
     public enum Interval
     {
+        FiveMinutes,
+        FifteenMinutes,
         Hour,
         Day,
         Week,

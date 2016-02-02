@@ -7,6 +7,16 @@ using System.Collections.Generic;
 
 namespace PlayFab.Internal
 {
+    internal class JsonNumTestContainer
+    {
+        public int IntValue;
+        public uint UintValue;
+        public long LongValue;
+        public ulong UlongValue;
+        public float FloatValue;
+        public double DoubleValue;
+    }
+
     class GMFB_327 : UUnitTestCase
     {
         private class ObjWithTimes
@@ -76,7 +86,7 @@ namespace PlayFab.Internal
                 actualJson = JsonConvert.SerializeObject(actualObj, Util.JsonFormatting, Util.JsonSettings);
 
                 if (i == IsoDateTimeConverter.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
-                    UUnitAssert.Equals(expectedJson, actualJson);
+                    UUnitAssert.StringEquals(expectedJson, actualJson);
 
                 // Verify that the times match
                 double diff = (expectedTime - actualObj.timestamp).TotalSeconds; // We expect that we have parsed the time correctly according to expectations
@@ -142,7 +152,7 @@ namespace PlayFab.Internal
             JsonConvert.PopulateObject(expectedJson, actualObj, Util.JsonSettings);
             actualJson = JsonConvert.SerializeObject(actualObj, Util.JsonFormatting, Util.JsonSettings);
 
-            UUnitAssert.Equals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
+            UUnitAssert.StringEquals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
             UUnitAssert.ObjEquals(expectedObj, actualObj);
         }
 
@@ -160,6 +170,34 @@ namespace PlayFab.Internal
             string inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
             JsonConvert.PopulateObject(inputJson, actualObj, Util.JsonSettings);
             UUnitAssert.ObjEquals(expectedObj, actualObj);
+        }
+    }
+
+    class JsonLongTest : UUnitTestCase
+    {
+        [UUnitTest]
+        public void TestJsonLong()
+        {
+            var expectedObjects = new JsonNumTestContainer[] {
+                // URGENT TODO: This test fails for long.MaxValue - Write custom serializers for ulongs that can handle larger values
+                new JsonNumTestContainer { IntValue = int.MaxValue, UintValue = uint.MaxValue, LongValue = long.MaxValue, UlongValue = long.MaxValue, FloatValue = float.MaxValue, DoubleValue = double.MaxValue },
+                new JsonNumTestContainer { IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue },
+                new JsonNumTestContainer { IntValue = 0, UintValue = 0, LongValue = 0, UlongValue = 0, FloatValue = 0, DoubleValue = 0 },
+            };
+
+            for (int i = 0; i < expectedObjects.Length; i++)
+            {
+                // Convert the object to json and back, and verify that everything is the same
+                var actualJson = JsonConvert.SerializeObject(expectedObjects[i], Util.JsonFormatting, Util.JsonSettings).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonConvert.DeserializeObject<JsonNumTestContainer>(actualJson, Util.JsonSettings);
+
+                UUnitAssert.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
+                UUnitAssert.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
+                UUnitAssert.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
+                UUnitAssert.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
+                UUnitAssert.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, 0.001f);
+                UUnitAssert.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, 0.001);
+            }
         }
     }
 }
