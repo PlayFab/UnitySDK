@@ -101,6 +101,10 @@ namespace PlayFab
         public delegate void SubtractCharacterVirtualCurrencyResponseCallback(string urlPath, int callId, SubtractCharacterVirtualCurrencyRequest request, ModifyCharacterVirtualCurrencyResult result, PlayFabError error, object customData);
         public delegate void SubtractUserVirtualCurrencyRequestCallback(string urlPath, int callId, SubtractUserVirtualCurrencyRequest request, object customData);
         public delegate void SubtractUserVirtualCurrencyResponseCallback(string urlPath, int callId, SubtractUserVirtualCurrencyRequest request, ModifyUserVirtualCurrencyResult result, PlayFabError error, object customData);
+        public delegate void UnlockContainerInstanceRequestCallback(string urlPath, int callId, UnlockContainerInstanceRequest request, object customData);
+        public delegate void UnlockContainerInstanceResponseCallback(string urlPath, int callId, UnlockContainerInstanceRequest request, UnlockContainerItemResult result, PlayFabError error, object customData);
+        public delegate void UnlockContainerItemRequestCallback(string urlPath, int callId, UnlockContainerItemRequest request, object customData);
+        public delegate void UnlockContainerItemResponseCallback(string urlPath, int callId, UnlockContainerItemRequest request, UnlockContainerItemResult result, PlayFabError error, object customData);
         public delegate void UpdateUserInventoryItemCustomDataRequestCallback(string urlPath, int callId, UpdateUserInventoryItemDataRequest request, object customData);
         public delegate void UpdateUserInventoryItemCustomDataResponseCallback(string urlPath, int callId, UpdateUserInventoryItemDataRequest request, UpdateUserInventoryItemDataResult result, PlayFabError error, object customData);
         public delegate void NotifyMatchmakerPlayerLeftRequestCallback(string urlPath, int callId, NotifyMatchmakerPlayerLeftRequest request, object customData);
@@ -819,6 +823,36 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Opens a specific container (ContainerItemInstanceId), with a specific key (KeyItemInstanceId, when required), and returns the contents of the opened container. If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
+        /// </summary>
+        public static void UnlockContainerInstance(UnlockContainerInstanceRequest request, ProcessApiCallback<UnlockContainerItemResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<UnlockContainerItemResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/UnlockContainerInstance", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Searches Player or Character inventory for any ItemInstance matching the given CatalogItemId, if necessary unlocks it using any appropriate key, and returns the contents of the opened container. If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
+        /// </summary>
+        public static void UnlockContainerItem(UnlockContainerItemRequest request, ProcessApiCallback<UnlockContainerItemResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<UnlockContainerItemResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/UnlockContainerItem", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// Updates the key-value pair data tagged to the specified item, which is read-only from the client.
         /// </summary>
         public static void UpdateUserInventoryItemCustomData(UpdateUserInventoryItemDataRequest request, ProcessApiCallback<UpdateUserInventoryItemDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -1014,7 +1048,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://support.playfab.com/support/discussions/topics/1000059929
+        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service
         /// </summary>
         public static void GetContentDownloadUrl(GetContentDownloadUrlRequest request, ProcessApiCallback<GetContentDownloadUrlResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {

@@ -163,6 +163,8 @@ namespace PlayFab
         public delegate void StartPurchaseResponseCallback(string urlPath, int callId, StartPurchaseRequest request, StartPurchaseResult result, PlayFabError error, object customData);
         public delegate void SubtractUserVirtualCurrencyRequestCallback(string urlPath, int callId, SubtractUserVirtualCurrencyRequest request, object customData);
         public delegate void SubtractUserVirtualCurrencyResponseCallback(string urlPath, int callId, SubtractUserVirtualCurrencyRequest request, ModifyUserVirtualCurrencyResult result, PlayFabError error, object customData);
+        public delegate void UnlockContainerInstanceRequestCallback(string urlPath, int callId, UnlockContainerInstanceRequest request, object customData);
+        public delegate void UnlockContainerInstanceResponseCallback(string urlPath, int callId, UnlockContainerInstanceRequest request, UnlockContainerItemResult result, PlayFabError error, object customData);
         public delegate void UnlockContainerItemRequestCallback(string urlPath, int callId, UnlockContainerItemRequest request, object customData);
         public delegate void UnlockContainerItemResponseCallback(string urlPath, int callId, UnlockContainerItemRequest request, UnlockContainerItemResult result, PlayFabError error, object customData);
         public delegate void AddFriendRequestCallback(string urlPath, int callId, AddFriendRequest request, object customData);
@@ -1466,7 +1468,22 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Unlocks a container item in the user's inventory and consumes a key item of the type indicated by the container item
+        /// Opens the specified container, with the specified key (when required), and returns the contents of the opened container. If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
+        /// </summary>
+        public static void UnlockContainerInstance(UnlockContainerInstanceRequest request, ProcessApiCallback<UnlockContainerItemResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<UnlockContainerItemResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/UnlockContainerInstance", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Searches target inventory for an ItemInstance matching the given CatalogItemId, if necessary unlocks it using an appropriate key, and returns the contents of the opened container. If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
         /// </summary>
         public static void UnlockContainerItem(UnlockContainerItemRequest request, ProcessApiCallback<UnlockContainerItemResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
@@ -1846,7 +1863,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://support.playfab.com/support/discussions/topics/1000059929
+        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service
         /// </summary>
         public static void GetContentDownloadUrl(GetContentDownloadUrlRequest request, ProcessApiCallback<GetContentDownloadUrlResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
