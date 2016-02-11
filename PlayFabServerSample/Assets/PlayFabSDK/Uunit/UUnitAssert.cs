@@ -12,6 +12,7 @@ namespace PlayFab.UUnit
 {
     public static class UUnitAssert
     {
+        public const float DEFAULT_FLOAT_PRECISION = 0.0001f;
         public const double DEFAULT_DOUBLE_PRECISION = 0.000001;
 
         public static void Skip()
@@ -56,7 +57,7 @@ namespace PlayFab.UUnit
             throw new UUnitAssertException(message);
         }
 
-        public static void Null(object something, string message = null)
+        public static void IsNull(object something, string message = null)
         {
             if (something == null)
                 return;
@@ -66,7 +67,7 @@ namespace PlayFab.UUnit
             throw new UUnitAssertException(message);
         }
 
-        public static void Equals(string wanted, string got, string message = null)
+        public static void StringEquals(string wanted, string got, string message = null)
         {
             if (wanted == got)
                 return;
@@ -76,7 +77,7 @@ namespace PlayFab.UUnit
             throw new UUnitAssertException(wanted, got, message);
         }
 
-        public static void Equals(int wanted, int got, string message = null)
+        public static void IntEquals(int wanted, int got, string message = null)
         {
             if (wanted == got)
                 return;
@@ -86,7 +87,47 @@ namespace PlayFab.UUnit
             throw new UUnitAssertException(wanted, got, message);
         }
 
-        public static void DblEquals(double wanted, double got, double precision = DEFAULT_DOUBLE_PRECISION, string message = null)
+        public static void UintEquals(uint wanted, uint got, string message = null)
+        {
+            if (wanted == got)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void LongEquals(long wanted, long got, string message = null)
+        {
+            if (wanted == got)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void ULongEquals(ulong wanted, ulong got, string message = null)
+        {
+            if (wanted == got)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void FloatEquals(float wanted, float got, float precision = DEFAULT_FLOAT_PRECISION, string message = null)
+        {
+            if (Math.Abs(wanted - got) < precision)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void DoubleEquals(double wanted, double got, double precision = DEFAULT_DOUBLE_PRECISION, string message = null)
         {
             if (Math.Abs(wanted - got) < precision)
                 return;

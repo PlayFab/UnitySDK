@@ -44,13 +44,13 @@ namespace PlayFab.Internal
         /// <summary>
         /// Sends a POST HTTP request
         /// </summary>
-        public static void Post(string url, string data, string authType, string authKey, Action<CallRequestContainer> callback, object request, object customData, bool isBlocking = false)
+        public static void Post(string urlPath, string data, string authType, string authKey, Action<CallRequestContainer> callback, object request, object customData, bool isBlocking = false)
         {
-            var requestContainer = new CallRequestContainer { RequestType = PlayFabSettings.RequestType, CallId = callIdGen++, AuthKey = authKey, AuthType = authType, Callback = callback, Data = data, Url = url, Request = request, CustomData = customData };
+            var requestContainer = new CallRequestContainer { RequestType = PlayFabSettings.RequestType, CallId = callIdGen++, AuthKey = authKey, AuthType = authType, Callback = callback, Data = data, Url = urlPath, Request = request, CustomData = customData };
             if (!isBlocking)
             {
 #if PLAYFAB_IOS_PLUGIN
-                PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(url), PlayFabVersion.getVersionString(), requestContainer, PlayFabSettings.InvokeRequest);
+                PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(urlPath), PlayFabVersion.getVersionString(), requestContainer, PlayFabSettings.InvokeRequest);
 #elif UNITY_WP8
                 instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
 #else
@@ -58,7 +58,7 @@ namespace PlayFab.Internal
                 {
                     lock (ActiveRequests)
                         ActiveRequests.Insert(0, requestContainer); // Parsing on this container is done backwards, so insert at 0 to make calls process in roughly queue order (but still not actually guaranteed)
-                    PlayFabSettings.InvokeRequest(url, requestContainer.CallId, request, customData);
+                    PlayFabSettings.InvokeRequest(urlPath, requestContainer.CallId, request, customData);
                     _ActivateWorkerThread();
                 }
                 else

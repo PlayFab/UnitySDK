@@ -53,8 +53,8 @@ namespace PlayFab.Internal
                         {
                             _invokeParams[0] = resultEnvelope.data;
                             resultCallback.DynamicInvoke(_invokeParams);
-                            PlayFabSettings.InvokeResponse(callRequest.Url, callRequest.CallId, callRequest.Request, resultEnvelope.data, callRequest.Error, callRequest.CustomData); // Do the globalMessage callback
                         }
+                        PlayFabSettings.InvokeResponse(callRequest.Url, callRequest.CallId, callRequest.Request, resultEnvelope.data, callRequest.Error, callRequest.CustomData); // Do the globalMessage callback
                         return resultEnvelope.data; // This is the expected output path for successful api call
                     }
 

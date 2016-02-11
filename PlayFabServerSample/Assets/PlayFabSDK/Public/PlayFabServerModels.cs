@@ -359,6 +359,44 @@ namespace PlayFab.ServerModels
         public string CharacterType { get; set;}
     }
 
+    public class ConsumeItemRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Unique instance identifier of the item to be consumed.
+        /// </summary>
+        public string ItemInstanceId { get; set;}
+
+        /// <summary>
+        /// Number of uses to consume from the item.
+        /// </summary>
+        public int ConsumeCount { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+    }
+
+    public class ConsumeItemResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Unique instance identifier of the item with uses consumed.
+        /// </summary>
+        public string ItemInstanceId { get; set;}
+
+        /// <summary>
+        /// Number of uses remaining on the item.
+        /// </summary>
+        public int RemainingUses { get; set;}
+    }
+
     public class CreateSharedGroupRequest
     {
 
@@ -2233,6 +2271,83 @@ namespace PlayFab.ServerModels
         /// News item text.
         /// </summary>
         public string Body { get; set;}
+    }
+
+    public class UnlockContainerInstanceRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+
+        /// <summary>
+        /// ItemInstanceId of the container to unlock.
+        /// </summary>
+        public string ContainerItemInstanceId { get; set;}
+
+        /// <summary>
+        /// ItemInstanceId of the key that will be consumed by unlocking this container.  If the container requires a key, this parameter is required.
+        /// </summary>
+        public string KeyItemInstanceId { get; set;}
+
+        /// <summary>
+        /// Specifies the catalog version that should be used to determine container contents.  If unspecified, uses catalog associated with the item instance.
+        /// </summary>
+        public string CatalogVersion { get; set;}
+    }
+
+    public class UnlockContainerItemRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+
+        /// <summary>
+        /// Catalog ItemId of the container type to unlock.
+        /// </summary>
+        public string ContainerItemId { get; set;}
+
+        /// <summary>
+        /// Specifies the catalog version that should be used to determine container contents.  If unspecified, uses default/primary catalog.
+        /// </summary>
+        public string CatalogVersion { get; set;}
+    }
+
+    public class UnlockContainerItemResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Unique instance identifier of the container unlocked.
+        /// </summary>
+        public string UnlockedItemInstanceId { get; set;}
+
+        /// <summary>
+        /// Unique instance identifier of the key used to unlock the container, if applicable.
+        /// </summary>
+        public string UnlockedWithItemInstanceId { get; set;}
+
+        /// <summary>
+        /// Items granted to the player as a result of unlocking the container.
+        /// </summary>
+        public List<ItemInstance> GrantedItems { get; set;}
+
+        /// <summary>
+        /// Virtual currency granted to the player as a result of unlocking the container.
+        /// </summary>
+        public Dictionary<string,uint> VirtualCurrency { get; set;}
     }
 
     public class UpdateCharacterDataRequest

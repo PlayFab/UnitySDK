@@ -1,3 +1,5 @@
+// #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
+
 #import <AdSupport/ASIdentifierManager.h>
 
 static NSString* ToNSString(const char* c_string)
@@ -40,6 +42,7 @@ static const char* MakeDataCopy(NSData *data)
 
 extern "C"
 {
+#ifndef DISABLE_IDFA
     const char* getIdfa()
     {
         if([[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled])
@@ -54,6 +57,7 @@ extern "C"
     {
         return ![[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled];
     }
+#endif // DISABLE_IDFA
 
     void pf_make_http_request(const char* url, const char* method, int numHeaders, const char* headers[], const char* headerValues[], const char* postBody, int requestId)
     {

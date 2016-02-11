@@ -353,7 +353,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// Size of the content in bytes
         /// </summary>
-        public long Size { get; set;}
+        public uint Size { get; set;}
 
         /// <summary>
         /// Last modified time
@@ -367,12 +367,12 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// unique name of the statistic
         /// </summary>
-        public string Name { get; set;}
+        public string StatisticName { get; set;}
 
         /// <summary>
         /// interval at which the values of the statistic for all players are reset. Resets begin at the next interval boundary
         /// </summary>
-        public Interval? VersionChangeInterval { get; set;}
+        public StatisticResetIntervalOption? VersionChangeInterval { get; set;}
     }
 
     public class CreatePlayerStatisticDefinitionResult : PlayFabResultCommon
@@ -694,12 +694,12 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// Number of content items returned. We currently have a maximum of 1000 items limit.
         /// </summary>
-        public long ItemCount { get; set;}
+        public int ItemCount { get; set;}
 
         /// <summary>
         /// The total size of listed contents in bytes.
         /// </summary>
-        public long TotalSize { get; set;}
+        public uint TotalSize { get; set;}
 
         /// <summary>
         /// List of content items.
@@ -1240,14 +1240,6 @@ namespace PlayFab.AdminModels
         public PlayerStatisticVersion StatisticVersion { get; set;}
     }
 
-    public enum Interval
-    {
-        Hour,
-        Day,
-        Week,
-        Month
-    }
-
     public class ItemGrant
     {
 
@@ -1569,7 +1561,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// interval at which the values of the statistic for all players are reset
         /// </summary>
-        public Interval? VersionChangeInterval { get; set;}
+        public StatisticResetIntervalOption? VersionChangeInterval { get; set;}
     }
 
     public class PlayerStatisticVersion
@@ -1934,6 +1926,15 @@ namespace PlayFab.AdminModels
         public string ARN { get; set;}
     }
 
+    public enum StatisticResetIntervalOption
+    {
+        Never,
+        Hour,
+        Day,
+        Week,
+        Month
+    }
+
     public enum StatisticVersionArchivalStatus
     {
         NotScheduled,
@@ -2050,7 +2051,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// interval at which the values of the statistic for all players are reset. Changes are effective at the next interval boundary
         /// </summary>
-        public Interval? VersionChangeInterval { get; set;}
+        public StatisticResetIntervalOption? VersionChangeInterval { get; set;}
     }
 
     public class UpdatePlayerStatisticDefinitionResult : PlayFabResultCommon

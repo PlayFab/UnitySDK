@@ -1,5 +1,6 @@
+// #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
+
 using System;
-using System.Reflection;
 using PlayFab.Internal;
 using System.Runtime.InteropServices;
 
@@ -9,18 +10,23 @@ namespace PlayFab
     {
         public delegate void InvokeRequestDelegate(string url, int callId, object request, object customData);
 
-#if UNITY_IOS
-        [DllImport("__Internal")]
-        private static extern void pf_make_http_request(string url, string method, int numHeaders, string[] headers, string[] headerValues, string body, int requestId);
+#if UNITY_IOS && !DISABLE_IDFA
         [DllImport("__Internal")]
         public static extern string getIdfa();
         [DllImport("__Internal")]
         public static extern bool getAdvertisingDisabled();
+#elif UNITY_IOS
+        public static string getIdfa() { return "invalid"; }
+
+        public static bool getAdvertisingDisabled() { return true; }
+#endif
+
+#if UNITY_IOS
+        [DllImport("__Internal")]
+        private static extern void pf_make_http_request(string url, string method, int numHeaders, string[] headers, string[] headerValues, string body, int requestId);
 
         public static bool isAvailable() { return true; }
-
 #else
-
         public static bool isAvailable() { return false; }
 #endif
 
