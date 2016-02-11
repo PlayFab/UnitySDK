@@ -2513,7 +2513,7 @@ namespace PlayFab.ClientModels
         public string TitleId { get; set;}
 
         /// <summary>
-        /// Unique identifier from Kongregate for the user.
+        /// Numeric user ID assigned by Kongregate
         /// </summary>
         public string KongregateId { get; set;}
 
