@@ -1,4 +1,4 @@
-// #define ENABLE_IDFA // If you intend to use IDFA, enable this directive
+// #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
 
 using System;
 using PlayFab.Internal;
@@ -10,7 +10,7 @@ namespace PlayFab
     {
         public delegate void InvokeRequestDelegate(string url, int callId, object request, object customData);
 
-#if UNITY_IOS && ENABLE_IDFA
+#if UNITY_IOS && !DISABLE_IDFA
         [DllImport("__Internal")]
         public static extern string getIdfa();
         [DllImport("__Internal")]
