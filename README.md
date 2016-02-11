@@ -97,13 +97,21 @@ You are now ready to begin making API calls using the PlayFabClientAPI class. Ch
 
 7. Troubleshooting:
 ----
-If you run into conflicts when upgrading SDKs, remove all files from previous versions and perform a fresh import of our unitypackage or SDK files. 
 
-When creating web player builds, ensure that you have the proper WWW Security Emulation
-  * The configuration variable can be found under Edit > Project Settings > Editor [more](http://docs.unity3d.com/Manual/class-EditorManager.html)
-  * Your address will be https://xxxx.playfablogic.com, where xxxx is your title ID
-  * A good overview of the issue can be found [here](http://answers.unity3d.com/questions/133806/why-is-unity-trying-to-get-a-crossdmain-policy-eve.html)
+CASE: Follow these instructions to disable IDFA for your IOS release:
+ * In Unity, navigate to and open: PlayFabClientSample/Assets/Plugins/iOS/PlayFabURLRequest.mm
+  * Uncomment the first line:  // #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
+ * In Unity, navigate to and open: PlayFabClientSample/Assets/Plugins/iOS/PlayFabiOS.cs
+  * Uncomment the first line:  // #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
+ * In Unity, view the inspector window when you select (do not open): PlayFabClientSample/Assets/Plugins/iOS/PlayFabURLRequest.mm
+  * Uncheck the "AdSupport" option under "Platform settings"
 
+CASE: If you run into conflicts when upgrading SDKs, remove all files from previous versions and perform a fresh import of our unitypackage or SDK files. 
+
+CASE: When creating web player builds, ensure that you have the proper WWW Security Emulation
+ * The configuration variable can be found under Edit > Project Settings > Editor [more](http://docs.unity3d.com/Manual/class-EditorManager.html)
+ * Your address will be https://xxxx.playfablogic.com, where xxxx is your title ID
+ * A good overview of the issue can be found [here](http://answers.unity3d.com/questions/133806/why-is-unity-trying-to-get-a-crossdmain-policy-eve.html)
 
 #### Contact Us
 We love to hear from our developer community! 
