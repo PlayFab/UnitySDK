@@ -115,6 +115,8 @@ namespace PlayFab
         public delegate void GetLeaderboardAroundCurrentUserResponseCallback(string urlPath, int callId, GetLeaderboardAroundCurrentUserRequest request, GetLeaderboardAroundCurrentUserResult result, PlayFabError error, object customData);
         public delegate void GetLeaderboardAroundPlayerRequestCallback(string urlPath, int callId, GetLeaderboardAroundPlayerRequest request, object customData);
         public delegate void GetLeaderboardAroundPlayerResponseCallback(string urlPath, int callId, GetLeaderboardAroundPlayerRequest request, GetLeaderboardAroundPlayerResult result, PlayFabError error, object customData);
+        public delegate void GetPlayerStatisticsRequestCallback(string urlPath, int callId, GetPlayerStatisticsRequest request, object customData);
+        public delegate void GetPlayerStatisticsResponseCallback(string urlPath, int callId, GetPlayerStatisticsRequest request, GetPlayerStatisticsResult result, PlayFabError error, object customData);
         public delegate void GetUserDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
         public delegate void GetUserDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
         public delegate void GetUserPublisherDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
@@ -125,6 +127,8 @@ namespace PlayFab
         public delegate void GetUserReadOnlyDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
         public delegate void GetUserStatisticsRequestCallback(string urlPath, int callId, GetUserStatisticsRequest request, object customData);
         public delegate void GetUserStatisticsResponseCallback(string urlPath, int callId, GetUserStatisticsRequest request, GetUserStatisticsResult result, PlayFabError error, object customData);
+        public delegate void UpdatePlayerStatisticsRequestCallback(string urlPath, int callId, UpdatePlayerStatisticsRequest request, object customData);
+        public delegate void UpdatePlayerStatisticsResponseCallback(string urlPath, int callId, UpdatePlayerStatisticsRequest request, UpdatePlayerStatisticsResult result, PlayFabError error, object customData);
         public delegate void UpdateUserDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
         public delegate void UpdateUserDataResponseCallback(string urlPath, int callId, UpdateUserDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
         public delegate void UpdateUserPublisherDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
@@ -1108,6 +1112,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the current version and values for the indicated statistics, for the local player.
+        /// </summary>
+        public static void GetPlayerStatistics(GetPlayerStatisticsRequest request, ProcessApiCallback<GetPlayerStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPlayerStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/GetPlayerStatistics", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// Retrieves the title-specific custom data for the user which is readable and writable by the client
         /// </summary>
         public static void GetUserData(GetUserDataRequest request, ProcessApiCallback<GetUserDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -1180,6 +1199,21 @@ namespace PlayFab
                 ResultContainer<GetUserStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Client/GetUserStatistics", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Updates the values of the specified title-specific statistics for the user
+        /// </summary>
+        public static void UpdatePlayerStatistics(UpdatePlayerStatisticsRequest request, ProcessApiCallback<UpdatePlayerStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<UpdatePlayerStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/UpdatePlayerStatistics", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
