@@ -2401,7 +2401,8 @@ namespace PlayFab.AdminModels
         PSN,
         GameCenter,
         CustomId,
-        XboxLive
+        XboxLive,
+        Parse
     }
 
     public class UserPrivateAccountInfo
