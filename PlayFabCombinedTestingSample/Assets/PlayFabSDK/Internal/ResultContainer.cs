@@ -40,7 +40,7 @@ namespace PlayFab.Internal
             {
                 try
                 {
-                    ResultContainer<TResultType> resultEnvelope = SimpleJson.SimpleJson.DeserializeObject<ResultContainer<TResultType>>(callRequest.ResultStr, Util.ApiSerializerStrategy);
+                    ResultContainer<TResultType> resultEnvelope = SimpleJson.DeserializeObject<ResultContainer<TResultType>>(callRequest.ResultStr, Util.ApiSerializerStrategy);
                     if (!resultEnvelope.errorCode.HasValue || resultEnvelope.errorCode.Value == (int)PlayFabErrorCode.Success)
                     {
                         resultEnvelope.data.Request = callRequest.Request;

@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using PlayFab.SimpleJson;
 
 namespace PlayFab.Internal
 {
@@ -56,8 +55,8 @@ namespace PlayFab.Internal
             public override object DeserializeObject(object value, Type type)
             {
                 string valueStr = value as string;
-                if (valueStr == null) // For most of our custom conversions, value is a string
-                    base.DeserializeObject(value, type);
+                if (valueStr == null) // For all of our custom conversions, value is a string
+                    return base.DeserializeObject(value, type);
 
                 Type underType = Nullable.GetUnderlyingType(type);
                 if (underType != null)

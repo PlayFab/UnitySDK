@@ -1,5 +1,3 @@
-#define SIMPLE_JSON_NO_LINQ_EXPRESSION
-
 //-----------------------------------------------------------------------
 // <copyright file="SimpleJson.cs" company="The Outercurve Foundation">
 //    Copyright (c) 2011, The Outercurve Foundation.
@@ -36,10 +34,6 @@
 // NOTE: uncomment the following line to enable IReadOnlyCollection<T> and IReadOnlyList<T> support.
 //#define SIMPLE_JSON_READONLY_COLLECTIONS
 
-// NOTE: uncomment the following line to disable linq expressions/compiled lambda (better performance) instead of method.invoke().
-// define if you are using .net framework <= 3.0 or < WP7.5
-//#define SIMPLE_JSON_NO_LINQ_EXPRESSION
-
 // NOTE: uncomment the following line if you are compiling under Window Metro style application/library.
 // usually already defined in properties
 //#define NETFX_CORE;
@@ -56,9 +50,6 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
-using System.Linq.Expressions;
-#endif
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 #if SIMPLE_JSON_DYNAMIC
@@ -66,13 +57,14 @@ using System.Dynamic;
 #endif
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable RedundantExplicitArrayCreation
 // ReSharper disable SuggestUseVarKeywordEvident
-namespace PlayFab.SimpleJson
+namespace PlayFab
 {
     /// <summary>
     /// Represents the json array.
@@ -515,7 +507,8 @@ namespace PlayFab.SimpleJson
 
         private static readonly char[] EscapeTable;
         private static readonly char[] EscapeCharacters = new char[] { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
-        private static readonly string EscapeCharactersString = new string(EscapeCharacters);
+        // private static readonly string EscapeCharactersString = new string(EscapeCharacters);
+        internal static readonly List<Type> NumberTypes = new List<Type> { typeof(bool), typeof(byte), typeof(ushort), typeof(uint), typeof(ulong), typeof(sbyte), typeof(short), typeof(int), typeof(long), typeof(double), typeof(float), typeof(decimal) };
 
         static SimpleJson()
         {
@@ -903,6 +896,12 @@ namespace PlayFab.SimpleJson
                 success = double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out number);
                 returnNumber = number;
             }
+            else if (str.IndexOf("-", StringComparison.OrdinalIgnoreCase) == -1)
+            {
+                ulong number;
+                success = ulong.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out number);
+                returnNumber = number;
+            }
             else
             {
                 long number;
@@ -1139,20 +1138,14 @@ namespace PlayFab.SimpleJson
 
         static bool SerializeNumber(object number, StringBuilder builder)
         {
-            if (number is long)
-                builder.Append(((long)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is ulong)
-                builder.Append(((ulong)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is int)
-                builder.Append(((int)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is uint)
-                builder.Append(((uint)number).ToString(CultureInfo.InvariantCulture));
-            else if (number is decimal)
-                builder.Append(((decimal)number).ToString(CultureInfo.InvariantCulture));
+            if (number is decimal)
+                builder.Append(((decimal)number).ToString("R", CultureInfo.InvariantCulture));
+            else if (number is double)
+                builder.Append(((double)number).ToString("R", CultureInfo.InvariantCulture));
             else if (number is float)
-                builder.Append(((float)number).ToString(CultureInfo.InvariantCulture));
-            else
-                builder.Append(Convert.ToDouble(number, CultureInfo.InvariantCulture).ToString("r", CultureInfo.InvariantCulture));
+                builder.Append(((float)number).ToString("R", CultureInfo.InvariantCulture));
+            else if (NumberTypes.IndexOf(number.GetType()) != -1)
+                builder.Append(number);
             return true;
         }
 
@@ -1379,81 +1372,80 @@ namespace PlayFab.SimpleJson
                 return value;
 
             bool valueIsLong = value is long;
+            bool valueIsUlong = value is ulong;
             bool valueIsDouble = value is double;
-            if ((valueIsLong && type == typeof(long)) || (valueIsDouble && type == typeof(double)))
+            bool isNumberType = SimpleJson.NumberTypes.IndexOf(type) != -1;
+            bool isEnumType = type.IsEnum;
+            if ((valueIsLong && type == typeof(long)) || (valueIsUlong && type == typeof(ulong)) || (valueIsDouble && type == typeof(double)))
                 return value;
-            if ((valueIsDouble && type != typeof(double)) || (valueIsLong && type != typeof(long)))
+            if ((valueIsLong || valueIsUlong || valueIsDouble) && isEnumType)
+                return Enum.ToObject(type, Convert.ChangeType(value, Enum.GetUnderlyingType(type), CultureInfo.InvariantCulture));
+            if ((valueIsLong || valueIsUlong || valueIsDouble) && isNumberType)
+                return Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
+
+            IDictionary<string, object> objects = value as IDictionary<string, object>;
+            if (objects != null)
             {
-                obj = type == typeof(int) || type == typeof(long) || type == typeof(double) || type == typeof(float) || type == typeof(bool) || type == typeof(decimal) || type == typeof(byte) || type == typeof(short)
-                            ? Convert.ChangeType(value, type, CultureInfo.InvariantCulture)
-                            : value;
-            }
-            else
-            {
-                IDictionary<string, object> objects = value as IDictionary<string, object>;
-                if (objects != null)
+                IDictionary<string, object> jsonObject = objects;
+
+                if (ReflectionUtils.IsTypeDictionary(type))
                 {
-                    IDictionary<string, object> jsonObject = objects;
+                    // if dictionary then
+                    Type[] types = ReflectionUtils.GetGenericTypeArguments(type);
+                    Type keyType = types[0];
+                    Type valueType = types[1];
 
-                    if (ReflectionUtils.IsTypeDictionary(type))
-                    {
-                        // if dictionary then
-                        Type[] types = ReflectionUtils.GetGenericTypeArguments(type);
-                        Type keyType = types[0];
-                        Type valueType = types[1];
+                    Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
 
-                        Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+                    IDictionary dict = (IDictionary)ConstructorCache[genericType]();
 
-                        IDictionary dict = (IDictionary)ConstructorCache[genericType]();
+                    foreach (KeyValuePair<string, object> kvp in jsonObject)
+                        dict.Add(kvp.Key, DeserializeObject(kvp.Value, valueType));
 
-                        foreach (KeyValuePair<string, object> kvp in jsonObject)
-                            dict.Add(kvp.Key, DeserializeObject(kvp.Value, valueType));
-
-                        obj = dict;
-                    }
+                    obj = dict;
+                }
+                else
+                {
+                    if (type == typeof(object))
+                        obj = value;
                     else
                     {
-                        if (type == typeof(object))
-                            obj = value;
-                        else
+                        obj = ConstructorCache[type]();
+                        foreach (KeyValuePair<string, KeyValuePair<Type, ReflectionUtils.SetDelegate>> setter in SetCache[type])
                         {
-                            obj = ConstructorCache[type]();
-                            foreach (KeyValuePair<string, KeyValuePair<Type, ReflectionUtils.SetDelegate>> setter in SetCache[type])
+                            object jsonValue;
+                            if (jsonObject.TryGetValue(setter.Key, out jsonValue))
                             {
-                                object jsonValue;
-                                if (jsonObject.TryGetValue(setter.Key, out jsonValue))
-                                {
-                                    jsonValue = DeserializeObject(jsonValue, setter.Value.Key);
-                                    setter.Value.Value(obj, jsonValue);
-                                }
+                                jsonValue = DeserializeObject(jsonValue, setter.Value.Key);
+                                setter.Value.Value(obj, jsonValue);
                             }
                         }
                     }
                 }
-                else
+            }
+            else
+            {
+                IList<object> valueAsList = value as IList<object>;
+                if (valueAsList != null)
                 {
-                    IList<object> valueAsList = value as IList<object>;
-                    if (valueAsList != null)
-                    {
-                        IList<object> jsonObject = valueAsList;
-                        IList list = null;
+                    IList<object> jsonObject = valueAsList;
+                    IList list = null;
 
-                        if (type.IsArray)
-                        {
-                            list = (IList)ConstructorCache[type](jsonObject.Count);
-                            int i = 0;
-                            foreach (object o in jsonObject)
-                                list[i++] = DeserializeObject(o, type.GetElementType());
-                        }
-                        else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || ReflectionUtils.IsAssignableFrom(typeof(IList), type))
-                        {
-                            Type innerType = ReflectionUtils.GetGenericListElementType(type);
-                            list = (IList)(ConstructorCache[type] ?? ConstructorCache[typeof(List<>).MakeGenericType(innerType)])();
-                            foreach (object o in jsonObject)
-                                list.Add(DeserializeObject(o, innerType));
-                        }
-                        obj = list;
+                    if (type.IsArray)
+                    {
+                        list = (IList)ConstructorCache[type](jsonObject.Count);
+                        int i = 0;
+                        foreach (object o in jsonObject)
+                            list[i++] = DeserializeObject(o, type.GetElementType());
                     }
+                    else if (ReflectionUtils.IsTypeGenericeCollectionInterface(type) || ReflectionUtils.IsAssignableFrom(typeof(IList), type))
+                    {
+                        Type innerType = ReflectionUtils.GetGenericListElementType(type);
+                        list = (IList)(ConstructorCache[type] ?? ConstructorCache[typeof(List<>).MakeGenericType(innerType)])();
+                        foreach (object o in jsonObject)
+                            list.Add(DeserializeObject(o, innerType));
+                    }
+                    obj = list;
                 }
                 return obj;
             }
@@ -1810,20 +1802,12 @@ namespace PlayFab.SimpleJson
 
         public static ConstructorDelegate GetContructor(ConstructorInfo constructorInfo)
         {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
             return GetConstructorByReflection(constructorInfo);
-#else
-                return GetConstructorByExpression(constructorInfo);
-#endif
         }
 
         public static ConstructorDelegate GetContructor(Type type, params Type[] argsType)
         {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
             return GetConstructorByReflection(type, argsType);
-#else
-                return GetConstructorByExpression(type, argsType);
-#endif
         }
 
         public static ConstructorDelegate GetConstructorByReflection(ConstructorInfo constructorInfo)
@@ -1841,51 +1825,14 @@ namespace PlayFab.SimpleJson
             return constructorInfo == null ? null : GetConstructorByReflection(constructorInfo);
         }
 
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
-
-            public static ConstructorDelegate GetConstructorByExpression(ConstructorInfo constructorInfo)
-            {
-                ParameterInfo[] paramsInfo = constructorInfo.GetParameters();
-                ParameterExpression param = Expression.Parameter(typeof(object[]), "args");
-                Expression[] argsExp = new Expression[paramsInfo.Length];
-                for (int i = 0; i < paramsInfo.Length; i++)
-                {
-                    Expression index = Expression.Constant(i);
-                    Type paramType = paramsInfo[i].ParameterType;
-                    Expression paramAccessorExp = Expression.ArrayIndex(param, index);
-                    Expression paramCastExp = Expression.Convert(paramAccessorExp, paramType);
-                    argsExp[i] = paramCastExp;
-                }
-                NewExpression newExp = Expression.New(constructorInfo, argsExp);
-                Expression<Func<object[], object>> lambda = Expression.Lambda<Func<object[], object>>(newExp, param);
-                Func<object[], object> compiledLambda = lambda.Compile();
-                return delegate(object[] args) { return compiledLambda(args); };
-            }
-
-            public static ConstructorDelegate GetConstructorByExpression(Type type, params Type[] argsType)
-            {
-                ConstructorInfo constructorInfo = GetConstructorInfo(type, argsType);
-                return constructorInfo == null ? null : GetConstructorByExpression(constructorInfo);
-            }
-
-#endif
-
         public static GetDelegate GetGetMethod(PropertyInfo propertyInfo)
         {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
             return GetGetMethodByReflection(propertyInfo);
-#else
-                return GetGetMethodByExpression(propertyInfo);
-#endif
         }
 
         public static GetDelegate GetGetMethod(FieldInfo fieldInfo)
         {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
             return GetGetMethodByReflection(fieldInfo);
-#else
-                return GetGetMethodByExpression(fieldInfo);
-#endif
         }
 
         public static GetDelegate GetGetMethodByReflection(PropertyInfo propertyInfo)
@@ -1899,43 +1846,14 @@ namespace PlayFab.SimpleJson
             return delegate(object source) { return fieldInfo.GetValue(source); };
         }
 
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
-
-            public static GetDelegate GetGetMethodByExpression(PropertyInfo propertyInfo)
-            {
-                MethodInfo getMethodInfo = GetGetterMethodInfo(propertyInfo);
-                ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
-                UnaryExpression instanceCast = (!IsValueType(propertyInfo.DeclaringType)) ? Expression.TypeAs(instance, propertyInfo.DeclaringType) : Expression.Convert(instance, propertyInfo.DeclaringType);
-                Func<object, object> compiled = Expression.Lambda<Func<object, object>>(Expression.TypeAs(Expression.Call(instanceCast, getMethodInfo), typeof(object)), instance).Compile();
-                return delegate(object source) { return compiled(source); };
-            }
-
-            public static GetDelegate GetGetMethodByExpression(FieldInfo fieldInfo)
-            {
-                ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
-                MemberExpression member = Expression.Field(Expression.Convert(instance, fieldInfo.DeclaringType), fieldInfo);
-                GetDelegate compiled = Expression.Lambda<GetDelegate>(Expression.Convert(member, typeof(object)), instance).Compile();
-                return delegate(object source) { return compiled(source); };
-            }
-
-#endif
-
         public static SetDelegate GetSetMethod(PropertyInfo propertyInfo)
         {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
             return GetSetMethodByReflection(propertyInfo);
-#else
-                return GetSetMethodByExpression(propertyInfo);
-#endif
         }
 
         public static SetDelegate GetSetMethod(FieldInfo fieldInfo)
         {
-#if SIMPLE_JSON_NO_LINQ_EXPRESSION
             return GetSetMethodByReflection(fieldInfo);
-#else
-                return GetSetMethodByExpression(fieldInfo);
-#endif
         }
 
         public static SetDelegate GetSetMethodByReflection(PropertyInfo propertyInfo)
@@ -1948,49 +1866,6 @@ namespace PlayFab.SimpleJson
         {
             return delegate(object source, object value) { fieldInfo.SetValue(source, value); };
         }
-
-#if !SIMPLE_JSON_NO_LINQ_EXPRESSION
-
-            public static SetDelegate GetSetMethodByExpression(PropertyInfo propertyInfo)
-            {
-                MethodInfo setMethodInfo = GetSetterMethodInfo(propertyInfo);
-                ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
-                ParameterExpression value = Expression.Parameter(typeof(object), "value");
-                UnaryExpression instanceCast = (!IsValueType(propertyInfo.DeclaringType)) ? Expression.TypeAs(instance, propertyInfo.DeclaringType) : Expression.Convert(instance, propertyInfo.DeclaringType);
-                UnaryExpression valueCast = (!IsValueType(propertyInfo.PropertyType)) ? Expression.TypeAs(value, propertyInfo.PropertyType) : Expression.Convert(value, propertyInfo.PropertyType);
-                Action<object, object> compiled = Expression.Lambda<Action<object, object>>(Expression.Call(instanceCast, setMethodInfo, valueCast), new ParameterExpression[] { instance, value }).Compile();
-                return delegate(object source, object val) { compiled(source, val); };
-            }
-
-            public static SetDelegate GetSetMethodByExpression(FieldInfo fieldInfo)
-            {
-                ParameterExpression instance = Expression.Parameter(typeof(object), "instance");
-                ParameterExpression value = Expression.Parameter(typeof(object), "value");
-                Action<object, object> compiled = Expression.Lambda<Action<object, object>>(
-                    Assign(Expression.Field(Expression.Convert(instance, fieldInfo.DeclaringType), fieldInfo), Expression.Convert(value, fieldInfo.FieldType)), instance, value).Compile();
-                return delegate(object source, object val) { compiled(source, val); };
-            }
-
-            public static BinaryExpression Assign(Expression left, Expression right)
-            {
-#if SIMPLE_JSON_TYPEINFO
-                return Expression.Assign(left, right);
-#else
-                MethodInfo assign = typeof(Assigner<>).MakeGenericType(left.Type).GetMethod("Assign");
-                BinaryExpression assignExpr = Expression.Add(left, right, assign);
-                return assignExpr;
-#endif
-            }
-
-            private static class Assigner<T>
-            {
-                public static T Assign(ref T left, T right)
-                {
-                    return (left = right);
-                }
-            }
-
-#endif
 
         public sealed class ThreadSafeDictionary<TKey, TValue> : IDictionary<TKey, TValue>
         {

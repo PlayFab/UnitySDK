@@ -7,6 +7,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace PlayFab.UUnit
 {
@@ -68,6 +69,46 @@ namespace PlayFab.UUnit
         }
 
         public static void StringEquals(string wanted, string got, string message = null)
+        {
+            if (wanted == got)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void SbyteEquals(sbyte wanted, sbyte got, string message = null)
+        {
+            if (wanted == got)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void ByteEquals(byte wanted, byte got, string message = null)
+        {
+            if (wanted == got)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void ShortEquals(short wanted, short got, string message = null)
+        {
+            if (wanted == got)
+                return;
+
+            if (string.IsNullOrEmpty(message))
+                message = "Expected: " + wanted + ", Actual: " + got;
+            throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void UshortEquals(ushort wanted, ushort got, string message = null)
         {
             if (wanted == got)
                 return;
@@ -145,6 +186,26 @@ namespace PlayFab.UUnit
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
             throw new UUnitAssertException(wanted, got, message);
+        }
+
+        public static void SequenceEquals<T>(IEnumerable<T> wanted, IEnumerable<T> got, string message = null)
+        {
+            var wEnum = wanted.GetEnumerator();
+            var gEnum = got.GetEnumerator();
+
+            bool wNext, gNext;
+            int count = 0;
+            while (true)
+            {
+                wNext = wEnum.MoveNext();
+                gNext = gEnum.MoveNext();
+                if (wNext != gNext)
+                    throw new UUnitAssertException(wanted, got, "Length mismatch: " + message);
+                if (!wNext)
+                    break;
+                count++;
+                ObjEquals(wEnum.Current, gEnum.Current, "Element at " + count + ": " + message);
+            }
         }
     }
 }

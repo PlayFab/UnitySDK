@@ -117,7 +117,7 @@ namespace PlayFab.Internal
             UUnitAssert.True(DateTime.UtcNow < expireTime, "Request timed out");
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestInstCallbacks_GeneralOnly()
         {
             var listener = new EventInstanceListener();
@@ -135,7 +135,7 @@ namespace PlayFab.Internal
             listener.Unregister();
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestStaticCallbacks_GeneralOnly()
         {
             EventStaticListener.Register();
@@ -152,7 +152,7 @@ namespace PlayFab.Internal
             EventStaticListener.Unregister();
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestInstCallbacks_LocalCallback()
         {
             var listener = new EventInstanceListener();
@@ -171,7 +171,7 @@ namespace PlayFab.Internal
             listener.Unregister();
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestStaticCallbacks_LocalCallback()
         {
             EventStaticListener.Register();
