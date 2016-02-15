@@ -38,7 +38,10 @@
 // usually already defined in properties
 //#define NETFX_CORE;
 
-// If you are targetting WinStore, WP8 and NET4.5+ PCL make sure to #define SIMPLE_JSON_TYPEINFO;
+// If you are targetting WinStore, WP8 and NET4.5+ PCL make sure to
+#if UNITY_WP8 || UNITY_WP8_1
+// #define SIMPLE_JSON_TYPEINFO
+#endif
 
 // original json parsing code from http://techblog.procurios.nl/k/618/news/view/14605/14863/How-do-I-write-my-own-parser-for-JSON.html
 
@@ -491,19 +494,22 @@ namespace PlayFab
 #endif
  static class SimpleJson
     {
-        private const int TOKEN_NONE = 0;
-        private const int TOKEN_CURLY_OPEN = 1;
-        private const int TOKEN_CURLY_CLOSE = 2;
-        private const int TOKEN_SQUARED_OPEN = 3;
-        private const int TOKEN_SQUARED_CLOSE = 4;
-        private const int TOKEN_COLON = 5;
-        private const int TOKEN_COMMA = 6;
-        private const int TOKEN_STRING = 7;
-        private const int TOKEN_NUMBER = 8;
-        private const int TOKEN_TRUE = 9;
-        private const int TOKEN_FALSE = 10;
-        private const int TOKEN_NULL = 11;
-        private const int BUILDER_CAPACITY = 2000;
+        private enum TokenType : byte
+        {
+            NONE = 0,
+            CURLY_OPEN = 1,
+            CURLY_CLOSE = 2,
+            SQUARED_OPEN = 3,
+            SQUARED_CLOSE = 4,
+            COLON = 5,
+            COMMA = 6,
+            STRING = 7,
+            NUMBER = 8,
+            TRUE = 9,
+            FALSE = 10,
+            NULL = 11,
+        }
+        private const int BUILDER_INIT = 2000;
 
         private static readonly char[] EscapeTable;
         private static readonly char[] EscapeCharacters = new char[] { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
@@ -594,7 +600,7 @@ namespace PlayFab
         /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
         public static string SerializeObject(object json, IJsonSerializerStrategy jsonSerializerStrategy)
         {
-            StringBuilder builder = new StringBuilder(BUILDER_CAPACITY);
+            StringBuilder builder = new StringBuilder(BUILDER_INIT);
             bool success = SerializeValue(jsonSerializerStrategy, json, builder);
             return (success ? builder.ToString() : null);
         }
@@ -665,7 +671,7 @@ namespace PlayFab
         static IDictionary<string, object> ParseObject(char[] json, ref int index, ref bool success)
         {
             IDictionary<string, object> table = new JsonObject();
-            int token;
+            TokenType token;
 
             // {
             NextToken(json, ref index);
@@ -674,14 +680,14 @@ namespace PlayFab
             while (!done)
             {
                 token = LookAhead(json, index);
-                if (token == TOKEN_NONE)
+                if (token == TokenType.NONE)
                 {
                     success = false;
                     return null;
                 }
-                else if (token == TOKEN_COMMA)
+                else if (token == TokenType.COMMA)
                     NextToken(json, ref index);
-                else if (token == TOKEN_CURLY_CLOSE)
+                else if (token == TokenType.CURLY_CLOSE)
                 {
                     NextToken(json, ref index);
                     return table;
@@ -697,7 +703,7 @@ namespace PlayFab
                     }
                     // :
                     token = NextToken(json, ref index);
-                    if (token != TOKEN_COLON)
+                    if (token != TokenType.COLON)
                     {
                         success = false;
                         return null;
@@ -725,15 +731,15 @@ namespace PlayFab
             bool done = false;
             while (!done)
             {
-                int token = LookAhead(json, index);
-                if (token == TOKEN_NONE)
+                TokenType token = LookAhead(json, index);
+                if (token == TokenType.NONE)
                 {
                     success = false;
                     return null;
                 }
-                else if (token == TOKEN_COMMA)
+                else if (token == TokenType.COMMA)
                     NextToken(json, ref index);
-                else if (token == TOKEN_SQUARED_CLOSE)
+                else if (token == TokenType.SQUARED_CLOSE)
                 {
                     NextToken(json, ref index);
                     break;
@@ -753,24 +759,24 @@ namespace PlayFab
         {
             switch (LookAhead(json, index))
             {
-                case TOKEN_STRING:
+                case TokenType.STRING:
                     return ParseString(json, ref index, ref success);
-                case TOKEN_NUMBER:
+                case TokenType.NUMBER:
                     return ParseNumber(json, ref index, ref success);
-                case TOKEN_CURLY_OPEN:
+                case TokenType.CURLY_OPEN:
                     return ParseObject(json, ref index, ref success);
-                case TOKEN_SQUARED_OPEN:
+                case TokenType.SQUARED_OPEN:
                     return ParseArray(json, ref index, ref success);
-                case TOKEN_TRUE:
+                case TokenType.TRUE:
                     NextToken(json, ref index);
                     return true;
-                case TOKEN_FALSE:
+                case TokenType.FALSE:
                     NextToken(json, ref index);
                     return false;
-                case TOKEN_NULL:
+                case TokenType.NULL:
                     NextToken(json, ref index);
                     return null;
-                case TOKEN_NONE:
+                case TokenType.NONE:
                     break;
             }
             success = false;
@@ -779,7 +785,7 @@ namespace PlayFab
 
         static string ParseString(char[] json, ref int index, ref bool success)
         {
-            StringBuilder s = new StringBuilder(BUILDER_CAPACITY);
+            StringBuilder s = new StringBuilder(BUILDER_INIT);
             char c;
 
             EatWhitespace(json, ref index);
@@ -926,34 +932,34 @@ namespace PlayFab
                 if (" \t\n\r\b\f".IndexOf(json[index]) == -1) break;
         }
 
-        static int LookAhead(char[] json, int index)
+        static TokenType LookAhead(char[] json, int index)
         {
             int saveIndex = index;
             return NextToken(json, ref saveIndex);
         }
 
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        static int NextToken(char[] json, ref int index)
+        static TokenType NextToken(char[] json, ref int index)
         {
             EatWhitespace(json, ref index);
             if (index == json.Length)
-                return TOKEN_NONE;
+                return TokenType.NONE;
             char c = json[index];
             index++;
             switch (c)
             {
                 case '{':
-                    return TOKEN_CURLY_OPEN;
+                    return TokenType.CURLY_OPEN;
                 case '}':
-                    return TOKEN_CURLY_CLOSE;
+                    return TokenType.CURLY_CLOSE;
                 case '[':
-                    return TOKEN_SQUARED_OPEN;
+                    return TokenType.SQUARED_OPEN;
                 case ']':
-                    return TOKEN_SQUARED_CLOSE;
+                    return TokenType.SQUARED_CLOSE;
                 case ',':
-                    return TOKEN_COMMA;
+                    return TokenType.COMMA;
                 case '"':
-                    return TOKEN_STRING;
+                    return TokenType.STRING;
                 case '0':
                 case '1':
                 case '2':
@@ -965,9 +971,9 @@ namespace PlayFab
                 case '8':
                 case '9':
                 case '-':
-                    return TOKEN_NUMBER;
+                    return TokenType.NUMBER;
                 case ':':
-                    return TOKEN_COLON;
+                    return TokenType.COLON;
             }
             index--;
             int remainingLength = json.Length - index;
@@ -977,7 +983,7 @@ namespace PlayFab
                 if (json[index] == 'f' && json[index + 1] == 'a' && json[index + 2] == 'l' && json[index + 3] == 's' && json[index + 4] == 'e')
                 {
                     index += 5;
-                    return TOKEN_FALSE;
+                    return TokenType.FALSE;
                 }
             }
             // true
@@ -986,7 +992,7 @@ namespace PlayFab
                 if (json[index] == 't' && json[index + 1] == 'r' && json[index + 2] == 'u' && json[index + 3] == 'e')
                 {
                     index += 4;
-                    return TOKEN_TRUE;
+                    return TokenType.TRUE;
                 }
             }
             // null
@@ -995,10 +1001,10 @@ namespace PlayFab
                 if (json[index] == 'n' && json[index + 1] == 'u' && json[index + 2] == 'l' && json[index + 3] == 'l')
                 {
                     index += 4;
-                    return TOKEN_NULL;
+                    return TokenType.NULL;
                 }
             }
-            return TOKEN_NONE;
+            return TokenType.NONE;
         }
 
         static bool SerializeValue(IJsonSerializerStrategy jsonSerializerStrategy, object value, StringBuilder builder)
