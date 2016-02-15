@@ -20,10 +20,16 @@ namespace PlayFab
         public delegate void SendAccountRecoveryEmailResponseCallback(string urlPath, int callId, SendAccountRecoveryEmailRequest request, SendAccountRecoveryEmailResult result, PlayFabError error, object customData);
         public delegate void UpdateUserTitleDisplayNameRequestCallback(string urlPath, int callId, UpdateUserTitleDisplayNameRequest request, object customData);
         public delegate void UpdateUserTitleDisplayNameResponseCallback(string urlPath, int callId, UpdateUserTitleDisplayNameRequest request, UpdateUserTitleDisplayNameResult result, PlayFabError error, object customData);
+        public delegate void CreatePlayerStatisticDefinitionRequestCallback(string urlPath, int callId, CreatePlayerStatisticDefinitionRequest request, object customData);
+        public delegate void CreatePlayerStatisticDefinitionResponseCallback(string urlPath, int callId, CreatePlayerStatisticDefinitionRequest request, CreatePlayerStatisticDefinitionResult result, PlayFabError error, object customData);
         public delegate void DeleteUsersRequestCallback(string urlPath, int callId, DeleteUsersRequest request, object customData);
         public delegate void DeleteUsersResponseCallback(string urlPath, int callId, DeleteUsersRequest request, DeleteUsersResult result, PlayFabError error, object customData);
         public delegate void GetDataReportRequestCallback(string urlPath, int callId, GetDataReportRequest request, object customData);
         public delegate void GetDataReportResponseCallback(string urlPath, int callId, GetDataReportRequest request, GetDataReportResult result, PlayFabError error, object customData);
+        public delegate void GetPlayerStatisticDefinitionsRequestCallback(string urlPath, int callId, GetPlayerStatisticDefinitionsRequest request, object customData);
+        public delegate void GetPlayerStatisticDefinitionsResponseCallback(string urlPath, int callId, GetPlayerStatisticDefinitionsRequest request, GetPlayerStatisticDefinitionsResult result, PlayFabError error, object customData);
+        public delegate void GetPlayerStatisticVersionsRequestCallback(string urlPath, int callId, GetPlayerStatisticVersionsRequest request, object customData);
+        public delegate void GetPlayerStatisticVersionsResponseCallback(string urlPath, int callId, GetPlayerStatisticVersionsRequest request, GetPlayerStatisticVersionsResult result, PlayFabError error, object customData);
         public delegate void GetUserDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
         public delegate void GetUserDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
         public delegate void GetUserInternalDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
@@ -36,8 +42,12 @@ namespace PlayFab
         public delegate void GetUserPublisherReadOnlyDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
         public delegate void GetUserReadOnlyDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
         public delegate void GetUserReadOnlyDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
+        public delegate void IncrementPlayerStatisticVersionRequestCallback(string urlPath, int callId, IncrementPlayerStatisticVersionRequest request, object customData);
+        public delegate void IncrementPlayerStatisticVersionResponseCallback(string urlPath, int callId, IncrementPlayerStatisticVersionRequest request, IncrementPlayerStatisticVersionResult result, PlayFabError error, object customData);
         public delegate void ResetUserStatisticsRequestCallback(string urlPath, int callId, ResetUserStatisticsRequest request, object customData);
         public delegate void ResetUserStatisticsResponseCallback(string urlPath, int callId, ResetUserStatisticsRequest request, ResetUserStatisticsResult result, PlayFabError error, object customData);
+        public delegate void UpdatePlayerStatisticDefinitionRequestCallback(string urlPath, int callId, UpdatePlayerStatisticDefinitionRequest request, object customData);
+        public delegate void UpdatePlayerStatisticDefinitionResponseCallback(string urlPath, int callId, UpdatePlayerStatisticDefinitionRequest request, UpdatePlayerStatisticDefinitionResult result, PlayFabError error, object customData);
         public delegate void UpdateUserDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
         public delegate void UpdateUserDataResponseCallback(string urlPath, int callId, UpdateUserDataRequest request, UpdateUserDataResult result, PlayFabError error, object customData);
         public delegate void UpdateUserInternalDataRequestCallback(string urlPath, int callId, UpdateUserInternalDataRequest request, object customData);
@@ -188,6 +198,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Adds a new player statistic configuration to the title, optionally allowing the developer to specify a reset interval.
+        /// </summary>
+        public static void CreatePlayerStatisticDefinition(CreatePlayerStatisticDefinitionRequest request, ProcessApiCallback<CreatePlayerStatisticDefinitionResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<CreatePlayerStatisticDefinitionResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/CreatePlayerStatisticDefinition", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// Deletes the users for the provided game. Deletes custom data, all account linkages, and statistics.
         /// </summary>
         public static void DeleteUsers(DeleteUsersRequest request, ProcessApiCallback<DeleteUsersResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -215,6 +240,36 @@ namespace PlayFab
                 ResultContainer<GetDataReportResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetDataReport", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Retrieves the configuration information for all player statistics defined in the title, regardless of whether they have a reset interval.
+        /// </summary>
+        public static void GetPlayerStatisticDefinitions(GetPlayerStatisticDefinitionsRequest request, ProcessApiCallback<GetPlayerStatisticDefinitionsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPlayerStatisticDefinitionsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/GetPlayerStatisticDefinitions", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Retrieves the information on the available versions of the specified statistic.
+        /// </summary>
+        public static void GetPlayerStatisticVersions(GetPlayerStatisticVersionsRequest request, ProcessApiCallback<GetPlayerStatisticVersionsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPlayerStatisticVersionsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/GetPlayerStatisticVersions", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
@@ -308,6 +363,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Resets the indicated statistic, removing all player entries for it and backing up the old values.
+        /// </summary>
+        public static void IncrementPlayerStatisticVersion(IncrementPlayerStatisticVersionRequest request, ProcessApiCallback<IncrementPlayerStatisticVersionResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<IncrementPlayerStatisticVersionResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/IncrementPlayerStatisticVersion", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// Completely removes all statistics for the specified user, for the current game
         /// </summary>
         public static void ResetUserStatistics(ResetUserStatisticsRequest request, ProcessApiCallback<ResetUserStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -320,6 +390,21 @@ namespace PlayFab
                 ResultContainer<ResetUserStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ResetUserStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Updates a player statistic configuration for the title, optionally allowing the developer to specify a reset interval.
+        /// </summary>
+        public static void UpdatePlayerStatisticDefinition(UpdatePlayerStatisticDefinitionRequest request, ProcessApiCallback<UpdatePlayerStatisticDefinitionResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<UpdatePlayerStatisticDefinitionResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/UpdatePlayerStatisticDefinition", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
