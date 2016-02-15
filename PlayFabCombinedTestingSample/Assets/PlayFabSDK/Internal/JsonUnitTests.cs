@@ -163,16 +163,23 @@ namespace PlayFab.UUnit
             [UUnitTest]
             public void OtherSpecificDatatypes()
             {
-                var expectedObj = new OtherSpecificDatatypes {EnumDict = new Dictionary<string, Region> {{"Japan", Region.Japan}}, IntDict = new Dictionary<string, int> {{"test", int.MinValue}}, StringDict = new Dictionary<string, string> {{"tested", "true"}}, TestString = "yup", UintDict = new Dictionary<string, uint> {{"test", uint.MaxValue}}};
+                var expectedObj = new OtherSpecificDatatypes {
+                    StringDict = new Dictionary<string, string> {{"stringKey", "stringValue"}},
+                    EnumDict = new Dictionary<string, Region> {{"enumKey", Region.Japan}},
+                    IntDict = new Dictionary<string, int> {{"intKey", int.MinValue}},
+                    UintDict = new Dictionary<string, uint> {{"uintKey", uint.MaxValue}},
+                    TestString = "yup", 
+                };
                 // Convert the object to json and back, and verify that everything is the same
                 var actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                actualJson = actualJson.Replace("[", "").Replace("]", "").Replace(",\"Value\"", "").Replace("\"Key\":", "");
                 var actualObject = SimpleJson.DeserializeObject<OtherSpecificDatatypes>(actualJson, Util.ApiSerializerStrategy);
 
+                UUnitAssert.ObjEquals(expectedObj.TestString, actualObject.TestString);
                 UUnitAssert.SequenceEquals(expectedObj.IntDict, actualObject.IntDict);
                 UUnitAssert.SequenceEquals(expectedObj.UintDict, actualObject.UintDict);
                 UUnitAssert.SequenceEquals(expectedObj.StringDict, actualObject.StringDict);
-                UUnitAssert.ObjEquals(expectedObj.TestString, actualObject.TestString);
-                UUnitAssert.ObjEquals(expectedObj.EnumDict, actualObject.EnumDict);
+                UUnitAssert.SequenceEquals(expectedObj.EnumDict, actualObject.EnumDict);
             }
         }
     }
