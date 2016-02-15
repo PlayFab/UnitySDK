@@ -37,7 +37,6 @@ namespace PlayFab.UUnit
 
         // Information fetched by appropriate API calls
         private static string playFabId;
-        private static string characterId;
 
         // This test operates multi-threaded, so keep some thread-transfer varaibles
         private string lastReceivedMessage;
@@ -92,7 +91,7 @@ namespace PlayFab.UUnit
                     string testInputsFile = File.ReadAllText(filename);
                     var serializer = JsonSerializer.Create(PlayFab.Internal.Util.JsonSettings);
                     var testInputs = serializer.Deserialize<Dictionary<string, string>>(new JsonTextReader(new StringReader(testInputsFile)));
-                    PlayFabApiTest.SetTitleInfo(testInputs);
+                    SetTitleInfo(testInputs);
                 }
                 else
                 {
@@ -367,7 +366,6 @@ namespace PlayFab.UUnit
 
             // Save the requested character
             UUnitAssert.NotNull(targetCharacter, "The test character did not exist, and was not successfully created");
-            characterId = targetCharacter.CharacterId;
         }
         private void GetCharsCallback(PlayFab.ServerModels.ListUsersCharactersResult result)
         {
@@ -389,33 +387,31 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void LeaderBoard()
         {
-            var clientRequest = new ClientModels.GetLeaderboardAroundCurrentUserRequest();
+            var clientRequest = new ClientModels.GetLeaderboardRequest();
             clientRequest.MaxResultsCount = 3;
             clientRequest.StatisticName = TEST_STAT_NAME;
-            PlayFabClientAPI.GetLeaderboardAroundCurrentUser(clientRequest, GetClientLbCallback, SharedErrorCallback);
+            PlayFabClientAPI.GetLeaderboard(clientRequest, GetClientLbCallback, SharedErrorCallback);
             WaitForApiCalls();
 
             UUnitAssert.StringEquals("Get Client Leaderboard Successful", lastReceivedMessage);
             // Testing anything more would be testing actual functionality of the Leaderboard, which is outside the scope of this test.
 
-            var serverRequest = new ServerModels.GetLeaderboardAroundCharacterRequest();
+            var serverRequest = new ServerModels.GetLeaderboardRequest();
             serverRequest.MaxResultsCount = 3;
             serverRequest.StatisticName = TEST_STAT_NAME;
-            serverRequest.CharacterId = characterId;
-            serverRequest.PlayFabId = playFabId;
-            PlayFabServerAPI.GetLeaderboardAroundCharacter(serverRequest, GetServerLbCallback, SharedErrorCallback);
+            PlayFabServerAPI.GetLeaderboard(serverRequest, GetServerLbCallback, SharedErrorCallback);
             WaitForApiCalls();
 
             UUnitAssert.StringEquals("Get Server Leaderboard Successful", lastReceivedMessage);
         }
-        public void GetClientLbCallback(PlayFab.ClientModels.GetLeaderboardAroundCurrentUserResult result)
+        private void GetClientLbCallback(PlayFab.ClientModels.GetLeaderboardResult result)
         {
             if (result.Leaderboard.Count > 0)
                 lastReceivedMessage = "Get Client Leaderboard Successful";
             else
                 lastReceivedMessage = "Get Client Leaderboard, empty";
         }
-        public void GetServerLbCallback(PlayFab.ServerModels.GetLeaderboardAroundCharacterResult result)
+        private void GetServerLbCallback(PlayFab.ServerModels.GetLeaderboardResult result)
         {
             if (result.Leaderboard.Count > 0)
                 lastReceivedMessage = "Get Server Leaderboard Successful";
@@ -466,7 +462,7 @@ namespace PlayFab.UUnit
 
             var request = new RunCloudScriptRequest();
             request.ActionId = "helloWorld";
-            PlayFabClientAPI.RunCloudScript(request, CloudScriptHWCallback, SharedErrorCallback);
+            PlayFabClientAPI.RunCloudScript(request, CloudScriptHwCallback, SharedErrorCallback);
             WaitForApiCalls();
             UUnitAssert.StringEquals("Hello " + playFabId + "!", lastReceivedMessage);
         }
@@ -474,7 +470,7 @@ namespace PlayFab.UUnit
         {
             lastReceivedMessage = "CloudScript setup complete: " + result.Url;
         }
-        private void CloudScriptHWCallback(RunCloudScriptResult result)
+        private void CloudScriptHwCallback(RunCloudScriptResult result)
         {
             UUnitAssert.NotNull(result.ResultsEncoded);
             JObject jobj = result.Results as JObject;
