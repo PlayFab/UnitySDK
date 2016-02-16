@@ -16,7 +16,6 @@ namespace PlayFab.UUnit
         public static ObjNumFieldTest Min = new ObjNumFieldTest { SbyteValue = sbyte.MinValue, ByteValue = byte.MinValue, ShortValue = short.MinValue, UshortValue = ushort.MinValue, IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue };
         public static ObjNumFieldTest Zero = new ObjNumFieldTest();
     }
-
     internal class ObjNumPropTest
     {
         public sbyte SbyteValue { get; set; } public byte ByteValue { get; set; }
@@ -41,18 +40,18 @@ namespace PlayFab.UUnit
         public static StructNumFieldTest Min = new StructNumFieldTest { SbyteValue = sbyte.MinValue, ByteValue = byte.MinValue, ShortValue = short.MinValue, UshortValue = ushort.MinValue, IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue };
         public static StructNumFieldTest Zero = new StructNumFieldTest();
     }
-
-    internal class StructNumPropTest
+    internal class ObjOptNumFieldTest
     {
-        public sbyte SbyteValue { get; set; } public byte ByteValue { get; set; }
-        public short ShortValue { get; set; } public ushort UshortValue { get; set; }
-        public int IntValue { get; set; } public uint UintValue { get; set; }
-        public long LongValue { get; set; } public ulong UlongValue { get; set; }
-        public float FloatValue { get; set; } public double DoubleValue { get; set; }
+        public sbyte? SbyteValue { get; set; } public byte? ByteValue { get; set; }
+        public short? ShortValue { get; set; } public ushort? UshortValue { get; set; }
+        public int? IntValue { get; set; } public uint? UintValue { get; set; }
+        public long? LongValue { get; set; } public ulong? UlongValue { get; set; }
+        public float? FloatValue { get; set; } public double? DoubleValue { get; set; }
 
-        public static StructNumPropTest Max = new StructNumPropTest { SbyteValue = sbyte.MaxValue, ByteValue = byte.MaxValue, ShortValue = short.MaxValue, UshortValue = ushort.MaxValue, IntValue = int.MaxValue, UintValue = uint.MaxValue, LongValue = long.MaxValue, UlongValue = ulong.MaxValue, FloatValue = float.MaxValue, DoubleValue = double.MaxValue };
-        public static StructNumPropTest Min = new StructNumPropTest { SbyteValue = sbyte.MinValue, ByteValue = byte.MinValue, ShortValue = short.MinValue, UshortValue = ushort.MinValue, IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue };
-        public static StructNumPropTest Zero = new StructNumPropTest();
+        public static ObjOptNumFieldTest Max = new ObjOptNumFieldTest { SbyteValue = sbyte.MaxValue, ByteValue = byte.MaxValue, ShortValue = short.MaxValue, UshortValue = ushort.MaxValue, IntValue = int.MaxValue, UintValue = uint.MaxValue, LongValue = long.MaxValue, UlongValue = ulong.MaxValue, FloatValue = float.MaxValue, DoubleValue = double.MaxValue };
+        public static ObjOptNumFieldTest Min = new ObjOptNumFieldTest { SbyteValue = sbyte.MinValue, ByteValue = byte.MinValue, ShortValue = short.MinValue, UshortValue = ushort.MinValue, IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue };
+        public static ObjOptNumFieldTest Zero = new ObjOptNumFieldTest { SbyteValue = 0, ByteValue = 0, ShortValue = 0, UshortValue = 0, IntValue = 0, UintValue = 0, LongValue = 0, UlongValue = 0, FloatValue = 0, DoubleValue = 0 };
+        public static ObjOptNumFieldTest Null = new ObjOptNumFieldTest { SbyteValue = null, ByteValue = null, ShortValue = null, UshortValue = null, IntValue = null, UintValue = null, LongValue = null, UlongValue = null, FloatValue = null, DoubleValue = null };
     }
 
     internal class OtherSpecificDatatypes
@@ -138,14 +137,14 @@ namespace PlayFab.UUnit
             }
 
             [UUnitTest]
-            public void TestStructNumProp()
+            public void TestObjOptNumField()
             {
-                var expectedObjects = new[] { StructNumPropTest.Max, StructNumPropTest.Min, StructNumPropTest.Zero };
+                var expectedObjects = new[] { ObjOptNumFieldTest.Max, ObjOptNumFieldTest.Min, ObjOptNumFieldTest.Zero, ObjOptNumFieldTest.Null };
                 for (int i = 0; i < expectedObjects.Length; i++)
                 {
                     // Convert the object to json and back, and verify that everything is the same
                     var actualJson = SimpleJson.SerializeObject(expectedObjects[i], Util.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                    var actualObject = SimpleJson.DeserializeObject<ObjNumPropTest>(actualJson, Util.ApiSerializerStrategy);
+                    var actualObject = SimpleJson.DeserializeObject<ObjOptNumFieldTest>(actualJson, Util.ApiSerializerStrategy);
 
                     UUnitAssert.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                     UUnitAssert.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -163,12 +162,13 @@ namespace PlayFab.UUnit
             [UUnitTest]
             public void OtherSpecificDatatypes()
             {
-                var expectedObj = new OtherSpecificDatatypes {
-                    StringDict = new Dictionary<string, string> {{"stringKey", "stringValue"}},
-                    EnumDict = new Dictionary<string, Region> {{"enumKey", Region.Japan}},
-                    IntDict = new Dictionary<string, int> {{"intKey", int.MinValue}},
-                    UintDict = new Dictionary<string, uint> {{"uintKey", uint.MaxValue}},
-                    TestString = "yup", 
+                var expectedObj = new OtherSpecificDatatypes
+                {
+                    StringDict = new Dictionary<string, string> { { "stringKey", "stringValue" } },
+                    EnumDict = new Dictionary<string, Region> { { "enumKey", Region.Japan } },
+                    IntDict = new Dictionary<string, int> { { "intKey", int.MinValue } },
+                    UintDict = new Dictionary<string, uint> { { "uintKey", uint.MaxValue } },
+                    TestString = "yup",
                 };
                 // Convert the object to json and back, and verify that everything is the same
                 var actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");

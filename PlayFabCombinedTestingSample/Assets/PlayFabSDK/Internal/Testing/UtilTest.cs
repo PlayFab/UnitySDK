@@ -100,6 +100,7 @@ namespace PlayFab.Internal
             public List<testRegion> enumList;
             public testRegion[] enumArray;
             public testRegion enumValue;
+            public testRegion? optEnumValue;
 
             public override bool Equals(object obj)
             {
@@ -115,6 +116,9 @@ namespace PlayFab.Internal
                 for (int i = 0; i < enumArray.Length; i++)
                     if (enumArray[i] != other.enumArray[i])
                         return false;
+                if (enumValue != other.enumValue || optEnumValue != other.optEnumValue)
+                    return false;
+
                 return true;
             }
 
@@ -130,12 +134,13 @@ namespace PlayFab.Internal
         void EnumConversionTest_Serialize()
         {
             string expectedJson, actualJson;
-            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj = new EnumConversionTestClass();
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj;
             expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumValue = testRegion.Australia;
+            expectedObj.optEnumValue = null;
 
-            expectedJson = "{\"enumList\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumArray\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumValue\":\"Australia\"}";
+            expectedJson = "{\"enumList\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumArray\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumValue\":\"Australia\",\"optEnumValue\":null}";
 
             actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(expectedJson, Util.ApiSerializerStrategy);
             actualJson = SimpleJson.SerializeObject(actualObj, Util.ApiSerializerStrategy);
@@ -150,13 +155,33 @@ namespace PlayFab.Internal
         [UUnitTest]
         void EnumConversionTest_Deserialize()
         {
-            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj = new EnumConversionTestClass();
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj;
             expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumValue = testRegion.Australia;
+            expectedObj.optEnumValue = null;
 
             string inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
             actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(inputJson, Util.ApiSerializerStrategy);
+            UUnitAssert.ObjEquals(expectedObj, actualObj);
+        }
+
+        [UUnitTest]
+        void EnumConversionTest_OptionalEnum()
+        {
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass();
+            expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumValue = testRegion.Australia;
+            expectedObj.optEnumValue = null;
+
+            var actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy);
+            var actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, Util.ApiSerializerStrategy);
+            UUnitAssert.ObjEquals(expectedObj, actualObj);
+
+            expectedObj.optEnumValue = testRegion.Brazil;
+            actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy);
+            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, Util.ApiSerializerStrategy);
             UUnitAssert.ObjEquals(expectedObj, actualObj);
         }
     }

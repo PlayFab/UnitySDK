@@ -514,7 +514,9 @@ namespace PlayFab
         private static readonly char[] EscapeTable;
         private static readonly char[] EscapeCharacters = new char[] { '"', '\\', '\b', '\f', '\n', '\r', '\t' };
         // private static readonly string EscapeCharactersString = new string(EscapeCharacters);
-        internal static readonly List<Type> NumberTypes = new List<Type> { typeof(bool), typeof(byte), typeof(ushort), typeof(uint), typeof(ulong), typeof(sbyte), typeof(short), typeof(int), typeof(long), typeof(double), typeof(float), typeof(decimal) };
+        internal static readonly List<Type> NumberTypes = new List<Type> {
+            typeof(bool), typeof(byte), typeof(ushort), typeof(uint), typeof(ulong), typeof(sbyte), typeof(short), typeof(int), typeof(long), typeof(double), typeof(float), typeof(decimal)
+        };
 
         static SimpleJson()
         {
@@ -1380,6 +1382,9 @@ namespace PlayFab
             bool valueIsLong = value is long;
             bool valueIsUlong = value is ulong;
             bool valueIsDouble = value is double;
+            Type nullableType = Nullable.GetUnderlyingType(type);
+            if (nullableType != null && SimpleJson.NumberTypes.IndexOf(nullableType) != -1)
+                type = nullableType; // Just use the regular type for the conversion
             bool isNumberType = SimpleJson.NumberTypes.IndexOf(type) != -1;
             bool isEnumType = type.IsEnum;
             if ((valueIsLong && type == typeof(long)) || (valueIsUlong && type == typeof(ulong)) || (valueIsDouble && type == typeof(double)))
