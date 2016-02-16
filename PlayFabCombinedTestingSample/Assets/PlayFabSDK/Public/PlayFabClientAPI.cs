@@ -1117,7 +1117,7 @@ namespace PlayFab
         {
             if (_authKey == null) throw new Exception("Must be logged in to call this method");
 
-            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
                 ResultContainer<GetPlayerStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
@@ -1207,7 +1207,7 @@ namespace PlayFab
         {
             if (_authKey == null) throw new Exception("Must be logged in to call this method");
 
-            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
             Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
             {
                 ResultContainer<UpdatePlayerStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
