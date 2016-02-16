@@ -17,6 +17,8 @@ namespace PlayFab
         public delegate void AuthenticateSessionTicketResponseCallback(string urlPath, int callId, AuthenticateSessionTicketRequest request, AuthenticateSessionTicketResult result, PlayFabError error, object customData);
         public delegate void GetPlayFabIDsFromFacebookIDsRequestCallback(string urlPath, int callId, GetPlayFabIDsFromFacebookIDsRequest request, object customData);
         public delegate void GetPlayFabIDsFromFacebookIDsResponseCallback(string urlPath, int callId, GetPlayFabIDsFromFacebookIDsRequest request, GetPlayFabIDsFromFacebookIDsResult result, PlayFabError error, object customData);
+        public delegate void GetPlayFabIDsFromSteamIDsRequestCallback(string urlPath, int callId, GetPlayFabIDsFromSteamIDsRequest request, object customData);
+        public delegate void GetPlayFabIDsFromSteamIDsResponseCallback(string urlPath, int callId, GetPlayFabIDsFromSteamIDsRequest request, GetPlayFabIDsFromSteamIDsResult result, PlayFabError error, object customData);
         public delegate void GetUserAccountInfoRequestCallback(string urlPath, int callId, GetUserAccountInfoRequest request, object customData);
         public delegate void GetUserAccountInfoResponseCallback(string urlPath, int callId, GetUserAccountInfoRequest request, GetUserAccountInfoResult result, PlayFabError error, object customData);
         public delegate void SendPushNotificationRequestCallback(string urlPath, int callId, SendPushNotificationRequest request, object customData);
@@ -190,6 +192,21 @@ namespace PlayFab
                 ResultContainer<GetPlayFabIDsFromFacebookIDsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/GetPlayFabIDsFromFacebookIDs", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers  are the profile IDs for the user accounts, available as SteamId in the Steamworks Community API calls.
+        /// </summary>
+        public static void GetPlayFabIDsFromSteamIDs(GetPlayFabIDsFromSteamIDsRequest request, ProcessApiCallback<GetPlayFabIDsFromSteamIDsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = JsonConvert.SerializeObject(request, Util.JsonFormatting, Util.JsonSettings);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPlayFabIDsFromSteamIDsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/GetPlayFabIDsFromSteamIDs", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
