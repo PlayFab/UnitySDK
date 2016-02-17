@@ -518,7 +518,15 @@ namespace PlayFab
             typeof(bool), typeof(byte), typeof(ushort), typeof(uint), typeof(ulong), typeof(sbyte), typeof(short), typeof(int), typeof(long), typeof(double), typeof(float), typeof(decimal)
         };
 
-        static SimpleJson()
+        // Performance stuff
+        [ThreadStatic]
+        private static StringBuilder _serializeObjectBuilder;
+        [ThreadStatic]
+        private static StringBuilder _parseStringBuilder;
+
+            [ThreadStatic]
+        private static object[] _1objArray;
+    static SimpleJson()
         {
             EscapeTable = new char[93];
             EscapeTable['"'] = '"';
@@ -600,16 +608,17 @@ namespace PlayFab
         /// <param name="json">A IDictionary&lt;string,object> / IList&lt;object></param>
         /// <param name="jsonSerializerStrategy">Serializer strategy to use</param>
         /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
-        public static string SerializeObject(object json, IJsonSerializerStrategy jsonSerializerStrategy)
+        public static string SerializeObject(object json, IJsonSerializerStrategy jsonSerializerStrategy = null)
         {
-            StringBuilder builder = new StringBuilder(BUILDER_INIT);
-            bool success = SerializeValue(jsonSerializerStrategy, json, builder);
-            return (success ? builder.ToString() : null);
-        }
+            if (_serializeObjectBuilder == null)
+                _serializeObjectBuilder = new StringBuilder(BUILDER_INIT);
+            _serializeObjectBuilder.Length = 0;
 
-        public static string SerializeObject(object json)
-        {
-            return SerializeObject(json, CurrentJsonSerializerStrategy);
+            if (jsonSerializerStrategy == null)
+                jsonSerializerStrategy = CurrentJsonSerializerStrategy;
+
+            bool success = SerializeValue(jsonSerializerStrategy, json, _serializeObjectBuilder);
+            return (success ? _serializeObjectBuilder.ToString() : null);
         }
 
         public static string EscapeToJavascriptString(string jsonString)
@@ -787,13 +796,14 @@ namespace PlayFab
 
         static string ParseString(char[] json, ref int index, ref bool success)
         {
-            StringBuilder s = new StringBuilder(BUILDER_INIT);
-            char c;
+            if (_parseStringBuilder == null)
+                _parseStringBuilder = new StringBuilder(BUILDER_INIT);
+            _parseStringBuilder.Length = 0;
 
             EatWhitespace(json, ref index);
 
             // "
-            c = json[index++];
+            char c = json[index++];
             bool complete = false;
             while (!complete)
             {
@@ -812,21 +822,21 @@ namespace PlayFab
                         break;
                     c = json[index++];
                     if (c == '"')
-                        s.Append('"');
+                        _parseStringBuilder.Append('"');
                     else if (c == '\\')
-                        s.Append('\\');
+                        _parseStringBuilder.Append('\\');
                     else if (c == '/')
-                        s.Append('/');
+                        _parseStringBuilder.Append('/');
                     else if (c == 'b')
-                        s.Append('\b');
+                        _parseStringBuilder.Append('\b');
                     else if (c == 'f')
-                        s.Append('\f');
+                        _parseStringBuilder.Append('\f');
                     else if (c == 'n')
-                        s.Append('\n');
+                        _parseStringBuilder.Append('\n');
                     else if (c == 'r')
-                        s.Append('\r');
+                        _parseStringBuilder.Append('\r');
                     else if (c == 't')
-                        s.Append('\t');
+                        _parseStringBuilder.Append('\t');
                     else if (c == 'u')
                     {
                         int remainingLength = json.Length - index;
@@ -849,8 +859,8 @@ namespace PlayFab
                                     {
                                         if (0xDC00 <= lowCodePoint && lowCodePoint <= 0xDFFF)    // if low surrogate
                                         {
-                                            s.Append((char)codePoint);
-                                            s.Append((char)lowCodePoint);
+                                            _parseStringBuilder.Append((char)codePoint);
+                                            _parseStringBuilder.Append((char)lowCodePoint);
                                             index += 6; // skip 6 chars
                                             continue;
                                         }
@@ -859,7 +869,7 @@ namespace PlayFab
                                 success = false;    // invalid surrogate pair
                                 return "";
                             }
-                            s.Append(ConvertFromUtf32((int)codePoint));
+                            _parseStringBuilder.Append(ConvertFromUtf32((int)codePoint));
                             // skip 4 chars
                             index += 4;
                         }
@@ -868,14 +878,14 @@ namespace PlayFab
                     }
                 }
                 else
-                    s.Append(c);
+                    _parseStringBuilder.Append(c);
             }
             if (!complete)
             {
                 success = false;
                 return null;
             }
-            return s.ToString();
+            return _parseStringBuilder.ToString();
         }
 
         private static string ConvertFromUtf32(int utf32)
@@ -1604,13 +1614,16 @@ namespace PlayFab
 #endif
  class ReflectionUtils
     {
-        private static readonly object[] EmptyObjects = new object[] { };
+        private static readonly object[] EmptyObjects = new object[0];
 
         public delegate object GetDelegate(object source);
         public delegate void SetDelegate(object source, object value);
         public delegate object ConstructorDelegate(params object[] args);
 
         public delegate TValue ThreadSafeDictionaryValueFactory<TKey, TValue>(TKey key);
+
+        [ThreadStatic]
+        private static object[] _1ObjArray;
 
 #if SIMPLE_JSON_TYPEINFO
             public static TypeInfo GetTypeInfo(Type type)
@@ -1870,7 +1883,12 @@ namespace PlayFab
         public static SetDelegate GetSetMethodByReflection(PropertyInfo propertyInfo)
         {
             MethodInfo methodInfo = GetSetterMethodInfo(propertyInfo);
-            return delegate(object source, object value) { methodInfo.Invoke(source, new object[] { value }); };
+            return delegate(object source, object value) {
+                if (_1ObjArray == null)
+                    _1ObjArray = new object[1];
+                _1ObjArray[0] = value;
+                methodInfo.Invoke(source, _1ObjArray);
+            };
         }
 
         public static SetDelegate GetSetMethodByReflection(FieldInfo fieldInfo)
