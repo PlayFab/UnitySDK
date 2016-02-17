@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
 public class PlayFabPackager : MonoBehaviour {
@@ -42,7 +42,7 @@ public class PlayFabPackager : MonoBehaviour {
     }
 
     [MenuItem("PlayFab/Testing/WinPhoneTestBuild")]
-    public static void MakeWinPhoneBuild()
+    public static void MakeWp8Build()
     {
         string WP8_PATH = System.IO.Path.Combine(BUILD_PATH, "PlayFabWP8");
         MkDir(BUILD_PATH);
