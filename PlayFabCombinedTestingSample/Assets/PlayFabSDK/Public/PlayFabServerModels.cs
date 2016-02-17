@@ -878,6 +878,29 @@ namespace PlayFab.ServerModels
         public Dictionary<string,int> CharacterStatistics { get; set;}
     }
 
+    public class GetCloudScriptUrlRequest
+    {
+
+        /// <summary>
+        /// Cloud Script Version to use. Defaults to 1.
+        /// </summary>
+        public int? Version { get; set;}
+
+        /// <summary>
+        /// Specifies whether the URL returned should be the one for the most recently uploaded Revision of the Cloud Script (true), or the Revision most recently set to live (false). Defaults to false.
+        /// </summary>
+        public bool? Testing { get; set;}
+    }
+
+    public class GetCloudScriptUrlResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// URL of the Cloud Script logic server.
+        /// </summary>
+        public string Url { get; set;}
+    }
+
     public class GetContentDownloadUrlRequest
     {
 
@@ -2097,6 +2120,69 @@ namespace PlayFab.ServerModels
 
     public class RevokeInventoryResult : PlayFabResultCommon
     {
+    }
+
+    public class RunCloudScriptResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// id of Cloud Script run
+        /// </summary>
+        public string ActionId { get; set;}
+
+        /// <summary>
+        /// version of Cloud Script run
+        /// </summary>
+        public int Version { get; set;}
+
+        /// <summary>
+        /// revision of Cloud Script run
+        /// </summary>
+        public int Revision { get; set;}
+
+        /// <summary>
+        /// return values from the server action as a dynamic object
+        /// </summary>
+        public object Results { get; set;}
+
+        /// <summary>
+        /// return values from the server action as a JSON encoded string
+        /// </summary>
+        public string ResultsEncoded { get; set;}
+
+        /// <summary>
+        /// any log statements generated during the run of this action
+        /// </summary>
+        public string ActionLog { get; set;}
+
+        /// <summary>
+        /// time this script took to run, in seconds
+        /// </summary>
+        public double ExecutionTime { get; set;}
+    }
+
+    public class RunServerCloudScriptRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// server action to trigger
+        /// </summary>
+        public string ActionId { get; set;}
+
+        /// <summary>
+        /// parameters to pass into the action (If you use this, don't use ParamsEncoded)
+        /// </summary>
+        public object Params { get; set;}
+
+        /// <summary>
+        /// json-encoded parameters to pass into the action (If you use this, don't use Params)
+        /// </summary>
+        public string ParamsEncoded { get; set;}
     }
 
     public class SendPushNotificationRequest
