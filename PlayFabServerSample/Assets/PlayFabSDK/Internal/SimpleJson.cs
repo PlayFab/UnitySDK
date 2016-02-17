@@ -524,8 +524,6 @@ namespace PlayFab
         [ThreadStatic]
         private static StringBuilder _parseStringBuilder;
 
-        [ThreadStatic]
-        private static object[] _1objArray;
         static SimpleJson()
         {
             EscapeTable = new char[93];
