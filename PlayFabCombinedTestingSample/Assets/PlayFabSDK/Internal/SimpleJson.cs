@@ -524,9 +524,9 @@ namespace PlayFab
         [ThreadStatic]
         private static StringBuilder _parseStringBuilder;
 
-            [ThreadStatic]
+        [ThreadStatic]
         private static object[] _1objArray;
-    static SimpleJson()
+        static SimpleJson()
         {
             EscapeTable = new char[93];
             EscapeTable['"'] = '"';
@@ -1023,12 +1023,22 @@ namespace PlayFab
         {
             bool success = true;
             string stringValue = value as string;
-            if (stringValue != null)
+            if (value == null)
+                builder.Append("null");
+            else if (stringValue != null)
                 success = SerializeString(stringValue, builder);
             else
             {
                 IDictionary<string, object> dict = value as IDictionary<string, object>;
-                if (dict != null)
+                Type type = value.GetType();
+                Type[] genArgs = ReflectionUtils.GetGenericTypeArguments(type);
+                var isStringKeyDictionary = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) && genArgs[0] == typeof(string);
+                if (isStringKeyDictionary)
+                {
+                    var strDictValue = value as IDictionary;
+                    success = SerializeObject(jsonSerializerStrategy, strDictValue.Keys, strDictValue.Values, builder);
+                }
+                else if (dict != null)
                 {
                     success = SerializeObject(jsonSerializerStrategy, dict.Keys, dict.Values, builder);
                 }
@@ -1048,8 +1058,6 @@ namespace PlayFab
                             success = SerializeNumber(value, builder);
                         else if (value is bool)
                             builder.Append((bool)value ? "true" : "false");
-                        else if (value == null)
-                            builder.Append("null");
                         else
                         {
                             object serializedObject;
@@ -1883,7 +1891,8 @@ namespace PlayFab
         public static SetDelegate GetSetMethodByReflection(PropertyInfo propertyInfo)
         {
             MethodInfo methodInfo = GetSetterMethodInfo(propertyInfo);
-            return delegate(object source, object value) {
+            return delegate(object source, object value)
+            {
                 if (_1ObjArray == null)
                     _1ObjArray = new object[1];
                 _1ObjArray[0] = value;

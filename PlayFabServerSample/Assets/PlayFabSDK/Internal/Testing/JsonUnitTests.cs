@@ -172,7 +172,6 @@ namespace PlayFab.UUnit
                 };
                 // Convert the object to json and back, and verify that everything is the same
                 var actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                actualJson = actualJson.Replace("[", "").Replace("]", "").Replace(",\"Value\"", "").Replace("\"Key\":", "");
                 var actualObject = SimpleJson.DeserializeObject<OtherSpecificDatatypes>(actualJson, Util.ApiSerializerStrategy);
 
                 UUnitAssert.ObjEquals(expectedObj.TestString, actualObject.TestString);

@@ -471,15 +471,9 @@ namespace PlayFab.UUnit
         private void CloudScriptHwCallback(RunCloudScriptResult result)
         {
             UUnitAssert.NotNull(result.ResultsEncoded);
-            // TODO: Debug result.Results here and determine if we can inspect into it
-            //JObject jobj = result.Results as JObject;
-            //UUnitAssert.NotNull(jobj);
-            //JToken jtok;
-            //jobj.TryGetValue("messageValue", out jtok);
-            //UUnitAssert.NotNull(jtok);
-            //JValue jval = jtok as JValue;
-            //UUnitAssert.NotNull(jval);
-            //lastReceivedMessage = jval.Value as string;
+            UUnitAssert.NotNull(result.Results);
+            var jobj = result.Results as JsonObject;
+            lastReceivedMessage = jobj["messageValue"] as string;
         }
     }
 }

@@ -164,7 +164,7 @@ namespace PlayFab.Internal
                 var payload = Encoding.UTF8.GetBytes(request.Data);
                 request.HttpRequest = (HttpWebRequest)WebRequest.Create(fullUrl);
 
-                request.HttpRequest.Proxy = null; // Prevents hitting a proxy is no proxy is available. TODO: Add support for proxy's.
+                request.HttpRequest.Proxy = null; // Prevents hitting a proxy if no proxy is available. TODO: Add support for proxy's.
                 request.HttpRequest.Headers.Add("X-ReportErrorAsSuccess", "true"); // Without this, we have to catch WebException instead, and manually decode the result
                 request.HttpRequest.Headers.Add("X-PlayFabSDK", PlayFabVersion.getVersionString());
                 if (request.AuthType != null)
