@@ -40,11 +40,7 @@ namespace PlayFab
 
         public static string GetFullUrl(string apiCall)
         {
-            if (apiCall == "/Client/RunCloudScript")
-            {
-                return GetLogicUrl(apiCall);
-            }
-            else if (!IsTesting)
+            if (!IsTesting)
             {
                 string baseUrl = ProductionEnvironmentUrl;
                 if (baseUrl.StartsWith("http"))
