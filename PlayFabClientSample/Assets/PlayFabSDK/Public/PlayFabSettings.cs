@@ -57,7 +57,8 @@ namespace PlayFab
             {
                 return GetLogicUrl(apiCall);
             }
-            else if (!IsTesting)
+            else
+            if (!IsTesting)
             {
                 string baseUrl = ProductionEnvironmentUrl;
                 if (baseUrl.StartsWith("http"))

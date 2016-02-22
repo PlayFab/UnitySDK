@@ -26,12 +26,15 @@ namespace PlayFab.Internal
                 PlayFabSettings.RegisterForResponses(null, onResponseInstGl);
                 PlayFabSettings.RegisterForRequests("/Client/LoginWithCustomID", onRequestInstLogin);
                 PlayFabSettings.RegisterForResponses("/Client/LoginWithCustomID", onResponseInstLogin);
+
+                PlayFabSettings.GlobalErrorHandler += error => { callbacks.Add(error.ErrorMessage); };
             }
 
             public void Unregister()
             {
                 // Automatically unregisters all callbacks bound to this instance - No delegate casting or local variables needed for a full un-register
                 PlayFabSettings.UnregisterInstance(this);
+                PlayFabSettings.GlobalErrorHandler = null;
             }
 
             private void OnRequest_InstGl(string url, int callId, object request, object customData)
