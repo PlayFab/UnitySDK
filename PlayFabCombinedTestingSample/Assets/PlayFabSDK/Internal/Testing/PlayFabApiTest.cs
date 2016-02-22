@@ -1,7 +1,5 @@
 using PlayFab.ClientModels;
 using PlayFab.Internal;
-using PlayFab.Json;
-using PlayFab.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,9 +87,9 @@ namespace PlayFab.UUnit
                 if (File.Exists(filename))
                 {
                     string testInputsFile = File.ReadAllText(filename);
-                    var serializer = JsonSerializer.Create(PlayFab.Internal.Util.JsonSettings);
-                    var testInputs = serializer.Deserialize<Dictionary<string, string>>(new JsonTextReader(new StringReader(testInputsFile)));
-                    SetTitleInfo(testInputs);
+
+                    var testInputs = SimpleJson.DeserializeObject<Dictionary<string, string>>(testInputsFile, Util.ApiSerializerStrategy);
+                    PlayFabApiTest.SetTitleInfo(testInputs);
                 }
                 else
                 {
@@ -473,14 +471,9 @@ namespace PlayFab.UUnit
         private void CloudScriptHwCallback(RunCloudScriptResult result)
         {
             UUnitAssert.NotNull(result.ResultsEncoded);
-            JObject jobj = result.Results as JObject;
-            UUnitAssert.NotNull(jobj);
-            JToken jtok;
-            jobj.TryGetValue("messageValue", out jtok);
-            UUnitAssert.NotNull(jtok);
-            JValue jval = jtok as JValue;
-            UUnitAssert.NotNull(jval);
-            lastReceivedMessage = jval.Value as string;
+            UUnitAssert.NotNull(result.Results);
+            var jobj = result.Results as JsonObject;
+            lastReceivedMessage = jobj["messageValue"] as string;
         }
     }
 }

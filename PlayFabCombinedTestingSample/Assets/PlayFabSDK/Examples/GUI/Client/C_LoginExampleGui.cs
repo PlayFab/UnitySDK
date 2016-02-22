@@ -1,7 +1,7 @@
-using PlayFab.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using PlayFab.Internal;
 using UnityEngine;
 
 namespace PlayFab.Examples.Client
@@ -47,8 +47,8 @@ namespace PlayFab.Examples.Client
 
                 string hiddenSecretKey; // Don't want to display this to the inspector if we use this mode
                 string testInputsFile = File.ReadAllText(titleDataFileName);
-                var serializer = JsonSerializer.Create(PlayFab.Internal.Util.JsonSettings);
-                var testInputs = serializer.Deserialize<Dictionary<string, string>>(new JsonTextReader(new StringReader(testInputsFile)));
+
+                var testInputs = SimpleJson.DeserializeObject<Dictionary<string, string>>(testInputsFile, Util.ApiSerializerStrategy);
 
                 success &= testInputs.TryGetValue("titleId", out titleId);
                 success &= testInputs.TryGetValue("developerSecretKey", out hiddenSecretKey);

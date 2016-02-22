@@ -1,7 +1,5 @@
 using PlayFab.ClientModels;
 using PlayFab.Internal;
-using PlayFab.Json;
-using PlayFab.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -85,8 +83,8 @@ namespace PlayFab.UUnit
                 if (File.Exists(filename))
                 {
                     string testInputsFile = File.ReadAllText(filename);
-                    var serializer = JsonSerializer.Create(Util.JsonSettings);
-                    var testInputs = serializer.Deserialize<Dictionary<string, string>>(new JsonTextReader(new StringReader(testInputsFile)));
+
+                    var testInputs = SimpleJson.DeserializeObject<Dictionary<string, string>>(testInputsFile, Util.ApiSerializerStrategy);
                     SetTitleInfo(testInputs);
                 }
                 else
@@ -180,7 +178,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.RegisterPlayFabUser(registerRequest, RegisterCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Registration Successful", lastReceivedMessage); // If we get here, we definitely registered a new user, and we definitely want to verify success
+            UUnitAssert.StringEquals("User Registration Successful", lastReceivedMessage); // If we get here, we definitely registered a new user, and we definitely want to verify success
 
             UUnitAssert.True(PlayFabClientAPI.IsClientLoggedIn(), "User login failed");
         }
@@ -207,7 +205,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.LoginWithEmailAddress(loginRequest, LoginCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals(PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful", PlayFabSettings.AdvertisingIdType);
+            UUnitAssert.StringEquals(PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful", PlayFabSettings.AdvertisingIdType);
         }
 
         /// <summary>
@@ -236,15 +234,15 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.UpdateUserData(updateRequest, UpdateUserDataCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Data Updated", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Data Updated", lastReceivedMessage);
 
             getRequest = new ClientModels.GetUserDataRequest();
             PlayFabClientAPI.GetUserData(getRequest, GetUserDataCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Data Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Data Received", lastReceivedMessage);
             int.TryParse(testCounterReturn.Value, out testCounterValueActual);
-            UUnitAssert.Equals(testCounterValueExpected, testCounterValueActual);
+            UUnitAssert.IntEquals(testCounterValueExpected, testCounterValueActual);
 
             DateTime timeUpdated = testCounterReturn.LastUpdated;
             DateTime minTest = DateTime.UtcNow - TimeSpan.FromMinutes(5);
@@ -428,14 +426,9 @@ namespace PlayFab.UUnit
         private void CloudScriptHwCallback(RunCloudScriptResult result)
         {
             UUnitAssert.NotNull(result.ResultsEncoded);
-            JObject jobj = result.Results as JObject;
-            UUnitAssert.NotNull(jobj);
-            JToken jtok;
-            jobj.TryGetValue("messageValue", out jtok);
-            UUnitAssert.NotNull(jtok);
-            JValue jval = jtok as JValue;
-            UUnitAssert.NotNull(jval);
-            lastReceivedMessage = jval.Value as string;
+            UUnitAssert.NotNull(result.Results);
+            var jobj = result.Results as JsonObject;
+            lastReceivedMessage = jobj["messageValue"] as string;
         }
     }
 }

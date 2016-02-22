@@ -1,5 +1,3 @@
-using PlayFab.Json;
-using PlayFab.Json.Converters;
 using PlayFab.UUnit;
 using System;
 using System.Globalization;
@@ -7,16 +5,6 @@ using System.Collections.Generic;
 
 namespace PlayFab.Internal
 {
-    internal class JsonNumTestContainer
-    {
-        public int IntValue;
-        public uint UintValue;
-        public long LongValue;
-        public ulong UlongValue;
-        public float FloatValue;
-        public double DoubleValue;
-    }
-
     class GMFB_327 : UUnitTestCase
     {
         private class ObjWithTimes
@@ -24,7 +12,7 @@ namespace PlayFab.Internal
             public DateTime timestamp = DateTime.UtcNow;
         }
 
-        private string[] examples = new string[]{
+        private readonly string[] _examples = {
             "2015-08-25T10:22:01.654321Z",
             "2015-08-25T10:22:01.8642Z",
             "2015-08-25T10:22:01.753Z",
@@ -50,16 +38,16 @@ namespace PlayFab.Internal
         [UUnitTest]
         void TimeStampHandlesAllFormats()
         {
-            DateTime expectedTime, actualTime;
-            var formats = IsoDateTimeConverter._defaultDateTimeFormats;
+            DateTime actualTime;
+            var formats = Util._defaultDateTimeFormats;
 
-            for (int i = 0; i < examples.Length; i++)
+            for (int i = 0; i < _examples.Length; i++)
             {
                 string expectedFormat = i < formats.Length ? formats[i] : "default";
-                UUnitAssert.True(DateTime.TryParseExact(examples[i], formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + examples.Length + ", " + examples[i] + " with " + expectedFormat);
+                UUnitAssert.True(DateTime.TryParseExact(_examples[i], formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i] + " with " + expectedFormat);
             }
 
-            expectedTime = DateTime.Now;
+            DateTime expectedTime = DateTime.Now;
             for (int i = 0; i < formats.Length; i++)
             {
                 string timeString = expectedTime.ToString(formats[i], CultureInfo.CurrentCulture);
@@ -75,17 +63,17 @@ namespace PlayFab.Internal
             DateTime expectedTime;
             ObjWithTimes actualObj = new ObjWithTimes();
 
-            for (int i = 0; i < examples.Length; i++)
+            for (int i = 0; i < _examples.Length; i++)
             {
                 // Define the time deserialization expectation
-                UUnitAssert.True(DateTime.TryParseExact(examples[i], IsoDateTimeConverter._defaultDateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out expectedTime), "Index: " + i + "/" + examples.Length + ", " + examples[i]);
+                UUnitAssert.True(DateTime.TryParseExact(_examples[i], Util._defaultDateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out expectedTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i]);
 
                 // De-serialize the time using json
-                expectedJson = "{\"timestamp\":\"" + examples[i] + "\"}"; // We are provided a json string with every random time format
-                JsonConvert.PopulateObject(expectedJson, actualObj, Util.JsonSettings);
-                actualJson = JsonConvert.SerializeObject(actualObj, Util.JsonFormatting, Util.JsonSettings);
+                expectedJson = "{\"timestamp\":\"" + _examples[i] + "\"}"; // We are provided a json string with every random time format
+                actualObj = SimpleJson.DeserializeObject<ObjWithTimes>(expectedJson, Util.ApiSerializerStrategy);
+                actualJson = SimpleJson.SerializeObject(actualObj, Util.ApiSerializerStrategy);
 
-                if (i == IsoDateTimeConverter.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
+                if (i == Util.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
                     UUnitAssert.StringEquals(expectedJson, actualJson);
 
                 // Verify that the times match
@@ -112,6 +100,7 @@ namespace PlayFab.Internal
             public List<testRegion> enumList;
             public testRegion[] enumArray;
             public testRegion enumValue;
+            public testRegion? optEnumValue;
 
             public override bool Equals(object obj)
             {
@@ -127,6 +116,9 @@ namespace PlayFab.Internal
                 for (int i = 0; i < enumArray.Length; i++)
                     if (enumArray[i] != other.enumArray[i])
                         return false;
+                if (enumValue != other.enumValue || optEnumValue != other.optEnumValue)
+                    return false;
+
                 return true;
             }
 
@@ -142,15 +134,16 @@ namespace PlayFab.Internal
         void EnumConversionTest_Serialize()
         {
             string expectedJson, actualJson;
-            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj = new EnumConversionTestClass();
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj;
             expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumValue = testRegion.Australia;
+            expectedObj.optEnumValue = null;
 
-            expectedJson = "{\"enumList\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumArray\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumValue\":\"Australia\"}";
+            expectedJson = "{\"enumList\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumArray\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumValue\":\"Australia\",\"optEnumValue\":null}";
 
-            JsonConvert.PopulateObject(expectedJson, actualObj, Util.JsonSettings);
-            actualJson = JsonConvert.SerializeObject(actualObj, Util.JsonFormatting, Util.JsonSettings);
+            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(expectedJson, Util.ApiSerializerStrategy);
+            actualJson = SimpleJson.SerializeObject(actualObj, Util.ApiSerializerStrategy);
 
             UUnitAssert.StringEquals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
             UUnitAssert.ObjEquals(expectedObj, actualObj);
@@ -162,42 +155,34 @@ namespace PlayFab.Internal
         [UUnitTest]
         void EnumConversionTest_Deserialize()
         {
-            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj = new EnumConversionTestClass();
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj;
             expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
             expectedObj.enumValue = testRegion.Australia;
+            expectedObj.optEnumValue = null;
 
             string inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
-            JsonConvert.PopulateObject(inputJson, actualObj, Util.JsonSettings);
+            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(inputJson, Util.ApiSerializerStrategy);
             UUnitAssert.ObjEquals(expectedObj, actualObj);
         }
-    }
 
-    class JsonLongTest : UUnitTestCase
-    {
         [UUnitTest]
-        public void TestJsonLong()
+        void EnumConversionTest_OptionalEnum()
         {
-            var expectedObjects = new JsonNumTestContainer[] {
-                // URGENT TODO: This test fails for long.MaxValue - Write custom serializers for ulongs that can handle larger values
-                new JsonNumTestContainer { IntValue = int.MaxValue, UintValue = uint.MaxValue, LongValue = long.MaxValue, UlongValue = long.MaxValue, FloatValue = float.MaxValue, DoubleValue = double.MaxValue },
-                new JsonNumTestContainer { IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue },
-                new JsonNumTestContainer { IntValue = 0, UintValue = 0, LongValue = 0, UlongValue = 0, FloatValue = 0, DoubleValue = 0 },
-            };
+            EnumConversionTestClass expectedObj = new EnumConversionTestClass();
+            expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
+            expectedObj.enumValue = testRegion.Australia;
+            expectedObj.optEnumValue = null;
 
-            for (int i = 0; i < expectedObjects.Length; i++)
-            {
-                // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonConvert.SerializeObject(expectedObjects[i], Util.JsonFormatting, Util.JsonSettings).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonConvert.DeserializeObject<JsonNumTestContainer>(actualJson, Util.JsonSettings);
+            var actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy);
+            var actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, Util.ApiSerializerStrategy);
+            UUnitAssert.ObjEquals(expectedObj, actualObj);
 
-                UUnitAssert.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
-                UUnitAssert.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
-                UUnitAssert.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
-                UUnitAssert.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
-                UUnitAssert.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, 0.001f);
-                UUnitAssert.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, 0.001);
-            }
+            expectedObj.optEnumValue = testRegion.Brazil;
+            actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy);
+            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, Util.ApiSerializerStrategy);
+            UUnitAssert.ObjEquals(expectedObj, actualObj);
         }
     }
 }

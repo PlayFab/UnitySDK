@@ -4,6 +4,8 @@
 #define PLAYFAB_ANDROID_PLUGIN
 #elif UNITY_IOS
 #define PLAYFAB_IOS_PLUGIN
+#elif UNITY_WP8
+#define PLAYFAB_WP8
 #endif
 
 using System;
@@ -51,7 +53,7 @@ namespace PlayFab.Internal
             {
 #if PLAYFAB_IOS_PLUGIN
                 PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(urlPath), PlayFabVersion.getVersionString(), requestContainer, PlayFabSettings.InvokeRequest);
-#elif UNITY_WP8
+#elif PLAYFAB_WP8
                 instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
 #else
                 if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
@@ -67,14 +69,19 @@ namespace PlayFab.Internal
             }
             else
             {
+#if PLAYFAB_WP8
+                throw new Exception("WP8 cannot make blocking api calls");
+#else
                 StartHttpWebRequest(requestContainer);
                 ProcessHttpWebResult(requestContainer, true);
                 callback(requestContainer);
+#endif
             }
         }
         #endregion
 
         #region Web Request Methods based on PlayFabSettings.WebRequestTypes
+#if !PLAYFAB_WP8
         /// <summary>
         /// If the worker thread is not running, start it
         /// </summary>
@@ -157,7 +164,7 @@ namespace PlayFab.Internal
                 var payload = Encoding.UTF8.GetBytes(request.Data);
                 request.HttpRequest = (HttpWebRequest)WebRequest.Create(fullUrl);
 
-                request.HttpRequest.Proxy = null; // Prevents hitting a proxy is no proxy is available. TODO: Add support for proxy's.
+                request.HttpRequest.Proxy = null; // Prevents hitting a proxy if no proxy is available. TODO: Add support for proxy's.
                 request.HttpRequest.Headers.Add("X-ReportErrorAsSuccess", "true"); // Without this, we have to catch WebException instead, and manually decode the result
                 request.HttpRequest.Headers.Add("X-PlayFabSDK", PlayFabVersion.getVersionString());
                 if (request.AuthType != null)
@@ -217,6 +224,7 @@ namespace PlayFab.Internal
             }
             return true;
         }
+#endif
 
         // This is the old Unity WWW class call.
         private IEnumerator MakeRequestViaUnity(CallRequestContainer requestContainer)
