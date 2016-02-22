@@ -1,9 +1,21 @@
+using System;
 using System.Collections.Generic;
-using PlayFab.ClientModels;
 using PlayFab.Internal;
+using PlayFab.UUnit;
 
 namespace PlayFab.UUnit
 {
+    public enum Region
+    {
+        USCentral,
+        USEast,
+        EUWest,
+        Singapore,
+        Japan,
+        Brazil,
+        Australia
+    }
+
     internal class ObjNumFieldTest
     {
         public sbyte SbyteValue; public byte ByteValue;
@@ -183,3 +195,47 @@ namespace PlayFab.UUnit
         }
     }
 }
+
+#region Delete this whole section after a few months
+namespace PlayFab.Json
+{
+    [Obsolete("Use PlayFab.SimpleJson")]
+    public static class JsonConvert
+    {
+        [Obsolete("Use PlayFab.SimpleJson.SerializeObject()")]
+        public static string SerializeObject(object obj)
+        {
+            return SimpleJson.SerializeObject(obj, Util.ApiSerializerStrategy);
+        }
+
+        [Obsolete("Use PlayFab.SimpleJson.DeserializeObject<t>()")]
+        public static T DeserializeObject<T>(string json)
+        {
+            return SimpleJson.DeserializeObject<T>(json, Util.ApiSerializerStrategy);
+        }
+
+        [Obsolete("Use PlayFab.SimpleJson.DeserializeObject()")]
+        public static object DeserializeObject(string json)
+        {
+            return SimpleJson.DeserializeObject(json);
+        }
+    }
+
+    public class JsonLegacyTest : UUnitTestCase
+    {
+        private class JsonTest { public bool TestBool; }
+
+        [UUnitTest]
+        public void TestLegacySignature()
+        {
+#pragma warning disable 0618
+            var expectedObj = new JsonTest { TestBool = true };
+            var actualJson = PlayFab.Json.JsonConvert.SerializeObject(expectedObj);
+            JsonTest actualObj = PlayFab.Json.JsonConvert.DeserializeObject<JsonTest>(actualJson);
+            PlayFab.Json.JsonConvert.DeserializeObject(actualJson);
+            UUnitAssert.True(actualObj.TestBool);
+#pragma warning restore 0618
+        }
+    }
+}
+#endregion Delete this whole section after a few months
