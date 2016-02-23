@@ -28,35 +28,6 @@ namespace PlayFab.ServerModels
         public int Amount { get; set;}
     }
 
-    public class AddFriendRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the player to add a new friend.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// The PlayFab identifier of the user being added.
-        /// </summary>
-        public string FriendPlayFabId { get; set;}
-
-        /// <summary>
-        /// The PlayFab username of the user being added
-        /// </summary>
-        public string FriendUsername { get; set;}
-
-        /// <summary>
-        /// Email address of the user being added.
-        /// </summary>
-        public string FriendEmail { get; set;}
-
-        /// <summary>
-        /// Title-specific display name of the user to being added.
-        /// </summary>
-        public string FriendTitleDisplayName { get; set;}
-    }
-
     public class AddSharedGroupMembersRequest
     {
 
@@ -927,68 +898,6 @@ namespace PlayFab.ServerModels
         /// URL for downloading content via HTTP GET or HEAD method. The URL will expire in 1 hour.
         /// </summary>
         public string URL { get; set;}
-    }
-
-    public class GetFriendLeaderboardRequest
-    {
-
-        /// <summary>
-        /// The player whose friend leaderboard to get
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// Statistic used to rank friends for this leaderboard.
-        /// </summary>
-        public string StatisticName { get; set;}
-
-        /// <summary>
-        /// Position in the leaderboard to start this listing (defaults to the first entry).
-        /// </summary>
-        public int StartPosition { get; set;}
-
-        /// <summary>
-        /// Maximum number of entries to retrieve.
-        /// </summary>
-        public int MaxResultsCount { get; set;}
-
-        /// <summary>
-        /// Indicates whether Steam service friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeSteamFriends { get; set;}
-
-        /// <summary>
-        /// Indicates whether Facebook friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeFacebookFriends { get; set;}
-    }
-
-    public class GetFriendsListRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the player whose friend list to get.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// Indicates whether Steam service friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeSteamFriends { get; set;}
-
-        /// <summary>
-        /// Indicates whether Facebook friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeFacebookFriends { get; set;}
-    }
-
-    public class GetFriendsListResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// Array of friends found.
-        /// </summary>
-        public List<FriendInfo> Friends { get; set;}
     }
 
     public class GetLeaderboardAroundCharacterRequest
@@ -2029,20 +1938,6 @@ namespace PlayFab.ServerModels
         public UserAccountInfo UserInfo { get; set;}
     }
 
-    public class RemoveFriendRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the friend account which is to be removed.
-        /// </summary>
-        public string FriendPlayFabId { get; set;}
-
-        /// <summary>
-        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
-        /// </summary>
-        public string PlayFabId { get; set;}
-    }
-
     public class RemoveSharedGroupMembersRequest
     {
 
@@ -2159,30 +2054,6 @@ namespace PlayFab.ServerModels
         /// time this script took to run, in seconds
         /// </summary>
         public double ExecutionTime { get; set;}
-    }
-
-    public class RunServerCloudScriptRequest
-    {
-
-        /// <summary>
-        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// server action to trigger
-        /// </summary>
-        public string ActionId { get; set;}
-
-        /// <summary>
-        /// parameters to pass into the action (If you use this, don't use ParamsEncoded)
-        /// </summary>
-        public object Params { get; set;}
-
-        /// <summary>
-        /// json-encoded parameters to pass into the action (If you use this, don't use Params)
-        /// </summary>
-        public string ParamsEncoded { get; set;}
     }
 
     public class SendPushNotificationRequest
