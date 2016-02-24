@@ -1398,9 +1398,14 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// statistics to return
+        /// statistics to return (current version will be returned for each)
         /// </summary>
         public List<string> StatisticNames { get; set;}
+
+        /// <summary>
+        /// statistics to return, if StatisticNames is not set (only statistics which have a version matching that provided will be returned)
+        /// </summary>
+        public List<StatisticNameVersion> StatisticNameVersions { get; set;}
     }
 
     public class GetPlayerStatisticsResult : PlayFabResultCommon
@@ -1410,6 +1415,24 @@ namespace PlayFab.ClientModels
         /// User statistics for the requested user.
         /// </summary>
         public List<StatisticValue> Statistics { get; set;}
+    }
+
+    public class GetPlayerStatisticVersionsRequest
+    {
+
+        /// <summary>
+        /// unique name of the statistic
+        /// </summary>
+        public string StatisticName { get; set;}
+    }
+
+    public class GetPlayerStatisticVersionsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// version change history of the statistic
+        /// </summary>
+        public List<PlayerStatisticVersion> StatisticVersions { get; set;}
     }
 
     public class GetPlayerTradesRequest
@@ -2742,6 +2765,40 @@ namespace PlayFab.ClientModels
         public int Position { get; set;}
     }
 
+    public class PlayerStatisticVersion
+    {
+
+        /// <summary>
+        /// name of the statistic when the version became active
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// version of the statistic
+        /// </summary>
+        public uint Version { get; set;}
+
+        /// <summary>
+        /// time at which the statistic version was scheduled to become active, based on the configured ResetInterval
+        /// </summary>
+        public DateTime? ScheduledActivationTime { get; set;}
+
+        /// <summary>
+        /// time when the statistic version became active
+        /// </summary>
+        public DateTime ActivationTime { get; set;}
+
+        /// <summary>
+        /// time at which the statistic version was scheduled to become inactive, based on the configured ResetInterval
+        /// </summary>
+        public DateTime? ScheduledDeactivationTime { get; set;}
+
+        /// <summary>
+        /// time when the statistic version became inactive due to statistic version incrementing
+        /// </summary>
+        public DateTime? DeactivationTime { get; set;}
+    }
+
     public class PurchaseItemRequest
     {
 
@@ -3233,6 +3290,20 @@ namespace PlayFab.ClientModels
         /// Current virtual currency totals for the user.
         /// </summary>
         public Dictionary<string,int> VirtualCurrencyBalances { get; set;}
+    }
+
+    public class StatisticNameVersion
+    {
+
+        /// <summary>
+        /// unique name of the statistic
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// the version of the statistic to be returned
+        /// </summary>
+        public uint Version { get; set;}
     }
 
     public class StatisticUpdate
