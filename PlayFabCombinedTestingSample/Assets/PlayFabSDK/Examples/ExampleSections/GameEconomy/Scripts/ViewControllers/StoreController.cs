@@ -302,11 +302,11 @@ public class StoreController : MonoBehaviour {
 		// TODO file bug on the VC price info being a uint rather than an int.		
 		if(this.DisplayState == StoreControllerStates.GetStore)
 		{
-			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, ActiveItems, ActiveItems);
+			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, 1, ActiveItems, PfSharedModelEx.PrimaryCatalogVersion); //TODO not sure about the PCV here. This will only make purchases from the p. catalog
 		}
 		else if(this.DisplayState == StoreControllerStates.GetCatalog)
 		{
-			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, null, ActiveItems);
+			PlayFab.Examples.Client.InventoryExample.PurchaseItem(item.ItemId, vcKvp.Key, (int)vcKvp.Value, 1, null, ActiveItems);
 		}
 	}
 	
