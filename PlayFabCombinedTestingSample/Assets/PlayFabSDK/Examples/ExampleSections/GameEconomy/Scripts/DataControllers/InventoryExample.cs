@@ -15,7 +15,7 @@ namespace PlayFab.Examples.Client
         #region Controller Event Handling
         static InventoryExample()
         {
-
+		
         }
 
         public static void SetUp()
