@@ -30,8 +30,6 @@ namespace PlayFab
         public delegate void GetLeaderboardAroundUserResponseCallback(string urlPath, int callId, GetLeaderboardAroundUserRequest request, GetLeaderboardAroundUserResult result, PlayFabError error, object customData);
         public delegate void GetPlayerStatisticsRequestCallback(string urlPath, int callId, GetPlayerStatisticsRequest request, object customData);
         public delegate void GetPlayerStatisticsResponseCallback(string urlPath, int callId, GetPlayerStatisticsRequest request, GetPlayerStatisticsResult result, PlayFabError error, object customData);
-        public delegate void GetPlayerStatisticVersionsRequestCallback(string urlPath, int callId, GetPlayerStatisticVersionsRequest request, object customData);
-        public delegate void GetPlayerStatisticVersionsResponseCallback(string urlPath, int callId, GetPlayerStatisticVersionsRequest request, GetPlayerStatisticVersionsResult result, PlayFabError error, object customData);
         public delegate void GetUserDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
         public delegate void GetUserDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
         public delegate void GetUserInternalDataRequestCallback(string urlPath, int callId, GetUserDataRequest request, object customData);
@@ -302,21 +300,6 @@ namespace PlayFab
                 ResultContainer<GetPlayerStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/GetPlayerStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Retrieves the information on the available versions of the specified statistic.
-        /// </summary>
-        public static void GetPlayerStatisticVersions(GetPlayerStatisticVersionsRequest request, ProcessApiCallback<GetPlayerStatisticVersionsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetPlayerStatisticVersionsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetPlayerStatisticVersions", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
