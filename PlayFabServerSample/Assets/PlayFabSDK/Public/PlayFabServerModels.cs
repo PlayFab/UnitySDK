@@ -28,35 +28,6 @@ namespace PlayFab.ServerModels
         public int Amount { get; set;}
     }
 
-    public class AddFriendRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the player to add a new friend.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// The PlayFab identifier of the user being added.
-        /// </summary>
-        public string FriendPlayFabId { get; set;}
-
-        /// <summary>
-        /// The PlayFab username of the user being added
-        /// </summary>
-        public string FriendUsername { get; set;}
-
-        /// <summary>
-        /// Email address of the user being added.
-        /// </summary>
-        public string FriendEmail { get; set;}
-
-        /// <summary>
-        /// Title-specific display name of the user to being added.
-        /// </summary>
-        public string FriendTitleDisplayName { get; set;}
-    }
-
     public class AddSharedGroupMembersRequest
     {
 
@@ -929,68 +900,6 @@ namespace PlayFab.ServerModels
         public string URL { get; set;}
     }
 
-    public class GetFriendLeaderboardRequest
-    {
-
-        /// <summary>
-        /// The player whose friend leaderboard to get
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// Statistic used to rank friends for this leaderboard.
-        /// </summary>
-        public string StatisticName { get; set;}
-
-        /// <summary>
-        /// Position in the leaderboard to start this listing (defaults to the first entry).
-        /// </summary>
-        public int StartPosition { get; set;}
-
-        /// <summary>
-        /// Maximum number of entries to retrieve.
-        /// </summary>
-        public int MaxResultsCount { get; set;}
-
-        /// <summary>
-        /// Indicates whether Steam service friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeSteamFriends { get; set;}
-
-        /// <summary>
-        /// Indicates whether Facebook friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeFacebookFriends { get; set;}
-    }
-
-    public class GetFriendsListRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the player whose friend list to get.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// Indicates whether Steam service friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeSteamFriends { get; set;}
-
-        /// <summary>
-        /// Indicates whether Facebook friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeFacebookFriends { get; set;}
-    }
-
-    public class GetFriendsListResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// Array of friends found.
-        /// </summary>
-        public List<FriendInfo> Friends { get; set;}
-    }
-
     public class GetLeaderboardAroundCharacterRequest
     {
 
@@ -1125,6 +1034,11 @@ namespace PlayFab.ServerModels
         /// statistics to return
         /// </summary>
         public List<string> StatisticNames { get; set;}
+
+        /// <summary>
+        /// statistics to return, if StatisticNames is not set (only statistics which have a version matching that provided will be returned)
+        /// </summary>
+        public List<StatisticNameVersion> StatisticNameVersions { get; set;}
     }
 
     public class GetPlayerStatisticsResult : PlayFabResultCommon
@@ -1139,6 +1053,24 @@ namespace PlayFab.ServerModels
         /// User statistics for the requested user.
         /// </summary>
         public List<StatisticValue> Statistics { get; set;}
+    }
+
+    public class GetPlayerStatisticVersionsRequest
+    {
+
+        /// <summary>
+        /// unique name of the statistic
+        /// </summary>
+        public string StatisticName { get; set;}
+    }
+
+    public class GetPlayerStatisticVersionsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// version change history of the statistic
+        /// </summary>
+        public List<PlayerStatisticVersion> StatisticVersions { get; set;}
     }
 
     public class GetPlayFabIDsFromFacebookIDsRequest
@@ -1968,6 +1900,40 @@ namespace PlayFab.ServerModels
         public int Position { get; set;}
     }
 
+    public class PlayerStatisticVersion
+    {
+
+        /// <summary>
+        /// name of the statistic when the version became active
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// version of the statistic
+        /// </summary>
+        public uint Version { get; set;}
+
+        /// <summary>
+        /// time at which the statistic version was scheduled to become active, based on the configured ResetInterval
+        /// </summary>
+        public DateTime? ScheduledActivationTime { get; set;}
+
+        /// <summary>
+        /// time when the statistic version became active
+        /// </summary>
+        public DateTime ActivationTime { get; set;}
+
+        /// <summary>
+        /// time at which the statistic version was scheduled to become inactive, based on the configured ResetInterval
+        /// </summary>
+        public DateTime? ScheduledDeactivationTime { get; set;}
+
+        /// <summary>
+        /// time when the statistic version became inactive due to statistic version incrementing
+        /// </summary>
+        public DateTime? DeactivationTime { get; set;}
+    }
+
     public class RedeemCouponRequest
     {
 
@@ -2027,20 +1993,6 @@ namespace PlayFab.ServerModels
         /// User account information for the user validated.
         /// </summary>
         public UserAccountInfo UserInfo { get; set;}
-    }
-
-    public class RemoveFriendRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the friend account which is to be removed.
-        /// </summary>
-        public string FriendPlayFabId { get; set;}
-
-        /// <summary>
-        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
-        /// </summary>
-        public string PlayFabId { get; set;}
     }
 
     public class RemoveSharedGroupMembersRequest
@@ -2161,30 +2113,6 @@ namespace PlayFab.ServerModels
         public double ExecutionTime { get; set;}
     }
 
-    public class RunServerCloudScriptRequest
-    {
-
-        /// <summary>
-        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// server action to trigger
-        /// </summary>
-        public string ActionId { get; set;}
-
-        /// <summary>
-        /// parameters to pass into the action (If you use this, don't use ParamsEncoded)
-        /// </summary>
-        public object Params { get; set;}
-
-        /// <summary>
-        /// json-encoded parameters to pass into the action (If you use this, don't use Params)
-        /// </summary>
-        public string ParamsEncoded { get; set;}
-    }
-
     public class SendPushNotificationRequest
     {
 
@@ -2268,6 +2196,20 @@ namespace PlayFab.ServerModels
         public UserDataPermission? Permission { get; set;}
     }
 
+    public class StatisticNameVersion
+    {
+
+        /// <summary>
+        /// unique name of the statistic
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// the version of the statistic to be returned
+        /// </summary>
+        public uint Version { get; set;}
+    }
+
     public class StatisticUpdate
     {
 
@@ -2303,7 +2245,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// for updates to an existing statistic value for a player, the version of the statistic when it was loaded
         /// </summary>
-        public string Version { get; set;}
+        public uint Version { get; set;}
     }
 
     public class SteamPlayFabIdPair
