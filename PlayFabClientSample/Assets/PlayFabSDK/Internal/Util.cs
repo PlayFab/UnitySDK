@@ -1,5 +1,15 @@
+#if UNITY_EDITOR
+#elif UNITY_ANDROID
+#define PLAYFAB_ANDROID_PLUGIN
+#elif UNITY_IOS
+#define PLAYFAB_IOS_PLUGIN
+#elif UNITY_WP8
+#define PLAYFAB_WP8
+#endif
+
 using System;
 using System.Globalization;
+using System.IO;
 
 namespace PlayFab.Internal
 {
@@ -102,6 +112,15 @@ namespace PlayFab.Internal
                 }
                 return base.TrySerializeKnownTypes(input, out output);
             }
+        }
+
+        public static string ReadAllFileText(string filename)
+        {
+#if PLAYFAB_WP8
+            return ""; // Don't have a solution for this on win-phone right now
+#else
+            return File.ReadAllText(filename);
+#endif
         }
     }
 }
