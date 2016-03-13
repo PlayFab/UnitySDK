@@ -3,8 +3,12 @@
 #define PLAYFAB_ANDROID_PLUGIN
 #elif UNITY_IOS
 #define PLAYFAB_IOS_PLUGIN
-#elif UNITY_WP8
-#define PLAYFAB_WP8
+#elif UNITY_WP8 || UNITY_WP8_1
+#define PLAYFAB_WP
+#elif UNITY_PS3 || UNITY_PS4
+#define PLAYFAB_PS
+#elif UNITY_WSA || UNITY_WSA_8_0 || UNITY_WSA_8_1 || UNITY_WSA_10_0
+#define PLAYFAB_WIN_STORE
 #endif
 
 using System;
@@ -114,10 +118,16 @@ namespace PlayFab.Internal
             }
         }
 
+        /// <summary>
+        /// For PlayFab internal testing
+        /// Load a text file, and return the file as text.
+        /// Used for small json files.
+        /// If your environment reports an error in this function, feel free to delete it locally.
+        /// </summary>
         public static string ReadAllFileText(string filename)
         {
-#if PLAYFAB_WP8
-            return ""; // Don't have a solution for this on win-phone right now
+#if PLAYFAB_WP || UNITY_WEBPLAYER || PLAYFAB_PS || PLAYFAB_WIN_STORE
+            return ""; // The File utility doesn't always exist
 #else
             return File.ReadAllText(filename);
 #endif
