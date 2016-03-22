@@ -207,7 +207,12 @@ namespace PlayFab
         StatisticCountLimitExceeded = 1203,
         StatisticVersionIncrementRateExceeded = 1204,
         ContainerKeyInvalid = 1205,
-        CloudScriptExecutionTimeLimitExceeded = 1206
+        CloudScriptExecutionTimeLimitExceeded = 1206,
+        NoWritePermissionsForEvent = 1207,
+        CloudScriptFunctionArgumentSizeExceeded = 1208,
+        CloudScriptAPIRequestCountExceeded = 1209,
+        CloudScriptAPIRequestError = 1210,
+        CloudScriptHTTPRequestError = 1211
     }
 
     public delegate void ErrorCallback(PlayFabError error);

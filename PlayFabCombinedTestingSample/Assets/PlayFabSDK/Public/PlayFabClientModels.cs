@@ -438,6 +438,13 @@ namespace PlayFab.ClientModels
         public string CharacterType { get; set;}
     }
 
+    public enum CloudScriptRevisionOption
+    {
+        Live,
+        Latest,
+        Specific
+    }
+
     public class ConfirmPurchaseRequest
     {
 
@@ -728,6 +735,78 @@ namespace PlayFab.ClientModels
 
     public class EmptyResult : PlayFabResultCommon
     {
+    }
+
+    public class ExecuteCloudScriptRequest
+    {
+
+        /// <summary>
+        /// The name of the CloudScript function to execute
+        /// </summary>
+        public string FunctionName { get; set;}
+
+        /// <summary>
+        /// Object that is passed in to the function as the first argument
+        /// </summary>
+        public object FunctionParameter { get; set;}
+
+        /// <summary>
+        /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live' executes the current live, published revision, and 'Specific' executes the specified revision.
+        /// </summary>
+        public CloudScriptRevisionOption? RevisionSelection { get; set;}
+
+        /// <summary>
+        /// The specivic revision to execute, when RevisionSelection is set to 'Specific'
+        /// </summary>
+        public int? SpecificRevision { get; set;}
+
+        /// <summary>
+        /// Generate a 'player_executed_cloudscript' PlayStream event containing the results of the function execution and other contextual information. This event will show up in the PlayStream debugger console for the player in Game Manager.
+        /// </summary>
+        public bool GeneratePlayStreamEvent { get; set;}
+    }
+
+    public class ExecuteCloudScriptResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// The name of the function that executed
+        /// </summary>
+        public string FunctionName { get; set;}
+
+        /// <summary>
+        /// The revision of the CloudScript that executed
+        /// </summary>
+        public int Revision { get; set;}
+
+        /// <summary>
+        /// The object returned from the CloudScript function, if any
+        /// </summary>
+        public object FunctionResult { get; set;}
+
+        /// <summary>
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
+        /// </summary>
+        public List<LogStatement> Logs { get; set;}
+
+        public double ExecutionTimeSeconds { get; set;}
+
+        public uint MemoryConsumedBytes { get; set;}
+
+        /// <summary>
+        /// Number of PlayFab API requests issued by the CloudScript function
+        /// </summary>
+        public int APIRequestsIssued { get; set;}
+
+        /// <summary>
+        /// Number of external HTTP requests issued by the CloudScript function
+        /// </summary>
+        public int HttpRequestsIssued { get; set;}
+
+        /// <summary>
+        /// Information about the error, if any, that occured during execution
+        /// </summary>
+        public ScriptExecutionError Error { get; set;}
     }
 
     public class FacebookPlayFabIdPair
@@ -2123,7 +2202,7 @@ namespace PlayFab.ClientModels
         public string AccessToken { get; set;}
 
         /// <summary>
-        /// If this Facebook account is already linked to a Playfab account, this will unlink the old account before linking the new one. Be careful when using this call, as it may orphan the old account. Defaults to false.
+        /// If another user is already linked to the account, unlink the other user and re-link.
         /// </summary>
         public bool? ForceLink { get; set;}
     }
@@ -2507,6 +2586,22 @@ namespace PlayFab.ClientModels
         public bool? CreateAccount { get; set;}
     }
 
+    public class LogStatement
+    {
+
+        /// <summary>
+        /// 'Debug', 'Info', or 'Error'
+        /// </summary>
+        public string Level { get; set;}
+
+        public string Message { get; set;}
+
+        /// <summary>
+        /// Optional object accompanying the message as contextual information
+        /// </summary>
+        public object Data { get; set;}
+    }
+
     public class MatchmakeRequest
     {
 
@@ -2797,6 +2892,25 @@ namespace PlayFab.ClientModels
         /// time when the statistic version became inactive due to statistic version incrementing
         /// </summary>
         public DateTime? DeactivationTime { get; set;}
+    }
+
+    public class PlayStreamEventHistory
+    {
+
+        /// <summary>
+        /// The ID of the trigger that caused this event to be created.
+        /// </summary>
+        public string ParentTriggerId { get; set;}
+
+        /// <summary>
+        /// The ID of the previous event that caused this event to be created by hitting a trigger.
+        /// </summary>
+        public string ParentEventId { get; set;}
+
+        /// <summary>
+        /// If true, then this event was allowed to trigger subsequent events in a trigger.
+        /// </summary>
+        public bool TriggeredEvents { get; set;}
     }
 
     public class PurchaseItemRequest
@@ -3116,6 +3230,25 @@ namespace PlayFab.ClientModels
         public double ExecutionTime { get; set;}
     }
 
+    public class ScriptExecutionError
+    {
+
+        /// <summary>
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// </summary>
+        public string Error { get; set;}
+
+        /// <summary>
+        /// Details about the error
+        /// </summary>
+        public string Message { get; set;}
+
+        /// <summary>
+        /// Point during the execution of the script at which the error occurred, if any
+        /// </summary>
+        public string StackTrace { get; set;}
+    }
+
     public class SendAccountRecoveryEmailRequest
     {
 
@@ -3179,6 +3312,16 @@ namespace PlayFab.ClientModels
         /// Indicates whether this data can be read by all users (public) or only members of the group (private).
         /// </summary>
         public UserDataPermission? Permission { get; set;}
+    }
+
+    public enum SourceType
+    {
+        Admin,
+        BackEnd,
+        GameClient,
+        GameServer,
+        Partner,
+        Stream
     }
 
     public class StartGameRequest

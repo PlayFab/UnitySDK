@@ -1934,6 +1934,25 @@ namespace PlayFab.ServerModels
         public DateTime? DeactivationTime { get; set;}
     }
 
+    public class PlayStreamEventHistory
+    {
+
+        /// <summary>
+        /// The ID of the trigger that caused this event to be created.
+        /// </summary>
+        public string ParentTriggerId { get; set;}
+
+        /// <summary>
+        /// The ID of the previous event that caused this event to be created by hitting a trigger.
+        /// </summary>
+        public string ParentEventId { get; set;}
+
+        /// <summary>
+        /// If true, then this event was allowed to trigger subsequent events in a trigger.
+        /// </summary>
+        public bool TriggeredEvents { get; set;}
+    }
+
     public class RedeemCouponRequest
     {
 
@@ -2194,6 +2213,16 @@ namespace PlayFab.ServerModels
         /// Indicates whether this data can be read by all users (public) or only members of the group (private).
         /// </summary>
         public UserDataPermission? Permission { get; set;}
+    }
+
+    public enum SourceType
+    {
+        Admin,
+        BackEnd,
+        GameClient,
+        GameServer,
+        Partner,
+        Stream
     }
 
     public class StatisticNameVersion
