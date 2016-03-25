@@ -212,7 +212,9 @@ namespace PlayFab
         CloudScriptFunctionArgumentSizeExceeded = 1208,
         CloudScriptAPIRequestCountExceeded = 1209,
         CloudScriptAPIRequestError = 1210,
-        CloudScriptHTTPRequestError = 1211
+        CloudScriptHTTPRequestError = 1211,
+        InsufficientGuildRole = 1212,
+        GuildNotFound = 1213
     }
 
     public delegate void ErrorCallback(PlayFabError error);

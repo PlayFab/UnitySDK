@@ -1087,7 +1087,7 @@ namespace PlayFab.AdminModels
     {
 
         /// <summary>
-        /// PlayFab unique identifier of the user whose inventory is being returned.
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
         /// </summary>
         public string PlayFabId { get; set;}
 
