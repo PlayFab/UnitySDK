@@ -8,7 +8,7 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// Player who opened trade.
+        /// Player who opened the trade.
         /// </summary>
         public string OfferingPlayerId { get; set;}
 
@@ -18,7 +18,7 @@ namespace PlayFab.ClientModels
         public string TradeId { get; set;}
 
         /// <summary>
-        /// Items from the accepting player's inventory in exchange for the offered items in the trade. In the case of a gift, this will be null.
+        /// Items from the accepting player's or guild's inventory in exchange for the offered items in the trade. In the case of a gift, this will be null.
         /// </summary>
         public List<string> AcceptedInventoryInstanceIds { get; set;}
     }
@@ -438,6 +438,13 @@ namespace PlayFab.ClientModels
         public string CharacterType { get; set;}
     }
 
+    public enum CloudScriptRevisionOption
+    {
+        Live,
+        Latest,
+        Specific
+    }
+
     public class ConfirmPurchaseRequest
     {
 
@@ -730,6 +737,78 @@ namespace PlayFab.ClientModels
     {
     }
 
+    public class ExecuteCloudScriptRequest
+    {
+
+        /// <summary>
+        /// The name of the CloudScript function to execute
+        /// </summary>
+        public string FunctionName { get; set;}
+
+        /// <summary>
+        /// Object that is passed in to the function as the first argument
+        /// </summary>
+        public object FunctionParameter { get; set;}
+
+        /// <summary>
+        /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live' executes the current live, published revision, and 'Specific' executes the specified revision.
+        /// </summary>
+        public CloudScriptRevisionOption? RevisionSelection { get; set;}
+
+        /// <summary>
+        /// The specivic revision to execute, when RevisionSelection is set to 'Specific'
+        /// </summary>
+        public int? SpecificRevision { get; set;}
+
+        /// <summary>
+        /// Generate a 'player_executed_cloudscript' PlayStream event containing the results of the function execution and other contextual information. This event will show up in the PlayStream debugger console for the player in Game Manager.
+        /// </summary>
+        public bool GeneratePlayStreamEvent { get; set;}
+    }
+
+    public class ExecuteCloudScriptResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// The name of the function that executed
+        /// </summary>
+        public string FunctionName { get; set;}
+
+        /// <summary>
+        /// The revision of the CloudScript that executed
+        /// </summary>
+        public int Revision { get; set;}
+
+        /// <summary>
+        /// The object returned from the CloudScript function, if any
+        /// </summary>
+        public object FunctionResult { get; set;}
+
+        /// <summary>
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
+        /// </summary>
+        public List<LogStatement> Logs { get; set;}
+
+        public double ExecutionTimeSeconds { get; set;}
+
+        public uint MemoryConsumedBytes { get; set;}
+
+        /// <summary>
+        /// Number of PlayFab API requests issued by the CloudScript function
+        /// </summary>
+        public int APIRequestsIssued { get; set;}
+
+        /// <summary>
+        /// Number of external HTTP requests issued by the CloudScript function
+        /// </summary>
+        public int HttpRequestsIssued { get; set;}
+
+        /// <summary>
+        /// Information about the error, if any, that occured during execution
+        /// </summary>
+        public ScriptExecutionError Error { get; set;}
+    }
+
     public class FacebookPlayFabIdPair
     {
 
@@ -920,7 +999,7 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// Array of inventory objects.
+        /// Array of items which can be purchased.
         /// </summary>
         public List<CatalogItem> Catalog { get; set;}
     }
@@ -972,11 +1051,6 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
         /// Unique PlayFab assigned ID for a specific character owned by a user
         /// </summary>
         public string CharacterId { get; set;}
@@ -989,11 +1063,6 @@ namespace PlayFab.ClientModels
 
     public class GetCharacterInventoryResult : PlayFabResultCommon
     {
-
-        /// <summary>
-        /// PlayFab unique identifier of the user whose character inventory is being returned.
-        /// </summary>
-        public string PlayFabId { get; set;}
 
         /// <summary>
         /// Unique identifier of the character for this inventory.
@@ -1651,21 +1720,21 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
+        /// catalog version to store items from. Use default catalog version if null
+        /// </summary>
+        public string CatalogVersion { get; set;}
+
+        /// <summary>
         /// Unqiue identifier for the store which is being requested.
         /// </summary>
         public string StoreId { get; set;}
-
-        /// <summary>
-        /// Catalog version for the requested store items. If null, defaults to most recent catalog.
-        /// </summary>
-        public string CatalogVersion { get; set;}
     }
 
     public class GetStoreItemsResult : PlayFabResultCommon
     {
 
         /// <summary>
-        /// Array of store items.
+        /// Array of items which can be purchased from this store.
         /// </summary>
         public List<StoreItem> Store { get; set;}
     }
@@ -1878,7 +1947,7 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// Array of inventory items in the user's current inventory.
+        /// Array of inventory items belonging to the user.
         /// </summary>
         public List<ItemInstance> Inventory { get; set;}
 
@@ -2123,7 +2192,7 @@ namespace PlayFab.ClientModels
         public string AccessToken { get; set;}
 
         /// <summary>
-        /// If this Facebook account is already linked to a Playfab account, this will unlink the old account before linking the new one. Be careful when using this call, as it may orphan the old account. Defaults to false.
+        /// If another user is already linked to the account, unlink the other user and re-link.
         /// </summary>
         public bool? ForceLink { get; set;}
     }
@@ -2507,6 +2576,22 @@ namespace PlayFab.ClientModels
         public bool? CreateAccount { get; set;}
     }
 
+    public class LogStatement
+    {
+
+        /// <summary>
+        /// 'Debug', 'Info', or 'Error'
+        /// </summary>
+        public string Level { get; set;}
+
+        public string Message { get; set;}
+
+        /// <summary>
+        /// Optional object accompanying the message as contextual information
+        /// </summary>
+        public object Data { get; set;}
+    }
+
     public class MatchmakeRequest
     {
 
@@ -2630,7 +2715,7 @@ namespace PlayFab.ClientModels
         public List<string> RequestedCatalogItemIds { get; set;}
 
         /// <summary>
-        /// Players who are allowed to accept the trade. If null, the trade may be accepted by any player.
+        /// Players who are allowed to accept the trade. If null, the trade may be accepted by any player. If empty, the trade may not be accepted by any player.
         /// </summary>
         public List<string> AllowedPlayerIds { get; set;}
     }
@@ -2797,6 +2882,25 @@ namespace PlayFab.ClientModels
         /// time when the statistic version became inactive due to statistic version incrementing
         /// </summary>
         public DateTime? DeactivationTime { get; set;}
+    }
+
+    public class PlayStreamEventHistory
+    {
+
+        /// <summary>
+        /// The ID of the trigger that caused this event to be created.
+        /// </summary>
+        public string ParentTriggerId { get; set;}
+
+        /// <summary>
+        /// The ID of the previous event that caused this event to be created by hitting a trigger.
+        /// </summary>
+        public string ParentEventId { get; set;}
+
+        /// <summary>
+        /// If true, then this event was allowed to trigger subsequent events in a trigger.
+        /// </summary>
+        public bool TriggeredEvents { get; set;}
     }
 
     public class PurchaseItemRequest
@@ -3116,6 +3220,25 @@ namespace PlayFab.ClientModels
         public double ExecutionTime { get; set;}
     }
 
+    public class ScriptExecutionError
+    {
+
+        /// <summary>
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// </summary>
+        public string Error { get; set;}
+
+        /// <summary>
+        /// Details about the error
+        /// </summary>
+        public string Message { get; set;}
+
+        /// <summary>
+        /// Point during the execution of the script at which the error occurred, if any
+        /// </summary>
+        public string StackTrace { get; set;}
+    }
+
     public class SendAccountRecoveryEmailRequest
     {
 
@@ -3179,6 +3302,16 @@ namespace PlayFab.ClientModels
         /// Indicates whether this data can be read by all users (public) or only members of the group (private).
         /// </summary>
         public UserDataPermission? Permission { get; set;}
+    }
+
+    public enum SourceType
+    {
+        Admin,
+        BackEnd,
+        GameClient,
+        GameServer,
+        Partner,
+        Stream
     }
 
     public class StartGameRequest

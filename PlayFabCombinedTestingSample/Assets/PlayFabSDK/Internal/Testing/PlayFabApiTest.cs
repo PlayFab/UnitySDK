@@ -475,5 +475,34 @@ namespace PlayFab.UUnit
             var jobj = result.Results as JsonObject;
             lastReceivedMessage = jobj["messageValue"] as string;
         }
+#if BETA
+
+        /// <summary>
+        /// CLIENT API
+        /// Test that the client can publish custom PlayStream events
+        /// </summary>
+        [UUnitTest]
+        private void WritePlayerEvent()
+        {
+            var request = new WritePlayerClientEventRequest();
+            request.Event = new PlayStreamPlayerEventData();
+            request.Event.EventName = "forum_post_event";
+            request.Event.EventNamespace = "com.mygame.forums";
+            request.Event.EntityType = "player";
+            request.Event.Timestamp = DateTime.UtcNow;
+            request.Event.CustomTags = new Dictionary<string, string>();
+            request.Event.CustomTags["Region"] = "US-East";
+            request.Event.CustomTags["Subject"] = "My First Post";
+            request.Event.CustomTags["Body"] = "My is my awesome post.";
+
+            PlayFabClientAPI.WritePlayerEvent(request, WriteEventCallback, SharedErrorCallback);
+            WaitForApiCalls();
+            UUnitAssert.StringEquals("WriteEvent posted successfully.", lastReceivedMessage);
+        }
+        private void WriteEventCallback(WriteEventResponse result)
+        {
+            lastReceivedMessage = "WriteEvent posted successfully.";
+        }
+#endif
     }
 }
