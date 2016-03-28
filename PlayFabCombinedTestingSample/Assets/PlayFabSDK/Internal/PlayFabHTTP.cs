@@ -1,9 +1,9 @@
 #if UNITY_EDITOR
 
 #elif UNITY_ANDROID
-#define PLAYFAB_ANDROID_PLUGIN
+#define PLAYFAB_ANDROID
 #elif UNITY_IOS
-#define PLAYFAB_IOS_PLUGIN
+#define PLAYFAB_IOS
 #elif UNITY_WP8
 #define PLAYFAB_WP8
 #endif
@@ -51,7 +51,7 @@ namespace PlayFab.Internal
             var requestContainer = new CallRequestContainer { RequestType = PlayFabSettings.RequestType, CallId = callIdGen++, AuthKey = authKey, AuthType = authType, Callback = callback, Data = data, Url = urlPath, Request = request, CustomData = customData };
             if (!isBlocking)
             {
-#if PLAYFAB_IOS_PLUGIN
+#if PLAYFAB_IOS
                 PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(urlPath), PlayFabVersion.getVersionString(), requestContainer, PlayFabSettings.InvokeRequest);
 #elif PLAYFAB_WP8
                 instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));

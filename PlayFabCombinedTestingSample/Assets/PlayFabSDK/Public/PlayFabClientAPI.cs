@@ -198,6 +198,8 @@ namespace PlayFab
         public delegate void RemoveSharedGroupMembersResponseCallback(string urlPath, int callId, RemoveSharedGroupMembersRequest request, RemoveSharedGroupMembersResult result, PlayFabError error, object customData);
         public delegate void UpdateSharedGroupDataRequestCallback(string urlPath, int callId, UpdateSharedGroupDataRequest request, object customData);
         public delegate void UpdateSharedGroupDataResponseCallback(string urlPath, int callId, UpdateSharedGroupDataRequest request, UpdateSharedGroupDataResult result, PlayFabError error, object customData);
+        public delegate void ExecuteCloudScriptRequestCallback(string urlPath, int callId, ExecuteCloudScriptRequest request, object customData);
+        public delegate void ExecuteCloudScriptResponseCallback(string urlPath, int callId, ExecuteCloudScriptRequest request, ExecuteCloudScriptResult result, PlayFabError error, object customData);
         public delegate void GetCloudScriptUrlRequestCallback(string urlPath, int callId, GetCloudScriptUrlRequest request, object customData);
         public delegate void GetCloudScriptUrlResponseCallback(string urlPath, int callId, GetCloudScriptUrlRequest request, GetCloudScriptUrlResult result, PlayFabError error, object customData);
         public delegate void RunCloudScriptRequestCallback(string urlPath, int callId, RunCloudScriptRequest request, object customData);
@@ -1708,6 +1710,21 @@ namespace PlayFab
                 ResultContainer<UpdateSharedGroupDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Client/UpdateSharedGroupData", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Executes a CloudScript function, with the 'currentPlayerId' set to the PlayFab ID of the authenticated player.
+        /// </summary>
+        public static void ExecuteCloudScript(ExecuteCloudScriptRequest request, ProcessApiCallback<ExecuteCloudScriptResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<ExecuteCloudScriptResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/ExecuteCloudScript", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
