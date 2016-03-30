@@ -330,6 +330,13 @@ namespace PlayFab.ServerModels
         public string CharacterType { get; set;}
     }
 
+    public enum CloudScriptRevisionOption
+    {
+        Live,
+        Latest,
+        Specific
+    }
+
     public class ConsumeItemRequest
     {
 
@@ -606,6 +613,83 @@ namespace PlayFab.ServerModels
     {
     }
 
+    public class ExecuteCloudScriptResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// The name of the function that executed
+        /// </summary>
+        public string FunctionName { get; set;}
+
+        /// <summary>
+        /// The revision of the CloudScript that executed
+        /// </summary>
+        public int Revision { get; set;}
+
+        /// <summary>
+        /// The object returned from the CloudScript function, if any
+        /// </summary>
+        public object FunctionResult { get; set;}
+
+        /// <summary>
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
+        /// </summary>
+        public List<LogStatement> Logs { get; set;}
+
+        public double ExecutionTimeSeconds { get; set;}
+
+        public uint MemoryConsumedBytes { get; set;}
+
+        /// <summary>
+        /// Number of PlayFab API requests issued by the CloudScript function
+        /// </summary>
+        public int APIRequestsIssued { get; set;}
+
+        /// <summary>
+        /// Number of external HTTP requests issued by the CloudScript function
+        /// </summary>
+        public int HttpRequestsIssued { get; set;}
+
+        /// <summary>
+        /// Information about the error, if any, that occured during execution
+        /// </summary>
+        public ScriptExecutionError Error { get; set;}
+    }
+
+    public class ExecuteCloudScriptServerRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// The name of the CloudScript function to execute
+        /// </summary>
+        public string FunctionName { get; set;}
+
+        /// <summary>
+        /// Object that is passed in to the function as the first argument
+        /// </summary>
+        public object FunctionParameter { get; set;}
+
+        /// <summary>
+        /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live' executes the current live, published revision, and 'Specific' executes the specified revision.
+        /// </summary>
+        public CloudScriptRevisionOption? RevisionSelection { get; set;}
+
+        /// <summary>
+        /// The specivic revision to execute, when RevisionSelection is set to 'Specific'
+        /// </summary>
+        public int? SpecificRevision { get; set;}
+
+        /// <summary>
+        /// Generate a 'player_executed_cloudscript' PlayStream event containing the results of the function execution and other contextual information. This event will show up in the PlayStream debugger console for the player in Game Manager.
+        /// </summary>
+        public bool? GeneratePlayStreamEvent { get; set;}
+    }
+
     public class FacebookPlayFabIdPair
     {
 
@@ -847,29 +931,6 @@ namespace PlayFab.ServerModels
         /// Character statistics for the requested user.
         /// </summary>
         public Dictionary<string,int> CharacterStatistics { get; set;}
-    }
-
-    public class GetCloudScriptUrlRequest
-    {
-
-        /// <summary>
-        /// Cloud Script Version to use. Defaults to 1.
-        /// </summary>
-        public int? Version { get; set;}
-
-        /// <summary>
-        /// Specifies whether the URL returned should be the one for the most recently uploaded Revision of the Cloud Script (true), or the Revision most recently set to live (false). Defaults to false.
-        /// </summary>
-        public bool? Testing { get; set;}
-    }
-
-    public class GetCloudScriptUrlResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// URL of the Cloud Script logic server.
-        /// </summary>
-        public string Url { get; set;}
     }
 
     public class GetContentDownloadUrlRequest
@@ -1699,6 +1760,22 @@ namespace PlayFab.ServerModels
     {
     }
 
+    public class LogStatement
+    {
+
+        /// <summary>
+        /// 'Debug', 'Info', or 'Error'
+        /// </summary>
+        public string Level { get; set;}
+
+        public string Message { get; set;}
+
+        /// <summary>
+        /// Optional object accompanying the message as contextual information
+        /// </summary>
+        public object Data { get; set;}
+    }
+
     public class ModifyCharacterVirtualCurrencyResult : PlayFabResultCommon
     {
 
@@ -2093,43 +2170,23 @@ namespace PlayFab.ServerModels
     {
     }
 
-    public class RunCloudScriptResult : PlayFabResultCommon
+    public class ScriptExecutionError
     {
 
         /// <summary>
-        /// id of Cloud Script run
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
         /// </summary>
-        public string ActionId { get; set;}
+        public string Error { get; set;}
 
         /// <summary>
-        /// version of Cloud Script run
+        /// Details about the error
         /// </summary>
-        public int Version { get; set;}
+        public string Message { get; set;}
 
         /// <summary>
-        /// revision of Cloud Script run
+        /// Point during the execution of the script at which the error occurred, if any
         /// </summary>
-        public int Revision { get; set;}
-
-        /// <summary>
-        /// return values from the server action as a dynamic object
-        /// </summary>
-        public object Results { get; set;}
-
-        /// <summary>
-        /// return values from the server action as a JSON encoded string
-        /// </summary>
-        public string ResultsEncoded { get; set;}
-
-        /// <summary>
-        /// any log statements generated during the run of this action
-        /// </summary>
-        public string ActionLog { get; set;}
-
-        /// <summary>
-        /// time this script took to run, in seconds
-        /// </summary>
-        public double ExecutionTime { get; set;}
+        public string StackTrace { get; set;}
     }
 
     public class SendPushNotificationRequest

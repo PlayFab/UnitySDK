@@ -763,7 +763,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Generate a 'player_executed_cloudscript' PlayStream event containing the results of the function execution and other contextual information. This event will show up in the PlayStream debugger console for the player in Game Manager.
         /// </summary>
-        public bool GeneratePlayStreamEvent { get; set;}
+        public bool? GeneratePlayStreamEvent { get; set;}
     }
 
     public class ExecuteCloudScriptResult : PlayFabResultCommon
