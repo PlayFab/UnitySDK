@@ -18,6 +18,7 @@ namespace PlayFab
 
     public static class PlayFabSettings
     {
+        internal static bool HideCallbackErrors = false; // This should only be used by unit-tests that test deliberately throwing errors
         private const string GLOBAL_KEY = "GLOBAL";
         public static ErrorCallback GlobalErrorHandler;
         private static readonly Dictionary<string, HashSet<MethodInfo>> ApiRequestHandlers = new Dictionary<string, HashSet<MethodInfo>>();
@@ -244,6 +245,7 @@ namespace PlayFab
             ApiRequestHandlers.Clear();
             ApiResponseHandlers.Clear();
             CallbackInstances.Clear();
+            GlobalErrorHandler = null;
         }
         #endregion Public Api Un-registration
 
@@ -304,16 +306,16 @@ namespace PlayFab
                 {
                     CallbackInstances.TryGetValue(methodInfo, out instances);
                     if (instances == null)
-                        SaveInvoke(methodInfo, null, prams);
+                        SafeInvoke(methodInfo, null, prams);
                     else
                         foreach (object instance in instances)
                             if (CheckInstance(instance))
-                                SaveInvoke(methodInfo, instance, prams);
+                                SafeInvoke(methodInfo, instance, prams);
                 }
             }
         }
 
-        private static void SaveInvoke(MethodInfo methodInfo, object instance, object[] prams)
+        private static void SafeInvoke(MethodInfo methodInfo, object instance, object[] prams)
         {
             try
             {
@@ -323,7 +325,8 @@ namespace PlayFab
             {
                 // If the callback itself throws an exception, log it and continue.
                 // Exceptions by customers should not halt the PlayFab SDK
-                UnityEngine.Debug.LogException(e);
+                if (!PlayFabSettings.HideCallbackErrors)
+                    UnityEngine.Debug.LogException(e);
             }
         }
         #endregion Internal Api Callback functionality

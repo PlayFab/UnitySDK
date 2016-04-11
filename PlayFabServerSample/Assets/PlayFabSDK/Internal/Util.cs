@@ -1,19 +1,8 @@
-#if UNITY_EDITOR
-#elif UNITY_ANDROID
-#define PLAYFAB_ANDROID
-#elif UNITY_IOS
-#define PLAYFAB_IOS
-#elif UNITY_WP8 || UNITY_WP8_1
-#define PLAYFAB_WP
-#elif UNITY_PS3 || UNITY_PS4
-#define PLAYFAB_PS
-#elif UNITY_WSA || UNITY_WSA_8_0 || UNITY_WSA_8_1 || UNITY_WSA_10_0
-#define PLAYFAB_WIN_STORE
-#endif
-
+using PlayFab.Json;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Text;
 
 namespace PlayFab.Internal
 {
@@ -118,19 +107,30 @@ namespace PlayFab.Internal
             }
         }
 
+        [ThreadStatic]
+        private static StringBuilder _sb;
         /// <summary>
+        /// A threadsafe way to block and load a text file
+        /// 
         /// For PlayFab internal testing
         /// Load a text file, and return the file as text.
-        /// Used for small json files.
-        /// If your environment reports an error in this function, feel free to delete it locally.
+        /// Used for small (usually json) files.
+        /// 
+        /// Doing this in a platform-independent way is surprisingly difficult
+        /// If your environment/build reports an error in this function, feel free to delete it locally, and file a bug report with your environment/build information
         /// </summary>
         public static string ReadAllFileText(string filename)
         {
-#if PLAYFAB_WP || UNITY_WEBPLAYER || PLAYFAB_PS || PLAYFAB_WIN_STORE
-            return ""; // The File utility doesn't always exist
-#else
-            return File.ReadAllText(filename);
-#endif
+            if (_sb == null)
+                _sb = new StringBuilder();
+            _sb.Length = 0;
+
+            var fs = new FileStream(filename, FileMode.Open);
+            BinaryReader br = new BinaryReader(fs);
+            while (br.BaseStream.Position != br.BaseStream.Length)
+                _sb.Append(br.ReadChar());
+
+            return _sb.ToString();
         }
     }
 }

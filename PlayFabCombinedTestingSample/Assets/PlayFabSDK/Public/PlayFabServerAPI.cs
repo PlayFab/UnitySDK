@@ -64,12 +64,16 @@ namespace PlayFab
         public delegate void UpdateUserStatisticsResponseCallback(string urlPath, int callId, UpdateUserStatisticsRequest request, UpdateUserStatisticsResult result, PlayFabError error, object customData);
         public delegate void GetCatalogItemsRequestCallback(string urlPath, int callId, GetCatalogItemsRequest request, object customData);
         public delegate void GetCatalogItemsResponseCallback(string urlPath, int callId, GetCatalogItemsRequest request, GetCatalogItemsResult result, PlayFabError error, object customData);
+        public delegate void GetPublisherDataRequestCallback(string urlPath, int callId, GetPublisherDataRequest request, object customData);
+        public delegate void GetPublisherDataResponseCallback(string urlPath, int callId, GetPublisherDataRequest request, GetPublisherDataResult result, PlayFabError error, object customData);
         public delegate void GetTitleDataRequestCallback(string urlPath, int callId, GetTitleDataRequest request, object customData);
         public delegate void GetTitleDataResponseCallback(string urlPath, int callId, GetTitleDataRequest request, GetTitleDataResult result, PlayFabError error, object customData);
         public delegate void GetTitleInternalDataRequestCallback(string urlPath, int callId, GetTitleDataRequest request, object customData);
         public delegate void GetTitleInternalDataResponseCallback(string urlPath, int callId, GetTitleDataRequest request, GetTitleDataResult result, PlayFabError error, object customData);
         public delegate void GetTitleNewsRequestCallback(string urlPath, int callId, GetTitleNewsRequest request, object customData);
         public delegate void GetTitleNewsResponseCallback(string urlPath, int callId, GetTitleNewsRequest request, GetTitleNewsResult result, PlayFabError error, object customData);
+        public delegate void SetPublisherDataRequestCallback(string urlPath, int callId, SetPublisherDataRequest request, object customData);
+        public delegate void SetPublisherDataResponseCallback(string urlPath, int callId, SetPublisherDataRequest request, SetPublisherDataResult result, PlayFabError error, object customData);
         public delegate void SetTitleDataRequestCallback(string urlPath, int callId, SetTitleDataRequest request, object customData);
         public delegate void SetTitleDataResponseCallback(string urlPath, int callId, SetTitleDataRequest request, SetTitleDataResult result, PlayFabError error, object customData);
         public delegate void SetTitleInternalDataRequestCallback(string urlPath, int callId, SetTitleDataRequest request, object customData);
@@ -128,16 +132,14 @@ namespace PlayFab
         public delegate void CreateSharedGroupResponseCallback(string urlPath, int callId, CreateSharedGroupRequest request, CreateSharedGroupResult result, PlayFabError error, object customData);
         public delegate void DeleteSharedGroupRequestCallback(string urlPath, int callId, DeleteSharedGroupRequest request, object customData);
         public delegate void DeleteSharedGroupResponseCallback(string urlPath, int callId, DeleteSharedGroupRequest request, EmptyResult result, PlayFabError error, object customData);
-        public delegate void GetPublisherDataRequestCallback(string urlPath, int callId, GetPublisherDataRequest request, object customData);
-        public delegate void GetPublisherDataResponseCallback(string urlPath, int callId, GetPublisherDataRequest request, GetPublisherDataResult result, PlayFabError error, object customData);
         public delegate void GetSharedGroupDataRequestCallback(string urlPath, int callId, GetSharedGroupDataRequest request, object customData);
         public delegate void GetSharedGroupDataResponseCallback(string urlPath, int callId, GetSharedGroupDataRequest request, GetSharedGroupDataResult result, PlayFabError error, object customData);
         public delegate void RemoveSharedGroupMembersRequestCallback(string urlPath, int callId, RemoveSharedGroupMembersRequest request, object customData);
         public delegate void RemoveSharedGroupMembersResponseCallback(string urlPath, int callId, RemoveSharedGroupMembersRequest request, RemoveSharedGroupMembersResult result, PlayFabError error, object customData);
-        public delegate void SetPublisherDataRequestCallback(string urlPath, int callId, SetPublisherDataRequest request, object customData);
-        public delegate void SetPublisherDataResponseCallback(string urlPath, int callId, SetPublisherDataRequest request, SetPublisherDataResult result, PlayFabError error, object customData);
         public delegate void UpdateSharedGroupDataRequestCallback(string urlPath, int callId, UpdateSharedGroupDataRequest request, object customData);
         public delegate void UpdateSharedGroupDataResponseCallback(string urlPath, int callId, UpdateSharedGroupDataRequest request, UpdateSharedGroupDataResult result, PlayFabError error, object customData);
+        public delegate void ExecuteCloudScriptRequestCallback(string urlPath, int callId, ExecuteCloudScriptServerRequest request, object customData);
+        public delegate void ExecuteCloudScriptResponseCallback(string urlPath, int callId, ExecuteCloudScriptServerRequest request, ExecuteCloudScriptResult result, PlayFabError error, object customData);
         public delegate void GetContentDownloadUrlRequestCallback(string urlPath, int callId, GetContentDownloadUrlRequest request, object customData);
         public delegate void GetContentDownloadUrlResponseCallback(string urlPath, int callId, GetContentDownloadUrlRequest request, GetContentDownloadUrlResult result, PlayFabError error, object customData);
         public delegate void DeleteCharacterFromUserRequestCallback(string urlPath, int callId, DeleteCharacterFromUserRequest request, object customData);
@@ -530,7 +532,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the values of the specified title-specific statistics for the user
+        /// Updates the values of the specified title-specific statistics for the user. By default, clients are not permitted to update statistics. Developers may override this setting in the Game Manager > Settings > API Features.
         /// </summary>
         public static void UpdateUserStatistics(UpdateUserStatisticsRequest request, ProcessApiCallback<UpdateUserStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
@@ -557,6 +559,21 @@ namespace PlayFab
                 ResultContainer<GetCatalogItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/GetCatalogItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Retrieves the key-value store of custom publisher settings
+        /// </summary>
+        public static void GetPublisherData(GetPublisherDataRequest request, ProcessApiCallback<GetPublisherDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/GetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
@@ -602,6 +619,21 @@ namespace PlayFab
                 ResultContainer<GetTitleNewsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/GetTitleNews", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Updates the key-value store of custom publisher settings
+        /// </summary>
+        public static void SetPublisherData(SetPublisherDataRequest request, ProcessApiCallback<SetPublisherDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<SetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/SetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1040,21 +1072,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the key-value store of custom publisher settings
-        /// </summary>
-        public static void GetPublisherData(GetPublisherDataRequest request, ProcessApiCallback<GetPublisherDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
         /// Retrieves data stored in a shared group object, as well as the list of members in the group. The server can access all public and private group data.
         /// </summary>
         public static void GetSharedGroupData(GetSharedGroupDataRequest request, ProcessApiCallback<GetSharedGroupDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -1085,21 +1102,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the key-value store of custom publisher settings
-        /// </summary>
-        public static void SetPublisherData(SetPublisherDataRequest request, ProcessApiCallback<SetPublisherDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<SetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/SetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
         /// Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group (and the server) can update the data.
         /// </summary>
         public static void UpdateSharedGroupData(UpdateSharedGroupDataRequest request, ProcessApiCallback<UpdateSharedGroupDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -1112,6 +1114,21 @@ namespace PlayFab
                 ResultContainer<UpdateSharedGroupDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/UpdateSharedGroupData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Executes a CloudScript function, with the 'currentPlayerId' variable set to the specified PlayFabId parameter value.
+        /// </summary>
+        public static void ExecuteCloudScript(ExecuteCloudScriptServerRequest request, ProcessApiCallback<ExecuteCloudScriptResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<ExecuteCloudScriptResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/ExecuteCloudScript", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1145,7 +1162,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Lists all of the characters that belong to a specific user.
+        /// Lists all of the characters that belong to a specific user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness.
         /// </summary>
         public static void GetAllUsersCharacters(ListUsersCharactersRequest request, ProcessApiCallback<ListUsersCharactersResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
@@ -1220,7 +1237,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Grants the specified character type to the user.
+        /// Grants the specified character type to the user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness.
         /// </summary>
         public static void GrantCharacterToUser(GrantCharacterToUserRequest request, ProcessApiCallback<GrantCharacterToUserResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
