@@ -67,7 +67,7 @@ using System.Text;
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable RedundantExplicitArrayCreation
 // ReSharper disable SuggestUseVarKeywordEvident
-namespace PlayFab
+namespace PlayFab.Json
 {
     /// <summary>
     /// Represents the json array.
