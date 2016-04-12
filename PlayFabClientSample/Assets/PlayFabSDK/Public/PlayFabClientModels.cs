@@ -380,7 +380,7 @@ namespace PlayFab.ClientModels
         public Dictionary<string,uint> VirtualCurrencyContents { get; set;}
     }
 
-    public class CharacterEntityEventData : PlayStreamEventData
+    public class CharacterEntityEventData
     {
 
         /// <summary>
@@ -796,7 +796,7 @@ namespace PlayFab.ClientModels
         public int GameCount { get; set;}
     }
 
-    public class CustomEntityEventData : PlayStreamEventData
+    public class CustomEntityEventData
     {
 
         /// <summary>
@@ -2953,7 +2953,7 @@ namespace PlayFab.ClientModels
     /// <summary>
     /// This describes a generic, player-based event. The provided attributes are the minimal setthat are required in order for PlayFab to understand your event. Any other structure or attributescan be added at will. 
     /// </summary>
-    public class PlayerEntityEventData : PlayStreamEventData
+    public class PlayerEntityEventData
     {
 
         /// <summary>
@@ -3736,7 +3736,7 @@ namespace PlayFab.ClientModels
         RevokedSteam
     }
 
-    public class TitleEntityEventData : PlayStreamEventData
+    public class TitleEntityEventData
     {
 
         /// <summary>
