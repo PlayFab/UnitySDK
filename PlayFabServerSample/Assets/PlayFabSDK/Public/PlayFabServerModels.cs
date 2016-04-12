@@ -272,6 +272,69 @@ namespace PlayFab.ServerModels
         public Dictionary<string,uint> VirtualCurrencyContents { get; set;}
     }
 
+    public class CharacterEntityEventData : PlayStreamEventData
+    {
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of this event.
+        /// </summary>
+        public string EventName { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The assigned namespacing for this event. For example: 'com.myprogram.ads'
+        /// </summary>
+        public string EventNamespace { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of the source of this PlayStream event; will be PlayFab if the event originated from us.
+        /// </summary>
+        public string Source { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of entity (player, title, etc.) to which this event applies. If PlayFab is meant to take action on this entity, then the EntityType must be either 'player', 'character', or 'title'. It is required    that any entity type that PlayFab does not currently parse should be prepended with a namespace (like 'com.mygame.guild') as PlayFab may begin to parse root entities at any time.
+        /// </summary>
+        public string EntityType { get; set;}
+
+        public string TitleId { get; set;}
+
+        public string PlayerId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of source of this event (PlayFab partner, other backend, or from the PlayFab API).
+        /// </summary>
+        public SourceType? SourceType { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. PlayFab-assigned unique identifier for this event.
+        /// </summary>
+        public string EventId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The identifier for the entity (title, player, etc) to which this event applies.
+        /// </summary>
+        public string EntityId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The time (in UTC) associated with this event.
+        /// </summary>
+        public DateTime Timestamp { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The history of events associated with this event. This is set in cases where an event has generated children events via a trigger action.
+        /// </summary>
+        public List<PlayStreamEventHistory> History { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Reserved exclusively for PlayFab internal use.
+        /// </summary>
+        public object Reserved { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Key-Value pair storage. Any provider of this event schema is allowed to send additional values in this property.
+        /// </summary>
+        public Dictionary<string,string> CustomTags { get; set;}
+    }
+
     public class CharacterLeaderboardEntry
     {
 
@@ -557,6 +620,67 @@ namespace PlayFab.ServerModels
         ZAR,
         ZMW,
         ZWD
+    }
+
+    public class CustomEntityEventData : PlayStreamEventData
+    {
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of this event.
+        /// </summary>
+        public string EventName { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of the source of this PlayStream event; will be PlayFab if the event originated from us.
+        /// </summary>
+        public string Source { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of entity (player, title, etc.) to which this event applies. If PlayFab is meant to take action on this entity, then the EntityType must be either 'player', 'character', or 'title'. It is required    that any entity type that PlayFab does not currently parse should be prepended with a namespace (like 'com.mygame.guild') as PlayFab may begin to parse root entities at any time.
+        /// </summary>
+        public string EntityType { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The assigned namespacing for this event. For example: 'com.myprogram.ads'
+        /// </summary>
+        public string EventNamespace { get; set;}
+
+        public string TitleId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of source of this event (PlayFab partner, other backend, or from the PlayFab API).
+        /// </summary>
+        public SourceType? SourceType { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. PlayFab-assigned unique identifier for this event.
+        /// </summary>
+        public string EventId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The identifier for the entity (title, player, etc) to which this event applies.
+        /// </summary>
+        public string EntityId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The time (in UTC) associated with this event.
+        /// </summary>
+        public DateTime Timestamp { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The history of events associated with this event. This is set in cases where an event has generated children events via a trigger action.
+        /// </summary>
+        public List<PlayStreamEventHistory> History { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Reserved exclusively for PlayFab internal use.
+        /// </summary>
+        public object Reserved { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Key-Value pair storage. Any provider of this event schema is allowed to send additional values in this property.
+        /// </summary>
+        public Dictionary<string,string> CustomTags { get; set;}
     }
 
     public class DeleteCharacterFromUserRequest
@@ -1953,6 +2077,73 @@ namespace PlayFab.ServerModels
         Reconnecting
     }
 
+    /// <summary>
+    /// This describes a generic, player-based event. The provided attributes are the minimal setthat are required in order for PlayFab to understand your event. Any other structure or attributescan be added at will. 
+    /// </summary>
+    public class PlayerEntityEventData : PlayStreamEventData
+    {
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of this event.
+        /// </summary>
+        public string EventName { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The assigned namespacing for this event. For example: 'com.myprogram.ads'
+        /// </summary>
+        public string EventNamespace { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of the source of this PlayStream event; will be PlayFab if the event originated from us.
+        /// </summary>
+        public string Source { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of entity (player, title, etc.) to which this event applies. If PlayFab is meant to take action on this entity, then the EntityType must be either 'player', 'character', or 'title'. It is required    that any entity type that PlayFab does not currently parse should be prepended with a namespace (like 'com.mygame.guild') as PlayFab may begin to parse root entities at any time.
+        /// </summary>
+        public string EntityType { get; set;}
+
+        /// <summary>
+        /// The ID of the title to which this player event applies.
+        /// </summary>
+        public string TitleId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of source of this event (PlayFab partner, other backend, or from the PlayFab API).
+        /// </summary>
+        public SourceType? SourceType { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. PlayFab-assigned unique identifier for this event.
+        /// </summary>
+        public string EventId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The identifier for the entity (title, player, etc) to which this event applies.
+        /// </summary>
+        public string EntityId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The time (in UTC) associated with this event.
+        /// </summary>
+        public DateTime Timestamp { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The history of events associated with this event. This is set in cases where an event has generated children events via a trigger action.
+        /// </summary>
+        public List<PlayStreamEventHistory> History { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Reserved exclusively for PlayFab internal use.
+        /// </summary>
+        public object Reserved { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Key-Value pair storage. Any provider of this event schema is allowed to send additional values in this property.
+        /// </summary>
+        public Dictionary<string,string> CustomTags { get; set;}
+    }
+
     public class PlayerLeaderboardEntry
     {
 
@@ -2009,6 +2200,29 @@ namespace PlayFab.ServerModels
         /// time when the statistic version became inactive due to statistic version incrementing
         /// </summary>
         public DateTime? DeactivationTime { get; set;}
+    }
+
+    public abstract class PlayStreamEventData
+    {
+    }
+
+    public class PlayStreamEventHistory
+    {
+
+        /// <summary>
+        /// The ID of the trigger that caused this event to be created.
+        /// </summary>
+        public string ParentTriggerId { get; set;}
+
+        /// <summary>
+        /// The ID of the previous event that caused this event to be created by hitting a trigger.
+        /// </summary>
+        public string ParentEventId { get; set;}
+
+        /// <summary>
+        /// If true, then this event was allowed to trigger subsequent events in a trigger.
+        /// </summary>
+        public bool TriggeredEvents { get; set;}
     }
 
     public class RedeemCouponRequest
@@ -2253,6 +2467,16 @@ namespace PlayFab.ServerModels
         public UserDataPermission? Permission { get; set;}
     }
 
+    public enum SourceType
+    {
+        Admin,
+        BackEnd,
+        GameClient,
+        GameServer,
+        Partner,
+        Stream
+    }
+
     public class StatisticNameVersion
     {
 
@@ -2374,6 +2598,65 @@ namespace PlayFab.ServerModels
         PendingSteam,
         ActivatedSteam,
         RevokedSteam
+    }
+
+    public class TitleEntityEventData : PlayStreamEventData
+    {
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of this event.
+        /// </summary>
+        public string EventName { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The assigned namespacing for this event. For example: 'com.myprogram.ads'
+        /// </summary>
+        public string EventNamespace { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of entity (player, title, etc.) to which this event applies. If PlayFab is meant to take action on this entity, then the EntityType must be either 'player', 'character', or 'title'. It is required    that any entity type that PlayFab does not currently parse should be prepended with a namespace (like 'com.mygame.guild') as PlayFab may begin to parse root entities at any time.
+        /// </summary>
+        public string EntityType { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The name of the source of this PlayStream event; will be PlayFab if the event originated from us.
+        /// </summary>
+        public string Source { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The type of source of this event (PlayFab partner, other backend, or from the PlayFab API).
+        /// </summary>
+        public SourceType? SourceType { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. PlayFab-assigned unique identifier for this event.
+        /// </summary>
+        public string EventId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The identifier for the entity (title, player, etc) to which this event applies.
+        /// </summary>
+        public string EntityId { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The time (in UTC) associated with this event.
+        /// </summary>
+        public DateTime Timestamp { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. The history of events associated with this event. This is set in cases where an event has generated children events via a trigger action.
+        /// </summary>
+        public List<PlayStreamEventHistory> History { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Reserved exclusively for PlayFab internal use.
+        /// </summary>
+        public object Reserved { get; set;}
+
+        /// <summary>
+        /// RESERVED KEYWORD. Key-Value pair storage. Any provider of this event schema is allowed to send additional values in this property.
+        /// </summary>
+        public Dictionary<string,string> CustomTags { get; set;}
     }
 
     public class TitleNewsItem
@@ -3002,5 +3285,23 @@ namespace PlayFab.ServerModels
         /// Maximum value to which the regenerating currency will automatically increment. Note that it can exceed this value through use of the AddUserVirtualCurrency API call. However, it will not regenerate automatically until it has fallen below this value.
         /// </summary>
         public int RechargeMax { get; set;}
+    }
+
+    public class WriteEventResponse : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// The ID of the event as it was written to PlayStream.
+        /// </summary>
+        public string EventId { get; set;}
+    }
+
+    public class WriteServerEventRequest
+    {
+
+        /// <summary>
+        /// The event data to send into the system. Must be one of the specified valid implementations.
+        /// </summary>
+        public PlayStreamEventData Event { get; set;}
     }
 }
