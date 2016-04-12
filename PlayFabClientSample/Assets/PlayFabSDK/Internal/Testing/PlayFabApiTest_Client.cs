@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using PlayFab.Json;
 
 namespace PlayFab.UUnit
 {
@@ -16,10 +17,10 @@ namespace PlayFab.UUnit
     /// </summary>
     public class PlayFabApiTest : UUnitTestCase
     {
+        // Test-data constants
         private const int TEST_STAT_BASE = 10;
         private const string TEST_STAT_NAME = "str";
         private const string TEST_DATA_KEY = "testCounter";
-
 
         // Functional
         private static bool EXEC_ONCE = true;
@@ -440,15 +441,16 @@ namespace PlayFab.UUnit
         private void WritePlayerEvent()
         {
             var request = new WritePlayerClientEventRequest();
-            request.Event = new PlayStreamPlayerEventData();
-            request.Event.EventName = "forum_post_event";
-            request.Event.EventNamespace = "com.mygame.forums";
-            request.Event.EntityType = "player";
-            request.Event.Timestamp = DateTime.UtcNow;
-            request.Event.CustomTags = new Dictionary<string, string>();
-            request.Event.CustomTags["Region"] = "US-East";
-            request.Event.CustomTags["Subject"] = "My First Post";
-            request.Event.CustomTags["Body"] = "My is my awesome post.";
+            var forumEvent = new PlayerCustomEventData();
+            forumEvent.EventName = "forum_post_event";
+            forumEvent.EventNamespace = "com.mygame.forums";
+            forumEvent.EntityType = "player";
+            forumEvent.Timestamp = DateTime.UtcNow;
+            forumEvent.CustomTags = new Dictionary<string, string>();
+            forumEvent.CustomTags["Region"] = "US-East";
+            forumEvent.CustomTags["Subject"] = "My First Post";
+            forumEvent.CustomTags["Body"] = "My is my awesome post.";
+            request.Event = forumEvent;
 
             PlayFabClientAPI.WritePlayerEvent(request, WriteEventCallback, SharedErrorCallback);
             WaitForApiCalls();

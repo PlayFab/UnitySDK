@@ -180,7 +180,10 @@ namespace PlayFab.Internal
             catch (WebException e)
             {
                 Debug.LogException(e); // If it's an unexpected exception, we should log it noisily
-                request.Error = GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, e.ToString());
+                var errorMessage = ResponseToString(e.Response);
+                if (string.IsNullOrEmpty(errorMessage))
+                    errorMessage = e.ToString();
+                request.Error = GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, errorMessage);
                 request.State = CallRequestContainer.RequestState.Error;
             }
             catch (Exception e)
@@ -201,10 +204,9 @@ namespace PlayFab.Internal
                 HttpWebResponse response = (HttpWebResponse)request.HttpRequest.GetResponse();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    using (var stream = new System.IO.StreamReader(response.GetResponseStream()))
-                        request.ResultStr = stream.ReadToEnd();
+                    request.ResultStr = ResponseToString(response);
                 }
-                else
+                if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(request.ResultStr))
                 {
                     request.Error = GeneratePfError(response.StatusCode, PlayFabErrorCode.ServiceUnavailable, "Failed to connect to PlayFab server");
                 }
@@ -223,6 +225,26 @@ namespace PlayFab.Internal
                 request.State = CallRequestContainer.RequestState.Error;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Extract the text-response from a webResponse, if possible
+        /// Returns null if there is some kind of connection failure
+        /// </summary>
+        private static string ResponseToString(WebResponse webResponse)
+        {
+            try
+            {
+                var responseStream = webResponse.GetResponseStream();
+                if (responseStream == null)
+                    return null;
+                using (var stream = new System.IO.StreamReader(responseStream))
+                    return stream.ReadToEnd();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 #endif
 

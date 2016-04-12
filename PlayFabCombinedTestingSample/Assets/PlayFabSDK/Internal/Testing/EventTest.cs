@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using PlayFab.UUnit;
 using PlayFab.ClientModels;
+using UnityEngine;
 
 namespace PlayFab.Internal
 {
@@ -195,6 +196,73 @@ namespace PlayFab.Internal
         private void OnSuccessLocal(LoginResult result)
         {
             callbacks.Add("OnSuccessLocal");
+        }
+
+        /// <summary>
+        /// The user can provide functions that throw errors on callbacks.
+        /// These should not affect the PlayFab api system itself.
+        /// </summary>
+        [UUnitTest]
+        public void TestCallbackFailures()
+        {
+            PlayFabSettings.HideCallbackErrors = true;
+            // Just need any valid auth token for this test
+            LoginWithCustomIDRequest loginRequest = new LoginWithCustomIDRequest();
+            loginRequest.CreateAccount = true;
+            loginRequest.CustomId = SystemInfo.deviceUniqueIdentifier;
+            PlayFabClientAPI.LoginWithCustomID(loginRequest, null, null);
+            WaitForApiCalls();
+
+            PlayFabSettings.RegisterForResponses(null, (PlayFabSettings.ResponseCallback<object, PlayFabResultCommon>)SuccessCallback_Global);
+            PlayFabSettings.GlobalErrorHandler += SharedError_Global;
+            callbacks.Clear();
+
+            GetCatalogItemsRequest catalogRequest = new GetCatalogItemsRequest();
+            PlayFabClientAPI.GetCatalogItems(catalogRequest, GetCatalogItemsCallback_Single, SharedError_Single);
+            WaitForApiCalls();
+            UUnitAssert.True(callbacks.Contains("GetCatalogItemsCallback_Single"), "GetCatalogItemsCallback_Single"); // All success callbacks should occur, even if some throw exceptions
+            UUnitAssert.True(callbacks.Contains("SuccessCallback_Global"), "SuccessCallback_Global"); // All success callbacks should occur, even if some throw exceptions
+            UUnitAssert.False(callbacks.Contains("SharedError_Single"), "SharedError_Single"); // Successful calls should not invoke error-callbacks (even when callbacks throw exceptions)
+            UUnitAssert.False(callbacks.Contains("SharedError_Global"), "SharedError_Global"); // Successful calls should not invoke error-callbacks (even when callbacks throw exceptions)
+            UUnitAssert.IntEquals(2, callbacks.Count);
+            callbacks.Clear();
+
+            RegisterPlayFabUserRequest registerRequest = new RegisterPlayFabUserRequest();
+            PlayFabClientAPI.RegisterPlayFabUser(registerRequest, RegisterPlayFabUserCallback_Single, SharedError_Single);
+            WaitForApiCalls();
+            UUnitAssert.False(callbacks.Contains("GetCatalogItemsCallback_Single"), "GetCatalogItemsCallback_Single"); // Success should not have occurred
+            UUnitAssert.False(callbacks.Contains("SuccessCallback_Global"), "SuccessCallback_Global"); // Success should not have occurred
+            UUnitAssert.True(callbacks.Contains("SharedError_Single"), "SharedError_Single"); // All error callbacks should occur, even if some throw exceptions
+            UUnitAssert.True(callbacks.Contains("SharedError_Global"), "SharedError_Global"); // All error callbacks should occur, even if some throw exceptions
+            UUnitAssert.IntEquals(2, callbacks.Count);
+            callbacks.Clear();
+            PlayFabSettings.HideCallbackErrors = false;
+            PlayFabSettings.ForceUnregisterAll();
+        }
+        private static void GetCatalogItemsCallback_Single(GetCatalogItemsResult result)
+        {
+            callbacks.Add("GetCatalogItemsCallback_Single");
+            throw new Exception("Non-PlayFab callback error");
+        }
+        private static void RegisterPlayFabUserCallback_Single(RegisterPlayFabUserResult result)
+        {
+            callbacks.Add("RegisterPlayFabUserCallback_Single");
+            throw new Exception("Non-PlayFab callback error");
+        }
+        private static void SharedError_Single(PlayFabError error)
+        {
+            callbacks.Add("SharedError_Single");
+            throw new Exception("Non-PlayFab callback error");
+        }
+        private static void SuccessCallback_Global(string urlPath, int callId, object request, PlayFabResultCommon result, PlayFabError error, object customData)
+        {
+            callbacks.Add("SuccessCallback_Global");
+            throw new Exception("Non-PlayFab callback error");
+        }
+        private static void SharedError_Global(PlayFabError error)
+        {
+            callbacks.Add("SharedError_Global");
+            throw new Exception("Non-PlayFab callback error");
         }
     }
 }

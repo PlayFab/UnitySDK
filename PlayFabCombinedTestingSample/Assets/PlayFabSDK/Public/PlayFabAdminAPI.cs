@@ -66,6 +66,8 @@ namespace PlayFab
         public delegate void AddVirtualCurrencyTypesResponseCallback(string urlPath, int callId, AddVirtualCurrencyTypesRequest request, BlankResult result, PlayFabError error, object customData);
         public delegate void GetCatalogItemsRequestCallback(string urlPath, int callId, GetCatalogItemsRequest request, object customData);
         public delegate void GetCatalogItemsResponseCallback(string urlPath, int callId, GetCatalogItemsRequest request, GetCatalogItemsResult result, PlayFabError error, object customData);
+        public delegate void GetPublisherDataRequestCallback(string urlPath, int callId, GetPublisherDataRequest request, object customData);
+        public delegate void GetPublisherDataResponseCallback(string urlPath, int callId, GetPublisherDataRequest request, GetPublisherDataResult result, PlayFabError error, object customData);
         public delegate void GetRandomResultTablesRequestCallback(string urlPath, int callId, GetRandomResultTablesRequest request, object customData);
         public delegate void GetRandomResultTablesResponseCallback(string urlPath, int callId, GetRandomResultTablesRequest request, GetRandomResultTablesResult result, PlayFabError error, object customData);
         public delegate void GetStoreItemsRequestCallback(string urlPath, int callId, GetStoreItemsRequest request, object customData);
@@ -116,8 +118,6 @@ namespace PlayFab
         public delegate void ModifyServerBuildResponseCallback(string urlPath, int callId, ModifyServerBuildRequest request, ModifyServerBuildResult result, PlayFabError error, object customData);
         public delegate void RemoveServerBuildRequestCallback(string urlPath, int callId, RemoveServerBuildRequest request, object customData);
         public delegate void RemoveServerBuildResponseCallback(string urlPath, int callId, RemoveServerBuildRequest request, RemoveServerBuildResult result, PlayFabError error, object customData);
-        public delegate void GetPublisherDataRequestCallback(string urlPath, int callId, GetPublisherDataRequest request, object customData);
-        public delegate void GetPublisherDataResponseCallback(string urlPath, int callId, GetPublisherDataRequest request, GetPublisherDataResult result, PlayFabError error, object customData);
         public delegate void SetPublisherDataRequestCallback(string urlPath, int callId, SetPublisherDataRequest request, object customData);
         public delegate void SetPublisherDataResponseCallback(string urlPath, int callId, SetPublisherDataRequest request, SetPublisherDataResult result, PlayFabError error, object customData);
         public delegate void GetCloudScriptRevisionRequestCallback(string urlPath, int callId, GetCloudScriptRevisionRequest request, object customData);
@@ -543,6 +543,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the key-value store of custom publisher settings
+        /// </summary>
+        public static void GetPublisherData(GetPublisherDataRequest request, ProcessApiCallback<GetPublisherDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/GetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// Retrieves the random drop table configuration for the title
         /// </summary>
         public static void GetRandomResultTables(GetRandomResultTablesRequest request, ProcessApiCallback<GetRandomResultTablesResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -915,21 +930,6 @@ namespace PlayFab
                 ResultContainer<RemoveServerBuildResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/RemoveServerBuild", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Retrieves the key-value store of custom publisher settings
-        /// </summary>
-        public static void GetPublisherData(GetPublisherDataRequest request, ProcessApiCallback<GetPublisherDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetPublisherDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Admin/GetPublisherData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>

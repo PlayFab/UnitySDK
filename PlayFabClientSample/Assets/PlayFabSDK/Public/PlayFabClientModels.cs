@@ -763,7 +763,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Generate a 'player_executed_cloudscript' PlayStream event containing the results of the function execution and other contextual information. This event will show up in the PlayStream debugger console for the player in Game Manager.
         /// </summary>
-        public bool GeneratePlayStreamEvent { get; set;}
+        public bool? GeneratePlayStreamEvent { get; set;}
     }
 
     public class ExecuteCloudScriptResult : PlayFabResultCommon
@@ -2218,7 +2218,7 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// Unique token from Google Play for the user.
+        /// Unique token (https://developers.google.com/android/reference/com/google/android/gms/auth/GoogleAuthUtil#public-methods) from Google Play for the user.
         /// </summary>
         public string AccessToken { get; set;}
     }
@@ -2470,7 +2470,7 @@ namespace PlayFab.ClientModels
         public string TitleId { get; set;}
 
         /// <summary>
-        /// Unique token from Google Play for the user.
+        /// Unique token (https://developers.google.com/android/reference/com/google/android/gms/auth/GoogleAuthUtil#public-methods) from Google Play for the user.
         /// </summary>
         public string AccessToken { get; set;}
 
@@ -2884,25 +2884,6 @@ namespace PlayFab.ClientModels
         public DateTime? DeactivationTime { get; set;}
     }
 
-    public class PlayStreamEventHistory
-    {
-
-        /// <summary>
-        /// The ID of the trigger that caused this event to be created.
-        /// </summary>
-        public string ParentTriggerId { get; set;}
-
-        /// <summary>
-        /// The ID of the previous event that caused this event to be created by hitting a trigger.
-        /// </summary>
-        public string ParentEventId { get; set;}
-
-        /// <summary>
-        /// If true, then this event was allowed to trigger subsequent events in a trigger.
-        /// </summary>
-        public bool TriggeredEvents { get; set;}
-    }
-
     public class PurchaseItemRequest
     {
 
@@ -3302,16 +3283,6 @@ namespace PlayFab.ClientModels
         /// Indicates whether this data can be read by all users (public) or only members of the group (private).
         /// </summary>
         public UserDataPermission? Permission { get; set;}
-    }
-
-    public enum SourceType
-    {
-        Admin,
-        BackEnd,
-        GameClient,
-        GameServer,
-        Partner,
-        Stream
     }
 
     public class StartGameRequest
@@ -3939,7 +3910,7 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// Statistics to be updated with the provided values.
+        /// Statistics to be updated with the provided values. UserStatistics object must follow the Key(string), Value(int) pattern.
         /// </summary>
         public Dictionary<string,int> UserStatistics { get; set;}
     }
