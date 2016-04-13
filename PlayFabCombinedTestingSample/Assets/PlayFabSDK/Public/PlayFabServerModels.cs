@@ -3003,4 +3003,70 @@ namespace PlayFab.ServerModels
         /// </summary>
         public int RechargeMax { get; set;}
     }
+
+    public class WriteEventResponse : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// The ID of the event as it was written to PlayStream. This is an alphanumeric GUID.
+        /// </summary>
+        public string EventId { get; set;}
+    }
+
+    public class WriteServerCharacterEventRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId { get; set;}
+
+        /// <summary>
+        /// The name of this event. This field is alphanumeric and at most 64 characters long. It is internally namespaced down onto the calling title.
+        /// </summary>
+        public string EventName { get; set;}
+
+        /// <summary>
+        /// The time (in UTC) associated with this event. If omitted, a timestamp of now in UTC will be applied.
+        /// </summary>
+        public DateTime? Timestamp { get; set;}
+    }
+
+    public class WriteServerPlayerEventRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// The name of this event. This field is alphanumeric and at most 64 characters long. It is internally namespaced down onto the calling title.
+        /// </summary>
+        public string EventName { get; set;}
+
+        /// <summary>
+        /// The time (in UTC) associated with this event. If omitted, a timestamp of 'now' in UTC will be applied.
+        /// </summary>
+        public DateTime? Timestamp { get; set;}
+    }
+
+    public class WriteTitleEventRequest
+    {
+
+        /// <summary>
+        /// The name of this event. This field is alphanumeric and at most 64 characters long. It is internally namespaced down onto the calling title.
+        /// </summary>
+        public string EventName { get; set;}
+
+        /// <summary>
+        /// The time (in UTC) associated with this event. If omitted, a timestamp of now in UTC will be applied.
+        /// </summary>
+        public DateTime? Timestamp { get; set;}
+    }
 }

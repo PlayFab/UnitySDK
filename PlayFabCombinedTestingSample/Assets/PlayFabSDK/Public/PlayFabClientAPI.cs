@@ -188,6 +188,12 @@ namespace PlayFab
         public delegate void ValidateGooglePlayPurchaseResponseCallback(string urlPath, int callId, ValidateGooglePlayPurchaseRequest request, ValidateGooglePlayPurchaseResult result, PlayFabError error, object customData);
         public delegate void LogEventRequestCallback(string urlPath, int callId, LogEventRequest request, object customData);
         public delegate void LogEventResponseCallback(string urlPath, int callId, LogEventRequest request, LogEventResult result, PlayFabError error, object customData);
+        public delegate void WriteCharacterEventRequestCallback(string urlPath, int callId, WriteClientCharacterEventRequest request, object customData);
+        public delegate void WriteCharacterEventResponseCallback(string urlPath, int callId, WriteClientCharacterEventRequest request, WriteEventResponse result, PlayFabError error, object customData);
+        public delegate void WritePlayerEventRequestCallback(string urlPath, int callId, WriteClientPlayerEventRequest request, object customData);
+        public delegate void WritePlayerEventResponseCallback(string urlPath, int callId, WriteClientPlayerEventRequest request, WriteEventResponse result, PlayFabError error, object customData);
+        public delegate void WriteTitleEventRequestCallback(string urlPath, int callId, WriteTitleEventRequest request, object customData);
+        public delegate void WriteTitleEventResponseCallback(string urlPath, int callId, WriteTitleEventRequest request, WriteEventResponse result, PlayFabError error, object customData);
         public delegate void AddSharedGroupMembersRequestCallback(string urlPath, int callId, AddSharedGroupMembersRequest request, object customData);
         public delegate void AddSharedGroupMembersResponseCallback(string urlPath, int callId, AddSharedGroupMembersRequest request, AddSharedGroupMembersResult result, PlayFabError error, object customData);
         public delegate void CreateSharedGroupRequestCallback(string urlPath, int callId, CreateSharedGroupRequest request, object customData);
@@ -1635,6 +1641,51 @@ namespace PlayFab
                 ResultContainer<LogEventResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Client/LogEvent", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Writes a character-based event into PlayStream.
+        /// </summary>
+        public static void WriteCharacterEvent(WriteClientCharacterEventRequest request, ProcessApiCallback<WriteEventResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<WriteEventResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/WriteCharacterEvent", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Writes a player-based event into PlayStream.
+        /// </summary>
+        public static void WritePlayerEvent(WriteClientPlayerEventRequest request, ProcessApiCallback<WriteEventResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<WriteEventResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/WritePlayerEvent", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Writes a title-based event into PlayStream.
+        /// </summary>
+        public static void WriteTitleEvent(WriteTitleEventRequest request, ProcessApiCallback<WriteEventResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<WriteEventResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Client/WriteTitleEvent", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>

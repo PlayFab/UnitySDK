@@ -218,7 +218,8 @@ namespace PlayFab
         OverLimit = 1214,
         EventNotFound = 1215,
         InvalidEventEntity = 1216,
-        InvalidEventName = 1217
+        InvalidEventName = 1217,
+        CatalogNotConfigured = 1218
     }
 
     public delegate void ErrorCallback(PlayFabError error);
