@@ -126,6 +126,12 @@ namespace PlayFab
         public delegate void AwardSteamAchievementResponseCallback(string urlPath, int callId, AwardSteamAchievementRequest request, AwardSteamAchievementResult result, PlayFabError error, object customData);
         public delegate void LogEventRequestCallback(string urlPath, int callId, LogEventRequest request, object customData);
         public delegate void LogEventResponseCallback(string urlPath, int callId, LogEventRequest request, LogEventResult result, PlayFabError error, object customData);
+        public delegate void WriteCharacterEventRequestCallback(string urlPath, int callId, WriteServerCharacterEventRequest request, object customData);
+        public delegate void WriteCharacterEventResponseCallback(string urlPath, int callId, WriteServerCharacterEventRequest request, WriteEventResponse result, PlayFabError error, object customData);
+        public delegate void WritePlayerEventRequestCallback(string urlPath, int callId, WriteServerPlayerEventRequest request, object customData);
+        public delegate void WritePlayerEventResponseCallback(string urlPath, int callId, WriteServerPlayerEventRequest request, WriteEventResponse result, PlayFabError error, object customData);
+        public delegate void WriteTitleEventRequestCallback(string urlPath, int callId, WriteTitleEventRequest request, object customData);
+        public delegate void WriteTitleEventResponseCallback(string urlPath, int callId, WriteTitleEventRequest request, WriteEventResponse result, PlayFabError error, object customData);
         public delegate void AddSharedGroupMembersRequestCallback(string urlPath, int callId, AddSharedGroupMembersRequest request, object customData);
         public delegate void AddSharedGroupMembersResponseCallback(string urlPath, int callId, AddSharedGroupMembersRequest request, AddSharedGroupMembersResult result, PlayFabError error, object customData);
         public delegate void CreateSharedGroupRequestCallback(string urlPath, int callId, CreateSharedGroupRequest request, object customData);
@@ -1024,6 +1030,51 @@ namespace PlayFab
                 ResultContainer<LogEventResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/LogEvent", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Writes a character-based event into PlayStream.
+        /// </summary>
+        public static void WriteCharacterEvent(WriteServerCharacterEventRequest request, ProcessApiCallback<WriteEventResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<WriteEventResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/WriteCharacterEvent", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Writes a player-based event into PlayStream.
+        /// </summary>
+        public static void WritePlayerEvent(WriteServerPlayerEventRequest request, ProcessApiCallback<WriteEventResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<WriteEventResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/WritePlayerEvent", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Writes a title-based event into PlayStream.
+        /// </summary>
+        public static void WriteTitleEvent(WriteTitleEventRequest request, ProcessApiCallback<WriteEventResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<WriteEventResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/WriteTitleEvent", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
