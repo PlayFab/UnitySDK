@@ -128,7 +128,7 @@ namespace PlayFab.UUnit
             if (error.ErrorDetails != null)
                 foreach (var pair in error.ErrorDetails)
                     foreach (var msg in pair.Value)
-                        TempSb.Append("\n").Append(msg);
+                        TempSb.Append("\n").Append(pair.Key).Append(": ").Append(msg);
             lastReceivedMessage = TempSb.ToString();
         }
 
@@ -462,25 +462,25 @@ namespace PlayFab.UUnit
             var jobj = result.Results as JsonObject;
             lastReceivedMessage = jobj["messageValue"] as string;
         }
-#if BETA
+
+        private class TestForumEventRequest : WriteClientPlayerEventRequest
+        {
+            public string Subject;
+            public string Body;
+        }
+
         /// <summary>
         /// CLIENT API
         /// Test that the client can publish custom PlayStream events
         /// </summary>
         [UUnitTest]
-        private void WritePlayerEvent()
+        private void WriteEvent()
         {
-            var request = new WritePlayerClientEventRequest();
-            var forumEvent = new PlayerCustomEventData();
-            forumEvent.EventName = "forum_post_event";
-            forumEvent.EventNamespace = "com.mygame.forums";
-            forumEvent.EntityType = "player";
-            forumEvent.Timestamp = DateTime.UtcNow;
-            forumEvent.CustomTags = new Dictionary<string, string>();
-            forumEvent.CustomTags["Region"] = "US-East";
-            forumEvent.CustomTags["Subject"] = "My First Post";
-            forumEvent.CustomTags["Body"] = "My is my awesome post.";
-            request.Event = forumEvent;
+            var request = new TestForumEventRequest();
+            request.EventName = "ForumPostEvent";
+            request.Timestamp = DateTime.UtcNow;
+            request.Subject = "My First Post";
+            request.Body = "My is my awesome post.";
 
             PlayFabClientAPI.WritePlayerEvent(request, WriteEventCallback, SharedErrorCallback);
             WaitForApiCalls();
@@ -490,6 +490,5 @@ namespace PlayFab.UUnit
         {
             lastReceivedMessage = "WriteEvent posted successfully.";
         }
-#endif
     }
 }
