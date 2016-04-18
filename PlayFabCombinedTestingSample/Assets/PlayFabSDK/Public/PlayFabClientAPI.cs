@@ -2124,7 +2124,7 @@ namespace PlayFab
             try
             {
 #if UNITY_ANDROID && !UNITY_EDITOR
-                AndroidJavaClass advertIdGetter = new AndroidJavaClass("com.playfab.unityplugin.PlayFabGetAdvertId");
+                AndroidJavaClass advertIdGetter = new AndroidJavaClass("com.playfab.unityadinfoplugin.PlayFabGetAdvertId");
 
                 AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"); 
                 AndroidJavaObject context = jc.GetStatic<AndroidJavaObject>("currentActivity");
