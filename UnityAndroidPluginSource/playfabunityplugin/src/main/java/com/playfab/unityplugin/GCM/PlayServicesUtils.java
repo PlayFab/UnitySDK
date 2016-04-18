@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
@@ -23,7 +24,8 @@ public class PlayServicesUtils {
      */
     public static boolean isPlayServicesAvailable() {
         Activity unityActivity = UnityPlayer.currentActivity;
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(unityActivity);
+        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+        int resultCode = googleAPI.isGooglePlayServicesAvailable(unityActivity);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, unityActivity,
