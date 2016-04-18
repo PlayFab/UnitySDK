@@ -677,7 +677,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live' executes the current live, published revision, and 'Specific' executes the specified revision.
         /// </summary>
-        public CloudScriptRevisionOption? RevisionSelection { get; set;}
+        public CloudScriptRevisionOption RevisionSelection { get; set;}
 
         /// <summary>
         /// The specivic revision to execute, when RevisionSelection is set to 'Specific'
