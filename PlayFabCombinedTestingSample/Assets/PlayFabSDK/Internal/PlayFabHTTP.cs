@@ -46,37 +46,26 @@ namespace PlayFab.Internal
         /// <summary>
         /// Sends a POST HTTP request
         /// </summary>
-        public static void Post(string urlPath, string data, string authType, string authKey, Action<CallRequestContainer> callback, object request, object customData, bool isBlocking = false)
+        public static void Post(string urlPath, string data, string authType, string authKey, Action<CallRequestContainer> callback, object request, object customData)
         {
             var requestContainer = new CallRequestContainer { RequestType = PlayFabSettings.RequestType, CallId = callIdGen++, AuthKey = authKey, AuthType = authType, Callback = callback, Data = data, Url = urlPath, Request = request, CustomData = customData };
-            if (!isBlocking)
-            {
-#if PLAYFAB_IOS
-                PlayFabiOSPlugin.Post(PlayFabSettings.GetFullUrl(urlPath), PlayFabVersion.getVersionString(), requestContainer, PlayFabSettings.InvokeRequest);
-#elif PLAYFAB_WP8
-                instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
+#if PLAYFAB_WP8
+            instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
 #else
-                if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
-                {
-                    lock (ActiveRequests)
-                        ActiveRequests.Insert(0, requestContainer); // Parsing on this container is done backwards, so insert at 0 to make calls process in roughly queue order (but still not actually guaranteed)
-                    PlayFabSettings.InvokeRequest(urlPath, requestContainer.CallId, request, customData);
-                    _ActivateWorkerThread();
-                }
-                else
-                    instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
-#endif
+            if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
+            {
+
+                lock (ActiveRequests)
+                    ActiveRequests.Insert(0, requestContainer);
+                // Parsing on this container is done backwards, so insert at 0 to make calls process in roughly queue order (but still not actually guaranteed)
+                PlayFabSettings.InvokeRequest(urlPath, requestContainer.CallId, request, customData);
+                _ActivateWorkerThread();
             }
             else
             {
-#if PLAYFAB_WP8
-                throw new Exception("WP8 cannot make blocking api calls");
-#else
-                StartHttpWebRequest(requestContainer);
-                ProcessHttpWebResult(requestContainer, true);
-                callback(requestContainer);
-#endif
+                instance.StartCoroutine(instance.MakeRequestViaUnity(requestContainer));
             }
+#endif
         }
         #endregion
 
