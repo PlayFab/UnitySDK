@@ -613,6 +613,29 @@ namespace PlayFab.ServerModels
     {
     }
 
+    public class EvaluateRandomResultTableRequest : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// The unique identifier of the Random Result Table to use.
+        /// </summary>
+        public string TableId { get; set;}
+
+        /// <summary>
+        /// Specifies the catalog version that should be used to evaluate the Random Result Table.  If unspecified, uses default/primary catalog.
+        /// </summary>
+        public string CatalogVersion { get; set;}
+    }
+
+    public class EvaluateRandomResultTableResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Unique identifier for the item returned from the Random Result Table evaluation, for the given catalog.
+        /// </summary>
+        public string ResultItemId { get; set;}
+    }
+
     public class ExecuteCloudScriptResult : PlayFabResultCommon
     {
 
@@ -677,7 +700,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live' executes the current live, published revision, and 'Specific' executes the specified revision.
         /// </summary>
-        public CloudScriptRevisionOption? RevisionSelection { get; set;}
+        public CloudScriptRevisionOption RevisionSelection { get; set;}
 
         /// <summary>
         /// The specivic revision to execute, when RevisionSelection is set to 'Specific'
