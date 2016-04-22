@@ -756,9 +756,9 @@ namespace PlayFab.ClientModels
         public object FunctionParameter { get; set;}
 
         /// <summary>
-        /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live' executes the current live, published revision, and 'Specific' executes the specified revision.
+        /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live' executes the current live, published revision, and 'Specific' executes the specified revision. The default value is 'Specific', if the SpeificRevision parameter is specified, otherwise it is 'Live'.
         /// </summary>
-        public CloudScriptRevisionOption RevisionSelection { get; set;}
+        public CloudScriptRevisionOption? RevisionSelection { get; set;}
 
         /// <summary>
         /// The specivic revision to execute, when RevisionSelection is set to 'Specific'
