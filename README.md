@@ -25,7 +25,7 @@ You can also manually update by overwriting the entire PlayFabSDK folder as well
 
 4. Source Code & Key Repository Components:
 ----
-Our repository contians these major sections:
+Our repository contains these major sections:
 
 1. **PlayFabClientSDK.unitypackage** - The fastest way to get started, ready for importing into your Unity project
 2. **PlayFabClientSample** - The base Unity project from which the asset package is built
