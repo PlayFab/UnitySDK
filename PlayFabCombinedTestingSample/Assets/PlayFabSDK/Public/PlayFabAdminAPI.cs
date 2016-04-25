@@ -198,7 +198,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds a new player statistic configuration to the title, optionally allowing the developer to specify a reset interval.
+        /// Adds a new player statistic configuration to the title, optionally allowing the developer to specify a reset interval and an aggregation method.
         /// </summary>
         public static void CreatePlayerStatisticDefinition(CreatePlayerStatisticDefinitionRequest request, ProcessApiCallback<CreatePlayerStatisticDefinitionResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
