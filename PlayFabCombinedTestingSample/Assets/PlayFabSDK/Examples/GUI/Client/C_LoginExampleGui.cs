@@ -46,7 +46,7 @@ namespace PlayFab.Examples.Client
                 }
 
                 string hiddenSecretKey; // Don't want to display this to the inspector if we use this mode
-                string testInputsFile = File.ReadAllText(titleDataFileName);
+                string testInputsFile = Util.ReadAllFileText(titleDataFileName);
 
                 var testInputs = SimpleJson.DeserializeObject<Dictionary<string, string>>(testInputsFile, Util.ApiSerializerStrategy);
 
