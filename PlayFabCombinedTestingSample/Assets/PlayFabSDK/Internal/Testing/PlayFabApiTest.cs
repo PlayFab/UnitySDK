@@ -486,7 +486,7 @@ namespace PlayFab.UUnit
             {
                 PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), CloudScriptUrlCallback, SharedErrorCallback);
                 WaitForApiCalls();
-                UUnitAssert.True(lastReceivedMessage.StartsWith("CloudScript setup complete: "));
+                UUnitAssert.True(lastReceivedMessage.StartsWith("CloudScript setup complete: "), lastReceivedMessage);
             }
 
             var request = new RunCloudScriptRequest();
