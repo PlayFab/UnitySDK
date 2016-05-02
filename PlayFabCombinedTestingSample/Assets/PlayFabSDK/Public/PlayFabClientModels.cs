@@ -141,11 +141,6 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Message to display when confirming push notification.
         /// </summary>
-        public string ConfirmationMessege { get; set;}
-
-        /// <summary>
-        /// Message to display when confirming push notification.
-        /// </summary>
         public string ConfirmationMessage { get; set;}
     }
 
@@ -2195,11 +2190,6 @@ namespace PlayFab.ClientModels
         /// Unique identifier from Facebook for the user.
         /// </summary>
         public string AccessToken { get; set;}
-
-        /// <summary>
-        /// If another user is already linked to the account, unlink the other user and re-link.
-        /// </summary>
-        public bool? ForceLink { get; set;}
     }
 
     public class LinkFacebookAccountResult : PlayFabResultCommon

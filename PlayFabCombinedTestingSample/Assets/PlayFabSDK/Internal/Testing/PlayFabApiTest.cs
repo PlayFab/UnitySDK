@@ -88,7 +88,7 @@ namespace PlayFab.UUnit
                 string filename = "C:/depot/pf-main/tools/SDKBuildScripts/testTitleData.json"; // TODO: Figure out how to not hard code this
                 if (File.Exists(filename))
                 {
-                    string testInputsFile = File.ReadAllText(filename);
+                    string testInputsFile = Util.ReadAllFileText(filename);
 
                     var testInputs = SimpleJson.DeserializeObject<Dictionary<string, string>>(testInputsFile, Util.ApiSerializerStrategy);
                     PlayFabApiTest.SetTitleInfo(testInputs);
@@ -486,7 +486,7 @@ namespace PlayFab.UUnit
             {
                 PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), CloudScriptUrlCallback, SharedErrorCallback);
                 WaitForApiCalls();
-                UUnitAssert.True(lastReceivedMessage.StartsWith("CloudScript setup complete: "));
+                UUnitAssert.True(lastReceivedMessage.StartsWith("CloudScript setup complete: "), lastReceivedMessage);
             }
 
             var request = new RunCloudScriptRequest();

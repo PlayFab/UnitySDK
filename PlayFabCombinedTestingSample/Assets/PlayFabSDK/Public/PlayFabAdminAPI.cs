@@ -80,6 +80,8 @@ namespace PlayFab
         public delegate void SetCatalogItemsResponseCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, UpdateCatalogItemsResult result, PlayFabError error, object customData);
         public delegate void SetStoreItemsRequestCallback(string urlPath, int callId, UpdateStoreItemsRequest request, object customData);
         public delegate void SetStoreItemsResponseCallback(string urlPath, int callId, UpdateStoreItemsRequest request, UpdateStoreItemsResult result, PlayFabError error, object customData);
+        public delegate void SetStoreSegmentOverridesRequestCallback(string urlPath, int callId, SetStoreSegmentOverridesRequest request, object customData);
+        public delegate void SetStoreSegmentOverridesResponseCallback(string urlPath, int callId, SetStoreSegmentOverridesRequest request, SetStoreSegemntOverridesResult result, PlayFabError error, object customData);
         public delegate void SetTitleDataRequestCallback(string urlPath, int callId, SetTitleDataRequest request, object customData);
         public delegate void SetTitleDataResponseCallback(string urlPath, int callId, SetTitleDataRequest request, SetTitleDataResult result, PlayFabError error, object customData);
         public delegate void SetupPushNotificationRequestCallback(string urlPath, int callId, SetupPushNotificationRequest request, object customData);
@@ -645,6 +647,21 @@ namespace PlayFab
                 ResultContainer<UpdateStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetStoreItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Sets up a store to be used in an AB test using segments
+        /// </summary>
+        public static void SetStoreSegmentOverrides(SetStoreSegmentOverridesRequest request, ProcessApiCallback<SetStoreSegemntOverridesResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<SetStoreSegemntOverridesResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/SetStoreSegmentOverrides", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
