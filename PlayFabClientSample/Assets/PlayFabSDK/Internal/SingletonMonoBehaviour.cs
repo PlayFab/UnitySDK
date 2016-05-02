@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace PlayFab.Internal
 {
@@ -20,7 +20,6 @@ namespace PlayFab.Internal
                         //create new instance
                         GameObject go = new GameObject (typeof (T).Name);
                         m_instance = go.AddComponent<T> ();
-                        DontDestroyOnLoad (go);
                     }
                     //initialize instance if necessary
                     if (!m_instance.initialized)
@@ -35,6 +34,7 @@ namespace PlayFab.Internal
 
         private void Awake ()
         {
+            DontDestroyOnLoad(this);
             //check if instance already exists when reloading original scene
             if (m_instance != null)
             {
