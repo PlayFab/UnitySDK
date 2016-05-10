@@ -608,6 +608,11 @@ namespace PlayFab.AdminModels
         /// maximum user count a specific Game Server Instance can support
         /// </summary>
         public uint MaxPlayerCount { get; set;}
+
+        /// <summary>
+        /// whether to start as an open session, meaning that players can matchmake into it (defaults to true)
+        /// </summary>
+        public bool? StartOpen { get; set;}
     }
 
     public class GetCatalogItemsRequest

@@ -771,6 +771,12 @@ namespace PlayFab.ServerModels
         public UserGameCenterInfo GameCenterInfo { get; set;}
     }
 
+    public enum GameInstanceState
+    {
+        Open,
+        Closed
+    }
+
     public class GetCatalogItemsRequest
     {
 
@@ -2213,6 +2219,24 @@ namespace PlayFab.ServerModels
     }
 
     public class SendPushNotificationResult : PlayFabResultCommon
+    {
+    }
+
+    public class SetGameServerInstanceStateRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the Game Instance to be updated.
+        /// </summary>
+        public string LobbyId { get; set;}
+
+        /// <summary>
+        /// State to set for the specified game server instance.
+        /// </summary>
+        public GameInstanceState State { get; set;}
+    }
+
+    public class SetGameServerInstanceStateResult : PlayFabResultCommon
     {
     }
 

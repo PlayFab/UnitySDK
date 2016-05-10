@@ -2621,6 +2621,11 @@ namespace PlayFab.ClientModels
         public string CharacterId { get; set;}
 
         /// <summary>
+        /// start a game session if one with an open slot is not found. Defaults to true
+        /// </summary>
+        public bool? StartNewIfNoneFound { get; set;}
+
+        /// <summary>
         /// [deprecated]
         /// </summary>
         public bool? EnableQueue { get; set;}
@@ -2669,7 +2674,9 @@ namespace PlayFab.ClientModels
     {
         Complete,
         Waiting,
-        GameNotFound
+        GameNotFound,
+        NoAvailableSlots,
+        SessionClosed
     }
 
     public class ModifyUserVirtualCurrencyResult : PlayFabResultCommon
