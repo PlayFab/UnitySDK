@@ -816,7 +816,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
         /// </summary>
-        public int? IfChangedFromDataVersion { get; set;}
+        public uint? IfChangedFromDataVersion { get; set;}
     }
 
     public class GetCharacterDataResult : PlayFabResultCommon
@@ -1325,7 +1325,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
         /// </summary>
-        public int? IfChangedFromDataVersion { get; set;}
+        public uint? IfChangedFromDataVersion { get; set;}
     }
 
     public class GetUserDataResult : PlayFabResultCommon
