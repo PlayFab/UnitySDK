@@ -97,7 +97,7 @@ namespace PlayFab.ClientModels
         public string Email { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }
@@ -2413,7 +2413,7 @@ namespace PlayFab.ClientModels
         public string Email { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }
@@ -2547,7 +2547,7 @@ namespace PlayFab.ClientModels
         public string Username { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }
@@ -3029,7 +3029,7 @@ namespace PlayFab.ClientModels
         public string Email { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
 

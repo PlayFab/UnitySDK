@@ -1984,6 +1984,11 @@ namespace PlayFab.AdminModels
         /// Immediately publish the new revision
         /// </summary>
         public bool Publish { get; set;}
+
+        /// <summary>
+        /// PlayFab user ID of the developer initiating the request.
+        /// </summary>
+        public string DeveloperPlayFabId { get; set;}
     }
 
     public class UpdateCloudScriptResult : PlayFabResultCommon
@@ -2241,7 +2246,7 @@ namespace PlayFab.AdminModels
         public string Username { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }
