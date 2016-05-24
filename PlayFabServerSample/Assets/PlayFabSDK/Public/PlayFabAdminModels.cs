@@ -608,6 +608,11 @@ namespace PlayFab.AdminModels
         /// maximum user count a specific Game Server Instance can support
         /// </summary>
         public uint MaxPlayerCount { get; set;}
+
+        /// <summary>
+        /// whether to start as an open session, meaning that players can matchmake into it (defaults to true)
+        /// </summary>
+        public bool? StartOpen { get; set;}
     }
 
     public class GetCatalogItemsRequest
@@ -1052,7 +1057,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
         /// </summary>
-        public int? IfChangedFromDataVersion { get; set;}
+        public uint? IfChangedFromDataVersion { get; set;}
     }
 
     public class GetUserDataResult : PlayFabResultCommon
@@ -1812,29 +1817,6 @@ namespace PlayFab.AdminModels
     {
     }
 
-    public class SetStoreSegemntOverridesResult : PlayFabResultCommon
-    {
-    }
-
-    public class SetStoreSegmentOverridesRequest
-    {
-
-        /// <summary>
-        /// Catalog version to use for the request. Defaults to most recent catalog if null.
-        /// </summary>
-        public string CatalogVersion { get; set;}
-
-        /// <summary>
-        /// The id of the store being overridden. Requests from the client api to store will return the store associated with the override
-        /// </summary>
-        public string BaseStoreId { get; set;}
-
-        /// <summary>
-        /// The list of overrides in order of evaluation.
-        /// </summary>
-        public List<StoreSegmentNamePair> Overrides { get; set;}
-    }
-
     public class SetTitleDataRequest
     {
 
@@ -1939,20 +1921,6 @@ namespace PlayFab.AdminModels
         public Dictionary<string,uint> RealCurrencyPrices { get; set;}
     }
 
-    public class StoreSegmentNamePair
-    {
-
-        /// <summary>
-        /// The id of the store being referenced
-        /// </summary>
-        public string StoreId { get; set;}
-
-        /// <summary>
-        /// The name of the segment being referenced
-        /// </summary>
-        public string SegmentName { get; set;}
-    }
-
     public class SubtractUserVirtualCurrencyRequest
     {
 
@@ -2016,6 +1984,11 @@ namespace PlayFab.AdminModels
         /// Immediately publish the new revision
         /// </summary>
         public bool Publish { get; set;}
+
+        /// <summary>
+        /// PlayFab user ID of the developer initiating the request.
+        /// </summary>
+        public string DeveloperPlayFabId { get; set;}
     }
 
     public class UpdateCloudScriptResult : PlayFabResultCommon
@@ -2273,7 +2246,7 @@ namespace PlayFab.AdminModels
         public string Username { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }

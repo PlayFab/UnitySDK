@@ -97,7 +97,7 @@ namespace PlayFab.ClientModels
         public string Email { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }
@@ -1025,7 +1025,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
         /// </summary>
-        public int? IfChangedFromDataVersion { get; set;}
+        public uint? IfChangedFromDataVersion { get; set;}
     }
 
     public class GetCharacterDataResult : PlayFabResultCommon
@@ -1922,7 +1922,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
         /// </summary>
-        public int? IfChangedFromDataVersion { get; set;}
+        public uint? IfChangedFromDataVersion { get; set;}
     }
 
     public class GetUserDataResult : PlayFabResultCommon
@@ -2413,7 +2413,7 @@ namespace PlayFab.ClientModels
         public string Email { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }
@@ -2547,7 +2547,7 @@ namespace PlayFab.ClientModels
         public string Username { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
     }
@@ -2621,6 +2621,11 @@ namespace PlayFab.ClientModels
         public string CharacterId { get; set;}
 
         /// <summary>
+        /// start a game session if one with an open slot is not found. Defaults to true
+        /// </summary>
+        public bool? StartNewIfNoneFound { get; set;}
+
+        /// <summary>
         /// [deprecated]
         /// </summary>
         public bool? EnableQueue { get; set;}
@@ -2669,7 +2674,9 @@ namespace PlayFab.ClientModels
     {
         Complete,
         Waiting,
-        GameNotFound
+        GameNotFound,
+        NoAvailableSlots,
+        SessionClosed
     }
 
     public class ModifyUserVirtualCurrencyResult : PlayFabResultCommon
@@ -3022,7 +3029,7 @@ namespace PlayFab.ClientModels
         public string Email { get; set;}
 
         /// <summary>
-        /// Password for the PlayFab account (6-30 characters)
+        /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password { get; set;}
 
