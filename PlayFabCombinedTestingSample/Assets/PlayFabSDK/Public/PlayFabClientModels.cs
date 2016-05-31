@@ -148,6 +148,24 @@ namespace PlayFab.ClientModels
     {
     }
 
+    public class ApproveGuildRoleChangeRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Unique identifier of the role change request
+        /// </summary>
+        public string GuildRoleRequestId { get; set;}
+    }
+
+    public class ApproveGuildRoleChangeResult : PlayFabResultCommon
+    {
+    }
+
     public class AttributeInstallRequest
     {
 
@@ -380,6 +398,29 @@ namespace PlayFab.ClientModels
         public Dictionary<string,uint> VirtualCurrencyContents { get; set;}
     }
 
+    public class ChangeGuildMemberRoleRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Unique identifier of the player to change
+        /// </summary>
+        public string PlayerId { get; set;}
+
+        /// <summary>
+        /// New role for the player
+        /// </summary>
+        public GuildRole? Role { get; set;}
+    }
+
+    public class ChangeGuildMemberRoleResult : PlayFabResultCommon
+    {
+    }
+
     public class CharacterLeaderboardEntry
     {
 
@@ -504,6 +545,47 @@ namespace PlayFab.ClientModels
         /// Number of uses remaining on the item.
         /// </summary>
         public int RemainingUses { get; set;}
+    }
+
+    public class ConsumePSNEntitlementsRequest
+    {
+
+        /// <summary>
+        /// Which catalog to match granted entitlements against. If null, defaults to title default catalog
+        /// </summary>
+        public string CatalogVersion { get; set;}
+
+        /// <summary>
+        /// Id of the PSN service label to consume entitlements from
+        /// </summary>
+        public int ServiceLabel { get; set;}
+    }
+
+    public class ConsumePSNEntitlementsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Array of items granted to the player as a result of consuming entitlements.
+        /// </summary>
+        public List<ItemInstance> ItemsGranted { get; set;}
+    }
+
+    public class CreateGuildRequest
+    {
+
+        /// <summary>
+        /// Guild name
+        /// </summary>
+        public string Name { get; set;}
+    }
+
+    public class CreateGuildResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Created guild
+        /// </summary>
+        public GuildProperties Guild { get; set;}
     }
 
     public class CreateSharedGroupRequest
@@ -731,6 +813,37 @@ namespace PlayFab.ClientModels
         /// number of games running
         /// </summary>
         public int GameCount { get; set;}
+    }
+
+    public class DeleteGuildRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild to delete
+        /// </summary>
+        public string GuildId { get; set;}
+    }
+
+    public class DeleteGuildResult : PlayFabResultCommon
+    {
+    }
+
+    public class DenyGuildRoleChangeRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Unique identifier of the role change request
+        /// </summary>
+        public string GuildRoleRequestId { get; set;}
+    }
+
+    public class DenyGuildRoleChangeResult : PlayFabResultCommon
+    {
     }
 
     public class EmptyResult : PlayFabResultCommon
@@ -1310,6 +1423,179 @@ namespace PlayFab.ClientModels
         public List<FriendInfo> Friends { get; set;}
     }
 
+    public class GetGuildDataRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild.
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Specific keys to search for in the guild data.
+        /// </summary>
+        public List<string> Keys { get; set;}
+
+        /// <summary>
+        /// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
+        /// </summary>
+        public uint? IfChangedFromDataVersion { get; set;}
+    }
+
+    public class GetGuildDataResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Guild specific data for this title.
+        /// </summary>
+        public Dictionary<string,UserDataRecord> Data { get; set;}
+
+        /// <summary>
+        /// Latest version of the data.
+        /// </summary>
+        public uint DataVersion { get; set;}
+    }
+
+    public class GetGuildInventoryRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Used to limit results to only those from a specific catalog version.
+        /// </summary>
+        public string CatalogVersion { get; set;}
+    }
+
+    public class GetGuildInventoryResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Array of inventory items belonging to the guild.
+        /// </summary>
+        public List<ItemInstance> Inventory { get; set;}
+
+        /// <summary>
+        /// Array of virtual currency balance(s) belonging to the guild.
+        /// </summary>
+        public Dictionary<string,int> VirtualCurrency { get; set;}
+    }
+
+    public class GetGuildMembershipLeaderboardRequest
+    {
+
+        /// <summary>
+        /// Statistic used to rank players for this leaderboard.
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific Guild on which to center the leaderboard.
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// First entry in the leaderboard to be retrieved.
+        /// </summary>
+        public int StartPosition { get; set;}
+
+        /// <summary>
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
+        /// </summary>
+        public int? MaxResultsCount { get; set;}
+    }
+
+    public class GetGuildMembershipLeaderboardResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Ordered listing of players and their positions in the requested leaderboard.
+        /// </summary>
+        public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
+    }
+
+    public class GetGuildsLeaderboardAroundGuildRequest
+    {
+
+        /// <summary>
+        /// Unique identifier for the title-specific statistic for the leaderboard.
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific Guild on which to center the leaderboard.
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
+        /// </summary>
+        public int? MaxResultsCount { get; set;}
+    }
+
+    public class GetGuildsLeaderboardAroundGuildResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Ordered list of leaderboard entries.
+        /// </summary>
+        public List<GuildLeaderboardEntry> Leaderboard { get; set;}
+    }
+
+    public class GetGuildsLeaderboardRequest
+    {
+
+        /// <summary>
+        /// Unique identifier for the title-specific statistic for the leaderboard.
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// First entry in the leaderboard to be retrieved.
+        /// </summary>
+        public int StartPosition { get; set;}
+
+        /// <summary>
+        /// Maximum number of entries to retrieve. Default 10, maximum 100.
+        /// </summary>
+        public int? MaxResultsCount { get; set;}
+    }
+
+    public class GetGuildsLeaderboardResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Ordered list of leaderboard entries.
+        /// </summary>
+        public List<GuildLeaderboardEntry> Leaderboard { get; set;}
+    }
+
+    public class GetGuildStatisticsRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// statistics to return, if StatisticNames is not set (only statistics which have a version matching that provided will be returned)
+        /// </summary>
+        public List<StatisticNameVersion> StatisticNameVersions { get; set;}
+    }
+
+    public class GetGuildStatisticsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Guild statistics for the requested guild.
+        /// </summary>
+        public List<StatisticValue> Statistics { get; set;}
+    }
+
     public class GetLeaderboardAroundCharacterRequest
     {
 
@@ -1415,6 +1701,29 @@ namespace PlayFab.ClientModels
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<CharacterLeaderboardEntry> Leaderboard { get; set;}
+    }
+
+    public class GetLeaderboardOfPlayersGuildsRequest
+    {
+
+        /// <summary>
+        /// Unique identifier for the title-specific statistic for the leaderboard.
+        /// </summary>
+        public string StatisticName { get; set;}
+
+        /// <summary>
+        /// Maximum number of entries to retrieve.
+        /// </summary>
+        public int MaxResultsCount { get; set;}
+    }
+
+    public class GetLeaderboardOfPlayersGuildsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Ordered list of leaderboard entries.
+        /// </summary>
+        public List<GuildLeaderboardEntry> Leaderboard { get; set;}
     }
 
     public class GetLeaderboardRequest
@@ -1597,6 +1906,29 @@ namespace PlayFab.ClientModels
         /// Mapping of Kongregate identifiers to PlayFab identifiers.
         /// </summary>
         public List<KongregatePlayFabIdPair> Data { get; set;}
+    }
+
+    public class GetPlayFabIDsFromPSNAccountIDsRequest
+    {
+
+        /// <summary>
+        /// Array of unique PlayStation Network identifiers for which the title needs to get PlayFab identifiers.
+        /// </summary>
+        public List<string> PSNAccountIDs { get; set;}
+
+        /// <summary>
+        /// Id of the PSN issuer environment. If null, defaults to 256 (production)
+        /// </summary>
+        public int? IssuerId { get; set;}
+    }
+
+    public class GetPlayFabIDsFromPSNAccountIDsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Mapping of PlayStation Network identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<PSNAccountPlayFabIdPair> Data { get; set;}
     }
 
     public class GetPlayFabIDsFromSteamIDsRequest
@@ -2027,6 +2359,97 @@ namespace PlayFab.ClientModels
         public bool Result { get; set;}
     }
 
+    public class GuildLeaderboardEntry
+    {
+
+        /// <summary>
+        /// PlayFab unique identifier of the guild for this leaderboard entry.
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Display name of the guild for this leaderboard entry.
+        /// </summary>
+        public string GuildName { get; set;}
+
+        /// <summary>
+        /// Specific value of the user's statistic.
+        /// </summary>
+        public int StatValue { get; set;}
+
+        /// <summary>
+        /// User's overall position in the leaderboard.
+        /// </summary>
+        public int Position { get; set;}
+    }
+
+    public class GuildMember
+    {
+
+        /// <summary>
+        /// Unique identifier of the player
+        /// </summary>
+        public string PlayerId { get; set;}
+
+        /// <summary>
+        /// Role of the player in the guild
+        /// </summary>
+        public GuildRole? Role { get; set;}
+    }
+
+    public class GuildMembership
+    {
+
+        /// <summary>
+        /// Guild properties
+        /// </summary>
+        public GuildProperties Guild { get; set;}
+
+        /// <summary>
+        /// Player's role in the guild
+        /// </summary>
+        public GuildRole? Role { get; set;}
+    }
+
+    public class GuildProperties
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string Id { get; set;}
+
+        /// <summary>
+        /// Guild name
+        /// </summary>
+        public string Name { get; set;}
+    }
+
+    public enum GuildRole
+    {
+        Owner,
+        Member
+    }
+
+    public class GuildRoleRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the role change request
+        /// </summary>
+        public string GuildRoleRequestId { get; set;}
+
+        /// <summary>
+        /// Unique identifier of the player requesting the role change
+        /// </summary>
+        public string PlayerId { get; set;}
+
+        /// <summary>
+        /// Desired role of the player requesting the role change
+        /// </summary>
+        public GuildRole? Role { get; set;}
+    }
+
     /// <summary>
     /// A unique instance of an item in a user's inventory
     /// </summary>
@@ -2147,6 +2570,19 @@ namespace PlayFab.ClientModels
         public string PlayFabId { get; set;}
     }
 
+    public class LeaveGuildRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+    }
+
+    public class LeaveGuildResult : PlayFabResultCommon
+    {
+    }
+
     public class LinkAndroidDeviceIDRequest
     {
 
@@ -2263,6 +2699,29 @@ namespace PlayFab.ClientModels
     {
     }
 
+    public class LinkPSNAccountRequest
+    {
+
+        /// <summary>
+        /// Authentication code provided by the PlayStation Network.
+        /// </summary>
+        public string AuthCode { get; set;}
+
+        /// <summary>
+        /// Redirect URI supplied to PSN when requesting an auth code
+        /// </summary>
+        public string RedirectUri { get; set;}
+
+        /// <summary>
+        /// Id of the PSN issuer environment. If null, defaults to 256 (production)
+        /// </summary>
+        public int? IssuerId { get; set;}
+    }
+
+    public class LinkPSNAccountResult : PlayFabResultCommon
+    {
+    }
+
     public class LinkSteamAccountRequest
     {
 
@@ -2274,6 +2733,68 @@ namespace PlayFab.ClientModels
 
     public class LinkSteamAccountResult : PlayFabResultCommon
     {
+    }
+
+    public class LinkXboxAccountRequest
+    {
+
+        /// <summary>
+        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+        /// </summary>
+        public string XboxToken { get; set;}
+    }
+
+    public class LinkXboxAccountResult : PlayFabResultCommon
+    {
+    }
+
+    public class ListGuildMembersRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+    }
+
+    public class ListGuildMembersResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Members of the guild
+        /// </summary>
+        public List<GuildMember> Members { get; set;}
+    }
+
+    public class ListPendingGuildRoleChangeRequestsRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+    }
+
+    public class ListPendingGuildRoleChangeRequestsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Pending role change requests
+        /// </summary>
+        public List<GuildRoleRequest> RoleRequests { get; set;}
+    }
+
+    public class ListPlayerGuildMembershipsRequest
+    {
+    }
+
+    public class ListPlayerGuildMembershipsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Guild memberships for the player
+        /// </summary>
+        public List<GuildMembership> Memberships { get; set;}
     }
 
     public class ListUsersCharactersRequest
@@ -2552,6 +3073,35 @@ namespace PlayFab.ClientModels
         public string Password { get; set;}
     }
 
+    public class LoginWithPSNRequest
+    {
+
+        /// <summary>
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// </summary>
+        public string TitleId { get; set;}
+
+        /// <summary>
+        /// Auth code provided by the PSN OAuth provider.
+        /// </summary>
+        public string AuthCode { get; set;}
+
+        /// <summary>
+        /// Redirect URI supplied to PSN when requesting an auth code
+        /// </summary>
+        public string RedirectUri { get; set;}
+
+        /// <summary>
+        /// Id of the PSN issuer environment. If null, defaults to 256 (production)
+        /// </summary>
+        public int? IssuerId { get; set;}
+
+        /// <summary>
+        /// Automatically create a PlayFab account if one is not currently linked to this PSN account.
+        /// </summary>
+        public bool? CreateAccount { get; set;}
+    }
+
     public class LoginWithSteamRequest
     {
 
@@ -2567,6 +3117,25 @@ namespace PlayFab.ClientModels
 
         /// <summary>
         /// Automatically create a PlayFab account if one is not currently linked to this Steam account.
+        /// </summary>
+        public bool? CreateAccount { get; set;}
+    }
+
+    public class LoginWithXboxRequest
+    {
+
+        /// <summary>
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// </summary>
+        public string TitleId { get; set;}
+
+        /// <summary>
+        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+        /// </summary>
+        public string XboxToken { get; set;}
+
+        /// <summary>
+        /// Automatically create a PlayFab account if one is not currently linked to this Xbox Live account.
         /// </summary>
         public bool? CreateAccount { get; set;}
     }
@@ -2886,6 +3455,20 @@ namespace PlayFab.ClientModels
         public DateTime? DeactivationTime { get; set;}
     }
 
+    public class PSNAccountPlayFabIdPair
+    {
+
+        /// <summary>
+        /// Unique PlayStation Network identifier for a user.
+        /// </summary>
+        public string PSNAccountId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the PlayStation Network identifier.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
     public class PurchaseItemRequest
     {
 
@@ -2950,6 +3533,25 @@ namespace PlayFab.ClientModels
         /// Items granted to the player as a result of redeeming the coupon.
         /// </summary>
         public List<ItemInstance> GrantedItems { get; set;}
+    }
+
+    public class RefreshPSNAuthTokenRequest
+    {
+
+        /// <summary>
+        /// Auth code returned by PSN OAuth system.
+        /// </summary>
+        public string AuthCode { get; set;}
+
+        /// <summary>
+        /// Redirect URI supplied to PSN when requesting an auth code
+        /// </summary>
+        public string RedirectUri { get; set;}
+
+        /// <summary>
+        /// Id of the PSN issuer environment. If null, defaults to 256 (production)
+        /// </summary>
+        public int? IssuerId { get; set;}
     }
 
     public enum Region
@@ -3086,6 +3688,24 @@ namespace PlayFab.ClientModels
     {
     }
 
+    public class RemoveGuildMemberRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Unique identifier of the player to change
+        /// </summary>
+        public string PlayerId { get; set;}
+    }
+
+    public class RemoveGuildMemberResult : PlayFabResultCommon
+    {
+    }
+
     public class RemoveSharedGroupMembersRequest
     {
 
@@ -3130,6 +3750,29 @@ namespace PlayFab.ClientModels
         /// The number of remaining reports which may be filed today.
         /// </summary>
         public int SubmissionsRemaining { get; set;}
+    }
+
+    public class RequestGuildRoleChangeRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Desired role of the player in the guild
+        /// </summary>
+        public GuildRole? Role { get; set;}
+    }
+
+    public class RequestGuildRoleChangeResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Unique identifier of the role change request
+        /// </summary>
+        public string GuildRoleRequestId { get; set;}
     }
 
     public class RestoreIOSPurchasesRequest
@@ -3713,11 +4356,32 @@ namespace PlayFab.ClientModels
     {
     }
 
+    public class UnlinkPSNAccountRequest
+    {
+    }
+
+    public class UnlinkPSNAccountResult : PlayFabResultCommon
+    {
+    }
+
     public class UnlinkSteamAccountRequest
     {
     }
 
     public class UnlinkSteamAccountResult : PlayFabResultCommon
+    {
+    }
+
+    public class UnlinkXboxAccountRequest
+    {
+
+        /// <summary>
+        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
+        /// </summary>
+        public string XboxToken { get; set;}
+    }
+
+    public class UnlinkXboxAccountResult : PlayFabResultCommon
     {
     }
 
@@ -3836,6 +4500,57 @@ namespace PlayFab.ClientModels
     }
 
     public class UpdateCharacterStatisticsResult : PlayFabResultCommon
+    {
+    }
+
+    public class UpdateGuildDataRequest
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific guild
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
+        /// </summary>
+        public Dictionary<string,string> Data { get; set;}
+
+        /// <summary>
+        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+        /// </summary>
+        public List<string> KeysToRemove { get; set;}
+
+        /// <summary>
+        /// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
+        /// </summary>
+        public UserDataPermission? Permission { get; set;}
+    }
+
+    public class UpdateGuildDataResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
+        /// </summary>
+        public uint DataVersion { get; set;}
+    }
+
+    public class UpdateGuildStatisticsRequest
+    {
+
+        /// <summary>
+        /// Id of the guild to update
+        /// </summary>
+        public string GuildId { get; set;}
+
+        /// <summary>
+        /// Statistics to be updated with the provided values
+        /// </summary>
+        public List<StatisticUpdate> Statistics { get; set;}
+    }
+
+    public class UpdateGuildStatisticsResult : PlayFabResultCommon
     {
     }
 
