@@ -51,7 +51,7 @@ namespace PlayFab.UUnit
         {
             string eachValue;
 
-            PlayFabHTTP.instance.Awake();
+            PlayFabHTTP.instance.SetupCertificates();
             PlayFabSettings.RequestType = WebRequestType.HttpWebRequest;
 
             TITLE_INFO_SET = true;

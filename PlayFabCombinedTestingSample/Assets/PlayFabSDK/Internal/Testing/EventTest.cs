@@ -105,7 +105,7 @@ namespace PlayFab.Internal
         protected override void SetUp()
         {
             PlayFabSettings.TitleId = "6195";
-            PlayFabHTTP.instance.Awake();
+            PlayFabHTTP.instance.SetupCertificates();
             PlayFabSettings.RequestType = WebRequestType.HttpWebRequest;
             PlayFabSettings.ForceUnregisterAll();
         }

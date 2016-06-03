@@ -32,7 +32,7 @@ namespace PlayFab.Internal
             }
         }
 
-        private void Awake ()
+        public virtual void Awake ()
         {
             DontDestroyOnLoad(this);
             //check if instance already exists when reloading original scene
