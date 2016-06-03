@@ -28,54 +28,6 @@ namespace PlayFab.ServerModels
         public int Amount { get; set;}
     }
 
-    public class AddFriendRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the player to add a new friend.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// The PlayFab identifier of the user being added.
-        /// </summary>
-        public string FriendPlayFabId { get; set;}
-
-        /// <summary>
-        /// The PlayFab username of the user being added
-        /// </summary>
-        public string FriendUsername { get; set;}
-
-        /// <summary>
-        /// Email address of the user being added.
-        /// </summary>
-        public string FriendEmail { get; set;}
-
-        /// <summary>
-        /// Title-specific display name of the user to being added.
-        /// </summary>
-        public string FriendTitleDisplayName { get; set;}
-    }
-
-    public class AddGuildVirtualCurrencyRequest
-    {
-
-        /// <summary>
-        /// PlayFab unique identifier of the Guild whose virtual currency balance is to be increased.
-        /// </summary>
-        public string GuildId { get; set;}
-
-        /// <summary>
-        /// Name of the virtual currency which is to be incremented.
-        /// </summary>
-        public string VirtualCurrency { get; set;}
-
-        /// <summary>
-        /// Amount to be added to the Guild balance of the specified virtual currency. Maximum VC balance is Int32 (2,147,483,647). Any increase over this value will be discarded.
-        /// </summary>
-        public int Amount { get; set;}
-    }
-
     public class AddSharedGroupMembersRequest
     {
 
@@ -1038,129 +990,6 @@ namespace PlayFab.ServerModels
         public string URL { get; set;}
     }
 
-    public class GetFriendLeaderboardRequest
-    {
-
-        /// <summary>
-        /// The player whose friend leaderboard to get
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// Statistic used to rank friends for this leaderboard.
-        /// </summary>
-        public string StatisticName { get; set;}
-
-        /// <summary>
-        /// Position in the leaderboard to start this listing (defaults to the first entry).
-        /// </summary>
-        public int StartPosition { get; set;}
-
-        /// <summary>
-        /// Maximum number of entries to retrieve.
-        /// </summary>
-        public int MaxResultsCount { get; set;}
-
-        /// <summary>
-        /// Indicates whether Steam service friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeSteamFriends { get; set;}
-
-        /// <summary>
-        /// Indicates whether Facebook friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeFacebookFriends { get; set;}
-    }
-
-    public class GetFriendsListRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the player whose friend list to get.
-        /// </summary>
-        public string PlayFabId { get; set;}
-
-        /// <summary>
-        /// Indicates whether Steam service friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeSteamFriends { get; set;}
-
-        /// <summary>
-        /// Indicates whether Facebook friends should be included in the response. Default is true.
-        /// </summary>
-        public bool? IncludeFacebookFriends { get; set;}
-    }
-
-    public class GetFriendsListResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// Array of friends found.
-        /// </summary>
-        public List<FriendInfo> Friends { get; set;}
-    }
-
-    public class GetGuildDataRequest
-    {
-
-        /// <summary>
-        /// Unique PlayFab assigned ID for a specific guild
-        /// </summary>
-        public string GuildId { get; set;}
-
-        /// <summary>
-        /// Specific keys to search for in the custom user data.
-        /// </summary>
-        public List<string> Keys { get; set;}
-
-        /// <summary>
-        /// The version that currently exists according to the caller. The call will return the data for all of the keys if the version in the system is greater than this.
-        /// </summary>
-        public uint? IfChangedFromDataVersion { get; set;}
-    }
-
-    public class GetGuildDataResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
-        /// </summary>
-        public uint DataVersion { get; set;}
-
-        /// <summary>
-        /// Guild specific data for this title.
-        /// </summary>
-        public Dictionary<string,UserDataRecord> Data { get; set;}
-    }
-
-    public class GetGuildStatisticsRequest
-    {
-
-        /// <summary>
-        /// guild for which statistics are being requested
-        /// </summary>
-        public string GuildId { get; set;}
-
-        /// <summary>
-        /// statistics to return
-        /// </summary>
-        public List<string> StatisticNames { get; set;}
-
-        /// <summary>
-        /// statistics to return, if StatisticNames is not set (only statistics which have a version matching that provided will be returned)
-        /// </summary>
-        public List<StatisticNameVersion> StatisticNameVersions { get; set;}
-    }
-
-    public class GetGuildStatisticsResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// User statistics for the requested user.
-        /// </summary>
-        public List<StatisticValue> Statistics { get; set;}
-    }
-
     public class GetLeaderboardAroundCharacterRequest
     {
 
@@ -1737,39 +1566,6 @@ namespace PlayFab.ServerModels
         public List<GrantedItemInstance> ItemGrantResults { get; set;}
     }
 
-    public class GrantItemsToGuildRequest
-    {
-
-        /// <summary>
-        /// Catalog version from which items are to be granted.
-        /// </summary>
-        public string CatalogVersion { get; set;}
-
-        /// <summary>
-        /// Unique PlayFab assigned ID for a specific guild
-        /// </summary>
-        public string GuildId { get; set;}
-
-        /// <summary>
-        /// String detailing any additional information concerning this operation.
-        /// </summary>
-        public string Annotation { get; set;}
-
-        /// <summary>
-        /// Array of itemIds specifying which catalog items to grant to the Guild.
-        /// </summary>
-        public List<string> ItemIds { get; set;}
-    }
-
-    public class GrantItemsToGuildResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// Array of items granted to Guild.
-        /// </summary>
-        public List<GrantedItemInstance> ItemGrantResults { get; set;}
-    }
-
     public class GrantItemsToUserRequest
     {
 
@@ -2016,25 +1812,6 @@ namespace PlayFab.ServerModels
         /// Name of the virtual currency which was modified.
         /// </summary>
         public string VirtualCurrency { get; set;}
-
-        /// <summary>
-        /// Balance of the virtual currency after modification.
-        /// </summary>
-        public int Balance { get; set;}
-    }
-
-    public class ModifyGuildVirtualCurrencyResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// Name of the virtual currency which was modified.
-        /// </summary>
-        public string VirtualCurrency { get; set;}
-
-        /// <summary>
-        /// Amount added or subtracted from the Guild's virtual currency. Maximum VC balance is Int32 (2,147,483,647). Any increase over this value will be discarded.
-        /// </summary>
-        public int BalanceChange { get; set;}
 
         /// <summary>
         /// Balance of the virtual currency after modification.
@@ -2322,20 +2099,6 @@ namespace PlayFab.ServerModels
         /// User account information for the user validated.
         /// </summary>
         public UserAccountInfo UserInfo { get; set;}
-    }
-
-    public class RemoveFriendRequest
-    {
-
-        /// <summary>
-        /// PlayFab identifier of the friend account which is to be removed.
-        /// </summary>
-        public string FriendPlayFabId { get; set;}
-
-        /// <summary>
-        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
-        /// </summary>
-        public string PlayFabId { get; set;}
     }
 
     public class RemoveSharedGroupMembersRequest
@@ -2632,25 +2395,6 @@ namespace PlayFab.ServerModels
         public int Amount { get; set;}
     }
 
-    public class SubtractGuildVirtualCurrencyRequest
-    {
-
-        /// <summary>
-        /// PlayFab unique identifier of the Guild whose virtual currency balance is to be decreased.
-        /// </summary>
-        public string GuildId { get; set;}
-
-        /// <summary>
-        /// Name of the virtual currency which is to be decremented.
-        /// </summary>
-        public string VirtualCurrency { get; set;}
-
-        /// <summary>
-        /// Amount to be subtracted from the Guild balance of the specified virtual currency.
-        /// </summary>
-        public int Amount { get; set;}
-    }
-
     public class SubtractUserVirtualCurrencyRequest
     {
 
@@ -2838,57 +2582,6 @@ namespace PlayFab.ServerModels
     }
 
     public class UpdateCharacterStatisticsResult : PlayFabResultCommon
-    {
-    }
-
-    public class UpdateGuildDataRequest
-    {
-
-        /// <summary>
-        /// Unique PlayFab assigned ID for a specific guild
-        /// </summary>
-        public string GuildId { get; set;}
-
-        /// <summary>
-        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
-        /// </summary>
-        public Dictionary<string,string> Data { get; set;}
-
-        /// <summary>
-        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
-        /// </summary>
-        public List<string> KeysToRemove { get; set;}
-
-        /// <summary>
-        /// Permission to be applied to all user data keys written in this request. Defaults to "private" if not set.
-        /// </summary>
-        public UserDataPermission? Permission { get; set;}
-    }
-
-    public class UpdateGuildDataResult : PlayFabResultCommon
-    {
-
-        /// <summary>
-        /// Indicates the current version of the data that has been set. This is incremented with every set call for that type of data (read-only, internal, etc). This version can be provided in Get calls to find updated data.
-        /// </summary>
-        public uint DataVersion { get; set;}
-    }
-
-    public class UpdateGuildStatisticsRequest
-    {
-
-        /// <summary>
-        /// Unique PlayFab assigned ID for a specific guild
-        /// </summary>
-        public string GuildId { get; set;}
-
-        /// <summary>
-        /// Statistics to be updated with the provided values
-        /// </summary>
-        public List<StatisticUpdate> Statistics { get; set;}
-    }
-
-    public class UpdateGuildStatisticsResult : PlayFabResultCommon
     {
     }
 

@@ -44,12 +44,8 @@ namespace PlayFab
         public delegate void GetUserReadOnlyDataResponseCallback(string urlPath, int callId, GetUserDataRequest request, GetUserDataResult result, PlayFabError error, object customData);
         public delegate void IncrementPlayerStatisticVersionRequestCallback(string urlPath, int callId, IncrementPlayerStatisticVersionRequest request, object customData);
         public delegate void IncrementPlayerStatisticVersionResponseCallback(string urlPath, int callId, IncrementPlayerStatisticVersionRequest request, IncrementPlayerStatisticVersionResult result, PlayFabError error, object customData);
-        public delegate void RefundPurchaseRequestCallback(string urlPath, int callId, RefundPurchaseRequest request, object customData);
-        public delegate void RefundPurchaseResponseCallback(string urlPath, int callId, RefundPurchaseRequest request, RefundPurchaseResponse result, PlayFabError error, object customData);
         public delegate void ResetUserStatisticsRequestCallback(string urlPath, int callId, ResetUserStatisticsRequest request, object customData);
         public delegate void ResetUserStatisticsResponseCallback(string urlPath, int callId, ResetUserStatisticsRequest request, ResetUserStatisticsResult result, PlayFabError error, object customData);
-        public delegate void ResolvePurchaseDisputeRequestCallback(string urlPath, int callId, ResolvePurchaseDisputeRequest request, object customData);
-        public delegate void ResolvePurchaseDisputeResponseCallback(string urlPath, int callId, ResolvePurchaseDisputeRequest request, ResolvePurchaseDisputeResponse result, PlayFabError error, object customData);
         public delegate void UpdatePlayerStatisticDefinitionRequestCallback(string urlPath, int callId, UpdatePlayerStatisticDefinitionRequest request, object customData);
         public delegate void UpdatePlayerStatisticDefinitionResponseCallback(string urlPath, int callId, UpdatePlayerStatisticDefinitionRequest request, UpdatePlayerStatisticDefinitionResult result, PlayFabError error, object customData);
         public delegate void UpdateUserDataRequestCallback(string urlPath, int callId, UpdateUserDataRequest request, object customData);
@@ -84,8 +80,6 @@ namespace PlayFab
         public delegate void SetCatalogItemsResponseCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, UpdateCatalogItemsResult result, PlayFabError error, object customData);
         public delegate void SetStoreItemsRequestCallback(string urlPath, int callId, UpdateStoreItemsRequest request, object customData);
         public delegate void SetStoreItemsResponseCallback(string urlPath, int callId, UpdateStoreItemsRequest request, UpdateStoreItemsResult result, PlayFabError error, object customData);
-        public delegate void SetStoreSegmentOverridesRequestCallback(string urlPath, int callId, SetStoreSegmentOverridesRequest request, object customData);
-        public delegate void SetStoreSegmentOverridesResponseCallback(string urlPath, int callId, SetStoreSegmentOverridesRequest request, SetStoreSegemntOverridesResult result, PlayFabError error, object customData);
         public delegate void SetTitleDataRequestCallback(string urlPath, int callId, SetTitleDataRequest request, object customData);
         public delegate void SetTitleDataResponseCallback(string urlPath, int callId, SetTitleDataRequest request, SetTitleDataResult result, PlayFabError error, object customData);
         public delegate void SetupPushNotificationRequestCallback(string urlPath, int callId, SetupPushNotificationRequest request, object customData);
@@ -384,21 +378,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Attempts to process an order refund through the original real money payment provider.
-        /// </summary>
-        public static void RefundPurchase(RefundPurchaseRequest request, ProcessApiCallback<RefundPurchaseResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<RefundPurchaseResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Admin/RefundPurchase", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
         /// Completely removes all statistics for the specified user, for the current game
         /// </summary>
         public static void ResetUserStatistics(ResetUserStatisticsRequest request, ProcessApiCallback<ResetUserStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -411,21 +390,6 @@ namespace PlayFab
                 ResultContainer<ResetUserStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/ResetUserStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Attempts to resolve a dispute with the original order's payment provider.
-        /// </summary>
-        public static void ResolvePurchaseDispute(ResolvePurchaseDisputeRequest request, ProcessApiCallback<ResolvePurchaseDisputeResponse> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<ResolvePurchaseDisputeResponse>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Admin/ResolvePurchaseDispute", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
@@ -681,21 +645,6 @@ namespace PlayFab
                 ResultContainer<UpdateStoreItemsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetStoreItems", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Sets up a store to be used in an AB test using segments
-        /// </summary>
-        public static void SetStoreSegmentOverrides(SetStoreSegmentOverridesRequest request, ProcessApiCallback<SetStoreSegemntOverridesResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<SetStoreSegemntOverridesResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Admin/SetStoreSegmentOverrides", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>

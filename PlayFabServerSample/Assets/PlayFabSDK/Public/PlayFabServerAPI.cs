@@ -24,8 +24,6 @@ namespace PlayFab
         public delegate void SendPushNotificationResponseCallback(string urlPath, int callId, SendPushNotificationRequest request, SendPushNotificationResult result, PlayFabError error, object customData);
         public delegate void DeleteUsersRequestCallback(string urlPath, int callId, DeleteUsersRequest request, object customData);
         public delegate void DeleteUsersResponseCallback(string urlPath, int callId, DeleteUsersRequest request, DeleteUsersResult result, PlayFabError error, object customData);
-        public delegate void GetFriendLeaderboardRequestCallback(string urlPath, int callId, GetFriendLeaderboardRequest request, object customData);
-        public delegate void GetFriendLeaderboardResponseCallback(string urlPath, int callId, GetFriendLeaderboardRequest request, GetLeaderboardResult result, PlayFabError error, object customData);
         public delegate void GetLeaderboardRequestCallback(string urlPath, int callId, GetLeaderboardRequest request, object customData);
         public delegate void GetLeaderboardResponseCallback(string urlPath, int callId, GetLeaderboardRequest request, GetLeaderboardResult result, PlayFabError error, object customData);
         public delegate void GetLeaderboardAroundUserRequestCallback(string urlPath, int callId, GetLeaderboardAroundUserRequest request, object customData);
@@ -122,12 +120,6 @@ namespace PlayFab
         public delegate void UnlockContainerItemResponseCallback(string urlPath, int callId, UnlockContainerItemRequest request, UnlockContainerItemResult result, PlayFabError error, object customData);
         public delegate void UpdateUserInventoryItemCustomDataRequestCallback(string urlPath, int callId, UpdateUserInventoryItemDataRequest request, object customData);
         public delegate void UpdateUserInventoryItemCustomDataResponseCallback(string urlPath, int callId, UpdateUserInventoryItemDataRequest request, EmptyResult result, PlayFabError error, object customData);
-        public delegate void AddFriendRequestCallback(string urlPath, int callId, AddFriendRequest request, object customData);
-        public delegate void AddFriendResponseCallback(string urlPath, int callId, AddFriendRequest request, EmptyResult result, PlayFabError error, object customData);
-        public delegate void GetFriendsListRequestCallback(string urlPath, int callId, GetFriendsListRequest request, object customData);
-        public delegate void GetFriendsListResponseCallback(string urlPath, int callId, GetFriendsListRequest request, GetFriendsListResult result, PlayFabError error, object customData);
-        public delegate void RemoveFriendRequestCallback(string urlPath, int callId, RemoveFriendRequest request, object customData);
-        public delegate void RemoveFriendResponseCallback(string urlPath, int callId, RemoveFriendRequest request, EmptyResult result, PlayFabError error, object customData);
         public delegate void NotifyMatchmakerPlayerLeftRequestCallback(string urlPath, int callId, NotifyMatchmakerPlayerLeftRequest request, object customData);
         public delegate void NotifyMatchmakerPlayerLeftResponseCallback(string urlPath, int callId, NotifyMatchmakerPlayerLeftRequest request, NotifyMatchmakerPlayerLeftResult result, PlayFabError error, object customData);
         public delegate void RedeemMatchmakerTicketRequestCallback(string urlPath, int callId, RedeemMatchmakerTicketRequest request, object customData);
@@ -188,28 +180,6 @@ namespace PlayFab
         public delegate void UpdateCharacterInternalDataResponseCallback(string urlPath, int callId, UpdateCharacterDataRequest request, UpdateCharacterDataResult result, PlayFabError error, object customData);
         public delegate void UpdateCharacterReadOnlyDataRequestCallback(string urlPath, int callId, UpdateCharacterDataRequest request, object customData);
         public delegate void UpdateCharacterReadOnlyDataResponseCallback(string urlPath, int callId, UpdateCharacterDataRequest request, UpdateCharacterDataResult result, PlayFabError error, object customData);
-        public delegate void AddGuildVirtualCurrencyRequestCallback(string urlPath, int callId, AddGuildVirtualCurrencyRequest request, object customData);
-        public delegate void AddGuildVirtualCurrencyResponseCallback(string urlPath, int callId, AddGuildVirtualCurrencyRequest request, ModifyGuildVirtualCurrencyResult result, PlayFabError error, object customData);
-        public delegate void GetGuildDataRequestCallback(string urlPath, int callId, GetGuildDataRequest request, object customData);
-        public delegate void GetGuildDataResponseCallback(string urlPath, int callId, GetGuildDataRequest request, GetGuildDataResult result, PlayFabError error, object customData);
-        public delegate void GetGuildInternalDataRequestCallback(string urlPath, int callId, GetGuildDataRequest request, object customData);
-        public delegate void GetGuildInternalDataResponseCallback(string urlPath, int callId, GetGuildDataRequest request, GetGuildDataResult result, PlayFabError error, object customData);
-        public delegate void GetGuildReadOnlyDataRequestCallback(string urlPath, int callId, GetGuildDataRequest request, object customData);
-        public delegate void GetGuildReadOnlyDataResponseCallback(string urlPath, int callId, GetGuildDataRequest request, GetGuildDataResult result, PlayFabError error, object customData);
-        public delegate void GetGuildStatisticsRequestCallback(string urlPath, int callId, GetGuildStatisticsRequest request, object customData);
-        public delegate void GetGuildStatisticsResponseCallback(string urlPath, int callId, GetGuildStatisticsRequest request, GetGuildStatisticsResult result, PlayFabError error, object customData);
-        public delegate void GrantItemsToGuildRequestCallback(string urlPath, int callId, GrantItemsToGuildRequest request, object customData);
-        public delegate void GrantItemsToGuildResponseCallback(string urlPath, int callId, GrantItemsToGuildRequest request, GrantItemsToGuildResult result, PlayFabError error, object customData);
-        public delegate void SubtractGuildVirtualCurrencyRequestCallback(string urlPath, int callId, SubtractGuildVirtualCurrencyRequest request, object customData);
-        public delegate void SubtractGuildVirtualCurrencyResponseCallback(string urlPath, int callId, SubtractGuildVirtualCurrencyRequest request, ModifyGuildVirtualCurrencyResult result, PlayFabError error, object customData);
-        public delegate void UpdateGuildDataRequestCallback(string urlPath, int callId, UpdateGuildDataRequest request, object customData);
-        public delegate void UpdateGuildDataResponseCallback(string urlPath, int callId, UpdateGuildDataRequest request, UpdateGuildDataResult result, PlayFabError error, object customData);
-        public delegate void UpdateGuildInternalDataRequestCallback(string urlPath, int callId, UpdateGuildDataRequest request, object customData);
-        public delegate void UpdateGuildInternalDataResponseCallback(string urlPath, int callId, UpdateGuildDataRequest request, UpdateGuildDataResult result, PlayFabError error, object customData);
-        public delegate void UpdateGuildReadOnlyDataRequestCallback(string urlPath, int callId, UpdateGuildDataRequest request, object customData);
-        public delegate void UpdateGuildReadOnlyDataResponseCallback(string urlPath, int callId, UpdateGuildDataRequest request, UpdateGuildDataResult result, PlayFabError error, object customData);
-        public delegate void UpdateGuildStatisticsRequestCallback(string urlPath, int callId, UpdateGuildStatisticsRequest request, object customData);
-        public delegate void UpdateGuildStatisticsResponseCallback(string urlPath, int callId, UpdateGuildStatisticsRequest request, UpdateGuildStatisticsResult result, PlayFabError error, object customData);
 
         /// <summary>
         /// Validated a client's session ticket, and if successful, returns details for that user
@@ -299,21 +269,6 @@ namespace PlayFab
                 ResultContainer<DeleteUsersResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/DeleteUsers", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Retrieves a list of ranked friends of the given player for the given statistic, starting from the indicated point in the leaderboard
-        /// </summary>
-        public static void GetFriendLeaderboard(GetFriendLeaderboardRequest request, ProcessApiCallback<GetLeaderboardResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetLeaderboardResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetFriendLeaderboard", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
@@ -1037,51 +992,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds the Friend user to the friendlist of the user with PlayFabId. At least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized.
-        /// </summary>
-        public static void AddFriend(AddFriendRequest request, ProcessApiCallback<EmptyResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<EmptyResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/AddFriend", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Retrieves the current friends for the user with PlayFabId, constrained to users who have PlayFab accounts. Friends from linked accounts (Facebook, Steam) are also included. You may optionally exclude some linked services' friends.
-        /// </summary>
-        public static void GetFriendsList(GetFriendsListRequest request, ProcessApiCallback<GetFriendsListResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetFriendsListResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetFriendsList", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Removes the specified friend from the the user's friend list
-        /// </summary>
-        public static void RemoveFriend(RemoveFriendRequest request, ProcessApiCallback<EmptyResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<EmptyResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/RemoveFriend", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
         /// Informs the PlayFab match-making service that the user specified has left the Game Server Instance
         /// </summary>
         public static void NotifyMatchmakerPlayerLeft(NotifyMatchmakerPlayerLeftRequest request, ProcessApiCallback<NotifyMatchmakerPlayerLeftResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -1529,171 +1439,6 @@ namespace PlayFab
                 ResultContainer<UpdateCharacterDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/UpdateCharacterReadOnlyData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Increments  the Guild's balance of the specified virtual currency by the stated amount
-        /// </summary>
-        public static void AddGuildVirtualCurrency(AddGuildVirtualCurrencyRequest request, ProcessApiCallback<ModifyGuildVirtualCurrencyResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<ModifyGuildVirtualCurrencyResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/AddGuildVirtualCurrency", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Updates the title-specific custom data for the guild which is readable and writable by the client
-        /// </summary>
-        public static void GetGuildData(GetGuildDataRequest request, ProcessApiCallback<GetGuildDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetGuildDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetGuildData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Retrieves the title-specific custom data for the guild which cannot be accessed by the client
-        /// </summary>
-        public static void GetGuildInternalData(GetGuildDataRequest request, ProcessApiCallback<GetGuildDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetGuildDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetGuildInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Retrieves the title-specific custom data for the guild which can only be read by the client
-        /// </summary>
-        public static void GetGuildReadOnlyData(GetGuildDataRequest request, ProcessApiCallback<GetGuildDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetGuildDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetGuildReadOnlyData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Retrieves the current version and values for the indicated statistics.
-        /// </summary>
-        public static void GetGuildStatistics(GetGuildStatisticsRequest request, ProcessApiCallback<GetGuildStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GetGuildStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GetGuildStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Adds the specified items to the specified guild's inventory
-        /// </summary>
-        public static void GrantItemsToGuild(GrantItemsToGuildRequest request, ProcessApiCallback<GrantItemsToGuildResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<GrantItemsToGuildResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/GrantItemsToGuild", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Decrements the Guild's balance of the specified virtual currency by the stated amount
-        /// </summary>
-        public static void SubtractGuildVirtualCurrency(SubtractGuildVirtualCurrencyRequest request, ProcessApiCallback<ModifyGuildVirtualCurrencyResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<ModifyGuildVirtualCurrencyResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/SubtractGuildVirtualCurrency", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Updates the title-specific custom data for the guild which is readable and writable by the client
-        /// </summary>
-        public static void UpdateGuildData(UpdateGuildDataRequest request, ProcessApiCallback<UpdateGuildDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<UpdateGuildDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/UpdateGuildData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Updates the title-specific custom data for the guild which cannot be accessed by the client
-        /// </summary>
-        public static void UpdateGuildInternalData(UpdateGuildDataRequest request, ProcessApiCallback<UpdateGuildDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<UpdateGuildDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/UpdateGuildInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Updates the title-specific custom data for the guild which can only be read by the client
-        /// </summary>
-        public static void UpdateGuildReadOnlyData(UpdateGuildDataRequest request, ProcessApiCallback<UpdateGuildDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<UpdateGuildDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/UpdateGuildReadOnlyData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
-        }
-
-        /// <summary>
-        /// Updates the values of the specified title-specific statistics.
-        /// </summary>
-        public static void UpdateGuildStatistics(UpdateGuildStatisticsRequest request, ProcessApiCallback<UpdateGuildStatisticsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
-            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
-            {
-                ResultContainer<UpdateGuildStatisticsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
-            };
-            PlayFabHTTP.Post("/Server/UpdateGuildStatistics", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
 
