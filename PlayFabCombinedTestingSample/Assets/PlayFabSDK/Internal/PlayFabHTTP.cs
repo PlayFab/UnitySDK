@@ -15,7 +15,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using UnityEngine;
-        
+
 namespace PlayFab.Internal
 {
     public class PlayFabHTTP : SingletonMonoBehaviour<PlayFabHTTP>
