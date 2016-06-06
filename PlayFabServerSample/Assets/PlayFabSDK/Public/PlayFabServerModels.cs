@@ -3055,7 +3055,7 @@ namespace PlayFab.ServerModels
     {
 
         /// <summary>
-        /// The ID of the event as it was written to PlayStream. This is an alphanumeric GUID.
+        /// The unique identifier of the event. This can be used to retrieve the event's properties using the GetEvent API. The values of this identifier consist of ASCII characters and are not constrained to any particular format.
         /// </summary>
         public string EventId { get; set;}
     }
@@ -3074,17 +3074,17 @@ namespace PlayFab.ServerModels
         public string CharacterId { get; set;}
 
         /// <summary>
-        /// The name of this event. This field is alphanumeric and at most 64 characters long. It is internally namespaced down onto the calling title. Best practices are to name in subject_verb_object format (player_logged_in).
+        /// The name of the event, within the namespace scoped to the title. The naming convention is up to the caller, but it commonly follows the subject_verb_object pattern (e.g. player_logged_in).
         /// </summary>
         public string EventName { get; set;}
 
         /// <summary>
-        /// The time (in UTC) associated with this event. If omitted, a timestamp of now in UTC will be applied.
+        /// The time (in UTC) associated with this event. The value dafaults to the current time.
         /// </summary>
         public DateTime? Timestamp { get; set;}
 
         /// <summary>
-        /// Arbitrary json values that represent the custom body of this event.
+        /// Custom event properties. Each property consists of a name (string) and a value (JSON object).
         /// </summary>
         public Dictionary<string,object> Body { get; set;}
     }
@@ -3098,17 +3098,17 @@ namespace PlayFab.ServerModels
         public string PlayFabId { get; set;}
 
         /// <summary>
-        /// The name of this event. This field is alphanumeric and at most 64 characters long. It is internally namespaced down onto the calling title. Best practices are to name in subject_verb_object format (player_logged_in).
+        /// The name of the event, within the namespace scoped to the title. The naming convention is up to the caller, but it commonly follows the subject_verb_object pattern (e.g. player_logged_in).
         /// </summary>
         public string EventName { get; set;}
 
         /// <summary>
-        /// The time (in UTC) associated with this event. If omitted, a timestamp of 'now' in UTC will be applied.
+        /// The time (in UTC) associated with this event. The value dafaults to the current time.
         /// </summary>
         public DateTime? Timestamp { get; set;}
 
         /// <summary>
-        /// Arbitrary json values that represent the custom body of this event.
+        /// Custom data properties associated with the event. Each property consists of a name (string) and a value (JSON object).
         /// </summary>
         public Dictionary<string,object> Body { get; set;}
     }
@@ -3117,17 +3117,17 @@ namespace PlayFab.ServerModels
     {
 
         /// <summary>
-        /// The name of this event. This field is alphanumeric and at most 64 characters long. It is internally namespaced down onto the calling title. Best practices are to name in subject_verb_object format (player_logged_in).
+        /// The name of the event, within the namespace scoped to the title. The naming convention is up to the caller, but it commonly follows the subject_verb_object pattern (e.g. player_logged_in).
         /// </summary>
         public string EventName { get; set;}
 
         /// <summary>
-        /// The time (in UTC) associated with this event. If omitted, a timestamp of now in UTC will be applied.
+        /// The time (in UTC) associated with this event. The value dafaults to the current time.
         /// </summary>
         public DateTime? Timestamp { get; set;}
 
         /// <summary>
-        /// Arbitrary json values that represent the custom body of this event.
+        /// Custom event properties. Each property consists of a name (string) and a value (JSON object).
         /// </summary>
         public Dictionary<string,object> Body { get; set;}
     }
