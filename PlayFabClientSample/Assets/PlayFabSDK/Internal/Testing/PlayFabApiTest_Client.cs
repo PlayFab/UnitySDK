@@ -438,28 +438,16 @@ namespace PlayFab.UUnit
         [UUnitTest]
         private void CloudScript()
         {
-            if (string.IsNullOrEmpty(PlayFabSettings.LogicServerUrl))
-            {
-                PlayFabClientAPI.GetCloudScriptUrl(new GetCloudScriptUrlRequest(), CloudScriptUrlCallback, SharedErrorCallback);
-                WaitForApiCalls();
-                UUnitAssert.True(lastReceivedMessage.StartsWith("CloudScript setup complete: "), lastReceivedMessage);
-            }
-
-            var request = new RunCloudScriptRequest();
-            request.ActionId = "helloWorld";
-            PlayFabClientAPI.RunCloudScript(request, CloudScriptHwCallback, SharedErrorCallback);
+            var request = new ExecuteCloudScriptRequest();
+            request.FunctionName = "helloWorld";
+            PlayFabClientAPI.ExecuteCloudScript(request, CloudScriptHwCallback, SharedErrorCallback);
             WaitForApiCalls();
             UUnitAssert.Equals("Hello " + playFabId + "!", lastReceivedMessage);
         }
-        private void CloudScriptUrlCallback(GetCloudScriptUrlResult result)
+        private void CloudScriptHwCallback(ExecuteCloudScriptResult result)
         {
-            lastReceivedMessage = "CloudScript setup complete: " + result.Url;
-        }
-        private void CloudScriptHwCallback(RunCloudScriptResult result)
-        {
-            UUnitAssert.NotNull(result.ResultsEncoded);
-            UUnitAssert.NotNull(result.Results);
-            var jobj = result.Results as JsonObject;
+            UUnitAssert.NotNull(result.FunctionResult);
+            var jobj = result.FunctionResult as JsonObject;
             lastReceivedMessage = jobj["messageValue"] as string;
         }
 

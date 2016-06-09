@@ -37,7 +37,7 @@ namespace PlayFab
         public static WebRequestType RequestType = WebRequestType.UnityWww;
         public static int RequestTimeout = 2000;
         public static bool RequestKeepAlive = true;
-        internal static string LogicServerUrl = null; // Assigned by GetCloudScriptUrl, used by RunCloudScript
+        internal static string LogicServerUrl = null; // Deprecated
         public static string AdvertisingIdType = null; // Set this to the appropriate AD_TYPE_X constant below
         public static string AdvertisingIdValue = null; // Set this to corresponding device value
 
