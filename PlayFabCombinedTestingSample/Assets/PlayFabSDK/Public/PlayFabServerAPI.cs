@@ -124,6 +124,8 @@ namespace PlayFab
         public delegate void NotifyMatchmakerPlayerLeftResponseCallback(string urlPath, int callId, NotifyMatchmakerPlayerLeftRequest request, NotifyMatchmakerPlayerLeftResult result, PlayFabError error, object customData);
         public delegate void RedeemMatchmakerTicketRequestCallback(string urlPath, int callId, RedeemMatchmakerTicketRequest request, object customData);
         public delegate void RedeemMatchmakerTicketResponseCallback(string urlPath, int callId, RedeemMatchmakerTicketRequest request, RedeemMatchmakerTicketResult result, PlayFabError error, object customData);
+        public delegate void SetGameServerInstanceDataRequestCallback(string urlPath, int callId, SetGameServerInstanceDataRequest request, object customData);
+        public delegate void SetGameServerInstanceDataResponseCallback(string urlPath, int callId, SetGameServerInstanceDataRequest request, SetGameServerInstanceDataResult result, PlayFabError error, object customData);
         public delegate void SetGameServerInstanceStateRequestCallback(string urlPath, int callId, SetGameServerInstanceStateRequest request, object customData);
         public delegate void SetGameServerInstanceStateResponseCallback(string urlPath, int callId, SetGameServerInstanceStateRequest request, SetGameServerInstanceStateResult result, PlayFabError error, object customData);
         public delegate void AwardSteamAchievementRequestCallback(string urlPath, int callId, AwardSteamAchievementRequest request, object customData);
@@ -1019,6 +1021,21 @@ namespace PlayFab
                 ResultContainer<RedeemMatchmakerTicketResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Server/RedeemMatchmakerTicket", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Sets the custom data of the indicated Game Server Instance
+        /// </summary>
+        public static void SetGameServerInstanceData(SetGameServerInstanceDataRequest request, ProcessApiCallback<SetGameServerInstanceDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<SetGameServerInstanceDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Server/SetGameServerInstanceData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>

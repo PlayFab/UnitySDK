@@ -927,7 +927,18 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// game specific string denoting server configuration
         /// </summary>
-        public string GameServerState { get; set;}
+        public GameInstanceState? GameServerState { get; set;}
+
+        /// <summary>
+        /// game session custom data
+        /// </summary>
+        public string GameServerData { get; set;}
+    }
+
+    public enum GameInstanceState
+    {
+        Open,
+        Closed
     }
 
     public class GameServerRegionsRequest
