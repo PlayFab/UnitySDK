@@ -38,7 +38,7 @@ namespace PlayFab
         public static int RequestTimeout = 2000;
         public static bool RequestKeepAlive = true;
         public static string DeveloperSecretKey = null; // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
-        internal static string LogicServerUrl = null; // Assigned by GetCloudScriptUrl, used by RunCloudScript
+        internal static string LogicServerUrl = null; // Deprecated
         public static string AdvertisingIdType = null; // Set this to the appropriate AD_TYPE_X constant below
         public static string AdvertisingIdValue = null; // Set this to corresponding device value
 

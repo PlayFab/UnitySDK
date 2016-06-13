@@ -2222,6 +2222,24 @@ namespace PlayFab.ServerModels
     {
     }
 
+    public class SetGameServerInstanceDataRequest
+    {
+
+        /// <summary>
+        /// Unique identifier of the Game Instance to be updated.
+        /// </summary>
+        public string LobbyId { get; set;}
+
+        /// <summary>
+        /// Custom data to set for the specified game server instance.
+        /// </summary>
+        public string GameServerData { get; set;}
+    }
+
+    public class SetGameServerInstanceDataResult : PlayFabResultCommon
+    {
+    }
+
     public class SetGameServerInstanceStateRequest
     {
 
