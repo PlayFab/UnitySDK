@@ -164,7 +164,7 @@ namespace PlayFab.Internal
 
                 request.HttpRequest.Proxy = null; // Prevents hitting a proxy if no proxy is available. TODO: Add support for proxy's.
                 request.HttpRequest.Headers.Add("X-ReportErrorAsSuccess", "true"); // Without this, we have to catch WebException instead, and manually decode the result
-                request.HttpRequest.Headers.Add("X-PlayFabSDK", PlayFabVersion.getVersionString());
+                request.HttpRequest.Headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
                 if (request.AuthType != null)
                     request.HttpRequest.Headers.Add(request.AuthType, request.AuthKey);
                 request.HttpRequest.ContentType = "application/json";
@@ -263,7 +263,7 @@ namespace PlayFab.Internal
             if (requestContainer.AuthType != null)
                 headers.Add(requestContainer.AuthType, requestContainer.AuthKey);
             headers.Add("X-ReportErrorAsSuccess", "true");
-            headers.Add("X-PlayFabSDK", PlayFabVersion.getVersionString());
+            headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
             WWW www = new WWW(fullUrl, bData, headers);
 
             PlayFabSettings.InvokeRequest(requestContainer.Url, requestContainer.CallId, requestContainer.Request, requestContainer.CustomData);

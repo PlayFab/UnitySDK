@@ -21,6 +21,7 @@ namespace PlayFab.UUnit
         // Test-data constants
         private const int TEST_STAT_BASE = 10;
         private const string TEST_STAT_NAME = "str";
+        private const string CHAR_TEST_TYPE = "Test";
         private const string TEST_DATA_KEY = "testCounter";
 
         // Functional
@@ -41,7 +42,6 @@ namespace PlayFab.UUnit
         private string lastReceivedMessage;
         private UserDataRecord testCounterReturn;
         private int testStatReturn;
-        CharacterResult targetCharacter = null;
 
         /// <summary>
         /// PlayFab Title cannot be created from SDK tests, so you must provide your titleId to run unit tests.
@@ -84,7 +84,6 @@ namespace PlayFab.UUnit
                 string filename = "C:/depot/pf-main/tools/SDKBuildScripts/testTitleData.json"; // TODO: Figure out how to not hard code this
                 if (File.Exists(filename))
                 {
-
                     string testInputsFile = Util.ReadAllFileText(filename);
 
                     var testInputs = SimpleJson.DeserializeObject<Dictionary<string, string>>(testInputsFile, Util.ApiSerializerStrategy);
@@ -145,13 +144,13 @@ namespace PlayFab.UUnit
             request.TitleId = PlayFabSettings.TitleId;
             request.Email = USER_EMAIL;
             request.Password = USER_PASSWORD + "INVALID";
-            PlayFabClientAPI.LoginWithEmailAddress(request, LoginCallback, SharedErrorCallback);
+            PlayFabClientAPI.LoginWithEmailAddress(request, SharedLoginCallback, SharedErrorCallback);
             WaitForApiCalls();
 
             UUnitAssert.False(lastReceivedMessage.ToLower().Contains("successful"), lastReceivedMessage);
             UUnitAssert.True(lastReceivedMessage.ToLower().Contains("password"), lastReceivedMessage);
         }
-        private void LoginCallback(LoginResult result)
+        private void SharedLoginCallback(LoginResult result)
         {
             playFabId = result.PlayFabId;
             lastReceivedMessage = "Login Successful";
@@ -170,7 +169,7 @@ namespace PlayFab.UUnit
             registerRequest.Username = "x"; // Provide invalid inputs for multiple parameters, which will show up in errorDetails
             registerRequest.Email = "x"; // Provide invalid inputs for multiple parameters, which will show up in errorDetails
             registerRequest.Password = "x"; // Provide invalid inputs for multiple parameters, which will show up in errorDetails
-            PlayFabClientAPI.RegisterPlayFabUser(registerRequest, RegisterCallback, SharedErrorCallback);
+            PlayFabClientAPI.RegisterPlayFabUser(registerRequest, null, SharedErrorCallback);
             WaitForApiCalls();
 
             var expectedEmailMsg = "email address is not valid.";
@@ -186,39 +185,14 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void LoginOrRegister()
         {
-            if (!PlayFabClientAPI.IsClientLoggedIn()) // If we haven't already logged in...
-            {
-                var loginRequest = new LoginWithEmailAddressRequest();
-                loginRequest.Email = USER_EMAIL;
-                loginRequest.Password = USER_PASSWORD;
-                loginRequest.TitleId = PlayFabSettings.TitleId;
-                PlayFabClientAPI.LoginWithEmailAddress(loginRequest, LoginCallback, SharedErrorCallback);
-                WaitForApiCalls();
-
-                // We don't do any test here, because the user may not exist, and thus login might fail, but the test should not
-            }
-
-            if (PlayFabClientAPI.IsClientLoggedIn())
-                return; // Success, already logged in
-
-            // If the setup failed to log in a user, we need to create one.
-            var registerRequest = new RegisterPlayFabUserRequest();
-            registerRequest.TitleId = PlayFabSettings.TitleId;
-            registerRequest.Username = USER_NAME;
-            registerRequest.Email = USER_EMAIL;
-            registerRequest.Password = USER_PASSWORD;
-            PlayFabClientAPI.RegisterPlayFabUser(registerRequest, RegisterCallback, SharedErrorCallback);
+            var loginRequest = new LoginWithCustomIDRequest();
+            loginRequest.CustomId = PlayFabSettings.BuildIdentifier;
+            loginRequest.CreateAccount = true;
+            PlayFabClientAPI.LoginWithCustomID(loginRequest, SharedLoginCallback, SharedErrorCallback);
             WaitForApiCalls();
-
-            UUnitAssert.StringEquals("User Registration Successful", lastReceivedMessage); // If we get here, we definitely registered a new user, and we definitely want to verify success
-
             UUnitAssert.True(PlayFabClientAPI.IsClientLoggedIn(), "User login failed");
         }
-        private void RegisterCallback(RegisterPlayFabUserResult result)
-        {
-            playFabId = result.PlayFabId;
-            lastReceivedMessage = "User Registration Successful";
-        }
+
 
         /// <summary>
         /// CLIENT API
@@ -230,11 +204,10 @@ namespace PlayFab.UUnit
             PlayFabSettings.AdvertisingIdType = PlayFabSettings.AD_TYPE_ANDROID_ID;
             PlayFabSettings.AdvertisingIdValue = "PlayFabTestId";
 
-            var loginRequest = new LoginWithEmailAddressRequest();
-            loginRequest.Email = USER_EMAIL;
-            loginRequest.Password = USER_PASSWORD;
-            loginRequest.TitleId = PlayFabSettings.TitleId;
-            PlayFabClientAPI.LoginWithEmailAddress(loginRequest, LoginCallback, SharedErrorCallback);
+            var loginRequest = new LoginWithCustomIDRequest();
+            loginRequest.CustomId = PlayFabSettings.BuildIdentifier;
+            loginRequest.CreateAccount = true;
+            PlayFabClientAPI.LoginWithCustomID(loginRequest, SharedLoginCallback, SharedErrorCallback);
             WaitForApiCalls();
 
             UUnitAssert.StringEquals(PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful", PlayFabSettings.AdvertisingIdType);
@@ -256,7 +229,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetUserData(getRequest, GetUserDataCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Data Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Data Received", lastReceivedMessage);
             int.TryParse(testCounterReturn.Value, out testCounterValueExpected);
             testCounterValueExpected = (testCounterValueExpected + 1) % 100; // This test is about the expected value changing - but not testing more complicated issues like bounds
 
@@ -315,7 +288,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetUserStatistics(getRequest, GetUserStatsCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Stats Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Stats Received", lastReceivedMessage);
             testStatExpected = ((testStatReturn + 1) % TEST_STAT_BASE) + TEST_STAT_BASE; // This test is about the expected value changing (incrementing through from TEST_STAT_BASE to TEST_STAT_BASE * 2 - 1)
 
             var updateRequest = new UpdateUserStatisticsRequest();
@@ -327,21 +300,21 @@ namespace PlayFab.UUnit
             // Test update result - no data returned, so error or no error, based on Title settings
             if (!TITLE_CAN_UPDATE_SETTINGS)
             {
-                UUnitAssert.Equals("error message from PlayFab", lastReceivedMessage);
+                UUnitAssert.StringEquals("error message from PlayFab", lastReceivedMessage);
                 return; // The rest of this tests changing settings - Which we verified we cannot do
             }
             else // if (CAN_UPDATE_SETTINGS)
             {
-                UUnitAssert.Equals("User Stats Updated", lastReceivedMessage);
+                UUnitAssert.StringEquals("User Stats Updated", lastReceivedMessage);
             }
 
             getRequest = new GetUserStatisticsRequest();
             PlayFabClientAPI.GetUserStatistics(getRequest, GetUserStatsCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("User Stats Received", lastReceivedMessage);
+            UUnitAssert.StringEquals("User Stats Received", lastReceivedMessage);
             testStatActual = testStatReturn;
-            UUnitAssert.Equals(testStatExpected, testStatActual);
+            UUnitAssert.IntEquals(testStatExpected, testStatActual);
         }
         private void GetUserStatsCallback(GetUserStatisticsResult result)
         {
@@ -369,14 +342,10 @@ namespace PlayFab.UUnit
             WaitForApiCalls();
 
             UUnitAssert.Equals("Get Chars Successful", lastReceivedMessage);
-            UUnitAssert.NotNull(targetCharacter, "The test character did not exist");
         }
         private void GetCharsCallback(ListUsersCharactersResult result)
         {
             lastReceivedMessage = "Get Chars Successful";
-            foreach (var eachCharacter in result.Characters)
-                if (eachCharacter.CharacterName == CHAR_NAME)
-                    targetCharacter = eachCharacter;
         }
 
         /// <summary>
@@ -393,10 +362,10 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetLeaderboard(clientRequest, GetClientLbCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("Get Client Leaderboard Successful", lastReceivedMessage);
+            UUnitAssert.StringEquals("Get Client Leaderboard Successful", lastReceivedMessage);
             // Testing anything more would be testing actual functionality of the Leaderboard, which is outside the scope of this test.
         }
-        public void GetClientLbCallback(GetLeaderboardResult result)
+        private void GetClientLbCallback(GetLeaderboardResult result)
         {
             if (result.Leaderboard.Count > 0)
                 lastReceivedMessage = "Get Client Leaderboard Successful";
@@ -417,7 +386,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.GetAccountInfo(request, AcctInfoCallback, SharedErrorCallback);
             WaitForApiCalls();
 
-            UUnitAssert.Equals("Enums tested", lastReceivedMessage);
+            UUnitAssert.StringEquals("Enums tested", lastReceivedMessage);
         }
         private void AcctInfoCallback(GetAccountInfoResult result)
         {
@@ -442,7 +411,7 @@ namespace PlayFab.UUnit
             request.FunctionName = "helloWorld";
             PlayFabClientAPI.ExecuteCloudScript(request, CloudScriptHwCallback, SharedErrorCallback);
             WaitForApiCalls();
-            UUnitAssert.Equals("Hello " + playFabId + "!", lastReceivedMessage);
+            UUnitAssert.StringEquals("Hello " + playFabId + "!", lastReceivedMessage);
         }
         private void CloudScriptHwCallback(ExecuteCloudScriptResult result)
         {
