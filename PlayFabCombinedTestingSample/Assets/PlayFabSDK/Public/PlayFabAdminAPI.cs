@@ -74,6 +74,8 @@ namespace PlayFab
         public delegate void GetStoreItemsResponseCallback(string urlPath, int callId, GetStoreItemsRequest request, GetStoreItemsResult result, PlayFabError error, object customData);
         public delegate void GetTitleDataRequestCallback(string urlPath, int callId, GetTitleDataRequest request, object customData);
         public delegate void GetTitleDataResponseCallback(string urlPath, int callId, GetTitleDataRequest request, GetTitleDataResult result, PlayFabError error, object customData);
+        public delegate void GetTitleInternalDataRequestCallback(string urlPath, int callId, GetTitleDataRequest request, object customData);
+        public delegate void GetTitleInternalDataResponseCallback(string urlPath, int callId, GetTitleDataRequest request, GetTitleDataResult result, PlayFabError error, object customData);
         public delegate void ListVirtualCurrencyTypesRequestCallback(string urlPath, int callId, ListVirtualCurrencyTypesRequest request, object customData);
         public delegate void ListVirtualCurrencyTypesResponseCallback(string urlPath, int callId, ListVirtualCurrencyTypesRequest request, ListVirtualCurrencyTypesResult result, PlayFabError error, object customData);
         public delegate void SetCatalogItemsRequestCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, object customData);
@@ -82,6 +84,8 @@ namespace PlayFab
         public delegate void SetStoreItemsResponseCallback(string urlPath, int callId, UpdateStoreItemsRequest request, UpdateStoreItemsResult result, PlayFabError error, object customData);
         public delegate void SetTitleDataRequestCallback(string urlPath, int callId, SetTitleDataRequest request, object customData);
         public delegate void SetTitleDataResponseCallback(string urlPath, int callId, SetTitleDataRequest request, SetTitleDataResult result, PlayFabError error, object customData);
+        public delegate void SetTitleInternalDataRequestCallback(string urlPath, int callId, SetTitleDataRequest request, object customData);
+        public delegate void SetTitleInternalDataResponseCallback(string urlPath, int callId, SetTitleDataRequest request, SetTitleDataResult result, PlayFabError error, object customData);
         public delegate void SetupPushNotificationRequestCallback(string urlPath, int callId, SetupPushNotificationRequest request, object customData);
         public delegate void SetupPushNotificationResponseCallback(string urlPath, int callId, SetupPushNotificationRequest request, SetupPushNotificationResult result, PlayFabError error, object customData);
         public delegate void UpdateCatalogItemsRequestCallback(string urlPath, int callId, UpdateCatalogItemsRequest request, object customData);
@@ -588,7 +592,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the key-value store of custom title settings
+        /// Retrieves the key-value store of custom title settings which can be read by the client
         /// </summary>
         public static void GetTitleData(GetTitleDataRequest request, ProcessApiCallback<GetTitleDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
@@ -600,6 +604,21 @@ namespace PlayFab
                 ResultContainer<GetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/GetTitleData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Retrieves the key-value store of custom title settings which cannot be read by the client
+        /// </summary>
+        public static void GetTitleInternalData(GetTitleDataRequest request, ProcessApiCallback<GetTitleDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/GetTitleInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
@@ -648,7 +667,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Creates and updates the key-value store of custom title settings
+        /// Creates and updates the key-value store of custom title settings which can be read by the client
         /// </summary>
         public static void SetTitleData(SetTitleDataRequest request, ProcessApiCallback<SetTitleDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
@@ -660,6 +679,21 @@ namespace PlayFab
                 ResultContainer<SetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHTTP.Post("/Admin/SetTitleData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Updates the key-value store of custom title settings which cannot be read by the client
+        /// </summary>
+        public static void SetTitleInternalData(SetTitleDataRequest request, ProcessApiCallback<SetTitleDataResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            string serializedJson = SimpleJson.SerializeObject(request, Util.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<SetTitleDataResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHTTP.Post("/Admin/SetTitleInternalData", serializedJson, "X-SecretKey", PlayFabSettings.DeveloperSecretKey, callback, request, customData);
         }
 
         /// <summary>
