@@ -158,7 +158,7 @@ namespace PlayFab.UUnit
 
         /// <summary>
         /// CLIENT API
-        /// Try to deliberately register a character with an invalid email and password.
+        /// Try to deliberately register a user with an invalid email and password
         ///   Verify that errorDetails are populated correctly.
         /// </summary>
         [UUnitTest]
