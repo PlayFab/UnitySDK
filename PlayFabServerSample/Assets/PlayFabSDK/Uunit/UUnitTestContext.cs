@@ -11,154 +11,191 @@ using System.Collections.Generic;
 
 namespace PlayFab.UUnit
 {
-    public static class UUnitAssert
+    public enum UUnitActiveState
     {
-        public const float DEFAULT_FLOAT_PRECISION = 0.0001f;
-        public const double DEFAULT_DOUBLE_PRECISION = 0.000001;
+        PENDING, // Not started
+        ACTIVE, // Currently testing
+        READY, // An answer is sent by the http thread, but the main thread hasn't finalized the test yet
+        COMPLETE, // Test is finalized and recorded
+        ABORTED // todo
+    };
 
-        public static void Skip()
+    public class UUnitTestContext
+    {
+        public const float DefaultFloatPrecision = 0.0001f;
+        public const double DefaultDoublePrecision = 0.000001;
+
+        public UUnitActiveState ActiveState;
+        public UUnitFinishState FinishState;
+        public Action<UUnitTestContext> TestDelegate;
+        public UUnitTestCase TestInstance;
+        public DateTime StartTime;
+        public DateTime EndTime;
+        public string TestResultMsg;
+
+        public string Name { get { return TestDelegate.Method.Name; } }
+
+        public UUnitTestContext(UUnitTestCase testInstance, Action<UUnitTestContext> testDelegate)
         {
-            throw new UUnitSkipException();
+            TestInstance = testInstance;
+            TestDelegate = testDelegate;
+            ActiveState = UUnitActiveState.PENDING;
         }
 
-        public static void Fail(string message = null)
+        internal void EndTest(UUnitFinishState finishState, string resultMsg)
+        {
+            EndTime = DateTime.UtcNow;
+            TestResultMsg = resultMsg;
+            FinishState = finishState;
+            ActiveState = UUnitActiveState.READY;
+        }
+
+        public void Skip(string message = "")
+        {
+            EndTime = DateTime.UtcNow;
+            EndTest(UUnitFinishState.SKIPPED, message);
+            throw new UUnitSkipException(message);
+        }
+
+        public void Fail(string message = null)
         {
             if (string.IsNullOrEmpty(message))
                 message = "fail";
+            EndTest(UUnitFinishState.FAILED, message);
             throw new UUnitAssertException(message);
         }
 
-        public static void True(bool boolean, string message = null)
+        public void True(bool boolean, string message = null)
         {
             if (boolean)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: true, Actual: false";
-            throw new UUnitAssertException(true, false, message);
+            Fail(message);
         }
 
-        public static void False(bool boolean, string message = null)
+        public void False(bool boolean, string message = null)
         {
             if (!boolean)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: false, Actual: true";
-            throw new UUnitAssertException(true, false, message);
+            Fail(message);
         }
 
-        public static void NotNull(object something, string message = null)
+        public void NotNull(object something, string message = null)
         {
             if (something != null)
                 return; // Success
 
             if (string.IsNullOrEmpty(message))
                 message = "Null object";
-            throw new UUnitAssertException(message);
+            Fail(message);
         }
 
-        public static void IsNull(object something, string message = null)
+        public void IsNull(object something, string message = null)
         {
             if (something == null)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Not null object";
-            throw new UUnitAssertException(message);
+            Fail(message);
         }
 
-        public static void StringEquals(string wanted, string got, string message = null)
+        public void StringEquals(string wanted, string got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void SbyteEquals(sbyte? wanted, sbyte? got, string message = null)
+        public void SbyteEquals(sbyte? wanted, sbyte? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void ByteEquals(byte? wanted, byte? got, string message = null)
+        public void ByteEquals(byte? wanted, byte? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void ShortEquals(short? wanted, short? got, string message = null)
+        public void ShortEquals(short? wanted, short? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void UshortEquals(ushort? wanted, ushort? got, string message = null)
+        public void UshortEquals(ushort? wanted, ushort? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void IntEquals(int? wanted, int? got, string message = null)
+        public void IntEquals(int? wanted, int? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void UintEquals(uint? wanted, uint? got, string message = null)
+        public void UintEquals(uint? wanted, uint? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void LongEquals(long? wanted, long? got, string message = null)
+        public void LongEquals(long? wanted, long? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void ULongEquals(ulong? wanted, ulong? got, string message = null)
+        public void ULongEquals(ulong? wanted, ulong? got, string message = null)
         {
             if (wanted == got)
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void FloatEquals(float? wanted, float? got, float precision = DEFAULT_FLOAT_PRECISION, string message = null)
+        public void FloatEquals(float? wanted, float? got, float precision = DefaultFloatPrecision, string message = null)
         {
             if (wanted == null && got == null)
                 return;
@@ -167,10 +204,10 @@ namespace PlayFab.UUnit
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void DoubleEquals(double? wanted, double? got, double precision = DEFAULT_DOUBLE_PRECISION, string message = null)
+        public void DoubleEquals(double? wanted, double? got, double precision = DefaultDoublePrecision, string message = null)
         {
             if (wanted == null && got == null)
                 return;
@@ -179,20 +216,20 @@ namespace PlayFab.UUnit
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void ObjEquals(object wanted, object got, string message = null)
+        public void ObjEquals(object wanted, object got, string message = null)
         {
             if (wanted.Equals(got))
                 return;
 
             if (string.IsNullOrEmpty(message))
                 message = "Expected: " + wanted + ", Actual: " + got;
-            throw new UUnitAssertException(wanted, got, message);
+            Fail(message);
         }
 
-        public static void SequenceEquals<T>(IEnumerable<T> wanted, IEnumerable<T> got, string message = null)
+        public void SequenceEquals<T>(IEnumerable<T> wanted, IEnumerable<T> got, string message = null)
         {
             var wEnum = wanted.GetEnumerator();
             var gEnum = got.GetEnumerator();
@@ -204,7 +241,7 @@ namespace PlayFab.UUnit
                 wNext = wEnum.MoveNext();
                 gNext = gEnum.MoveNext();
                 if (wNext != gNext)
-                    throw new UUnitAssertException(wanted, got, "Length mismatch: " + message);
+                    Fail(message);
                 if (!wNext)
                     break;
                 count++;

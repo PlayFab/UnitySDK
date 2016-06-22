@@ -53,4 +53,12 @@ public class PlayFabPackager : MonoBehaviour {
         MkDir(WP8_PATH);
         BuildPipeline.BuildPlayer(TEST_SCENES, WP8_PATH, BuildTarget.WP8Player, BuildOptions.None);
     }
+
+    [MenuItem("PlayFab/Testing/Win32TestBuild")]
+    public static void MakeWin32TestingBuild()
+    {
+        string WIN32_PATH = System.IO.Path.Combine(BUILD_PATH, "Win32test.exe");
+        MkDir(BUILD_PATH);
+        BuildPipeline.BuildPlayer(TEST_SCENES, WIN32_PATH, BuildTarget.StandaloneWindows, BuildOptions.None);
+    }
 }
