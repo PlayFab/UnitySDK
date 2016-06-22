@@ -3,16 +3,17 @@
  */
 package com.playfab.unityplugin;
 
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.app.Service;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import com.playfab.unityplugin.GCM.PlayFabRegistrationIntentService;
 import com.playfab.unityplugin.GCM.PlayServicesUtils;
 import com.unity3d.player.UnityPlayer;
