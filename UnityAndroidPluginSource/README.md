@@ -1,6 +1,8 @@
 #PlayFab Push Notification Plugin
 ##For Android build targets
 
+  * The 5.0+ version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity5_0/AndroidPushPlugin.unitypackage)
+  * The 4.7 version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity4_7/AndroidPushPlugin.unitypackage)
 
 1. Overview:
 ----
