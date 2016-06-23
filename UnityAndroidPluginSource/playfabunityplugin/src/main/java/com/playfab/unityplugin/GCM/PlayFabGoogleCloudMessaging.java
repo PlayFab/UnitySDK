@@ -1,7 +1,6 @@
 package com.playfab.unityplugin.GCM;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmPubSub;

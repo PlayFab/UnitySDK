@@ -1,7 +1,5 @@
 package com.playfab.unityplugin;
 
-import java.io.IOException;
-import java.util.concurrent.LinkedBlockingQueue;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +10,9 @@ import android.os.IInterface;
 import android.os.Looper;
 import android.os.Parcel;
 import android.os.RemoteException;
+
+import java.io.IOException;
+import java.util.concurrent.LinkedBlockingQueue;
 
 // This example built from:
 // http://stackoverflow.com/questions/20097506/using-the-new-android-advertiser-id-inside-an-sdk
