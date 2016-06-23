@@ -21,7 +21,7 @@ This document assumes familiarity with PlayFab, Unity3D, Java, Gradle & using An
   * SetupPushNotification will reset your subscribed devices. After calling SetupPushNotification each device will need to re-subscribe. 
 
 ####Unity Project Setup:
-By default the Android Push plugin is not installed by default. It is included with the UnitySDK as an [AssetPackage](https://github.com/PlayFab/UnitySDK/blob/master/PlayFabClientSample/Assets/Plugins/Android/AndroidPushPlugin.unitypackage) and must be manually unpacked after installing the UnitySDK. 
+By default the Android Push plugin is not installed by default. It is included with the UnitySDK as an AssetPackage and must be manually unpacked after installing the UnitySDK. 
 
 Once unpacked you will need to initialize the plugin prior to use. These details are covered in the guides below.
 
