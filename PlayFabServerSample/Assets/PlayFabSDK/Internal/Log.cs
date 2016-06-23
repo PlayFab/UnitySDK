@@ -8,7 +8,7 @@ namespace PlayFab.Internal
         {
             if ((PlayFabSettings.LogLevel & PlayFabLogLevel.Debug) != 0)
             {
-                UnityEngine.Debug.Log(Util.timeStamp + " DEBUG: " + Util.Format(text, args));
+                UnityEngine.Debug.Log(PlayFabUtil.timeStamp + " DEBUG: " + PlayFabUtil.Format(text, args));
             }
         }
 
@@ -16,7 +16,7 @@ namespace PlayFab.Internal
         {
             if ((PlayFabSettings.LogLevel & PlayFabLogLevel.Info) != 0)
             {
-                UnityEngine.Debug.Log(Util.timeStamp + " INFO: " + Util.Format(text, args));
+                UnityEngine.Debug.Log(PlayFabUtil.timeStamp + " INFO: " + PlayFabUtil.Format(text, args));
             }
         }
 
@@ -24,7 +24,7 @@ namespace PlayFab.Internal
         {
             if ((PlayFabSettings.LogLevel & PlayFabLogLevel.Warning) != 0)
             {
-                UnityEngine.Debug.LogWarning(Util.timeStamp + " WARNING: " + Util.Format(text, args));
+                UnityEngine.Debug.LogWarning(PlayFabUtil.timeStamp + " WARNING: " + PlayFabUtil.Format(text, args));
             }
         }
 
@@ -32,7 +32,7 @@ namespace PlayFab.Internal
         {
             if ((PlayFabSettings.LogLevel & PlayFabLogLevel.Error) != 0)
             {
-                UnityEngine.Debug.LogError(Util.timeStamp + " ERROR: " + Util.Format(text, args));
+                UnityEngine.Debug.LogError(PlayFabUtil.timeStamp + " ERROR: " + PlayFabUtil.Format(text, args));
             }
         }
     }

@@ -6,6 +6,8 @@ namespace PlayFab.Internal
 {
     public class PlayFabResultCommon
     {
+        public delegate void ProcessApiCallback<in TResult>(TResult result) where TResult : PlayFabResultCommon;
+
         public object Request;
         public object CustomData;
     }
@@ -39,15 +41,15 @@ namespace PlayFab.Internal
             {
                 try
                 {
-                    ResultContainer<TResultType> resultEnvelope = SimpleJson.DeserializeObject<ResultContainer<TResultType>>(callRequest.ResultStr, Util.ApiSerializerStrategy);
+                    ResultContainer<TResultType> resultEnvelope = SimpleJson.DeserializeObject<ResultContainer<TResultType>>(callRequest.ResultStr, PlayFabUtil.ApiSerializerStrategy);
                     if (!resultEnvelope.errorCode.HasValue || resultEnvelope.errorCode.Value == (int)PlayFabErrorCode.Success)
                     {
                         resultEnvelope.data.Request = callRequest.Request;
                         resultEnvelope.data.CustomData = callRequest.CustomData;
                         if (resultAction != null)
                             resultAction(resultEnvelope.data, callRequest);
+                        PlayFabSettings.InvokeResponse(callRequest.UrlPath, callRequest.CallId, callRequest.Request, resultEnvelope.data, callRequest.Error, callRequest.CustomData); // Do the globalMessage callback
                         WrapCallback(resultCallback, resultEnvelope.data);
-                        PlayFabSettings.InvokeResponse(callRequest.Url, callRequest.CallId, callRequest.Request, resultEnvelope.data, callRequest.Error, callRequest.CustomData); // Do the globalMessage callback
                         return resultEnvelope.data; // This is the expected output path for successful api call
                     }
 
@@ -58,7 +60,8 @@ namespace PlayFab.Internal
                         HttpStatus = resultEnvelope.status,
                         Error = (PlayFabErrorCode)resultEnvelope.errorCode.Value,
                         ErrorMessage = resultEnvelope.errorMessage,
-                        ErrorDetails = resultEnvelope.errorDetails
+                        ErrorDetails = resultEnvelope.errorDetails,
+                        CustomData = callRequest.CustomData
                     };
                 }
                 catch (Exception e)
@@ -70,13 +73,14 @@ namespace PlayFab.Internal
                         HttpStatus = "Client failed to parse response from server",
                         Error = PlayFabErrorCode.Unknown,
                         ErrorMessage = e.ToString(),
-                        ErrorDetails = null
+                        ErrorDetails = null,
+                        CustomData = callRequest.CustomData
                     };
                 }
             }
 
-            WrapCallback(errorCallback, callRequest.Error);
             WrapCallback(PlayFabSettings.GlobalErrorHandler, callRequest.Error);
+            WrapCallback(errorCallback, callRequest.Error);
             return null;
         }
         private static readonly object[] _invokeParams = new object[1];

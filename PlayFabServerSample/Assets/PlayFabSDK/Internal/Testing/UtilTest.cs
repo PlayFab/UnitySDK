@@ -30,34 +30,35 @@ namespace PlayFab.Internal
             "2015-08-25 10:22.01.71",
             "2015-08-25 10:22.01",
 
-            Util.timeStamp,
-            Util.utcTimeStamp,
+            PlayFabUtil.timeStamp,
+            PlayFabUtil.utcTimeStamp,
             // The standard DateTime.ToString() uses slashes instead of dashes, and is currently unsupported
         };
 
         [UUnitTest]
-        void TimeStampHandlesAllFormats()
+        void TimeStampHandlesAllFormats(UUnitTestContext testContext)
         {
             DateTime actualTime;
-            var formats = Util._defaultDateTimeFormats;
+            var formats = PlayFabUtil._defaultDateTimeFormats;
 
             for (int i = 0; i < _examples.Length; i++)
             {
                 string expectedFormat = i < formats.Length ? formats[i] : "default";
-                UUnitAssert.True(DateTime.TryParseExact(_examples[i], formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i] + " with " + expectedFormat);
+                testContext.True(DateTime.TryParseExact(_examples[i], formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i] + " with " + expectedFormat);
             }
 
             DateTime expectedTime = DateTime.Now;
             for (int i = 0; i < formats.Length; i++)
             {
                 string timeString = expectedTime.ToString(formats[i], CultureInfo.CurrentCulture);
-                UUnitAssert.True(DateTime.TryParseExact(timeString, formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + formats.Length + ", " + formats[i] + " with " + timeString);
-                UUnitAssert.True((actualTime - expectedTime).TotalSeconds < 1, "Expected: " + expectedTime + " vs actual:" + actualTime);
+                testContext.True(DateTime.TryParseExact(timeString, formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + formats.Length + ", " + formats[i] + " with " + timeString);
+                testContext.True((actualTime - expectedTime).TotalSeconds < 1, "Expected: " + expectedTime + " vs actual:" + actualTime);
             }
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
         [UUnitTest]
-        void JsonTimeStampHandlesAllFormats()
+        void JsonTimeStampHandlesAllFormats(UUnitTestContext testContext)
         {
             string expectedJson, actualJson;
             DateTime expectedTime;
@@ -66,23 +67,24 @@ namespace PlayFab.Internal
             for (int i = 0; i < _examples.Length; i++)
             {
                 // Define the time deserialization expectation
-                UUnitAssert.True(DateTime.TryParseExact(_examples[i], Util._defaultDateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out expectedTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i]);
+                testContext.True(DateTime.TryParseExact(_examples[i], PlayFabUtil._defaultDateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out expectedTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i]);
 
                 // De-serialize the time using json
                 expectedJson = "{\"timestamp\":\"" + _examples[i] + "\"}"; // We are provided a json string with every random time format
-                actualObj = SimpleJson.DeserializeObject<ObjWithTimes>(expectedJson, Util.ApiSerializerStrategy);
-                actualJson = SimpleJson.SerializeObject(actualObj, Util.ApiSerializerStrategy);
+                actualObj = SimpleJson.DeserializeObject<ObjWithTimes>(expectedJson, PlayFabUtil.ApiSerializerStrategy);
+                actualJson = SimpleJson.SerializeObject(actualObj, PlayFabUtil.ApiSerializerStrategy);
 
-                if (i == Util.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
-                    UUnitAssert.StringEquals(expectedJson, actualJson);
+                if (i == PlayFabUtil.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
+                    testContext.StringEquals(expectedJson, actualJson);
 
                 // Verify that the times match
                 double diff = (expectedTime - actualObj.timestamp).TotalSeconds; // We expect that we have parsed the time correctly according to expectations
-                UUnitAssert.True(diff < 1,
-                    "\nActual time: " + actualObj.timestamp + " vs expected time: " + expectedTime + ", diff: " + diff +
-                    "\nActual json: " + actualJson + " vs expected json: " + expectedJson
+                testContext.True(diff < 1,
+                    "\nActual time: " + actualObj.timestamp + " vs Expected time: " + expectedTime + ", diff: " + diff +
+                    "\nActual json: " + actualJson + " vs Expected json: " + expectedJson
                 );
             }
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
         private enum testRegion
@@ -131,7 +133,7 @@ namespace PlayFab.Internal
         /// Test that enum lists json-serialize and de-serialize correctly
         /// </summary>
         [UUnitTest]
-        void EnumConversionTest_Serialize()
+        public void EnumConversionTest_Serialize(UUnitTestContext testContext)
         {
             string expectedJson, actualJson;
             EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj;
@@ -142,18 +144,19 @@ namespace PlayFab.Internal
 
             expectedJson = "{\"enumList\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumArray\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumValue\":\"Australia\",\"optEnumValue\":null}";
 
-            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(expectedJson, Util.ApiSerializerStrategy);
-            actualJson = SimpleJson.SerializeObject(actualObj, Util.ApiSerializerStrategy);
+            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(expectedJson, PlayFabUtil.ApiSerializerStrategy);
+            actualJson = SimpleJson.SerializeObject(actualObj, PlayFabUtil.ApiSerializerStrategy);
 
-            UUnitAssert.StringEquals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
-            UUnitAssert.ObjEquals(expectedObj, actualObj);
+            testContext.StringEquals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
+            testContext.ObjEquals(expectedObj, actualObj);
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
         /// <summary>
         /// Test that enum lists json-serialize and de-serialize correctly
         /// </summary>
         [UUnitTest]
-        void EnumConversionTest_Deserialize()
+        public void EnumConversionTest_Deserialize(UUnitTestContext testContext)
         {
             EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj;
             expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
@@ -162,12 +165,13 @@ namespace PlayFab.Internal
             expectedObj.optEnumValue = null;
 
             string inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
-            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(inputJson, Util.ApiSerializerStrategy);
-            UUnitAssert.ObjEquals(expectedObj, actualObj);
+            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(inputJson, PlayFabUtil.ApiSerializerStrategy);
+            testContext.ObjEquals(expectedObj, actualObj);
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
         [UUnitTest]
-        void EnumConversionTest_OptionalEnum()
+        public void EnumConversionTest_OptionalEnum(UUnitTestContext testContext)
         {
             EnumConversionTestClass expectedObj = new EnumConversionTestClass();
             expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
@@ -175,14 +179,15 @@ namespace PlayFab.Internal
             expectedObj.enumValue = testRegion.Australia;
             expectedObj.optEnumValue = null;
 
-            var actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy);
-            var actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, Util.ApiSerializerStrategy);
-            UUnitAssert.ObjEquals(expectedObj, actualObj);
+            var actualJson = SimpleJson.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy);
+            var actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+            testContext.ObjEquals(expectedObj, actualObj);
 
             expectedObj.optEnumValue = testRegion.Brazil;
-            actualJson = SimpleJson.SerializeObject(expectedObj, Util.ApiSerializerStrategy);
-            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, Util.ApiSerializerStrategy);
-            UUnitAssert.ObjEquals(expectedObj, actualObj);
+            actualJson = SimpleJson.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy);
+            actualObj = SimpleJson.DeserializeObject<EnumConversionTestClass>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+            testContext.ObjEquals(expectedObj, actualObj);
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
     }
 }

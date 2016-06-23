@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace PlayFab.UUnit
 {
-    public class StaticTestRunner
+    public static class StaticTestRunner
     {
+        private static UUnitIncrementalTestRunner[] testers = null;
+
         private static void ClearDebugLog()
         {
             Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
@@ -15,42 +17,19 @@ namespace PlayFab.UUnit
             method.Invoke(new object(), null);
         }
 
-        [MenuItem("PlayFab/UUnit/Run Tests Immediately%#t")]
+        [MenuItem("PlayFab/UUnit/Play and Run Tests%#t")]
         public static void TestImmediately()
         {
             ClearDebugLog();
-            UUnitTestSuite suite = new UUnitTestSuite();
-            suite.FindAndAddAllTestCases(typeof(UUnitTestCase));
-            suite.RunAllTests();
-            UUnitTestResult result = suite.GetResults();
 
-            if (!result.AllTestsPassed())
+            testers = UnityEngine.Object.FindObjectsOfType<UUnitIncrementalTestRunner>();
+            if (testers.Length == 0)
             {
-                Debug.LogWarning(result.Summary());
-                throw new Exception("Not all tests passed.");
+                testers = new[] { new GameObject("UUnitRunner", typeof(UUnitIncrementalTestRunner)).GetComponent<UUnitIncrementalTestRunner>() };
+                testers[0].autoQuit = true;
             }
-            else
-            {
-                Debug.Log(result.Summary());
-            }
-        }
 
-        /*[MenuItem("UUnit/Run Tests Incrementally")] Not quite ready for prime-time*/
-        public static void TestIncrementally()
-        {
-            var runnerGOs = GameObject.FindObjectsOfType<UnityIncrementalTestRunner>();
-            if (!Application.isPlaying)
-                for (int i = 1; i < runnerGOs.Length; i++)
-                    GameObject.DestroyImmediate(runnerGOs[i]); // You should only have 1 unit-test runner
-
-            EditorApplication.isPlaying = true; // Start the player
-
-            if (runnerGOs.Length == 0)
-            {
-                // If there is no unit-test runner active, create one
-                GameObject newRunner = new GameObject();
-                newRunner.AddComponent<UnityIncrementalTestRunner>();
-            }
+            EditorApplication.isPlaying = true;
         }
     }
 }
