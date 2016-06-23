@@ -94,6 +94,8 @@ You are now ready to begin making API calls using the PlayFabClientAPI class. Ch
 #####New Users:
 * Check out our Tutorials, Samples and more [here](https://playfab.com/docs/overview/)
 
+#####Using the Push Plugin for Android
+  * See [this section](https://github.com/PlayFab/UnitySDK/tree/master/UnityAndroidPluginSource) of the repository for complete details.
 
 7. Troubleshooting:
 ----

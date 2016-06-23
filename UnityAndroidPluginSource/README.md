@@ -1,75 +1,44 @@
-UnitySDK README
-========
-Welcome to the PlayFab Unity Android Plugin
+#PlayFab Push Notification Plugin
+##For Android build targets
+
+  * The 5.0+ version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity5_0/AndroidPushPlugin.unitypackage)
+  * The 4.7 version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity4_7/AndroidPushPlugin.unitypackage)
 
 1. Overview:
 ----
-This document describes the process of configuring and building the PlayFab Unity plugin using Android Studio. The document also contains instructions for developers to start using the plugin in their Unity games.
+This section of the repository contains the source code and documentation for building our Android push notification plugin using Android Studio. 
+
+The document also contains instructions for developers to start using the plugin in their Unity games.
 
 2. Prerequisites:
 ----
-This document assumes familiarity with the Unity game engine, Java, Gradle & Using Android Studio.  However, there is not much you'll have to do with Gradle since we've done all the work for you.  
+This document assumes familiarity with PlayFab, Unity3D, Java, Gradle & using Android Studio.  However, there is not much you'll have to do with Gradle since we've done all the work for you.  
 
-* Devices cannot receive push notification until you have done the proper setup.
-	* Login to GameManager and then go to GameManager --> Settings --> Secret Keys
-	* Enter your Google App Package Id  (example:  com.playfab.unicornbattle)
-	* Enter your Google App License Key - this is in your https://play.google.com/apps/publish  Service & API's section.
-	* You will also need to enable push notifications in you Google Play account for your application and acquire your **SenderId** (aka ProjectId, aka ProjectNumber).  Follow the instructions for this here: https://developers.google.com/cloud-messaging/
-	* You will also need your API key from https://console.developers.google.com/project
-		* Select or create your project
-		* Expand APIs & auth --> Credentials
-		* Add a new API Key.
-	* We also require you to use a PlayFab Admin API call to initailly setup your title.  In the future you won't have to do this, but for now you need to make a call to admin/SetupPushNotification
-		* https://api.playfab.com/Documentation/Admin/method/SetupPushNotification
+* Devices will not receive push notification until properly configured.
 
-###Setup Push notification via Admin API
+####PlayFab Title Setup:
+  * Login to game manager and navigate to your title > Settings > Push Notifications.
+  * Follow the instructions for linking your title to the GCM channel
+  * Optionally, this can also be achieved via [SetupPushNotification](https://api.playfab.com/Documentation/Admin/method/SetupPushNotification) in our Admin API.
+  * SetupPushNotification will reset your subscribed devices. After calling SetupPushNotification each device will need to re-subscribe. 
 
-I like using postman for this.  You can get postman (which is a chrome plugin) at http://www.getpostman.com
+####Unity Project Setup:
+By default the Android Push plugin is not installed by default. It is included with the UnitySDK as an AssetPackage and must be manually unpacked after installing the UnitySDK. 
 
-*	headers - 
-	*	Content-Type =  application/json
-	*	X-SecretKey =  [ GameManager --> Settings --Credentials --> PlayFab API Secret Key ]
-*	body - This holds the key/value attributes sent to PlayFab Server. 
-
-```JSON
-
-{
-    "Name":"Unicorn_Battle_GCM",
-    "Platform":"GCM",
-    "Credential":"[Insert your Google API Key here]"
-}
-
-```
-
-3. Compiling, Jar files & Key Source code 
----
-*	**PlayFabUnityAndroidPlugin.java**
-	*	This is primarily used for initialization of the plugin.
-*	**GCM.PlayFabRegistrationIntentService.java**
-	*	This class is used to gain access to the service that allows you to acquire the GCM Token.
-*	**GCM.PlayFabGcmListenerService.java**
-	*	This class receives messages and sends them either to Unity or to the notification bar.
-*	**PlayFabGoogleCloudMessaging.java**
-	*	Allows you to call .getToken() to receive the GCM token and send it back to Unity.
-*	**PlayFabPushCache.java**	
-	*	Allows you to get the Cached push notification after it has been sent / received.
-*	**PlayFabNotificationPackage.java**
-	*	Data model for holding push notification data
+Once unpacked you will need to initialize the plugin prior to use. These details are covered in the guides below.
 
 
-###Compiling in Android Studio
- 
-*	Open the project in Android Studio
-*	On the far right of the editor there is a Gradle tab.  Click that and then click the "refresh all gradle projects" button.
-*	In the gradle projects window you should see two entries.  UnityAndroidPluginSouce & :playfabunityplugin. Expand :playfabunityplugin --> Tasks --> other
-*	Look for exportJar function
-*	Double clicking exportJar will compile the plugin and export the UnityAndroidPlugin.jar file into the /releases folder in the root of your project.  This file needs to be copied into your unity /assets/plugins/Android/  folder.
 
-4. Plugin usage in Unity:
+
+####For Additional Push-related information, see our guides:
+  * [Push Notification Basics](https://api.playfab.com/docs/push-basics)
+  * [Push Notifications for Android](https://api.playfab.com/docs/push-for-android)
+
+3. Plugin Component Overview:
 ----
 The source code is fairly simple and this version of the PlayFab Unity Android Plugin makes use of the new token based **GCM** (Google Cloud Messaging) service.  
 
-* **PlayFabUnityAndroidPlugin** -  We have created this class as a Service rather than an activity. It's purpose is to allow you to initialize the Plugin from within Unity.  You can accomplish this by making a call to the Android plugin as shown below from within unity.
+* **PlayFabUnityAndroidPlugin** -  We have created this class as a Service rather than an activity. Its purpose is to allow you to initialize the Plugin from within Unity.  You can accomplish this by making a call to the Android plugin as shown below from within unity.
 
 ```C#
 
@@ -131,83 +100,64 @@ Once a token has been acquired, then the registration callback will be triggered
 
 ```
 
-Now that you have acquired a token, you can use it after  you've loggeded in like below.
-
-```C#
-
-    AndroidJavaClass up = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-    AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject>("currentActivity");
-    AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject>("getContentResolver");
-    AndroidJavaClass secure = new AndroidJavaClass("android.provider.Settings$Secure");
-    var deviceId = secure.CallStatic<string>("getString", contentResolver, "android_id");
-    PlayFabClientAPI.LoginWithAndroidDeviceID(new PlayFab.ClientModels.LoginWithAndroidDeviceIDRequest()
-    {
-        AndroidDeviceId = deviceId,
-        AndroidDevice = SystemInfo.deviceModel,
-        OS = SystemInfo.operatingSystem,
-        TitleId = PlayFabSettings.TitleId,
-        CreateAccount=true
-    }, (result) =>
-    {
-        
-		PlayFabClientAPI.AndroidDevicePushNotificationRegistration(new AndroidDevicePushNotificationRegistrationRequest()
-		{
-		    DeviceToken = _PushToken
-		}, null,
-		(pushError) =>
-		{
-		    if (ShowDebug)
-		    {
-		        Debug.Log(pushError.ErrorMessage);
-		    }
-		});		
-
-    }, HandleLoginError);
-
-```
-
-5. Advanced: CustomData via Push Notifications
-----
-
-Playfab supports custom notifications,  allowing you ultimate flexability on the type of messaging you want to send from the server to your game client.  
-
-To make use of CustomData, you'll need to send JSON data from the PlayFab Server through the GCM to the game client.  However, it is really not that complicated to accomplish.
-
-First off you'll need to prepare some JSON that you will send via the SendNotification API. 
-
-Example:
- 
-```JSON
-
-	{
-	    "Title": "Message from Game",
-	    "Icon": "app_icon",
-	    "Message": "You've gained gold!",
-	    "CustomData":{
-	        "gold":"5",
-	        "currency":"G"
-	    }
-	}
-
-```
-
-There is a new **PlayFabNotifiationPackage** object which holds the following fields:
-
-*	Title -  String
-	*	Assigns a title to the Push if passed
-*	Sound - Uri
-	*	Assigns a custom sound to the Push if passed
-*	Icon - String
-	*   Assigns a custom Icon from "Drawable" if passed
-*	Message - String
-	*	Assigns a message to be displayed (required), if the message is not JSON then the all other attributes are not existing and reverts to defaults and the message is a straight passthrough
-*	CustomData - String
-	*	Holds a custom JSON data structure that can be accessed via  PlayFabPushCache static getPushCacheData() method.
-
 **See the diagram for Push Notification flow below**
 
 ![](http://i.imgur.com/zp6vHiu.png)
 
-When an event is received either to the device or from within Unity,  you can make a call to "getPushCacheData()" method to retrieve the CustomData that was sent via the Push Notification. 
+4. Source Code Overview and Build Instructions
+----
 
-**Please note:** that you will need to deserialize the CustomData and what your getting is Raw JSON.
+Source File | Description
+--- |  ---
+PlayFabUnityAndroidPlugin.java | This is primarily used for initialization of the plugin.
+GCM.PlayFabRegistrationIntentService.java | This class is used to gain access to the service that allows you to acquire the GCM Token.
+GCM.PlayFabGcmListenerService.java | This class receives messages and sends them either to Unity or to the notification bar.
+PlayFabGoogleCloudMessaging.java | Allows you to call .getToken() to receive the GCM token and send it back to Unity.
+PlayFabPushCache.java | Allows you to get the Cached push notification after it has been sent / received.
+PlayFabNotificationPackage.java | Data model for holding push notification data
+
+###Compiling in Android Studio
+*	Open the project in Android Studio
+*	On the far right of the editor there is a Gradle tab.  Click that and then click the "refresh all gradle projects" button.
+*	In the gradle projects window you should see two entries.  *UnityAndroidPluginSouce* & *:playfabunityplugin*. 
+* Expand *:playfabunityplugin --> Tasks --> other* and find the **exportJar** function.
+*	Double-click exportJar. This will compile the plugin and export the UnityAndroidPlugin.jar & the Android.manifest files into the /releases folder in the root of your project.  These files need to be copied into your unity /assets/plugins/Android/  folder.
+
+
+5. Resolving .JAR & .AAR Conflicts
+----
+If your project is using multiple Android plugins, there is a good chance that you could have multiple copies of a given Android library. Having multiple copies of .JARs and .AARs will cause your builds to fail during the DEX compilation. 
+
+Review our Android SDK dependencies below. Some version of these files must be included before for push to work. We have not tested all permutations of libraries within the Android SDK. Please let us know if you run into any compatibility issues.
+
+####Android SDK dependencies (Unity 5.0+)
+The 5.0+ version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity5_0/AndroidPushPlugin.unitypackage).
+
+Included Archive | Class Location
+--- |  ---
+appcompat-v7-24.0.0.aar | com.android.support.appcompat-v7 
+support-v4-23.4.0.aar | com.android.support.support-v4
+play-services-base-9.0.2.aar | com.google.android.gms.play-services-base
+play-services-basement-9.0.2.aar | com.google.android.gms.play-services-basement 
+play-services-gcm-9.0.2.aar | com.google.android.gms.play-services.gcm
+play-services-iid-9.0.2.aar | com.google.android.gms.play-services.iid
+
+
+####Android SDK dependencies (Unity 4.7)
+Projects built using Unity versions < 5.0 do not support android .AAR files. Due to this fact, our plugin has the following .JAR dependencies. The 4.7 version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity4_7/AndroidPushPlugin.unitypackage).
+
+Included Archive | Class Location
+--- |  ---
+play-services-7.8.0.jar | com.google.android.gms.play-services
+support-v4.jar | com.android.support.support-v4
+support-v7-appcompat-7.22.0.jar | com.android.support.appcompat-v7 
+
+
+####To resolve conflicts follow these steps:
+Find duplicate copies of .AAR / .JAR files and remove them. There should be at most 1 copy of a given android library. Older .JAR files often map to multiple .AAR files. 
+
+Double-check your plug-in support resources to determine what dependencies your plug-ins are using and if they conflict with any of the above libraries, you should be able to remove either copy to resolve your DEX issues. 
+
+After modifying any .JAR / .AAR files, thoroughly test your plug-in capabilities to ensure that no other issues were introduced. This can be an involved process requiring careful deliberation to identify and resolve conflicts.
+
+Please let us know if you run into any issues and we will do our best to help.

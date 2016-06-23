@@ -67,7 +67,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".GCM.PlayFabGcmListenerService" android:exported="false">
+        <service android:name="com.playfab.unityplugin.GCM.PlayFabGcmListenerService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -75,14 +75,14 @@
         </service>
 
         <service
-            android:name=".GCM.PlayFabInstanceIDListenerService"
+            android:name="com.playfab.unityplugin.GCM.PlayFabInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
         <service
-            android:name=".GCM.PlayFabRegistrationIntentService"
+            android:name="com.playfab.unityplugin.GCM.PlayFabRegistrationIntentService"
             android:exported="false">
         </service>
         <service
