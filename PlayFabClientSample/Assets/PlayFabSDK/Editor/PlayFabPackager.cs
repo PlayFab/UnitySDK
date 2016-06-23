@@ -27,6 +27,7 @@ public class PlayFabPackager : MonoBehaviour {
     [MenuItem("PlayFab/Testing/AndroidTestBuild")]
     public static void MakeAndroidBuild()
     {
+        PlayerSettings.bundleIdentifier = "com.PlayFab.PlayFabTest";
         string ANDROID_PACKAGE = System.IO.Path.Combine(BUILD_PATH, "PlayFabAndroid.apk");
         MkDir(BUILD_PATH);
         BuildPipeline.BuildPlayer(TEST_SCENES, ANDROID_PACKAGE, BuildTarget.Android, BuildOptions.None);
