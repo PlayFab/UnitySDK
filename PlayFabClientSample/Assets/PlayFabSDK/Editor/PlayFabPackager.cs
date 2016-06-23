@@ -8,7 +8,7 @@ public class PlayFabPackager : MonoBehaviour {
 		"Assets/Plugins"
 	};
     private static readonly string[] TEST_SCENES = {
-        "Assets/PlayFabSDK/DemoScene/DemoScene.unity"
+        "Assets/PlayFabSDK/Internal/PlayFabTestScene.unity"
     };
     private const string BUILD_PATH = "C:/depot/sdks/UnitySDK/testBuilds/";
 
