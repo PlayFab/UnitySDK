@@ -1,4 +1,4 @@
-﻿namespace  PlayFab
+namespace PlayFab.Json
 {
     public interface ISerializer
     {
@@ -9,7 +9,7 @@
         string SerializeObject(object json, object jsonSerializerStrategy);
     }
 
-    public class SimpleJson
+    public class JsonWrapper
     {
         private static ISerializer _instance = new SimpleJsonInstance();
 
@@ -47,24 +47,22 @@
     {
         public T DeserializeObject<T>(string json)
         {
-            return PlayFab.Json.SimpleJson.DeserializeObject<T>(json);
+            return PlayFab.Json.PlayFabSimpleJson.DeserializeObject<T>(json);
         }
 
         public T DeserializeObject<T>(string json, object jsonSerializerStrategy)
         {
-            return PlayFab.Json.SimpleJson.DeserializeObject<T>(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
+            return PlayFab.Json.PlayFabSimpleJson.DeserializeObject<T>(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
         }
 
         public string SerializeObject(object json)
         {
-            return PlayFab.Json.SimpleJson.SerializeObject(json);
+            return PlayFab.Json.PlayFabSimpleJson.SerializeObject(json);
         }
 
         public string SerializeObject(object json, object jsonSerializerStrategy)
         {
-            return PlayFab.Json.SimpleJson.SerializeObject(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
+            return PlayFab.Json.PlayFabSimpleJson.SerializeObject(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
         }
     }
-
-
 }
