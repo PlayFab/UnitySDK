@@ -11,11 +11,12 @@ namespace PlayFab.UUnit
         public string summary;
         public UUnitTestSuite suite;
         public Text textDisplay = null;
+        public string filter;
 
         public void Start()
         {
             suite = new UUnitTestSuite();
-            suite.FindAndAddAllTestCases(typeof(UUnitTestCase));
+            suite.FindAndAddAllTestCases(typeof(UUnitTestCase), filter);
 
             if (textDisplay == null)
             {

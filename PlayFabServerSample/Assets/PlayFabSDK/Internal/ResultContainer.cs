@@ -1,3 +1,4 @@
+using PlayFab.Json;
 using System.Collections.Generic;
 using System;
 using System.Net;
@@ -41,7 +42,7 @@ namespace PlayFab.Internal
             {
                 try
                 {
-                    ResultContainer<TResultType> resultEnvelope = SimpleJson.DeserializeObject<ResultContainer<TResultType>>(callRequest.ResultStr, PlayFabUtil.ApiSerializerStrategy);
+                    ResultContainer<TResultType> resultEnvelope = JsonWrapper.DeserializeObject<ResultContainer<TResultType>>(callRequest.ResultStr, PlayFabUtil.ApiSerializerStrategy);
                     if (!resultEnvelope.errorCode.HasValue || resultEnvelope.errorCode.Value == (int)PlayFabErrorCode.Success)
                     {
                         resultEnvelope.data.Request = callRequest.Request;

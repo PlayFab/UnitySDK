@@ -78,17 +78,17 @@ namespace PlayFab.UUnit
             return sb.ToString();
         }
 
-        public void FindAndAddAllTestCases(Type parent)
+        public void FindAndAddAllTestCases(Type parent, string filter = null)
         {
             if (_suiteState != UUnitActiveState.PENDING)
                 throw new Exception("Must add all tests before executing tests.");
 
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var eachAssembly in assemblies)
-                FindAndAddAllTestCases(eachAssembly, parent);
+                FindAndAddAllTestCases(eachAssembly, parent, filter);
         }
 
-        public void FindAndAddAllTestCases(Assembly assembly, Type parent)
+        public void FindAndAddAllTestCases(Assembly assembly, Type parent, string filter = null)
         {
             if (_suiteState != UUnitActiveState.PENDING)
                 throw new Exception("Must add all tests before executing tests.");
@@ -96,13 +96,15 @@ namespace PlayFab.UUnit
             var types = assembly.GetTypes();
             foreach (var t in types)
                 if (!t.IsAbstract && t.IsSubclassOf(parent))
-                    AddTestsForType(t);
+                    AddTestsForType(t, filter);
         }
 
-        private void AddTestsForType(Type testCaseType)
+        private void AddTestsForType(Type testCaseType, string filter = null)
         {
             if (_suiteState != UUnitActiveState.PENDING)
                 throw new Exception("Must add all tests before executing tests.");
+
+            var filterSet = AssembleFilter(filter);
 
             UUnitTestCase newTestCase = null;
             foreach (var constructorInfo in testCaseType.GetConstructors())
@@ -120,7 +122,7 @@ namespace PlayFab.UUnit
             foreach (MethodInfo m in methods)
             {
                 var attributes = m.GetCustomAttributes(typeof(UUnitTestAttribute), false);
-                if (attributes.Length == 0) // There can only be 1, and we only care about attribute existence (no data on attribute)
+                if (attributes.Length == 0 || !MatchesFilters(m.Name, filterSet)) // There can only be 1, and we only care about attribute existence (no data on attribute), and it has to match the filter
                     continue;
 
                 Action<UUnitTestContext> eachTestDelegate;
@@ -149,6 +151,27 @@ namespace PlayFab.UUnit
                 if (eachTestDelegate != null)
                     _testContexts.Add(new UUnitTestContext(newTestCase, eachTestDelegate));
             }
+        }
+
+        private HashSet<string> AssembleFilter(string filter)
+        {
+            if (string.IsNullOrEmpty(filter))
+                return null;
+            var filterWords = filter.ToLower().Split(new char[] { '\n', ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (filterWords.Length > 0)
+                return new HashSet<string>(filterWords);
+            return null;
+        }
+
+        private bool MatchesFilters(string name, HashSet<string> filterSet)
+        {
+            if (filterSet == null)
+                return true;
+            var nameLc = name.ToLower();
+            foreach (var eachFilter in filterSet)
+                if (nameLc.Contains(eachFilter))
+                    return true;
+            return false;
         }
 
         /// <summary>
