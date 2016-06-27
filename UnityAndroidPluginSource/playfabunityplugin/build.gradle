@@ -1,14 +1,17 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.google.gms.google-services'
+
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 23
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 22
+        minSdkVersion 14
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        // Enabling multidex support.
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -20,10 +23,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.google.android.gms:play-services:8.3.0'
+    compile 'com.android.support:appcompat-v7:23.0.0+'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile files('libs/unity-android.jar')
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 //task to delete the old jar
 task deleteOldJar(type: Delete) {

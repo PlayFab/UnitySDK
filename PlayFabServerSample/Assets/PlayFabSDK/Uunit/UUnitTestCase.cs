@@ -7,104 +7,54 @@
 */
 
 using System;
-using System.Diagnostics;
-using System.Reflection;
 
 namespace PlayFab.UUnit
 {
     public class UUnitTestCase
     {
-        private delegate void UUnitTestDelegate();
-
-        Stopwatch setUpStopwatch = new Stopwatch();
-        Stopwatch tearDownStopwatch = new Stopwatch();
-        Stopwatch eachTestStopwatch = new Stopwatch();
-        private string testMethodName;
-
-        public void SetTest(string testMethodName)
-        {
-            this.testMethodName = testMethodName;
-        }
-
-        public void Run(UUnitTestResult testResult)
-        {
-            UUnitTestResult.TestState testState = UUnitTestResult.TestState.FAILED;
-            string message = null;
-            eachTestStopwatch.Reset();
-            setUpStopwatch.Reset();
-            tearDownStopwatch.Reset();
-
-            try
-            {
-                testResult.TestStarted();
-
-                setUpStopwatch.Start();
-                SetUp();
-                setUpStopwatch.Stop();
-
-                Type type = this.GetType();
-                MethodInfo method = type.GetMethod(testMethodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                UUnitAssert.NotNull(method, "Could not execute: " + testMethodName + ", it's probably not public."); // Limited access to loaded assemblies
-                eachTestStopwatch.Start();
-                method.Invoke(this, null);
-                testState = UUnitTestResult.TestState.PASSED;
-            }
-            catch (UUnitSkipException)
-            {
-                // message remains null
-                testState = UUnitTestResult.TestState.SKIPPED;
-            }
-            catch (UUnitAssertException e)
-            {
-                message = e.ToString();
-                testState = UUnitTestResult.TestState.FAILED;
-            }
-            catch (TargetInvocationException e)
-            {
-                if (e.InnerException is UUnitSkipException)
-                {
-                    // message remains null
-                    testState = UUnitTestResult.TestState.SKIPPED;
-                }
-                else
-                {
-                    message = e.InnerException.ToString();
-                    testState = UUnitTestResult.TestState.FAILED;
-                }
-            }
-            catch (Exception e)
-            {
-                message = e.ToString();
-                testState = UUnitTestResult.TestState.FAILED;
-            }
-            finally
-            {
-                eachTestStopwatch.Stop();
-
-                if (testState != UUnitTestResult.TestState.SKIPPED)
-                {
-                    try
-                    {
-                        tearDownStopwatch.Start();
-                        TearDown();
-                        tearDownStopwatch.Stop();
-                    }
-                    catch (Exception e)
-                    {
-                        message = e.ToString();
-                        testState = UUnitTestResult.TestState.FAILED;
-                    }
-                }
-            }
-
-            testResult.TestComplete(testMethodName, testState, eachTestStopwatch.ElapsedMilliseconds, message);
-        }
-
-        protected virtual void SetUp()
+        /// <summary>
+        /// During testing, this is the first function that will be called.
+        /// This is run exactly once for this type.
+        /// It is not considered part of any test. A failure or exception in this method will halt the test framework.
+        /// </summary>
+        public virtual void ClassSetUp()
         {
         }
 
-        protected virtual void TearDown()
+        /// <summary>
+        /// During testing, this will be called once before every test function with the [UUnitTest] attribute
+        /// This is run once for each test.
+        /// This is considered part of the active test. A failure or exception in this method will be considered a failure for the active test.
+        /// </summary>
+        public virtual void SetUp(UUnitTestContext testContext)
+        {
+        }
+
+        /// <summary>
+        /// During testing, this will be called every tick that a test is asynchronous.
+        /// This is run once for each test.
+        /// This is considered part of the active test. A failure or exception in this method will be considered a failure for the active test.
+        /// </summary>
+        public virtual void Tick(UUnitTestContext testContext)
+        {
+            testContext.Fail(GetType().Name + "." + testContext.TestDelegate.Method.Name + ": Async TestCase does not implement Tick().  To fix this error, implement \"" + GetType().Name + ".Tick()\" in your async test, or call testContext.EndTest() in your syncronous test.");
+        }
+
+        /// <summary>
+        /// During testing, this will be called once after every test function with the [UUnitTest] attribute
+        /// This is run once for each test.
+        /// This is considered part of the active test. A failure or exception in this method will be considered a failure for the active test.
+        /// </summary>
+        public virtual void TearDown(UUnitTestContext testContext)
+        {
+        }
+
+        /// <summary>
+        /// During testing, this is the last function that will be called.
+        /// This is run exactly once for this type.
+        /// It is not considered part of any test. A failure or exception in this method will halt the test framework.
+        /// </summary>
+        public virtual void ClassTearDown()
         {
         }
     }

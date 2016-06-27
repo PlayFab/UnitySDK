@@ -8,7 +8,7 @@ public class PlayFabPackager : MonoBehaviour {
 		"Assets/Plugins"
 	};
     private static readonly string[] TEST_SCENES = {
-        "Assets/PlayFabSDK/DemoScene/DemoScene.unity"
+        "Assets/PlayFabSDK/Internal/PlayFabTestScene.unity"
     };
     private const string BUILD_PATH = "C:/depot/sdks/UnitySDK/testBuilds/";
 
@@ -27,6 +27,7 @@ public class PlayFabPackager : MonoBehaviour {
     [MenuItem("PlayFab/Testing/AndroidTestBuild")]
     public static void MakeAndroidBuild()
     {
+        PlayerSettings.bundleIdentifier = "com.PlayFab.PlayFabTest";
         string ANDROID_PACKAGE = System.IO.Path.Combine(BUILD_PATH, "PlayFabAndroid.apk");
         MkDir(BUILD_PATH);
         BuildPipeline.BuildPlayer(TEST_SCENES, ANDROID_PACKAGE, BuildTarget.Android, BuildOptions.None);
@@ -52,5 +53,19 @@ public class PlayFabPackager : MonoBehaviour {
         MkDir(BUILD_PATH);
         MkDir(WP8_PATH);
         BuildPipeline.BuildPlayer(TEST_SCENES, WP8_PATH, BuildTarget.WP8Player, BuildOptions.None);
+    }
+
+    [MenuItem("PlayFab/Testing/Win32TestBuild")]
+    public static void MakeWin32TestingBuild()
+    {
+        PlayerSettings.defaultIsFullScreen = false;
+        PlayerSettings.defaultScreenHeight = 768;
+        PlayerSettings.defaultScreenWidth = 1024;
+        PlayerSettings.runInBackground = true;
+        PlayerSettings.displayResolutionDialog = ResolutionDialogSetting.Disabled;
+        PlayerSettings.resizableWindow = true;
+        string WIN32_PATH = System.IO.Path.Combine(BUILD_PATH, "Win32test.exe");
+        MkDir(BUILD_PATH);
+        BuildPipeline.BuildPlayer(TEST_SCENES, WIN32_PATH, BuildTarget.StandaloneWindows, BuildOptions.None);
     }
 }
