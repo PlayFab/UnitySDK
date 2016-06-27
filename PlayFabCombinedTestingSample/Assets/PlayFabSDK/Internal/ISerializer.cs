@@ -4,6 +4,7 @@ namespace PlayFab.Json
     {
         T DeserializeObject<T>(string json);
         T DeserializeObject<T>(string json, object jsonSerializerStrategy);
+        object DeserializeObject(string json);
 
         string SerializeObject(object json);
         string SerializeObject(object json, object jsonSerializerStrategy);
@@ -32,6 +33,11 @@ namespace PlayFab.Json
             return _instance.DeserializeObject<T>(json, jsonSerializerStrategy);
         }
 
+        public static object DeserializeObject(string json)
+        {
+            return _instance.DeserializeObject(json);
+        }
+
         public static string SerializeObject(object json)
         {
             return _instance.SerializeObject(json);
@@ -47,22 +53,27 @@ namespace PlayFab.Json
     {
         public T DeserializeObject<T>(string json)
         {
-            return PlayFab.Json.PlayFabSimpleJson.DeserializeObject<T>(json);
+            return PlayFabSimpleJson.DeserializeObject<T>(json);
         }
 
         public T DeserializeObject<T>(string json, object jsonSerializerStrategy)
         {
-            return PlayFab.Json.PlayFabSimpleJson.DeserializeObject<T>(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
+            return PlayFabSimpleJson.DeserializeObject<T>(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
+        }
+
+        public object DeserializeObject(string json)
+        {
+            return PlayFabSimpleJson.DeserializeObject(json);
         }
 
         public string SerializeObject(object json)
         {
-            return PlayFab.Json.PlayFabSimpleJson.SerializeObject(json);
+            return PlayFabSimpleJson.SerializeObject(json);
         }
 
         public string SerializeObject(object json, object jsonSerializerStrategy)
         {
-            return PlayFab.Json.PlayFabSimpleJson.SerializeObject(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
+            return PlayFabSimpleJson.SerializeObject(json, (PlayFab.Json.IJsonSerializerStrategy)jsonSerializerStrategy);
         }
     }
 }

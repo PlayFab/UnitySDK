@@ -17,6 +17,14 @@ namespace PlayFab.UUnit
         Australia
     }
 
+    //internal class JsonPropertyAttrTestClass
+    //{
+    //    [JsonProperty(PropertyName = "GoodField")]
+    //    public string InvalidField;
+    //    [JsonProperty(PropertyName = "GoodField")]
+    //    public string InvalidProperty { get; set; }
+    //}
+
     internal class ObjNumFieldTest
     {
         public sbyte SbyteValue; public byte ByteValue;
@@ -31,11 +39,16 @@ namespace PlayFab.UUnit
     }
     internal class ObjNumPropTest
     {
-        public sbyte SbyteValue { get; set; } public byte ByteValue { get; set; }
-        public short ShortValue { get; set; } public ushort UshortValue { get; set; }
-        public int IntValue { get; set; } public uint UintValue { get; set; }
-        public long LongValue { get; set; } public ulong UlongValue { get; set; }
-        public float FloatValue { get; set; } public double DoubleValue { get; set; }
+        public sbyte SbyteValue { get; set; }
+        public byte ByteValue { get; set; }
+        public short ShortValue { get; set; }
+        public ushort UshortValue { get; set; }
+        public int IntValue { get; set; }
+        public uint UintValue { get; set; }
+        public long LongValue { get; set; }
+        public ulong UlongValue { get; set; }
+        public float FloatValue { get; set; }
+        public double DoubleValue { get; set; }
 
         public static ObjNumPropTest Max = new ObjNumPropTest { SbyteValue = sbyte.MaxValue, ByteValue = byte.MaxValue, ShortValue = short.MaxValue, UshortValue = ushort.MaxValue, IntValue = int.MaxValue, UintValue = uint.MaxValue, LongValue = long.MaxValue, UlongValue = ulong.MaxValue, FloatValue = float.MaxValue, DoubleValue = double.MaxValue };
         public static ObjNumPropTest Min = new ObjNumPropTest { SbyteValue = sbyte.MinValue, ByteValue = byte.MinValue, ShortValue = short.MinValue, UshortValue = ushort.MinValue, IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue };
@@ -55,11 +68,16 @@ namespace PlayFab.UUnit
     }
     internal class ObjOptNumFieldTest
     {
-        public sbyte? SbyteValue { get; set; } public byte? ByteValue { get; set; }
-        public short? ShortValue { get; set; } public ushort? UshortValue { get; set; }
-        public int? IntValue { get; set; } public uint? UintValue { get; set; }
-        public long? LongValue { get; set; } public ulong? UlongValue { get; set; }
-        public float? FloatValue { get; set; } public double? DoubleValue { get; set; }
+        public sbyte? SbyteValue { get; set; }
+        public byte? ByteValue { get; set; }
+        public short? ShortValue { get; set; }
+        public ushort? UshortValue { get; set; }
+        public int? IntValue { get; set; }
+        public uint? UintValue { get; set; }
+        public long? LongValue { get; set; }
+        public ulong? UlongValue { get; set; }
+        public float? FloatValue { get; set; }
+        public double? DoubleValue { get; set; }
 
         public static ObjOptNumFieldTest Max = new ObjOptNumFieldTest { SbyteValue = sbyte.MaxValue, ByteValue = byte.MaxValue, ShortValue = short.MaxValue, UshortValue = ushort.MaxValue, IntValue = int.MaxValue, UintValue = uint.MaxValue, LongValue = long.MaxValue, UlongValue = ulong.MaxValue, FloatValue = float.MaxValue, DoubleValue = double.MaxValue };
         public static ObjOptNumFieldTest Min = new ObjOptNumFieldTest { SbyteValue = sbyte.MinValue, ByteValue = byte.MinValue, ShortValue = short.MinValue, UshortValue = ushort.MinValue, IntValue = int.MinValue, UintValue = uint.MinValue, LongValue = long.MinValue, UlongValue = ulong.MinValue, FloatValue = float.MinValue, DoubleValue = double.MinValue };
@@ -76,129 +94,142 @@ namespace PlayFab.UUnit
         public string TestString { get; set; }
     }
 
-    class JsonUnitTests
+    public class JsonFeatureTests : UUnitTestCase
     {
-        class JsonLongTest : UUnitTestCase
+        //[UUnitTest]
+        //public void JsonPropertyTest(UUnitTestContext testContext)
+        //{
+        //    var expectedObject = new JsonPropertyAttrTestClass { InvalidField = "asdf", InvalidProperty = "fdsa" };
+        //    string json = JsonWrapper.SerializeObject(expectedObject);
+        //    // Verify that the field names have been transformed by the JsonProperty attribute
+        //    testContext.False(json.ToLower().Contains("invalid"));
+
+        //    // Verify that the fields are re-serialized into the proper locations by the JsonProperty attribute
+        //    var actualObject = JsonWrapper.DeserializeObject<JsonPropertyAttrTestClass>(json);
+        //    testContext.StringEquals(expectedObject.InvalidField, actualObject.InvalidField, actualObject.InvalidField);
+        //    testContext.StringEquals(expectedObject.InvalidProperty, actualObject.InvalidProperty, actualObject.InvalidProperty);
+
+        //    testContext.EndTest(UUnitFinishState.PASSED, null);
+        //}
+
+        [UUnitTest]
+        public void TestObjNumField(UUnitTestContext testContext)
         {
-            [UUnitTest]
-            public void TestObjNumField(UUnitTestContext testContext)
+            var expectedObjects = new[] { ObjNumFieldTest.Max, ObjNumFieldTest.Min, ObjNumFieldTest.Zero };
+            for (int i = 0; i < expectedObjects.Length; i++)
             {
-                var expectedObjects = new[] { ObjNumFieldTest.Max, ObjNumFieldTest.Min, ObjNumFieldTest.Zero };
-                for (int i = 0; i < expectedObjects.Length; i++)
-                {
-                    // Convert the object to json and back, and verify that everything is the same
-                    var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                    var actualObject = JsonWrapper.DeserializeObject<ObjNumFieldTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
-
-                    testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
-                    testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
-                    testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
-                    testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
-                    testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
-                    testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
-                    testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
-                    testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
-                    testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, 0.001f);
-                    testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, 0.001);
-                }
-                testContext.EndTest(UUnitFinishState.PASSED, null);
-            }
-
-            [UUnitTest]
-            public void TestObjNumProp(UUnitTestContext testContext)
-            {
-                var expectedObjects = new[] { ObjNumPropTest.Max, ObjNumPropTest.Min, ObjNumPropTest.Zero };
-                for (int i = 0; i < expectedObjects.Length; i++)
-                {
-                    // Convert the object to json and back, and verify that everything is the same
-                    var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                    var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
-
-                    testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
-                    testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
-                    testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
-                    testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
-                    testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
-                    testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
-                    testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
-                    testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
-                    testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, float.MaxValue * 0.000000001f);
-                    testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, double.MaxValue * 0.000000001f);
-                }
-                testContext.EndTest(UUnitFinishState.PASSED, null);
-            }
-
-            [UUnitTest]
-            public void TestStructNumField(UUnitTestContext testContext)
-            {
-                var expectedObjects = new[] { StructNumFieldTest.Max, StructNumFieldTest.Min, StructNumFieldTest.Zero };
-                for (int i = 0; i < expectedObjects.Length; i++)
-                {
-                    // Convert the object to json and back, and verify that everything is the same
-                    var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                    var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
-
-                    testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
-                    testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
-                    testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
-                    testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
-                    testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
-                    testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
-                    testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
-                    testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
-                    testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, float.MaxValue * 0.000000001f);
-                    testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, double.MaxValue * 0.000000001f);
-                }
-                testContext.EndTest(UUnitFinishState.PASSED, null);
-            }
-
-            [UUnitTest]
-            public void TestObjOptNumField(UUnitTestContext testContext)
-            {
-                var expectedObjects = new[] { ObjOptNumFieldTest.Max, ObjOptNumFieldTest.Min, ObjOptNumFieldTest.Zero, ObjOptNumFieldTest.Null };
-                for (int i = 0; i < expectedObjects.Length; i++)
-                {
-                    // Convert the object to json and back, and verify that everything is the same
-                    var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                    var actualObject = JsonWrapper.DeserializeObject<ObjOptNumFieldTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
-
-                    testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
-                    testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
-                    testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
-                    testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
-                    testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
-                    testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
-                    testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
-                    testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
-                    testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, float.MaxValue * 0.000000001f);
-                    testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, double.MaxValue * 0.000000001f);
-                }
-                testContext.EndTest(UUnitFinishState.PASSED, null);
-            }
-
-            [UUnitTest]
-            public void OtherSpecificDatatypes(UUnitTestContext testContext)
-            {
-                var expectedObj = new OtherSpecificDatatypes
-                {
-                    StringDict = new Dictionary<string, string> { { "stringKey", "stringValue" } },
-                    EnumDict = new Dictionary<string, Region> { { "enumKey", Region.Japan } },
-                    IntDict = new Dictionary<string, int> { { "intKey", int.MinValue } },
-                    UintDict = new Dictionary<string, uint> { { "uintKey", uint.MaxValue } },
-                    TestString = "yup",
-                };
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<OtherSpecificDatatypes>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjNumFieldTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
 
-                testContext.ObjEquals(expectedObj.TestString, actualObject.TestString);
-                testContext.SequenceEquals(expectedObj.IntDict, actualObject.IntDict);
-                testContext.SequenceEquals(expectedObj.UintDict, actualObject.UintDict);
-                testContext.SequenceEquals(expectedObj.StringDict, actualObject.StringDict);
-                testContext.SequenceEquals(expectedObj.EnumDict, actualObject.EnumDict);
-
-                testContext.EndTest(UUnitFinishState.PASSED, null);
+                testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
+                testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
+                testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
+                testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
+                testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
+                testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
+                testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
+                testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
+                testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, 0.001f);
+                testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, 0.001);
             }
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        [UUnitTest]
+        public void TestObjNumProp(UUnitTestContext testContext)
+        {
+            var expectedObjects = new[] { ObjNumPropTest.Max, ObjNumPropTest.Min, ObjNumPropTest.Zero };
+            for (int i = 0; i < expectedObjects.Length; i++)
+            {
+                // Convert the object to json and back, and verify that everything is the same
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+
+                testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
+                testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
+                testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
+                testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
+                testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
+                testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
+                testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
+                testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
+                testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, float.MaxValue * 0.000000001f);
+                testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, double.MaxValue * 0.000000001f);
+            }
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        [UUnitTest]
+        public void TestStructNumField(UUnitTestContext testContext)
+        {
+            var expectedObjects = new[] { StructNumFieldTest.Max, StructNumFieldTest.Min, StructNumFieldTest.Zero };
+            for (int i = 0; i < expectedObjects.Length; i++)
+            {
+                // Convert the object to json and back, and verify that everything is the same
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+
+                testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
+                testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
+                testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
+                testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
+                testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
+                testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
+                testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
+                testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
+                testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, float.MaxValue * 0.000000001f);
+                testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, double.MaxValue * 0.000000001f);
+            }
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        [UUnitTest]
+        public void TestObjOptNumField(UUnitTestContext testContext)
+        {
+            var expectedObjects = new[] { ObjOptNumFieldTest.Max, ObjOptNumFieldTest.Min, ObjOptNumFieldTest.Zero, ObjOptNumFieldTest.Null };
+            for (int i = 0; i < expectedObjects.Length; i++)
+            {
+                // Convert the object to json and back, and verify that everything is the same
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjOptNumFieldTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+
+                testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
+                testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
+                testContext.ShortEquals(expectedObjects[i].ShortValue, actualObject.ShortValue);
+                testContext.UshortEquals(expectedObjects[i].UshortValue, actualObject.UshortValue);
+                testContext.IntEquals(expectedObjects[i].IntValue, actualObject.IntValue);
+                testContext.UintEquals(expectedObjects[i].UintValue, actualObject.UintValue);
+                testContext.LongEquals(expectedObjects[i].LongValue, actualObject.LongValue);
+                testContext.ULongEquals(expectedObjects[i].UlongValue, actualObject.UlongValue);
+                testContext.FloatEquals(expectedObjects[i].FloatValue, actualObject.FloatValue, float.MaxValue * 0.000000001f);
+                testContext.DoubleEquals(expectedObjects[i].DoubleValue, actualObject.DoubleValue, double.MaxValue * 0.000000001f);
+            }
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        [UUnitTest]
+        public void OtherSpecificDatatypes(UUnitTestContext testContext)
+        {
+            var expectedObj = new OtherSpecificDatatypes
+            {
+                StringDict = new Dictionary<string, string> { { "stringKey", "stringValue" } },
+                EnumDict = new Dictionary<string, Region> { { "enumKey", Region.Japan } },
+                IntDict = new Dictionary<string, int> { { "intKey", int.MinValue } },
+                UintDict = new Dictionary<string, uint> { { "uintKey", uint.MaxValue } },
+                TestString = "yup",
+            };
+            // Convert the object to json and back, and verify that everything is the same
+            var actualJson = JsonWrapper.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+            var actualObject = JsonWrapper.DeserializeObject<OtherSpecificDatatypes>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+
+            testContext.ObjEquals(expectedObj.TestString, actualObject.TestString);
+            testContext.SequenceEquals(expectedObj.IntDict, actualObject.IntDict);
+            testContext.SequenceEquals(expectedObj.UintDict, actualObject.UintDict);
+            testContext.SequenceEquals(expectedObj.StringDict, actualObject.StringDict);
+            testContext.SequenceEquals(expectedObj.EnumDict, actualObject.EnumDict);
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
     }
 }
@@ -220,6 +251,12 @@ namespace PlayFab.Json
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
         }
+
+        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
+        public static object DeserializeObject(string json)
+        {
+            return JsonWrapper.DeserializeObject(json);
+        }
     }
 
     public static class SimpleJson
@@ -234,6 +271,12 @@ namespace PlayFab.Json
         public static T DeserializeObject<T>(string json)
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
+        }
+
+        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
+        public static object DeserializeObject(string json)
+        {
+            return JsonWrapper.DeserializeObject(json);
         }
     }
 }
@@ -252,6 +295,12 @@ namespace PlayFab
         public static T DeserializeObject<T>(string json)
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
+        }
+
+        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
+        public static object DeserializeObject(string json)
+        {
+            return JsonWrapper.DeserializeObject(json);
         }
     }
 }

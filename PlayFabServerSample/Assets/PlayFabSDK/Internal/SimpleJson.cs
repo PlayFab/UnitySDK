@@ -71,6 +71,12 @@ using System.Text;
 // ReSharper disable SuggestUseVarKeywordEvident
 namespace PlayFab.Json
 {
+    // [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    // public class JsonProperty : Attribute
+    // {
+    //     public string PropertyName;
+    // }
+
     /// <summary>
     /// Represents the json array.
     /// </summary>
