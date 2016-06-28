@@ -17,13 +17,16 @@ namespace PlayFab.UUnit
         Australia
     }
 
-    //internal class JsonPropertyAttrTestClass
-    //{
-    //    [JsonProperty(PropertyName = "GoodField")]
-    //    public string InvalidField;
-    //    [JsonProperty(PropertyName = "GoodField")]
-    //    public string InvalidProperty { get; set; }
-    //}
+    internal class JsonPropertyAttrTestClass
+    {
+        [JsonProperty(PropertyName = "GoodField")]
+        public string InvalidField;
+        [JsonProperty(PropertyName = "GoodProperty")]
+        public string InvalidProperty { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public object HideNull = null;
+        public object ShowNull = null;
+    }
 
     internal class ObjNumFieldTest
     {
@@ -96,21 +99,23 @@ namespace PlayFab.UUnit
 
     public class JsonFeatureTests : UUnitTestCase
     {
-        //[UUnitTest]
-        //public void JsonPropertyTest(UUnitTestContext testContext)
-        //{
-        //    var expectedObject = new JsonPropertyAttrTestClass { InvalidField = "asdf", InvalidProperty = "fdsa" };
-        //    string json = JsonWrapper.SerializeObject(expectedObject);
-        //    // Verify that the field names have been transformed by the JsonProperty attribute
-        //    testContext.False(json.ToLower().Contains("invalid"));
+        [UUnitTest]
+        public void JsonPropertyTest(UUnitTestContext testContext)
+        {
+            var expectedObject = new JsonPropertyAttrTestClass { InvalidField = "asdf", InvalidProperty = "fdsa" };
+            string json = JsonWrapper.SerializeObject(expectedObject);
+            // Verify that the field names have been transformed by the JsonProperty attribute
+            testContext.False(json.ToLower().Contains("invalid"), json);
+            testContext.False(json.ToLower().Contains("hidenull"), json);
+            testContext.True(json.ToLower().Contains("shownull"), json);
 
-        //    // Verify that the fields are re-serialized into the proper locations by the JsonProperty attribute
-        //    var actualObject = JsonWrapper.DeserializeObject<JsonPropertyAttrTestClass>(json);
-        //    testContext.StringEquals(expectedObject.InvalidField, actualObject.InvalidField, actualObject.InvalidField);
-        //    testContext.StringEquals(expectedObject.InvalidProperty, actualObject.InvalidProperty, actualObject.InvalidProperty);
+            // Verify that the fields are re-serialized into the proper locations by the JsonProperty attribute
+            var actualObject = JsonWrapper.DeserializeObject<JsonPropertyAttrTestClass>(json);
+            testContext.StringEquals(expectedObject.InvalidField, actualObject.InvalidField, actualObject.InvalidField);
+            testContext.StringEquals(expectedObject.InvalidProperty, actualObject.InvalidProperty, actualObject.InvalidProperty);
 
-        //    testContext.EndTest(UUnitFinishState.PASSED, null);
-        //}
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
 
         [UUnitTest]
         public void TestObjNumField(UUnitTestContext testContext)
@@ -231,6 +236,23 @@ namespace PlayFab.UUnit
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
+
+        [UUnitTest]
+        public void ArrayAsObject(UUnitTestContext testContext)
+        {
+            string json = "{\"Version\": \"2016-06-21_23-57-16\", \"ObjectArray\": [{\"Id\": 2, \"Name\": \"Stunned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Stunned\", \"EN_reminder\": \"Can\'t attack, block, or activate\"}, {\"Id\": 3, \"Name\": \"Poisoned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Poisoned\", \"EN_reminder\": \"Takes {N} damage at the start of each turn. Wears off over time.\" }], \"StringArray\": [\"NoSubtype\", \"Aircraft\"]}";
+            var result = JsonWrapper.DeserializeObject<Dictionary<string, object>>(json);
+            var version = result["Version"] as string;
+            var objArray = result["ObjectArray"] as List<object>;
+            var strArray = result["StringArray"] as List<object>;
+
+            testContext.NotNull(result);
+            testContext.True(!string.IsNullOrEmpty(version));
+            testContext.True(objArray != null && objArray.Count > 0);
+            testContext.True(strArray != null && strArray.Count > 0);
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
     }
 }
 
@@ -267,10 +289,22 @@ namespace PlayFab.Json
             return JsonWrapper.SerializeObject(obj, PlayFabUtil.ApiSerializerStrategy);
         }
 
+        [Obsolete("Use PlayFab.JsonWrapper.SerializeObject()")]
+        public static string SerializeObject(object obj, IJsonSerializerStrategy serializerStrategy)
+        {
+            return JsonWrapper.SerializeObject(obj, serializerStrategy);
+        }
+
         [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
         public static T DeserializeObject<T>(string json)
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
+        }
+
+        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
+        public static T DeserializeObject<T>(string json, IJsonSerializerStrategy serializerStrategy)
+        {
+            return JsonWrapper.DeserializeObject<T>(json, serializerStrategy);
         }
 
         [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
@@ -291,10 +325,22 @@ namespace PlayFab
             return JsonWrapper.SerializeObject(obj, PlayFabUtil.ApiSerializerStrategy);
         }
 
+        [Obsolete("Use PlayFab.JsonWrapper.SerializeObject()")]
+        public static string SerializeObject(object obj, IJsonSerializerStrategy serializerStrategy)
+        {
+            return JsonWrapper.SerializeObject(obj, serializerStrategy);
+        }
+
         [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
         public static T DeserializeObject<T>(string json)
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
+        }
+
+        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
+        public static T DeserializeObject<T>(string json, IJsonSerializerStrategy serializerStrategy)
+        {
+            return JsonWrapper.DeserializeObject<T>(json, serializerStrategy);
         }
 
         [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
