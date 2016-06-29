@@ -2138,9 +2138,9 @@ namespace PlayFab
                     disableAdvertising = adInfo.Get<bool>("limitAdTrackingEnabled");
                 }
 #elif UNITY_IOS && !UNITY_EDITOR
-                    advertisingIdType = PlayFab.PlayFabSettings.AD_TYPE_IDFA;
-                    advertisingIdValue = PlayFabiOSPlugin.getIdfa();
-                    disableAdvertising = PlayFabiOSPlugin.getAdvertisingDisabled();
+                advertisingIdType = PlayFab.PlayFabSettings.AD_TYPE_IDFA;
+                advertisingIdValue = PlayFabiOSPlugin.getIdfa();
+                disableAdvertising = PlayFabiOSPlugin.getAdvertisingDisabled();
 #endif
             }
             catch (Exception e)
