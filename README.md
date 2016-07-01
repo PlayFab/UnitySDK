@@ -46,9 +46,10 @@ Open your Unity project, open the PlayFabClientSDK.unitypackage, and import the 
 #### Install the Unity SDK into another Unity project:
  1. Extract the UnitySdk to a location of your choice (described as the UnitySDkFolder for the rest of this example)
  2. Create a new Unity project or open an existing Unity project
- 3. Navigate to  UnitySDkFolder\PlayFabClientSample\Assets
+ 3. Navigate to UnitySDkFolder\PlayFabClientSample\Assets
  4. Copy the PlayFabSDK folder from the example project, into your new/existing project's Assets folder
- 5. Begin integrating PlayFab calls into your project
+ 6. [Client only] Copy the Plugins from the example project, into your new/existing project's Assets folder
+ 7. Begin integrating PlayFab calls into your project
    1. UnitySDkFolder\PlayFabCombinedTestingSample\Assets\PlayFabSDK\Internal\Testing\PlayFabApiTest.cs - This file executes some basic API calls, which you can use as an example.
 
 To building your game client, install our native iOS and Android plugins. To do this, drag the Plugins folder to the root(Assets/Plugins) of the Unity project.
@@ -105,12 +106,14 @@ CASE: Serialization errors involving ResultContainer and Generic paramerters
  * This case can't be resolved with the current PlayFab UnitySdk.  We are building a new sdk to address this.  Please see: https://playfab.com/new-and-improved-unity-sdk-beta-preview/ and https://github.com/PlayFab/UnitySDKV2Beta
 
 CASE: Follow these instructions to disable IDFA for your IOS release:
- * In Unity, navigate to and open: PlayFabClientSample/Assets/Plugins/iOS/PlayFabURLRequest.mm
+ * In Unity, navigate to and open: {YourUnityProject}/Assets/Plugins/iOS/PlayFabURLRequest.mm
   * Uncomment the first line:  // #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
- * In Unity, navigate to and open: PlayFabClientSample/Assets/Plugins/iOS/PlayFabiOS.cs
-  * Uncomment the first line:  // #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
- * In Unity, view the inspector window when you select (do not open): PlayFabClientSample/Assets/Plugins/iOS/PlayFabURLRequest.mm
+ * In Unity, view the inspector window when you select (do not open): {YourUnityProject}/Assets/Plugins/iOS/PlayFabURLRequest.mm
   * Uncheck the "AdSupport" option under "Platform settings"
+ * In Unity, Edit -> Project Settings -> Player
+  * Select the global tab (first tab)
+  * Scripting Define Symbols
+  * Add this: DISABLE_IDFA
 
 CASE: If you run into conflicts when upgrading SDKs, remove all files from previous versions and perform a fresh import of our unitypackage or SDK files. 
 
