@@ -100,6 +100,10 @@ You are now ready to begin making API calls using the PlayFabClientAPI class. Ch
 7. Troubleshooting:
 ----
 
+CASE: Serialization errors involving ResultContainer and Generic paramerters
+ * Top of the exception log will look like this: System.MemberAccessException: Cannot create an instance of PlayFab.Internal.ResultContainer`1[TResultType] because Type.ContainsGenericParameters is true.
+ * This case can't be resolved with the current PlayFab UnitySdk.  We are building a new sdk to address this.  Please see: https://playfab.com/new-and-improved-unity-sdk-beta-preview/ and https://github.com/PlayFab/UnitySDKV2Beta
+
 CASE: Follow these instructions to disable IDFA for your IOS release:
  * In Unity, navigate to and open: PlayFabClientSample/Assets/Plugins/iOS/PlayFabURLRequest.mm
   * Uncomment the first line:  // #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
