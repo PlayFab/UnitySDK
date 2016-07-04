@@ -19,7 +19,7 @@ namespace PlayFab
     public static class PlayFabSettings
     {
         public const string SdkVersion = "0.30.160627";
-        public const string BuildIdentifier = "jbuild_unitysdk_0";
+        public const string BuildIdentifier = "jbuild_unitysdk_1";
         public const string VersionString = "UnitySDK-0.30.160627";
 
         internal static bool HideCallbackErrors = false; // This should only be used by unit-tests that test deliberately throwing errors
@@ -34,6 +34,7 @@ namespace PlayFab
             where TRequest : class
             where TResult : PlayFabResultCommon;
 
+        public static bool CompressApiData = true;
         public static string ProductionEnvironmentUrl = ".playfabapi.com";
         public static string TitleId = null; // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
         public static PlayFabLogLevel LogLevel = PlayFabLogLevel.Warning | PlayFabLogLevel.Error;

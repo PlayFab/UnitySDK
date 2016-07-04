@@ -1,3 +1,4 @@
+#if !UNITY_WSA && !UNITY_WP8
 // DeflateStream.cs
 // ------------------------------------------------------------------
 //
@@ -310,7 +311,7 @@ namespace Ionic.Zlib
             _baseStream = new ZlibBaseStream(stream, mode, level, ZlibStreamFlavor.DEFLATE, leaveOpen);
         }
 
-        #region Zlib properties
+#region Zlib properties
 
         /// <summary>
         /// This property sets the flush behavior on the stream.
@@ -400,9 +401,9 @@ namespace Ionic.Zlib
             }
         }
 
-        #endregion
+#endregion
 
-        #region System.IO.Stream methods
+#region System.IO.Stream methods
         /// <summary>
         ///   Dispose the stream.
         /// </summary>
@@ -616,7 +617,7 @@ namespace Ionic.Zlib
             if (_disposed) throw new ObjectDisposedException("DeflateStream");
             _baseStream.Write(buffer, offset, count);
         }
-        #endregion
+#endregion
 
 
 
@@ -737,4 +738,4 @@ namespace Ionic.Zlib
     }
 
 }
-
+#endif
