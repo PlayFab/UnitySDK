@@ -39,6 +39,8 @@ namespace PlayFab
         public delegate void AddUsernamePasswordResponseCallback(string urlPath, int callId, AddUsernamePasswordRequest request, AddUsernamePasswordResult result, PlayFabError error, object customData);
         public delegate void GetAccountInfoRequestCallback(string urlPath, int callId, GetAccountInfoRequest request, object customData);
         public delegate void GetAccountInfoResponseCallback(string urlPath, int callId, GetAccountInfoRequest request, GetAccountInfoResult result, PlayFabError error, object customData);
+        public delegate void GetPlayerCombinedInfoRequestCallback(string urlPath, int callId, GetPlayerCombinedInfoRequest request, object customData);
+        public delegate void GetPlayerCombinedInfoResponseCallback(string urlPath, int callId, GetPlayerCombinedInfoRequest request, GetPlayerCombinedInfoResult result, PlayFabError error, object customData);
         public delegate void GetPlayFabIDsFromFacebookIDsRequestCallback(string urlPath, int callId, GetPlayFabIDsFromFacebookIDsRequest request, object customData);
         public delegate void GetPlayFabIDsFromFacebookIDsResponseCallback(string urlPath, int callId, GetPlayFabIDsFromFacebookIDsRequest request, GetPlayFabIDsFromFacebookIDsResult result, PlayFabError error, object customData);
         public delegate void GetPlayFabIDsFromGameCenterIDsRequestCallback(string urlPath, int callId, GetPlayFabIDsFromGameCenterIDsRequest request, object customData);
@@ -534,6 +536,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves all of the user's different kinds of info.
+        /// </summary>
+        public static void GetPlayerCombinedInfo(GetPlayerCombinedInfoRequest request, PlayFabResultCommon.ProcessApiCallback<GetPlayerCombinedInfoResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPlayerCombinedInfoResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHttp.Post("/Client/GetPlayerCombinedInfo", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// Retrieves the unique PlayFab identifiers for the given set of Facebook identifiers.
         /// </summary>
         public static void GetPlayFabIDsFromFacebookIDs(GetPlayFabIDsFromFacebookIDsRequest request, PlayFabResultCommon.ProcessApiCallback<GetPlayFabIDsFromFacebookIDsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -609,7 +626,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves all requested data for a user in one unified request. By default, this API returns all  data for the locally signed-in user. The input parameters may be used to limit the data retrieved to any subset of the available data, as well as retrieve the available data for a different user. Note that certain data, including inventory, virtual currency balances, and personally identifying information, may only be retrieved for the locally signed-in user. In the example below, a request is made for the account details, virtual currency balances, and specified user data for the locally signed-in user.
+        /// NOTE: This call will be deprecated soon. For fetching the data for a given user  use GetPlayerCombinedInfo. For looking up users from the client api, we are in the process of adding a new api call. Once that call is ready, this one will be deprecated.  Retrieves all requested data for a user in one unified request. By default, this API returns all  data for the locally signed-in user. The input parameters may be used to limit the data retrieved to any subset of the available data, as well as retrieve the available data for a different user. Note that certain data, including inventory, virtual currency balances, and personally identifying information, may only be retrieved for the locally signed-in user. In the example below, a request is made for the account details, virtual currency balances, and specified user data for the locally signed-in user.
         /// </summary>
         public static void GetUserCombinedInfo(GetUserCombinedInfoRequest request, PlayFabResultCommon.ProcessApiCallback<GetUserCombinedInfoResult> resultCallback, ErrorCallback errorCallback, object customData = null)
         {
