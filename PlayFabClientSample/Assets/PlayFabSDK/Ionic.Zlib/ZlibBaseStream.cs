@@ -1,3 +1,4 @@
+#if !UNITY_WSA && !UNITY_WP8
 // ZlibBaseStream.cs
 // ------------------------------------------------------------------
 //
@@ -625,3 +626,4 @@ namespace Ionic.Zlib
 
 
 }
+#endif

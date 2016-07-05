@@ -253,6 +253,17 @@ namespace PlayFab.UUnit
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
+
+        [UUnitTest]
+        public void TimeSpanJson(UUnitTestContext testContext)
+        {
+            TimeSpan span = TimeSpan.FromSeconds(5);
+            string actualJson = JsonWrapper.SerializeObject(span, PlayFabUtil.ApiSerializerStrategy);
+            string expectedJson = "5";
+            testContext.StringEquals(expectedJson, actualJson, actualJson);
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
     }
 }
 

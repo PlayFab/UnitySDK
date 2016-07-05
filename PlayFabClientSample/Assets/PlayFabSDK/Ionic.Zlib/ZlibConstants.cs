@@ -1,3 +1,4 @@
+#if !UNITY_WSA && !UNITY_WP8
 // ZlibConstants.cs
 // ------------------------------------------------------------------
 //
@@ -113,7 +114,7 @@ namespace Ionic.Zlib
         /// <summary>
         /// The size of the working buffer used in the ZlibCodec class. Defaults to 8192 bytes.
         /// </summary>
-#if NETCF        
+#if NETCF
         public const int WorkingBufferSizeDefault = 8192;
 #else
         public const int WorkingBufferSizeDefault = 16384; 
@@ -125,4 +126,4 @@ namespace Ionic.Zlib
     }
 
 }
-
+#endif

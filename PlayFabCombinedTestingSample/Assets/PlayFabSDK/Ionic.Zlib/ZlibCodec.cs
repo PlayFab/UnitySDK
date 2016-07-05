@@ -1,3 +1,4 @@
+#if !UNITY_WSA && !UNITY_WP8
 // ZlibCodec.cs
 // ------------------------------------------------------------------
 //
@@ -81,7 +82,7 @@ namespace Ionic.Zlib
     /// </remarks>
     [Interop.GuidAttribute("ebc25cf6-9120-4283-b972-0e5520d0000D")]
     [Interop.ComVisible(true)]
-#if !NETCF    
+#if !NETCF
     [Interop.ClassInterface(Interop.ClassInterfaceType.AutoDispatch)]
 #endif
     sealed public class ZlibCodec
@@ -715,3 +716,4 @@ namespace Ionic.Zlib
 
     }
 }
+#endif
