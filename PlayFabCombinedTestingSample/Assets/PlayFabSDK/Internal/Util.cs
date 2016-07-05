@@ -83,6 +83,12 @@ namespace PlayFab.Internal
                     if (result)
                         return output;
                 }
+                else if (type == typeof(TimeSpan))
+                {
+                    double seconds;
+                    if (double.TryParse(valueStr, out seconds))
+                        return TimeSpan.FromSeconds(seconds);
+                }
                 return base.DeserializeObject(value, type);
             }
 
@@ -108,6 +114,11 @@ namespace PlayFab.Internal
                 else if (input is DateTimeOffset)
                 {
                     output = ((DateTimeOffset)input).ToString(_defaultDateTimeFormats[DEFAULT_UTC_OUTPUT_INDEX], CultureInfo.CurrentCulture);
+                    return true;
+                }
+                else if (input is TimeSpan)
+                {
+                    output = ((TimeSpan)input).TotalSeconds;
                     return true;
                 }
                 return base.TrySerializeKnownTypes(input, out output);

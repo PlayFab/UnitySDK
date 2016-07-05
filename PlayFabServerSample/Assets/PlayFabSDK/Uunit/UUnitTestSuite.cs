@@ -78,6 +78,11 @@ namespace PlayFab.UUnit
             return sb.ToString();
         }
 
+        public TestSuiteReport GetInternalReport()
+        {
+            return _testReport.InternalReport;
+        }
+
         public void FindAndAddAllTestCases(Type parent, string filter = null)
         {
             if (_suiteState != UUnitActiveState.PENDING)
