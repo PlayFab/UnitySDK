@@ -180,7 +180,7 @@ namespace PlayFab.UUnit
             var loginRequest = new LoginWithCustomIDRequest();
             loginRequest.CustomId = PlayFabSettings.BuildIdentifier;
             loginRequest.CreateAccount = true;
-            PlayFabClientAPI.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, LoginCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, LoginCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void LoginCallback(LoginResult result)
         {
@@ -204,7 +204,7 @@ namespace PlayFab.UUnit
             var loginRequest = new LoginWithCustomIDRequest();
             loginRequest.CustomId = PlayFabSettings.BuildIdentifier;
             loginRequest.CreateAccount = true;
-            PlayFabClientAPI.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, AdvertLoginCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, AdvertLoginCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void AdvertLoginCallback(LoginResult result)
         {
@@ -234,7 +234,7 @@ namespace PlayFab.UUnit
             }
 
             var getRequest = new GetUserDataRequest();
-            PlayFabClientAPI.GetUserData(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserDataResult>(testContext, GetUserDataCallback1), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetUserData(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserDataResult>(testContext, GetUserDataCallback1), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void GetUserDataCallback1(GetUserDataResult result)
         {
@@ -253,14 +253,14 @@ namespace PlayFab.UUnit
                     { TEST_DATA_KEY, _testInteger.ToString() }
                 }
             };
-            PlayFabClientAPI.UpdateUserData(updateRequest, PlayFabUUnitUtils.ApiCallbackWrapper<UpdateUserDataResult>(testContext, UpdateUserDataCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.UpdateUserData(updateRequest, PlayFabUUnitUtils.ApiCallbackWrapper<UpdateUserDataResult>(testContext, UpdateUserDataCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void UpdateUserDataCallback(UpdateUserDataResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
             var getRequest = new GetUserDataRequest();
-            PlayFabClientAPI.GetUserData(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserDataResult>(testContext, GetUserDataCallback2), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetUserData(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserDataResult>(testContext, GetUserDataCallback2), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void GetUserDataCallback2(GetUserDataResult result)
         {
@@ -299,7 +299,7 @@ namespace PlayFab.UUnit
             }
 
             var getRequest = new GetUserStatisticsRequest();
-            PlayFabClientAPI.GetUserStatistics(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserStatisticsResult>(testContext, GetUserStatsCallback1), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetUserStatistics(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserStatisticsResult>(testContext, GetUserStatsCallback1), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void GetUserStatsCallback1(GetUserStatisticsResult result)
         {
@@ -316,14 +316,14 @@ namespace PlayFab.UUnit
                     { TEST_DATA_KEY, _testInteger }
                 }
             };
-            PlayFabClientAPI.UpdateUserStatistics(updateRequest, PlayFabUUnitUtils.ApiCallbackWrapper<UpdateUserStatisticsResult>(testContext, UpdateUserStatsCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.UpdateUserStatistics(updateRequest, PlayFabUUnitUtils.ApiCallbackWrapper<UpdateUserStatisticsResult>(testContext, UpdateUserStatsCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void UpdateUserStatsCallback(UpdateUserStatisticsResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
             var getRequest = new GetUserStatisticsRequest();
-            PlayFabClientAPI.GetUserStatistics(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserStatisticsResult>(testContext, GetUserStatsCallback2), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetUserStatistics(getRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetUserStatisticsResult>(testContext, GetUserStatsCallback2), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void GetUserStatsCallback2(GetUserStatisticsResult result)
         {
@@ -347,7 +347,7 @@ namespace PlayFab.UUnit
         {
             var request = new ListUsersCharactersRequest();
             request.PlayFabId = _playFabId; // Received from client upon login
-            PlayFabClientAPI.GetAllUsersCharacters(request, PlayFabUUnitUtils.ApiCallbackWrapper<ListUsersCharactersResult>(testContext, GetCharsCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetAllUsersCharacters(request, PlayFabUUnitUtils.ApiCallbackWrapper<ListUsersCharactersResult>(testContext, GetCharsCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void GetCharsCallback(ListUsersCharactersResult result)
         {
@@ -365,7 +365,7 @@ namespace PlayFab.UUnit
             var clientRequest = new GetLeaderboardRequest();
             clientRequest.MaxResultsCount = 3;
             clientRequest.StatisticName = TEST_STAT_NAME;
-            PlayFabClientAPI.GetLeaderboard(clientRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetLeaderboardResult>(testContext, GetClientLbCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetLeaderboard(clientRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetLeaderboardResult>(testContext, GetClientLbCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void GetClientLbCallback(GetLeaderboardResult result)
         {
@@ -387,7 +387,7 @@ namespace PlayFab.UUnit
             {
                 PlayFabId = _playFabId
             };
-            PlayFabClientAPI.GetAccountInfo(request, PlayFabUUnitUtils.ApiCallbackWrapper<GetAccountInfoResult>(testContext, AcctInfoCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetAccountInfo(request, PlayFabUUnitUtils.ApiCallbackWrapper<GetAccountInfoResult>(testContext, AcctInfoCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void AcctInfoCallback(GetAccountInfoResult result)
         {
@@ -412,7 +412,7 @@ namespace PlayFab.UUnit
             {
                 FunctionName = "helloWorld"
             };
-            PlayFabClientAPI.ExecuteCloudScript(request, PlayFabUUnitUtils.ApiCallbackWrapper<ExecuteCloudScriptResult>(testContext, CloudScriptHwCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.ExecuteCloudScript(request, PlayFabUUnitUtils.ApiCallbackWrapper<ExecuteCloudScriptResult>(testContext, CloudScriptHwCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void CloudScriptHwCallback(ExecuteCloudScriptResult result)
         {
@@ -442,7 +442,7 @@ namespace PlayFab.UUnit
                 }
             };
 
-            PlayFabClientAPI.WritePlayerEvent(request, PlayFabUUnitUtils.ApiCallbackWrapper<WriteEventResponse>(testContext, WriteEventCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.WritePlayerEvent(request, PlayFabUUnitUtils.ApiCallbackWrapper<WriteEventResponse>(testContext, WriteEventCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private void WriteEventCallback(WriteEventResponse result)
         {

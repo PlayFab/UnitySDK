@@ -162,13 +162,13 @@ namespace PlayFab.Internal
                 var errorMessage = ResponseToString(e.Response);
                 if (string.IsNullOrEmpty(errorMessage))
                     errorMessage = e.ToString();
-                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, errorMessage);
+                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, errorMessage, request.CustomData);
                 request.State = CallRequestContainer.RequestState.Error;
             }
             catch (Exception e)
             {
                 Debug.LogException(e); // If it's an unexpected exception, we should log it noisily
-                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, e.ToString());
+                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, e.ToString(), request.CustomData);
                 request.State = CallRequestContainer.RequestState.Error;
             }
         }
@@ -188,7 +188,7 @@ namespace PlayFab.Internal
                     }
                     if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(request.ResultStr))
                     {
-                        request.Error = PlayFabHttp.GeneratePfError(response.StatusCode, PlayFabErrorCode.ServiceUnavailable, "Failed to connect to PlayFab server");
+                        request.Error = PlayFabHttp.GeneratePfError(response.StatusCode, PlayFabErrorCode.ServiceUnavailable, "Failed to connect to PlayFab server", request.CustomData);
                     }
                     request.State = CallRequestContainer.RequestState.RequestReceived;
                 }
@@ -196,13 +196,13 @@ namespace PlayFab.Internal
             catch (WebException e)
             {
                 Debug.LogException(e); // If it's an unexpected exception, we should log it noisily
-                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, e.ToString());
+                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, e.ToString(), request.CustomData);
                 request.State = CallRequestContainer.RequestState.Error;
             }
             catch (Exception e)
             {
                 Debug.LogException(e); // If it's an unexpected exception, we should log it noisily
-                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, e.ToString());
+                request.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, e.ToString(), request.CustomData);
                 request.State = CallRequestContainer.RequestState.Error;
             }
             return true;

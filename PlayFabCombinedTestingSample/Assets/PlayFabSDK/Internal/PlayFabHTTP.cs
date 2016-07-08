@@ -67,7 +67,7 @@ namespace PlayFab.Internal
                 _internalHttp.Update();
         }
 
-        internal static PlayFabError GeneratePfError(HttpStatusCode httpCode, PlayFabErrorCode pfErrorCode, string errorMessage)
+        internal static PlayFabError GeneratePfError(HttpStatusCode httpCode, PlayFabErrorCode pfErrorCode, string errorMessage, object customData)
         {
             string httpCodeStr;
             switch (httpCode)
@@ -89,7 +89,8 @@ namespace PlayFab.Internal
                 HttpStatus = httpCodeStr,
                 Error = pfErrorCode,
                 ErrorMessage = errorMessage,
-                ErrorDetails = null
+                ErrorDetails = null,
+                CustomData = customData
             };
         }
     }
