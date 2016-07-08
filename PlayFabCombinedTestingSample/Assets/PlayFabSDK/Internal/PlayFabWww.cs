@@ -75,7 +75,7 @@ namespace PlayFab.Internal
             requestContainer.Error = null;
             if (!string.IsNullOrEmpty(www.error))
             {
-                requestContainer.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, www.error);
+                requestContainer.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.ServiceUnavailable, PlayFabErrorCode.ServiceUnavailable, www.error, requestContainer.CustomData);
             }
             else
             {
@@ -105,8 +105,7 @@ namespace PlayFab.Internal
                     }
                     catch
                     {
-                        // if this was not a valid GZip response, then send the message back as text to the call back.
-                        requestContainer.Error = PlayFabHttp.GeneratePfError(HttpStatusCode.PreconditionFailed, PlayFabErrorCode.Unknown, www.text);
+                        // If this was not a valid GZip response, then the uncompressed result is probably a valid response
                         finalWwwText = www.text;
                     }
                 }
