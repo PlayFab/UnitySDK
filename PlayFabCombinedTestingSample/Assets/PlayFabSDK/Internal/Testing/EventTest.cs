@@ -151,7 +151,7 @@ namespace PlayFab.Internal
         {
             _listener.Register();
 
-            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestInstCallbacks_GeneralOnlyCallback), null, testContext);
+            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestInstCallbacks_GeneralOnlyCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
             testContext.True(callbacks.Contains("OnRequest_InstGl"), string.Join(", ", callbacks.ToArray()));
             testContext.True(callbacks.Contains("OnRequest_InstLogin"), string.Join(", ", callbacks.ToArray()));
             testContext.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
@@ -173,7 +173,7 @@ namespace PlayFab.Internal
         {
             EventStaticListener.Register();
 
-            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestStaticCallbacks_GeneralOnlyCallback), null, testContext);
+            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestStaticCallbacks_GeneralOnlyCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
             CheckCallbacks(testContext, "OnRequest_StaticGl", callbacks);
             CheckCallbacks(testContext, "OnRequest_StaticLogin", callbacks);
             testContext.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
@@ -197,7 +197,7 @@ namespace PlayFab.Internal
         {
             _listener.Register();
 
-            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestInstCallbacks_LocalCallback), null, testContext);
+            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestInstCallbacks_LocalCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
             CheckCallbacks(testContext, "OnRequest_InstGl", callbacks);
             CheckCallbacks(testContext, "OnRequest_InstLogin", callbacks);
             testContext.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
@@ -220,7 +220,7 @@ namespace PlayFab.Internal
         {
             EventStaticListener.Register();
 
-            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestStaticCallbacks_LocalCallback), SharedErrorCallback, testContext);
+            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" }, PlayFabUUnitUtils.ApiCallbackWrapper<LoginResult>(testContext, TestStaticCallbacks_LocalCallback), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
             CheckCallbacks(testContext, "OnRequest_StaticGl", callbacks);
             CheckCallbacks(testContext, "OnRequest_StaticLogin", callbacks);
             testContext.IntEquals(2, callbacks.Count, string.Join(", ", callbacks.ToArray()));
@@ -249,7 +249,7 @@ namespace PlayFab.Internal
             PlayFabSettings.RegisterForResponses(null, (PlayFabSettings.ResponseCallback<object, PlayFabResultCommon>)SuccessCallback_Global);
 
             GetCatalogItemsRequest catalogRequest = new GetCatalogItemsRequest();
-            PlayFabClientAPI.GetCatalogItems(catalogRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetCatalogItemsResult>(testContext, GetCatalogItemsCallback_Single), SharedErrorCallback, testContext);
+            PlayFabClientAPI.GetCatalogItems(catalogRequest, PlayFabUUnitUtils.ApiCallbackWrapper<GetCatalogItemsResult>(testContext, GetCatalogItemsCallback_Single), PlayFabUUnitUtils.ApiErrorWrapper(testContext, SharedErrorCallback), testContext);
         }
         private static void SuccessCallback_Global(string urlPath, int callId, object request, PlayFabResultCommon result, PlayFabError error, object customData)
         {
