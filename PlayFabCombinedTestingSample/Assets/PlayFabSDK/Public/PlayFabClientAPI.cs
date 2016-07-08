@@ -33,6 +33,8 @@ namespace PlayFab
         public delegate void LoginWithPlayFabResponseCallback(string urlPath, int callId, LoginWithPlayFabRequest request, LoginResult result, PlayFabError error, object customData);
         public delegate void LoginWithSteamRequestCallback(string urlPath, int callId, LoginWithSteamRequest request, object customData);
         public delegate void LoginWithSteamResponseCallback(string urlPath, int callId, LoginWithSteamRequest request, LoginResult result, PlayFabError error, object customData);
+        public delegate void LoginWithTwitchRequestCallback(string urlPath, int callId, LoginWithTwitchRequest request, object customData);
+        public delegate void LoginWithTwitchResponseCallback(string urlPath, int callId, LoginWithTwitchRequest request, LoginResult result, PlayFabError error, object customData);
         public delegate void RegisterPlayFabUserRequestCallback(string urlPath, int callId, RegisterPlayFabUserRequest request, object customData);
         public delegate void RegisterPlayFabUserResponseCallback(string urlPath, int callId, RegisterPlayFabUserRequest request, RegisterPlayFabUserResult result, PlayFabError error, object customData);
         public delegate void AddUsernamePasswordRequestCallback(string urlPath, int callId, AddUsernamePasswordRequest request, object customData);
@@ -51,6 +53,8 @@ namespace PlayFab
         public delegate void GetPlayFabIDsFromKongregateIDsResponseCallback(string urlPath, int callId, GetPlayFabIDsFromKongregateIDsRequest request, GetPlayFabIDsFromKongregateIDsResult result, PlayFabError error, object customData);
         public delegate void GetPlayFabIDsFromSteamIDsRequestCallback(string urlPath, int callId, GetPlayFabIDsFromSteamIDsRequest request, object customData);
         public delegate void GetPlayFabIDsFromSteamIDsResponseCallback(string urlPath, int callId, GetPlayFabIDsFromSteamIDsRequest request, GetPlayFabIDsFromSteamIDsResult result, PlayFabError error, object customData);
+        public delegate void GetPlayFabIDsFromTwitchIDsRequestCallback(string urlPath, int callId, GetPlayFabIDsFromTwitchIDsRequest request, object customData);
+        public delegate void GetPlayFabIDsFromTwitchIDsResponseCallback(string urlPath, int callId, GetPlayFabIDsFromTwitchIDsRequest request, GetPlayFabIDsFromTwitchIDsResult result, PlayFabError error, object customData);
         public delegate void GetUserCombinedInfoRequestCallback(string urlPath, int callId, GetUserCombinedInfoRequest request, object customData);
         public delegate void GetUserCombinedInfoResponseCallback(string urlPath, int callId, GetUserCombinedInfoRequest request, GetUserCombinedInfoResult result, PlayFabError error, object customData);
         public delegate void LinkAndroidDeviceIDRequestCallback(string urlPath, int callId, LinkAndroidDeviceIDRequest request, object customData);
@@ -69,6 +73,8 @@ namespace PlayFab
         public delegate void LinkKongregateResponseCallback(string urlPath, int callId, LinkKongregateAccountRequest request, LinkKongregateAccountResult result, PlayFabError error, object customData);
         public delegate void LinkSteamAccountRequestCallback(string urlPath, int callId, LinkSteamAccountRequest request, object customData);
         public delegate void LinkSteamAccountResponseCallback(string urlPath, int callId, LinkSteamAccountRequest request, LinkSteamAccountResult result, PlayFabError error, object customData);
+        public delegate void LinkTwitchRequestCallback(string urlPath, int callId, LinkTwitchAccountRequest request, object customData);
+        public delegate void LinkTwitchResponseCallback(string urlPath, int callId, LinkTwitchAccountRequest request, LinkTwitchAccountResult result, PlayFabError error, object customData);
         public delegate void ReportPlayerRequestCallback(string urlPath, int callId, ReportPlayerClientRequest request, object customData);
         public delegate void ReportPlayerResponseCallback(string urlPath, int callId, ReportPlayerClientRequest request, ReportPlayerClientResult result, PlayFabError error, object customData);
         public delegate void SendAccountRecoveryEmailRequestCallback(string urlPath, int callId, SendAccountRecoveryEmailRequest request, object customData);
@@ -89,6 +95,8 @@ namespace PlayFab
         public delegate void UnlinkKongregateResponseCallback(string urlPath, int callId, UnlinkKongregateAccountRequest request, UnlinkKongregateAccountResult result, PlayFabError error, object customData);
         public delegate void UnlinkSteamAccountRequestCallback(string urlPath, int callId, UnlinkSteamAccountRequest request, object customData);
         public delegate void UnlinkSteamAccountResponseCallback(string urlPath, int callId, UnlinkSteamAccountRequest request, UnlinkSteamAccountResult result, PlayFabError error, object customData);
+        public delegate void UnlinkTwitchRequestCallback(string urlPath, int callId, UnlinkTwitchAccountRequest request, object customData);
+        public delegate void UnlinkTwitchResponseCallback(string urlPath, int callId, UnlinkTwitchAccountRequest request, UnlinkTwitchAccountResult result, PlayFabError error, object customData);
         public delegate void UpdateUserTitleDisplayNameRequestCallback(string urlPath, int callId, UpdateUserTitleDisplayNameRequest request, object customData);
         public delegate void UpdateUserTitleDisplayNameResponseCallback(string urlPath, int callId, UpdateUserTitleDisplayNameRequest request, UpdateUserTitleDisplayNameResult result, PlayFabError error, object customData);
         public delegate void GetFriendLeaderboardRequestCallback(string urlPath, int callId, GetFriendLeaderboardRequest request, object customData);
@@ -484,6 +492,28 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using a Twitch access token.
+        /// </summary>
+        public static void LoginWithTwitch(LoginWithTwitchRequest request, PlayFabResultCommon.ProcessApiCallback<LoginResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+            if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
+
+            string serializedJson = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<LoginResult>.HandleResults(requestContainer, resultCallback, errorCallback, LoginWithTwitchResultAction);
+            };
+            PlayFabHttp.Post("/Client/LoginWithTwitch", serializedJson, null, null, callback, request, customData);
+        }
+        public static void LoginWithTwitchResultAction(LoginResult result, CallRequestContainer requestContainer)
+        {
+            _authKey = result.SessionTicket ?? _authKey;
+            MultiStepClientLogin(result.SettingsForUser.NeedsAttribution);
+
+        }
+
+        /// <summary>
         /// Registers a new Playfab user account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. You must supply either a username or an email address.
         /// </summary>
         public static void RegisterPlayFabUser(RegisterPlayFabUserRequest request, PlayFabResultCommon.ProcessApiCallback<RegisterPlayFabUserResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -626,6 +656,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Twitch identifiers. The Twitch identifiers are the IDs for the user accounts, available as "_id" from the Twitch API methods(ex: https://github.com/justintv/Twitch-API/blob/master/v3_resources/users.md#get-usersuser).
+        /// </summary>
+        public static void GetPlayFabIDsFromTwitchIDs(GetPlayFabIDsFromTwitchIDsRequest request, PlayFabResultCommon.ProcessApiCallback<GetPlayFabIDsFromTwitchIDsResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<GetPlayFabIDsFromTwitchIDsResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHttp.Post("/Client/GetPlayFabIDsFromTwitchIDs", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
         /// NOTE: This call will be deprecated soon. For fetching the data for a given user  use GetPlayerCombinedInfo. For looking up users from the client api, we are in the process of adding a new api call. Once that call is ready, this one will be deprecated.  Retrieves all requested data for a user in one unified request. By default, this API returns all  data for the locally signed-in user. The input parameters may be used to limit the data retrieved to any subset of the available data, as well as retrieve the available data for a different user. Note that certain data, including inventory, virtual currency balances, and personally identifying information, may only be retrieved for the locally signed-in user. In the example below, a request is made for the account details, virtual currency balances, and specified user data for the locally signed-in user.
         /// </summary>
         public static void GetUserCombinedInfo(GetUserCombinedInfoRequest request, PlayFabResultCommon.ProcessApiCallback<GetUserCombinedInfoResult> resultCallback, ErrorCallback errorCallback, object customData = null)
@@ -758,6 +803,21 @@ namespace PlayFab
                 ResultContainer<LinkSteamAccountResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHttp.Post("/Client/LinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Links the Twitch account associated with the token to the user's PlayFab account
+        /// </summary>
+        public static void LinkTwitch(LinkTwitchAccountRequest request, PlayFabResultCommon.ProcessApiCallback<LinkTwitchAccountResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<LinkTwitchAccountResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHttp.Post("/Client/LinkTwitch", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
@@ -907,6 +967,21 @@ namespace PlayFab
                 ResultContainer<UnlinkSteamAccountResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
             };
             PlayFabHttp.Post("/Client/UnlinkSteamAccount", serializedJson, "X-Authorization", _authKey, callback, request, customData);
+        }
+
+        /// <summary>
+        /// Unlinks the related Twitch account from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkTwitch(UnlinkTwitchAccountRequest request, PlayFabResultCommon.ProcessApiCallback<UnlinkTwitchAccountResult> resultCallback, ErrorCallback errorCallback, object customData = null)
+        {
+            if (_authKey == null) throw new Exception("Must be logged in to call this method");
+
+            string serializedJson = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
+            Action<CallRequestContainer> callback = delegate(CallRequestContainer requestContainer)
+            {
+                ResultContainer<UnlinkTwitchAccountResult>.HandleResults(requestContainer, resultCallback, errorCallback, null);
+            };
+            PlayFabHttp.Post("/Client/UnlinkTwitch", serializedJson, "X-Authorization", _authKey, callback, request, customData);
         }
 
         /// <summary>
