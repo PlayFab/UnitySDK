@@ -1808,6 +1808,24 @@ namespace PlayFab.ClientModels
         public List<SteamPlayFabIdPair> Data { get; set;}
     }
 
+    public class GetPlayFabIDsFromTwitchIDsRequest
+    {
+
+        /// <summary>
+        /// Array of unique Twitch identifiers (Twitch's _id) for which the title needs to get PlayFab identifiers.
+        /// </summary>
+        public List<string> TwitchIds { get; set;}
+    }
+
+    public class GetPlayFabIDsFromTwitchIDsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Mapping of Twitch identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<TwitchPlayFabIdPair> Data { get; set;}
+    }
+
     public class GetPublisherDataRequest
     {
 
@@ -2462,6 +2480,19 @@ namespace PlayFab.ClientModels
     {
     }
 
+    public class LinkTwitchAccountRequest
+    {
+
+        /// <summary>
+        /// Valid token issued by Twitch
+        /// </summary>
+        public string AccessToken { get; set;}
+    }
+
+    public class LinkTwitchAccountResult : PlayFabResultCommon
+    {
+    }
+
     public class ListUsersCharactersRequest
     {
 
@@ -2803,6 +2834,30 @@ namespace PlayFab.ClientModels
 
         /// <summary>
         /// Automatically create a PlayFab account if one is not currently linked to this Steam account.
+        /// </summary>
+        public bool? CreateAccount { get; set;}
+
+        /// <summary>
+        /// Flags for which pieces of info to return for the user.
+        /// </summary>
+        public GetPlayerCombinedInfoRequestParams InfoRequestParameters { get; set;}
+    }
+
+    public class LoginWithTwitchRequest
+    {
+
+        /// <summary>
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// </summary>
+        public string TitleId { get; set;}
+
+        /// <summary>
+        /// Token issued by Twitch's API for the user.
+        /// </summary>
+        public string AccessToken { get; set;}
+
+        /// <summary>
+        /// Automatically create a PlayFab account if one is not currently linked to this Twitch account.
         /// </summary>
         public bool? CreateAccount { get; set;}
 
@@ -3883,6 +3938,20 @@ namespace PlayFab.ClientModels
         Failed
     }
 
+    public class TwitchPlayFabIdPair
+    {
+
+        /// <summary>
+        /// Unique Twitch identifier for a user.
+        /// </summary>
+        public string TwitchId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Twitch identifier.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
     public class UnlinkAndroidDeviceIDRequest
     {
 
@@ -3959,6 +4028,14 @@ namespace PlayFab.ClientModels
     }
 
     public class UnlinkSteamAccountResult : PlayFabResultCommon
+    {
+    }
+
+    public class UnlinkTwitchAccountRequest
+    {
+    }
+
+    public class UnlinkTwitchAccountResult : PlayFabResultCommon
     {
     }
 
@@ -4239,6 +4316,11 @@ namespace PlayFab.ClientModels
         public UserKongregateInfo KongregateInfo { get; set;}
 
         /// <summary>
+        /// User Twitch account information, if a Twitch account has been linked
+        /// </summary>
+        public UserTwitchInfo TwitchInfo { get; set;}
+
+        /// <summary>
         /// User PSN account information, if a PSN account has been linked
         /// </summary>
         public UserPsnInfo PsnInfo { get; set;}
@@ -4392,7 +4474,8 @@ namespace PlayFab.ClientModels
         GameCenter,
         CustomId,
         XboxLive,
-        Parse
+        Parse,
+        Twitch
     }
 
     public class UserPrivateAccountInfo
@@ -4483,6 +4566,20 @@ namespace PlayFab.ClientModels
         /// boolean indicating whether or not the user is currently banned for a title
         /// </summary>
         public bool? isBanned { get; set;}
+    }
+
+    public class UserTwitchInfo
+    {
+
+        /// <summary>
+        /// Twitch ID
+        /// </summary>
+        public string TwitchId { get; set;}
+
+        /// <summary>
+        /// Twitch Username
+        /// </summary>
+        public string TwitchUserName { get; set;}
     }
 
     public class UserXboxInfo

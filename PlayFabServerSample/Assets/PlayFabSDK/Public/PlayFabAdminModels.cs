@@ -2208,6 +2208,11 @@ namespace PlayFab.AdminModels
         public UserKongregateInfo KongregateInfo { get; set;}
 
         /// <summary>
+        /// User Twitch account information, if a Twitch account has been linked
+        /// </summary>
+        public UserTwitchInfo TwitchInfo { get; set;}
+
+        /// <summary>
         /// User PSN account information, if a PSN account has been linked
         /// </summary>
         public UserPsnInfo PsnInfo { get; set;}
@@ -2375,7 +2380,8 @@ namespace PlayFab.AdminModels
         GameCenter,
         CustomId,
         XboxLive,
-        Parse
+        Parse,
+        Twitch
     }
 
     public class UserPrivateAccountInfo
@@ -2457,6 +2463,20 @@ namespace PlayFab.AdminModels
         /// boolean indicating whether or not the user is currently banned for a title
         /// </summary>
         public bool? isBanned { get; set;}
+    }
+
+    public class UserTwitchInfo
+    {
+
+        /// <summary>
+        /// Twitch ID
+        /// </summary>
+        public string TwitchId { get; set;}
+
+        /// <summary>
+        /// Twitch Username
+        /// </summary>
+        public string TwitchUserName { get; set;}
     }
 
     public class UserXboxInfo
