@@ -1644,6 +1644,16 @@ namespace PlayFab.ServerModels
         /// Unique PlayFab assigned ID for a specific character owned by a user
         /// </summary>
         public string CharacterId { get; set;}
+
+        /// <summary>
+        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
+        /// </summary>
+        public Dictionary<string,string> Data { get; set;}
+
+        /// <summary>
+        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+        /// </summary>
+        public List<string> KeysToRemove { get; set;}
     }
 
     /// <summary>
