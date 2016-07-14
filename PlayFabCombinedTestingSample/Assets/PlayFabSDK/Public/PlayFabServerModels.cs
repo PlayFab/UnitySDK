@@ -600,7 +600,7 @@ namespace PlayFab.ServerModels
         public List<string> PlayFabIds { get; set;}
 
         /// <summary>
-        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a title has been selected.
         /// </summary>
         public string TitleId { get; set;}
     }
@@ -1644,6 +1644,16 @@ namespace PlayFab.ServerModels
         /// Unique PlayFab assigned ID for a specific character owned by a user
         /// </summary>
         public string CharacterId { get; set;}
+
+        /// <summary>
+        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
+        /// </summary>
+        public Dictionary<string,string> Data { get; set;}
+
+        /// <summary>
+        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language constraints.  Use this to delete the keys directly.
+        /// </summary>
+        public List<string> KeysToRemove { get; set;}
     }
 
     /// <summary>
@@ -2807,6 +2817,11 @@ namespace PlayFab.ServerModels
         public UserKongregateInfo KongregateInfo { get; set;}
 
         /// <summary>
+        /// User Twitch account information, if a Twitch account has been linked
+        /// </summary>
+        public UserTwitchInfo TwitchInfo { get; set;}
+
+        /// <summary>
         /// User PSN account information, if a PSN account has been linked
         /// </summary>
         public UserPsnInfo PsnInfo { get; set;}
@@ -2960,7 +2975,8 @@ namespace PlayFab.ServerModels
         GameCenter,
         CustomId,
         XboxLive,
-        Parse
+        Parse,
+        Twitch
     }
 
     public class UserPrivateAccountInfo
@@ -3042,6 +3058,20 @@ namespace PlayFab.ServerModels
         /// boolean indicating whether or not the user is currently banned for a title
         /// </summary>
         public bool? isBanned { get; set;}
+    }
+
+    public class UserTwitchInfo
+    {
+
+        /// <summary>
+        /// Twitch ID
+        /// </summary>
+        public string TwitchId { get; set;}
+
+        /// <summary>
+        /// Twitch Username
+        /// </summary>
+        public string TwitchUserName { get; set;}
     }
 
     public class UserXboxInfo

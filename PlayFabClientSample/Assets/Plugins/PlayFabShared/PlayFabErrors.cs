@@ -232,7 +232,9 @@ namespace PlayFab
         GameServerBuildCountLimitExceeded = 1228,
         VirtualCurrencyCountLimitExceeded = 1229,
         VirtualCurrencyCodeExists = 1230,
-        TitleNewsItemCountLimitExceeded = 1231
+        TitleNewsItemCountLimitExceeded = 1231,
+        InvalidTwitchToken = 1232,
+        TwitchResponseError = 1233
     }
 
     public delegate void ErrorCallback(PlayFabError error);

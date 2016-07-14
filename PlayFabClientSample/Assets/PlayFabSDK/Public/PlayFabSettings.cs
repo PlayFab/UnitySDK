@@ -18,9 +18,9 @@ namespace PlayFab
 
     public static class PlayFabSettings
     {
-        public const string SdkVersion = "0.31.160705";
+        public const string SdkVersion = "0.32.160714";
         public const string BuildIdentifier = "jbuild_unitysdk_1";
-        public const string VersionString = "UnitySDK-0.31.160705";
+        public const string VersionString = "UnitySDK-0.32.160714";
 
         internal static bool HideCallbackErrors = false; // This should only be used by unit-tests that test deliberately throwing errors
         private const string GLOBAL_KEY = "GLOBAL";
