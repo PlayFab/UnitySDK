@@ -484,6 +484,24 @@ namespace PlayFab.ClientModels
         Specific
     }
 
+    /// <summary>
+    /// Collection filter to include and/or exclude collections with certain key-value pairs. The filter generates a collection set defined by Includes rules and then remove collections that matches the Excludes rules. A collection is considered matching a rule if the rule describes a subset of the collection. 
+    /// </summary>
+    [Serializable]
+    public class CollectionFilter
+    {
+
+        /// <summary>
+        /// List of Include rules, with any of which if a collection matches, it is included by the filter, unless it is excluded by one of the Exclude rule
+        /// </summary>
+        public List<Container_Dictionary_String_String> Includes { get; set;}
+
+        /// <summary>
+        /// List of Exclude rules, with any of which if a collection matches, it is excluded by the filter.
+        /// </summary>
+        public List<Container_Dictionary_String_String> Excludes { get; set;}
+    }
+
     [Serializable]
     public class ConfirmPurchaseRequest
     {
@@ -547,6 +565,19 @@ namespace PlayFab.ClientModels
         /// Number of uses remaining on the item.
         /// </summary>
         public int RemainingUses { get; set;}
+    }
+
+    /// <summary>
+    /// A data container
+    /// </summary>
+    [Serializable]
+    public class Container_Dictionary_String_String
+    {
+
+        /// <summary>
+        /// Content of data
+        /// </summary>
+        public Dictionary<string,string> Data { get; set;}
     }
 
     [Serializable]
@@ -740,24 +771,29 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// region to check for game instances
+        /// Region to check for Game Server Instances.
         /// </summary>
         public Region? Region { get; set;}
 
         /// <summary>
-        /// version of build to match against
+        /// Build to match against.
         /// </summary>
         public string BuildVersion { get; set;}
 
         /// <summary>
-        /// game mode to look for (optional)
+        /// Game mode to look for.
         /// </summary>
         public string GameMode { get; set;}
 
         /// <summary>
-        /// statistic name to find statistic-based matches (optional)
+        /// Statistic name to find statistic-based matches.
         /// </summary>
         public string StatisticName { get; set;}
+
+        /// <summary>
+        /// Filter to include and/or exclude Game Server Instances associated with certain tags.
+        /// </summary>
+        public CollectionFilter TagFilter { get; set;}
     }
 
     [Serializable]
@@ -969,7 +1005,7 @@ namespace PlayFab.ClientModels
         public int? MaxPlayers { get; set;}
 
         /// <summary>
-        /// array of strings of current player names on this server (note that these are PlayFab usernames, as opposed to title display names)
+        /// array of current player IDs on this server
         /// </summary>
         public List<string> PlayerUserIds { get; set;}
 
@@ -987,6 +1023,16 @@ namespace PlayFab.ClientModels
         /// game session custom data
         /// </summary>
         public string GameServerData { get; set;}
+
+        /// <summary>
+        /// game session tags
+        /// </summary>
+        public Dictionary<string,string> Tags { get; set;}
+
+        /// <summary>
+        /// last heartbeat of the game server instance, used in external game server provider mode
+        /// </summary>
+        public DateTime? LastHeartbeat { get; set;}
     }
 
     public enum GameInstanceState
@@ -3050,39 +3096,44 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// build version to match against [Note: Required if LobbyId is not specified]
+        /// Build version to match against. [Note: Required if LobbyId is not specified]
         /// </summary>
         public string BuildVersion { get; set;}
 
         /// <summary>
-        /// region to match make against [Note: Required if LobbyId is not specified]
+        /// Region to match make against. [Note: Required if LobbyId is not specified]
         /// </summary>
         public Region? Region { get; set;}
 
         /// <summary>
-        /// game mode to match make against [Note: Required if LobbyId is not specified]
+        /// Game mode to match make against. [Note: Required if LobbyId is not specified]
         /// </summary>
         public string GameMode { get; set;}
 
         /// <summary>
-        /// lobby identifier to match make against (used to select a specific server)
+        /// Lobby identifier to match make against. This is used to select a specific Game Server Instance.
         /// </summary>
         public string LobbyId { get; set;}
 
         /// <summary>
-        /// player statistic to use in finding a match. May be null for no stat-based matching
+        /// Player statistic to use in finding a match. May be null for no stat-based matching.
         /// </summary>
         public string StatisticName { get; set;}
 
         /// <summary>
-        /// character to use for stats based matching. Leave null to use account stats
+        /// Character to use for stats based matching. Leave null to use account stats.
         /// </summary>
         public string CharacterId { get; set;}
 
         /// <summary>
-        /// start a game session if one with an open slot is not found. Defaults to true
+        /// Start a game session if one with an open slot is not found. Defaults to true.
         /// </summary>
         public bool? StartNewIfNoneFound { get; set;}
+
+        /// <summary>
+        /// Filter to include and/or exclude Game Server Instances associated with certain Tags
+        /// </summary>
+        public CollectionFilter TagFilter { get; set;}
 
         /// <summary>
         /// [deprecated]

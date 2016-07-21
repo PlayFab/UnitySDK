@@ -115,7 +115,6 @@ namespace PlayFab
         InvalidReportDate = 1111,
         ReportNotAvailable = 1112,
         DatabaseThroughputExceeded = 1113,
-        InvalidLobbyId = 1114,
         InvalidGameTicket = 1115,
         ExpiredGameTicket = 1116,
         GameTicketDoesNotMatchLobby = 1117,
