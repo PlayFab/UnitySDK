@@ -234,7 +234,8 @@ namespace PlayFab
         VirtualCurrencyCodeExists = 1230,
         TitleNewsItemCountLimitExceeded = 1231,
         InvalidTwitchToken = 1232,
-        TwitchResponseError = 1233
+        TwitchResponseError = 1233,
+        ProfaneDisplayName = 1234
     }
 
     public delegate void ErrorCallback(PlayFabError error);

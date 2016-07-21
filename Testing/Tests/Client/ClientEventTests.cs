@@ -76,7 +76,7 @@ namespace PlayFab.Internal
             _listener.Register();
             PlayFabHttp.ApiProcessingEventHandler += TestInstCallbacks_GeneralOnly_OnGlobalEventHandler;
 
-            var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" };
+            var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = PlayFabSettings.BuildIdentifier, TitleId = "6195" };
             PlayFabClientAPI.LoginWithCustomID(request,
                 PlayFabUUnitUtils.ApiActionWrapper<LoginResult>(testContext, TestInstCallbacks_GeneralOnlyCallback),
                 PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);

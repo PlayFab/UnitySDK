@@ -114,13 +114,12 @@ namespace PlayFab.Internal
                         }
                         else if (regRes != null)
                         {
-                            userSettings = res.SettingsForUser;
+                            userSettings = regRes.SettingsForUser;
                             AuthKey = regRes.SessionTicket;
                         }
 
-                        if (userSettings != null)
+                        if (userSettings != null && AuthKey != null)
                         {
-                            AuthKey = res.SessionTicket;
                             #region Track IDFA
 
 #if !DISABLE_IDFA

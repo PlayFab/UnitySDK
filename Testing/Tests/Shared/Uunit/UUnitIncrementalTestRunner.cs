@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using PlayFab.ClientModels;
 using UnityEngine.UI;
 
 namespace PlayFab.UUnit
@@ -12,6 +14,7 @@ namespace PlayFab.UUnit
         public UUnitTestSuite suite;
         public Text textDisplay = null;
         public string filter;
+        public bool postResultsToCloudscript = true;
 
         public void Start()
         {
@@ -45,16 +48,53 @@ namespace PlayFab.UUnit
             if (suiteFinished)
             {
                 textDisplay.text += "\nThe UUnitRunner gameobject was added to the scene for these tests.  You must manually remove it from your scene.";
-                bool passed = suite.AllTestsPassed();
-                if (!passed)
-                    Debug.LogWarning(summary);
-                else
+                if (suite.AllTestsPassed())
                     Debug.Log(summary);
-                if (autoQuit && !Application.isEditor)
-                    Application.Quit();
-                else if (!passed)
-                    throw new Exception("Not all tests passed.");
+                else
+                    Debug.LogWarning(summary);
+
+                if (postResultsToCloudscript)
+                    PostTestResultsToCloudScript(suite.GetInternalReport());
+                else
+                    OnCloudScriptSubmit(null);
             }
+        }
+
+        public void PostTestResultsToCloudScript(TestSuiteReport testReport)
+        {
+            ExecuteCloudScriptRequest request = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "SaveTestData",
+                FunctionParameter = new Dictionary<string, object> { { "customId", PlayFabSettings.BuildIdentifier }, { "testReport", new[] { testReport } } },
+                GeneratePlayStreamEvent = true
+            };
+            PlayFabClientAPI.ExecuteCloudScript(request, OnCloudScriptSubmit, OnCloudScriptError);
+        }
+
+        public void OnCloudScriptSubmit(ExecuteCloudScriptResult result)
+        {
+            if (postResultsToCloudscript && result != null)
+            {
+                Debug.Log("Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + PlayFabApiTest.PlayFabId);
+                if (result.Logs != null)
+                    foreach (var eachLog in result.Logs)
+                        Debug.Log("Cloud Log: " + eachLog.Message);
+            }
+
+            if (autoQuit && !Application.isEditor)
+                Application.Quit();
+            else if (!suite.AllTestsPassed())
+                throw new Exception("Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier);
+        }
+
+        public void OnCloudScriptError(PlayFabError error)
+        {
+            Debug.LogWarning("Error posting results to Cloud Script:" + error.GenerateErrorReport());
+
+            if (autoQuit && !Application.isEditor)
+                Application.Quit();
+            else if (!suite.AllTestsPassed())
+                throw new Exception("Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier);
         }
     }
 }

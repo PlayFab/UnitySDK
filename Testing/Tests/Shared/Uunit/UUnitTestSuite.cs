@@ -78,14 +78,23 @@ namespace PlayFab.UUnit
             return sb.ToString();
         }
 
+        public TestSuiteReport GetInternalReport()
+        {
+            return _testReport.InternalReport;
+        }
+
         public void FindAndAddAllTestCases(Type parent, string filter = null)
         {
             if (_suiteState != UUnitActiveState.PENDING)
                 throw new Exception("Must add all tests before executing tests.");
 
+#if NETFX_CORE
+            var eachAssembly = typeof(UUnitTestCase).GetTypeInfo().Assembly; // We can only load assemblies known in advance on WSA
+#else
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var eachAssembly in assemblies)
-                FindAndAddAllTestCases(eachAssembly, parent, filter);
+#endif
+            FindAndAddAllTestCases(eachAssembly, parent, filter);
         }
 
         public void FindAndAddAllTestCases(Assembly assembly, Type parent, string filter = null)
@@ -95,8 +104,8 @@ namespace PlayFab.UUnit
 
             var types = assembly.GetTypes();
             foreach (var t in types)
-                if (!t.IsAbstract && t.IsSubclassOf(parent))
-                    AddTestsForType(t, filter);
+                if (!t.GetTypeInfo().IsAbstract && t.GetTypeInfo().IsSubclassOf(parent))
+                    AddTestsForType(t.AsType(), filter);
         }
 
         private void AddTestsForType(Type testCaseType, string filter = null)
@@ -107,7 +116,7 @@ namespace PlayFab.UUnit
             var filterSet = AssembleFilter(filter);
 
             UUnitTestCase newTestCase = null;
-            foreach (var constructorInfo in testCaseType.GetConstructors())
+            foreach (var constructorInfo in testCaseType.GetTypeInfo().GetConstructors())
             {
                 try
                 {
@@ -118,39 +127,47 @@ namespace PlayFab.UUnit
             if (newTestCase == null)
                 throw new Exception(testCaseType.Name + " must have a parameter-less constructor.");
 
-            var methods = testCaseType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            foreach (MethodInfo m in methods)
+            var methods = testCaseType.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            List<object> attributesList = new List<object>();
+            foreach (MethodInfo methodInfo in methods)
             {
-                var attributes = m.GetCustomAttributes(typeof(UUnitTestAttribute), false);
-                if (attributes.Length == 0 || !MatchesFilters(m.Name, filterSet)) // There can only be 1, and we only care about attribute existence (no data on attribute), and it has to match the filter
+                attributesList.Clear();
+                attributesList.AddRange(methodInfo.GetCustomAttributes(typeof(UUnitTestAttribute), false));
+                if (attributesList.Count == 0 || !MatchesFilters(methodInfo.Name, filterSet)) // There can only be 1, and we only care about attribute existence (no data on attribute), and it has to match the filter
                     continue;
 
-                Action<UUnitTestContext> eachTestDelegate;
-                try
-                {
-                    eachTestDelegate = Delegate.CreateDelegate(typeof(Action<UUnitTestContext>), newTestCase, m) as Action<UUnitTestContext>;
-                }
-                catch (Exception e)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(testCaseType.Name).Append(".").Append(m.Name).Append(" must match the test delegate signature: Action<UUnitTestContext>");
-                    sb.Append("\n").Append(e);
-
-                    sb.Append("\nExpected Params: [");
-                    var actionInfo = typeof(Action<UUnitTestContext>).GetMethod("Invoke");
-                    foreach (var param in actionInfo.GetParameters())
-                        sb.Append(param.Name).Append(",");
-                    sb.Append("]");
-
-                    sb.Append("\nActual Params: [");
-                    foreach (var param in m.GetParameters())
-                        sb.Append(param.Name).Append(",");
-                    sb.Append("]");
-                    throw new Exception(sb.ToString());
-                }
+                Action<UUnitTestContext> eachTestDelegate = CreateDelegate<UUnitTestContext>(testCaseType.Name, newTestCase, methodInfo);
                 if (eachTestDelegate != null)
-                    _testContexts.Add(new UUnitTestContext(newTestCase, eachTestDelegate));
+                    _testContexts.Add(new UUnitTestContext(newTestCase, eachTestDelegate, methodInfo.Name));
             }
+        }
+
+        private static Action<T> CreateDelegate<T>(string typeName, object instance, MethodInfo methodInfo)
+        {
+            Action<T> eachTestDelegate;
+            try
+            {
+                eachTestDelegate = methodInfo.CreateDelegate(typeof(Action<T>), instance) as Action<T>;
+            }
+            catch (Exception e)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append(typeName).Append(".").Append(methodInfo.Name).Append(" must match the test delegate signature: Action<T>");
+                sb.Append("\n").Append(e);
+
+                sb.Append("\nExpected Params: [");
+                var actionInfo = typeof(Action<T>).GetMethod("Invoke");
+                foreach (var param in actionInfo.GetParameters())
+                    sb.Append(param.Name).Append(",");
+                sb.Append("]");
+
+                sb.Append("\nActual Params: [");
+                foreach (var param in methodInfo.GetParameters())
+                    sb.Append(param.Name).Append(",");
+                sb.Append("]");
+                throw new Exception(sb.ToString());
+            }
+            return eachTestDelegate;
         }
 
         private HashSet<string> AssembleFilter(string filter)
@@ -210,7 +227,6 @@ namespace PlayFab.UUnit
             if (testsDone && _suiteState == UUnitActiveState.ACTIVE)
             {
                 _suiteState = UUnitActiveState.READY;
-                // PostTestResultsToCloudScript();
                 ManageInstance(null, activeTestInstance); // Ensure that the final test is cleaned up
             }
             return _suiteState == UUnitActiveState.READY;
@@ -288,7 +304,7 @@ namespace PlayFab.UUnit
             testContext.EndTime = now;
             testContext.ActiveState = UUnitActiveState.COMPLETE;
             Wrap(testContext, testContext.TestInstance.TearDown);
-            _testReport.TestComplete(testContext.TestDelegate.Target.GetType().Name + "." + testContext.TestDelegate.Method.Name, testContext.FinishState, (int)(testContext.EndTime - testContext.StartTime).TotalMilliseconds, testContext.TestResultMsg, null);
+            _testReport.TestComplete(testContext.TestDelegate.Target.GetType().Name + "." + testContext.Name, testContext.FinishState, (int)(testContext.EndTime - testContext.StartTime).TotalMilliseconds, testContext.TestResultMsg, null);
         }
     }
 }

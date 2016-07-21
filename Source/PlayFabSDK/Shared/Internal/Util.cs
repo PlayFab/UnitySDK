@@ -66,11 +66,7 @@ namespace PlayFab.Internal
                 Type underType = Nullable.GetUnderlyingType(type);
                 if (underType != null)
                     return DeserializeObject(value, underType);
-#if NETFX_CORE
                 else if (type.GetTypeInfo().IsEnum)
-#else
-                else if (type.IsEnum)
-#endif
                     return Enum.Parse(type, (string)value, true);
                 else if (type == typeof(DateTime))
                 {
@@ -100,11 +96,7 @@ namespace PlayFab.Internal
             /// </summary>
             protected override bool TrySerializeKnownTypes(object input, out object output)
             {
-#if NETFX_CORE
                 if (input.GetType().GetTypeInfo().IsEnum)
-#else
-                if (input.GetType().IsEnum)
-#endif
                 {
                     output = input.ToString();
                     return true;
