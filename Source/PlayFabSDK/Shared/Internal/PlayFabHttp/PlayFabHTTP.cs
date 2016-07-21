@@ -137,9 +137,9 @@ namespace PlayFab.Internal
             {
                 _logger = null;
 #if UNITY_5
-                UnityEngine.Application.logMessageReceivedThreaded -= HandleLogOutput;
+                Application.logMessageReceivedThreaded -= HandleLogOutput;
 #else
-                UniytEngine.Application.RegisterLogCallback(null);
+                Application.RegisterLogCallback(null);
 #endif
             }
         }
@@ -205,9 +205,9 @@ namespace PlayFab.Internal
                 //_logger = new UdpPaperTrailLogger(PlayFabSettings.LoggerHost, PlayFabSettings.LoggerPort);
                 _logger = PlayFabSettings.Logger ?? new PlayFabLogger(PlayFabSettings.LoggerHost, PlayFabSettings.LoggerPort);
 #if UNITY_5
-                UnityEngine.Application.logMessageReceivedThreaded += HandleLogOutput;
+                Application.logMessageReceivedThreaded += HandleLogOutput;
 #else
-                UniytEngine.Application.RegisterLogCallback(HandleLogOutput);
+                Application.RegisterLogCallback(HandleLogOutput);
 #endif
             }
         }

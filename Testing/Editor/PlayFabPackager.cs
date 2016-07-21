@@ -48,15 +48,21 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Testing/iPhoneTestBuild")]
         public static void MakeIPhoneBuild()
         {
-            // PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.IL2CPP, BuildTargetGroup.iOS); // Ideally we should be testing both at some point, but ...
-            PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.Mono2x, BuildTargetGroup.iOS); // Mono2x is traditionally the one with issues, and it's a lot faster to build/test
+#if UNITY_5
+            BuildTarget appleBuildTarget = BuildTarget.iOS;
+#else
+            BuildTarget appleBuildTarget = BuildTarget.iPhone;
+#endif
+
+            // PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.IL2CPP, appleBuildTarget); // Ideally we should be testing both at some point, but ...
+            PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.Mono2x, appleBuildTarget); // Mono2x is traditionally the one with issues, and it's a lot faster to build/test
             var iosPath = Path.Combine(GetBuildPath(), "PlayFabIOS");
             MkDir(GetBuildPath());
             MkDir(iosPath);
 #if UNITY_5
-            BuildPipeline.BuildPlayer(TestScenes, iosPath, BuildTarget.iOS, BuildOptions.None);
+            BuildPipeline.BuildPlayer(TestScenes, iosPath, appleBuildTarget, BuildOptions.None);
 #else
-            BuildPipeline.BuildPlayer(TestScenes, iosPath, BuildTarget.iPhone, BuildOptions.None);
+            BuildPipeline.BuildPlayer(TestScenes, iosPath, appleBuildTarget, BuildOptions.None);
 #endif
         }
 
