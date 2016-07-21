@@ -100,11 +100,17 @@ namespace PlayFab.Internal
             }
 
             _internalRealtime = new PlayFabSignalR();
+            _internalRealtime.AuthToken = _internalHttp.AuthKey;
             _internalRealtime.Start();
             //TODO auto start when authkey is set
-            _internalRealtime.AuthToken = _internalHttp.AuthKey;
+            
             _internalRealtime.OnConnected += onConnected;
+            
+        }
 
+        public static void SubscribeRealtime(string onInvoked, Action<object[]> callbacks)
+        {
+            _internalRealtime.Subscribe(onInvoked, callbacks);
         }
 
         #endregion

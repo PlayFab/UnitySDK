@@ -22,6 +22,7 @@ namespace PlayFab.Internal
         private static readonly string TokenKey = "X-Authentication";
 
         public event Action OnConnected;
+        public event Action OnDisconnected;
         public Action OnConnectionFailed;
 
         private ConnectionState _connState = ConnectionState.Unstarted;
@@ -113,11 +114,13 @@ namespace PlayFab.Internal
 
         private void _ThreadedStartConnection(object tokenValue)
         {
+            
             var _startedConnection = new HubConnection(ConnectionUrl, new Dictionary<string, string>
                                    {
                                        { TokenKey, (string)tokenValue }
                                    });
             var _startedProxy = _startedConnection.CreateProxy(HubName);
+            Debug.Log("started here");
             _startedConnection.Start();
 
             lock (_connLock)
@@ -125,6 +128,7 @@ namespace PlayFab.Internal
                 _proxy = _startedProxy;
                 _connection = _startedConnection;
             }
+            Debug.Log("connected");
         }
 
         public void StopConnetion()

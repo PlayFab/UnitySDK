@@ -80,7 +80,7 @@ namespace PlayFab.Realtime
 
         private static void SetupCallbacks()
         {
-            SignalRController.instance.Subscribe(OnReceiveEventCallbackChannel, data =>
+            PlayFabHttp.SubscribeRealtime(OnReceiveEventCallbackChannel, data =>
             {
                 var notif = PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
 
@@ -93,7 +93,21 @@ namespace PlayFab.Realtime
                     }
                 }
             });
-            SignalRController.instance.OnClosed(OnDisconnected);
+
+            //SignalRController.instance.Subscribe(OnReceiveEventCallbackChannel, data =>
+            //{
+            //    var notif = PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
+
+            //    if (eventHandlers != null)
+            //    {
+            //        Action<PlayStreamNotification> handler;
+            //        if (eventHandlers.TryGetValue(notif.EventName, out handler))
+            //        {
+            //            handler(notif);
+            //        }
+            //    }
+            //});
+            //SignalRController.instance.OnClosed(OnDisconnected);
         }
 
         private static void SendBufferedRequests()
