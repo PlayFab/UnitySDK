@@ -18,6 +18,8 @@ namespace PlayFab.Internal
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
+        private static IPlayFabRealtime _internalRealtime;
+
         private IPlayFabTailLogger _logger; //Removed PaperTrail ( UdpPaperTrailLogger )
         private static PlayFabDataGatherer _gatherer = new PlayFabDataGatherer();
 
@@ -56,7 +58,7 @@ namespace PlayFab.Internal
         }
 
         /// <summary>
-        /// Optional redirect to allow mocking of AuthKey
+        /// Optional redirect to allow mocking of AuthToken
         /// </summary>
         /// <param name="AuthKey"></param>
         public static void SetAuthKey(string AuthKey)
@@ -86,6 +88,27 @@ namespace PlayFab.Internal
 #endif
             _internalHttp.Awake();
         }
+
+
+        #region Realtime
+
+        public static void InitializeRealtime(Action onConnected, Action onFailed)
+        {
+            if (_internalRealtime != null)
+            {
+                return;
+            }
+
+            _internalRealtime = new PlayFabSignalR();
+            _internalRealtime.Start();
+            //TODO auto start when authkey is set
+            _internalRealtime.AuthToken = _internalHttp.AuthKey;
+            _internalRealtime.OnConnected += onConnected;
+
+        }
+
+        #endregion
+
 
         /// <summary>
         /// Internal method for Make API Calls
@@ -152,6 +175,22 @@ namespace PlayFab.Internal
             if (_internalHttp != null)
             {
                 _internalHttp.Update();
+            }
+
+            if (_internalRealtime != null)
+            {
+                _internalRealtime.Update();
+            }
+        }
+
+        /// <summary>
+        /// Monobehaviour OnDestroy method, close realtime connection if enabled.
+        /// </summary>
+        public void OnDestroy()
+        {
+            if (_internalRealtime != null)
+            {
+                _internalRealtime.Close();
             }
         }
 

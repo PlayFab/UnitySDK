@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using SignalR.Client._20.Http;
 using SignalR.Client._20.Infrastructure;
+using UnityEngine;
 
 namespace SignalR.Client._20.Transports
 {
@@ -175,7 +176,7 @@ namespace SignalR.Client._20.Transports
                         }
 
                         //Debug.WriteLine("Giving up on connection initializing.");
-
+                        Debug.Log("stopping");
                         // Stop the connection
                         Stop(connection);
 

@@ -10,46 +10,46 @@ namespace PlayFab.Realtime.Event
     [EventName("character_consumed_item")]
     public class CharacterConsumedItemEvent : EventBase
     {
-        public string ItemId { get; set; }
+        public string ItemId;
 
-        public string ItemInstanceId { get; set; }
+        public string ItemInstanceId;
 
-        public string CatalogVersion { get; set; }
+        public string CatalogVersion;
 
-        public uint? PreviousUsesRemaining { get; set; }
+        public uint? PreviousUsesRemaining;
 
-        public uint? UsesRemaining { get; set; }
+        public uint? UsesRemaining;
 
-        public string TitleId { get; set; }
+        public string TitleId;
 
-        public string PlayerId { get; set; }
-        
+        public string PlayerId;
+
     }
 
     [EventName("player_inventory_item_added")]
     public class PlayerInventoryItemAddedEvent : EventBase
     {
-        public string InstanceId { get; set; }
+        public string InstanceId;
 
-        public string ItemId { get; set; }
+        public string ItemId;
 
-        public string Displayname { get; set; }
+        public string Displayname;
 
-        public string Class { get; set; }
+        public string Class;
 
-        public string CatalogVersion { get; set; }
+        public string CatalogVersion;
 
-        public DateTime? Expiration { get; set; }
+        public DateTime? Expiration;
 
-        public uint? RemainingUses { get; set; }
+        public uint? RemainingUses;
 
-        public string Annotation { get; set; }
+        public string Annotation;
 
-        public string CouponCode { get; set; }
+        public string CouponCode;
 
-        public string[] BundleContents { get; set; }
+        public string[] BundleContents;
 
-        public string TitleId { get; set; }
+        public string TitleId;
     }
 }
 

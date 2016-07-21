@@ -18,23 +18,69 @@ namespace PlayFab.Realtime
         private const string UnregisterFilterRequestName = "UnregisterClientSubscriptionFilter";
         private const string OnReceiveEventCallbackChannel = "OnPushClientEvents";
 
-        private static bool isConnected = false;
-
         private static readonly Dictionary<string, Action<RealtimeConnectionResult>> InvokeBuffer = new Dictionary<string, Action<RealtimeConnectionResult>>();
         private static readonly List<string> SubscribedFilters = new List<string>();
 
         private static readonly Dictionary<string, Action<PlayStreamNotification>> eventHandlers = new Dictionary<string, Action<PlayStreamNotification>>();
 
-        public static string Token { get; set; }
-        public static float TimeOut = 10;
-
         public static event Action OnConnected;
-        public static event Action<RealtimeConnectionResult> OnConnectionFailed;
+        public static event Action OnConnectionFailed;
         public static event Action OnDisconnected;
+
+        private static bool IsConnected = false;
+        
+        public static void Start()
+        {
+            if (IsConnected) return;
+            PlayFabHttp.InitializeRealtime(() =>
+            {
+                if (OnConnected != null)
+                {
+                    OnConnected();
+                }
+
+                SetupCallbacks();
+
+            }, () =>
+            {
+                if (OnConnectionFailed != null)
+                {
+                    OnConnectionFailed();
+                }
+            });
+
+
+
+
+
+
+
+            //SignalRController.instance.AuthToken = Token;
+            //SignalRController.instance.StartConnection(TimeOut);
+            //SignalRController.instance.OnConnected = () =>
+            //{
+            //    IsConnected = true;
+            //    SetupCallbacks();
+            //    SendBufferedRequests();
+
+            //    if (OnConnected != null)
+            //    {
+            //        OnConnected();
+            //    }
+            //};
+            //SignalRController.instance.OnConnectionFailed = () =>
+            //{
+            //    if (OnConnectionFailed != null)
+            //    {
+            //        OnConnectionFailed(new RealtimeConnectionResult { Error = RealtimeConnectionResult.ErrorCode.Unexpected, ErrorMessage = "Failed to connect to server", Success = false });
+            //    }
+            //};
+
+        }
 
         private static void SetupCallbacks()
         {
-            SignalRController.instance.SubscripeFor(OnReceiveEventCallbackChannel, data =>
+            SignalRController.instance.Subscribe(OnReceiveEventCallbackChannel, data =>
             {
                 var notif = PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
 
@@ -48,31 +94,6 @@ namespace PlayFab.Realtime
                 }
             });
             SignalRController.instance.OnClosed(OnDisconnected);
-        }
-
-
-        public static void Start()
-        {
-            SignalRController.instance.StartConnection(Token, TimeOut);
-            SignalRController.instance.OnConnected = () =>
-            {
-                isConnected = true;
-                SetupCallbacks();
-                SendBufferedRequests();
-
-                if (OnConnected != null)
-                {
-                    OnConnected();
-                }
-            };
-            SignalRController.instance.OnConnectionFailed = () =>
-            {
-                if (OnConnectionFailed != null)
-                {
-                    OnConnectionFailed(new RealtimeConnectionResult { Error = RealtimeConnectionResult.ErrorCode.Unexpected, ErrorMessage = "Failed to connect to server", Success = false });
-                }
-            };
-
         }
 
         private static void SendBufferedRequests()
@@ -89,7 +110,7 @@ namespace PlayFab.Realtime
             {
                 var attrs = typeof(TEvent).GetCustomAttributes(typeof(EventNameAttribute), false);
                 if (attrs.Length != 0)
-                    eventName = ((EventNameAttribute) attrs[0]).EventName;
+                    eventName = ((EventNameAttribute)attrs[0]).EventName;
                 else
                 {
                     eventName = typeof(TEvent).Name;
@@ -127,7 +148,7 @@ namespace PlayFab.Realtime
 
         public static void Subscribe(string filterName, Action<RealtimeConnectionResult> callback = null)
         {
-            if (!isConnected)
+            if (!IsConnected)
             {
                 AddQueue(filterName, callback);
                 return;
@@ -174,7 +195,7 @@ namespace PlayFab.Realtime
 
         public static void Unsubscribe(Action<RealtimeConnectionResult> callback = null)
         {
-            if (!isConnected)
+            if (!IsConnected)
             {
                 InvokeBuffer.Clear();
                 return;

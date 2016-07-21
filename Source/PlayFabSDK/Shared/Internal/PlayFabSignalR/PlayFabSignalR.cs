@@ -1,6 +1,4 @@
-﻿#if ENABLE_PLAYSTREAM_REALTIME
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using SignalR.Client._20.Hubs;
@@ -8,7 +6,7 @@ using UnityEngine;
 
 namespace PlayFab.Internal
 {
-    public class SignalRController : SingletonMonoBehaviour<SignalRController>
+    public class PlayFabSignalR : IPlayFabRealtime
     {
         private enum ConnectionState
         {
@@ -23,9 +21,7 @@ namespace PlayFab.Internal
         private static readonly string HubName = "SubscriptionHub";
         private static readonly string TokenKey = "X-Authentication";
 
-        private static float ConnectionTimeout { get; set; }
-
-        public Action OnConnected;
+        public event Action OnConnected;
         public Action OnConnectionFailed;
 
         private ConnectionState _connState = ConnectionState.Unstarted;
@@ -35,8 +31,30 @@ namespace PlayFab.Internal
 
         private Thread _startThread;
         private DateTime _startTime;
+        public TimeSpan ConnectionTimeout { get; set; }
+        public string AuthToken { get; set; }
 
-        public string AuthKey { get; set; }
+        public void Start()
+        {
+            if (_connState != ConnectionState.Unstarted)
+            {
+                return;
+            }
+
+            _connState = ConnectionState.Pending;
+            _startTime = DateTime.UtcNow;
+
+            _startThread = new Thread(_ThreadedStartConnection);
+            _startThread.Start(AuthToken);
+        }
+
+        public void Close()
+        {
+            if (_connection != null)
+                _connection.Stop();
+            lock (ResultQueue)
+                ResultQueue.Clear();
+        }
 
         public void Update()
         {
@@ -72,7 +90,7 @@ namespace PlayFab.Internal
 
             if (_connState == ConnectionState.Running || _connState == ConnectionState.Unstarted) return;
 
-            if ((DateTime.UtcNow - _startTime).Seconds > ConnectionTimeout)
+            if ((DateTime.UtcNow - _startTime) > ConnectionTimeout)
             {
                 lock (_connLock)
                 {
@@ -93,25 +111,6 @@ namespace PlayFab.Internal
             }
         }
 
-        public void OnDestroy()
-        {
-            if (_connection != null)
-                _connection.Stop();
-            lock (ResultQueue)
-                ResultQueue.Clear();
-        }
-
-        public void StartConnection(float timeOut)
-        {
-            if (_connState != ConnectionState.Unstarted) return;
-            ConnectionTimeout = timeOut;
-            _connState = ConnectionState.Pending;
-            _startTime = DateTime.UtcNow;
-            
-            _startThread = new Thread(_ThreadedStartConnection);
-            _startThread.Start(AuthKey);
-        }
-
         private void _ThreadedStartConnection(object tokenValue)
         {
             var _startedConnection = new HubConnection(ConnectionUrl, new Dictionary<string, string>
@@ -130,13 +129,23 @@ namespace PlayFab.Internal
 
         public void StopConnetion()
         {
-            lock (_connLock) if (_connection != null) _connection.Stop();
+            lock (_connLock)
+            {
+                if (_connection != null)
+                {
+                    _connection.Stop();
+                }
+            }
+
             _connState = ConnectionState.Unstarted;
         }
 
         public void OnClosed(Action closedAction)
         {
-            lock (_connLock) _connection.Closed += closedAction;
+            lock (_connLock)
+            {
+                _connection.Closed += closedAction;
+            }
         }
 
         public void Subscribe(string methodName, Action<object[]> callback)
@@ -155,7 +164,6 @@ namespace PlayFab.Internal
                 };
             }
         }
-
 
         public void Invoke<T>(string methodName, Action<T> callback, params object[] args)
         {
@@ -181,9 +189,5 @@ namespace PlayFab.Internal
                 }
             };
         }
-
     }
-
 }
-
-#endif
