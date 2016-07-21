@@ -32,14 +32,14 @@ namespace PlayFab.UUnit
         public DateTime StartTime;
         public DateTime EndTime;
         public string TestResultMsg;
+        public string Name;
 
-        public string Name { get { return TestDelegate.Method.Name; } }
-
-        public UUnitTestContext(UUnitTestCase testInstance, Action<UUnitTestContext> testDelegate)
+        public UUnitTestContext(UUnitTestCase testInstance, Action<UUnitTestContext> testDelegate, string name)
         {
             TestInstance = testInstance;
             TestDelegate = testDelegate;
             ActiveState = UUnitActiveState.PENDING;
+            Name = name;
         }
 
         internal void EndTest(UUnitFinishState finishState, string resultMsg)

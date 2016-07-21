@@ -28,7 +28,6 @@ namespace PlayFab.Internal
                 {
                     //create new instance
                     GameObject go = new GameObject(typeof(T).Name);
-                    go.hideFlags = HideFlags.HideAndDontSave;
                     _instance = go.AddComponent<T>();
                 }
                 //initialize instance if necessary

@@ -7,7 +7,6 @@ using System.Reflection;
 
 namespace PlayFab
 {
-
     public class PlayFabDataGatherer
     {
         //Application
@@ -41,9 +40,14 @@ namespace PlayFab
         //GRAPHICS ABILITIES
         public int GraphicsDeviceId;
         public string GraphicsDeviceName;
-        //public enum GraphicsDeviceType { OpenGL2 = 0, Direct3D9 = 1, Direct3D11 = 2, PlayStation3 = 3, Null = 4, Xbox360 = 6, OpenGLES2 = 8, OpenGLES3 = 11, PlayStationVita = 12,
-        //PlayStation4 = 13, XboxOne = 14, PlayStationMobile = 15, Metal = 16, OpenGLCore = 17, Direct3D12 = 18, Nintendo3DS = 19 }
-        public GraphicsDeviceType GraphicsDeviceType;
+#if !UNITY_5
+        public enum GraphicsDeviceType
+        {
+            OpenGL2 = 0, Direct3D9 = 1, Direct3D11 = 2, PlayStation3 = 3, Null = 4, Xbox360 = 6, OpenGLES2 = 8, OpenGLES3 = 11, PlayStationVita = 12,
+            PlayStation4 = 13, XboxOne = 14, PlayStationMobile = 15, Metal = 16, OpenGLCore = 17, Direct3D12 = 18, Nintendo3DS = 19
+        }
+#endif
+        public GraphicsDeviceType GraphicsType;
         public int GraphicsMemorySize;
         public bool GraphicsMultiThreaded;
         public int GraphicsShaderLevel;
@@ -59,12 +63,17 @@ namespace PlayFab
 
         public void GatherData()
         {
-            //Application
+#if UNITY_5
+            // UNITY_5 Application items
             ProductName = Application.productName;
             ProductBundle = Application.bundleIdentifier; //Only Used on iOS & Android
             Version = Application.version;
             Company = Application.companyName;
             Platform = Application.platform;
+            // UNITY_5 Graphics Abilities
+            GraphicsType = SystemInfo.graphicsDeviceType;
+            GraphicsMultiThreaded = SystemInfo.graphicsMultiThreaded;
+#endif
 
             DataPath = Application.dataPath;
             PersistentDataPath = Application.persistentDataPath;
@@ -84,9 +93,7 @@ namespace PlayFab
             //GRAPHICS ABILITIES
             GraphicsDeviceId = SystemInfo.graphicsDeviceID;
             GraphicsDeviceName = SystemInfo.graphicsDeviceName;
-            GraphicsDeviceType = SystemInfo.graphicsDeviceType;
             GraphicsMemorySize = SystemInfo.graphicsMemorySize;
-            GraphicsMultiThreaded = SystemInfo.graphicsMultiThreaded;
             GraphicsShaderLevel = SystemInfo.graphicsShaderLevel;
 
             //SYSTEM INFO
