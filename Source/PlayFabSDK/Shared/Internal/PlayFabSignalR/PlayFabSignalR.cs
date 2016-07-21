@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using System.Threading;
 using SignalR.Client._20.Hubs;
-using UnityEngine;
 
 namespace PlayFab.Internal
 {
     public class PlayFabSignalR : IPlayFabRealtime
     {
-        private enum ConnectionState
-        {
-            Unstarted,
-            Pending,
-            Running
-        }
-
-        private static readonly Queue<Action> ResultQueue = new Queue<Action>();
-        private static readonly Queue<Action> _tempActions = new Queue<Action>();
-        private static readonly string ConnectionUrl = "http://playstreamlive.playfabdev.com/signalr";
-        private static readonly string HubName = "SubscriptionHub";
-        private static readonly string TokenKey = "X-Authentication";
-
         public event Action OnConnected;
         public event Action OnDisconnected;
         public Action OnConnectionFailed;
+
+        public TimeSpan ConnectionTimeout { get; set; }
+        public string AuthToken { get; set; }
+        public string Uri { get; set; }
+        public string Controller { get; set; }
+
+        #region Private
+
+        private const string TokenKey = "X-Authentication";
+
+        private static readonly Queue<Action> ResultQueue = new Queue<Action>();
+        private static readonly Queue<Action> TempActions = new Queue<Action>();
 
         private ConnectionState _connState = ConnectionState.Unstarted;
         private readonly object _connLock = new object();
@@ -32,17 +30,22 @@ namespace PlayFab.Internal
 
         private Thread _startThread;
         private DateTime _startTime;
-        public TimeSpan ConnectionTimeout { get; set; }
-        public string AuthToken { get; set; }
+        
+        #endregion
 
         public void Start()
         {
-            if (_connState != ConnectionState.Unstarted)
+            lock (_connLock)
             {
-                return;
+                if (_connState != ConnectionState.Unstarted)
+                {
+                    return;
+                }
+                _connState = ConnectionState.Pending;
             }
 
-            _connState = ConnectionState.Pending;
+
+
             _startTime = DateTime.UtcNow;
 
             _startThread = new Thread(_ThreadedStartConnection);
@@ -52,9 +55,13 @@ namespace PlayFab.Internal
         public void Close()
         {
             if (_connection != null)
+            {
                 _connection.Stop();
+            }
             lock (ResultQueue)
+            {
                 ResultQueue.Clear();
+            }
         }
 
         public void Update()
@@ -64,13 +71,13 @@ namespace PlayFab.Internal
                 while (ResultQueue.Count > 0)
                 {
                     var actionToQueue = ResultQueue.Dequeue();
-                    _tempActions.Enqueue(actionToQueue);
+                    TempActions.Enqueue(actionToQueue);
                 }
             }
 
-            while (_tempActions.Count > 0)
+            while (TempActions.Count > 0)
             {
-                var finishedRequest = _tempActions.Dequeue();
+                var finishedRequest = TempActions.Dequeue();
                 finishedRequest.Invoke();
             }
 
@@ -86,10 +93,20 @@ namespace PlayFab.Internal
             if (doOnConnectCallback)
             {
                 _connState = ConnectionState.Running;
-                if (OnConnected != null) OnConnected();
+                if (OnConnected != null)
+                {
+                    OnConnected();
+                }
             }
 
-            if (_connState == ConnectionState.Running || _connState == ConnectionState.Unstarted) return;
+            lock (_connLock)
+            {
+                if (_connState == ConnectionState.Running || _connState == ConnectionState.Unstarted)
+                {
+                    return;
+                }
+            }
+
 
             if ((DateTime.UtcNow - _startTime) > ConnectionTimeout)
             {
@@ -106,7 +123,10 @@ namespace PlayFab.Internal
                 if (doOnConnectionFailedCallback)
                 {
                     _connState = ConnectionState.Unstarted;
-                    if (OnConnectionFailed != null) OnConnectionFailed();
+                    if (OnConnectionFailed != null)
+                    {
+                        OnConnectionFailed();
+                    }
                 }
 
             }
@@ -114,21 +134,21 @@ namespace PlayFab.Internal
 
         private void _ThreadedStartConnection(object tokenValue)
         {
-            
-            var _startedConnection = new HubConnection(ConnectionUrl, new Dictionary<string, string>
+
+            var startedConnection = new HubConnection(Uri, new Dictionary<string, string>
                                    {
                                        { TokenKey, (string)tokenValue }
                                    });
-            var _startedProxy = _startedConnection.CreateProxy(HubName);
-            Debug.Log("started here");
-            _startedConnection.Start();
+            var startedProxy = startedConnection.CreateProxy(Controller);
+            //TODO add timeout
+            ConnectionTimeout = TimeSpan.FromMinutes(3);
+            startedConnection.Start();
 
             lock (_connLock)
             {
-                _proxy = _startedProxy;
-                _connection = _startedConnection;
+                _proxy = startedProxy;
+                _connection = startedConnection;
             }
-            Debug.Log("connected");
         }
 
         public void StopConnetion()
@@ -139,9 +159,8 @@ namespace PlayFab.Internal
                 {
                     _connection.Stop();
                 }
+                _connState = ConnectionState.Unstarted;
             }
-
-            _connState = ConnectionState.Unstarted;
         }
 
         public void OnClosed(Action closedAction)
@@ -154,18 +173,20 @@ namespace PlayFab.Internal
 
         public void Subscribe(string methodName, Action<object[]> callback)
         {
+            Action<object[]> onData = objs =>
+            {
+                lock (ResultQueue)
+                {
+                    ResultQueue.Enqueue(() =>
+                    {
+                        callback(objs);
+                    });
+                }
+            };
+
             lock (_connLock)
             {
-                _proxy.Subscribe(methodName).Data += objs =>
-                {
-                    lock (ResultQueue)
-                    {
-                        ResultQueue.Enqueue(() =>
-                        {
-                            callback(objs);
-                        });
-                    }
-                };
+                _proxy.Subscribe(methodName).Data += onData;
             }
         }
 
@@ -192,6 +213,13 @@ namespace PlayFab.Internal
                     ResultQueue.Enqueue(callback);
                 }
             };
+        }
+
+        private enum ConnectionState
+        {
+            Unstarted,
+            Pending,
+            Running
         }
     }
 }

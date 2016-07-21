@@ -10,37 +10,40 @@ using UnityEngine;
 namespace PlayFab.Realtime
 {
     /// <summary>
-    /// APIs which provide the full range of PlayFab features available to the client - authentication, account and data management, inventory, friends, matchmaking, reporting, and platform-specific functionality
+    /// APIs which provide realtime PlayStream events subscription services - invoke subscription of Actions in PlayStream on GameManager, listen to specific types of PlayStream events.
+    /// To define an Action that sends PlayStream events to clients, go to https://developer.playfab.com/en-us/[your_title]/event-actions
     /// </summary>
     public static class PlayFabRealtimeAPI
     {
+
+        private static readonly string ConnectionUrl = "http://playstreamlive.playfabdev.com/signalr";
+        private static readonly string HubName = "SubscriptionHub";
         private const string RegisterFilterRequestName = "RegisterClientSubscriptionFilter";
         private const string UnregisterFilterRequestName = "UnregisterClientSubscriptionFilter";
         private const string OnReceiveEventCallbackChannel = "OnPushClientEvents";
 
-        private static readonly Dictionary<string, Action<RealtimeConnectionResult>> InvokeBuffer = new Dictionary<string, Action<RealtimeConnectionResult>>();
-        private static readonly List<string> SubscribedFilters = new List<string>();
+        private static readonly Dictionary<string, Action<RealtimeConnectionResult>> RequestsOfflineCache = new Dictionary<string, Action<RealtimeConnectionResult>>();
 
-        private static readonly Dictionary<string, Action<PlayStreamNotification>> eventHandlers = new Dictionary<string, Action<PlayStreamNotification>>();
+        private static bool _isConnected = false;
+        private static readonly List<string> SubscribedFilters = new List<string>();
+        private static readonly Dictionary<string, Action<PlayStreamNotification>> RegisteredHandlers = new Dictionary<string, Action<PlayStreamNotification>>();
 
         public static event Action OnConnected;
         public static event Action OnConnectionFailed;
         public static event Action OnDisconnected;
 
-        private static bool IsConnected = false;
-        
         public static void Start()
         {
-            if (IsConnected) return;
-            PlayFabHttp.InitializeRealtime(() =>
+            if (_isConnected) return;
+            PlayFabHttp.InitializeRealtime(ConnectionUrl, HubName, () =>
             {
                 if (OnConnected != null)
                 {
                     OnConnected();
                 }
-
+                _isConnected = true;
                 SetupCallbacks();
-
+                SendBufferedRequests();
             }, () =>
             {
                 if (OnConnectionFailed != null)
@@ -48,12 +51,6 @@ namespace PlayFab.Realtime
                     OnConnectionFailed();
                 }
             });
-
-
-
-
-
-
 
             //SignalRController.instance.AuthToken = Token;
             //SignalRController.instance.StartConnection(TimeOut);
@@ -78,44 +75,116 @@ namespace PlayFab.Realtime
 
         }
 
-        private static void SetupCallbacks()
+        public static void Stop()
         {
-            PlayFabHttp.SubscribeRealtime(OnReceiveEventCallbackChannel, data =>
-            {
-                var notif = PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
+            PlayFabHttp.StopRealtime();
+        }
 
-                if (eventHandlers != null)
+        public static void InvokeSubscriptionRequest(string filterName, Action<RealtimeConnectionResult> callback = null)
+        {
+            if (!_isConnected)
+            {
+                AddQueue(filterName, callback);
+                return;
+            }
+
+            if (SubscribedFilters.Contains(filterName)) return;
+
+            if (string.IsNullOrEmpty(filterName))
+            {
+                if (callback == null) return;
+                callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Empty Params" });
+                return;
+            }
+
+            PlayFabHttp.InvokeRealtime<string>(RegisterFilterRequestName, result =>
+            {
+                if (string.IsNullOrEmpty(result))
                 {
-                    Action<PlayStreamNotification> handler;
-                    if (eventHandlers.TryGetValue(notif.EventName, out handler))
+                    if (callback != null)
                     {
-                        handler(notif);
+                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to get response", Error = RealtimeConnectionResult.ErrorCode.FailedGettingResponse });
+                    }
+                    return;
+                }
+
+                var serverResponse = PlayFabSimpleJson.DeserializeObject<RealtimeConnectionServerResponse>(result);
+                if (serverResponse == null)
+                {
+                    if (callback != null)
+                    {
+                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to parse response", Error = RealtimeConnectionResult.ErrorCode.FailedParsingResponse });
+                    }
+                    return;
+                }
+                if (serverResponse.Success)
+                {
+                    SubscribedFilters.Add(filterName);
+                    RequestsOfflineCache.Remove(filterName);
+                    if (callback != null)
+                    {
+                        callback(new RealtimeConnectionResult { Success = true, ErrorMessage = "", Error = RealtimeConnectionResult.ErrorCode.Ok });
+                    }
+                }
+                else
+                {
+                    if (callback != null)
+                    {
+                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = serverResponse.Detail, Error = RealtimeConnectionResult.ErrorCode.Unexpected });
+                    }
+                }
+            }, filterName);
+        }
+
+        public static void InvokeUnsubscriptionRequest(Action<RealtimeConnectionResult> callback = null)
+        {
+            // if the connection has not been established, clear the local cache.
+            if (!_isConnected)
+            {
+                RequestsOfflineCache.Clear();
+                return;
+            }
+
+            if (SubscribedFilters.Count <= 0) return;
+
+            PlayFabHttp.InvokeRealtime<string>(UnregisterFilterRequestName, result =>
+            {
+                if (string.IsNullOrEmpty(result))
+                {
+                    if (callback != null)
+                    {
+                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to get response", Error = RealtimeConnectionResult.ErrorCode.FailedGettingResponse });
+                    }
+                    return;
+                }
+
+                var serverResponse = PlayFabSimpleJson.DeserializeObject<RealtimeConnectionServerResponse>(result);
+                if (serverResponse == null)
+                {
+                    if (callback != null)
+                    {
+                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to parse response: " + result, Error = RealtimeConnectionResult.ErrorCode.FailedParsingResponse });
+                    }
+                    return;
+                }
+
+                if (serverResponse.Success)
+                {
+                    SubscribedFilters.Clear();
+                    if (callback != null)
+                    {
+                        callback(new RealtimeConnectionResult { Success = true, ErrorMessage = "", Error = RealtimeConnectionResult.ErrorCode.Ok });
+                    }
+                }
+                else
+                {
+                    if (callback != null)
+                    {
+                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = serverResponse.Detail, Error = RealtimeConnectionResult.ErrorCode.Unexpected });
                     }
                 }
             });
 
-            //SignalRController.instance.Subscribe(OnReceiveEventCallbackChannel, data =>
-            //{
-            //    var notif = PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
-
-            //    if (eventHandlers != null)
-            //    {
-            //        Action<PlayStreamNotification> handler;
-            //        if (eventHandlers.TryGetValue(notif.EventName, out handler))
-            //        {
-            //            handler(notif);
-            //        }
-            //    }
-            //});
-            //SignalRController.instance.OnClosed(OnDisconnected);
-        }
-
-        private static void SendBufferedRequests()
-        {
-            foreach (var variable in InvokeBuffer)
-            {
-                Subscribe(variable.Key, variable.Value);
-            }
         }
 
         public static void RegisterHandler<TEvent>(Action<TEvent> callback, string eventName = null) where TEvent : EventBase, new()
@@ -144,136 +213,72 @@ namespace PlayFab.Realtime
                 }
             });
 
-            if (eventHandlers.ContainsKey(eventName))
+            if (RegisteredHandlers.ContainsKey(eventName))
             {
-                eventHandlers[eventName] += newCallback;
+                RegisteredHandlers[eventName] += newCallback;
             }
             else
             {
-                eventHandlers.Add(eventName, newCallback);
+                RegisteredHandlers.Add(eventName, newCallback);
             }
 
         }
 
-        public static void StopConnection()
+        private static void SetupCallbacks()
         {
-            SignalRController.instance.StopConnetion();
-        }
-
-        public static void Subscribe(string filterName, Action<RealtimeConnectionResult> callback = null)
-        {
-            if (!IsConnected)
+            PlayFabHttp.SubscribeRealtime(OnReceiveEventCallbackChannel, data =>
             {
-                AddQueue(filterName, callback);
-                return;
-            }
+                var notif = PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
 
-            if (SubscribedFilters.Contains(filterName)) return;
-
-            if (string.IsNullOrEmpty(filterName))
-            {
-                if (callback == null) return;
-                callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Empty Params" });
-                Debug.LogError("Request name cannot be null!");
-                return;
-            }
-
-            SignalRController.instance.Invoke<string>(RegisterFilterRequestName, result =>
-            {
-                if (callback == null) return;
-                if (string.IsNullOrEmpty(result))
+                if (RegisteredHandlers != null)
                 {
-                    callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to get response", Error = RealtimeConnectionResult.ErrorCode.FailedGettingResponse });
-                    return;
-                }
-
-                var serverResponse = PlayFabSimpleJson.DeserializeObject<RealtimeConnectionServerResponse>(result);
-                if (serverResponse == null)
-                {
-                    callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to parse response", Error = RealtimeConnectionResult.ErrorCode.FailedParsingResponse });
-                    return;
-                }
-
-                if (serverResponse.Success)
-                {
-                    SubscribedFilters.Add(filterName);
-                    InvokeBuffer.Remove(filterName);
-                    callback(new RealtimeConnectionResult { Success = true, ErrorMessage = "", Error = RealtimeConnectionResult.ErrorCode.Ok });
-                }
-                else
-                {
-                    callback(new RealtimeConnectionResult { Success = false, ErrorMessage = serverResponse.Detail, Error = RealtimeConnectionResult.ErrorCode.Unexpected });
-                }
-            }, filterName);
-        }
-
-        public static void Unsubscribe(Action<RealtimeConnectionResult> callback = null)
-        {
-            if (!IsConnected)
-            {
-                InvokeBuffer.Clear();
-                return;
-            }
-
-            if (SubscribedFilters.Count <= 0) return;
-
-            SignalRController.instance.Invoke<string>(UnregisterFilterRequestName, result =>
-            {
-                if (callback == null) return;
-                if (string.IsNullOrEmpty(result))
-                {
-                    callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to get response", Error = RealtimeConnectionResult.ErrorCode.FailedGettingResponse });
-                    return;
-                }
-
-                var serverResponse = PlayFabSimpleJson.DeserializeObject<RealtimeConnectionServerResponse>(result);
-                if (serverResponse == null)
-                {
-                    callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to parse response", Error = RealtimeConnectionResult.ErrorCode.FailedParsingResponse });
-                    return;
-                }
-
-                if (serverResponse.Success)
-                {
-                    SubscribedFilters.Clear();
-                    callback(new RealtimeConnectionResult { Success = true, ErrorMessage = "", Error = RealtimeConnectionResult.ErrorCode.Ok });
-                }
-                else
-                {
-                    callback(new RealtimeConnectionResult { Success = false, ErrorMessage = serverResponse.Detail, Error = RealtimeConnectionResult.ErrorCode.Unexpected });
+                    Action<PlayStreamNotification> handler;
+                    if (RegisteredHandlers.TryGetValue(notif.EventName, out handler))
+                    {
+                        handler(notif);
+                    }
                 }
             });
+
+        }
+
+        private static void SendBufferedRequests()
+        {
+            foreach (var variable in RequestsOfflineCache)
+            {
+                InvokeSubscriptionRequest(variable.Key, variable.Value);
+            }
         }
 
         private static void AddQueue(string filterName, Action<RealtimeConnectionResult> callback)
         {
-            if (InvokeBuffer.ContainsKey(filterName))
+            if (RequestsOfflineCache.ContainsKey(filterName))
             {
-                InvokeBuffer[filterName] = callback;
+                RequestsOfflineCache[filterName] = callback;
             }
             else
             {
-                InvokeBuffer.Add(filterName, callback);
+                RequestsOfflineCache.Add(filterName, callback);
             }
         }
 
         private sealed class RealtimeConnectionServerResponse
         {
             [JsonProperty(PropertyName = "success")]
-            public bool Success { get; set; }
+            public bool Success;
 
             [JsonProperty(PropertyName = "detail")]
-            public string Detail { get; set; }
+            public string Detail;
         }
 
         private sealed class PlayStreamNotification
         {
 
             [JsonProperty(PropertyName = "message")]
-            public object RawMessage { get; set; }
+            public object RawMessage;
 
             [JsonProperty(PropertyName = "eventName")]
-            public string EventName { get; set; }
+            public string EventName;
 
             public TEventData ReadEvent<TEventData>() where TEventData : EventBase
             {

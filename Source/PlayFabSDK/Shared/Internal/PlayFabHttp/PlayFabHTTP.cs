@@ -88,21 +88,18 @@ namespace PlayFab.Internal
 #endif
             _internalHttp.Awake();
         }
-
-
+        
         #region Realtime
 
-        public static void InitializeRealtime(Action onConnected, Action onFailed)
+        public static void InitializeRealtime(string baseUrl, string hubName, Action onConnected, Action onFailed)
         {
             if (_internalRealtime != null)
             {
                 return;
             }
 
-            _internalRealtime = new PlayFabSignalR();
-            _internalRealtime.AuthToken = _internalHttp.AuthKey;
+            _internalRealtime = new PlayFabSignalR { AuthToken = _internalHttp.AuthKey, Controller = hubName, Uri = baseUrl };
             _internalRealtime.Start();
-            //TODO auto start when authkey is set
             
             _internalRealtime.OnConnected += onConnected;
             
@@ -113,8 +110,17 @@ namespace PlayFab.Internal
             _internalRealtime.Subscribe(onInvoked, callbacks);
         }
 
-        #endregion
+        public static void InvokeRealtime<T>(string methodName, Action<T> callback, params object[] args)
+        {
+            _internalRealtime.Invoke<T>(methodName, callback, args);
+        }
 
+        public static void StopRealtime()
+        {
+            _internalRealtime.Close();
+
+        }
+        #endregion
 
         /// <summary>
         /// Internal method for Make API Calls
