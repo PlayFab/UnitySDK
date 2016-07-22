@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if ENABLE_PLAYSTREAM_REALTIME
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using SignalR.Client._20.Hubs;
@@ -8,8 +10,10 @@ namespace PlayFab.Internal
     public class PlayFabSignalR : IPlayFabRealtime
     {
         public event Action OnConnected;
+        public event Action<string> OnReceived;
+        public event Action OnReconnected;
         public event Action OnDisconnected;
-        public Action OnConnectionFailed;
+        public event Action<Exception> OnError;
 
         public TimeSpan ConnectionTimeout { get; set; }
         public string AuthToken { get; set; }
@@ -19,7 +23,7 @@ namespace PlayFab.Internal
         #region Private
 
         private const string TokenKey = "X-Authentication";
-
+        private const float DefaultTimeout = 10000;
         private static readonly Queue<Action> ResultQueue = new Queue<Action>();
         private static readonly Queue<Action> TempActions = new Queue<Action>();
 
@@ -30,7 +34,7 @@ namespace PlayFab.Internal
 
         private Thread _startThread;
         private DateTime _startTime;
-        
+
         #endregion
 
         public void Start()
@@ -43,8 +47,6 @@ namespace PlayFab.Internal
                 }
                 _connState = ConnectionState.Pending;
             }
-
-
 
             _startTime = DateTime.UtcNow;
 
@@ -92,7 +94,11 @@ namespace PlayFab.Internal
             }
             if (doOnConnectCallback)
             {
-                _connState = ConnectionState.Running;
+                lock (_connLock)
+                {
+                    _connState = ConnectionState.Running;
+                }
+                    
                 if (OnConnected != null)
                 {
                     OnConnected();
@@ -106,7 +112,6 @@ namespace PlayFab.Internal
                     return;
                 }
             }
-
 
             if ((DateTime.UtcNow - _startTime) > ConnectionTimeout)
             {
@@ -123,9 +128,9 @@ namespace PlayFab.Internal
                 if (doOnConnectionFailedCallback)
                 {
                     _connState = ConnectionState.Unstarted;
-                    if (OnConnectionFailed != null)
+                    if (OnError != null)
                     {
-                        OnConnectionFailed();
+                        OnError(new TimeoutException("Timeout after " + DefaultTimeout + " ms"));
                     }
                 }
 
@@ -140,16 +145,82 @@ namespace PlayFab.Internal
                                        { TokenKey, (string)tokenValue }
                                    });
             var startedProxy = startedConnection.CreateProxy(Controller);
-            //TODO add timeout
-            ConnectionTimeout = TimeSpan.FromMinutes(3);
+            
+            ConnectionTimeout = TimeSpan.FromMilliseconds(DefaultTimeout);
             startedConnection.Start();
-
+           
             lock (_connLock)
             {
                 _proxy = startedProxy;
                 _connection = startedConnection;
+
+                _connection.Reconnected += ReconnectedAction;
+                _connection.Received += ReceivedAction;
+                _connection.Error += ErrorAction;
+                _connection.Closed += ClosedAction;
             }
         }
+
+        #region Connection callbacks
+
+        private void ReconnectedAction()
+        {
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(() =>
+                {
+                    if (OnReconnected != null)
+                    {
+                        OnReconnected();
+                    }
+                });
+            }
+        }
+
+        private void ReceivedAction(string receivedMsg)
+        {
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(() =>
+                {
+                    if (OnReceived != null)
+                    {
+                        OnReceived(receivedMsg);
+                    }
+                });
+            }
+        }
+
+        private void ErrorAction(Exception ex)
+        {
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(() =>
+                {
+                    if (OnError != null)
+                    {
+                        OnError(ex);
+                    }
+                });
+
+            }
+        }
+
+        private void ClosedAction()
+        {
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(() =>
+                {
+                    if (OnDisconnected != null)
+                    {
+                        OnDisconnected();
+                    }
+                });
+            }
+        }
+
+        #endregion Connection callbacks
 
         public void StopConnetion()
         {
@@ -215,7 +286,7 @@ namespace PlayFab.Internal
             };
         }
 
-        private enum ConnectionState
+        public enum ConnectionState
         {
             Unstarted,
             Pending,
@@ -223,3 +294,5 @@ namespace PlayFab.Internal
         }
     }
 }
+
+#endif

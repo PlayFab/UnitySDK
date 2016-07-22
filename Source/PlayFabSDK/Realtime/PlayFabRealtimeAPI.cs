@@ -11,93 +11,86 @@ namespace PlayFab.Realtime
 {
     /// <summary>
     /// APIs which provide realtime PlayStream events subscription services - invoke subscription of Actions in PlayStream on GameManager, listen to specific types of PlayStream events.
-    /// To define an Action that sends PlayStream events to clients, go to https://developer.playfab.com/en-us/[your_title]/event-actions
     /// </summary>
     public static class PlayFabRealtimeAPI
     {
 
-        private static readonly string ConnectionUrl = "http://playstreamlive.playfabdev.com/signalr";
-        private static readonly string HubName = "SubscriptionHub";
-        private const string RegisterFilterRequestName = "RegisterClientSubscriptionFilter";
-        private const string UnregisterFilterRequestName = "UnregisterClientSubscriptionFilter";
-        private const string OnReceiveEventCallbackChannel = "OnPushClientEvents";
+        #region Private
 
+        private const string ConnectionUrl = "http://playstreamlive.playfabdev.com/signalr";
+        private const string HubName = "SubscriptionHub";
+        private const string RegisterFilterRequestInvocation = "RegisterClientSubscriptionFilter";
+        private const string UnregisterFilterRequestInvocation = "UnregisterClientSubscriptionFilter";
+        private const string OnInvokedCallbackName = "OnPushClientEvents";
+
+        /// <summary>
+        /// A container for all requested subscriptions when the connection has not been established
+        /// </summary>
         private static readonly Dictionary<string, Action<RealtimeConnectionResult>> RequestsOfflineCache = new Dictionary<string, Action<RealtimeConnectionResult>>();
 
         private static bool _isConnected = false;
         private static readonly List<string> SubscribedFilters = new List<string>();
+
+        /// <summary>
+        /// A dictionary of PlayStream events with their handlers, mapped by the event name
+        /// </summary>
         private static readonly Dictionary<string, Action<PlayStreamNotification>> RegisteredHandlers = new Dictionary<string, Action<PlayStreamNotification>>();
+
+        #endregion
 
         public static event Action OnConnected;
         public static event Action OnConnectionFailed;
+        public static event Action OnReconnected;
+        public static event Action<string> OnReceived;
+        public static event Action<Exception> OnError;
         public static event Action OnDisconnected;
 
+        public static bool IsConnected
+        {
+            get { return _isConnected; }
+        }
+
+        /// <summary>
+        /// Start the realtime connection asynchronously.
+        /// </summary>
         public static void Start()
         {
             if (_isConnected) return;
-            PlayFabHttp.InitializeRealtime(ConnectionUrl, HubName, () =>
-            {
-                if (OnConnected != null)
-                {
-                    OnConnected();
-                }
-                _isConnected = true;
-                SetupCallbacks();
-                SendBufferedRequests();
-            }, () =>
-            {
-                if (OnConnectionFailed != null)
-                {
-                    OnConnectionFailed();
-                }
-            });
-
-            //SignalRController.instance.AuthToken = Token;
-            //SignalRController.instance.StartConnection(TimeOut);
-            //SignalRController.instance.OnConnected = () =>
-            //{
-            //    IsConnected = true;
-            //    SetupCallbacks();
-            //    SendBufferedRequests();
-
-            //    if (OnConnected != null)
-            //    {
-            //        OnConnected();
-            //    }
-            //};
-            //SignalRController.instance.OnConnectionFailed = () =>
-            //{
-            //    if (OnConnectionFailed != null)
-            //    {
-            //        OnConnectionFailed(new RealtimeConnectionResult { Error = RealtimeConnectionResult.ErrorCode.Unexpected, ErrorMessage = "Failed to connect to server", Success = false });
-            //    }
-            //};
-
+            PlayFabHttp.InitializeRealtime(ConnectionUrl, HubName, _onConnectedCallback, _onReceivedCallback, _onReconnectedCallback, _onDisconnectedCallback, _onErrorCallback);
         }
 
+        /// <summary>
+        /// Sends a disconnect request to the server and stop the transport.
+        /// </summary>
         public static void Stop()
         {
             PlayFabHttp.StopRealtime();
         }
 
-        public static void InvokeSubscriptionRequest(string filterName, Action<RealtimeConnectionResult> callback = null)
+        /// <summary>
+        /// <para />Invoke a subscription request to signal the server to start streaming playstream events. The name of the action must be defined on GameManager. 
+        /// <para />To define an Action that sends PlayStream events to clients, go to https://developer.playfab.com/en-us/[your_title]/event-actions
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <param name="callback">=</param>
+        public static void InvokeSubscriptionRequest(string actionName, Action<RealtimeConnectionResult> callback = null)
         {
             if (!_isConnected)
             {
-                AddQueue(filterName, callback);
+                RequestsOfflineCache[actionName] = callback;
                 return;
             }
 
-            if (SubscribedFilters.Contains(filterName)) return;
+            if (SubscribedFilters.Contains(actionName)) return;
 
-            if (string.IsNullOrEmpty(filterName))
+            if (string.IsNullOrEmpty(actionName))
             {
                 if (callback == null) return;
                 callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Empty Params" });
                 return;
             }
 
-            PlayFabHttp.InvokeRealtime<string>(RegisterFilterRequestName, result =>
+            PlayFabHttp.InvokeRealtime<string>(RegisterFilterRequestInvocation, result =>
             {
                 if (string.IsNullOrEmpty(result))
                 {
@@ -108,7 +101,7 @@ namespace PlayFab.Realtime
                     return;
                 }
 
-                var serverResponse = PlayFabSimpleJson.DeserializeObject<RealtimeConnectionServerResponse>(result);
+                var serverResponse = PlayFabSimpleJson.DeserializeObject<RequestResponse>(result);
                 if (serverResponse == null)
                 {
                     if (callback != null)
@@ -119,8 +112,8 @@ namespace PlayFab.Realtime
                 }
                 if (serverResponse.Success)
                 {
-                    SubscribedFilters.Add(filterName);
-                    RequestsOfflineCache.Remove(filterName);
+                    SubscribedFilters.Add(actionName);
+                    RequestsOfflineCache.Remove(actionName);
                     if (callback != null)
                     {
                         callback(new RealtimeConnectionResult { Success = true, ErrorMessage = "", Error = RealtimeConnectionResult.ErrorCode.Ok });
@@ -133,12 +126,16 @@ namespace PlayFab.Realtime
                         callback(new RealtimeConnectionResult { Success = false, ErrorMessage = serverResponse.Detail, Error = RealtimeConnectionResult.ErrorCode.Unexpected });
                     }
                 }
-            }, filterName);
+            }, actionName);
         }
 
+        /// <summary>
+        /// <para />Invoke a request to signal the server to stop sending playstream events.
+        /// </summary>
+        /// <param name="callback"></param>
         public static void InvokeUnsubscriptionRequest(Action<RealtimeConnectionResult> callback = null)
         {
-            // if the connection has not been established, clear the local cache.
+            // if the connection has not been established and there are local cache already, clear the local cache.
             if (!_isConnected)
             {
                 RequestsOfflineCache.Clear();
@@ -147,7 +144,7 @@ namespace PlayFab.Realtime
 
             if (SubscribedFilters.Count <= 0) return;
 
-            PlayFabHttp.InvokeRealtime<string>(UnregisterFilterRequestName, result =>
+            PlayFabHttp.InvokeRealtime<string>(UnregisterFilterRequestInvocation, result =>
             {
                 if (string.IsNullOrEmpty(result))
                 {
@@ -158,7 +155,7 @@ namespace PlayFab.Realtime
                     return;
                 }
 
-                var serverResponse = PlayFabSimpleJson.DeserializeObject<RealtimeConnectionServerResponse>(result);
+                var serverResponse = PlayFabSimpleJson.DeserializeObject<RequestResponse>(result);
                 if (serverResponse == null)
                 {
                     if (callback != null)
@@ -173,7 +170,7 @@ namespace PlayFab.Realtime
                     SubscribedFilters.Clear();
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = true, ErrorMessage = "", Error = RealtimeConnectionResult.ErrorCode.Ok });
+                        callback(new RealtimeConnectionResult { Success = true, ErrorMessage = null, Error = RealtimeConnectionResult.ErrorCode.Ok });
                     }
                 }
                 else
@@ -187,7 +184,15 @@ namespace PlayFab.Realtime
 
         }
 
-        public static void RegisterHandler<TEvent>(Action<TEvent> callback, string eventName = null) where TEvent : EventBase, new()
+        /// <summary>
+        /// <para />Event Callback when received PlayStream events from server.
+        /// <para />To define a custom event, inherit it from PlayFab.Realtime.Events.EventBase and add a name as EventNameAttribute, or pass the name as an optional parameter <paramref name="eventName"/> for it to be properly serialized.
+        /// </summary>
+        /// <paramref name="callback"/>
+        /// <typeparam name="TEvent"></typeparam>
+        /// <param name="callback"></param>
+        /// <param name="eventName"></param>
+        public static void Subscribe<TEvent>(Action<TEvent> callback, string eventName = null) where TEvent : EventBase, new()
         {
             if (string.IsNullOrEmpty(eventName))
             {
@@ -224,9 +229,74 @@ namespace PlayFab.Realtime
 
         }
 
-        private static void SetupCallbacks()
+        #region Connection Callbacks
+
+        private static void _onConnectedCallback()
         {
-            PlayFabHttp.SubscribeRealtime(OnReceiveEventCallbackChannel, data =>
+            if (OnConnected != null)
+            {
+                OnConnected();
+            }
+
+            _isConnected = true;
+            foreach (var variable in RequestsOfflineCache)
+            {
+                InvokeSubscriptionRequest(variable.Key, variable.Value);
+            }
+            SubscribeToServer();
+        }
+
+        private static void _onReceivedCallback(string msg)
+        {
+            if (OnReceived != null)
+            {
+                OnReceived(msg);
+            }
+        }
+
+        private static void _onReconnectedCallback()
+        {
+            if (OnReconnected != null)
+            {
+                OnReconnected();
+            }
+        }
+
+        private static void _onDisconnectedCallback()
+        {
+            if (OnDisconnected != null)
+            {
+                OnDisconnected();
+            }
+        }
+
+        private static void _onErrorCallback(Exception ex)
+        {
+            var timeoutEx = ex as TimeoutException;
+            if (timeoutEx != null)
+            {
+                if (OnDisconnected != null)
+                {
+                    OnDisconnected();
+                }
+            }
+            else
+            {
+                if (OnError != null)
+                {
+                    OnError(ex);
+                }
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// <para /> Automatically subscribed to the server when connection is established
+        /// </summary>
+        private static void SubscribeToServer()
+        {
+            PlayFabHttp.SubscribeRealtime(OnInvokedCallbackName, data =>
             {
                 var notif = PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
 
@@ -239,45 +309,30 @@ namespace PlayFab.Realtime
                     }
                 }
             });
-
         }
 
-        private static void SendBufferedRequests()
+        /// <summary>
+        /// Server response when making event listening requests
+        /// </summary>
+        private sealed class RequestResponse
         {
-            foreach (var variable in RequestsOfflineCache)
-            {
-                InvokeSubscriptionRequest(variable.Key, variable.Value);
-            }
-        }
-
-        private static void AddQueue(string filterName, Action<RealtimeConnectionResult> callback)
-        {
-            if (RequestsOfflineCache.ContainsKey(filterName))
-            {
-                RequestsOfflineCache[filterName] = callback;
-            }
-            else
-            {
-                RequestsOfflineCache.Add(filterName, callback);
-            }
-        }
-
-        private sealed class RealtimeConnectionServerResponse
-        {
-            [JsonProperty(PropertyName = "success")]
+            [JsonProperty("success")]
             public bool Success;
 
-            [JsonProperty(PropertyName = "detail")]
+            [JsonProperty("detail")]
             public string Detail;
         }
 
+        /// <summary>
+        /// The server message wrapper for PlayStream events. It is used to deserialize PlayStream events into appropriate types by eventName
+        /// </summary>
         private sealed class PlayStreamNotification
         {
 
-            [JsonProperty(PropertyName = "message")]
+            [JsonProperty("message")]
             public object RawMessage;
 
-            [JsonProperty(PropertyName = "eventName")]
+            [JsonProperty("eventName")]
             public string EventName;
 
             public TEventData ReadEvent<TEventData>() where TEventData : EventBase

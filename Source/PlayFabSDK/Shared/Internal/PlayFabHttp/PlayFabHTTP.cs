@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using PlayFab.Json;
+using PlayFab.UUnit;
 
 namespace PlayFab.Internal
 {
@@ -18,8 +19,9 @@ namespace PlayFab.Internal
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
+#if ENABLE_PLAYSTREAM_REALTIME
         private static IPlayFabRealtime _internalRealtime;
-
+#endif
         private IPlayFabTailLogger _logger; //Removed PaperTrail ( UdpPaperTrailLogger )
         private static PlayFabDataGatherer _gatherer = new PlayFabDataGatherer();
 
@@ -88,10 +90,11 @@ namespace PlayFab.Internal
 #endif
             _internalHttp.Awake();
         }
-        
+
+#if ENABLE_PLAYSTREAM_REALTIME
         #region Realtime
 
-        public static void InitializeRealtime(string baseUrl, string hubName, Action onConnected, Action onFailed)
+        public static void InitializeRealtime(string baseUrl, string hubName, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
         {
             if (_internalRealtime != null)
             {
@@ -102,7 +105,10 @@ namespace PlayFab.Internal
             _internalRealtime.Start();
             
             _internalRealtime.OnConnected += onConnected;
-            
+            _internalRealtime.OnReceived += onReceived;
+            _internalRealtime.OnReconnected += onReconnected;
+            _internalRealtime.OnDisconnected += onDisconnected;
+            _internalRealtime.OnError += onError;
         }
 
         public static void SubscribeRealtime(string onInvoked, Action<object[]> callbacks)
@@ -121,7 +127,7 @@ namespace PlayFab.Internal
 
         }
         #endregion
-
+#endif
         /// <summary>
         /// Internal method for Make API Calls
         /// </summary>
@@ -188,13 +194,15 @@ namespace PlayFab.Internal
             {
                 _internalHttp.Update();
             }
-
+#if ENABLE_PLAYSTREAM_REALTIME
             if (_internalRealtime != null)
             {
                 _internalRealtime.Update();
             }
+#endif
         }
 
+#if ENABLE_PLAYSTREAM_REALTIME
         /// <summary>
         /// Monobehaviour OnDestroy method, close realtime connection if enabled.
         /// </summary>
@@ -205,6 +213,7 @@ namespace PlayFab.Internal
                 _internalRealtime.Close();
             }
         }
+#endif
 
         /// <summary>
         /// Monobehaviour FixedUpdate, logs messages when enabled.

@@ -84,7 +84,6 @@ namespace SignalR.Client._20.Transports
                     return;
                 }
 
-                //Debug.WriteLine("HttpBasedTransport: finished send with raw result {0}", _raw);
                 _returnSignal.OnFinish(PlayFabSimpleJson.DeserializeObject<T>(_raw));
             };
             return _returnSignal;
@@ -162,7 +161,6 @@ namespace SignalR.Client._20.Transports
         {
             timedOut = false;
             disconnected = false;
-            //Debug.WriteLine("HttpBasedTransport: ProcessResponse [{0}]", response);
 
             if (String.IsNullOrEmpty(response))
                 return;
@@ -172,15 +170,12 @@ namespace SignalR.Client._20.Transports
 
             try
             {
-                //var _result = JValue.Parse(response);
                 var _result = PlayFabSimpleJson.DeserializeObject<JsonObject>(response);
 
                 if (!_result.Any())
                     return;
 
-                //timedOut = _result.Value<bool>("TimedOut");
                 timedOut = _result.ContainsKey("TimedOut") && bool.Parse(_result["TimedOut"].ToString());
-                //disconnected = _result.Value<bool>("Disconnect");
                 disconnected = _result.ContainsKey("Disconnect") && bool.Parse(_result["Disconnect"].ToString());
 
                 if (disconnected)
@@ -198,18 +193,23 @@ namespace SignalR.Client._20.Transports
                         }
                         catch (Exception ex)
                         {
-                            //Debug.WriteLine("HttpBasedTransport: ProcessResponse exception in OnReceived event [{0}]", ex.Message);
                             connection.OnError(ex);
                         }
                     }
 
                     connection.MessageId = _result.ContainsKey("C") ? _result["C"].ToString() : "";
 
-                    var _transportData = _result["T"] as JsonObject;
-
-                    if (_transportData != null)
+                    
+                    JsonObject transportData = null;
+                    object triedData;
+                    if (_result.TryGetValue("T", out triedData))
                     {
-                        var groups = (JsonArray)_transportData["G"];
+                        transportData = triedData as JsonObject;
+                    }
+
+                    if (transportData != null)
+                    {
+                        var groups = (JsonArray)transportData["G"];
                         if (groups != null)
                         {
                             var groupList = new List<string>();
@@ -224,7 +224,6 @@ namespace SignalR.Client._20.Transports
             }
             catch (Exception ex)
             {
-                //Debug.WriteLine("HttpBasedTransport: ProcessResponse failed to response: {0}", ex.ToString());
                 connection.OnError(ex);
             }
         }

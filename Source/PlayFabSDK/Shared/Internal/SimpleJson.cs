@@ -74,7 +74,7 @@ namespace PlayFab.Json
     public enum NullValueHandling
     {
         Include, // Include null values when serializing and deserializing objects
-        Ignore // Ignore null values when serializing and deserializing objects
+        Ignore
     }
 
     /// <summary>
@@ -83,8 +83,19 @@ namespace PlayFab.Json
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class JsonProperty : Attribute
     {
-        public string PropertyName = null;
+        public string PropertyName;
+
         public NullValueHandling NullValueHandling = NullValueHandling.Include;
+
+        public JsonProperty()
+        {
+            PropertyName = null;
+        }
+
+        public JsonProperty(string propertyName)
+        {
+            PropertyName = propertyName;
+        }
     }
 
     /// <summary>
