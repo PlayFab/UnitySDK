@@ -26,7 +26,7 @@ namespace PlayFab.Realtime
         /// <summary>
         /// A container for all requested subscriptions when the connection has not been established
         /// </summary>
-        private static readonly Dictionary<string, Action<RealtimeConnectionResult>> RequestsOfflineCache = new Dictionary<string, Action<RealtimeConnectionResult>>();
+        private static readonly Dictionary<string, Action<SubscriptionRequestResponse>> RequestsOfflineCache = new Dictionary<string, Action<SubscriptionRequestResponse>>();
 
         private static bool _isConnected = false;
         private static readonly List<string> SubscribedFilters = new List<string>();
@@ -73,7 +73,7 @@ namespace PlayFab.Realtime
         /// </summary>
         /// <param name="actionName"></param>
         /// <param name="callback">=</param>
-        public static void InvokeSubscriptionRequest(string actionName, Action<RealtimeConnectionResult> callback = null)
+        public static void InvokeSubscriptionRequest(string actionName, Action<SubscriptionRequestResponse> callback = null)
         {
             if (!_isConnected)
             {
@@ -86,7 +86,7 @@ namespace PlayFab.Realtime
             if (string.IsNullOrEmpty(actionName))
             {
                 if (callback == null) return;
-                callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Empty Params" });
+                callback(new SubscriptionRequestResponse { Success = false, ErrorMessage = "Empty Params" });
                 return;
             }
 
@@ -96,7 +96,7 @@ namespace PlayFab.Realtime
                 {
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to get response", Error = RealtimeConnectionResult.ErrorCode.FailedGettingResponse });
+                        callback(new SubscriptionRequestResponse { Success = false, ErrorMessage = "Failed to get response", Error = SubscriptionRequestResponse.ErrorCode.FailedGettingResponse });
                     }
                     return;
                 }
@@ -106,7 +106,7 @@ namespace PlayFab.Realtime
                 {
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to parse response", Error = RealtimeConnectionResult.ErrorCode.FailedParsingResponse });
+                        callback(new SubscriptionRequestResponse { Success = false, ErrorMessage = "Failed to parse response", Error = SubscriptionRequestResponse.ErrorCode.FailedParsingResponse });
                     }
                     return;
                 }
@@ -116,14 +116,14 @@ namespace PlayFab.Realtime
                     RequestsOfflineCache.Remove(actionName);
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = true, ErrorMessage = "", Error = RealtimeConnectionResult.ErrorCode.Ok });
+                        callback(new SubscriptionRequestResponse { Success = true, ErrorMessage = "", Error = SubscriptionRequestResponse.ErrorCode.Ok });
                     }
                 }
                 else
                 {
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = serverResponse.Detail, Error = RealtimeConnectionResult.ErrorCode.Unexpected });
+                        callback(new SubscriptionRequestResponse { Success = false, ErrorMessage = serverResponse.Detail, Error = SubscriptionRequestResponse.ErrorCode.Unexpected });
                     }
                 }
             }, actionName);
@@ -133,7 +133,7 @@ namespace PlayFab.Realtime
         /// <para />Invoke a request to signal the server to stop sending playstream events.
         /// </summary>
         /// <param name="callback"></param>
-        public static void InvokeUnsubscriptionRequest(Action<RealtimeConnectionResult> callback = null)
+        public static void InvokeUnsubscriptionRequest(Action<SubscriptionRequestResponse> callback = null)
         {
             // if the connection has not been established and there are local cache already, clear the local cache.
             if (!_isConnected)
@@ -150,7 +150,7 @@ namespace PlayFab.Realtime
                 {
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to get response", Error = RealtimeConnectionResult.ErrorCode.FailedGettingResponse });
+                        callback(new SubscriptionRequestResponse { Success = false, ErrorMessage = "Failed to get response", Error = SubscriptionRequestResponse.ErrorCode.FailedGettingResponse });
                     }
                     return;
                 }
@@ -160,7 +160,7 @@ namespace PlayFab.Realtime
                 {
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = "Failed to parse response: " + result, Error = RealtimeConnectionResult.ErrorCode.FailedParsingResponse });
+                        callback(new SubscriptionRequestResponse { Success = false, ErrorMessage = "Failed to parse response: " + result, Error = SubscriptionRequestResponse.ErrorCode.FailedParsingResponse });
                     }
                     return;
                 }
@@ -170,14 +170,14 @@ namespace PlayFab.Realtime
                     SubscribedFilters.Clear();
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = true, ErrorMessage = null, Error = RealtimeConnectionResult.ErrorCode.Ok });
+                        callback(new SubscriptionRequestResponse { Success = true, ErrorMessage = null, Error = SubscriptionRequestResponse.ErrorCode.Ok });
                     }
                 }
                 else
                 {
                     if (callback != null)
                     {
-                        callback(new RealtimeConnectionResult { Success = false, ErrorMessage = serverResponse.Detail, Error = RealtimeConnectionResult.ErrorCode.Unexpected });
+                        callback(new SubscriptionRequestResponse { Success = false, ErrorMessage = serverResponse.Detail, Error = SubscriptionRequestResponse.ErrorCode.Unexpected });
                     }
                 }
             });
@@ -343,7 +343,7 @@ namespace PlayFab.Realtime
         }
     }
 
-    public class RealtimeConnectionResult
+    public class SubscriptionRequestResponse
     {
         public enum ErrorCode
         {
