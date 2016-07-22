@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabPackager : MonoBehaviour
+    public static class PlayFabPackager
     {
         private static readonly string[] SdkAssets = {
             "Assets/PlayFabSDK",
