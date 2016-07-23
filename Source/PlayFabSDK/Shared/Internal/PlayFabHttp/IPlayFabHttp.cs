@@ -1,8 +1,8 @@
-﻿using System;
+using System;
+using PlayFab.SharedModels;
 
 namespace PlayFab.Internal
 {
-
     public interface IPlayFabHttp
     {
         string AuthKey { get; set; }
@@ -10,11 +10,12 @@ namespace PlayFab.Internal
         void Awake();
         void Update();
 
-        void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint, TRequestType request,
+        void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,
             string authType,
-            Action<TResultType> resultCallback, Action<PlayFabError> errorCallback, object customData = null);
+            Action<TResult> resultCallback, Action<PlayFabError> errorCallback,
+            object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon;
 
         int GetPendingMessages();
-
     }
 }

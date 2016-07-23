@@ -1,9 +1,10 @@
-using UnityEngine;
+using PlayFab.Json;
+using PlayFab.SharedModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using PlayFab.Json;
+using UnityEngine;
 
 namespace PlayFab.Internal
 {
@@ -14,7 +15,7 @@ namespace PlayFab.Internal
     {
         private static IPlayFabHttp _internalHttp; //This is the default;
         public delegate void ApiProcessingEvent<in TEventArgs>(TEventArgs e);
-        public delegate void ApiProcessErrorEvent(object request, PlayFabError error);
+        public delegate void ApiProcessErrorEvent(PlayFabRequestCommon request, PlayFabError error);
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
@@ -90,8 +91,8 @@ namespace PlayFab.Internal
         /// <summary>
         /// Internal method for Make API Calls
         /// </summary>
-        /// <typeparam name="TRequestType"></typeparam>
-        /// <typeparam name="TResultType"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="api"></param>
         /// <param name="apiEndpoint"></param>
         /// <param name="request"></param>
@@ -99,9 +100,10 @@ namespace PlayFab.Internal
         /// <param name="resultCallback"></param>
         /// <param name="errorCallback"></param>
         /// <param name="customData"></param>
-        protected internal static void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint,
-            TRequestType request, string authType, Action<TResultType> resultCallback,
+        protected internal static void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint,
+            TRequest request, string authType, Action<TResult> resultCallback,
             Action<PlayFabError> errorCallback, object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             InitializeHttp();
             SendEvent(request, null, ApiProcessingEventType.Pre);
@@ -297,7 +299,7 @@ namespace PlayFab.Internal
             };
         }
 
-        protected internal static void SendErrorEvent(object request, PlayFabError error)
+        protected internal static void SendErrorEvent(PlayFabRequestCommon request, PlayFabError error)
         {
             if (ApiProcessingErrorEventHandler == null)
                 return;
@@ -312,7 +314,7 @@ namespace PlayFab.Internal
             }
         }
 
-        protected internal static void SendEvent(object request, object result, ApiProcessingEventType eventType)
+        protected internal static void SendEvent(PlayFabRequestCommon request, PlayFabResultCommon result, ApiProcessingEventType eventType)
         {
             if (ApiProcessingEventHandler == null)
                 return;
@@ -357,16 +359,12 @@ namespace PlayFab.Internal
     public class ApiProcessingEventArgs : EventArgs
     {
         public ApiProcessingEventType EventType { get; set; }
-        public object Request { get; set; }
-        public object Result { get; set; }
+        public PlayFabRequestCommon Request { get; set; }
+        public PlayFabResultCommon Result { get; set; }
 
-        public T GetRequest<T>()
+        public TRequest GetRequest<TRequest>() where TRequest : PlayFabRequestCommon
         {
-            if (typeof(T) == Request.GetType())
-            {
-                return (T)Request;
-            }
-            return default(T);
+            return Request as TRequest;
         }
     }
     #endregion

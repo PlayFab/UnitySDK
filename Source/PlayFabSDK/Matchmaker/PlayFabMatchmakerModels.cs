@@ -7,7 +7,7 @@ using PlayFab.SharedModels;
 namespace PlayFab.MatchmakerModels
 {
     [Serializable]
-    public class AuthUserRequest
+    public class AuthUserRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class PlayerJoinedRequest
+    public class PlayerJoinedRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class PlayerLeftRequest
+    public class PlayerLeftRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class StartGameRequest
+    public class StartGameRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class UserInfoRequest
+    public class UserInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>

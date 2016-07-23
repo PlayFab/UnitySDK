@@ -71,9 +71,10 @@ namespace PlayFab.Internal
             return true;
         }
 
-        public void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint, TRequestType request,
+        public void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,
             string authType,
-            Action<TResultType> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+            Action<TResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
 
             //Build Endpoint
@@ -208,8 +209,9 @@ namespace PlayFab.Internal
             }
         }
 
-        public void Post<TRequestType, TResultType>(CallRequestContainer reqContainer, string urlPath, string data, string authType, string authKey,
-            TRequestType request, Action<TResultType> callBack, Action<PlayFabError> errorCallback)
+        public void Post<TRequest, TResult>(CallRequestContainer reqContainer, string urlPath, string data, string authType, string authKey,
+            TRequest request, Action<TResult> callBack, Action<PlayFabError> errorCallback)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
 
             try
@@ -284,8 +286,9 @@ namespace PlayFab.Internal
 
         }
 
-        public void ProcessHttpResponse<TRequestType, TResultType>(CallRequestContainer reqContainer, TRequestType request, Action<TResultType> callBack,
-            Action<PlayFabError> errorCallback)
+        public void ProcessHttpResponse<TRequest, TResult>(CallRequestContainer reqContainer, TRequest request,
+            Action<TResult> callBack, Action<PlayFabError> errorCallback)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             try
             {
@@ -345,8 +348,9 @@ namespace PlayFab.Internal
             }
         }
 
-        public void ProcessJsonResponse<TRequestType, TResultType>(CallRequestContainer reqContainer, TRequestType request,
-            Action<TResultType> callBack, Action<PlayFabError> errorCallback)
+        public void ProcessJsonResponse<TRequest, TResult>(CallRequestContainer reqContainer, TRequest request,
+            Action<TResult> callBack, Action<PlayFabError> errorCallback)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             try
             {
@@ -399,14 +403,10 @@ namespace PlayFab.Internal
                 }
 
                 var dataJson = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
-                var result = JsonWrapper.DeserializeObject<TResultType>(dataJson, PlayFabUtil.ApiSerializerStrategy);
+                var result = JsonWrapper.DeserializeObject<TResult>(dataJson, PlayFabUtil.ApiSerializerStrategy);
 
-                var resultCommon = result as PlayFabResultCommon;
-                if (resultCommon != null)
-                {
-                    resultCommon.Request = request;
-                    resultCommon.CustomData = reqContainer.CustomData;
-                }
+                result.Request = request;
+                result.CustomData = reqContainer.CustomData;
 
 #if !DISABLE_PLAYFABCLIENT_API
                 UserSettings userSettings = null;

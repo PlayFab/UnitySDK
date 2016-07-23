@@ -24,9 +24,11 @@ namespace PlayFab.Internal
         public void Awake() { }
         public void Update() { }
 
-        public void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint, TRequestType request,
+        public void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,
             string authType,
-            Action<TResultType> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+            Action<TResult> resultCallback, Action<PlayFabError> errorCallback,
+            object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             //serialize the request;
             var req = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
@@ -93,15 +95,10 @@ namespace PlayFab.Internal
                     {
                         //We have a good response from the server
                         var dataJson = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
-                        var result = JsonWrapper.DeserializeObject<TResultType>(dataJson,
-                            PlayFabUtil.ApiSerializerStrategy);
+                        var result = JsonWrapper.DeserializeObject<TResult>(dataJson, PlayFabUtil.ApiSerializerStrategy);
 
-                        var resultCommon = result as PlayFabResultCommon;
-                        if (resultCommon != null)
-                        {
-                            resultCommon.Request = request;
-                            resultCommon.CustomData = customData;
-                        }
+                        result.Request = request;
+                        result.CustomData = customData;
 
 #if !DISABLE_PLAYFABCLIENT_API
                         UserSettings userSettings = null;
