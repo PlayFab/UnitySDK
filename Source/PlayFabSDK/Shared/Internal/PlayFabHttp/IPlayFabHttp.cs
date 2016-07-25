@@ -7,7 +7,7 @@ namespace PlayFab.Internal
     {
         string AuthKey { get; set; }
         string DevKey { get; set; }
-        void Awake();
+        void InitializeHttp();
         void Update();
 
         void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,

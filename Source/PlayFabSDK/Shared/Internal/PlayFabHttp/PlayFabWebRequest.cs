@@ -22,7 +22,7 @@ namespace PlayFab.Internal
 
         private static Thread _RequestQueueThread;
         private static readonly object _ThreadLock = new object();
-        private static TimeSpan _threadKillTimeout = TimeSpan.FromSeconds(5);
+        private static TimeSpan _threadKillTimeout = TimeSpan.FromSeconds(60);
         private static DateTime _threadKillTime = DateTime.UtcNow + _threadKillTimeout; // Kill the thread after 1 minute of inactivity
         private static bool _isApplicationPlaying;
         private static int _activeCallCount;
@@ -31,7 +31,7 @@ namespace PlayFab.Internal
         public string AuthKey { get; set; }
         public string DevKey { get; set; }
 
-        public void Awake()
+        public void InitializeHttp()
         {
             SetupCertificates();
             _isApplicationPlaying = true;
@@ -354,7 +354,7 @@ namespace PlayFab.Internal
         {
             try
             {
-                var httpResult = JsonWrapper.DeserializeObject<PlayFabHttp.HttpResponseObject>(reqContainer.JsonResponse,
+                var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(reqContainer.JsonResponse,
                     PlayFabUtil.ApiSerializerStrategy);
 
 
@@ -527,23 +527,30 @@ namespace PlayFab.Internal
                 {
                     if (responseStream == null)
                         return null;
-                    using (var stream = new System.IO.StreamReader(responseStream))
+                    using (var stream = new StreamReader(responseStream))
                     {
                         return stream.ReadToEnd();
                     }
                 }
-
             }
-            catch (WebException e)
+            catch (WebException webException)
             {
-                using (var responseStream = e.Response.GetResponseStream())
+                try
                 {
-                    if (responseStream == null)
-                        return null;
-                    using (var stream = new System.IO.StreamReader(responseStream))
+                    using (var responseStream = webException.Response.GetResponseStream())
                     {
-                        return stream.ReadToEnd();
+                        if (responseStream == null)
+                            return null;
+                        using (var stream = new StreamReader(responseStream))
+                        {
+                            return stream.ReadToEnd();
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    return null;
                 }
             }
             catch (Exception e)

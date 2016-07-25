@@ -35,7 +35,6 @@ namespace PlayFab.Internal
                     _instance.initialized = true;
                 }
             }
-           
         }
 
         public virtual void Awake ()

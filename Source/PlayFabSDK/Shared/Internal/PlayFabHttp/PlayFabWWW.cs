@@ -16,12 +16,11 @@ namespace PlayFab.Internal
 {
     public class PlayFabWWW : IPlayFabHttp
     {
-        private readonly object _eventLock = new object();
         private int _pendingWwwMessages = 0;
         public string AuthKey { get; set; }
         public string DevKey { get; set; }
 
-        public void Awake() { }
+        public void InitializeHttp() { }
         public void Update() { }
 
         public void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,
@@ -88,7 +87,7 @@ namespace PlayFab.Internal
                     var startTime = DateTime.UtcNow;
 #endif
                     //Debug.Log(response);
-                    var httpResult = JsonWrapper.DeserializeObject<PlayFabHttp.HttpResponseObject>(response,
+                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response,
                         PlayFabUtil.ApiSerializerStrategy);
 
                     if (httpResult.code == 200)
@@ -154,16 +153,13 @@ namespace PlayFab.Internal
                             PlayFabSettings.LogicServerUrl = cloudScriptUrl.Url;
                         }
 #endif
-                        lock (_eventLock)
+                        try
                         {
-                            try
-                            {
-                                PlayFabHttp.SendEvent(request, result, ApiProcessingEventType.Post);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.LogException(e);
-                            }
+                            PlayFabHttp.SendEvent(request, result, ApiProcessingEventType.Post);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
                         }
 
 #if PLAYFAB_REQUEST_TIMING
