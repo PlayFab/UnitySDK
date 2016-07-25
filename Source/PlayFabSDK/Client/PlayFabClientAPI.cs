@@ -28,7 +28,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPhotonAuthenticationTokenRequest, GetPhotonAuthenticationTokenResult>("Client", "/Client/GetPhotonAuthenticationToken", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPhotonAuthenticationToken", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithAndroidDeviceIDRequest, LoginResult>("Client", "/Client/LoginWithAndroidDeviceID", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithAndroidDeviceID", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithCustomIDRequest, LoginResult>("Client", "/Client/LoginWithCustomID", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithCustomID", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithEmailAddressRequest, LoginResult>("Client", "/Client/LoginWithEmailAddress", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithEmailAddress", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithFacebookRequest, LoginResult>("Client", "/Client/LoginWithFacebook", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithFacebook", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithGameCenterRequest, LoginResult>("Client", "/Client/LoginWithGameCenter", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithGameCenter", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithGoogleAccountRequest, LoginResult>("Client", "/Client/LoginWithGoogleAccount", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithGoogleAccount", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithIOSDeviceIDRequest, LoginResult>("Client", "/Client/LoginWithIOSDeviceID", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithIOSDeviceID", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithKongregateRequest, LoginResult>("Client", "/Client/LoginWithKongregate", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithKongregate", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithPlayFabRequest, LoginResult>("Client", "/Client/LoginWithPlayFab", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithPlayFab", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithSteamRequest, LoginResult>("Client", "/Client/LoginWithSteam", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithSteam", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<LoginWithTwitchRequest, LoginResult>("Client", "/Client/LoginWithTwitch", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LoginWithTwitch", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
-            PlayFabHttp.MakeApiCall<RegisterPlayFabUserRequest, RegisterPlayFabUserResult>("Client", "/Client/RegisterPlayFabUser", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/RegisterPlayFabUser", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<AddUsernamePasswordRequest, AddUsernamePasswordResult>("Client", "/Client/AddUsernamePassword", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/AddUsernamePassword", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetAccountInfoRequest, GetAccountInfoResult>("Client", "/Client/GetAccountInfo", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetAccountInfo", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayerCombinedInfoRequest, GetPlayerCombinedInfoResult>("Client", "/Client/GetPlayerCombinedInfo", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayerCombinedInfo", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromFacebookIDsRequest, GetPlayFabIDsFromFacebookIDsResult>("Client", "/Client/GetPlayFabIDsFromFacebookIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayFabIDsFromFacebookIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromGameCenterIDsRequest, GetPlayFabIDsFromGameCenterIDsResult>("Client", "/Client/GetPlayFabIDsFromGameCenterIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayFabIDsFromGameCenterIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromGoogleIDsRequest, GetPlayFabIDsFromGoogleIDsResult>("Client", "/Client/GetPlayFabIDsFromGoogleIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayFabIDsFromGoogleIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromKongregateIDsRequest, GetPlayFabIDsFromKongregateIDsResult>("Client", "/Client/GetPlayFabIDsFromKongregateIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayFabIDsFromKongregateIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromSteamIDsRequest, GetPlayFabIDsFromSteamIDsResult>("Client", "/Client/GetPlayFabIDsFromSteamIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayFabIDsFromSteamIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromTwitchIDsRequest, GetPlayFabIDsFromTwitchIDsResult>("Client", "/Client/GetPlayFabIDsFromTwitchIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayFabIDsFromTwitchIDs", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserCombinedInfoRequest, GetUserCombinedInfoResult>("Client", "/Client/GetUserCombinedInfo", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetUserCombinedInfo", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkAndroidDeviceIDRequest, LinkAndroidDeviceIDResult>("Client", "/Client/LinkAndroidDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkAndroidDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkCustomIDRequest, LinkCustomIDResult>("Client", "/Client/LinkCustomID", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkCustomID", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -290,7 +290,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkFacebookAccountRequest, LinkFacebookAccountResult>("Client", "/Client/LinkFacebookAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkFacebookAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkGameCenterAccountRequest, LinkGameCenterAccountResult>("Client", "/Client/LinkGameCenterAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkGameCenterAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -310,7 +310,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkGoogleAccountRequest, LinkGoogleAccountResult>("Client", "/Client/LinkGoogleAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkGoogleAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -320,7 +320,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkIOSDeviceIDRequest, LinkIOSDeviceIDResult>("Client", "/Client/LinkIOSDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkIOSDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -330,7 +330,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkKongregateAccountRequest, LinkKongregateAccountResult>("Client", "/Client/LinkKongregate", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkKongregate", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkSteamAccountRequest, LinkSteamAccountResult>("Client", "/Client/LinkSteamAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkSteamAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LinkTwitchAccountRequest, LinkTwitchAccountResult>("Client", "/Client/LinkTwitch", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LinkTwitch", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ReportPlayerClientRequest, ReportPlayerClientResult>("Client", "/Client/ReportPlayer", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/ReportPlayer", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace PlayFab
         public static void SendAccountRecoveryEmail(SendAccountRecoveryEmailRequest request, Action<SendAccountRecoveryEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             
-            PlayFabHttp.MakeApiCall<SendAccountRecoveryEmailRequest, SendAccountRecoveryEmailResult>("Client", "/Client/SendAccountRecoveryEmail", request , null, resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/SendAccountRecoveryEmail", request , null, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkAndroidDeviceIDRequest, UnlinkAndroidDeviceIDResult>("Client", "/Client/UnlinkAndroidDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkAndroidDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -389,7 +389,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkCustomIDRequest, UnlinkCustomIDResult>("Client", "/Client/UnlinkCustomID", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkCustomID", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkFacebookAccountRequest, UnlinkFacebookAccountResult>("Client", "/Client/UnlinkFacebookAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkFacebookAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkGameCenterAccountRequest, UnlinkGameCenterAccountResult>("Client", "/Client/UnlinkGameCenterAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkGameCenterAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkGoogleAccountRequest, UnlinkGoogleAccountResult>("Client", "/Client/UnlinkGoogleAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkGoogleAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkIOSDeviceIDRequest, UnlinkIOSDeviceIDResult>("Client", "/Client/UnlinkIOSDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkIOSDeviceID", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkKongregateAccountRequest, UnlinkKongregateAccountResult>("Client", "/Client/UnlinkKongregate", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkKongregate", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkSteamAccountRequest, UnlinkSteamAccountResult>("Client", "/Client/UnlinkSteamAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkSteamAccount", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlinkTwitchAccountRequest, UnlinkTwitchAccountResult>("Client", "/Client/UnlinkTwitch", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlinkTwitch", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -469,7 +469,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserTitleDisplayNameRequest, UpdateUserTitleDisplayNameResult>("Client", "/Client/UpdateUserTitleDisplayName", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdateUserTitleDisplayName", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetFriendLeaderboardRequest, GetLeaderboardResult>("Client", "/Client/GetFriendLeaderboard", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetFriendLeaderboard", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -489,7 +489,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetFriendLeaderboardAroundCurrentUserRequest, GetFriendLeaderboardAroundCurrentUserResult>("Client", "/Client/GetFriendLeaderboardAroundCurrentUser", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetFriendLeaderboardAroundCurrentUser", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -499,7 +499,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetFriendLeaderboardAroundPlayerRequest, GetFriendLeaderboardAroundPlayerResult>("Client", "/Client/GetFriendLeaderboardAroundPlayer", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetFriendLeaderboardAroundPlayer", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardRequest, GetLeaderboardResult>("Client", "/Client/GetLeaderboard", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetLeaderboard", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardAroundCurrentUserRequest, GetLeaderboardAroundCurrentUserResult>("Client", "/Client/GetLeaderboardAroundCurrentUser", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetLeaderboardAroundCurrentUser", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardAroundPlayerRequest, GetLeaderboardAroundPlayerResult>("Client", "/Client/GetLeaderboardAroundPlayer", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetLeaderboardAroundPlayer", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -539,7 +539,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayerStatisticsRequest, GetPlayerStatisticsResult>("Client", "/Client/GetPlayerStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayerStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -549,7 +549,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayerStatisticVersionsRequest, GetPlayerStatisticVersionsResult>("Client", "/Client/GetPlayerStatisticVersions", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayerStatisticVersions", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -559,7 +559,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Client", "/Client/GetUserData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetUserData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -569,7 +569,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Client", "/Client/GetUserPublisherData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetUserPublisherData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -579,7 +579,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Client", "/Client/GetUserPublisherReadOnlyData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetUserPublisherReadOnlyData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -589,7 +589,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Client", "/Client/GetUserReadOnlyData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetUserReadOnlyData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserStatisticsRequest, GetUserStatisticsResult>("Client", "/Client/GetUserStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetUserStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdatePlayerStatisticsRequest, UpdatePlayerStatisticsResult>("Client", "/Client/UpdatePlayerStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdatePlayerStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -619,7 +619,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserDataRequest, UpdateUserDataResult>("Client", "/Client/UpdateUserData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdateUserData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -629,7 +629,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserDataRequest, UpdateUserDataResult>("Client", "/Client/UpdateUserPublisherData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdateUserPublisherData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -639,7 +639,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserStatisticsRequest, UpdateUserStatisticsResult>("Client", "/Client/UpdateUserStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdateUserStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -649,7 +649,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCatalogItemsRequest, GetCatalogItemsResult>("Client", "/Client/GetCatalogItems", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCatalogItems", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -659,7 +659,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPublisherDataRequest, GetPublisherDataResult>("Client", "/Client/GetPublisherData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPublisherData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -669,7 +669,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetStoreItemsRequest, GetStoreItemsResult>("Client", "/Client/GetStoreItems", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetStoreItems", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -679,7 +679,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetTitleDataRequest, GetTitleDataResult>("Client", "/Client/GetTitleData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetTitleData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -689,7 +689,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetTitleNewsRequest, GetTitleNewsResult>("Client", "/Client/GetTitleNews", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetTitleNews", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -699,7 +699,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<AddUserVirtualCurrencyRequest, ModifyUserVirtualCurrencyResult>("Client", "/Client/AddUserVirtualCurrency", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/AddUserVirtualCurrency", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -709,7 +709,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ConfirmPurchaseRequest, ConfirmPurchaseResult>("Client", "/Client/ConfirmPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/ConfirmPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -719,7 +719,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ConsumeItemRequest, ConsumeItemResult>("Client", "/Client/ConsumeItem", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/ConsumeItem", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -729,7 +729,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterInventoryRequest, GetCharacterInventoryResult>("Client", "/Client/GetCharacterInventory", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCharacterInventory", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -739,7 +739,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPurchaseRequest, GetPurchaseResult>("Client", "/Client/GetPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -749,7 +749,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserInventoryRequest, GetUserInventoryResult>("Client", "/Client/GetUserInventory", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetUserInventory", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -759,7 +759,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<PayForPurchaseRequest, PayForPurchaseResult>("Client", "/Client/PayForPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/PayForPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -769,7 +769,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<PurchaseItemRequest, PurchaseItemResult>("Client", "/Client/PurchaseItem", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/PurchaseItem", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -779,7 +779,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<RedeemCouponRequest, RedeemCouponResult>("Client", "/Client/RedeemCoupon", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/RedeemCoupon", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -789,7 +789,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<StartPurchaseRequest, StartPurchaseResult>("Client", "/Client/StartPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/StartPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -799,7 +799,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<SubtractUserVirtualCurrencyRequest, ModifyUserVirtualCurrencyResult>("Client", "/Client/SubtractUserVirtualCurrency", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/SubtractUserVirtualCurrency", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -809,7 +809,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlockContainerInstanceRequest, UnlockContainerItemResult>("Client", "/Client/UnlockContainerInstance", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlockContainerInstance", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -819,7 +819,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlockContainerItemRequest, UnlockContainerItemResult>("Client", "/Client/UnlockContainerItem", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UnlockContainerItem", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -829,7 +829,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<AddFriendRequest, AddFriendResult>("Client", "/Client/AddFriend", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/AddFriend", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -839,7 +839,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetFriendsListRequest, GetFriendsListResult>("Client", "/Client/GetFriendsList", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetFriendsList", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -849,7 +849,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<RemoveFriendRequest, RemoveFriendResult>("Client", "/Client/RemoveFriend", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/RemoveFriend", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -859,7 +859,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<SetFriendTagsRequest, SetFriendTagsResult>("Client", "/Client/SetFriendTags", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/SetFriendTags", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -869,7 +869,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<RegisterForIOSPushNotificationRequest, RegisterForIOSPushNotificationResult>("Client", "/Client/RegisterForIOSPushNotification", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/RegisterForIOSPushNotification", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -879,7 +879,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<RestoreIOSPurchasesRequest, RestoreIOSPurchasesResult>("Client", "/Client/RestoreIOSPurchases", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/RestoreIOSPurchases", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -889,7 +889,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ValidateIOSReceiptRequest, ValidateIOSReceiptResult>("Client", "/Client/ValidateIOSReceipt", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/ValidateIOSReceipt", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -899,7 +899,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<CurrentGamesRequest, CurrentGamesResult>("Client", "/Client/GetCurrentGames", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCurrentGames", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -909,7 +909,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GameServerRegionsRequest, GameServerRegionsResult>("Client", "/Client/GetGameServerRegions", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetGameServerRegions", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -919,7 +919,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<MatchmakeRequest, MatchmakeResult>("Client", "/Client/Matchmake", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/Matchmake", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -929,7 +929,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<StartGameRequest, StartGameResult>("Client", "/Client/StartGame", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/StartGame", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -939,7 +939,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<AndroidDevicePushNotificationRegistrationRequest, AndroidDevicePushNotificationRegistrationResult>("Client", "/Client/AndroidDevicePushNotificationRegistration", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/AndroidDevicePushNotificationRegistration", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -949,7 +949,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ValidateGooglePlayPurchaseRequest, ValidateGooglePlayPurchaseResult>("Client", "/Client/ValidateGooglePlayPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/ValidateGooglePlayPurchase", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -959,7 +959,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<LogEventRequest, LogEventResult>("Client", "/Client/LogEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/LogEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -969,7 +969,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<WriteClientCharacterEventRequest, WriteEventResponse>("Client", "/Client/WriteCharacterEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/WriteCharacterEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -979,7 +979,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<WriteClientPlayerEventRequest, WriteEventResponse>("Client", "/Client/WritePlayerEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/WritePlayerEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -989,7 +989,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<WriteTitleEventRequest, WriteEventResponse>("Client", "/Client/WriteTitleEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/WriteTitleEvent", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -999,7 +999,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<AddSharedGroupMembersRequest, AddSharedGroupMembersResult>("Client", "/Client/AddSharedGroupMembers", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/AddSharedGroupMembers", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1009,7 +1009,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<CreateSharedGroupRequest, CreateSharedGroupResult>("Client", "/Client/CreateSharedGroup", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/CreateSharedGroup", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1019,7 +1019,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetSharedGroupDataRequest, GetSharedGroupDataResult>("Client", "/Client/GetSharedGroupData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetSharedGroupData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1029,7 +1029,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<RemoveSharedGroupMembersRequest, RemoveSharedGroupMembersResult>("Client", "/Client/RemoveSharedGroupMembers", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/RemoveSharedGroupMembers", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1039,7 +1039,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateSharedGroupDataRequest, UpdateSharedGroupDataResult>("Client", "/Client/UpdateSharedGroupData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdateSharedGroupData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1049,7 +1049,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ExecuteCloudScriptRequest, ExecuteCloudScriptResult>("Client", "/Client/ExecuteCloudScript", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/ExecuteCloudScript", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1059,7 +1059,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCloudScriptUrlRequest, GetCloudScriptUrlResult>("Client", "/Client/GetCloudScriptUrl", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCloudScriptUrl", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1069,7 +1069,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<RunCloudScriptRequest, RunCloudScriptResult>("Client", "/Client/RunCloudScript", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/RunCloudScript", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1079,7 +1079,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetContentDownloadUrlRequest, GetContentDownloadUrlResult>("Client", "/Client/GetContentDownloadUrl", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetContentDownloadUrl", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1089,7 +1089,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ListUsersCharactersRequest, ListUsersCharactersResult>("Client", "/Client/GetAllUsersCharacters", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetAllUsersCharacters", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1099,7 +1099,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterLeaderboardRequest, GetCharacterLeaderboardResult>("Client", "/Client/GetCharacterLeaderboard", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCharacterLeaderboard", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1109,7 +1109,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterStatisticsRequest, GetCharacterStatisticsResult>("Client", "/Client/GetCharacterStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCharacterStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1119,7 +1119,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardAroundCharacterRequest, GetLeaderboardAroundCharacterResult>("Client", "/Client/GetLeaderboardAroundCharacter", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetLeaderboardAroundCharacter", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1129,7 +1129,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardForUsersCharactersRequest, GetLeaderboardForUsersCharactersResult>("Client", "/Client/GetLeaderboardForUserCharacters", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetLeaderboardForUserCharacters", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1139,7 +1139,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GrantCharacterToUserRequest, GrantCharacterToUserResult>("Client", "/Client/GrantCharacterToUser", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GrantCharacterToUser", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1149,7 +1149,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateCharacterStatisticsRequest, UpdateCharacterStatisticsResult>("Client", "/Client/UpdateCharacterStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdateCharacterStatistics", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1159,7 +1159,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterDataRequest, GetCharacterDataResult>("Client", "/Client/GetCharacterData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCharacterData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1169,7 +1169,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterDataRequest, GetCharacterDataResult>("Client", "/Client/GetCharacterReadOnlyData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetCharacterReadOnlyData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1179,7 +1179,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateCharacterDataRequest, UpdateCharacterDataResult>("Client", "/Client/UpdateCharacterData", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/UpdateCharacterData", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1189,7 +1189,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<ValidateAmazonReceiptRequest, ValidateAmazonReceiptResult>("Client", "/Client/ValidateAmazonIAPReceipt", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/ValidateAmazonIAPReceipt", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1199,7 +1199,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<AcceptTradeRequest, AcceptTradeResponse>("Client", "/Client/AcceptTrade", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/AcceptTrade", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1209,7 +1209,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<CancelTradeRequest, CancelTradeResponse>("Client", "/Client/CancelTrade", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/CancelTrade", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1219,7 +1219,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayerTradesRequest, GetPlayerTradesResponse>("Client", "/Client/GetPlayerTrades", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetPlayerTrades", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1229,7 +1229,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<GetTradeStatusRequest, GetTradeStatusResponse>("Client", "/Client/GetTradeStatus", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/GetTradeStatus", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1239,7 +1239,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<OpenTradeRequest, OpenTradeResponse>("Client", "/Client/OpenTrade", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/OpenTrade", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1249,7 +1249,7 @@ namespace PlayFab
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall<AttributeInstallRequest, AttributeInstallResult>("Client", "/Client/AttributeInstall", request , "X-Authorization", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Client", "/Client/AttributeInstall", request , "X-Authorization", resultCallback, errorCallback, customData);
         }
 
 

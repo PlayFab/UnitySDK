@@ -19,7 +19,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<AuthenticateSessionTicketRequest, AuthenticateSessionTicketResult>("Server", "/Server/AuthenticateSessionTicket", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/AuthenticateSessionTicket", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromFacebookIDsRequest, GetPlayFabIDsFromFacebookIDsResult>("Server", "/Server/GetPlayFabIDsFromFacebookIDs", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetPlayFabIDsFromFacebookIDs", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayFabIDsFromSteamIDsRequest, GetPlayFabIDsFromSteamIDsResult>("Server", "/Server/GetPlayFabIDsFromSteamIDs", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetPlayFabIDsFromSteamIDs", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserAccountInfoRequest, GetUserAccountInfoResult>("Server", "/Server/GetUserAccountInfo", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserAccountInfo", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SendPushNotificationRequest, SendPushNotificationResult>("Server", "/Server/SendPushNotification", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SendPushNotification", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<DeleteUsersRequest, DeleteUsersResult>("Server", "/Server/DeleteUsers", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/DeleteUsers", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardRequest, GetLeaderboardResult>("Server", "/Server/GetLeaderboard", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetLeaderboard", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardAroundUserRequest, GetLeaderboardAroundUserResult>("Server", "/Server/GetLeaderboardAroundUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetLeaderboardAroundUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayerStatisticsRequest, GetPlayerStatisticsResult>("Server", "/Server/GetPlayerStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetPlayerStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPlayerStatisticVersionsRequest, GetPlayerStatisticVersionsResult>("Server", "/Server/GetPlayerStatisticVersions", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetPlayerStatisticVersions", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Server", "/Server/GetUserData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Server", "/Server/GetUserInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Server", "/Server/GetUserPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Server", "/Server/GetUserPublisherInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserPublisherInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Server", "/Server/GetUserPublisherReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserPublisherReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserDataRequest, GetUserDataResult>("Server", "/Server/GetUserReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserStatisticsRequest, GetUserStatisticsResult>("Server", "/Server/GetUserStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdatePlayerStatisticsRequest, UpdatePlayerStatisticsResult>("Server", "/Server/UpdatePlayerStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdatePlayerStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserDataRequest, UpdateUserDataResult>("Server", "/Server/UpdateUserData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserInternalDataRequest, UpdateUserDataResult>("Server", "/Server/UpdateUserInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserDataRequest, UpdateUserDataResult>("Server", "/Server/UpdateUserPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserInternalDataRequest, UpdateUserDataResult>("Server", "/Server/UpdateUserPublisherInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserPublisherInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserDataRequest, UpdateUserDataResult>("Server", "/Server/UpdateUserPublisherReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserPublisherReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserDataRequest, UpdateUserDataResult>("Server", "/Server/UpdateUserReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserStatisticsRequest, UpdateUserStatisticsResult>("Server", "/Server/UpdateUserStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCatalogItemsRequest, GetCatalogItemsResult>("Server", "/Server/GetCatalogItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetCatalogItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetPublisherDataRequest, GetPublisherDataResult>("Server", "/Server/GetPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetTitleDataRequest, GetTitleDataResult>("Server", "/Server/GetTitleData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetTitleData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetTitleDataRequest, GetTitleDataResult>("Server", "/Server/GetTitleInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetTitleInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetTitleNewsRequest, GetTitleNewsResult>("Server", "/Server/GetTitleNews", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetTitleNews", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SetPublisherDataRequest, SetPublisherDataResult>("Server", "/Server/SetPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SetPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SetTitleDataRequest, SetTitleDataResult>("Server", "/Server/SetTitleData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SetTitleData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SetTitleDataRequest, SetTitleDataResult>("Server", "/Server/SetTitleInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SetTitleInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -349,7 +349,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<AddCharacterVirtualCurrencyRequest, ModifyCharacterVirtualCurrencyResult>("Server", "/Server/AddCharacterVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/AddCharacterVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -359,7 +359,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<AddUserVirtualCurrencyRequest, ModifyUserVirtualCurrencyResult>("Server", "/Server/AddUserVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/AddUserVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -369,7 +369,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<ConsumeItemRequest, ConsumeItemResult>("Server", "/Server/ConsumeItem", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/ConsumeItem", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -379,7 +379,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<EvaluateRandomResultTableRequest, EvaluateRandomResultTableResult>("Server", "/Server/EvaluateRandomResultTable", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/EvaluateRandomResultTable", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -389,7 +389,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterInventoryRequest, GetCharacterInventoryResult>("Server", "/Server/GetCharacterInventory", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetCharacterInventory", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetUserInventoryRequest, GetUserInventoryResult>("Server", "/Server/GetUserInventory", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetUserInventory", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GrantItemsToCharacterRequest, GrantItemsToCharacterResult>("Server", "/Server/GrantItemsToCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GrantItemsToCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GrantItemsToUserRequest, GrantItemsToUserResult>("Server", "/Server/GrantItemsToUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GrantItemsToUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GrantItemsToUsersRequest, GrantItemsToUsersResult>("Server", "/Server/GrantItemsToUsers", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GrantItemsToUsers", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<ModifyItemUsesRequest, ModifyItemUsesResult>("Server", "/Server/ModifyItemUses", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/ModifyItemUses", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<MoveItemToCharacterFromCharacterRequest, MoveItemToCharacterFromCharacterResult>("Server", "/Server/MoveItemToCharacterFromCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/MoveItemToCharacterFromCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -459,7 +459,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<MoveItemToCharacterFromUserRequest, MoveItemToCharacterFromUserResult>("Server", "/Server/MoveItemToCharacterFromUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/MoveItemToCharacterFromUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -469,7 +469,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<MoveItemToUserFromCharacterRequest, MoveItemToUserFromCharacterResult>("Server", "/Server/MoveItemToUserFromCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/MoveItemToUserFromCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -479,7 +479,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<RedeemCouponRequest, RedeemCouponResult>("Server", "/Server/RedeemCoupon", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/RedeemCoupon", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -489,7 +489,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<ReportPlayerServerRequest, ReportPlayerServerResult>("Server", "/Server/ReportPlayer", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/ReportPlayer", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -499,7 +499,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<RevokeInventoryItemRequest, RevokeInventoryResult>("Server", "/Server/RevokeInventoryItem", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/RevokeInventoryItem", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SubtractCharacterVirtualCurrencyRequest, ModifyCharacterVirtualCurrencyResult>("Server", "/Server/SubtractCharacterVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SubtractCharacterVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SubtractUserVirtualCurrencyRequest, ModifyUserVirtualCurrencyResult>("Server", "/Server/SubtractUserVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SubtractUserVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -529,7 +529,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlockContainerInstanceRequest, UnlockContainerItemResult>("Server", "/Server/UnlockContainerInstance", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UnlockContainerInstance", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -539,7 +539,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UnlockContainerItemRequest, UnlockContainerItemResult>("Server", "/Server/UnlockContainerItem", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UnlockContainerItem", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -549,7 +549,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateUserInventoryItemDataRequest, EmptyResult>("Server", "/Server/UpdateUserInventoryItemCustomData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateUserInventoryItemCustomData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -559,7 +559,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<NotifyMatchmakerPlayerLeftRequest, NotifyMatchmakerPlayerLeftResult>("Server", "/Server/NotifyMatchmakerPlayerLeft", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/NotifyMatchmakerPlayerLeft", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -569,7 +569,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<RedeemMatchmakerTicketRequest, RedeemMatchmakerTicketResult>("Server", "/Server/RedeemMatchmakerTicket", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/RedeemMatchmakerTicket", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -579,17 +579,17 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SetGameServerInstanceDataRequest, SetGameServerInstanceDataResult>("Server", "/Server/SetGameServerInstanceData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SetGameServerInstanceData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
-        /// Sets the state of the indicated Game Server Instance
+        /// Set the state of the indicated Game Server Instance.
         /// </summary>
         public static void SetGameServerInstanceState(SetGameServerInstanceStateRequest request, Action<SetGameServerInstanceStateResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<SetGameServerInstanceStateRequest, SetGameServerInstanceStateResult>("Server", "/Server/SetGameServerInstanceState", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/SetGameServerInstanceState", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<AwardSteamAchievementRequest, AwardSteamAchievementResult>("Server", "/Server/AwardSteamAchievement", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/AwardSteamAchievement", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -609,7 +609,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<LogEventRequest, LogEventResult>("Server", "/Server/LogEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/LogEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -619,7 +619,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<WriteServerCharacterEventRequest, WriteEventResponse>("Server", "/Server/WriteCharacterEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/WriteCharacterEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -629,7 +629,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<WriteServerPlayerEventRequest, WriteEventResponse>("Server", "/Server/WritePlayerEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/WritePlayerEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -639,7 +639,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<WriteTitleEventRequest, WriteEventResponse>("Server", "/Server/WriteTitleEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/WriteTitleEvent", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -649,7 +649,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<AddSharedGroupMembersRequest, AddSharedGroupMembersResult>("Server", "/Server/AddSharedGroupMembers", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/AddSharedGroupMembers", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -659,7 +659,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<CreateSharedGroupRequest, CreateSharedGroupResult>("Server", "/Server/CreateSharedGroup", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/CreateSharedGroup", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -669,7 +669,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<DeleteSharedGroupRequest, EmptyResult>("Server", "/Server/DeleteSharedGroup", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/DeleteSharedGroup", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -679,7 +679,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetSharedGroupDataRequest, GetSharedGroupDataResult>("Server", "/Server/GetSharedGroupData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetSharedGroupData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -689,7 +689,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<RemoveSharedGroupMembersRequest, RemoveSharedGroupMembersResult>("Server", "/Server/RemoveSharedGroupMembers", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/RemoveSharedGroupMembers", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -699,7 +699,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateSharedGroupDataRequest, UpdateSharedGroupDataResult>("Server", "/Server/UpdateSharedGroupData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateSharedGroupData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -709,7 +709,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<ExecuteCloudScriptServerRequest, ExecuteCloudScriptResult>("Server", "/Server/ExecuteCloudScript", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/ExecuteCloudScript", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -719,7 +719,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetContentDownloadUrlRequest, GetContentDownloadUrlResult>("Server", "/Server/GetContentDownloadUrl", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetContentDownloadUrl", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -729,7 +729,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<DeleteCharacterFromUserRequest, DeleteCharacterFromUserResult>("Server", "/Server/DeleteCharacterFromUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/DeleteCharacterFromUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -739,7 +739,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<ListUsersCharactersRequest, ListUsersCharactersResult>("Server", "/Server/GetAllUsersCharacters", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetAllUsersCharacters", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -749,7 +749,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterLeaderboardRequest, GetCharacterLeaderboardResult>("Server", "/Server/GetCharacterLeaderboard", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetCharacterLeaderboard", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -759,7 +759,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterStatisticsRequest, GetCharacterStatisticsResult>("Server", "/Server/GetCharacterStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetCharacterStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -769,7 +769,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardAroundCharacterRequest, GetLeaderboardAroundCharacterResult>("Server", "/Server/GetLeaderboardAroundCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetLeaderboardAroundCharacter", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -779,7 +779,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetLeaderboardForUsersCharactersRequest, GetLeaderboardForUsersCharactersResult>("Server", "/Server/GetLeaderboardForUserCharacters", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetLeaderboardForUserCharacters", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -789,7 +789,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GrantCharacterToUserRequest, GrantCharacterToUserResult>("Server", "/Server/GrantCharacterToUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GrantCharacterToUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -799,7 +799,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateCharacterStatisticsRequest, UpdateCharacterStatisticsResult>("Server", "/Server/UpdateCharacterStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateCharacterStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -809,7 +809,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterDataRequest, GetCharacterDataResult>("Server", "/Server/GetCharacterData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetCharacterData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -819,7 +819,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterDataRequest, GetCharacterDataResult>("Server", "/Server/GetCharacterInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetCharacterInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -829,7 +829,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<GetCharacterDataRequest, GetCharacterDataResult>("Server", "/Server/GetCharacterReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/GetCharacterReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -839,7 +839,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateCharacterDataRequest, UpdateCharacterDataResult>("Server", "/Server/UpdateCharacterData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateCharacterData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -849,7 +849,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateCharacterDataRequest, UpdateCharacterDataResult>("Server", "/Server/UpdateCharacterInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateCharacterInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -859,7 +859,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UpdateCharacterDataRequest, UpdateCharacterDataResult>("Server", "/Server/UpdateCharacterReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("Server", "/Server/UpdateCharacterReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
         }
 
 
