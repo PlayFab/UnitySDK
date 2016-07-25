@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayFab.Internal
@@ -37,7 +35,6 @@ namespace PlayFab.Internal
                     _instance.initialized = true;
                 }
             }
-           
         }
 
         public virtual void Awake ()

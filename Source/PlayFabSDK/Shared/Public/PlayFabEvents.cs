@@ -15,9 +15,9 @@ namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
-        public delegate void PlayFabErrorEvent(object request, PlayFabError error);
-        public delegate void PlayFabResultEvent<in TResultType>(TResultType result);
-        public delegate void PlayFabRequestEvent<in TRequestType>(TRequestType request);
+        public delegate void PlayFabErrorEvent(PlayFabRequestCommon request, PlayFabError error);
+        public delegate void PlayFabResultEvent<in TResult>(TResult result) where TResult : PlayFabResultCommon;
+        public delegate void PlayFabRequestEvent<in TRequest>(TRequest request) where TRequest : PlayFabRequestCommon;
         public event PlayFabErrorEvent OnGlobalErrorEvent;
 
         private static PlayFabEvents _instance;
@@ -870,7 +870,7 @@ namespace PlayFab.Events
 
         }
 
-        private void OnProcessingErrorEvent(object request, PlayFabError error)
+        private void OnProcessingErrorEvent(PlayFabRequestCommon request, PlayFabError error)
         {
             //This just forwards the event.
             if (_instance.OnGlobalErrorEvent != null)
