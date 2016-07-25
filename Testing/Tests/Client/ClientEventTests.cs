@@ -5,6 +5,7 @@ using System.Linq;
 using PlayFab.UUnit;
 using PlayFab.ClientModels;
 using PlayFab.Events;
+using PlayFab.SharedModels;
 
 namespace PlayFab.Internal
 {
@@ -152,7 +153,7 @@ namespace PlayFab.Internal
             RegisterPlayFabUserRequest registerRequest = new RegisterPlayFabUserRequest(); // A bad request that will fail
             PlayFabClientAPI.RegisterPlayFabUser(registerRequest, null, PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedError_Single), testContext);
         }
-        private static void SharedError_Global(object request, PlayFabError error)
+        private static void SharedError_Global(PlayFabRequestCommon request, PlayFabError error)
         {
             Callbacks.Add("SharedError_Global");
             throw new Exception("Non-PlayFab callback error");

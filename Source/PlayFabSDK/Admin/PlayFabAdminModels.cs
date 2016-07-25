@@ -7,7 +7,7 @@ using PlayFab.SharedModels;
 namespace PlayFab.AdminModels
 {
     [Serializable]
-    public class AddNewsRequest
+    public class AddNewsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class AddServerBuildRequest
+    public class AddServerBuildRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class AddUserVirtualCurrencyRequest
+    public class AddUserVirtualCurrencyRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class AddVirtualCurrencyTypesRequest
+    public class AddVirtualCurrencyTypesRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -378,7 +378,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class CreatePlayerStatisticDefinitionRequest
+    public class CreatePlayerStatisticDefinitionRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -574,7 +574,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class DeleteContentRequest
+    public class DeleteContentRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -584,7 +584,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class DeleteUsersRequest
+    public class DeleteUsersRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -638,7 +638,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetCatalogItemsRequest
+    public class GetCatalogItemsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -658,7 +658,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetCloudScriptRevisionRequest
+    public class GetCloudScriptRevisionRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -703,7 +703,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetCloudScriptVersionsRequest
+    public class GetCloudScriptVersionsRequest : PlayFabRequestCommon
     {
     }
 
@@ -718,7 +718,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetContentListRequest
+    public class GetContentListRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -748,7 +748,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetContentUploadUrlRequest
+    public class GetContentUploadUrlRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -773,7 +773,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetDataReportRequest
+    public class GetDataReportRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -808,7 +808,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetMatchmakerGameInfoRequest
+    public class GetMatchmakerGameInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -873,7 +873,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetMatchmakerGameModesRequest
+    public class GetMatchmakerGameModesRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -893,7 +893,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetPlayerStatisticDefinitionsRequest
+    public class GetPlayerStatisticDefinitionsRequest : PlayFabRequestCommon
     {
     }
 
@@ -908,7 +908,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetPlayerStatisticVersionsRequest
+    public class GetPlayerStatisticVersionsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -928,7 +928,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetPublisherDataRequest
+    public class GetPublisherDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -968,7 +968,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetServerBuildInfoRequest
+    public class GetServerBuildInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1031,7 +1031,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetServerBuildUploadURLRequest
+    public class GetServerBuildUploadURLRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1051,7 +1051,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetStoreItemsRequest
+    public class GetStoreItemsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1076,7 +1076,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetTitleDataRequest
+    public class GetTitleDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1096,7 +1096,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetUserDataRequest
+    public class GetUserDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1136,7 +1136,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetUserInventoryRequest
+    public class GetUserInventoryRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1269,7 +1269,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GrantItemsToUsersRequest
+    public class GrantItemsToUsersRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1294,7 +1294,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class IncrementPlayerStatisticVersionRequest
+    public class IncrementPlayerStatisticVersionRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1432,7 +1432,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ListBuildsRequest
+    public class ListBuildsRequest : PlayFabRequestCommon
     {
     }
 
@@ -1447,7 +1447,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ListVirtualCurrencyTypesRequest
+    public class ListVirtualCurrencyTypesRequest : PlayFabRequestCommon
     {
     }
 
@@ -1462,7 +1462,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class LookupUserAccountInfoRequest
+    public class LookupUserAccountInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1497,7 +1497,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ModifyMatchmakerGameModesRequest
+    public class ModifyMatchmakerGameModesRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1517,7 +1517,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ModifyServerBuildRequest
+    public class ModifyServerBuildRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1748,17 +1748,17 @@ namespace PlayFab.AdminModels
 
     public enum Region
     {
-        USCentral,
         USEast,
         EUWest,
         Singapore,
         Japan,
+        Australia,
         Brazil,
-        Australia
+        USCentral
     }
 
     [Serializable]
-    public class RemoveServerBuildRequest
+    public class RemoveServerBuildRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1773,7 +1773,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ResetCharacterStatisticsRequest
+    public class ResetCharacterStatisticsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1793,7 +1793,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ResetUsersRequest
+    public class ResetUsersRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1803,7 +1803,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ResetUserStatisticsRequest
+    public class ResetUserStatisticsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1844,7 +1844,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class RevokeInventoryItemRequest
+    public class RevokeInventoryItemRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1869,7 +1869,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class SendAccountRecoveryEmailRequest
+    public class SendAccountRecoveryEmailRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1884,7 +1884,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class SetPublishedRevisionRequest
+    public class SetPublishedRevisionRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1904,7 +1904,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class SetPublisherDataRequest
+    public class SetPublisherDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1924,7 +1924,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class SetTitleDataRequest
+    public class SetTitleDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1944,7 +1944,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class SetupPushNotificationRequest
+    public class SetupPushNotificationRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2033,7 +2033,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class SubtractUserVirtualCurrencyRequest
+    public class SubtractUserVirtualCurrencyRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2062,7 +2062,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdateCatalogItemsRequest
+    public class UpdateCatalogItemsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2082,7 +2082,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdateCloudScriptRequest
+    public class UpdateCloudScriptRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2122,7 +2122,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdatePlayerStatisticDefinitionRequest
+    public class UpdatePlayerStatisticDefinitionRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2172,7 +2172,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdateStoreItemsRequest
+    public class UpdateStoreItemsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2197,7 +2197,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdateUserDataRequest
+    public class UpdateUserDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2232,7 +2232,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdateUserInternalDataRequest
+    public class UpdateUserInternalDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2252,7 +2252,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdateUserTitleDisplayNameRequest
+    public class UpdateUserTitleDisplayNameRequest : PlayFabRequestCommon
     {
 
         /// <summary>

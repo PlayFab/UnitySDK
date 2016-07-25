@@ -16,17 +16,18 @@ namespace PlayFab.Internal
 {
     public class PlayFabWWW : IPlayFabHttp
     {
-        private readonly object _eventLock = new object();
         private int _pendingWwwMessages = 0;
         public string AuthKey { get; set; }
         public string DevKey { get; set; }
 
-        public void Awake() { }
+        public void InitializeHttp() { }
         public void Update() { }
 
-        public void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint, TRequestType request,
+        public void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,
             string authType,
-            Action<TResultType> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+            Action<TResult> resultCallback, Action<PlayFabError> errorCallback,
+            object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             //serialize the request;
             var req = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
@@ -86,22 +87,17 @@ namespace PlayFab.Internal
                     var startTime = DateTime.UtcNow;
 #endif
                     //Debug.Log(response);
-                    var httpResult = JsonWrapper.DeserializeObject<PlayFabHttp.HttpResponseObject>(response,
+                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response,
                         PlayFabUtil.ApiSerializerStrategy);
 
                     if (httpResult.code == 200)
                     {
                         //We have a good response from the server
                         var dataJson = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
-                        var result = JsonWrapper.DeserializeObject<TResultType>(dataJson,
-                            PlayFabUtil.ApiSerializerStrategy);
+                        var result = JsonWrapper.DeserializeObject<TResult>(dataJson, PlayFabUtil.ApiSerializerStrategy);
 
-                        var resultCommon = result as PlayFabResultCommon;
-                        if (resultCommon != null)
-                        {
-                            resultCommon.Request = request;
-                            resultCommon.CustomData = customData;
-                        }
+                        result.Request = request;
+                        result.CustomData = customData;
 
 #if !DISABLE_PLAYFABCLIENT_API
                         UserSettings userSettings = null;
@@ -157,16 +153,13 @@ namespace PlayFab.Internal
                             PlayFabSettings.LogicServerUrl = cloudScriptUrl.Url;
                         }
 #endif
-                        lock (_eventLock)
+                        try
                         {
-                            try
-                            {
-                                PlayFabHttp.SendEvent(request, result, ApiProcessingEventType.Post);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.LogException(e);
-                            }
+                            PlayFabHttp.SendEvent(request, result, ApiProcessingEventType.Post);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
                         }
 
 #if PLAYFAB_REQUEST_TIMING

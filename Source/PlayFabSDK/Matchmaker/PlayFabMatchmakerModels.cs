@@ -7,7 +7,7 @@ using PlayFab.SharedModels;
 namespace PlayFab.MatchmakerModels
 {
     [Serializable]
-    public class AuthUserRequest
+    public class AuthUserRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class PlayerJoinedRequest
+    public class PlayerJoinedRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class PlayerLeftRequest
+    public class PlayerLeftRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -156,17 +156,17 @@ namespace PlayFab.MatchmakerModels
 
     public enum Region
     {
-        USCentral,
         USEast,
         EUWest,
         Singapore,
         Japan,
+        Australia,
         Brazil,
-        Australia
+        USCentral
     }
 
     [Serializable]
-    public class StartGameRequest
+    public class StartGameRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace PlayFab.MatchmakerModels
     {
 
         /// <summary>
-        /// Unique identifier for the lobby in the new Game Server Instance.
+        /// Unique identifier for the game/lobby in the new Game Server Instance.
         /// </summary>
         public string GameID { get; set;}
 
@@ -216,7 +216,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class UserInfoRequest
+    public class UserInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>
