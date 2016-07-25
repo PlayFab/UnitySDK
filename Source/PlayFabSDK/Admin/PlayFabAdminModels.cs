@@ -1748,13 +1748,13 @@ namespace PlayFab.AdminModels
 
     public enum Region
     {
+        USCentral,
         USEast,
         EUWest,
         Singapore,
         Japan,
-        Australia,
         Brazil,
-        USCentral
+        Australia
     }
 
     [Serializable]
