@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -17,7 +18,7 @@ namespace PlayFab.Internal
         #region Utility Functions
         private static string GetBuildPath()
         {
-            return Path.Combine(Application.dataPath, "../testBuilds");
+            return Path.GetFullPath(Path.Combine(Application.dataPath, "../testBuilds"));
         }
 
         private static void MkDir(string path)
@@ -43,6 +44,8 @@ namespace PlayFab.Internal
             var androidPackage = Path.Combine(GetBuildPath(), "PlayFabAndroid.apk");
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, androidPackage, BuildTarget.Android, BuildOptions.None);
+            if (Directory.GetFiles(androidPackage).Length == 0)
+                throw new Exception("Target file did not build: " + androidPackage);
         }
 
         [MenuItem("PlayFab/Testing/iPhoneTestBuild")]
@@ -64,6 +67,8 @@ namespace PlayFab.Internal
 #else
             BuildPipeline.BuildPlayer(TestScenes, iosPath, appleBuildTarget, BuildOptions.None);
 #endif
+            if (Directory.GetFiles(iosPath).Length == 0)
+                throw new Exception("Target directory is empty: " + iosPath + ", " + string.Join(",", Directory.GetFiles(iosPath)));
         }
 
         [MenuItem("PlayFab/Testing/WinPhoneTestBuild")]
@@ -77,6 +82,8 @@ namespace PlayFab.Internal
 #else
             BuildPipeline.BuildPlayer(TestScenes, wp8Path, BuildTarget.WP8Player, BuildOptions.None);
 #endif
+            if (Directory.GetFiles(wp8Path).Length == 0)
+                throw new Exception("Target directory is empty: " + wp8Path + ", " + string.Join(",", Directory.GetFiles(wp8Path)));
         }
 
         [MenuItem("PlayFab/Testing/Win32TestBuild")]
@@ -92,6 +99,8 @@ namespace PlayFab.Internal
             string win32Path = Path.Combine(GetBuildPath(), "Win32test.exe");
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, win32Path, BuildTarget.StandaloneWindows, BuildOptions.None);
+            if (Directory.GetFiles(win32Path).Length == 0)
+                throw new Exception("Target file did not build: " + win32Path);
         }
     }
 }

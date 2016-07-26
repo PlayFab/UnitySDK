@@ -343,6 +343,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Removes one or more virtual currencies from the set defined for the title.
+        /// </summary>
+        public static void RemoveVirtualCurrencyTypes(RemoveVirtualCurrencyTypesRequest request, Action<BlankResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("Admin", "/Admin/RemoveVirtualCurrencyTypes", request , "X-SecretKey", resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Creates the catalog configuration of all virtual goods for the specified catalog version
         /// </summary>
         public static void SetCatalogItems(UpdateCatalogItemsRequest request, Action<UpdateCatalogItemsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)

@@ -35,9 +35,9 @@ public static class UUnitWsaReflectionExtensions
     {
         return type.GetTypeInfo().GetDeclaredMethod(methodName);
     }
-    public static IEnumerable<FieldInfo> GetFields(this Type type)
+    public static IEnumerable<FieldInfo> GetFields(this TypeInfo typeInfo)
     {
-        return type.GetTypeInfo().DeclaredFields;
+        return typeInfo.DeclaredFields;
     }
     public static TypeInfo GetTypeInfo(this TypeInfo typeInfo)
     {

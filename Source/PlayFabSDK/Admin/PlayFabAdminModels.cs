@@ -1773,6 +1773,16 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class RemoveVirtualCurrencyTypesRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// List of virtual currencies to delete
+        /// </summary>
+        public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
+    }
+
+    [Serializable]
     public class ResetCharacterStatisticsRequest : PlayFabRequestCommon
     {
 

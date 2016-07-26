@@ -423,41 +423,13 @@ namespace PlayFab.Internal
                     AuthKey = regRes.SessionTicket;
                 }
 
-                if (userSettings != null)
+                if (userSettings != null && AuthKey != null && userSettings.NeedsAttribution)
                 {
                     AuthKey = res.SessionTicket;
-                    #region Track IDFA
-
-#if !DISABLE_IDFA
-#if UNITY_IOS || UNITY_ANDROID
-                    if (userSettings.NeedsAttribution)
+                    lock (ResultQueue)
                     {
-                        ResultQueue.Enqueue(() =>
-                        {
-                            Application.RequestAdvertisingIdentifierAsync(
-                                (advertisingId, trackingEnabled, error) =>
-                                {
-                                    if (trackingEnabled)
-                                    {
-                                        var attribRequest = new AttributeInstallRequest();
-#if UNITY_ANDROID
-                                        attribRequest.Android_Id = advertisingId;
-#elif UNITY_IOS
-                                        attribRequest.Idfa = advertisingId;
-#endif
-                                        PlayFabClientAPI.AttributeInstall(attribRequest, (attribResult) =>
-                                        {
-                                            //This is for internal testing tools.
-                                            PlayFabSettings.AdvertisingIdType += "_Successful";
-                                        }, null);
-                                    }
-                                });
-                        });
+                        ResultQueue.Enqueue(PlayFabIdfa.OnPlayFabLogin);
                     }
-#endif
-#endif
-
-                    #endregion
                 }
 
                 var cloudScriptUrl = result as GetCloudScriptUrlResult;
