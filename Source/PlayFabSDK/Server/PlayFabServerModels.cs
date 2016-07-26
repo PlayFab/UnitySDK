@@ -641,7 +641,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class EvaluateRandomResultTableRequest : PlayFabResultCommon
+    public class EvaluateRandomResultTableRequest : PlayFabRequestCommon
     {
 
         /// <summary>
