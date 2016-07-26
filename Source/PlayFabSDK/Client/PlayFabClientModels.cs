@@ -72,6 +72,21 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class AddGenericIDRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// Generic service identifier to add to the player account.
+        /// </summary>
+        public GenericServiceId GenericId { get; set;}
+    }
+
+    [Serializable]
+    public class AddGenericIDResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class AddSharedGroupMembersRequest : PlayFabRequestCommon
     {
 
@@ -1067,6 +1082,36 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class GenericPlayFabIdPair
+    {
+
+        /// <summary>
+        /// Unique generic service identifier for a user.
+        /// </summary>
+        public GenericServiceId GenericId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the given generic identifier.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
+    [Serializable]
+    public class GenericServiceId
+    {
+
+        /// <summary>
+        /// Name of the service for which the player has a unique identifier.
+        /// </summary>
+        public string ServiceName { get; set;}
+
+        /// <summary>
+        /// Unique identifier of the player in that service.
+        /// </summary>
+        public string UserId { get; set;}
+    }
+
+    [Serializable]
     public class GetAccountInfoRequest : PlayFabRequestCommon
     {
 
@@ -1884,6 +1929,26 @@ namespace PlayFab.ClientModels
         /// Mapping of Game Center identifiers to PlayFab identifiers.
         /// </summary>
         public List<GameCenterPlayFabIdPair> Data { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromGenericIDsRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// Array of unique generic service identifiers for which the title needs to get PlayFab identifiers. Currently limited to a maximum of 10 in a single request.
+        /// </summary>
+        public List<GenericServiceId> GenericIDs { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromGenericIDsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Mapping of generic service identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<GenericPlayFabIdPair> Data { get; set;}
     }
 
     [Serializable]
@@ -3613,6 +3678,21 @@ namespace PlayFab.ClientModels
 
     [Serializable]
     public class RemoveFriendResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class RemoveGenericIDRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// Generic service identifier to be removed from the player.
+        /// </summary>
+        public GenericServiceId GenericId { get; set;}
+    }
+
+    [Serializable]
+    public class RemoveGenericIDResult : PlayFabResultCommon
     {
     }
 

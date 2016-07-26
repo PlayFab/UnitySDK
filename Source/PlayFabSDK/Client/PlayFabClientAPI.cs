@@ -164,6 +164,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Adds the specified generic service identifier to the player's PlayFab account. This is designed to allow for a PlayFab ID lookup of any arbitrary service identifier a title wants to add. This identifier should never be used as authentication credentials, as the intent is that it is easily accessible by other players.
+        /// </summary>
+        public static void AddGenericID(AddGenericIDRequest request, Action<AddGenericIDResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/AddGenericID", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Adds playfab username/password auth to an existing semi-anonymous account created via a 3rd party auth method.
         /// </summary>
         public static void AddUsernamePassword(AddUsernamePasswordRequest request, Action<AddUsernamePasswordResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -211,6 +221,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromGameCenterIDs", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of generic service identifiers. A generic identifier is the service name plus the service-specific ID for the player, as specified by the title when the generic identifier was added to the player account.
+        /// </summary>
+        public static void GetPlayFabIDsFromGenericIDs(GetPlayFabIDsFromGenericIDsRequest request, Action<GetPlayFabIDsFromGenericIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromGenericIDs", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -351,6 +371,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/LinkTwitch", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Removes the specified generic service identifier from the player's PlayFab account.
+        /// </summary>
+        public static void RemoveGenericID(RemoveGenericIDRequest request, Action<RemoveGenericIDResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/RemoveGenericID", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
         }
 
         /// <summary>

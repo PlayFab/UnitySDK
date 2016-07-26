@@ -23,6 +23,8 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<LoginWithTwitchRequest> OnLoginWithTwitchRequestEvent;
         public event PlayFabRequestEvent<RegisterPlayFabUserRequest> OnRegisterPlayFabUserRequestEvent;
         public event PlayFabResultEvent<RegisterPlayFabUserResult> OnRegisterPlayFabUserResultEvent;
+        public event PlayFabRequestEvent<AddGenericIDRequest> OnAddGenericIDRequestEvent;
+        public event PlayFabResultEvent<AddGenericIDResult> OnAddGenericIDResultEvent;
         public event PlayFabRequestEvent<AddUsernamePasswordRequest> OnAddUsernamePasswordRequestEvent;
         public event PlayFabResultEvent<AddUsernamePasswordResult> OnAddUsernamePasswordResultEvent;
         public event PlayFabRequestEvent<GetAccountInfoRequest> OnGetAccountInfoRequestEvent;
@@ -33,6 +35,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayFabIDsFromFacebookIDsResult> OnGetPlayFabIDsFromFacebookIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromGameCenterIDsRequest> OnGetPlayFabIDsFromGameCenterIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromGameCenterIDsResult> OnGetPlayFabIDsFromGameCenterIDsResultEvent;
+        public event PlayFabRequestEvent<GetPlayFabIDsFromGenericIDsRequest> OnGetPlayFabIDsFromGenericIDsRequestEvent;
+        public event PlayFabResultEvent<GetPlayFabIDsFromGenericIDsResult> OnGetPlayFabIDsFromGenericIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromGoogleIDsRequest> OnGetPlayFabIDsFromGoogleIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromGoogleIDsResult> OnGetPlayFabIDsFromGoogleIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromKongregateIDsRequest> OnGetPlayFabIDsFromKongregateIDsRequestEvent;
@@ -61,6 +65,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LinkSteamAccountResult> OnLinkSteamAccountResultEvent;
         public event PlayFabRequestEvent<LinkTwitchAccountRequest> OnLinkTwitchRequestEvent;
         public event PlayFabResultEvent<LinkTwitchAccountResult> OnLinkTwitchResultEvent;
+        public event PlayFabRequestEvent<RemoveGenericIDRequest> OnRemoveGenericIDRequestEvent;
+        public event PlayFabResultEvent<RemoveGenericIDResult> OnRemoveGenericIDResultEvent;
         public event PlayFabRequestEvent<ReportPlayerClientRequest> OnReportPlayerRequestEvent;
         public event PlayFabResultEvent<ReportPlayerClientResult> OnReportPlayerResultEvent;
         public event PlayFabRequestEvent<SendAccountRecoveryEmailRequest> OnSendAccountRecoveryEmailRequestEvent;
