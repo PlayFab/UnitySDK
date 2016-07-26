@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 
@@ -16,6 +17,16 @@ namespace PlayFab.Internal
         };
 
         #region Utility Functions
+        private static void Setup()
+        {
+            Type setupPlayFabExampleType = typeof(PlayFabPackager).Assembly.GetType("SetupPlayFabExample");
+            MethodInfo setupMethod = null;
+            if (setupPlayFabExampleType != null)
+                setupMethod = setupPlayFabExampleType.GetMethod("Setup", BindingFlags.Static | BindingFlags.Public);
+            if (setupMethod != null)
+                setupMethod.Invoke(null, null);
+        }
+
         private static string GetBuildPath()
         {
             return Path.GetFullPath(Path.Combine(Application.dataPath, "../testBuilds"));
@@ -31,6 +42,7 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Package SDK")]
         public static void PackagePlayFabSdk()
         {
+            Setup();
             var packagePath = "C:/depot/sdks/UnitySDK/Packages/UnitySDK.unitypackage";
             AssetDatabase.ExportPackage(SdkAssets, packagePath, ExportPackageOptions.Recurse);
             Debug.Log("Package built: " + packagePath);
@@ -39,6 +51,7 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Testing/AndroidTestBuild")]
         public static void MakeAndroidBuild()
         {
+            Setup();
             PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.Mono2x, BuildTargetGroup.Android); // Ideal setting for Android
             PlayerSettings.bundleIdentifier = "com.PlayFab.PlayFabTest";
             var androidPackage = Path.Combine(GetBuildPath(), "PlayFabAndroid.apk");
@@ -51,6 +64,7 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Testing/iPhoneTestBuild")]
         public static void MakeIPhoneBuild()
         {
+            Setup();
 #if UNITY_5
             BuildTarget appleBuildTarget = BuildTarget.iOS;
 #else
@@ -74,6 +88,7 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Testing/WinPhoneTestBuild")]
         public static void MakeWp8Build()
         {
+            Setup();
             var wp8Path = Path.Combine(GetBuildPath(), "PlayFabWP8");
             MkDir(GetBuildPath());
             MkDir(wp8Path);
@@ -89,6 +104,7 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Testing/Win32TestBuild")]
         public static void MakeWin32TestingBuild()
         {
+            Setup();
             PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.Mono2x, BuildTargetGroup.Standalone); // Ideal setting for Windows
             PlayerSettings.defaultIsFullScreen = false;
             PlayerSettings.defaultScreenHeight = 768;
