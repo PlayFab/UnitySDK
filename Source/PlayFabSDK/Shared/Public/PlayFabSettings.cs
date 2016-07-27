@@ -26,7 +26,7 @@ namespace PlayFab
     {
         public static PlayFabSharedSettings PlayFabShared = GetSharedSettingsObject();
         public const string SdkVersion = "2.2.160725";
-        public const string BuildIdentifier = "jbuild_unitysdk_0";
+        public const string BuildIdentifier = "jbuild_unitysdk_1";
         public const string VersionString = "UnitySDK-2.2.160725";
 
         public static PlayFabSharedSettings GetSharedSettingsObject()
