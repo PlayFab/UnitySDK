@@ -109,14 +109,14 @@ namespace PlayFab.Internal
         /// <param name="resultCallback"></param>
         /// <param name="errorCallback"></param>
         /// <param name="customData"></param>
-        protected internal static void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint,
-            TRequest request, string authType, Action<TResult> resultCallback,
+        protected internal static void MakeApiCall<TRequest, TResult>(string apiEndpoint,
+            TRequest request, AuthType authType, Action<TResult> resultCallback,
             Action<PlayFabError> errorCallback, object customData = null)
             where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             InitializeHttp();
             SendEvent(request, null, ApiProcessingEventType.Pre);
-            _internalHttp.MakeApiCall(api, apiEndpoint, request, authType, resultCallback, errorCallback, customData);
+            _internalHttp.MakeApiCall(apiEndpoint, request, authType, resultCallback, errorCallback, customData);
         }
 
         /// <summary>

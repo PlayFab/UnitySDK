@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace PlayFab.Public
 {
+#if !UNITY_WSA && !UNITY_WP8 && !NETFX_CORE
     public interface IPlayFabLogger
     {
         IPAddress ip { get; set; }
@@ -206,6 +207,38 @@ namespace PlayFab.Public
             }
         }
     }
+#else
+    public interface IPlayFabLogger
+    {
+        string ip { get; set; }
+        int port { get; set; }
+        string url { get; set; }
+
+        // Unity MonoBehaviour callbacks
+        void OnEnable();
+        void OnDisable();
+        void OnDestroy();
+    }
+
+    /// <summary>
+    /// This is just a placeholder.  WP8 doesn't support direct threading, but instead makes you use the await command.
+    /// </summary>
+    public abstract class PlayFabLoggerBase : IPlayFabLogger
+    {
+        public string ip { get; set; }
+        public int port { get; set; }
+        public string url { get; set; }
+
+        // Unity MonoBehaviour callbacks
+        public void OnEnable() { }
+        public void OnDisable() { }
+        public void OnDestroy() { }
+
+        protected abstract void BeginUploadLog();
+        protected abstract void UploadLog(string message);
+        protected abstract void EndUploadLog();
+    }
+#endif
 
     /// <summary>
     /// This translates the logs up to the PlayFab service via a PlayFab restful API
