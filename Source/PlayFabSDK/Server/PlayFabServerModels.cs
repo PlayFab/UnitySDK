@@ -288,6 +288,21 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class CharacterInventory
+    {
+
+        /// <summary>
+        /// The id of this character.
+        /// </summary>
+        public string CharacterId { get; set;}
+
+        /// <summary>
+        /// The inventory of this character.
+        /// </summary>
+        public List<ItemInstance> Inventory { get; set;}
+    }
+
+    [Serializable]
     public class CharacterLeaderboardEntry
     {
 
@@ -1163,6 +1178,171 @@ namespace PlayFab.ServerModels
         /// Ordered list of leaderboard entries.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerCombinedInfoRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// PlayFabId of the user whose data will be returned
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Flags for which pieces of info to return for the user.
+        /// </summary>
+        public GetPlayerCombinedInfoRequestParams InfoRequestParameters { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerCombinedInfoRequestParams : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// Whether to get the player's account Info. Defaults to false
+        /// </summary>
+        public bool GetUserAccountInfo { get; set;}
+
+        /// <summary>
+        /// Whether to get the player's inventory. Defaults to false
+        /// </summary>
+        public bool GetUserInventory { get; set;}
+
+        /// <summary>
+        /// Whether to get the player's virtual currency balances. Defaults to false
+        /// </summary>
+        public bool GetUserVirtualCurrency { get; set;}
+
+        /// <summary>
+        /// Whether to get the player's custom data. Defaults to false
+        /// </summary>
+        public bool GetUserData { get; set;}
+
+        /// <summary>
+        /// Specific keys to search for in the custom data. Leave null to get all keys. Has no effect if UserDataKeys is false
+        /// </summary>
+        public List<string> UserDataKeys { get; set;}
+
+        /// <summary>
+        /// Whether to get the player's read only data. Defaults to false
+        /// </summary>
+        public bool GetUserReadOnlyData { get; set;}
+
+        /// <summary>
+        /// Specific keys to search for in the custom data. Leave null to get all keys. Has no effect if GetUserReadOnlyData is false
+        /// </summary>
+        public List<string> UserReadOnlyDataKeys { get; set;}
+
+        /// <summary>
+        /// Whether to get character inventories. Defaults to false.
+        /// </summary>
+        public bool GetCharacterInventories { get; set;}
+
+        /// <summary>
+        /// Whether to get the list of characters. Defaults to false.
+        /// </summary>
+        public bool GetCharacterList { get; set;}
+
+        /// <summary>
+        /// Whether to get title data. Defaults to false.
+        /// </summary>
+        public bool GetTitleData { get; set;}
+
+        /// <summary>
+        /// Specific keys to search for in the custom data. Leave null to get all keys. Has no effect if GetTitleData is false
+        /// </summary>
+        public List<string> TitleDataKeys { get; set;}
+
+        /// <summary>
+        /// Whether to get player statistics. Defaults to false.
+        /// </summary>
+        public bool GetPlayerStatistics { get; set;}
+
+        /// <summary>
+        /// Specific statistics to retrieve. Leave null to get all keys. Has no effect if GetPlayerStatistics is false
+        /// </summary>
+        public List<string> PlayerStatisticNames { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerCombinedInfoResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+
+        /// <summary>
+        /// Results for requested info.
+        /// </summary>
+        public GetPlayerCombinedInfoResultPayload InfoResultPayload { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerCombinedInfoResultPayload : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Account information for the user. This is always retrieved.
+        /// </summary>
+        public UserAccountInfo AccountInfo { get; set;}
+
+        /// <summary>
+        /// Array of inventory items in the user's current inventory.
+        /// </summary>
+        public List<ItemInstance> UserInventory { get; set;}
+
+        /// <summary>
+        /// Dictionary of virtual currency balance(s) belonging to the user.
+        /// </summary>
+        public Dictionary<string,int> UserVirtualCurrency { get; set;}
+
+        /// <summary>
+        /// Dictionary of remaining times and timestamps for virtual currencies.
+        /// </summary>
+        public Dictionary<string,VirtualCurrencyRechargeTime> UserVirtualCurrencyRechargeTimes { get; set;}
+
+        /// <summary>
+        /// User specific custom data.
+        /// </summary>
+        public Dictionary<string,UserDataRecord> UserData { get; set;}
+
+        /// <summary>
+        /// The version of the UserData that was returned.
+        /// </summary>
+        public uint UserDataVersion { get; set;}
+
+        /// <summary>
+        /// User specific read-only data.
+        /// </summary>
+        public Dictionary<string,UserDataRecord> UserReadOnlyData { get; set;}
+
+        /// <summary>
+        /// The version of the Read-Only UserData that was returned.
+        /// </summary>
+        public uint UserReadOnlyDataVersion { get; set;}
+
+        /// <summary>
+        /// List of characters for the user.
+        /// </summary>
+        public List<CharacterResult> CharacterList { get; set;}
+
+        /// <summary>
+        /// Inventories for each character for the user.
+        /// </summary>
+        public List<CharacterInventory> CharacterInventories { get; set;}
+
+        /// <summary>
+        /// Title data for this title.
+        /// </summary>
+        public Dictionary<string,string> TitleData { get; set;}
+
+        /// <summary>
+        /// List of statistics for this player.
+        /// </summary>
+        public List<StatisticValue> PlayerStatistics { get; set;}
     }
 
     [Serializable]
@@ -3030,17 +3210,17 @@ namespace PlayFab.ServerModels
     {
 
         /// <summary>
-        /// User-supplied data for this user data key.
+        /// Data stored for the specified user data key.
         /// </summary>
         public string Value { get; set;}
 
         /// <summary>
-        /// Timestamp indicating when this data was last updated.
+        /// Timestamp for when this data was last updated.
         /// </summary>
         public DateTime LastUpdated { get; set;}
 
         /// <summary>
-        /// Permissions on this data key.
+        /// Indicates whether this data can be read by all users (public) or only the user (private). This is used for GetUserData requests being made by one player about another player.
         /// </summary>
         public UserDataPermission? Permission { get; set;}
     }

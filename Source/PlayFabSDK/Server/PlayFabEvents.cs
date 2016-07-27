@@ -24,6 +24,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetLeaderboardResult> OnServerGetLeaderboardResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardAroundUserRequest> OnServerGetLeaderboardAroundUserRequestEvent;
         public event PlayFabResultEvent<GetLeaderboardAroundUserResult> OnServerGetLeaderboardAroundUserResultEvent;
+        public event PlayFabRequestEvent<GetPlayerCombinedInfoRequest> OnServerGetPlayerCombinedInfoRequestEvent;
+        public event PlayFabResultEvent<GetPlayerCombinedInfoResult> OnServerGetPlayerCombinedInfoResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticsRequest> OnServerGetPlayerStatisticsRequestEvent;
         public event PlayFabResultEvent<GetPlayerStatisticsResult> OnServerGetPlayerStatisticsResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticVersionsRequest> OnServerGetPlayerStatisticVersionsRequestEvent;
