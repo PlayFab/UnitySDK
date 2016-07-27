@@ -23,8 +23,8 @@ namespace PlayFab.Internal
         public void InitializeHttp() { }
         public void Update() { }
 
-        public void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,
-            string authType,
+        public void MakeApiCall<TRequest, TResult>(string apiEndpoint, TRequest request,
+            AuthType authType,
             Action<TResult> resultCallback, Action<PlayFabError> errorCallback,
             object customData = null)
             where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
@@ -35,16 +35,13 @@ namespace PlayFab.Internal
 
             //Set headers
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
-            if (authType != null)
+            if (authType == AuthType.DevSecretKey)
             {
-                if (authType == "X-SecretKey")
-                {
-                    headers.Add("X-SecretKey", DevKey);
-                }
-                else
-                {
-                    headers.Add(authType, AuthKey);
-                }
+                headers.Add("X-SecretKey", DevKey);
+            }
+            else if (authType == AuthType.LoginSession)
+            {
+                headers.Add("X-Authorization", AuthKey);
             }
 
             headers.Add("X-ReportErrorAsSuccess", "true");
@@ -114,37 +111,9 @@ namespace PlayFab.Internal
                             AuthKey = regRes.SessionTicket;
                         }
 
-                        if (userSettings != null && AuthKey != null)
+                        if (userSettings != null && AuthKey != null && userSettings.NeedsAttribution)
                         {
-                            #region Track IDFA
-
-#if !DISABLE_IDFA
-#if UNITY_IOS || UNITY_ANDROID
-                            if (userSettings.NeedsAttribution)
-                            {
-                                Application.RequestAdvertisingIdentifierAsync(
-                                    (advertisingId, trackingEnabled, error) =>
-                                    {
-                                        if (trackingEnabled)
-                                        {
-                                            var attribRequest = new AttributeInstallRequest();
-#if UNITY_ANDROID
-                                            attribRequest.Android_Id = advertisingId;
-#elif UNITY_IOS
-                                            attribRequest.Idfa = advertisingId;
-#endif
-                                            PlayFabClientAPI.AttributeInstall(attribRequest, (attribResult) =>
-                                            {
-                                                //This is for internal testing tools.
-                                                PlayFabSettings.AdvertisingIdType += "_Successful";
-                                            }, null);
-                                        }
-                                    });
-                            }
-#endif
-#endif
-
-                            #endregion
+                            PlayFabIdfa.OnPlayFabLogin();
                         }
 
                         var cloudScriptUrl = result as GetCloudScriptUrlResult;

@@ -235,7 +235,11 @@ namespace PlayFab
         InvalidTwitchToken = 1232,
         TwitchResponseError = 1233,
         ProfaneDisplayName = 1234,
-        UserAlreadyAdded = 1235
+        UserAlreadyAdded = 1235,
+        InvalidVirtualCurrencyCode = 1236,
+        VirtualCurrencyCannotBeDeleted = 1237,
+        IdentifierAlreadyClaimed = 1238,
+        IdentifierNotLinked = 1239
     }
 
     public delegate void ErrorCallback(PlayFabError error);

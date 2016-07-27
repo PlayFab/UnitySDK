@@ -948,7 +948,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetRandomResultTablesRequest : PlayFabResultCommon
+    public class GetRandomResultTablesRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1773,6 +1773,16 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class RemoveVirtualCurrencyTypesRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// List of virtual currencies to delete
+        /// </summary>
+        public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
+    }
+
+    [Serializable]
     public class ResetCharacterStatisticsRequest : PlayFabRequestCommon
     {
 
@@ -2152,7 +2162,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class UpdateRandomResultTablesRequest : PlayFabResultCommon
+    public class UpdateRandomResultTablesRequest : PlayFabRequestCommon
     {
 
         /// <summary>

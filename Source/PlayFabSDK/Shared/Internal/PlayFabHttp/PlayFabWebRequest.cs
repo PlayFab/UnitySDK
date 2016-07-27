@@ -71,8 +71,8 @@ namespace PlayFab.Internal
             return true;
         }
 
-        public void MakeApiCall<TRequest, TResult>(string api, string apiEndpoint, TRequest request,
-            string authType,
+        public void MakeApiCall<TRequest, TResult>(string apiEndpoint, TRequest request,
+            AuthType authType,
             Action<TResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
             where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
@@ -209,7 +209,7 @@ namespace PlayFab.Internal
             }
         }
 
-        public void Post<TRequest, TResult>(CallRequestContainer reqContainer, string urlPath, string data, string authType, string authKey,
+        public void Post<TRequest, TResult>(CallRequestContainer reqContainer, string urlPath, string data, AuthType authType, string authKey,
             TRequest request, Action<TResult> callBack, Action<PlayFabError> errorCallback)
             where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
@@ -227,16 +227,13 @@ namespace PlayFab.Internal
                 // Without this, we have to catch WebException instead, and manually decode the result
                 reqContainer.Request.Headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
 
-                if (authType != null)
+                if (authType == AuthType.DevSecretKey)
                 {
-                    if (authType == "X-SecretKey")
-                    {
-                        reqContainer.Request.Headers.Add("X-SecretKey", DevKey);
-                    }
-                    else
-                    {
-                        reqContainer.Request.Headers.Add(authType, AuthKey);
-                    }
+                    reqContainer.Request.Headers.Add("X-SecretKey", DevKey);
+                }
+                else if (authType == AuthType.LoginSession)
+                {
+                    reqContainer.Request.Headers.Add("X-Authorization", AuthKey);
                 }
 
                 reqContainer.Request.ContentType = "application/json";
@@ -423,41 +420,13 @@ namespace PlayFab.Internal
                     AuthKey = regRes.SessionTicket;
                 }
 
-                if (userSettings != null)
+                if (userSettings != null && AuthKey != null && userSettings.NeedsAttribution)
                 {
                     AuthKey = res.SessionTicket;
-                    #region Track IDFA
-
-#if !DISABLE_IDFA
-#if UNITY_IOS || UNITY_ANDROID
-                    if (userSettings.NeedsAttribution)
+                    lock (ResultQueue)
                     {
-                        ResultQueue.Enqueue(() =>
-                        {
-                            Application.RequestAdvertisingIdentifierAsync(
-                                (advertisingId, trackingEnabled, error) =>
-                                {
-                                    if (trackingEnabled)
-                                    {
-                                        var attribRequest = new AttributeInstallRequest();
-#if UNITY_ANDROID
-                                        attribRequest.Android_Id = advertisingId;
-#elif UNITY_IOS
-                                        attribRequest.Idfa = advertisingId;
-#endif
-                                        PlayFabClientAPI.AttributeInstall(attribRequest, (attribResult) =>
-                                        {
-                                            //This is for internal testing tools.
-                                            PlayFabSettings.AdvertisingIdType += "_Successful";
-                                        }, null);
-                                    }
-                                });
-                        });
+                        ResultQueue.Enqueue(PlayFabIdfa.OnPlayFabLogin);
                     }
-#endif
-#endif
-
-                    #endregion
                 }
 
                 var cloudScriptUrl = result as GetCloudScriptUrlResult;
@@ -497,9 +466,7 @@ namespace PlayFab.Internal
                 Debug.LogException(e);
                 reqContainer.State = HttpRequestState.Error;
             }
-
         }
-
 
         public void Update()
         {

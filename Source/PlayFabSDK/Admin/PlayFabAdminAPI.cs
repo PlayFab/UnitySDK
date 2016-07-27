@@ -19,7 +19,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserAccountInfo", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserAccountInfo", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/ResetUsers", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/ResetUsers", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SendAccountRecoveryEmail", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SendAccountRecoveryEmail", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateUserTitleDisplayName", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateUserTitleDisplayName", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/CreatePlayerStatisticDefinition", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/CreatePlayerStatisticDefinition", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/DeleteUsers", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/DeleteUsers", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetDataReport", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetDataReport", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetPlayerStatisticDefinitions", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetPlayerStatisticDefinitions", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetPlayerStatisticVersions", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetPlayerStatisticVersions", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserInternalData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserPublisherData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserPublisherInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserPublisherInternalData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserPublisherReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserPublisherReadOnlyData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserReadOnlyData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/IncrementPlayerStatisticVersion", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/IncrementPlayerStatisticVersion", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/ResetUserStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/ResetUserStatistics", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdatePlayerStatisticDefinition", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdatePlayerStatisticDefinition", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateUserData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateUserData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateUserInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateUserInternalData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateUserPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateUserPublisherData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateUserPublisherInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateUserPublisherInternalData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateUserPublisherReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateUserPublisherReadOnlyData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateUserReadOnlyData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateUserReadOnlyData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -259,7 +259,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/AddNews", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/AddNews", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/AddVirtualCurrencyTypes", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/AddVirtualCurrencyTypes", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetCatalogItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetCatalogItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetPublisherData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetRandomResultTables", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetRandomResultTables", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -309,7 +309,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetStoreItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetStoreItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetTitleData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetTitleData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetTitleInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetTitleInternalData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -339,7 +339,17 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/ListVirtualCurrencyTypes", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/ListVirtualCurrencyTypes", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Removes one or more virtual currencies from the set defined for the title.
+        /// </summary>
+        public static void RemoveVirtualCurrencyTypes(RemoveVirtualCurrencyTypesRequest request, Action<BlankResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Admin/RemoveVirtualCurrencyTypes", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -349,7 +359,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SetCatalogItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SetCatalogItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -359,7 +369,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SetStoreItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SetStoreItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -369,7 +379,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SetTitleData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SetTitleData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -379,7 +389,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SetTitleInternalData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SetTitleInternalData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -389,7 +399,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SetupPushNotification", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SetupPushNotification", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -399,7 +409,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateCatalogItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateCatalogItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -409,7 +419,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateRandomResultTables", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateRandomResultTables", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -419,7 +429,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateStoreItems", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateStoreItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -429,7 +439,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/AddUserVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/AddUserVirtualCurrency", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -439,7 +449,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetUserInventory", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetUserInventory", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -449,7 +459,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GrantItemsToUsers", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GrantItemsToUsers", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -459,7 +469,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/RevokeInventoryItem", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/RevokeInventoryItem", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -469,7 +479,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SubtractUserVirtualCurrency", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SubtractUserVirtualCurrency", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -479,7 +489,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetMatchmakerGameInfo", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetMatchmakerGameInfo", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -489,7 +499,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetMatchmakerGameModes", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetMatchmakerGameModes", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -499,7 +509,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/ModifyMatchmakerGameModes", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/ModifyMatchmakerGameModes", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -509,7 +519,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/AddServerBuild", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/AddServerBuild", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -519,7 +529,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetServerBuildInfo", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetServerBuildInfo", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -529,7 +539,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetServerBuildUploadUrl", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetServerBuildUploadUrl", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -539,7 +549,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/ListServerBuilds", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/ListServerBuilds", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -549,7 +559,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/ModifyServerBuild", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/ModifyServerBuild", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -559,7 +569,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/RemoveServerBuild", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/RemoveServerBuild", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -569,7 +579,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SetPublisherData", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SetPublisherData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -579,7 +589,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetCloudScriptRevision", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetCloudScriptRevision", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -589,7 +599,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetCloudScriptVersions", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetCloudScriptVersions", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -599,7 +609,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/SetPublishedRevision", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/SetPublishedRevision", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -609,7 +619,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/UpdateCloudScript", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/UpdateCloudScript", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -619,7 +629,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/DeleteContent", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/DeleteContent", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -629,7 +639,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetContentList", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetContentList", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -639,7 +649,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/GetContentUploadUrl", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/GetContentUploadUrl", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -649,7 +659,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("Admin", "/Admin/ResetCharacterStatistics", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Admin/ResetCharacterStatistics", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
 
