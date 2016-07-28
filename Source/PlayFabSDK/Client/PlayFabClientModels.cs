@@ -1822,6 +1822,21 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class GetPlayerSegmentsRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
+    public class GetPlayerSegmentsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Array of segments the requested player currently belongs to.
+        /// </summary>
+        public List<GetSegmentResult> Segments { get; set;}
+    }
+
+    [Serializable]
     public class GetPlayerStatisticsRequest : PlayFabRequestCommon
     {
 
@@ -2099,6 +2114,26 @@ namespace PlayFab.ClientModels
         /// Array of items purchased.
         /// </summary>
         public List<ItemInstance> Items { get; set;}
+    }
+
+    [Serializable]
+    public class GetSegmentResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Unique identifier for this segment.
+        /// </summary>
+        public string Id { get; set;}
+
+        /// <summary>
+        /// Segment name.
+        /// </summary>
+        public string Name { get; set;}
+
+        /// <summary>
+        /// Identifier of the segments AB Test, if it is attached to one.
+        /// </summary>
+        public string ABTestParent { get; set;}
     }
 
     [Serializable]
@@ -2467,7 +2502,7 @@ namespace PlayFab.ClientModels
     }
 
     /// <summary>
-    /// A unique instance of an item in a user's inventory
+    /// A unique instance of an item in a user's inventory. Note, To retrieve additional information for an item instance (such as Tags, Description, or Custom Data that are set on the root catalog item), a call to GetCatalogItems is required. The Item ID of the instance can then be matched to a catalog entry, which contains the additional information.
     /// </summary>
     [Serializable]
     public class ItemInstance

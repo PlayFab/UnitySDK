@@ -247,6 +247,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<OpenTradeResponse> OnOpenTradeResultEvent;
         public event PlayFabRequestEvent<AttributeInstallRequest> OnAttributeInstallRequestEvent;
         public event PlayFabResultEvent<AttributeInstallResult> OnAttributeInstallResultEvent;
+        public event PlayFabRequestEvent<GetPlayerSegmentsRequest> OnGetPlayerSegmentsRequestEvent;
+        public event PlayFabResultEvent<GetPlayerSegmentsResult> OnGetPlayerSegmentsResultEvent;
     }
 }
 #endif
