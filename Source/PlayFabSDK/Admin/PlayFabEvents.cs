@@ -1,13 +1,10 @@
 #if ENABLE_PLAYFABADMIN_API
 using PlayFab.AdminModels;
-using PlayFab.Internal;
 
 namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
-        
-        
         public event PlayFabRequestEvent<LookupUserAccountInfoRequest> OnAdminGetUserAccountInfoRequestEvent;
         public event PlayFabResultEvent<LookupUserAccountInfoResult> OnAdminGetUserAccountInfoResultEvent;
         public event PlayFabRequestEvent<ResetUsersRequest> OnAdminResetUsersRequestEvent;

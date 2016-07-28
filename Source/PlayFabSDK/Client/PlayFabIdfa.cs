@@ -1,3 +1,6 @@
+#if !DISABLE_PLAYFABCLIENT_API
+using PlayFab.ClientModels;
+using UnityEngine;
 
 namespace PlayFab.Internal
 {
@@ -42,3 +45,4 @@ namespace PlayFab.Internal
 #endif
     }
 }
+#endif

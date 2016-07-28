@@ -1,13 +1,10 @@
 #if ENABLE_PLAYFABSERVER_API
 using PlayFab.ServerModels;
-using PlayFab.Internal;
 
 namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
-        
-        
         public event PlayFabRequestEvent<AuthenticateSessionTicketRequest> OnServerAuthenticateSessionTicketRequestEvent;
         public event PlayFabResultEvent<AuthenticateSessionTicketResult> OnServerAuthenticateSessionTicketResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromFacebookIDsRequest> OnServerGetPlayFabIDsFromFacebookIDsRequestEvent;

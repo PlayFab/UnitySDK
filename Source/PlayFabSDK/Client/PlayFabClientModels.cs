@@ -1,5 +1,4 @@
 #if !DISABLE_PLAYFABCLIENT_API
-using PlayFab.Internal;
 using System;
 using System.Collections.Generic;
 using PlayFab.SharedModels;
