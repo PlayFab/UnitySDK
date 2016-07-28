@@ -37,7 +37,7 @@ namespace PlayFab.UUnit
         /// </summary>
         public virtual void Tick(UUnitTestContext testContext)
         {
-            testContext.Fail(GetType().Name + "." + testContext.TestDelegate.Method.Name + ": Async TestCase does not implement Tick().  To fix this error, implement \"" + GetType().Name + ".Tick()\" in your async test, or call testContext.EndTest() in your syncronous test.");
+            testContext.Fail(GetType().Name + "." + testContext.Name + ": Async TestCase does not implement Tick().  To fix this error, implement \"" + GetType().Name + ".Tick()\" in your async test, or call testContext.EndTest() in your syncronous test.");
         }
 
         /// <summary>

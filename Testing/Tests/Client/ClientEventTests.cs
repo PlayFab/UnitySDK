@@ -5,6 +5,7 @@ using System.Linq;
 using PlayFab.UUnit;
 using PlayFab.ClientModels;
 using PlayFab.Events;
+using PlayFab.SharedModels;
 
 namespace PlayFab.Internal
 {
@@ -76,7 +77,7 @@ namespace PlayFab.Internal
             _listener.Register();
             PlayFabHttp.ApiProcessingEventHandler += TestInstCallbacks_GeneralOnly_OnGlobalEventHandler;
 
-            var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = "UnitySdk-UnitTest", TitleId = "6195" };
+            var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = PlayFabSettings.BuildIdentifier, TitleId = "6195" };
             PlayFabClientAPI.LoginWithCustomID(request,
                 PlayFabUUnitUtils.ApiActionWrapper<LoginResult>(testContext, TestInstCallbacks_GeneralOnlyCallback),
                 PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
@@ -152,7 +153,7 @@ namespace PlayFab.Internal
             RegisterPlayFabUserRequest registerRequest = new RegisterPlayFabUserRequest(); // A bad request that will fail
             PlayFabClientAPI.RegisterPlayFabUser(registerRequest, null, PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedError_Single), testContext);
         }
-        private static void SharedError_Global(object request, PlayFabError error)
+        private static void SharedError_Global(PlayFabRequestCommon request, PlayFabError error)
         {
             Callbacks.Add("SharedError_Global");
             throw new Exception("Non-PlayFab callback error");

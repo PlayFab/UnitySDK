@@ -1,18 +1,15 @@
 #if !UNITY_WSA && !UNITY_WP8
 using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
-using PlayFab;
 using PlayFab.SharedModels;
 #if !DISABLE_PLAYFABCLIENT_API
 using PlayFab.ClientModels;
 #endif
-using PlayFab.Internal;
 using PlayFab.Json;
 
 namespace PlayFab.Internal
@@ -21,11 +18,11 @@ namespace PlayFab.Internal
     {
         private static readonly Queue<Action> ResultQueue = new Queue<Action>();
         private static readonly Queue<Action> _tempActions = new Queue<Action>();
-        private static readonly List<RequestState> ActiveRequests = new List<RequestState>();
+        private static readonly List<CallRequestContainer> ActiveRequests = new List<CallRequestContainer>();
 
         private static Thread _RequestQueueThread;
         private static readonly object _ThreadLock = new object();
-        private static TimeSpan _threadKillTimeout = TimeSpan.FromSeconds(5);
+        private static TimeSpan _threadKillTimeout = TimeSpan.FromSeconds(60);
         private static DateTime _threadKillTime = DateTime.UtcNow + _threadKillTimeout; // Kill the thread after 1 minute of inactivity
         private static bool _isApplicationPlaying;
         private static int _activeCallCount;
@@ -34,7 +31,7 @@ namespace PlayFab.Internal
         public string AuthKey { get; set; }
         public string DevKey { get; set; }
 
-        public void Awake()
+        public void InitializeHttp()
         {
             SetupCertificates();
             _isApplicationPlaying = true;
@@ -74,31 +71,32 @@ namespace PlayFab.Internal
             return true;
         }
 
-        public void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint, TRequestType request,
-            string authType,
-            Action<TResultType> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        public void MakeApiCall<TRequest, TResult>(string apiEndpoint, TRequest request,
+            AuthType authType,
+            Action<TResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
 
             //Build Endpoint
             var url = PlayFabSettings.GetFullUrl(apiEndpoint);
 
-            var requestState = new RequestState();
+            var reqContainer = new CallRequestContainer();
 #if PLAYFAB_REQUEST_TIMING
-            requestState.Timing.StartTimeUtc = DateTime.UtcNow;
-            requestState.Timing.ApiEndpoint = apiEndpoint;
+            reqContainer.Timing.StartTimeUtc = DateTime.UtcNow;
+            reqContainer.Timing.ApiEndpoint = apiEndpoint;
 #endif
-            requestState.State = HttpRequestState.Idle;
-            requestState.CustomData = customData;
-            requestState.ProcessPostAction = () =>
+            reqContainer.State = HttpRequestState.Idle;
+            reqContainer.CustomData = customData;
+            reqContainer.ProcessPostAction = () =>
             {
                 //serialize the request;
                 var req = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
-                Post(requestState, url, req, authType, AuthKey, request, resultCallback, errorCallback);
+                Post(reqContainer, url, req, authType, AuthKey, request, resultCallback, errorCallback);
             };
 
             lock (ActiveRequests)
             {
-                ActiveRequests.Insert(0, requestState);
+                ActiveRequests.Insert(0, reqContainer);
             }
 
             ActivateThreadWorker();
@@ -128,7 +126,7 @@ namespace PlayFab.Internal
                     _threadKillTime = DateTime.UtcNow + _threadKillTimeout;
                 }
 
-                List<RequestState> localActiveRequests = new List<RequestState>();
+                List<CallRequestContainer> localActiveRequests = new List<CallRequestContainer>();
                 do
                 {
                     //process active requests
@@ -211,111 +209,110 @@ namespace PlayFab.Internal
             }
         }
 
-        public void Post<TRequestType, TResultType>(RequestState requestState, string urlPath, string data, string authType, string authKey,
-            TRequestType request, Action<TResultType> callBack, Action<PlayFabError> errorCallback)
+        public void Post<TRequest, TResult>(CallRequestContainer reqContainer, string urlPath, string data, AuthType authType, string authKey,
+            TRequest request, Action<TResult> callBack, Action<PlayFabError> errorCallback)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
 
             try
             {
                 var payload = Encoding.UTF8.GetBytes(data);
 
-                requestState.Request = (HttpWebRequest)WebRequest.Create(urlPath);
-                requestState.Request.UserAgent = "UnityEngine-Unity; Version: " + _UnityVersion;
-                requestState.Request.SendChunked = false;
-                requestState.Request.Proxy = null;
+                reqContainer.Request = (HttpWebRequest)WebRequest.Create(urlPath);
+                reqContainer.Request.UserAgent = "UnityEngine-Unity; Version: " + _UnityVersion;
+                reqContainer.Request.SendChunked = false;
+                reqContainer.Request.Proxy = null;
                 // Prevents hitting a proxy if no proxy is available. TODO: Add support for proxy's.
-                requestState.Request.Headers.Add("X-ReportErrorAsSuccess", "true");
+                reqContainer.Request.Headers.Add("X-ReportErrorAsSuccess", "true");
                 // Without this, we have to catch WebException instead, and manually decode the result
-                requestState.Request.Headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
+                reqContainer.Request.Headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
 
-                if (authType != null)
+                if (authType == AuthType.DevSecretKey)
                 {
-                    if (authType == "X-SecretKey")
-                    {
-                        requestState.Request.Headers.Add("X-SecretKey", DevKey);
-                    }
-                    else
-                    {
-                        requestState.Request.Headers.Add(authType, AuthKey);
-                    }
+                    reqContainer.Request.Headers.Add("X-SecretKey", DevKey);
+                }
+                else if (authType == AuthType.LoginSession)
+                {
+                    reqContainer.Request.Headers.Add("X-Authorization", AuthKey);
                 }
 
-                requestState.Request.ContentType = "application/json";
-                requestState.Request.Method = "POST";
-                requestState.Request.KeepAlive = PlayFabSettings.RequestKeepAlive;
-                requestState.Request.Timeout = PlayFabSettings.RequestTimeout;
-                requestState.Request.AllowWriteStreamBuffering = false;
-                requestState.Request.Proxy = null;
-                requestState.Request.ContentLength = payload.LongLength;
-                requestState.Request.ReadWriteTimeout = PlayFabSettings.RequestTimeout;
+                reqContainer.Request.ContentType = "application/json";
+                reqContainer.Request.Method = "POST";
+                reqContainer.Request.KeepAlive = PlayFabSettings.RequestKeepAlive;
+                reqContainer.Request.Timeout = PlayFabSettings.RequestTimeout;
+                reqContainer.Request.AllowWriteStreamBuffering = false;
+                reqContainer.Request.Proxy = null;
+                reqContainer.Request.ContentLength = payload.LongLength;
+                reqContainer.Request.ReadWriteTimeout = PlayFabSettings.RequestTimeout;
 
                 //Debug.Log("Get Stream");
                 // Get Request Stream and send data in the body.
-                using (Stream stream = requestState.Request.GetRequestStream())
+                using (Stream stream = reqContainer.Request.GetRequestStream())
                 {
                     //Debug.Log("Post Stream");
                     stream.Write(payload, 0, payload.Length);
                     //Debug.Log("After Post stream");
                 }
 
-                requestState.ProcessResponseAction = () =>
+                reqContainer.ProcessResponseAction = () =>
                 {
-                    ProcessHttpResponse(requestState, request, callBack, errorCallback);
+                    ProcessHttpResponse(reqContainer, request, callBack, errorCallback);
                 };
 
-                requestState.State = HttpRequestState.Sent;
+                reqContainer.State = HttpRequestState.Sent;
             }
             catch (WebException e)
             {
-                if (requestState.RetryTimeoutCounter == 0 && e.Status == WebExceptionStatus.Timeout)
+                if (reqContainer.RetryTimeoutCounter == 0 && e.Status == WebExceptionStatus.Timeout)
                 {
-                    requestState.RetryTimeoutCounter++;
+                    reqContainer.RetryTimeoutCounter++;
                 }
                 else
                 {
                     var enhancedError = new WebException("Exception making http request to :" + urlPath, e);
                     Debug.LogException(enhancedError);
-                    requestState.RetryTimeoutCounter = 0;
-                    requestState.State = HttpRequestState.Error;
+                    reqContainer.RetryTimeoutCounter = 0;
+                    reqContainer.State = HttpRequestState.Error;
                 }
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
-                requestState.State = HttpRequestState.Error;
+                reqContainer.State = HttpRequestState.Error;
             }
 
         }
 
-        public void ProcessHttpResponse<TRequestType, TResultType>(RequestState state, TRequestType request, Action<TResultType> callBack,
-            Action<PlayFabError> errorCallback)
+        public void ProcessHttpResponse<TRequest, TResult>(CallRequestContainer reqContainer, TRequest request,
+            Action<TResult> callBack, Action<PlayFabError> errorCallback)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             try
             {
 #if PLAYFAB_REQUEST_TIMING
-                state.Timing.WorkerRequestMs = (int)state.Stopwatch.ElapsedMilliseconds;
+                reqContainer.Timing.WorkerRequestMs = (int)reqContainer.Stopwatch.ElapsedMilliseconds;
 #endif
 
-                if (state.Response == null)
+                if (reqContainer.Response == null)
                 {
-                    state.Response = (HttpWebResponse)state.Request.GetResponse();
+                    reqContainer.Response = (HttpWebResponse)reqContainer.Request.GetResponse();
                 }
 
                 //Check for an Okay Response.
-                if (state.Response.StatusCode == HttpStatusCode.OK)
+                if (reqContainer.Response.StatusCode == HttpStatusCode.OK)
                 {
-                    state.JsonResponse = ResponseToString(state.Response);
+                    reqContainer.JsonResponse = ResponseToString(reqContainer.Response);
                 }
 
-                if (state.Response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(state.JsonResponse))
+                if (reqContainer.Response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(reqContainer.JsonResponse))
                 {
                     //Throw Friendly PF Status.
                     if (errorCallback != null)
                     {
-                        var message = string.IsNullOrEmpty(state.JsonResponse)
-                            ? "Internal Server Status"
-                            : state.JsonResponse;
-                        var playFabError = PlayFabHttp.GeneratePlayFabError(message, state.CustomData);
+                        var message = string.IsNullOrEmpty(reqContainer.JsonResponse)
+                            ? "Internal Server Error"
+                            : reqContainer.JsonResponse;
+                        var playFabError = PlayFabHttp.GeneratePlayFabError(message, reqContainer.CustomData);
                         lock (ResultQueue)
                         {
                             //Queue The result callbacks to run on the main thread.
@@ -325,40 +322,41 @@ namespace PlayFab.Internal
                                 errorCallback(playFabError);
                             });
                         }
-                        state.State = HttpRequestState.Error;
+                        reqContainer.State = HttpRequestState.Error;
                         return;
                     }
                 }
                 else
                 {
                     //Response Recieved Successfully, now process.
-                    state.ProcessJsonAction = () =>
+                    reqContainer.ProcessJsonAction = () =>
                     {
-                        ProcessJsonResponse(state, request, callBack, errorCallback);
+                        ProcessJsonResponse(reqContainer, request, callBack, errorCallback);
                     };
                 }
 
-                state.State = HttpRequestState.Received;
+                reqContainer.State = HttpRequestState.Received;
 
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
-                state.State = HttpRequestState.Error;
+                reqContainer.State = HttpRequestState.Error;
             }
         }
 
-        public void ProcessJsonResponse<TRequestType, TResultType>(RequestState state, TRequestType request,
-            Action<TResultType> callBack, Action<PlayFabError> errorCallback)
+        public void ProcessJsonResponse<TRequest, TResult>(CallRequestContainer reqContainer, TRequest request,
+            Action<TResult> callBack, Action<PlayFabError> errorCallback)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             try
             {
-                var httpResult = JsonWrapper.DeserializeObject<PlayFabHttp.HttpResponseObject>(state.JsonResponse,
+                var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(reqContainer.JsonResponse,
                     PlayFabUtil.ApiSerializerStrategy);
 
 
 #if PLAYFAB_REQUEST_TIMING
-                state.Timing.WorkerRequestMs = (int)state.Stopwatch.ElapsedMilliseconds;
+                reqContainer.Timing.WorkerRequestMs = (int)reqContainer.Stopwatch.ElapsedMilliseconds;
 #endif
 
                 //This would happen if playfab returned a 500 internal server error or a bad json response.
@@ -367,7 +365,7 @@ namespace PlayFab.Internal
                     if (errorCallback != null)
                     {
                         //TODO: this may need to be adjusted if the response is ugly.
-                        var playFabError = PlayFabHttp.GeneratePlayFabErrorGeneric(state.JsonResponse, null, state.CustomData);
+                        var playFabError = PlayFabHttp.GeneratePlayFabErrorGeneric(reqContainer.JsonResponse, null, reqContainer.CustomData);
                         //Queue The result callbacks to run on the main thread.
                         lock (ResultQueue)
                         {
@@ -377,7 +375,7 @@ namespace PlayFab.Internal
                                 errorCallback(playFabError);
                             });
                         }
-                        state.State = HttpRequestState.Error;
+                        reqContainer.State = HttpRequestState.Error;
                     }
                     return;
                 }
@@ -386,7 +384,7 @@ namespace PlayFab.Internal
                 {
                     if (errorCallback != null)
                     {
-                        var playFabError = PlayFabHttp.GeneratePlayFabError(state.JsonResponse, state.CustomData);
+                        var playFabError = PlayFabHttp.GeneratePlayFabError(reqContainer.JsonResponse, reqContainer.CustomData);
                         //Queue The result callbacks to run on the main thread.
                         lock (ResultQueue)
                         {
@@ -396,20 +394,16 @@ namespace PlayFab.Internal
                                 errorCallback(playFabError);
                             });
                         }
-                        state.State = HttpRequestState.Error;
+                        reqContainer.State = HttpRequestState.Error;
                     }
                     return;
                 }
 
                 var dataJson = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
-                var result = JsonWrapper.DeserializeObject<TResultType>(dataJson, PlayFabUtil.ApiSerializerStrategy);
+                var result = JsonWrapper.DeserializeObject<TResult>(dataJson, PlayFabUtil.ApiSerializerStrategy);
 
-                var resultCommon = result as PlayFabResultCommon;
-                if (resultCommon != null)
-                {
-                    resultCommon.Request = request;
-                    resultCommon.CustomData = state.CustomData;
-                }
+                result.Request = request;
+                result.CustomData = reqContainer.CustomData;
 
 #if !DISABLE_PLAYFABCLIENT_API
                 UserSettings userSettings = null;
@@ -426,41 +420,13 @@ namespace PlayFab.Internal
                     AuthKey = regRes.SessionTicket;
                 }
 
-                if (userSettings != null)
+                if (userSettings != null && AuthKey != null && userSettings.NeedsAttribution)
                 {
                     AuthKey = res.SessionTicket;
-                    #region Track IDFA
-
-#if !DISABLE_IDFA
-#if UNITY_IOS || UNITY_ANDROID
-                    if (userSettings.NeedsAttribution)
+                    lock (ResultQueue)
                     {
-                        ResultQueue.Enqueue(() =>
-                        {
-                            Application.RequestAdvertisingIdentifierAsync(
-                                (advertisingId, trackingEnabled, error) =>
-                                {
-                                    if (trackingEnabled)
-                                    {
-                                        var attribRequest = new AttributeInstallRequest();
-#if UNITY_ANDROID
-                                        attribRequest.Android_Id = advertisingId;
-#elif UNITY_IOS
-                                        attribRequest.Idfa = advertisingId;
-#endif
-                                        PlayFabClientAPI.AttributeInstall(attribRequest, (attribResult) =>
-                                        {
-                                            //This is for internal testing tools.
-                                            PlayFabSettings.AdvertisingIdType += "_Successful";
-                                        }, null);
-                                    }
-                                });
-                        });
+                        ResultQueue.Enqueue(PlayFabIdfa.OnPlayFabLogin);
                     }
-#endif
-#endif
-
-                    #endregion
                 }
 
                 var cloudScriptUrl = result as GetCloudScriptUrlResult;
@@ -477,9 +443,9 @@ namespace PlayFab.Internal
                         ResultQueue.Enqueue(() =>
                         {
 #if PLAYFAB_REQUEST_TIMING
-                            state.Stopwatch.Stop();
-                            state.Timing.MainThreadRequestMs = (int)state.Stopwatch.ElapsedMilliseconds;
-                            PlayFabHttp.SendRequestTiming(state.Timing);
+                            reqContainer.Stopwatch.Stop();
+                            reqContainer.Timing.MainThreadRequestMs = (int)reqContainer.Stopwatch.ElapsedMilliseconds;
+                            PlayFabHttp.SendRequestTiming(reqContainer.Timing);
 #endif
                             try
                             {
@@ -498,11 +464,9 @@ namespace PlayFab.Internal
             catch (Exception e)
             {
                 Debug.LogException(e);
-                state.State = HttpRequestState.Error;
+                reqContainer.State = HttpRequestState.Error;
             }
-
         }
-
 
         public void Update()
         {
@@ -530,17 +494,31 @@ namespace PlayFab.Internal
                 {
                     if (responseStream == null)
                         return null;
-                    using (var stream = new System.IO.StreamReader(responseStream))
+                    using (var stream = new StreamReader(responseStream))
                     {
                         return stream.ReadToEnd();
                     }
                 }
-
             }
-            catch (WebException e)
+            catch (WebException webException)
             {
-                Debug.LogException(e);
-                return null;
+                try
+                {
+                    using (var responseStream = webException.Response.GetResponseStream())
+                    {
+                        if (responseStream == null)
+                            return null;
+                        using (var stream = new StreamReader(responseStream))
+                        {
+                            return stream.ReadToEnd();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    return null;
+                }
             }
             catch (Exception e)
             {
@@ -567,7 +545,7 @@ namespace PlayFab.Internal
             Error
         }
 
-        public class RequestState
+        public class CallRequestContainer
         {
             // This class stores the State of the request.
             public HttpRequestState State;
@@ -586,7 +564,7 @@ namespace PlayFab.Internal
             public System.Diagnostics.Stopwatch Stopwatch;
 #endif
 
-            public RequestState()
+            public CallRequestContainer()
             {
                 State = HttpRequestState.Idle;
                 Request = null;

@@ -19,7 +19,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<AuthUserRequest, AuthUserResponse>("Matchmaker", "/Matchmaker/AuthUser", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Matchmaker/AuthUser", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<PlayerJoinedRequest, PlayerJoinedResponse>("Matchmaker", "/Matchmaker/PlayerJoined", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Matchmaker/PlayerJoined", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<PlayerLeftRequest, PlayerLeftResponse>("Matchmaker", "/Matchmaker/PlayerLeft", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Matchmaker/PlayerLeft", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<StartGameRequest, StartGameResponse>("Matchmaker", "/Matchmaker/StartGame", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Matchmaker/StartGame", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace PlayFab
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall<UserInfoRequest, UserInfoResponse>("Matchmaker", "/Matchmaker/UserInfo", request , "X-SecretKey", resultCallback, errorCallback, customData);
+            PlayFabHttp.MakeApiCall("/Matchmaker/UserInfo", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
 

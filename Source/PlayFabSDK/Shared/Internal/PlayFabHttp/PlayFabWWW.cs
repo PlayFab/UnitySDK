@@ -16,17 +16,18 @@ namespace PlayFab.Internal
 {
     public class PlayFabWWW : IPlayFabHttp
     {
-        private readonly object _eventLock = new object();
         private int _pendingWwwMessages = 0;
         public string AuthKey { get; set; }
         public string DevKey { get; set; }
 
-        public void Awake() { }
+        public void InitializeHttp() { }
         public void Update() { }
 
-        public void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint, TRequestType request,
-            string authType,
-            Action<TResultType> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        public void MakeApiCall<TRequest, TResult>(string apiEndpoint, TRequest request,
+            AuthType authType,
+            Action<TResult> resultCallback, Action<PlayFabError> errorCallback,
+            object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             //serialize the request;
             var req = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
@@ -34,16 +35,13 @@ namespace PlayFab.Internal
 
             //Set headers
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
-            if (authType != null)
+            if (authType == AuthType.DevSecretKey)
             {
-                if (authType == "X-SecretKey")
-                {
-                    headers.Add("X-SecretKey", DevKey);
-                }
-                else
-                {
-                    headers.Add(authType, AuthKey);
-                }
+                headers.Add("X-SecretKey", DevKey);
+            }
+            else if (authType == AuthType.LoginSession)
+            {
+                headers.Add("X-Authorization", AuthKey);
             }
 
             headers.Add("X-ReportErrorAsSuccess", "true");
@@ -86,22 +84,17 @@ namespace PlayFab.Internal
                     var startTime = DateTime.UtcNow;
 #endif
                     //Debug.Log(response);
-                    var httpResult = JsonWrapper.DeserializeObject<PlayFabHttp.HttpResponseObject>(response,
+                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response,
                         PlayFabUtil.ApiSerializerStrategy);
 
                     if (httpResult.code == 200)
                     {
                         //We have a good response from the server
                         var dataJson = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
-                        var result = JsonWrapper.DeserializeObject<TResultType>(dataJson,
-                            PlayFabUtil.ApiSerializerStrategy);
+                        var result = JsonWrapper.DeserializeObject<TResult>(dataJson, PlayFabUtil.ApiSerializerStrategy);
 
-                        var resultCommon = result as PlayFabResultCommon;
-                        if (resultCommon != null)
-                        {
-                            resultCommon.Request = request;
-                            resultCommon.CustomData = customData;
-                        }
+                        result.Request = request;
+                        result.CustomData = customData;
 
 #if !DISABLE_PLAYFABCLIENT_API
                         UserSettings userSettings = null;
@@ -114,42 +107,13 @@ namespace PlayFab.Internal
                         }
                         else if (regRes != null)
                         {
-                            userSettings = res.SettingsForUser;
+                            userSettings = regRes.SettingsForUser;
                             AuthKey = regRes.SessionTicket;
                         }
 
-                        if (userSettings != null)
+                        if (userSettings != null && AuthKey != null && userSettings.NeedsAttribution)
                         {
-                            AuthKey = res.SessionTicket;
-                            #region Track IDFA
-
-#if !DISABLE_IDFA
-#if UNITY_IOS || UNITY_ANDROID
-                            if (userSettings.NeedsAttribution)
-                            {
-                                Application.RequestAdvertisingIdentifierAsync(
-                                    (advertisingId, trackingEnabled, error) =>
-                                    {
-                                        if (trackingEnabled)
-                                        {
-                                            var attribRequest = new AttributeInstallRequest();
-#if UNITY_ANDROID
-                                            attribRequest.Android_Id = advertisingId;
-#elif UNITY_IOS
-                                            attribRequest.Idfa = advertisingId;
-#endif
-                                            PlayFabClientAPI.AttributeInstall(attribRequest, (attribResult) =>
-                                            {
-                                                //This is for internal testing tools.
-                                                PlayFabSettings.AdvertisingIdType += "_Successful";
-                                            }, null);
-                                        }
-                                    });
-                            }
-#endif
-#endif
-
-                            #endregion
+                            PlayFabIdfa.OnPlayFabLogin();
                         }
 
                         var cloudScriptUrl = result as GetCloudScriptUrlResult;
@@ -158,16 +122,13 @@ namespace PlayFab.Internal
                             PlayFabSettings.LogicServerUrl = cloudScriptUrl.Url;
                         }
 #endif
-                        lock (_eventLock)
+                        try
                         {
-                            try
-                            {
-                                PlayFabHttp.SendEvent(request, result, ApiProcessingEventType.Post);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.LogException(e);
-                            }
+                            PlayFabHttp.SendEvent(request, result, ApiProcessingEventType.Post);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
                         }
 
 #if PLAYFAB_REQUEST_TIMING

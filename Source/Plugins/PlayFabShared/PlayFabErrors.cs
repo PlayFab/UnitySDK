@@ -115,7 +115,6 @@ namespace PlayFab
         InvalidReportDate = 1111,
         ReportNotAvailable = 1112,
         DatabaseThroughputExceeded = 1113,
-        InvalidLobbyId = 1114,
         InvalidGameTicket = 1115,
         ExpiredGameTicket = 1116,
         GameTicketDoesNotMatchLobby = 1117,
@@ -234,7 +233,13 @@ namespace PlayFab
         VirtualCurrencyCodeExists = 1230,
         TitleNewsItemCountLimitExceeded = 1231,
         InvalidTwitchToken = 1232,
-        TwitchResponseError = 1233
+        TwitchResponseError = 1233,
+        ProfaneDisplayName = 1234,
+        UserAlreadyAdded = 1235,
+        InvalidVirtualCurrencyCode = 1236,
+        VirtualCurrencyCannotBeDeleted = 1237,
+        IdentifierAlreadyClaimed = 1238,
+        IdentifierNotLinked = 1239
     }
 
     public delegate void ErrorCallback(PlayFabError error);

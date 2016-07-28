@@ -7,7 +7,7 @@ using PlayFab.SharedModels;
 namespace PlayFab.ClientModels
 {
     [Serializable]
-    public class AcceptTradeRequest
+    public class AcceptTradeRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class AddFriendRequest
+    public class AddFriendRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -72,7 +72,22 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class AddSharedGroupMembersRequest
+    public class AddGenericIDRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// Generic service identifier to add to the player account.
+        /// </summary>
+        public GenericServiceId GenericId { get; set;}
+    }
+
+    [Serializable]
+    public class AddGenericIDResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class AddSharedGroupMembersRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -92,7 +107,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class AddUsernamePasswordRequest
+    public class AddUsernamePasswordRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -122,7 +137,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class AddUserVirtualCurrencyRequest
+    public class AddUserVirtualCurrencyRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -137,7 +152,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class AndroidDevicePushNotificationRegistrationRequest
+    public class AndroidDevicePushNotificationRegistrationRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -162,7 +177,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class AttributeInstallRequest
+    public class AttributeInstallRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -182,7 +197,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class CancelTradeRequest
+    public class CancelTradeRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -484,8 +499,26 @@ namespace PlayFab.ClientModels
         Specific
     }
 
+    /// <summary>
+    /// Collection filter to include and/or exclude collections with certain key-value pairs. The filter generates a collection set defined by Includes rules and then remove collections that matches the Excludes rules. A collection is considered matching a rule if the rule describes a subset of the collection. 
+    /// </summary>
     [Serializable]
-    public class ConfirmPurchaseRequest
+    public class CollectionFilter
+    {
+
+        /// <summary>
+        /// List of Include rules, with any of which if a collection matches, it is included by the filter, unless it is excluded by one of the Exclude rule
+        /// </summary>
+        public List<Container_Dictionary_String_String> Includes { get; set;}
+
+        /// <summary>
+        /// List of Exclude rules, with any of which if a collection matches, it is excluded by the filter.
+        /// </summary>
+        public List<Container_Dictionary_String_String> Excludes { get; set;}
+    }
+
+    [Serializable]
+    public class ConfirmPurchaseRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -515,7 +548,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ConsumeItemRequest
+    public class ConsumeItemRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -549,8 +582,21 @@ namespace PlayFab.ClientModels
         public int RemainingUses { get; set;}
     }
 
+    /// <summary>
+    /// A data container
+    /// </summary>
     [Serializable]
-    public class CreateSharedGroupRequest
+    public class Container_Dictionary_String_String
+    {
+
+        /// <summary>
+        /// Content of data
+        /// </summary>
+        public Dictionary<string,string> Data { get; set;}
+    }
+
+    [Serializable]
+    public class CreateSharedGroupRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -736,28 +782,33 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class CurrentGamesRequest
+    public class CurrentGamesRequest : PlayFabRequestCommon
     {
 
         /// <summary>
-        /// region to check for game instances
+        /// Region to check for Game Server Instances.
         /// </summary>
         public Region? Region { get; set;}
 
         /// <summary>
-        /// version of build to match against
+        /// Build to match against.
         /// </summary>
         public string BuildVersion { get; set;}
 
         /// <summary>
-        /// game mode to look for (optional)
+        /// Game mode to look for.
         /// </summary>
         public string GameMode { get; set;}
 
         /// <summary>
-        /// statistic name to find statistic-based matches (optional)
+        /// Statistic name to find statistic-based matches.
         /// </summary>
         public string StatisticName { get; set;}
+
+        /// <summary>
+        /// Filter to include and/or exclude Game Server Instances associated with certain tags.
+        /// </summary>
+        public CollectionFilter TagFilter { get; set;}
     }
 
     [Serializable]
@@ -786,7 +837,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ExecuteCloudScriptRequest
+    public class ExecuteCloudScriptRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -969,7 +1020,7 @@ namespace PlayFab.ClientModels
         public int? MaxPlayers { get; set;}
 
         /// <summary>
-        /// array of strings of current player names on this server (note that these are PlayFab usernames, as opposed to title display names)
+        /// array of current player IDs on this server
         /// </summary>
         public List<string> PlayerUserIds { get; set;}
 
@@ -987,6 +1038,16 @@ namespace PlayFab.ClientModels
         /// game session custom data
         /// </summary>
         public string GameServerData { get; set;}
+
+        /// <summary>
+        /// game session tags
+        /// </summary>
+        public Dictionary<string,string> Tags { get; set;}
+
+        /// <summary>
+        /// last heartbeat of the game server instance, used in external game server provider mode
+        /// </summary>
+        public DateTime? LastHeartbeat { get; set;}
     }
 
     public enum GameInstanceState
@@ -996,7 +1057,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GameServerRegionsRequest
+    public class GameServerRegionsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1021,7 +1082,37 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetAccountInfoRequest
+    public class GenericPlayFabIdPair
+    {
+
+        /// <summary>
+        /// Unique generic service identifier for a user.
+        /// </summary>
+        public GenericServiceId GenericId { get; set;}
+
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the given generic identifier.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
+    [Serializable]
+    public class GenericServiceId
+    {
+
+        /// <summary>
+        /// Name of the service for which the player has a unique identifier.
+        /// </summary>
+        public string ServiceName { get; set;}
+
+        /// <summary>
+        /// Unique identifier of the player in that service.
+        /// </summary>
+        public string UserId { get; set;}
+    }
+
+    [Serializable]
+    public class GetAccountInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1056,7 +1147,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetCatalogItemsRequest
+    public class GetCatalogItemsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1076,7 +1167,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetCharacterDataRequest
+    public class GetCharacterDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1121,7 +1212,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetCharacterInventoryRequest
+    public class GetCharacterInventoryRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1161,7 +1252,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetCharacterLeaderboardRequest
+    public class GetCharacterLeaderboardRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1196,7 +1287,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetCharacterStatisticsRequest
+    public class GetCharacterStatisticsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1216,7 +1307,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetCloudScriptUrlRequest
+    public class GetCloudScriptUrlRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1241,7 +1332,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetContentDownloadUrlRequest
+    public class GetContentDownloadUrlRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1271,7 +1362,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetFriendLeaderboardAroundCurrentUserRequest
+    public class GetFriendLeaderboardAroundCurrentUserRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1306,7 +1397,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetFriendLeaderboardAroundPlayerRequest
+    public class GetFriendLeaderboardAroundPlayerRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1346,7 +1437,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetFriendLeaderboardRequest
+    public class GetFriendLeaderboardRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1376,7 +1467,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetFriendsListRequest
+    public class GetFriendsListRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1401,7 +1492,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetLeaderboardAroundCharacterRequest
+    public class GetLeaderboardAroundCharacterRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1436,7 +1527,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetLeaderboardAroundCurrentUserRequest
+    public class GetLeaderboardAroundCurrentUserRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1461,7 +1552,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetLeaderboardAroundPlayerRequest
+    public class GetLeaderboardAroundPlayerRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1491,7 +1582,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetLeaderboardForUsersCharactersRequest
+    public class GetLeaderboardForUsersCharactersRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1516,7 +1607,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetLeaderboardRequest
+    public class GetLeaderboardRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1546,7 +1637,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPhotonAuthenticationTokenRequest
+    public class GetPhotonAuthenticationTokenRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1566,7 +1657,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoRequest
+    public class GetPlayerCombinedInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1581,7 +1672,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoRequestParams
+    public class GetPlayerCombinedInfoRequestParams : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1731,7 +1822,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayerStatisticsRequest
+    public class GetPlayerStatisticsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1756,7 +1847,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayerStatisticVersionsRequest
+    public class GetPlayerStatisticVersionsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1776,7 +1867,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayerTradesRequest
+    public class GetPlayerTradesRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1801,7 +1892,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayFabIDsFromFacebookIDsRequest
+    public class GetPlayFabIDsFromFacebookIDsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1821,7 +1912,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayFabIDsFromGameCenterIDsRequest
+    public class GetPlayFabIDsFromGameCenterIDsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1841,7 +1932,27 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayFabIDsFromGoogleIDsRequest
+    public class GetPlayFabIDsFromGenericIDsRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// Array of unique generic service identifiers for which the title needs to get PlayFab identifiers. Currently limited to a maximum of 10 in a single request.
+        /// </summary>
+        public List<GenericServiceId> GenericIDs { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromGenericIDsResult : PlayFabResultCommon
+    {
+
+        /// <summary>
+        /// Mapping of generic service identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<GenericPlayFabIdPair> Data { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromGoogleIDsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1861,7 +1972,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayFabIDsFromKongregateIDsRequest
+    public class GetPlayFabIDsFromKongregateIDsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1881,7 +1992,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayFabIDsFromSteamIDsRequest
+    public class GetPlayFabIDsFromSteamIDsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1906,7 +2017,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayFabIDsFromTwitchIDsRequest
+    public class GetPlayFabIDsFromTwitchIDsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1926,7 +2037,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPublisherDataRequest
+    public class GetPublisherDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1946,7 +2057,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPurchaseRequest
+    public class GetPurchaseRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -1991,7 +2102,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetSharedGroupDataRequest
+    public class GetSharedGroupDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2026,7 +2137,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetStoreItemsRequest
+    public class GetStoreItemsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2051,7 +2162,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetTitleDataRequest
+    public class GetTitleDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2071,7 +2182,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetTitleNewsRequest
+    public class GetTitleNewsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2091,7 +2202,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetTradeStatusRequest
+    public class GetTradeStatusRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2116,7 +2227,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetUserCombinedInfoRequest
+    public class GetUserCombinedInfoRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2226,7 +2337,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetUserDataRequest
+    public class GetUserDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2261,7 +2372,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetUserInventoryRequest
+    public class GetUserInventoryRequest : PlayFabRequestCommon
     {
     }
 
@@ -2286,7 +2397,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetUserStatisticsRequest
+    public class GetUserStatisticsRequest : PlayFabRequestCommon
     {
     }
 
@@ -2316,7 +2427,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GrantCharacterToUserRequest
+    public class GrantCharacterToUserRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2439,7 +2550,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ItemPurchaseRequest
+    public class ItemPurchaseRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2479,7 +2590,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkAndroidDeviceIDRequest
+    public class LinkAndroidDeviceIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2504,7 +2615,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkCustomIDRequest
+    public class LinkCustomIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2519,7 +2630,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkFacebookAccountRequest
+    public class LinkFacebookAccountRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2534,7 +2645,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkGameCenterAccountRequest
+    public class LinkGameCenterAccountRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2549,7 +2660,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkGoogleAccountRequest
+    public class LinkGoogleAccountRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2564,7 +2675,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkIOSDeviceIDRequest
+    public class LinkIOSDeviceIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2589,7 +2700,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkKongregateAccountRequest
+    public class LinkKongregateAccountRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2609,7 +2720,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkSteamAccountRequest
+    public class LinkSteamAccountRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2624,7 +2735,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LinkTwitchAccountRequest
+    public class LinkTwitchAccountRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2639,7 +2750,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ListUsersCharactersRequest
+    public class ListUsersCharactersRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2659,7 +2770,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LogEventRequest
+    public class LogEventRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2724,7 +2835,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithAndroidDeviceIDRequest
+    public class LoginWithAndroidDeviceIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2759,7 +2870,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithCustomIDRequest
+    public class LoginWithCustomIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2784,7 +2895,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithEmailAddressRequest
+    public class LoginWithEmailAddressRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2809,7 +2920,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithFacebookRequest
+    public class LoginWithFacebookRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2834,7 +2945,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithGameCenterRequest
+    public class LoginWithGameCenterRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2859,7 +2970,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithGoogleAccountRequest
+    public class LoginWithGoogleAccountRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2889,7 +3000,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithIOSDeviceIDRequest
+    public class LoginWithIOSDeviceIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2924,7 +3035,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithKongregateRequest
+    public class LoginWithKongregateRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2954,7 +3065,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithPlayFabRequest
+    public class LoginWithPlayFabRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -2979,7 +3090,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithSteamRequest
+    public class LoginWithSteamRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3004,7 +3115,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginWithTwitchRequest
+    public class LoginWithTwitchRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3046,43 +3157,48 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class MatchmakeRequest
+    public class MatchmakeRequest : PlayFabRequestCommon
     {
 
         /// <summary>
-        /// build version to match against [Note: Required if LobbyId is not specified]
+        /// Build version to match against. [Note: Required if LobbyId is not specified]
         /// </summary>
         public string BuildVersion { get; set;}
 
         /// <summary>
-        /// region to match make against [Note: Required if LobbyId is not specified]
+        /// Region to match make against. [Note: Required if LobbyId is not specified]
         /// </summary>
         public Region? Region { get; set;}
 
         /// <summary>
-        /// game mode to match make against [Note: Required if LobbyId is not specified]
+        /// Game mode to match make against. [Note: Required if LobbyId is not specified]
         /// </summary>
         public string GameMode { get; set;}
 
         /// <summary>
-        /// lobby identifier to match make against (used to select a specific server)
+        /// Lobby identifier to match make against. This is used to select a specific Game Server Instance.
         /// </summary>
         public string LobbyId { get; set;}
 
         /// <summary>
-        /// player statistic to use in finding a match. May be null for no stat-based matching
+        /// Player statistic to use in finding a match. May be null for no stat-based matching.
         /// </summary>
         public string StatisticName { get; set;}
 
         /// <summary>
-        /// character to use for stats based matching. Leave null to use account stats
+        /// Character to use for stats based matching. Leave null to use account stats.
         /// </summary>
         public string CharacterId { get; set;}
 
         /// <summary>
-        /// start a game session if one with an open slot is not found. Defaults to true
+        /// Start a game session if one with an open slot is not found. Defaults to true.
         /// </summary>
         public bool? StartNewIfNoneFound { get; set;}
+
+        /// <summary>
+        /// Filter to include and/or exclude Game Server Instances associated with certain Tags
+        /// </summary>
+        public CollectionFilter TagFilter { get; set;}
 
         /// <summary>
         /// [deprecated]
@@ -3165,7 +3281,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class OpenTradeRequest
+    public class OpenTradeRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3195,7 +3311,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class PayForPurchaseRequest
+    public class PayForPurchaseRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3355,7 +3471,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class PurchaseItemRequest
+    public class PurchaseItemRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3400,7 +3516,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class RedeemCouponRequest
+    public class RedeemCouponRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3461,7 +3577,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class RegisterForIOSPushNotificationRequest
+    public class RegisterForIOSPushNotificationRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3486,7 +3602,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class RegisterPlayFabUserRequest
+    public class RegisterPlayFabUserRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3551,7 +3667,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class RemoveFriendRequest
+    public class RemoveFriendRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3566,7 +3682,22 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class RemoveSharedGroupMembersRequest
+    public class RemoveGenericIDRequest : PlayFabRequestCommon
+    {
+
+        /// <summary>
+        /// Generic service identifier to be removed from the player.
+        /// </summary>
+        public GenericServiceId GenericId { get; set;}
+    }
+
+    [Serializable]
+    public class RemoveGenericIDResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class RemoveSharedGroupMembersRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3586,7 +3717,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ReportPlayerClientRequest
+    public class ReportPlayerClientRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3616,7 +3747,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class RestoreIOSPurchasesRequest
+    public class RestoreIOSPurchasesRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3631,7 +3762,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class RunCloudScriptRequest
+    public class RunCloudScriptRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3711,7 +3842,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class SendAccountRecoveryEmailRequest
+    public class SendAccountRecoveryEmailRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3736,7 +3867,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class SetFriendTagsRequest
+    public class SetFriendTagsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3781,7 +3912,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class StartGameRequest
+    public class StartGameRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3851,7 +3982,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class StartPurchaseRequest
+    public class StartPurchaseRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -3994,7 +4125,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class SubtractUserVirtualCurrencyRequest
+    public class SubtractUserVirtualCurrencyRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4163,7 +4294,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkAndroidDeviceIDRequest
+    public class UnlinkAndroidDeviceIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4178,7 +4309,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkCustomIDRequest
+    public class UnlinkCustomIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4193,7 +4324,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkFacebookAccountRequest
+    public class UnlinkFacebookAccountRequest : PlayFabRequestCommon
     {
     }
 
@@ -4203,7 +4334,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkGameCenterAccountRequest
+    public class UnlinkGameCenterAccountRequest : PlayFabRequestCommon
     {
     }
 
@@ -4213,7 +4344,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkGoogleAccountRequest
+    public class UnlinkGoogleAccountRequest : PlayFabRequestCommon
     {
     }
 
@@ -4223,7 +4354,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkIOSDeviceIDRequest
+    public class UnlinkIOSDeviceIDRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4238,7 +4369,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkKongregateAccountRequest
+    public class UnlinkKongregateAccountRequest : PlayFabRequestCommon
     {
     }
 
@@ -4248,7 +4379,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkSteamAccountRequest
+    public class UnlinkSteamAccountRequest : PlayFabRequestCommon
     {
     }
 
@@ -4258,7 +4389,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlinkTwitchAccountRequest
+    public class UnlinkTwitchAccountRequest : PlayFabRequestCommon
     {
     }
 
@@ -4268,7 +4399,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlockContainerInstanceRequest
+    public class UnlockContainerInstanceRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4293,7 +4424,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UnlockContainerItemRequest
+    public class UnlockContainerItemRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4338,7 +4469,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UpdateCharacterDataRequest
+    public class UpdateCharacterDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4373,7 +4504,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UpdateCharacterStatisticsRequest
+    public class UpdateCharacterStatisticsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4393,7 +4524,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UpdatePlayerStatisticsRequest
+    public class UpdatePlayerStatisticsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4408,7 +4539,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UpdateSharedGroupDataRequest
+    public class UpdateSharedGroupDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4438,7 +4569,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UpdateUserDataRequest
+    public class UpdateUserDataRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4468,7 +4599,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UpdateUserStatisticsRequest
+    public class UpdateUserStatisticsRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4483,7 +4614,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class UpdateUserTitleDisplayNameRequest
+    public class UpdateUserTitleDisplayNameRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4853,7 +4984,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ValidateAmazonReceiptRequest
+    public class ValidateAmazonReceiptRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4888,7 +5019,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ValidateGooglePlayPurchaseRequest
+    public class ValidateGooglePlayPurchaseRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4918,7 +5049,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class ValidateIOSReceiptRequest
+    public class ValidateIOSReceiptRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4963,7 +5094,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class WriteClientCharacterEventRequest
+    public class WriteClientCharacterEventRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -4988,7 +5119,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class WriteClientPlayerEventRequest
+    public class WriteClientPlayerEventRequest : PlayFabRequestCommon
     {
 
         /// <summary>
@@ -5018,7 +5149,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class WriteTitleEventRequest
+    public class WriteTitleEventRequest : PlayFabRequestCommon
     {
 
         /// <summary>

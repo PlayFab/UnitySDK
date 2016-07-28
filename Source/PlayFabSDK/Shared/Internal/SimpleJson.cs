@@ -1059,11 +1059,7 @@ namespace PlayFab.Json
                 IDictionary<string, object> dict = value as IDictionary<string, object>;
                 Type type = value.GetType();
                 Type[] genArgs = ReflectionUtils.GetGenericTypeArguments(type);
-#if NETFX_CORE
                 var isStringKeyDictionary = type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) && genArgs[0] == typeof(string);
-#else
-                var isStringKeyDictionary = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>) && genArgs[0] == typeof(string);
-#endif
                 if (isStringKeyDictionary)
                 {
                     var strDictValue = value as IDictionary;
@@ -1452,11 +1448,7 @@ namespace PlayFab.Json
             if (nullableType != null && PlayFabSimpleJson.NumberTypes.IndexOf(nullableType) != -1)
                 type = nullableType; // Just use the regular type for the conversion
             bool isNumberType = PlayFabSimpleJson.NumberTypes.IndexOf(type) != -1;
-#if NETFX_CORE
             bool isEnumType = type.GetTypeInfo().IsEnum;
-#else
-            bool isEnumType = type.IsEnum; //type.GetType;
-#endif
             if ((valueIsLong && type == typeof(long)) || (valueIsUlong && type == typeof(ulong)) || (valueIsDouble && type == typeof(double)))
                 return value;
             if ((valueIsLong || valueIsUlong || valueIsDouble) && isEnumType)
@@ -1808,7 +1800,7 @@ namespace PlayFab.Json
                 return false;
 
             Type genericDefinition = type.GetGenericTypeDefinition();
-            return genericDefinition == typeof(IDictionary<,>);
+            return genericDefinition == typeof(IDictionary<,>) || genericDefinition == typeof(Dictionary<,>);
         }
 
         public static bool IsNullableType(Type type)

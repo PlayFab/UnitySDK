@@ -1,5 +1,5 @@
-using PlayFab.Internal;
 using System;
+using PlayFab.Public;
 using UnityEngine;
 
 namespace PlayFab
@@ -25,9 +25,9 @@ namespace PlayFab
     public static partial class PlayFabSettings
     {
         public static PlayFabSharedSettings PlayFabShared = GetSharedSettingsObject();
-        public const string SdkVersion = "2.0.160714";
-        public const string BuildIdentifier = "jbuild_1";
-        public const string VersionString = "UnitySDK-2.0.160714";
+        public const string SdkVersion = "2.2.160725";
+        public const string BuildIdentifier = "jbuild_unitysdk_1";
+        public const string VersionString = "UnitySDK-2.2.160725";
 
         public static PlayFabSharedSettings GetSharedSettingsObject()
         {
@@ -50,7 +50,7 @@ namespace PlayFab
 
         public static string ProductionEnvironmentUrl
         {
-            get { return PlayFabShared.ProductionEnvironmentUrl; }
+            get { return !string.IsNullOrEmpty(PlayFabShared.ProductionEnvironmentUrl) ? PlayFabShared.ProductionEnvironmentUrl : ".playfabapi.com"; }
             set { PlayFabShared.ProductionEnvironmentUrl = value; }
         }
 
@@ -97,9 +97,6 @@ namespace PlayFab
             get { return PlayFabShared.IsTesting; }
             set { PlayFabShared.IsTesting = value; }
         }
-
-        //For realtime logging.
-        public static IPlayFabTailLogger Logger;
 
         public static string LoggerHost
         {

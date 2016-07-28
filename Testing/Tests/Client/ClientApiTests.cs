@@ -35,7 +35,7 @@ namespace PlayFab.UUnit
         private static string USER_PASSWORD;
 
         // Information fetched by appropriate API calls
-        private string _playFabId;
+        public static string PlayFabId;
 
         // This test operates multi-threaded, so keep some thread-transfer varaibles
         private int _testInteger;
@@ -187,7 +187,7 @@ namespace PlayFab.UUnit
         }
         private void LoginCallback(LoginResult result)
         {
-            _playFabId = result.PlayFabId;
+            PlayFabId = result.PlayFabId;
             var testContext = (UUnitTestContext)result.CustomData;
             testContext.True(PlayFabClientAPI.IsClientLoggedIn(), "User login failed");
             testContext.EndTest(UUnitFinishState.PASSED, null);
@@ -211,7 +211,7 @@ namespace PlayFab.UUnit
         }
         private void AdvertLoginCallback(LoginResult result)
         {
-            _playFabId = result.PlayFabId;
+            PlayFabId = result.PlayFabId;
             var testContext = (UUnitTestContext)result.CustomData;
             testContext.True(PlayFabClientAPI.IsClientLoggedIn(), "User login failed");
 
@@ -349,7 +349,7 @@ namespace PlayFab.UUnit
         public void UserCharacter(UUnitTestContext testContext)
         {
             var request = new ListUsersCharactersRequest();
-            request.PlayFabId = _playFabId; // Received from client upon login
+            request.PlayFabId = PlayFabId; // Received from client upon login
             PlayFabClientAPI.GetAllUsersCharacters(request, PlayFabUUnitUtils.ApiActionWrapper<ListUsersCharactersResult>(testContext, GetCharsCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void GetCharsCallback(ListUsersCharactersResult result)
@@ -388,7 +388,7 @@ namespace PlayFab.UUnit
         {
             GetAccountInfoRequest request = new GetAccountInfoRequest
             {
-                PlayFabId = _playFabId
+                PlayFabId = PlayFabId
             };
             PlayFabClientAPI.GetAccountInfo(request, PlayFabUUnitUtils.ApiActionWrapper<GetAccountInfoResult>(testContext, AcctInfoCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
@@ -423,7 +423,7 @@ namespace PlayFab.UUnit
             testContext.NotNull(result.FunctionResult);
             var jobj = (JsonObject)result.FunctionResult;
             var messageValue = jobj["messageValue"] as string;
-            testContext.StringEquals("Hello " + _playFabId + "!", messageValue);
+            testContext.StringEquals("Hello " + PlayFabId + "!", messageValue);
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 

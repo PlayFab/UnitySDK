@@ -1,9 +1,10 @@
-using UnityEngine;
+using PlayFab.Json;
+using PlayFab.Public;
+using PlayFab.SharedModels;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using PlayFab.Json;
+using UnityEngine;
 
 namespace PlayFab.Internal
 {
@@ -12,21 +13,18 @@ namespace PlayFab.Internal
     /// </summary>
     public class PlayFabHttp : SingletonMonoBehaviour<PlayFabHttp>
     {
+        private static readonly StringBuilder Sb = new StringBuilder();
+
         private static IPlayFabHttp _internalHttp; //This is the default;
         public delegate void ApiProcessingEvent<in TEventArgs>(TEventArgs e);
-        public delegate void ApiProcessErrorEvent(object request, PlayFabError error);
+        public delegate void ApiProcessErrorEvent(PlayFabRequestCommon request, PlayFabError error);
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
 #if ENABLE_PLAYFABPLAYSTREAM_API
         private static IPlayFabSignalR _internalSignalR;
 #endif
-        private IPlayFabTailLogger _logger; //Removed PaperTrail ( UdpPaperTrailLogger )
-        private static PlayFabDataGatherer _gatherer = new PlayFabDataGatherer();
-
-        private readonly object _logMessageLock = new object();
-        private readonly Queue<string> _logMessageQueue = new Queue<string>();
-        private bool _systemInfoLogged = false;
+        private static IPlayFabLogger _logger;
 
 #if PLAYFAB_REQUEST_TIMING
         public struct RequestTiming
@@ -61,10 +59,10 @@ namespace PlayFab.Internal
         /// <summary>
         /// Optional redirect to allow mocking of AuthToken
         /// </summary>
-        /// <param name="AuthKey"></param>
-        public static void SetAuthKey(string AuthKey)
+        /// <param name="authKey"></param>
+        public static void SetAuthKey(string authKey)
         {
-            _internalHttp.AuthKey = AuthKey;
+            _internalHttp.AuthKey = authKey;
         }
 
         /// <summary>
@@ -75,7 +73,6 @@ namespace PlayFab.Internal
             if (_internalHttp != null)
                 return;
 
-            CreateInstance(); // Invoke the SingletonMonoBehaviour
             Application.runInBackground = true; // Http requests respond even if you lose focus
 #if !UNITY_WSA && !UNITY_WP8
             if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
@@ -87,7 +84,20 @@ namespace PlayFab.Internal
 #if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API
             _internalHttp.DevKey = PlayFabSettings.DeveloperSecretKey;
 #endif
-            _internalHttp.Awake();
+            _internalHttp.InitializeHttp();
+            CreateInstance(); // Invoke the SingletonMonoBehaviour
+        }
+
+        /// <summary>
+        /// This initializes the GameObject and ensures it is in the scene.
+        /// TODO: Allow redirecting to a custom logger.
+        /// </summary>
+        public static void InitializeLogger()
+        {
+            if (_logger != null)
+                return;
+
+            _logger = new PlayFabLogger();
         }
 
 #if ENABLE_PLAYFABPLAYSTREAM_API
@@ -141,8 +151,8 @@ namespace PlayFab.Internal
         /// <summary>
         /// Internal method for Make API Calls
         /// </summary>
-        /// <typeparam name="TRequestType"></typeparam>
-        /// <typeparam name="TResultType"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="api"></param>
         /// <param name="apiEndpoint"></param>
         /// <param name="request"></param>
@@ -150,50 +160,37 @@ namespace PlayFab.Internal
         /// <param name="resultCallback"></param>
         /// <param name="errorCallback"></param>
         /// <param name="customData"></param>
-        protected internal static void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint,
-            TRequestType request, string authType, Action<TResultType> resultCallback,
+        protected internal static void MakeApiCall<TRequest, TResult>(string apiEndpoint,
+            TRequest request, AuthType authType, Action<TResult> resultCallback,
             Action<PlayFabError> errorCallback, object customData = null)
+            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
         {
             InitializeHttp();
             SendEvent(request, null, ApiProcessingEventType.Pre);
-            _internalHttp.MakeApiCall(api, apiEndpoint, request, authType, resultCallback, errorCallback, customData);
+            _internalHttp.MakeApiCall(apiEndpoint, request, authType, resultCallback, errorCallback, customData);
         }
 
-        /// <summary>
-        /// Monobehaviour Awake Method, gathers system data
-        /// </summary>
-        public override void Awake()
-        {
-            _gatherer.GatherData();
-            base.Awake();
-        }
-
-        /// <summary>
-        /// Monobehaviour OnEnable Method, registers logger
+	/// <summary>
+        /// MonoBehaviour OnEnable Method
         /// </summary>
         public void OnEnable()
         {
-            StartCoroutine(RegisterLogger());
+            if (_logger != null)
+            {
+                _logger.OnEnable();
+            }
         }
 
-        /// <summary>
-        /// Monobehaviour OnDisable method, performs cleanup of Logger and bindings to Log Messages
-        /// </summary>
         public void OnDisable()
         {
-            if (!string.IsNullOrEmpty(PlayFabSettings.LoggerHost))
+            if (_logger != null)
             {
-                _logger = null;
-#if UNITY_5
-                UnityEngine.Application.logMessageReceivedThreaded -= HandleLogOutput;
-#else
-                UniytEngine.Application.RegisterLogCallback(null);
-#endif
+                _logger.OnDisable();
             }
         }
 
         /// <summary>
-        /// Monobehaviour Update method, logs System info data if gathered.
+        /// MonoBehaviour OnDisable
         /// </summary>
         public void Update()
         {
@@ -209,125 +206,54 @@ namespace PlayFab.Internal
 #endif
         }
 
-#if ENABLE_PLAYFABPLAYSTREAM_API
         /// <summary>
-        /// Monobehaviour OnDestroy method, close realtime connection if enabled.
+        /// MonoBehaviour OnDestroy
         /// </summary>
         public void OnDestroy()
         {
+#if ENABLE_PLAYFABPLAYSTREAM_API
             if (_internalSignalR != null)
             {
                 _internalSignalR.Close();
             }
-        }
 #endif
-
-        /// <summary>
-        /// Monobehaviour FixedUpdate, logs messages when enabled.
-        /// </summary>
-        void FixedUpdate()
-        {
-            if (!_systemInfoLogged && PlayFabSettings.EnableRealTimeLogging)
+            if (_logger != null)
             {
-                _gatherer.EnqueueToLogger(_logMessageQueue);
-                _systemInfoLogged = true;
-            }
-
-            lock (_logMessageLock)
-            {
-                if (_logMessageQueue.Count > 0 && PlayFabSettings.EnableRealTimeLogging)
-                {
-                    if (_logger == null)
-                    {
-                        return;
-                    }
-                    _logger.Open();
-                    while (_logMessageQueue.Count > 0)
-                    {
-                        _logger.Log(_logMessageQueue.Dequeue());
-                    }
-                    _logger.Close();
-                }
-                else if (_logMessageQueue.Count > 0 && _logMessageQueue.Count > PlayFabSettings.LogCapLimit)
-                {
-                    while (_logMessageQueue.Count > PlayFabSettings.LogCapLimit)
-                    {
-                        _logMessageQueue.Dequeue();
-                    }
-                }
-
-            }
-        }
-
-        #region Helpers
-        /// <summary>
-        /// helper class to register the logger.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator RegisterLogger()
-        {
-            yield return new WaitForEndOfFrame();
-            if (!string.IsNullOrEmpty(PlayFabSettings.LoggerHost))
-            {
-                //_logger = new UdpPaperTrailLogger(PlayFabSettings.LoggerHost, PlayFabSettings.LoggerPort);
-                _logger = PlayFabSettings.Logger ?? new PlayFabLogger(PlayFabSettings.LoggerHost, PlayFabSettings.LoggerPort);
-#if UNITY_5
-                UnityEngine.Application.logMessageReceivedThreaded += HandleLogOutput;
-#else
-                UniytEngine.Application.RegisterLogCallback(HandleLogOutput);
-#endif
+                _logger.OnDestroy();
             }
         }
 
         /// <summary>
-        /// Handler to enqueue log messages
+        /// MonoBehaviour Update method, logs System info data if gathered.
         /// </summary>
-        /// <param name="condition"></param>
-        /// <param name="stacktrace"></param>
-        /// <param name="type"></param>
-        private void HandleLogOutput(string condition, string stacktrace, LogType type)
+        public void Update()
         {
-            var message = condition;
-            if (type == LogType.Log || type == LogType.Warning)
+            if (_internalHttp != null)
             {
-                //logger.Log(string.Format("{0}: {1}", type.ToString(), message));
-                _logMessageQueue.Enqueue(string.Format("{0}: {1}", type.ToString(), message));
-            }
-            else if (type == LogType.Error || type == LogType.Exception)
-            {
-                message = condition + "\n" + stacktrace + UnityEngine.StackTraceUtility.ExtractStackTrace();
-                //logger.Log(message);
-                _logMessageQueue.Enqueue(message);
+                _internalHttp.Update();
             }
         }
 
+#region Helpers
         public static bool IsClientLoggedIn()
         {
             return _internalHttp != null && !string.IsNullOrEmpty(_internalHttp.AuthKey);
         }
 
-        [Serializable]
-        protected internal class HttpResponseObject
-        {
-            public int code;
-            public string status;
-            public object data;
-        }
-
         protected internal static PlayFabError GeneratePlayFabErrorGeneric(string message, string stacktrace, object customData = null)
         {
             var errorDetails = new Dictionary<string, List<string>>();
-            var sb = new StringBuilder();
-            sb.Append(message);
+            Sb.Length = 0;
+            Sb.Append(message);
             if (!string.IsNullOrEmpty(stacktrace))
             {
-                sb.Append(" | See stack trace in errorDetails");
+                Sb.Append(" | See stack trace in errorDetails");
                 errorDetails.Add("stacktrace", new List<string>() { stacktrace });
             }
             return new PlayFabError()
             {
                 Error = PlayFabErrorCode.InternalServerError,
-                ErrorMessage = sb.ToString(),
+                ErrorMessage = Sb.ToString(),
                 ErrorDetails = errorDetails,
                 CustomData = customData ?? new object()
             };
@@ -364,7 +290,7 @@ namespace PlayFab.Internal
             };
         }
 
-        protected internal static void SendErrorEvent(object request, PlayFabError error)
+        protected internal static void SendErrorEvent(PlayFabRequestCommon request, PlayFabError error)
         {
             if (ApiProcessingErrorEventHandler == null)
                 return;
@@ -379,7 +305,7 @@ namespace PlayFab.Internal
             }
         }
 
-        protected internal static void SendEvent(object request, object result, ApiProcessingEventType eventType)
+        protected internal static void SendEvent(PlayFabRequestCommon request, PlayFabResultCommon result, ApiProcessingEventType eventType)
         {
             if (ApiProcessingEventHandler == null)
                 return;
@@ -411,10 +337,10 @@ namespace PlayFab.Internal
             }
         }
 #endif
-        #endregion
+#endregion
     }
 
-    #region Event Classes
+#region Event Classes
     public enum ApiProcessingEventType
     {
         Pre,
@@ -424,17 +350,13 @@ namespace PlayFab.Internal
     public class ApiProcessingEventArgs : EventArgs
     {
         public ApiProcessingEventType EventType { get; set; }
-        public object Request { get; set; }
-        public object Result { get; set; }
+        public PlayFabRequestCommon Request { get; set; }
+        public PlayFabResultCommon Result { get; set; }
 
-        public T GetRequest<T>()
+        public TRequest GetRequest<TRequest>() where TRequest : PlayFabRequestCommon
         {
-            if (typeof(T) == Request.GetType())
-            {
-                return (T)Request;
-            }
-            return default(T);
+            return Request as TRequest;
         }
     }
-    #endregion
+#endregion
 }
