@@ -21,6 +21,10 @@ namespace PlayFab.Internal
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
+#if ENABLE_PLAYFABPLAYSTREAM_API
+        private static IPlayFabSignalR _internalSignalR;
+#endif
+
         private static IPlayFabLogger _logger;
 
 #if PLAYFAB_REQUEST_TIMING
@@ -97,6 +101,37 @@ namespace PlayFab.Internal
             _logger = new PlayFabLogger();
         }
 
+#if ENABLE_PLAYFABPLAYSTREAM_API
+
+        public static void InitializeSignalR(string baseUrl, string hubName, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
+        {
+            if (_internalSignalR != null) return;
+
+            _internalSignalR = new PlayFabSignalR (onConnected);
+            _internalSignalR.OnReceived += onReceived;
+            _internalSignalR.OnReconnected += onReconnected;
+            _internalSignalR.OnDisconnected += onDisconnected;
+            _internalSignalR.OnError += onError;
+
+            _internalSignalR.Start(baseUrl, hubName);
+        }
+
+        public static void SubscribeSignalR(string onInvoked, Action<object[]> callbacks)
+        {
+            _internalSignalR.Subscribe(onInvoked, callbacks);
+        }
+
+        public static void InvokeSignalR(string methodName, Action callback, params object[] args)
+        {
+            _internalSignalR.Invoke(methodName, callback, args);
+        }
+
+        public static void StopSignalR()
+        {
+            _internalSignalR.Stop();
+        }
+
+#endif
         /// <summary>
         /// Internal method for Make API Calls
         /// </summary>
@@ -168,6 +203,12 @@ namespace PlayFab.Internal
         /// </summary>
         public void OnDestroy()
         {
+#if ENABLE_PLAYFABPLAYSTREAM_API
+            if (_internalSignalR != null)
+            {
+                _internalSignalR.Stop();
+            }
+#endif
             if (_logger != null)
             {
                 _logger.OnDestroy();
@@ -175,7 +216,7 @@ namespace PlayFab.Internal
         }
 
         /// <summary>
-        /// MonoBehaviour Update method, logs System info data if gathered.
+        /// MonoBehaviour Update
         /// </summary>
         public void Update()
         {
@@ -183,6 +224,14 @@ namespace PlayFab.Internal
             {
                 _internalHttp.Update();
             }
+
+#if ENABLE_PLAYFABPLAYSTREAM_API
+            var playFabSignalR = _internalSignalR as PlayFabSignalR;
+            if (playFabSignalR != null)
+            {
+                playFabSignalR.Update();
+            }
+#endif
         }
 
         #region Helpers
