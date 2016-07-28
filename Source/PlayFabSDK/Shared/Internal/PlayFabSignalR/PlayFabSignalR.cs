@@ -1,5 +1,4 @@
 ﻿#if ENABLE_PLAYFABPLAYSTREAM_API
-
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,20 +8,22 @@ namespace PlayFab.Internal
 {
     public class PlayFabSignalR : IPlayFabSignalR
     {
-        public event Action OnConnected;
+        public PlayFabSignalR(Action onConnected)
+        {
+            OnConnected += onConnected;
+        }
+
         public event Action<string> OnReceived;
         public event Action OnReconnected;
         public event Action OnDisconnected;
         public event Action<Exception> OnError;
 
-        public TimeSpan ConnectionTimeout { get; set; }
-        public string Uri { get; set; }
-        public string Controller { get; set; }
-        public Dictionary<string, string> QueryString { get; set; }
-
         #region Private
 
-        private const float DefaultTimeout = 110000;
+        private string _url;
+        private string _hubName;
+
+        private event Action OnConnected;
         private static readonly Queue<Action> ResultQueue = new Queue<Action>();
         private static readonly Queue<Action> TempActions = new Queue<Action>();
 
@@ -32,11 +33,12 @@ namespace PlayFab.Internal
         private IHubProxy _proxy;
 
         private Thread _startThread;
+        private TimeSpan _defaultTimeout = TimeSpan.FromSeconds(110);
         private DateTime _startTime;
 
         #endregion
 
-        public void Start()
+        public void Start(string url, string hubName)
         {
             lock (_connLock)
             {
@@ -49,197 +51,13 @@ namespace PlayFab.Internal
 
             _startTime = DateTime.UtcNow;
 
+            _url = url;
+            _hubName = hubName;
             _startThread = new Thread(_ThreadedStartConnection);
             _startThread.Start();
         }
 
-        public void Close()
-        {
-            if (_connection != null)
-            {
-                _connection.Stop();
-            }
-            lock (ResultQueue)
-            {
-                ResultQueue.Clear();
-            }
-        }
-
-        public void Update()
-        {
-            lock (ResultQueue)
-            {
-                while (ResultQueue.Count > 0)
-                {
-                    var actionToQueue = ResultQueue.Dequeue();
-                    TempActions.Enqueue(actionToQueue);
-                }
-            }
-
-            while (TempActions.Count > 0)
-            {
-                var finishedRequest = TempActions.Dequeue();
-                finishedRequest.Invoke();
-            }
-
-            //var doOnConnectCallback = false;
-            var doOnConnectionFailedCallback = false;
-            //lock (_connLock)
-            //{
-            //    if (_connection != null && _connState == ConnectionState.Pending)
-            //    {
-            //        doOnConnectCallback = true;
-            //    }
-            //}
-            //if (doOnConnectCallback)
-            //{
-            //    lock (_connLock)
-            //    {
-            //        _connState = ConnectionState.Running;
-            //    }
-                    
-            //    if (OnConnected != null)
-            //    {
-            //        OnConnected();
-            //    }
-            //}
-
-            lock (_connLock)
-            {
-                if (_connState == ConnectionState.Running || _connState == ConnectionState.Unstarted)
-                {
-                    return;
-                }
-            }
-
-            if ((DateTime.UtcNow - _startTime) > ConnectionTimeout)
-            {
-                lock (_connLock)
-                {
-                    if (_startThread != null)
-                    {
-                        _startThread.Abort();
-                        _startThread = null;
-                        doOnConnectionFailedCallback = true;
-                    }
-                }
-
-                if (doOnConnectionFailedCallback)
-                {
-                    _connState = ConnectionState.Unstarted;
-                    if (OnError != null)
-                    {
-                        OnError(new TimeoutException("Timeout after " + DefaultTimeout + " ms"));
-                    }
-                }
-
-            }
-        }
-
-        private void _ThreadedStartConnection()
-        {
-            HubConnection startedConnection;
-            if (QueryString != null)
-            {
-                startedConnection = new HubConnection(Uri, QueryString);
-            }
-            else
-            {
-                startedConnection = new HubConnection(Uri);
-            }
-
-            var startedProxy = startedConnection.CreateProxy(Controller);
-
-            ConnectionTimeout = TimeSpan.FromMilliseconds(DefaultTimeout);
-            startedConnection.Start();
-
-            lock (_connLock)
-            {
-                _proxy = startedProxy;
-                _connection = startedConnection;
-
-                _connection.Reconnected += ReconnectedAction;
-                _connection.Received += ReceivedAction;
-                _connection.Error += ErrorAction;
-                _connection.Closed += ClosedAction;
-                _connState = ConnectionState.Running;
-            }
-            lock (ResultQueue)
-            {
-                ResultQueue.Enqueue(ConnectedAction);
-            }
-        }
-
-        #region Connection callbacks
-
-        private void ConnectedAction()
-        {
-            if (OnConnected != null)
-            {
-                OnConnected();
-            }
-        }
-
-        private void ReconnectedAction()
-        {
-            lock (ResultQueue)
-            {
-                ResultQueue.Enqueue(() =>
-                {
-                    if (OnReconnected != null)
-                    {
-                        OnReconnected();
-                    }
-                });
-            }
-        }
-
-        private void ReceivedAction(string receivedMsg)
-        {
-            lock (ResultQueue)
-            {
-                ResultQueue.Enqueue(() =>
-                {
-                    if (OnReceived != null)
-                    {
-                        OnReceived(receivedMsg);
-                    }
-                });
-            }
-        }
-
-        private void ErrorAction(Exception ex)
-        {
-            lock (ResultQueue)
-            {
-                ResultQueue.Enqueue(() =>
-                {
-                    if (OnError != null)
-                    {
-                        OnError(ex);
-                    }
-                });
-
-            }
-        }
-
-        private void ClosedAction()
-        {
-            lock (ResultQueue)
-            {
-                ResultQueue.Enqueue(() =>
-                {
-                    if (OnDisconnected != null)
-                    {
-                        OnDisconnected();
-                    }
-                });
-            }
-        }
-
-        #endregion Connection callbacks
-
-        public void StopConnetion()
+        public void Stop()
         {
             lock (_connLock)
             {
@@ -249,13 +67,10 @@ namespace PlayFab.Internal
                 }
                 _connState = ConnectionState.Unstarted;
             }
-        }
 
-        public void OnClosed(Action closedAction)
-        {
-            lock (_connLock)
+            lock (ResultQueue)
             {
-                _connection.Closed += closedAction;
+                ResultQueue.Clear();
             }
         }
 
@@ -278,20 +93,6 @@ namespace PlayFab.Internal
             }
         }
 
-        public void Invoke<T>(string methodName, Action<T> callback, params object[] args)
-        {
-            _proxy.Invoke<T>(methodName, args).Finished += (sender, e) =>
-            {
-                lock (ResultQueue)
-                {
-                    ResultQueue.Enqueue(() =>
-                    {
-                        callback(e.Result);
-                    });
-                }
-            };
-        }
-
         public void Invoke(string methodName, Action callback, params object[] args)
         {
             _proxy.Invoke(methodName, args).Finished += (sender, e) =>
@@ -303,7 +104,126 @@ namespace PlayFab.Internal
             };
         }
 
-        public enum ConnectionState
+        internal void Update()
+        {
+            lock (ResultQueue)
+            {
+                while (ResultQueue.Count > 0)
+                {
+                    var actionToQueue = ResultQueue.Dequeue();
+                    if (actionToQueue != null)
+                    {
+                        TempActions.Enqueue(actionToQueue);
+                    }
+                }
+            }
+            while (TempActions.Count > 0)
+            {
+                var finishedRequest = TempActions.Dequeue();
+                if (finishedRequest != null)
+                {
+                    finishedRequest.Invoke();
+                }
+            }
+
+            lock (_connLock)
+            {
+                if (_connState != ConnectionState.Pending) return;
+            }
+
+            if ((DateTime.UtcNow - _startTime) <= _defaultTimeout) return;
+            lock (_connLock)
+            {
+                if (_startThread == null) return;
+            }
+
+            _startThread.Abort();
+            _startThread = null;
+            lock (_connLock)
+            {
+                _connState = ConnectionState.Unstarted;
+            }
+            if (OnError != null)
+            {
+                OnError(new TimeoutException("Connection timeout after " + _defaultTimeout.TotalSeconds + "s"));
+            }
+        }
+
+        private void _ThreadedStartConnection()
+        {
+            var startedConnection = new HubConnection(_url);
+
+            var startedProxy = startedConnection.CreateProxy(_hubName);
+
+            startedConnection.Start();
+
+            lock (_connLock)
+            {
+                _proxy = startedProxy;
+                _connection = startedConnection;
+
+                _connection.Reconnected += ReconnectedAction;
+                _connection.Received += ReceivedAction;
+                _connection.Error += ErrorAction;
+                _connection.Closed += ClosedAction;
+                _connState = ConnectionState.Running;
+            }
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(OnConnected);
+            }
+        }
+
+        #region Connection callbacks
+
+        private void ReconnectedAction()
+        {
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(OnReconnected);
+            }
+        }
+
+        private void ReceivedAction(string receivedMsg)
+        {
+            lock (ResultQueue)
+            {
+                if (OnReceived != null)
+                {
+                    ResultQueue.Enqueue(() =>
+                    {
+                        OnReceived(receivedMsg);
+                    });
+                }
+            }
+        }
+
+        private void ErrorAction(Exception ex)
+        {
+            lock (ResultQueue)
+            {
+                if (OnError != null)
+                {
+                    ResultQueue.Enqueue(() =>
+                    {
+                        OnError(ex);
+                    });
+                }
+
+            }
+        }
+
+        private void ClosedAction()
+        {
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(OnDisconnected);
+            }
+        }
+
+        #endregion Connection callbacks
+
+        private enum ConnectionState
         {
             Unstarted,
             Pending,

@@ -1,12 +1,27 @@
-﻿#if ENABLE_PLAYFABPLAYSTREAM_API
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PlayFab.PlayStreamModels
 {
     /// <summary>
-    /// This event is triggered when a character consumes an item frmo their inventory
+    /// The base type for all PlayStream events.
+    /// See https://api.playfab.com/playstream/docs/PlayStreamEventModels for more information
     /// </summary>
-    [PlayStreamEvent("character_consumed_item", "character", "com.playfab")]
+    public abstract class EventBase
+    {
+        public string Source;
+        public string EventId;
+        public string EntityId;
+        public string EntityType;
+        public string EventNamespace;
+        public string EventName;
+        public DateTime Timestamp;
+        public Dictionary<string, string> CustomTags;
+        public List<object> History;
+        public object Reserved;
+
+    }
+
     public class CharacterConsumedItemEvent : EventBase
     {
         public string ItemId;
@@ -25,7 +40,6 @@ namespace PlayFab.PlayStreamModels
 
     }
 
-    [PlayStreamEvent("player_inventory_item_added", "player", "com.playfab")]
     public class PlayerInventoryItemAddedEvent : EventBase
     {
         public string InstanceId;
@@ -51,7 +65,6 @@ namespace PlayFab.PlayStreamModels
         public string TitleId;
     }
 
-    [PlayStreamEvent("player_virtual_currency_balance_changed", "player", "com.playfab")]
     public class PlayerVirtualCurrencyBalanceChanged : EventBase
     {
         public string VirtualCurrencyName;
@@ -65,5 +78,3 @@ namespace PlayFab.PlayStreamModels
         public string TitleId;
     }
 }
-
-#endif

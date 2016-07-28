@@ -1,5 +1,4 @@
 ﻿#if ENABLE_PLAYFABPLAYSTREAM_API
-
 using System;
 using System.Collections.Generic;
 using PlayFab.Internal;
@@ -7,28 +6,18 @@ using PlayFab.Internal;
 namespace PlayFab
 {
     /// <summary>
-    /// <para />APIs which provide realtime PlayStream events subscription services - invoke subscription of Actions in PlayStream on GameManager, listen to specific types of PlayStream events.
-    /// <para />Should be only used in GameServer
+    /// <para />APIs which provide PlayStream events subscription services - invoke subscription of Actions in PlayStream on GameManager, listen to specific types of PlayStream events.
+    /// <para />Server only: NEVER use it on client.
     /// </summary>
     public static class PlayFabPlayStreamAPI
     {
-        #region Private
+        #region Private Events
 
-        private const string ConnectionUrl = "http://playstreamlive.playfab.com/signalr";
-        private const string HubName = "EventStreamsHub";
-        private const string SubscribeToQueueInvocation = "SubscribeToQueue";
-        private const string OnReceivedNewMessageCallback = "notifyNewMessage";
-        private const string OnReceiveSubscriptionErrorCallback = "notifySubscriptionError";
-        private const string OnReceiveSubscriptionSuccessCallback = "notifySubscriptionSuccess";
+        private static event Action OnSubscribed;
+        private static event Action<SubscriptionError> OnFailed;
 
-        private static bool _isConnected = false;
-
-        private static event Action<string> OnReceiveSubscriptionError;
-        private static event Action OnReceiveSubscriptionSuccess;
         #endregion
 
-        public static event Action OnConnected;
-        public static event Action OnConnectionFailed;
         public static event Action OnReconnected;
         public static event Action<string> OnReceived;
         public static event Action<Exception> OnError;
@@ -37,164 +26,67 @@ namespace PlayFab
         public static event Action<PlayStreamNotification> OnPlayStreamEvents;
 
         /// <summary>
-        /// Start the realtime connection asynchronously.
+        /// Start the SignalR connection asynchronously and subscribe to PlayStream events.
         /// </summary>
-        public static void Start()
+        public static void Start(Action onSubscribed = null, Action<SubscriptionError> onFailed = null)
         {
-            if (_isConnected) return;
-            PlayFabHttp.InitializeRealtime(ConnectionUrl, HubName, null, _onConnectedCallback, _onReceivedCallback, _onReconnectedCallback, _onDisconnectedCallback, _onErrorCallback);
+            OnSubscribed += onSubscribed;
+            OnFailed += onFailed;
+            PlayFabHttp.InitializeSignalR("http://playstreamlive.playfab.com/signalr", "EventStreamsHub", OnConnectedCallback, OnReceivedCallback, OnReconnectedCallback, OnDisconnectedCallback, OnErrorCallback);
         }
 
         /// <summary>
-        /// Sends a disconnect request to the server and stop the transport.
+        /// Sends a disconnect request to the server and stop the SignalR connection.
         /// </summary>
         public static void Stop()
         {
-            PlayFabHttp.StopRealtime();
+            PlayFabHttp.StopSignalR();
         }
 
-        /// <summary>
-        /// <para />Invoke a subscription request to signal the server to start streaming playstream events for this title.
-        /// <para />To define an Action that sends PlayStream events to clients, go to https://developer.playfab.com/en-us/[your_title]/event-actions
-        /// </summary>
-        /// <param name="errorCallback">=</param>
-        public static void RequestEvents(Action<SubscriptionResponse> errorCallback = null)
+        #region Connection Callbacks
+
+        private static void OnConnectedCallback()
         {
-            if (!_isConnected)
-            {
-                return;
-            }
-
-            // parameters: Name of method on server, completion callback, titleId, dev secret key, playerId (empty to listen to all events for this title), should backfill last 10 events
-            // Don't change this
-            PlayFabHttp.InvokeRealtime(SubscribeToQueueInvocation, null, PlayFabSettings.TitleId, PlayFabSettings.DeveloperSecretKey, "", false);
-
-            if (errorCallback == null)
-            {
-                return;
-            }
-
-            OnReceiveSubscriptionError += result =>
-            {
-                if (string.IsNullOrEmpty(result))
-                {
-                    errorCallback(SubscriptionResponse.FailWithUnexpected(""));
-                }
-                else
-                {
-                    switch (result)
-                    {
-                        case "Invalid Title Secret Key!":
-                            errorCallback(SubscriptionResponse.InvalidSecretKey);
-                            break;
-                        default:
-                            errorCallback(SubscriptionResponse.FailWithUnexpected(result));
-                            break;
-                    }
-                }
-            };
-
-            OnReceiveSubscriptionSuccess += () =>
-            {
-                errorCallback(SubscriptionResponse.Ok);
-            };
+            PlayFabHttp.SubscribeSignalR("notifyNewMessage", OnPlayStreamNotificationCallback);
+            PlayFabHttp.SubscribeSignalR("notifySubscriptionError", OnSubscriptionErrorCallback);
+            PlayFabHttp.SubscribeSignalR("notifySubscriptionSuccess", OnSubscriptionSuccessCallback);
+            PlayFabHttp.InvokeSignalR("SubscribeToQueue", null, PlayFabSettings.TitleId, PlayFabSettings.DeveloperSecretKey, "", false);
         }
 
-        ///// <summary>
-        ///// Event callback when received PlayStream events from server.
-        ///// </summary>
-        ///// <param name="callback"></param>
-        //public static void Subscribe(Action<PlayStreamNotification> callback)
-        //{
-        //    if (string.IsNullOrEmpty(eventName))
-        //    {
-        //        var attrs = typeof(TEvent).GetCustomAttributes(typeof(PlayStreamEventAttribute), false);
-        //        if (attrs.Length != 0)
-        //            eventName = ((PlayStreamEventAttribute)attrs[0]).EventName;
-        //        else
-        //        {
-        //            eventName = typeof(TEvent).Name;
-        //            Debug.LogError("PlayStreamEventAttribute on " + eventName + " not found");
-        //            return;
-        //        }
-        //    }
-
-        //    var newCallback = new Action<PlayStreamNotification>(notification =>
-        //    {
-        //        try
-        //        {
-        //            callback(notification.ReadEvent<TEvent>());
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Debug.LogException(e);
-        //        }
-        //    });
-        //}
-
-        #region Private
-
-        /// <summary>
-        /// <para /> Automatically subscribed to the server when connection is established
-        /// </summary>
-        private static void SubscribeToServer()
+        private static void OnPlayStreamNotificationCallback(object[] data)
         {
-            PlayFabHttp.SubscribeRealtime(OnReceiveSubscriptionErrorCallback, data =>
-            {
-                var message = data[0] as string;
-                if (OnReceiveSubscriptionError != null)
-                {
-                    OnReceiveSubscriptionError(message);
-                }
-            });
-
-            PlayFabHttp.SubscribeRealtime(OnReceiveSubscriptionSuccessCallback, data =>
-            {
-                var message = data[0] as string;
-                if (OnReceiveSubscriptionSuccess != null)
-                {
-                    OnReceiveSubscriptionSuccess();
-                }
-
-            });
-
-            PlayFabHttp.SubscribeRealtime(OnReceivedNewMessageCallback, OnPlayStreamNotificationDataReceived);
-        }
-
-        /// <summary>
-        /// A callback 
-        /// </summary>
-        /// <param name="data"></param>
-        private static void OnPlayStreamNotificationDataReceived(object[] data)
-        {
-            var notif = Json.PlayFabSimpleJson.DeserializeObject<PlayStreamNotification>(data[0].ToString());
+            var notif = Json.JsonWrapper.DeserializeObject<PlayStreamNotification>(data[0].ToString());
             if (OnPlayStreamEvents != null)
             {
                 OnPlayStreamEvents(notif);
             }
         }
 
-        #region Connection Callbacks
-
-        private static void _onConnectedCallback()
+        private static void OnSubscriptionErrorCallback(object[] data)
         {
-            _isConnected = true;
-            SubscribeToServer();
-            if (OnConnected != null)
+            var message = data[0] as string;
+            if (OnFailed != null)
             {
-                OnConnected();
+                if (message == "Invalid Title Secret Key!")
+                {
+                    OnFailed(SubscriptionError.InvalidSecretKey);
+                }
+                else
+                {
+                    OnFailed(SubscriptionError.FailWithUnexpected(message));
+                }
             }
         }
 
-        private static void _onReceivedCallback(string msg)
+        private static void OnSubscriptionSuccessCallback(object[] data)
         {
-            if (OnReceived != null)
+            if (OnSubscribed != null)
             {
-                OnReceived(msg);
+                OnSubscribed();
             }
         }
 
-        private static void _onReconnectedCallback()
+        private static void OnReconnectedCallback()
         {
             if (OnReconnected != null)
             {
@@ -202,22 +94,22 @@ namespace PlayFab
             }
         }
 
-        private static void _onDisconnectedCallback()
+        private static void OnReceivedCallback(string msg)
         {
-            if (OnDisconnected != null)
+            if (OnReceived != null)
             {
-                OnDisconnected();
+                OnReceived(msg);
             }
         }
 
-        private static void _onErrorCallback(Exception ex)
+        private static void OnErrorCallback(Exception ex)
         {
             var timeoutEx = ex as TimeoutException;
             if (timeoutEx != null)
             {
-                if (OnDisconnected != null)
+                if (OnFailed != null)
                 {
-                    OnDisconnected();
+                    OnFailed(SubscriptionError.ConnectionTimeout);
                 }
             }
             else
@@ -229,7 +121,14 @@ namespace PlayFab
             }
         }
 
-        #endregion
+        private static void OnDisconnectedCallback()
+        {
+            if (OnDisconnected != null)
+            {
+                OnDisconnected();
+            }
+        }
+
 
         #endregion
 
@@ -283,40 +182,39 @@ namespace PlayFab
     }
 
     /// <summary>
-    /// The response from the server when sending PlayStream subscription request.
+    /// The error code of PlayStream subscription result.
     /// </summary>
-    public struct SubscriptionResponse
+    public struct SubscriptionError
     {
-        public StatusCode Status;
+        public ErrorCode Code;
         public string Message;
 
-        public enum StatusCode
+        public enum ErrorCode
         {
-            Ok,
-            Unexpected,
-            InvalidSecretKey
+            Unexpected = 400,
+            ConnectionTimeout = 401,
+            InvalidSecretKey = 402
         }
 
-        public static SubscriptionResponse Ok
+        public static SubscriptionError ConnectionTimeout
         {
             get
             {
-                return new SubscriptionResponse() { Message = null, Status = StatusCode.Ok };
+                return new SubscriptionError() { Message = "Connection Timeout", Code = ErrorCode.ConnectionTimeout };
             }
         }
 
-        public static SubscriptionResponse InvalidSecretKey
+        public static SubscriptionError InvalidSecretKey
         {
             get
             {
-                return new SubscriptionResponse() { Message = "Invalid Token", Status = StatusCode.InvalidSecretKey };
+                return new SubscriptionError() { Message = "Invalid Secret Key", Code = ErrorCode.InvalidSecretKey };
             }
         }
 
-        public static SubscriptionResponse FailWithUnexpected(string message)
+        public static SubscriptionError FailWithUnexpected(string message)
         {
-            return new SubscriptionResponse() { Message = message, Status = StatusCode.Unexpected };
-
+            return new SubscriptionError() { Message = message, Code = ErrorCode.Unexpected };
         }
     }
 }
