@@ -2,7 +2,6 @@
 using System;
 using PlayFab.MatchmakerModels;
 using PlayFab.Internal;
-using UnityEngine;
 
 namespace PlayFab
 {

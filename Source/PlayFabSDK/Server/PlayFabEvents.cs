@@ -1,13 +1,10 @@
 #if ENABLE_PLAYFABSERVER_API
 using PlayFab.ServerModels;
-using PlayFab.Internal;
 
 namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
-        
-        
         public event PlayFabRequestEvent<AuthenticateSessionTicketRequest> OnServerAuthenticateSessionTicketRequestEvent;
         public event PlayFabResultEvent<AuthenticateSessionTicketResult> OnServerAuthenticateSessionTicketResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromFacebookIDsRequest> OnServerGetPlayFabIDsFromFacebookIDsRequestEvent;
@@ -24,6 +21,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetLeaderboardResult> OnServerGetLeaderboardResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardAroundUserRequest> OnServerGetLeaderboardAroundUserRequestEvent;
         public event PlayFabResultEvent<GetLeaderboardAroundUserResult> OnServerGetLeaderboardAroundUserResultEvent;
+        public event PlayFabRequestEvent<GetPlayerCombinedInfoRequest> OnServerGetPlayerCombinedInfoRequestEvent;
+        public event PlayFabResultEvent<GetPlayerCombinedInfoResult> OnServerGetPlayerCombinedInfoResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticsRequest> OnServerGetPlayerStatisticsRequestEvent;
         public event PlayFabResultEvent<GetPlayerStatisticsResult> OnServerGetPlayerStatisticsResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticVersionsRequest> OnServerGetPlayerStatisticVersionsRequestEvent;
@@ -178,6 +177,12 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateCharacterDataResult> OnServerUpdateCharacterInternalDataResultEvent;
         public event PlayFabRequestEvent<UpdateCharacterDataRequest> OnServerUpdateCharacterReadOnlyDataRequestEvent;
         public event PlayFabResultEvent<UpdateCharacterDataResult> OnServerUpdateCharacterReadOnlyDataResultEvent;
+        public event PlayFabRequestEvent<GetAllSegmentsRequest> OnServerGetAllSegmentsRequestEvent;
+        public event PlayFabResultEvent<GetAllSegmentsResult> OnServerGetAllSegmentsResultEvent;
+        public event PlayFabRequestEvent<GetPlayersSegmentsRequest> OnServerGetPlayerSegmentsRequestEvent;
+        public event PlayFabResultEvent<GetPlayerSegmentsResult> OnServerGetPlayerSegmentsResultEvent;
+        public event PlayFabRequestEvent<GetPlayersInSegmentRequest> OnServerGetPlayersInSegmentRequestEvent;
+        public event PlayFabResultEvent<GetPlayersInSegmentResult> OnServerGetPlayersInSegmentResultEvent;
     }
 }
 #endif

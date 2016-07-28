@@ -1,13 +1,10 @@
 #if ENABLE_PLAYFABSERVER_API
 using PlayFab.MatchmakerModels;
-using PlayFab.Internal;
 
 namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
-        
-        
         public event PlayFabRequestEvent<AuthUserRequest> OnMatchmakerAuthUserRequestEvent;
         public event PlayFabResultEvent<AuthUserResponse> OnMatchmakerAuthUserResultEvent;
         public event PlayFabRequestEvent<PlayerJoinedRequest> OnMatchmakerPlayerJoinedRequestEvent;
