@@ -12,6 +12,8 @@ namespace PlayFab.Internal
 
         void Start(string url, string hubName);
         void Stop();
+
+        void Update();
         
         void Invoke(string api, Action resultCallback, params object[] args);
         void Subscribe(string onInvoked, Action<object[]> resultCallback);

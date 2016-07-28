@@ -104,7 +104,7 @@ namespace PlayFab.Internal
             };
         }
 
-        internal void Update()
+        public void Update()
         {
             lock (ResultQueue)
             {

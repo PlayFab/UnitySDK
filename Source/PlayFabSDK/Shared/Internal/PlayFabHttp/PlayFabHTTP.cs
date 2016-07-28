@@ -226,10 +226,9 @@ namespace PlayFab.Internal
             }
 
 #if ENABLE_PLAYFABPLAYSTREAM_API
-            var playFabSignalR = _internalSignalR as PlayFabSignalR;
-            if (playFabSignalR != null)
+            if (_internalSignalR != null)
             {
-                playFabSignalR.Update();
+                _internalSignalR.Update();
             }
 #endif
         }
