@@ -1,8 +1,9 @@
-﻿#if ENABLE_PLAYFABPLAYSTREAM_API
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using SignalR.Client._20.Hubs;
+using UnityEditor;
 
 namespace PlayFab.Internal
 {
@@ -78,12 +79,14 @@ namespace PlayFab.Internal
         {
             Action<object[]> onData = objs =>
             {
+                Action enqueuedAction = () =>
+                {
+                    callback(objs);
+                };
+
                 lock (ResultQueue)
                 {
-                    ResultQueue.Enqueue(() =>
-                    {
-                        callback(objs);
-                    });
+                    ResultQueue.Enqueue(enqueuedAction);
                 }
             };
 
@@ -95,13 +98,18 @@ namespace PlayFab.Internal
 
         public void Invoke(string methodName, Action callback, params object[] args)
         {
-            _proxy.Invoke(methodName, args).Finished += (sender, e) =>
+            EventHandler<SignalR.Client._20.Transports.CustomEventArgs<object>> invokeCallback = (sender, e) =>
             {
                 lock (ResultQueue)
                 {
                     ResultQueue.Enqueue(callback);
                 }
             };
+
+            lock (_connLock)
+            {
+                _proxy.Invoke(methodName, args).Finished += invokeCallback;
+            }
         }
 
         public void Update()
@@ -117,6 +125,7 @@ namespace PlayFab.Internal
                     }
                 }
             }
+
             while (TempActions.Count > 0)
             {
                 var finishedRequest = TempActions.Dequeue();
@@ -131,6 +140,11 @@ namespace PlayFab.Internal
                 if (_connState != ConnectionState.Pending) return;
             }
 
+            AbortThreadIfTimeout();
+        }
+
+        private void AbortThreadIfTimeout()
+        {
             if ((DateTime.UtcNow - _startTime) <= _defaultTimeout) return;
             lock (_connLock)
             {
@@ -186,30 +200,33 @@ namespace PlayFab.Internal
 
         private void ReceivedAction(string receivedMsg)
         {
-            lock (ResultQueue)
+            Action receivedCallback = () =>
             {
                 if (OnReceived != null)
                 {
-                    ResultQueue.Enqueue(() =>
-                    {
-                        OnReceived(receivedMsg);
-                    });
+                    OnReceived(receivedMsg);
                 }
+            };
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(receivedCallback);
             }
         }
 
         private void ErrorAction(Exception ex)
         {
-            lock (ResultQueue)
+            Action errorAction = () =>
             {
                 if (OnError != null)
                 {
-                    ResultQueue.Enqueue(() =>
-                    {
-                        OnError(ex);
-                    });
+                    OnError(ex);
                 }
+                   
+            };
 
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(errorAction);
             }
         }
 

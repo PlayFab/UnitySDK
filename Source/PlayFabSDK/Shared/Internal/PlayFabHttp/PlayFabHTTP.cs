@@ -21,7 +21,7 @@ namespace PlayFab.Internal
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
-#if ENABLE_PLAYFABPLAYSTREAM_API
+#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
         private static IPlayFabSignalR _internalSignalR;
 #endif
 
@@ -101,7 +101,7 @@ namespace PlayFab.Internal
             _logger = new PlayFabLogger();
         }
 
-#if ENABLE_PLAYFABPLAYSTREAM_API
+#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
 
         public static void InitializeSignalR(string baseUrl, string hubName, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
         {
@@ -203,7 +203,7 @@ namespace PlayFab.Internal
         /// </summary>
         public void OnDestroy()
         {
-#if ENABLE_PLAYFABPLAYSTREAM_API
+#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
             if (_internalSignalR != null)
             {
                 _internalSignalR.Stop();
@@ -225,7 +225,7 @@ namespace PlayFab.Internal
                 _internalHttp.Update();
             }
 
-#if ENABLE_PLAYFABPLAYSTREAM_API
+#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
             if (_internalSignalR != null)
             {
                 _internalSignalR.Update();
