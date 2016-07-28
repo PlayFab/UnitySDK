@@ -12,7 +12,7 @@ namespace PlayFab.Internal
         {
             // Do nothing because we're not applying device advertising id
         }
-#elif (UNITY_4 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2)
+#elif (!UNITY_5_3 && !UNITY_5_4) // This section for 5.3 or newer
         public static void OnPlayFabLogin()
         {
             // TODO: Restore the old Pre-V2 plugin which extracted these ids (RequestAdvertisingIdentifierAsync doesn't exist)
