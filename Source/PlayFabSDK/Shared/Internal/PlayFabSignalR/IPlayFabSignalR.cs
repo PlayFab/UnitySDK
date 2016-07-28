@@ -1,14 +1,13 @@
-﻿#if ENABLE_PLAYSTREAM_REALTIME
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PlayFab.Internal
 {
-    public interface IPlayFabRealtime
+    public interface IPlayFabSignalR
     {
-        string AuthToken { get; set; }
         string Uri { get; set; }
         string Controller { get; set; }
+        Dictionary<string, string> QueryString { get; set; }
 
         void Start();
         void Update();
@@ -28,4 +27,3 @@ namespace PlayFab.Internal
 
 }
 
-#endif

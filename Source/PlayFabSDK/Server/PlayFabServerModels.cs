@@ -1896,7 +1896,7 @@ namespace PlayFab.ServerModels
     {
 
         /// <summary>
-        /// 'Debug', 'Info', or 'Error'
+        /// 'Debug', 'Info', or 'Status'
         /// </summary>
         public string Level { get; set;}
 
@@ -2212,7 +2212,7 @@ namespace PlayFab.ServerModels
         public bool TicketIsValid { get; set;}
 
         /// <summary>
-        /// Error value if the ticket was not validated.
+        /// Status value if the ticket was not validated.
         /// </summary>
         public string Error { get; set;}
 
@@ -2312,7 +2312,7 @@ namespace PlayFab.ServerModels
     {
 
         /// <summary>
-        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// Status code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
         /// </summary>
         public string Error { get; set;}
 

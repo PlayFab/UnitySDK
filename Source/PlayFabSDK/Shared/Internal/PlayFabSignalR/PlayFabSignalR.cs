@@ -1,4 +1,4 @@
-﻿#if ENABLE_PLAYSTREAM_REALTIME
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API
 
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using SignalR.Client._20.Hubs;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabSignalR : IPlayFabRealtime
+    public class PlayFabSignalR : IPlayFabSignalR
     {
         public event Action OnConnected;
         public event Action<string> OnReceived;
@@ -16,14 +16,13 @@ namespace PlayFab.Internal
         public event Action<Exception> OnError;
 
         public TimeSpan ConnectionTimeout { get; set; }
-        public string AuthToken { get; set; }
         public string Uri { get; set; }
         public string Controller { get; set; }
+        public Dictionary<string, string> QueryString { get; set; }
 
         #region Private
 
-        private const string TokenKey = "X-Authentication";
-        private const float DefaultTimeout = 10000;
+        private const float DefaultTimeout = 110000;
         private static readonly Queue<Action> ResultQueue = new Queue<Action>();
         private static readonly Queue<Action> TempActions = new Queue<Action>();
 
@@ -51,7 +50,7 @@ namespace PlayFab.Internal
             _startTime = DateTime.UtcNow;
 
             _startThread = new Thread(_ThreadedStartConnection);
-            _startThread.Start(AuthToken);
+            _startThread.Start();
         }
 
         public void Close()
@@ -83,27 +82,27 @@ namespace PlayFab.Internal
                 finishedRequest.Invoke();
             }
 
-            var doOnConnectCallback = false;
+            //var doOnConnectCallback = false;
             var doOnConnectionFailedCallback = false;
-            lock (_connLock)
-            {
-                if (_connection != null && _connState == ConnectionState.Pending)
-                {
-                    doOnConnectCallback = true;
-                }
-            }
-            if (doOnConnectCallback)
-            {
-                lock (_connLock)
-                {
-                    _connState = ConnectionState.Running;
-                }
+            //lock (_connLock)
+            //{
+            //    if (_connection != null && _connState == ConnectionState.Pending)
+            //    {
+            //        doOnConnectCallback = true;
+            //    }
+            //}
+            //if (doOnConnectCallback)
+            //{
+            //    lock (_connLock)
+            //    {
+            //        _connState = ConnectionState.Running;
+            //    }
                     
-                if (OnConnected != null)
-                {
-                    OnConnected();
-                }
-            }
+            //    if (OnConnected != null)
+            //    {
+            //        OnConnected();
+            //    }
+            //}
 
             lock (_connLock)
             {
@@ -137,18 +136,23 @@ namespace PlayFab.Internal
             }
         }
 
-        private void _ThreadedStartConnection(object tokenValue)
+        private void _ThreadedStartConnection()
         {
+            HubConnection startedConnection;
+            if (QueryString != null)
+            {
+                startedConnection = new HubConnection(Uri, QueryString);
+            }
+            else
+            {
+                startedConnection = new HubConnection(Uri);
+            }
 
-            var startedConnection = new HubConnection(Uri, new Dictionary<string, string>
-                                   {
-                                       { TokenKey, (string)tokenValue }
-                                   });
             var startedProxy = startedConnection.CreateProxy(Controller);
-            
+
             ConnectionTimeout = TimeSpan.FromMilliseconds(DefaultTimeout);
             startedConnection.Start();
-           
+
             lock (_connLock)
             {
                 _proxy = startedProxy;
@@ -158,10 +162,23 @@ namespace PlayFab.Internal
                 _connection.Received += ReceivedAction;
                 _connection.Error += ErrorAction;
                 _connection.Closed += ClosedAction;
+                _connState = ConnectionState.Running;
+            }
+            lock (ResultQueue)
+            {
+                ResultQueue.Enqueue(ConnectedAction);
             }
         }
 
         #region Connection callbacks
+
+        private void ConnectedAction()
+        {
+            if (OnConnected != null)
+            {
+                OnConnected();
+            }
+        }
 
         private void ReconnectedAction()
         {

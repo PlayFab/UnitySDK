@@ -3033,7 +3033,7 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// 'Debug', 'Info', or 'Error'
+        /// 'Debug', 'Info', or 'Status'
         /// </summary>
         public string Level { get; set;}
 
@@ -3695,7 +3695,7 @@ namespace PlayFab.ClientModels
     {
 
         /// <summary>
-        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// Status code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
         /// </summary>
         public string Error { get; set;}
 

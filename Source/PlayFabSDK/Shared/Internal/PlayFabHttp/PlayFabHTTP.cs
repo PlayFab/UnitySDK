@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using PlayFab.Json;
-using PlayFab.UUnit;
 
 namespace PlayFab.Internal
 {
@@ -19,8 +18,8 @@ namespace PlayFab.Internal
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
-#if ENABLE_PLAYSTREAM_REALTIME
-        private static IPlayFabRealtime _internalRealtime;
+#if ENABLE_PLAYFABPLAYSTREAM_API
+        private static IPlayFabSignalR _internalSignalR;
 #endif
         private IPlayFabTailLogger _logger; //Removed PaperTrail ( UdpPaperTrailLogger )
         private static PlayFabDataGatherer _gatherer = new PlayFabDataGatherer();
@@ -91,39 +90,50 @@ namespace PlayFab.Internal
             _internalHttp.Awake();
         }
 
-#if ENABLE_PLAYSTREAM_REALTIME
-        #region Realtime
+#if ENABLE_PLAYFABPLAYSTREAM_API
+        #region PlayStream
 
-        public static void InitializeRealtime(string baseUrl, string hubName, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
+        public static void InitializeRealtime(string baseUrl, string hubName, Dictionary<string, string> queryString, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
         {
-            if (_internalRealtime != null)
+            if (_internalSignalR != null)
             {
                 return;
             }
 
-            _internalRealtime = new PlayFabSignalR { AuthToken = _internalHttp.AuthKey, Controller = hubName, Uri = baseUrl };
-            _internalRealtime.Start();
+            _internalSignalR = new PlayFabSignalR {Controller = hubName, Uri = baseUrl, QueryString = queryString };
+            _internalSignalR.Start();
             
-            _internalRealtime.OnConnected += onConnected;
-            _internalRealtime.OnReceived += onReceived;
-            _internalRealtime.OnReconnected += onReconnected;
-            _internalRealtime.OnDisconnected += onDisconnected;
-            _internalRealtime.OnError += onError;
+            _internalSignalR.OnConnected += onConnected;
+            _internalSignalR.OnReceived += onReceived;
+            _internalSignalR.OnReconnected += onReconnected;
+            _internalSignalR.OnDisconnected += onDisconnected;
+            _internalSignalR.OnError += onError;
         }
 
         public static void SubscribeRealtime(string onInvoked, Action<object[]> callbacks)
         {
-            _internalRealtime.Subscribe(onInvoked, callbacks);
+            _internalSignalR.Subscribe(onInvoked, callbacks);
         }
 
         public static void InvokeRealtime<T>(string methodName, Action<T> callback, params object[] args)
         {
-            _internalRealtime.Invoke<T>(methodName, callback, args);
+            _internalSignalR.Invoke<T>(methodName, callback, args);
+        }
+
+        public static void InvokeRealtime(string methodName, Action callback, params object[] args)
+        {
+            _internalSignalR.Invoke<object>(methodName, t =>
+            {
+                if (callback != null)
+                {
+                    callback();
+                }
+            }, args);
         }
 
         public static void StopRealtime()
         {
-            _internalRealtime.Close();
+            _internalSignalR.Close();
 
         }
         #endregion
@@ -154,9 +164,6 @@ namespace PlayFab.Internal
         /// </summary>
         public override void Awake()
         {
-#if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API
-            _internalHttp.DevKey = PlayFabSettings.DeveloperSecretKey ?? _internalHttp.DevKey;
-#endif
             _gatherer.GatherData();
             base.Awake();
         }
@@ -194,23 +201,23 @@ namespace PlayFab.Internal
             {
                 _internalHttp.Update();
             }
-#if ENABLE_PLAYSTREAM_REALTIME
-            if (_internalRealtime != null)
+#if ENABLE_PLAYFABPLAYSTREAM_API
+            if (_internalSignalR != null)
             {
-                _internalRealtime.Update();
+                _internalSignalR.Update();
             }
 #endif
         }
 
-#if ENABLE_PLAYSTREAM_REALTIME
+#if ENABLE_PLAYFABPLAYSTREAM_API
         /// <summary>
         /// Monobehaviour OnDestroy method, close realtime connection if enabled.
         /// </summary>
         public void OnDestroy()
         {
-            if (_internalRealtime != null)
+            if (_internalSignalR != null)
             {
-                _internalRealtime.Close();
+                _internalSignalR.Close();
             }
         }
 #endif

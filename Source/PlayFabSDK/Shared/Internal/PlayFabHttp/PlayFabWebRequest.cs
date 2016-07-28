@@ -309,11 +309,11 @@ namespace PlayFab.Internal
 
                 if (state.Response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(state.JsonResponse))
                 {
-                    //Throw Friendly PF Error.
+                    //Throw Friendly PF Status.
                     if (errorCallback != null)
                     {
                         var message = string.IsNullOrEmpty(state.JsonResponse)
-                            ? "Internal Server Error"
+                            ? "Internal Server Status"
                             : state.JsonResponse;
                         var playFabError = PlayFabHttp.GeneratePlayFabError(message, state.CustomData);
                         lock (ResultQueue)

@@ -1,10 +1,9 @@
-﻿#if ENABLE_PLAYSTREAM_REALTIME
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
-namespace PlayFab.Realtime.Event
+namespace PlayFab.PlayStreamModels
 {
     public abstract class EventBase
     {

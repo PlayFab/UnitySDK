@@ -1,13 +1,12 @@
-﻿#if ENABLE_PLAYSTREAM_REALTIME
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API
 using System;
-using System.Runtime.CompilerServices;
 
-namespace PlayFab.Realtime.Event
+namespace PlayFab.PlayStreamModels
 {
     /// <summary>
     /// This event is triggered when a character consumes an item frmo their inventory
     /// </summary>
-    [EventName("character_consumed_item")]
+    [PlayStreamEvent("character_consumed_item", "character", "com.playfab")]
     public class CharacterConsumedItemEvent : EventBase
     {
         public string ItemId;
@@ -26,14 +25,14 @@ namespace PlayFab.Realtime.Event
 
     }
 
-    [EventName("player_inventory_item_added")]
+    [PlayStreamEvent("player_inventory_item_added", "player", "com.playfab")]
     public class PlayerInventoryItemAddedEvent : EventBase
     {
         public string InstanceId;
 
         public string ItemId;
 
-        public string Displayname;
+        public string DisplayName;
 
         public string Class;
 
@@ -48,6 +47,20 @@ namespace PlayFab.Realtime.Event
         public string CouponCode;
 
         public string[] BundleContents;
+
+        public string TitleId;
+    }
+
+    [PlayStreamEvent("player_virtual_currency_balance_changed", "player", "com.playfab")]
+    public class PlayerVirtualCurrencyBalanceChanged : EventBase
+    {
+        public string VirtualCurrencyName;
+
+        public int VirtualCurrencyBalance;
+
+        public int VirtualCurrencyPreviousBalance;
+
+        public string OrderId;
 
         public string TitleId;
     }

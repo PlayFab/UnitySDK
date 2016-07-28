@@ -1,0 +1,3 @@
+PlayStreamAPI should be used on GameServers to subscribe to PlayStream events. NEVER use it on client build because this api uses Developer Secret Key to connect to PlayStream server. It is up to the server how it wants to handle the event messages. The PlayStream event data models are provided and they should be used for both clients and servers. 
+An example is provided in https://github.com/PlayFab/PlayFabGameServer.
+This feature is in beta, and please contact us if you have any questions.
