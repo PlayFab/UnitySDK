@@ -21,6 +21,9 @@ namespace PlayFab.Internal
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
 
+#if ENABLE_PLAYFABPLAYSTREAM_API
+        private static IPlayFabSignalR _internalSignalR;
+#endif
         private static IPlayFabLogger _logger;
 
 #if PLAYFAB_REQUEST_TIMING
@@ -54,7 +57,7 @@ namespace PlayFab.Internal
         }
 
         /// <summary>
-        /// Optional redirect to allow mocking of AuthKey
+        /// Optional redirect to allow mocking of AuthToken
         /// </summary>
         /// <param name="authKey"></param>
         public static void SetAuthKey(string authKey)
@@ -97,6 +100,54 @@ namespace PlayFab.Internal
             _logger = new PlayFabLogger();
         }
 
+#if ENABLE_PLAYFABPLAYSTREAM_API
+        #region PlayStream
+
+        public static void InitializeRealtime(string baseUrl, string hubName, Dictionary<string, string> queryString, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
+        {
+            if (_internalSignalR != null)
+            {
+                return;
+            }
+
+            _internalSignalR = new PlayFabSignalR {Controller = hubName, Uri = baseUrl, QueryString = queryString };
+            _internalSignalR.Start();
+            
+            _internalSignalR.OnConnected += onConnected;
+            _internalSignalR.OnReceived += onReceived;
+            _internalSignalR.OnReconnected += onReconnected;
+            _internalSignalR.OnDisconnected += onDisconnected;
+            _internalSignalR.OnError += onError;
+        }
+
+        public static void SubscribeRealtime(string onInvoked, Action<object[]> callbacks)
+        {
+            _internalSignalR.Subscribe(onInvoked, callbacks);
+        }
+
+        public static void InvokeRealtime<T>(string methodName, Action<T> callback, params object[] args)
+        {
+            _internalSignalR.Invoke<T>(methodName, callback, args);
+        }
+
+        public static void InvokeRealtime(string methodName, Action callback, params object[] args)
+        {
+            _internalSignalR.Invoke<object>(methodName, t =>
+            {
+                if (callback != null)
+                {
+                    callback();
+                }
+            }, args);
+        }
+
+        public static void StopRealtime()
+        {
+            _internalSignalR.Close();
+
+        }
+        #endregion
+#endif
         /// <summary>
         /// Internal method for Make API Calls
         /// </summary>
@@ -119,7 +170,7 @@ namespace PlayFab.Internal
             _internalHttp.MakeApiCall(apiEndpoint, request, authType, resultCallback, errorCallback, customData);
         }
 
-        /// <summary>
+	/// <summary>
         /// MonoBehaviour OnEnable Method
         /// </summary>
         public void OnEnable()
@@ -130,9 +181,6 @@ namespace PlayFab.Internal
             }
         }
 
-        /// <summary>
-        /// MonoBehaviour OnDisable
-        /// </summary>
         public void OnDisable()
         {
             if (_logger != null)
@@ -142,10 +190,33 @@ namespace PlayFab.Internal
         }
 
         /// <summary>
+        /// MonoBehaviour OnDisable
+        /// </summary>
+        public void Update()
+        {
+            if (_internalHttp != null)
+            {
+                _internalHttp.Update();
+            }
+#if ENABLE_PLAYFABPLAYSTREAM_API
+            if (_internalSignalR != null)
+            {
+                _internalSignalR.Update();
+            }
+#endif
+        }
+
+        /// <summary>
         /// MonoBehaviour OnDestroy
         /// </summary>
         public void OnDestroy()
         {
+#if ENABLE_PLAYFABPLAYSTREAM_API
+            if (_internalSignalR != null)
+            {
+                _internalSignalR.Close();
+            }
+#endif
             if (_logger != null)
             {
                 _logger.OnDestroy();
@@ -163,7 +234,7 @@ namespace PlayFab.Internal
             }
         }
 
-        #region Helpers
+#region Helpers
         public static bool IsClientLoggedIn()
         {
             return _internalHttp != null && !string.IsNullOrEmpty(_internalHttp.AuthKey);
@@ -266,10 +337,10 @@ namespace PlayFab.Internal
             }
         }
 #endif
-        #endregion
+#endregion
     }
 
-    #region Event Classes
+#region Event Classes
     public enum ApiProcessingEventType
     {
         Pre,
@@ -287,5 +358,5 @@ namespace PlayFab.Internal
             return Request as TRequest;
         }
     }
-    #endregion
+#endregion
 }

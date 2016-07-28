@@ -1027,7 +1027,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// error message, if any, about this build
         /// </summary>
-        public string ErrorMessage { get; set;}
+        public string Message { get; set;}
     }
 
     [Serializable]

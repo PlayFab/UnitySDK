@@ -306,7 +306,7 @@ namespace PlayFab.Internal
 
                 if (reqContainer.Response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(reqContainer.JsonResponse))
                 {
-                    //Throw Friendly PF Error.
+                    //Throw Friendly PF Status.
                     if (errorCallback != null)
                     {
                         var message = string.IsNullOrEmpty(reqContainer.JsonResponse)
