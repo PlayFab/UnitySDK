@@ -1,13 +1,12 @@
 #if !DISABLE_PLAYFABCLIENT_API
 using PlayFab.ClientModels;
-using PlayFab.Internal;
 
 namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
         public event PlayFabResultEvent<LoginResult> OnLoginResultEvent;
-        
+
         public event PlayFabRequestEvent<GetPhotonAuthenticationTokenRequest> OnGetPhotonAuthenticationTokenRequestEvent;
         public event PlayFabResultEvent<GetPhotonAuthenticationTokenResult> OnGetPhotonAuthenticationTokenResultEvent;
         public event PlayFabRequestEvent<LoginWithAndroidDeviceIDRequest> OnLoginWithAndroidDeviceIDRequestEvent;
@@ -247,6 +246,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<OpenTradeResponse> OnOpenTradeResultEvent;
         public event PlayFabRequestEvent<AttributeInstallRequest> OnAttributeInstallRequestEvent;
         public event PlayFabResultEvent<AttributeInstallResult> OnAttributeInstallResultEvent;
+        public event PlayFabRequestEvent<GetPlayerSegmentsRequest> OnGetPlayerSegmentsRequestEvent;
+        public event PlayFabResultEvent<GetPlayerSegmentsResult> OnGetPlayerSegmentsResultEvent;
     }
 }
 #endif

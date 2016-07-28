@@ -1,20 +1,19 @@
 using System;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using PlayFab.Json;
+using PlayFab.SharedModels;
+using UnityEngine;
+
 #if !UNITY_WSA && !UNITY_WP8
 using Ionic.Zlib;
 #endif
-using PlayFab.SharedModels;
-#if !DISABLE_PLAYFABCLIENT_API
-using PlayFab.ClientModels;
-#endif
-using PlayFab.Json;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabWWW : IPlayFabHttp
+    public class PlayFabWww : IPlayFabHttp
     {
         private int _pendingWwwMessages = 0;
         public string AuthKey { get; set; }
@@ -23,32 +22,21 @@ namespace PlayFab.Internal
         public void InitializeHttp() { }
         public void Update() { }
 
-        public void MakeApiCall<TRequest, TResult>(string apiEndpoint, TRequest request,
-            AuthType authType,
-            Action<TResult> resultCallback, Action<PlayFabError> errorCallback,
-            object customData = null)
-            where TRequest : PlayFabRequestCommon where TResult : PlayFabResultCommon
+        public void MakeApiCall(CallRequestContainer reqContainer)
         {
-            //serialize the request;
-            var req = JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy);
-            var url = PlayFabSettings.GetFullUrl(apiEndpoint);
-
             //Set headers
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
-            if (authType == AuthType.DevSecretKey)
+            if (reqContainer.AuthKey == AuthType.DevSecretKey)
             {
                 headers.Add("X-SecretKey", DevKey);
             }
-            else if (authType == AuthType.LoginSession)
+            else if (reqContainer.AuthKey == AuthType.LoginSession)
             {
                 headers.Add("X-Authorization", AuthKey);
             }
 
             headers.Add("X-ReportErrorAsSuccess", "true");
             headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
-
-            //Encode Payload
-            var payload = System.Text.Encoding.UTF8.GetBytes(req.Trim());
 
 #if !UNITY_WSA && !UNITY_WP8
             if (PlayFabSettings.CompressApiData)
@@ -60,46 +48,42 @@ namespace PlayFab.Internal
                 {
                     using (GZipStream zipstream = new GZipStream(stream, CompressionMode.Compress, CompressionLevel.BestCompression))
                     {
-                        zipstream.Write(payload, 0, payload.Length);
+                        zipstream.Write(reqContainer.Payload, 0, reqContainer.Payload.Length);
                     }
-                    payload = stream.ToArray();
+                    reqContainer.Payload = stream.ToArray();
                 }
             }
 #endif
 
             //Debug.LogFormat("Posting {0} to Url: {1}", req.Trim(), url);
-            var www = new WWW(url, payload, headers);
+            var www = new WWW(reqContainer.FullUrl, reqContainer.Payload, headers);
 
 #if PLAYFAB_REQUEST_TIMING
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 #endif
 
-            //Start the www corouting to Post, and get a response or error which is 
-            //then passed to the callbacks.
-            PlayFabHttp.instance.StartCoroutine(Post(www, (response) =>
+            // Start the www corouting to Post, and get a response or error which is then passed to the callbacks.
+            Action<string> wwwSuccessCallback = (response) =>
             {
                 try
                 {
 #if PLAYFAB_REQUEST_TIMING
                     var startTime = DateTime.UtcNow;
 #endif
-                    //Debug.Log(response);
-                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response,
-                        PlayFabUtil.ApiSerializerStrategy);
+                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response, PlayFabUtil.ApiSerializerStrategy);
 
                     if (httpResult.code == 200)
                     {
-                        //We have a good response from the server
-                        var dataJson = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
-                        var result = JsonWrapper.DeserializeObject<TResult>(dataJson, PlayFabUtil.ApiSerializerStrategy);
-
-                        result.Request = request;
-                        result.CustomData = customData;
+                        // We have a good response from the server
+                        reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
+                        reqContainer.DeserializeResultJson();
+                        reqContainer.ApiResult.Request = reqContainer.ApiRequest;
+                        reqContainer.ApiResult.CustomData = reqContainer.CustomData;
 
 #if !DISABLE_PLAYFABCLIENT_API
-                        UserSettings userSettings = null;
-                        var res = result as LoginResult;
-                        var regRes = result as RegisterPlayFabUserResult;
+                        ClientModels.UserSettings userSettings = null;
+                        var res = reqContainer.ApiResult as ClientModels.LoginResult;
+                        var regRes = reqContainer.ApiResult as ClientModels.RegisterPlayFabUserResult;
                         if (res != null)
                         {
                             userSettings = res.SettingsForUser;
@@ -116,7 +100,7 @@ namespace PlayFab.Internal
                             PlayFabIdfa.OnPlayFabLogin();
                         }
 
-                        var cloudScriptUrl = result as GetCloudScriptUrlResult;
+                        var cloudScriptUrl = reqContainer.ApiResult as ClientModels.GetCloudScriptUrlResult;
                         if (cloudScriptUrl != null)
                         {
                             PlayFabSettings.LogicServerUrl = cloudScriptUrl.Url;
@@ -124,7 +108,7 @@ namespace PlayFab.Internal
 #endif
                         try
                         {
-                            PlayFabHttp.SendEvent(request, result, ApiProcessingEventType.Post);
+                            PlayFabHttp.SendEvent(reqContainer.ApiRequest, reqContainer.ApiResult, ApiProcessingEventType.Post);
                         }
                         catch (Exception e)
                         {
@@ -141,26 +125,22 @@ namespace PlayFab.Internal
                         };
                         PlayFabHttp.SendRequestTiming(timing);
 #endif
-
-                        if (resultCallback != null)
+                        try
                         {
-                            try
-                            {
-                                resultCallback(result);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.LogException(e);
-                            }
+                            reqContainer.InvokeSuccessCallback();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
                         }
                     }
                     else
                     {
-                        if (errorCallback != null)
+                        if (reqContainer.ErrorCallback != null)
                         {
-                            var playFabError = PlayFabHttp.GeneratePlayFabError(response, customData);
-                            PlayFabHttp.SendErrorEvent(request, playFabError);
-                            errorCallback(playFabError);
+                            var playFabError = PlayFabHttp.GeneratePlayFabError(response, reqContainer.CustomData);
+                            PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, playFabError);
+                            reqContainer.ErrorCallback(playFabError);
                         }
                     }
                 }
@@ -168,24 +148,27 @@ namespace PlayFab.Internal
                 {
                     Debug.LogException(e);
                 }
+            };
 
-            }, (errorCb) =>
+            Action<string> wwwErrorCallback = (errorCb) =>
             {
-                if (errorCallback != null)
+                if (reqContainer.ErrorCallback != null)
                 {
-                    var playFabError = PlayFabHttp.GeneratePlayFabErrorGeneric(errorCb, null, customData);
-                    PlayFabHttp.SendErrorEvent(request, playFabError);
-                    errorCallback(playFabError);
+                    var playFabError = PlayFabHttp.GeneratePlayFabErrorGeneric(errorCb, null, reqContainer.CustomData);
+                    PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, playFabError);
+                    reqContainer.ErrorCallback(playFabError);
                 }
-            }));
+            };
+
+            PlayFabHttp.instance.StartCoroutine(Post(www, wwwSuccessCallback, wwwErrorCallback));
         }
 
-        private IEnumerator Post(WWW www, Action<string> callBack, Action<string> errorCallback)
+        private IEnumerator Post(WWW www, Action<string> wwwSuccessCallback, Action<string> wwwErrorCallback)
         {
             yield return www;
             if (!string.IsNullOrEmpty(www.error))
             {
-                errorCallback(www.error);
+                wwwErrorCallback(www.error);
             }
             else
             {
@@ -200,7 +183,7 @@ namespace PlayFab.Internal
                             var buffer = new byte[4096];
                             using (var output = new MemoryStream())
                             {
-                                var read = 0;
+                                int read;
                                 while ((read = gZipStream.Read(buffer, 0, buffer.Length)) > 0)
                                 {
                                     output.Write(buffer, 0, read);
@@ -209,20 +192,20 @@ namespace PlayFab.Internal
                                 var streamReader = new System.IO.StreamReader(output);
                                 var jsonResponse = streamReader.ReadToEnd();
                                 //Debug.Log(jsonResponse);
-                                callBack(jsonResponse);
+                                wwwSuccessCallback(jsonResponse);
                             }
                         }
                     }
                     catch
                     {
                         //if this was not a valid GZip response, then send the message back as text to the call back.
-                        callBack(www.text);
+                        wwwSuccessCallback(www.text);
                     }
                 }
                 else
                 {
 #endif
-                    callBack(www.text);
+                    wwwSuccessCallback(www.text);
 #if !UNITY_WSA && !UNITY_WP8
                 }
 #endif
@@ -233,6 +216,5 @@ namespace PlayFab.Internal
         {
             return _pendingWwwMessages;
         }
-
     }
 }
