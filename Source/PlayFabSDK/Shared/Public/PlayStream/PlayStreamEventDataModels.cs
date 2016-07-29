@@ -7,7 +7,7 @@ namespace PlayFab.PlayStreamModels
     /// The base type for all PlayStream events.
     /// See https://api.playfab.com/playstream/docs/PlayStreamEventModels for more information
     /// </summary>
-    public abstract class EventBase
+    public abstract class PlayStreamEventBase
     {
         public string Source;
         public string EventId;
@@ -19,10 +19,9 @@ namespace PlayFab.PlayStreamModels
         public Dictionary<string, string> CustomTags;
         public List<object> History;
         public object Reserved;
-
     }
 
-    public class CharacterConsumedItemEvent : EventBase
+    public class CharacterConsumedItemEvent : PlayStreamEventBase
     {
         public string ItemId;
         public string ItemInstanceId;
@@ -33,7 +32,7 @@ namespace PlayFab.PlayStreamModels
         public string PlayerId;
     }
 
-    public class PlayerInventoryItemAddedEvent : EventBase
+    public class PlayerInventoryItemAddedEvent : PlayStreamEventBase
     {
         public string InstanceId;
         public string ItemId;
@@ -48,7 +47,7 @@ namespace PlayFab.PlayStreamModels
         public string TitleId;
     }
 
-    public class PlayerVirtualCurrencyBalanceChanged : EventBase
+    public class PlayerVirtualCurrencyBalanceChanged : PlayStreamEventBase
     {
         public string VirtualCurrencyName;
         public int VirtualCurrencyBalance;
