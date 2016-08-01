@@ -11,29 +11,6 @@ namespace PlayFab
     /// </summary>
     public static class PlayFabPlayStreamAPI
     {
-        private static Action<PlayStreamNotification> _onPlayStreamEvents;
-
-        /// <summary>
-        /// <para />This is the event when a PlayStream event is received from the server.
-        /// <para />The connection will automatically start when this event is subscribed. Check the status of the connection by subscribing to OnSubscribed and OnFailed.
-        /// </summary>
-        public static event Action<PlayStreamNotification> OnPlayStreamEvent
-        {
-            add
-            {
-                Start(OnSubscribed, OnFailed);
-                _onPlayStreamEvents += value;
-            }
-            remove
-            {
-                if (_onPlayStreamEvents != null && value != null)
-                {
-                    // ReSharper disable once DelegateSubtraction
-                    _onPlayStreamEvents -= value;
-                }
-            }
-        }
-
         /// <summary>
         /// The event when successfully subcribed to PlayStream.
         /// </summary>
@@ -43,6 +20,12 @@ namespace PlayFab
         /// The event when failed to subcribe events from PlayStream server.
         /// </summary>
         public static event Action<SubscriptionError> OnFailed;
+
+        /// <summary>
+        /// <para />This is the event when a PlayStream event is received from the server.
+        /// <para />The connection will automatically start when this event is subscribed. Check the status of the connection by subscribing to OnSubscribed and OnFailed.
+        /// </summary>
+        public static event Action<PlayStreamNotification> OnPlayStreamEvent;
 
         #region Connection Status Events
 
@@ -69,21 +52,19 @@ namespace PlayFab
         #endregion
 
         /// <summary>
+        /// Start the SignalR connection asynchronously and subscribe to PlayStream events if successfully connected. This is called automatically by subscribing to OnPlayStreamEvents.
+        /// </summary>
+        public static void Start(string filter = null)
+        {
+            PlayFabHttp.InitializeSignalR("http://playstreamlive.playfab.com/signalr", "EventStreamsHub", OnConnectedCallback, OnReceivedCallback, OnReconnectedCallback, OnDisconnectedCallback, OnErrorCallback);
+        }
+
+        /// <summary>
         /// Sends a disconnect request to the server and stop the SignalR connection.
         /// </summary>
         public static void Stop()
         {
             PlayFabHttp.StopSignalR();
-        }
-
-        /// <summary>
-        /// Start the SignalR connection asynchronously and subscribe to PlayStream events if successfully connected. This is called automatically by subscribing to OnPlayStreamEvents.
-        /// </summary>
-        private static void Start(Action onSubscribed = null, Action<SubscriptionError> onFailed = null)
-        {
-            OnSubscribed += onSubscribed;
-            OnFailed += onFailed;
-            PlayFabHttp.InitializeSignalR("http://playstreamlive.playfab.com/signalr", "EventStreamsHub", OnConnectedCallback, OnReceivedCallback, OnReconnectedCallback, OnDisconnectedCallback, OnErrorCallback);
         }
 
         #region Connection Callbacks
@@ -99,9 +80,9 @@ namespace PlayFab
         private static void OnPlayStreamNotificationCallback(object[] data)
         {
             var notif = Json.JsonWrapper.DeserializeObject<PlayStreamNotification>(data[0].ToString());
-            if (_onPlayStreamEvents != null)
+            if (OnPlayStreamEvent != null)
             {
-                _onPlayStreamEvents(notif);
+                OnPlayStreamEvent(notif);
             }
         }
 
