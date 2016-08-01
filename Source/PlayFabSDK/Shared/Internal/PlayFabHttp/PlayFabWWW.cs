@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using PlayFab.Json;
 using PlayFab.SharedModels;
 using UnityEngine;
@@ -16,11 +15,13 @@ namespace PlayFab.Internal
     public class PlayFabWww : IPlayFabHttp
     {
         private int _pendingWwwMessages = 0;
+        public bool SessionStarted { get; set; }
         public string AuthKey { get; set; }
         public string DevKey { get; set; }
 
         public void InitializeHttp() { }
         public void Update() { }
+        public void OnDestroy() { }
 
         public void MakeApiCall(CallRequestContainer reqContainer)
         {

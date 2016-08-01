@@ -16,6 +16,8 @@ namespace PlayFab.Internal
         private static readonly StringBuilder Sb = new StringBuilder();
 
         private static IPlayFabHttp _internalHttp; //This is the default;
+        private static List<CallRequestContainer> _apiCallQueue = new List<CallRequestContainer>(); // Starts initialized, and is nulled when it's flushed
+
         public delegate void ApiProcessingEvent<in TEventArgs>(TEventArgs e);
         public delegate void ApiProcessErrorEvent(PlayFabRequestCommon request, PlayFabError error);
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
@@ -109,7 +111,7 @@ namespace PlayFab.Internal
         /// <param name="customData"></param>
         protected internal static void MakeApiCall<TResult>(string apiEndpoint,
             PlayFabRequestCommon request, AuthType authType, Action<TResult> resultCallback,
-            Action<PlayFabError> errorCallback, object customData = null)
+            Action<PlayFabError> errorCallback, object customData = null, bool allowQueueing = false)
             where TResult : PlayFabResultCommon
         {
             InitializeHttp();
@@ -120,6 +122,7 @@ namespace PlayFab.Internal
             reqContainer.Timing.StartTimeUtc = DateTime.UtcNow;
             reqContainer.Timing.ApiEndpoint = apiEndpoint;
 #endif
+            reqContainer.ApiEndpoint = apiEndpoint;
             reqContainer.FullUrl = PlayFabSettings.GetFullUrl(apiEndpoint);
             reqContainer.CustomData = customData;
             reqContainer.Payload = Encoding.UTF8.GetBytes(JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy));
@@ -138,7 +141,17 @@ namespace PlayFab.Internal
                     resultCallback((TResult)reqContainer.ApiResult);
             };
 
-            _internalHttp.MakeApiCall(reqContainer);
+            if (allowQueueing && _apiCallQueue != null && !_internalHttp.SessionStarted)
+            {
+                for (var i = _apiCallQueue.Count - 1; i >= 0; i--)
+                    if (_apiCallQueue[i].ApiEndpoint == apiEndpoint)
+                        _apiCallQueue.RemoveAt(i);
+                _apiCallQueue.Add(reqContainer);
+            }
+            else
+            {
+                _internalHttp.MakeApiCall(reqContainer);
+            }
         }
 
         /// <summary>
@@ -168,6 +181,10 @@ namespace PlayFab.Internal
         /// </summary>
         public void OnDestroy()
         {
+            if (_internalHttp != null)
+            {
+                _internalHttp.OnDestroy();
+            }
             if (_logger != null)
             {
                 _logger.OnDestroy();
@@ -181,6 +198,12 @@ namespace PlayFab.Internal
         {
             if (_internalHttp != null)
             {
+                if (!_internalHttp.SessionStarted && _apiCallQueue != null)
+                {
+                    foreach (var eachRequest in _apiCallQueue)
+                        _internalHttp.MakeApiCall(eachRequest); // Flush the queue
+                    _apiCallQueue = null; // null this after it's flushed
+                }
                 _internalHttp.Update();
             }
         }
@@ -218,10 +241,7 @@ namespace PlayFab.Internal
             Dictionary<string, List<string>> errorDetails = null;
             if (errorDict.ContainsKey("errorDetails"))
             {
-                var ed =
-                    JsonWrapper.DeserializeObject<Dictionary<string, List<string>>>(
-                        errorDict["errorDetails"].ToString());
-                errorDetails = ed;
+                errorDetails = JsonWrapper.DeserializeObject<Dictionary<string, List<string>>>(errorDict["errorDetails"].ToString());
             }
             //create new error object
             return new PlayFabError

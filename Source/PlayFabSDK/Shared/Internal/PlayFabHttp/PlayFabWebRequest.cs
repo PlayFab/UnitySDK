@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading;
 using PlayFab.SharedModels;
 #if !DISABLE_PLAYFABCLIENT_API
@@ -31,6 +30,8 @@ namespace PlayFab.Internal
 
         private static string _authKey;
         private static string _devKey;
+        private static bool _sessionStarted;
+        public bool SessionStarted { get { return _sessionStarted; } set { _sessionStarted = value; } }
         public string AuthKey { get { return _authKey; } set { _authKey = value; } }
         public string DevKey { get { return _devKey; } set { _devKey = value; } }
 
@@ -41,7 +42,7 @@ namespace PlayFab.Internal
             _UnityVersion = Application.unityVersion;
         }
 
-        void OnDestroy()
+        public void OnDestroy()
         {
             _isApplicationPlaying = false;
             lock (ResultQueue)

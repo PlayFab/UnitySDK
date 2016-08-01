@@ -264,7 +264,21 @@ namespace PlayFab.UUnit
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
+
+        [UUnitTest]
+        public void ArrayOfObjects(UUnitTestContext testContext)
+        {
+            string actualJson = "[{\"a\":\"aValue\"}, {\"b\":\"bValue\"}]";
+            var actualObjectList = JsonWrapper.DeserializeObject<List<object>>(actualJson);
+            var actualObjectArray = JsonWrapper.DeserializeObject<object[]>(actualJson);
+
+            testContext.IntEquals(actualObjectList.Count, 2);
+            testContext.IntEquals(actualObjectArray.Length, 2);
+
+            testContext.StringEquals(((JsonObject)actualObjectList[0])["a"] as string, "aValue");
+            testContext.StringEquals(((JsonObject)actualObjectList[1])["b"] as string, "bValue");
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
     }
 }
-
-
