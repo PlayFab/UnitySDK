@@ -5,10 +5,14 @@ namespace PlayFab.Internal
 {
     public interface IPlayFabHttp
     {
+        bool SessionStarted { get; set; }
         string AuthKey { get; set; }
         string DevKey { get; set; }
         void InitializeHttp();
+
+        // Mirroring MonoBehaviour - Relayed from PlayFabHTTP
         void Update();
+        void OnDestroy();
 
         void MakeApiCall(CallRequestContainer reqContainer);
 
@@ -44,6 +48,7 @@ namespace PlayFab.Internal
 #endif
 
         // This class stores the state of the request and all associated data
+        public string ApiEndpoint = null;
         public string FullUrl = null;
         public AuthType AuthKey = AuthType.None;
         public byte[] Payload = null;
