@@ -10,7 +10,10 @@ public class PlayFabSharedSettings : ScriptableObject
 #if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API
     public string DeveloperSecretKey;
 #endif
-    public string ProductionEnvironmentUrl = ".playfabapi.com";
+#if ENABLE_PLAYSTREAM_REALTIME
+    public string ProductionEnvironmentPlayStreamUrl = "";
+#endif
+    public string ProductionEnvironmentUrl = "";
     public WebRequestType RequestType = WebRequestType.UnityWww;
     public int RequestTimeout = 2000;
     public bool RequestKeepAlive = true;
