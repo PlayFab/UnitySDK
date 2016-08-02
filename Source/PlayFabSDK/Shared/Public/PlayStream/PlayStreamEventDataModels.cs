@@ -247,6 +247,14 @@ namespace PlayFab.PlayStreamModels
         public int? StatisticPreviousValue;
         public string TitleId;
     }
+    public class PlayerStatisticDeletedEventData : PlayStreamEventBase
+    {
+        public string StatisticName;
+        public uint StatisticId;
+        public uint Version;
+        public int? StatisticPreviousValue;
+        public string TitleId;
+    }
     public class PlayerTriggeredActionExecutedCloudScriptEventData : PlayStreamEventBase
     {
         public string FunctionName;
