@@ -173,7 +173,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds playfab username/password auth to an existing semi-anonymous account created via a 3rd party auth method.
+        /// Adds playfab username/password auth to an existing account created via an anonymous auth method, e.g. automatic device ID login.
         /// </summary>
         public static void AddUsernamePassword(AddUsernamePasswordRequest request, Action<AddUsernamePasswordResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
