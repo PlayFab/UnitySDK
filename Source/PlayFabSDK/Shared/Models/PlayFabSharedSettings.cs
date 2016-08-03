@@ -10,7 +10,7 @@ public class PlayFabSharedSettings : ScriptableObject
 #if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API
     public string DeveloperSecretKey;
 #endif
-#if ENABLE_PLAYSTREAM_REALTIME
+#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
     public string ProductionEnvironmentPlayStreamUrl = "";
 #endif
     public string ProductionEnvironmentUrl = "";

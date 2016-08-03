@@ -106,8 +106,8 @@ namespace PlayFab.Internal
 #if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
         public static void InitializeSignalR(string baseUrl, string hubName, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
         {
+            CreateInstance();
             if (_internalSignalR != null) return;
-
             _internalSignalR = new PlayFabSignalR (onConnected);
             _internalSignalR.OnReceived += onReceived;
             _internalSignalR.OnReconnected += onReconnected;
