@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using PlayFab.Internal;
 using PlayFab.Json;
-using PlayFab.UUnit;
 
 namespace PlayFab.UUnit
 {
@@ -26,6 +25,16 @@ namespace PlayFab.UUnit
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object HideNull = null;
         public object ShowNull = null;
+    }
+
+    internal class NullableTestClass
+    {
+        public int? IntField = null;
+        public int? IntProperty { get; set; }
+        public DateTime? TimeField = null;
+        public DateTime? TimeProperty { get; set; }
+        public Region? EnumField = null;
+        public Region? EnumProperty { get; set; }
     }
 
     internal class ObjNumFieldTest
@@ -277,6 +286,23 @@ namespace PlayFab.UUnit
 
             testContext.StringEquals(((JsonObject)actualObjectList[0])["a"] as string, "aValue");
             testContext.StringEquals(((JsonObject)actualObjectList[1])["b"] as string, "bValue");
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        [UUnitTest]
+        public void NullableJson(UUnitTestContext testContext)
+        {
+            var testObj = new NullableTestClass();
+            var actualJson = JsonWrapper.SerializeObject(testObj, PlayFabUtil.ApiSerializerStrategy);
+            var actualObj = JsonWrapper.DeserializeObject<NullableTestClass>(actualJson);
+
+            testContext.IsNull(actualObj.IntField, "Nullable integer field does not serialize properly: " + testObj.IntField + ", from " + actualJson);
+            testContext.IsNull(actualObj.IntProperty, "Nullable integer property does not serialize properly: " + testObj.IntProperty + ", from " + actualJson);
+            testContext.IsNull(actualObj.TimeField, "Nullable struct field does not serialize properly: " + testObj.TimeField + ", from " + actualJson);
+            testContext.IsNull(actualObj.TimeProperty, "Nullable struct property does not serialize properly: " + testObj.TimeProperty + ", from " + actualJson);
+            testContext.IsNull(actualObj.EnumField, "Nullable enum field does not serialize properly: " + testObj.EnumField + ", from " + actualJson);
+            testContext.IsNull(actualObj.EnumProperty, "Nullable enum property does not serialize properly: " + testObj.EnumProperty + ", from " + actualJson);
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
