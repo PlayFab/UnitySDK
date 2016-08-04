@@ -808,7 +808,7 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// Dictionary of player's total currency purchases. The key VTD is a sum of all player_realmoney_purchase events OrderTotals.
         /// </summary>
-        public Dictionary<string,decimal> ValuesToDate { get; set;}
+        public Dictionary<string,uint> ValuesToDate { get; set;}
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
