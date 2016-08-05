@@ -39,7 +39,7 @@ namespace PlayFab.Internal
             headers.Add("X-ReportErrorAsSuccess", "true");
             headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
 
-#if !UNITY_WSA && !UNITY_WP8
+#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
             if (PlayFabSettings.CompressApiData)
             {
                 headers.Add("Content-Encoding", "GZIP");
@@ -173,7 +173,7 @@ namespace PlayFab.Internal
             }
             else
             {
-#if !UNITY_WSA && !UNITY_WP8
+#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
                 if (PlayFabSettings.CompressApiData)
                 {
                     try
@@ -207,7 +207,7 @@ namespace PlayFab.Internal
                 {
 #endif
                     wwwSuccessCallback(www.text);
-#if !UNITY_WSA && !UNITY_WP8
+#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
                 }
 #endif
             }
