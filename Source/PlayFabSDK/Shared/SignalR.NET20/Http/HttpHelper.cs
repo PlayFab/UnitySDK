@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -50,7 +51,7 @@ namespace SignalR.Client._20.Http
                     }
                 }
             }
-            catch 
+            catch
             {
                 return null;
             }
@@ -201,4 +202,5 @@ namespace SignalR.Client._20.Http
             return Encoding.UTF8.GetBytes(_stringB.ToString());
         }
     }
-}
+} 
+#endif

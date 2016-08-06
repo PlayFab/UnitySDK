@@ -1,10 +1,9 @@
-﻿using SignalR.Client._20.Http;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using SignalR.Client._20.Http;
 using SignalR.Client._20.Infrastructure;
 using System;
-using System.Collections.Generic;
 //using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading;
 
 namespace SignalR.Client._20.Transports
@@ -193,3 +192,5 @@ namespace SignalR.Client._20.Transports
         }
     }
 }
+
+#endif

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -46,8 +47,8 @@ namespace SignalR.Client._20.Transports
             var _signal = m_httpClient.PostAsync(
                 _url,
                 PrepareRequest(connection),
-                new Dictionary<string, string> { 
-                    { "groups", GetSerializedGroups(connection) } 
+                new Dictionary<string, string> {
+                    { "groups", GetSerializedGroups(connection) }
                 });
 
             _signal.Finished += (sender, e) =>
@@ -170,3 +171,5 @@ namespace SignalR.Client._20.Transports
         }
     }
 }
+
+#endif

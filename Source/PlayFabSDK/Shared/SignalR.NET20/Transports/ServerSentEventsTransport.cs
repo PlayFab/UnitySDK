@@ -1,10 +1,9 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Collections.Generic;
-//using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using SignalR.Client._20.Http;
-using SignalR.Client._20.Infrastructure;
 using UnityEngine;
 
 namespace SignalR.Client._20.Transports
@@ -86,9 +85,9 @@ namespace SignalR.Client._20.Transports
                         _prepareRequest(request);
                         request.Accept = "text/event-stream";
                     },
-                    new Dictionary<string, string> { 
+                    new Dictionary<string, string> {
                     {
-                        "groups", GetSerializedGroups(connection) } 
+                        "groups", GetSerializedGroups(connection) }
                     });
             }
             else
@@ -200,3 +199,5 @@ namespace SignalR.Client._20.Transports
         }
     }
 }
+
+#endif

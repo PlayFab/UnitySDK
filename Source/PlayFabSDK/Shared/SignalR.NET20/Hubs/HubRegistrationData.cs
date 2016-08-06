@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
 namespace SignalR.Client._20.Hubs
 {
     public class HubRegistrationData
@@ -7,3 +6,5 @@ namespace SignalR.Client._20.Hubs
         public string Name { get; set; }
     }
 }
+
+#endif

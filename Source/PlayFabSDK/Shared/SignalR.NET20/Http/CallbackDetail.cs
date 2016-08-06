@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 
 namespace SignalR.Client._20.Http
 {
@@ -11,3 +10,5 @@ namespace SignalR.Client._20.Http
         public T Result { get; set; }
     }
 }
+
+#endif

@@ -1,8 +1,7 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Collections.Generic;
-using SignalR.Client._20.Infrastructure;
 using SignalR.Client._20.Transports;
-using System.Net;
 
 namespace SignalR.Client._20.Http
 {
@@ -25,7 +24,7 @@ namespace SignalR.Client._20.Http
         public EventSignal<IResponse> PostAsync(string url, Action<IRequest> prepareRequest, Dictionary<string, string> postData)
         {
             var _returnSignal = new EventSignal<IResponse>();
-            var _signal = HttpHelper.PostAsync(url, request => 
+            var _signal = HttpHelper.PostAsync(url, request =>
                 prepareRequest(new HttpWebRequestWrapper(request)), postData);
 
             _signal.Finished += (sender, e) => _returnSignal.OnFinish(
@@ -38,3 +37,5 @@ namespace SignalR.Client._20.Http
         }
     }
 }
+
+#endif

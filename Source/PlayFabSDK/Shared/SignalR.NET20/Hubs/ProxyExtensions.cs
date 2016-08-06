@@ -1,4 +1,5 @@
-﻿using PlayFab.Json;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using PlayFab.Json;
 namespace SignalR.Client._20.Hubs
 {
     public static class HubProxyExtensions
@@ -21,3 +22,5 @@ namespace SignalR.Client._20.Hubs
         }
     }
 }
+
+#endif

@@ -1,8 +1,6 @@
-﻿using SignalR.Client._20.Transports;
-using System;
-using System.Collections.Generic;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using SignalR.Client._20.Transports;
 using System.Net;
-using System.Text;
 
 namespace SignalR.Client._20.Http
 {
@@ -13,3 +11,5 @@ namespace SignalR.Client._20.Http
         public byte[] PostData { get; set; }
     }
 }
+
+#endif

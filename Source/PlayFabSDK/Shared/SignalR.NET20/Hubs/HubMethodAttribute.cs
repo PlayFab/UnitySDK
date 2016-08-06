@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 
 namespace SignalR.Client._20.Hubs
 {
@@ -21,3 +22,5 @@ namespace SignalR.Client._20.Hubs
         }
     }
 }
+
+#endif

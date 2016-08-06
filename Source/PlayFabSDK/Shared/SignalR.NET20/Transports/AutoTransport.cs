@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using SignalR.Client._20.Http;
 
 namespace SignalR.Client._20.Transports
@@ -12,9 +13,9 @@ namespace SignalR.Client._20.Transports
         public AutoTransport(IHttpClient httpClient)
         {
             m_httpClient = httpClient;
-            m_transports = new IClientTransport[] { 
-                new ServerSentEventsTransport(httpClient), 
-                new LongPollingTransport(httpClient) 
+            m_transports = new IClientTransport[] {
+                new ServerSentEventsTransport(httpClient),
+                new LongPollingTransport(httpClient)
             };
         }
 
@@ -66,3 +67,5 @@ namespace SignalR.Client._20.Transports
         }
     }
 }
+
+#endif

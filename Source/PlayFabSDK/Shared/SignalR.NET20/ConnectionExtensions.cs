@@ -1,6 +1,4 @@
-﻿using System;
-using SignalR.Client._20.Hubs;
-
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
 namespace SignalR.Client._20
 {
     public static class ConnectionExtensions
@@ -15,3 +13,5 @@ namespace SignalR.Client._20
         }
     }
 }
+
+#endif

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -189,7 +190,7 @@ namespace SignalR.Client._20.Transports
                     {
                         try
                         {
-                            connection.OnReceived((JsonObject) message);
+                            connection.OnReceived((JsonObject)message);
                         }
                         catch (Exception ex)
                         {
@@ -199,7 +200,7 @@ namespace SignalR.Client._20.Transports
 
                     connection.MessageId = _result.ContainsKey("C") ? _result["C"].ToString() : "";
 
-                    
+
                     JsonObject transportData = null;
                     object triedData;
                     if (_result.TryGetValue("T", out triedData))
@@ -236,3 +237,5 @@ namespace SignalR.Client._20.Transports
         }
     }
 }
+
+#endif

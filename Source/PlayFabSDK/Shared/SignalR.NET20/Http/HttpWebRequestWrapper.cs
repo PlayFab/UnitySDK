@@ -1,5 +1,5 @@
-﻿using System.Net;
-using SignalR.Client._20.Infrastructure;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System.Net;
 
 namespace SignalR.Client._20.Http
 {
@@ -66,3 +66,5 @@ namespace SignalR.Client._20.Http
         }
     }
 }
+
+#endif

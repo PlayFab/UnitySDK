@@ -1,7 +1,7 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.IO;
 using System.Net;
-using SignalR.Client._20.Infrastructure;
 
 namespace SignalR.Client._20.Http
 {
@@ -29,8 +29,10 @@ namespace SignalR.Client._20.Http
             ((IDisposable)m_response).Dispose();
         }
 
-    	public bool IsFaulted { get; set; }
+        public bool IsFaulted { get; set; }
 
-    	public Exception Exception { get; set; }
+        public Exception Exception { get; set; }
     }
 }
+
+#endif

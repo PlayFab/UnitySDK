@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
 namespace SignalR.Client._20.Hubs
 {
     public interface IObserver<T>
@@ -9,3 +6,5 @@ namespace SignalR.Client._20.Hubs
         void OnNext(T value);
     }
 }
+
+#endif

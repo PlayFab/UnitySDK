@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 
 namespace SignalR.Client._20.Transports
 {
@@ -47,3 +46,5 @@ namespace SignalR.Client._20.Transports
         Data
     }
 }
+
+#endif

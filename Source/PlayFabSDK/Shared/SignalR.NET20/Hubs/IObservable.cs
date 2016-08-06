@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 
 namespace SignalR.Client._20.Hubs
 {
@@ -9,3 +8,5 @@ namespace SignalR.Client._20.Hubs
         IDisposable Subscribe(IObserver<T> observer);
     }
 }
+
+#endif

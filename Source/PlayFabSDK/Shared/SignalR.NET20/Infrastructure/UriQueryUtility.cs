@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Text;
 
 namespace SignalR.Infrastructure
@@ -12,7 +13,7 @@ namespace SignalR.Infrastructure
     {
         // The implementation below is ported from WebUtility for use in .Net 4
 
-        #region UrlEncode implementation
+#region UrlEncode implementation
 
         private static byte[] UrlEncode(byte[] bytes, int offset, int count, bool alwaysCreateNewReturnValue)
         {
@@ -76,9 +77,9 @@ namespace SignalR.Infrastructure
             return expandedBytes;
         }
 
-        #endregion
+#endregion
 
-        #region UrlEncode public methods
+#region UrlEncode public methods
 
         public static string UrlEncode(string str)
         {
@@ -95,9 +96,9 @@ namespace SignalR.Infrastructure
             return UrlEncode(bytes, offset, count, true);
         }
 
-        #endregion
+#endregion
 
-        #region UrlDecode implementation
+#region UrlDecode implementation
 
         private static string UrlDecodeInternal(string value, Encoding encoding)
         {
@@ -210,9 +211,9 @@ namespace SignalR.Infrastructure
             return decodedBytes;
         }
 
-        #endregion
+#endregion
 
-        #region UrlDecode public methods
+#region UrlDecode public methods
 
         public static string UrlDecode(string str)
         {
@@ -227,9 +228,9 @@ namespace SignalR.Infrastructure
             return UrlDecodeInternal(bytes, offset, count);
         }
 
-        #endregion
+#endregion
 
-        #region Helper methods
+#region Helper methods
 
         private static int HexToInt(char h)
         {
@@ -288,9 +289,9 @@ namespace SignalR.Infrastructure
             return true;
         }
 
-        #endregion
+#endregion
 
-        #region UrlDecoder nested class
+#region UrlDecoder nested class
 
         // Internal class to facilitate URL decoding -- keeps char buffer and byte buffer, allows appending of either chars or bytes
         private class UrlDecoder
@@ -354,6 +355,8 @@ namespace SignalR.Infrastructure
             }
         }
 
-        #endregion
+#endregion
     }
 }
+
+#endif

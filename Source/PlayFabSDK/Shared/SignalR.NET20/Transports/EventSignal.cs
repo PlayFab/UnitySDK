@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Threading;
 
 namespace SignalR.Client._20.Transports
@@ -53,4 +54,5 @@ namespace SignalR.Client._20.Transports
             return m_attemptCount > m_maxAttempts;
         }
     }
-}
+} 
+#endif

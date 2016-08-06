@@ -1,4 +1,5 @@
-﻿using SignalR.Client._20.Transports;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using SignalR.Client._20.Transports;
 
 namespace SignalR.Client._20.Hubs
 {
@@ -13,3 +14,5 @@ namespace SignalR.Client._20.Hubs
         EventSignal<T> Invoke<T>(string method, params object[] args);
     }
 }
+
+#endif

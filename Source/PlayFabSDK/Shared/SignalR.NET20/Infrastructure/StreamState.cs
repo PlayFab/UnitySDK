@@ -1,9 +1,7 @@
-﻿using SignalR.Client._20.Http;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using SignalR.Client._20.Http;
 using SignalR.Client._20.Transports;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SignalR.Client._20.Infrastructure
 {
@@ -14,3 +12,5 @@ namespace SignalR.Client._20.Infrastructure
         public EventSignal<CallbackDetail<int>> Response { get; set; }
     }
 }
+
+#endif

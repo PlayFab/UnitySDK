@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
@@ -186,7 +187,7 @@ namespace SignalR.Client._20
 
             if (CookieContainer != null)
                 request.CookieContainer = CookieContainer;
-            
+
         }
 
         private static string CreateUserAgentString(string client)
@@ -195,10 +196,10 @@ namespace SignalR.Client._20
                 m_assemblyVersion = new AssemblyName(typeof(Connection).Assembly.FullName).Version;
 
             return String.Format(
-                CultureInfo.InvariantCulture, 
-                "{0}/{1} ({2})", 
-                client, 
-                m_assemblyVersion, 
+                CultureInfo.InvariantCulture,
+                "{0}/{1} ({2})",
+                client,
+                m_assemblyVersion,
                 Environment.OSVersion);
         }
 
@@ -227,3 +228,5 @@ namespace SignalR.Client._20
         }
     }
 }
+
+#endif

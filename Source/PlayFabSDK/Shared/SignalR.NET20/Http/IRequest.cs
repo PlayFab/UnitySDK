@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
 using System.Net;
 
 namespace SignalR.Client._20.Http
@@ -16,3 +16,5 @@ namespace SignalR.Client._20.Http
         void Abort();
     }
 }
+
+#endif

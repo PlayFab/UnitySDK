@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
+using System;
 using System.Text;
 
 namespace SignalR.Client._20.Infrastructure
@@ -35,7 +36,7 @@ namespace SignalR.Client._20.Infrastructure
                         m_buffer.Remove(0, m_offset + 1);
 
                         string _line = m_lineBuilder.ToString();
-                    	m_lineBuilder.Length = 0;
+                        m_lineBuilder.Length = 0;
                         m_offset = 0;
                         return _line;
                     }
@@ -59,3 +60,5 @@ namespace SignalR.Client._20.Infrastructure
         }
     }
 }
+
+#endif
