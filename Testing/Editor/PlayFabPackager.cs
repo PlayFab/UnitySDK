@@ -87,13 +87,13 @@ namespace PlayFab.Internal
             Setup();
 #if UNITY_5
             BuildTarget wsaBuildTarget = BuildTarget.WSAPlayer;
-#else
-            BuildTarget wsaBuildTarget = BuildTarget.WP8Player;
-#endif
             EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.LocalMachineAndWindowsPhone;
             EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
             PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
+#else
+            BuildTarget wsaBuildTarget = BuildTarget.WP8Player;
+#endif
 
             var wp8Path = Path.Combine(GetBuildPath(), "PlayFabWP8");
             MkDir(GetBuildPath());
