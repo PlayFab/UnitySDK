@@ -81,13 +81,14 @@ namespace PlayFab.UUnit
                 }
                 else
                 {
-                    Debug.LogError("Loading testSettings file failed: " + filename + ", loading defaults.");
-                    testInputs = new Dictionary<String, String>();
-                    testInputs["titleId"] = "6195";
-                    testInputs["titleCanUpdateSettings"] = "true";
-                    testInputs["userName"] = "paul";
-                    testInputs["userEmail"] = "paul@playfab.com";
-                    testInputs["userPassword"] = "testPassword";
+                    // NOTE FOR DEVELOPERS: if you want to run these tests, provide useful defaults, and uncomment this section, or provide a valid path to a "testTitleData.json" file above
+                    testInputs = new Dictionary<string, string>();
+                    //Debug.LogError("Loading testSettings file failed: " + filename + ", loading defaults.");
+                    //testInputs["titleId"] = "your title id here";
+                    //testInputs["titleCanUpdateSettings"] = "true"; // These tests require a GameManager setting: clients must be able to set stats and userData
+                    //testInputs["userName"] = "yourTestUserName";
+                    //testInputs["userEmail"] = "yourTest@email.com";
+                    //testInputs["userPassword"] = "yourTestPassword";
                 }
                 SetTitleInfo(testInputs);
                 EXEC_ONCE = false;

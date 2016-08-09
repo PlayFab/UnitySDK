@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PlayFab.UUnit;
 using PlayFab.ClientModels;
 using PlayFab.Events;
+using PlayFab.Internal;
 using PlayFab.SharedModels;
 
-namespace PlayFab.Internal
+namespace PlayFab.UUnit
 {
     public class ClientEventTest : UUnitTestCase
     {
