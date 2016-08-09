@@ -15,10 +15,10 @@ namespace PlayFab
     public enum PlayFabLogLevel
     {
         None = 0,
-        Debug = 1,
-        Info = 2,
-        Warning = 4,
-        Error = 8,
+        Debug = 1 << 0,
+        Info = 1 << 1,
+        Warning = 1 << 2,
+        Error = 1 << 3,
         All = Debug | Info | Warning | Error,
     }
 

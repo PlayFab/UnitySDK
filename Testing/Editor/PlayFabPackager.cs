@@ -76,11 +76,7 @@ namespace PlayFab.Internal
             var iosPath = Path.Combine(GetBuildPath(), "PlayFabIOS");
             MkDir(GetBuildPath());
             MkDir(iosPath);
-#if UNITY_5
             BuildPipeline.BuildPlayer(TestScenes, iosPath, appleBuildTarget, BuildOptions.None);
-#else
-            BuildPipeline.BuildPlayer(TestScenes, iosPath, appleBuildTarget, BuildOptions.None);
-#endif
             if (Directory.GetFiles(iosPath).Length == 0)
                 throw new Exception("Target directory is empty: " + iosPath + ", " + string.Join(",", Directory.GetFiles(iosPath)));
         }
@@ -89,14 +85,20 @@ namespace PlayFab.Internal
         public static void MakeWp8Build()
         {
             Setup();
+#if UNITY_5
+            BuildTarget wsaBuildTarget = BuildTarget.WSAPlayer;
+#else
+            BuildTarget wsaBuildTarget = BuildTarget.WP8Player;
+#endif
+            EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
+            EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.LocalMachineAndWindowsPhone;
+            EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
+            PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
+
             var wp8Path = Path.Combine(GetBuildPath(), "PlayFabWP8");
             MkDir(GetBuildPath());
             MkDir(wp8Path);
-#if UNITY_5
-            BuildPipeline.BuildPlayer(TestScenes, wp8Path, BuildTarget.WSAPlayer, BuildOptions.None);
-#else
-            BuildPipeline.BuildPlayer(TestScenes, wp8Path, BuildTarget.WP8Player, BuildOptions.None);
-#endif
+            BuildPipeline.BuildPlayer(TestScenes, wp8Path, wsaBuildTarget, BuildOptions.None);
             if (Directory.GetFiles(wp8Path).Length == 0)
                 throw new Exception("Target directory is empty: " + wp8Path + ", " + string.Join(",", Directory.GetFiles(wp8Path)));
         }
