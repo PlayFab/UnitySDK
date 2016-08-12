@@ -244,7 +244,8 @@ namespace PlayFab
         ExpiredContinuationToken = 1241,
         InvalidSegment = 1242,
         InvalidSessionId = 1243,
-        SessionLogNotFound = 1244
+        SessionLogNotFound = 1244,
+        InvalidSearchTerm = 1245
     }
 
     public delegate void ErrorCallback(PlayFabError error);
