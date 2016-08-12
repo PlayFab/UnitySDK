@@ -264,6 +264,12 @@ namespace PlayFab.PlayStreamModels
         public PlayerProfile TriggeringPlayer;
         public string TitleId;
     }
+    public class PlayerUnlinkedAccountEventData : PlayStreamEventBase
+    {
+        public LoginIdentityProvider? Origination;
+        public string OriginationUserId;
+        public string TitleId;
+    }
     public class PlayerVCPurchaseEventData : PlayStreamEventBase
     {
         public string PurchaseId;

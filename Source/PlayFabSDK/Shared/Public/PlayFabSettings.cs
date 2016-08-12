@@ -48,6 +48,25 @@ namespace PlayFab
         }
 #endif
 
+        public static string DeviceUniqueIdentifier
+        {
+            get
+            {
+                var deviceId = "";
+#if UNITY_ANDROID && !UNITY_EDITOR
+                AndroidJavaClass up = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
+                AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject> ("currentActivity");
+                AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject> ("getContentResolver");
+                AndroidJavaClass secure = new AndroidJavaClass ("android.provider.Settings$Secure");
+                deviceId = secure.CallStatic<string> ("getString", contentResolver, "android_id");
+#else
+                deviceId = SystemInfo.deviceUniqueIdentifier;
+#endif
+                return deviceId;
+            }
+        }
+
+
         public static string ProductionEnvironmentUrl
         {
             get { return !string.IsNullOrEmpty(PlayFabShared.ProductionEnvironmentUrl) ? PlayFabShared.ProductionEnvironmentUrl : ".playfabapi.com"; }

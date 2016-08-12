@@ -120,7 +120,7 @@ namespace PlayFab.Internal
                         stopwatch.Stop();
                         var timing = new PlayFabHttp.RequestTiming {
                             StartTimeUtc = startTime,
-                            ApiEndpoint = apiEndpoint,
+                            ApiEndpoint = reqContainer.apiEndpoint,
                             WorkerRequestMs = (int)stopwatch.ElapsedMilliseconds,
                             MainThreadRequestMs = (int)stopwatch.ElapsedMilliseconds
                         };

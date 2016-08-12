@@ -97,7 +97,7 @@ namespace PlayFab
             DeviceName = SystemInfo.deviceName;
             DeviceType = SystemInfo.deviceType;
 
-            DeviceUniqueId = SystemInfo.deviceUniqueIdentifier;
+            DeviceUniqueId = PlayFabSettings.DeviceUniqueIdentifier;
             OperatingSystem = SystemInfo.operatingSystem;
 
             //GRAPHICS ABILITIES
