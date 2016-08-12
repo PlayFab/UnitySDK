@@ -1,13 +1,10 @@
 #if !DISABLE_PLAYFABCLIENT_API
-using UnityEngine;
 using PlayFab.ClientModels;
 using PlayFab.Internal;
 using PlayFab.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading;
 
 namespace PlayFab.UUnit
 {
@@ -294,7 +291,7 @@ namespace PlayFab.UUnit
         /// Parameter types tested: Dictionary<string, int>
         /// </summary>
         [UUnitTest]
-        public void UserStatisticsApi(UUnitTestContext testContext)
+        public void PlayerStatisticsApi(UUnitTestContext testContext)
         {
             if (!TITLE_CAN_UPDATE_SETTINGS)
             {
@@ -302,40 +299,42 @@ namespace PlayFab.UUnit
                 return;
             }
 
-            var getRequest = new GetUserStatisticsRequest();
-            PlayFabClientAPI.GetUserStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetUserStatisticsResult>(testContext, GetUserStatsCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            var getRequest = new GetPlayerStatisticsRequest();
+            PlayFabClientAPI.GetPlayerStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetPlayerStatisticsResult>(testContext, GetUserStatsCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void GetUserStatsCallback1(GetUserStatisticsResult result)
+        private void GetUserStatsCallback1(GetPlayerStatisticsResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
-
-            if (!result.UserStatistics.TryGetValue(TEST_DATA_KEY, out _testInteger))
-                _testInteger = 0; // Default if the data isn't present
+            _testInteger = 0;
+            foreach (var eachStat in result.Statistics)
+                if (eachStat.StatisticName == TEST_STAT_NAME)
+                    _testInteger = eachStat.Value;
             _testInteger = (_testInteger + 1) % 100; // This test is about the Expected value changing - but not testing more complicated issues like bounds
 
-            var updateRequest = new UpdateUserStatisticsRequest
+            var updateRequest = new UpdatePlayerStatisticsRequest
             {
-                UserStatistics = new Dictionary<string, int>
+                Statistics = new List<StatisticUpdate>
                 {
-                    { TEST_DATA_KEY, _testInteger }
+                    new StatisticUpdate { StatisticName = TEST_STAT_NAME, Value = _testInteger }
                 }
             };
-            PlayFabClientAPI.UpdateUserStatistics(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<UpdateUserStatisticsResult>(testContext, UpdateUserStatsCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            PlayFabClientAPI.UpdatePlayerStatistics(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<UpdatePlayerStatisticsResult>(testContext, UpdateUserStatsCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void UpdateUserStatsCallback(UpdateUserStatisticsResult result)
+        private void UpdateUserStatsCallback(UpdatePlayerStatisticsResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            var getRequest = new GetUserStatisticsRequest();
-            PlayFabClientAPI.GetUserStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetUserStatisticsResult>(testContext, GetUserStatsCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            var getRequest = new GetPlayerStatisticsRequest();
+            PlayFabClientAPI.GetPlayerStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetPlayerStatisticsResult>(testContext, GetUserStatsCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void GetUserStatsCallback2(GetUserStatisticsResult result)
+        private void GetUserStatsCallback2(GetPlayerStatisticsResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            int actualValue;
-            if (!result.UserStatistics.TryGetValue(TEST_DATA_KEY, out actualValue))
-                actualValue = 0; // Default if the data isn't present
+            var actualValue = int.MinValue; // a value that shouldn't actually occur in this test
+            foreach (var eachStat in result.Statistics)
+                if (eachStat.StatisticName == TEST_STAT_NAME)
+                    actualValue = eachStat.Value;
             testContext.IntEquals(_testInteger, actualValue);
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
