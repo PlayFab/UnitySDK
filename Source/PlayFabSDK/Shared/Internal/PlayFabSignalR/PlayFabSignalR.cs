@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using SignalR.Client._20.Hubs;
-using UnityEditor;
 
 namespace PlayFab.Internal
 {

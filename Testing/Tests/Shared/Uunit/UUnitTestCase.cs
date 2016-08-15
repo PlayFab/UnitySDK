@@ -13,7 +13,7 @@ namespace PlayFab.UUnit
     public class UUnitTestCase
     {
         /// <summary>
-        /// During testing, this is the first function that will be called.
+        /// During testing, this is the first function that will be called for each UUnitTestCase.
         /// This is run exactly once for this type.
         /// It is not considered part of any test. A failure or exception in this method will halt the test framework.
         /// </summary>
@@ -32,7 +32,7 @@ namespace PlayFab.UUnit
 
         /// <summary>
         /// During testing, this will be called every tick that a test is asynchronous.
-        /// This is run once for each test.
+        /// This is run every unity tick until testContext.EndTest() is called, or until the test times out.
         /// This is considered part of the active test. A failure or exception in this method will be considered a failure for the active test.
         /// </summary>
         public virtual void Tick(UUnitTestContext testContext)
@@ -41,7 +41,7 @@ namespace PlayFab.UUnit
         }
 
         /// <summary>
-        /// During testing, this will be called once after every test function with the [UUnitTest] attribute
+        /// During testing, this will be called once after every test function with the [UUnitTest] attribute.
         /// This is run once for each test.
         /// This is considered part of the active test. A failure or exception in this method will be considered a failure for the active test.
         /// </summary>
@@ -50,7 +50,7 @@ namespace PlayFab.UUnit
         }
 
         /// <summary>
-        /// During testing, this is the last function that will be called.
+        /// During testing, this is the last function that will be called for each UUnitTestCase.
         /// This is run exactly once for this type.
         /// It is not considered part of any test. A failure or exception in this method will halt the test framework.
         /// </summary>
