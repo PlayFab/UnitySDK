@@ -15,19 +15,19 @@ namespace PlayFab
     public enum PlayFabLogLevel
     {
         None = 0,
-        Debug = 1,
-        Info = 2,
-        Warning = 4,
-        Error = 8,
+        Debug = 1 << 0,
+        Info = 1 << 1,
+        Warning = 1 << 2,
+        Error = 1 << 3,
         All = Debug | Info | Warning | Error,
     }
 
     public static partial class PlayFabSettings
     {
         public static PlayFabSharedSettings PlayFabShared = GetSharedSettingsObject();
-        public const string SdkVersion = "2.4.160801";
-        public const string BuildIdentifier = "jbuild_unitysdk_0";
-        public const string VersionString = "UnitySDK-2.4.160801";
+        public const string SdkVersion = "2.5.160815";
+        public const string BuildIdentifier = "jbuild_unitysdk_1";
+        public const string VersionString = "UnitySDK-2.5.160815";
 
         public static PlayFabSharedSettings GetSharedSettingsObject()
         {
@@ -47,6 +47,25 @@ namespace PlayFab
             internal get { return PlayFabShared.DeveloperSecretKey; }
         }
 #endif
+
+        public static string DeviceUniqueIdentifier
+        {
+            get
+            {
+                var deviceId = "";
+#if UNITY_ANDROID && !UNITY_EDITOR
+                AndroidJavaClass up = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
+                AndroidJavaObject currentActivity = up.GetStatic<AndroidJavaObject> ("currentActivity");
+                AndroidJavaObject contentResolver = currentActivity.Call<AndroidJavaObject> ("getContentResolver");
+                AndroidJavaClass secure = new AndroidJavaClass ("android.provider.Settings$Secure");
+                deviceId = secure.CallStatic<string> ("getString", contentResolver, "android_id");
+#else
+                deviceId = SystemInfo.deviceUniqueIdentifier;
+#endif
+                return deviceId;
+            }
+        }
+
 
         public static string ProductionEnvironmentUrl
         {

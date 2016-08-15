@@ -1,7 +1,7 @@
 using UnityEngine;
 using PlayFab;
 
-#if UNITY_5
+#if UNITY_5 && !UNITY_5_0
 [CreateAssetMenu(fileName = "PlayFabSharedSettings", menuName = "PlayFab/CreateSharedSettings", order = 1)]
 #endif
 public class PlayFabSharedSettings : ScriptableObject
@@ -10,7 +10,7 @@ public class PlayFabSharedSettings : ScriptableObject
 #if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API
     public string DeveloperSecretKey;
 #endif
-#if ENABLE_PLAYSTREAM_REALTIME
+#if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
     public string ProductionEnvironmentPlayStreamUrl = "";
 #endif
     public string ProductionEnvironmentUrl = "";

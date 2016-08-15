@@ -294,11 +294,15 @@ namespace PlayFab.UUnit
         private void TickTest(UUnitTestContext testContext)
         {
             DateTime now = DateTime.UtcNow;
-            if (testContext.ActiveState != UUnitActiveState.READY // Not finished
-                && (now - testContext.StartTime) < TestTimeout) // Not timed out
+            bool timedOut = (now - testContext.StartTime) > TestTimeout;
+            if (testContext.ActiveState != UUnitActiveState.READY && !timedOut) // Not finished & not timed out
             {
                 testContext.TestInstance.Tick(testContext);
                 return;
+            }
+            else if (testContext.ActiveState == UUnitActiveState.ACTIVE && timedOut)
+            {
+                testContext.EndTest(UUnitFinishState.TIMEDOUT, "Test duration exceeded maxumum");
             }
 
             testContext.EndTime = now;

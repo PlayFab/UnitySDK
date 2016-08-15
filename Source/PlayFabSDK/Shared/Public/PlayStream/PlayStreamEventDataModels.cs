@@ -247,6 +247,14 @@ namespace PlayFab.PlayStreamModels
         public int? StatisticPreviousValue;
         public string TitleId;
     }
+    public class PlayerStatisticDeletedEventData : PlayStreamEventBase
+    {
+        public string StatisticName;
+        public uint StatisticId;
+        public uint Version;
+        public int? StatisticPreviousValue;
+        public string TitleId;
+    }
     public class PlayerTriggeredActionExecutedCloudScriptEventData : PlayStreamEventBase
     {
         public string FunctionName;
@@ -254,6 +262,12 @@ namespace PlayFab.PlayStreamModels
         public object TriggeringEventData;
         public string TriggeringEventName;
         public PlayerProfile TriggeringPlayer;
+        public string TitleId;
+    }
+    public class PlayerUnlinkedAccountEventData : PlayStreamEventBase
+    {
+        public LoginIdentityProvider? Origination;
+        public string OriginationUserId;
         public string TitleId;
     }
     public class PlayerVCPurchaseEventData : PlayStreamEventBase
@@ -797,6 +811,10 @@ namespace PlayFab.PlayStreamModels
         /// Dictionary of player's statistics using only the latest version's value
         /// </summary>
         public Dictionary<string,int> Statistics { get; set;}
+        /// <summary>
+        /// Dictionary of player's total currency purchases. The key VTD is a sum of all player_realmoney_purchase events OrderTotals.
+        /// </summary>
+        public Dictionary<string,uint> ValuesToDate { get; set;}
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
