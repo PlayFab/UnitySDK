@@ -56,7 +56,11 @@ namespace PlayFab
         /// </summary>
         public static void Start(string filter = null)
         {
-            PlayFabHttp.InitializeSignalR("http://playstreamlive.playfab.com/signalr", "EventStreamsHub", OnConnectedCallback, OnReceivedCallback, OnReconnectedCallback, OnDisconnectedCallback, OnErrorCallback);
+            Action connetionCallback = () =>
+            {
+                OnConnectedCallback(filter);
+            };
+            PlayFabHttp.InitializeSignalR(PlayFabSettings.ProductionEnvironmentPlayStreamUrl, "EventStreamsHub", connetionCallback, OnReceivedCallback, OnReconnectedCallback, OnDisconnectedCallback, OnErrorCallback);
         }
 
         /// <summary>
@@ -69,12 +73,19 @@ namespace PlayFab
 
         #region Connection Callbacks
 
-        private static void OnConnectedCallback()
+        private static void OnConnectedCallback(string filter)
         {
             PlayFabHttp.SubscribeSignalR("notifyNewMessage", OnPlayStreamNotificationCallback);
             PlayFabHttp.SubscribeSignalR("notifySubscriptionError", OnSubscriptionErrorCallback);
             PlayFabHttp.SubscribeSignalR("notifySubscriptionSuccess", OnSubscriptionSuccessCallback);
-            PlayFabHttp.InvokeSignalR("SubscribeToQueue", null, PlayFabSettings.TitleId, PlayFabSettings.DeveloperSecretKey, "", false);
+            var queueRequest = new
+            {
+                TitleId = PlayFabSettings.TitleId,
+                TitleSecret = PlayFabSettings.DeveloperSecretKey,
+                BackFill = false,
+                EventFilter = filter
+            };
+            PlayFabHttp.InvokeSignalR("SubscribeToQueue", null, queueRequest);
         }
 
         private static void OnPlayStreamNotificationCallback(object[] data)

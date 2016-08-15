@@ -1,8 +1,10 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
-using PlayFab.ClientModels;
+using UnityEngine;
 using UnityEngine.UI;
+#if !DISABLE_PLAYFABCLIENT_API
+using PlayFab.ClientModels;
+#endif
 
 namespace PlayFab.UUnit
 {
@@ -53,11 +55,21 @@ namespace PlayFab.UUnit
                 else
                     Debug.LogWarning(summary);
 
-                if (postResultsToCloudscript)
-                    PostTestResultsToCloudScript(suite.GetInternalReport());
-                else
-                    OnCloudScriptSubmit(null);
+                OnSuiteFinish();
             }
+        }
+
+#if DISABLE_PLAYFABCLIENT_API
+        private void OnSuiteFinish()
+        {
+        }
+#else
+        private void OnSuiteFinish()
+        {
+            if (postResultsToCloudscript)
+                PostTestResultsToCloudScript(suite.GetInternalReport());
+            else
+                OnCloudScriptSubmit(null);
         }
 
         public void PostTestResultsToCloudScript(TestSuiteReport testReport)
@@ -96,5 +108,6 @@ namespace PlayFab.UUnit
             else if (!suite.AllTestsPassed())
                 throw new Exception("Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier);
         }
+#endif
     }
 }

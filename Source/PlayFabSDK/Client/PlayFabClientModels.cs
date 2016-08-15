@@ -1006,7 +1006,7 @@ namespace PlayFab.ClientModels
     public class GetCatalogItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Which catalog is being requested.
+        /// Which catalog is being requested. If null, uses the default catalog.
         /// </summary>
         public string CatalogVersion { get; set;}
     }
@@ -2172,7 +2172,7 @@ namespace PlayFab.ClientModels
     }
 
     /// <summary>
-    /// A unique instance of an item in a user's inventory. Note, To retrieve additional information for an item instance (such as Tags, Description, or Custom Data that are set on the root catalog item), a call to GetCatalogItems is required. The Item ID of the instance can then be matched to a catalog entry, which contains the additional information.
+    /// A unique instance of an item in a user's inventory. Note, to retrieve additional information for an item instance (such as Tags, Description, or Custom Data that are set on the root catalog item), a call to GetCatalogItems is required. The Item ID of the instance can then be matched to a catalog entry, which contains the additional information. Also note that Custom Data is only set here from a call to UpdateUserInventoryItemCustomData.
     /// </summary>
     [Serializable]
     public class ItemInstance

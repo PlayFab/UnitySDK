@@ -31,8 +31,10 @@ namespace PlayFab
         public string Company;
         public RuntimePlatform Platform;
         // UNITY_5 Graphics Abilities
-        public GraphicsDeviceType GraphicsType;
         public bool GraphicsMultiThreaded;
+#endif
+#if UNITY_5 && !UNITY_5_0
+		public GraphicsDeviceType GraphicsType;
 #endif
 
         // Application info
@@ -76,8 +78,10 @@ namespace PlayFab
             Company = Application.companyName;
             Platform = Application.platform;
             // UNITY_5 Graphics Abilities
-            GraphicsType = SystemInfo.graphicsDeviceType;
             GraphicsMultiThreaded = SystemInfo.graphicsMultiThreaded;
+#endif
+#if UNITY_5 && !UNITY_5_0
+			GraphicsType = SystemInfo.graphicsDeviceType;
 #endif
 
             // Application info
@@ -93,7 +97,7 @@ namespace PlayFab
             DeviceName = SystemInfo.deviceName;
             DeviceType = SystemInfo.deviceType;
 
-            DeviceUniqueId = SystemInfo.deviceUniqueIdentifier;
+            DeviceUniqueId = PlayFabSettings.DeviceUniqueIdentifier;
             OperatingSystem = SystemInfo.operatingSystem;
 
             //GRAPHICS ABILITIES

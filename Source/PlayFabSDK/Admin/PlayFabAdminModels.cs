@@ -601,7 +601,7 @@ namespace PlayFab.AdminModels
     public class GetCatalogItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Which catalog is being requested.
+        /// Which catalog is being requested. If null, uses the default catalog.
         /// </summary>
         public string CatalogVersion { get; set;}
     }
@@ -1283,7 +1283,7 @@ namespace PlayFab.AdminModels
     }
 
     /// <summary>
-    /// A unique instance of an item in a user's inventory. Note, To retrieve additional information for an item instance (such as Tags, Description, or Custom Data that are set on the root catalog item), a call to GetCatalogItems is required. The Item ID of the instance can then be matched to a catalog entry, which contains the additional information.
+    /// A unique instance of an item in a user's inventory. Note, to retrieve additional information for an item instance (such as Tags, Description, or Custom Data that are set on the root catalog item), a call to GetCatalogItems is required. The Item ID of the instance can then be matched to a catalog entry, which contains the additional information. Also note that Custom Data is only set here from a call to UpdateUserInventoryItemCustomData.
     /// </summary>
     [Serializable]
     public class ItemInstance
@@ -1602,6 +1602,10 @@ namespace PlayFab.AdminModels
         /// Dictionary of player's statistics using only the latest version's value
         /// </summary>
         public Dictionary<string,int> Statistics { get; set;}
+        /// <summary>
+        /// Dictionary of player's total currency purchases. The key VTD is a sum of all player_realmoney_purchase events OrderTotals.
+        /// </summary>
+        public Dictionary<string,uint> ValuesToDate { get; set;}
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
@@ -2050,7 +2054,7 @@ namespace PlayFab.AdminModels
     public class UpdateCatalogItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Which catalog is being updated
+        /// Which catalog is being updated. If null, uses the default catalog.
         /// </summary>
         public string CatalogVersion { get; set;}
         /// <summary>
@@ -2146,7 +2150,7 @@ namespace PlayFab.AdminModels
     public class UpdateStoreItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// catalog version of the store to update. Use default catalog version if null
+        /// catalog version of the store to update. If null, uses the default catalog.
         /// </summary>
         public string CatalogVersion { get; set;}
         /// <summary>
