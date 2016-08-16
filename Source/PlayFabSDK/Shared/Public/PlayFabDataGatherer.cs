@@ -34,7 +34,7 @@ namespace PlayFab
         public bool GraphicsMultiThreaded;
 #endif
 #if UNITY_5 && !UNITY_5_0
-		public GraphicsDeviceType GraphicsType;
+        public GraphicsDeviceType GraphicsType;
 #endif
 
         // Application info
@@ -81,7 +81,7 @@ namespace PlayFab
             GraphicsMultiThreaded = SystemInfo.graphicsMultiThreaded;
 #endif
 #if UNITY_5 && !UNITY_5_0
-			GraphicsType = SystemInfo.graphicsDeviceType;
+            GraphicsType = SystemInfo.graphicsDeviceType;
 #endif
 
             // Application info
