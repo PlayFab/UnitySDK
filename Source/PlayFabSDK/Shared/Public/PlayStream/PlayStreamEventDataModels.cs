@@ -323,6 +323,13 @@ namespace PlayFab.PlayStreamModels
         public string UserId;
         public string DeveloperId;
     }
+    public class TitleCatalogUpdatedEventData : PlayStreamEventBase
+    {
+        public string CatalogVersion;
+        public bool Deleted;
+        public string UserId;
+        public string DeveloperId;
+    }
     public class TitleClientRateLimitedEventData : PlayStreamEventBase
     {
         public string GraphUrl;
@@ -337,8 +344,8 @@ namespace PlayFab.PlayStreamModels
         public string LimitId;
         public string LimitDisplayName;
         public MetricUnit? Unit;
-        public decimal LimitValue;
-        public decimal Value;
+        public double LimitValue;
+        public double Value;
         public Dictionary<string,object> Details;
     }
     public class TitleHighErrorRateEventData : PlayStreamEventBase
@@ -364,10 +371,10 @@ namespace PlayFab.PlayStreamModels
         public string LimitDisplayName;
         public MetricUnit? Unit;
         public string TransactionId;
-        public decimal? PreviousPriceUSD;
-        public decimal? PreviousValue;
-        public decimal? PriceUSD;
-        public decimal? Value;
+        public double? PreviousPriceUSD;
+        public double? PreviousValue;
+        public double? PriceUSD;
+        public double? Value;
     }
     public class TitleModifiedGameBuildEventData : PlayStreamEventBase
     {
@@ -398,11 +405,11 @@ namespace PlayFab.PlayStreamModels
         public MetricUnit? Unit;
         public string TransactionId;
         public string PreviousLevelName;
-        public decimal? PreviousPriceUSD;
-        public decimal? PreviousValue;
+        public double? PreviousPriceUSD;
+        public double? PreviousValue;
         public string LevelName;
-        public decimal? PriceUSD;
-        public decimal? Value;
+        public double? PriceUSD;
+        public double? Value;
         public string UserId;
         public string DeveloperId;
     }
@@ -417,6 +424,14 @@ namespace PlayFab.PlayStreamModels
         public uint StatisticVersion;
         public StatisticResetIntervalOption? ScheduledResetInterval;
         public DateTime? ScheduledResetTime;
+    }
+    public class TitleStoreUpdatedEventData : PlayStreamEventBase
+    {
+        public string CatalogVersion;
+        public string StoreId;
+        public bool Deleted;
+        public string UserId;
+        public string DeveloperId;
     }
     #endregion title
 
@@ -791,6 +806,10 @@ namespace PlayFab.PlayStreamModels
         /// Player Display Name
         /// </summary>
         public string DisplayName { get; set;}
+        /// <summary>
+        /// Publisher this player belongs to
+        /// </summary>
+        public string PublisherId { get; set;}
         /// <summary>
         /// Player account origination
         /// </summary>

@@ -2147,6 +2147,10 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string DisplayName { get; set;}
         /// <summary>
+        /// Publisher this player belongs to
+        /// </summary>
+        public string PublisherId { get; set;}
+        /// <summary>
         /// Player account origination
         /// </summary>
         public LoginIdentityProvider? Origination { get; set;}
@@ -2574,7 +2578,7 @@ namespace PlayFab.ServerModels
     public class SteamPlayFabIdPair
     {
         /// <summary>
-        /// Deprecated: Please use SteamStringId
+        /// Deprecated: Please use SteamStringIDs
         /// </summary>
         public ulong SteamId { get; set;}
         /// <summary>
