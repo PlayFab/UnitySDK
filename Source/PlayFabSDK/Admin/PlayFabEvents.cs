@@ -57,6 +57,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<AddNewsResult> OnAdminAddNewsResultEvent;
         public event PlayFabRequestEvent<AddVirtualCurrencyTypesRequest> OnAdminAddVirtualCurrencyTypesRequestEvent;
         public event PlayFabResultEvent<BlankResult> OnAdminAddVirtualCurrencyTypesResultEvent;
+        public event PlayFabRequestEvent<DeleteStoreRequest> OnAdminDeleteStoreRequestEvent;
+        public event PlayFabResultEvent<DeleteStoreResult> OnAdminDeleteStoreResultEvent;
         public event PlayFabRequestEvent<GetCatalogItemsRequest> OnAdminGetCatalogItemsRequestEvent;
         public event PlayFabResultEvent<GetCatalogItemsResult> OnAdminGetCatalogItemsResultEvent;
         public event PlayFabRequestEvent<GetPublisherDataRequest> OnAdminGetPublisherDataRequestEvent;
