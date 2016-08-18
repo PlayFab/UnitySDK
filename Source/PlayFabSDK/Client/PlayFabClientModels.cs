@@ -1751,6 +1751,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated: Please use SteamStringIDs
         /// </summary>
+        [Obsolete("Use 'SteamStringIDs' instead", false)]
         public List<ulong> SteamIDs { get; set;}
         /// <summary>
         /// Array of unique Steam identifiers (Steam profile IDs) for which the title needs to get PlayFab identifiers.
@@ -2623,6 +2624,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated - Do not use
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string PublisherId { get; set;}
         /// <summary>
         /// Flags for which pieces of info to return for the user.
@@ -2799,6 +2801,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated - Do not use
         /// </summary>
+        [Obsolete("No longer available", false)]
         public bool? EnableQueue { get; set;}
     }
 
@@ -3168,6 +3171,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The Origination of a user is determined by the API call used to create the account. In the case of RegisterPlayFabUser, it will be Organic.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string Origination { get; set;}
     }
 
@@ -3359,6 +3363,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated - Do not use
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string PublisherId { get; set;}
     }
 
@@ -3553,8 +3558,9 @@ namespace PlayFab.ClientModels
     public class SteamPlayFabIdPair
     {
         /// <summary>
-        /// Deprecated: Please use SteamStringIDs
+        /// Deprecated: Please use SteamStringId
         /// </summary>
+        [Obsolete("Use 'SteamStringId' instead", false)]
         public ulong SteamId { get; set;}
         /// <summary>
         /// Unique Steam identifier for a user.

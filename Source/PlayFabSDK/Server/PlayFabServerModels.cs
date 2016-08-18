@@ -1327,6 +1327,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Deprecated: Please use SteamStringIDs
         /// </summary>
+        [Obsolete("Use 'SteamStringIDs' instead", false)]
         public List<ulong> SteamIDs { get; set;}
         /// <summary>
         /// Array of unique Steam identifiers (Steam profile IDs) for which the title needs to get PlayFab identifiers.
@@ -2578,8 +2579,9 @@ namespace PlayFab.ServerModels
     public class SteamPlayFabIdPair
     {
         /// <summary>
-        /// Deprecated: Please use SteamStringIDs
+        /// Deprecated: Please use SteamStringId
         /// </summary>
+        [Obsolete("Use 'SteamStringId' instead", false)]
         public ulong SteamId { get; set;}
         /// <summary>
         /// Unique Steam identifier for a user.
