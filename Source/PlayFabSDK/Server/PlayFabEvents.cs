@@ -83,6 +83,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EvaluateRandomResultTableResult> OnServerEvaluateRandomResultTableResultEvent;
         public event PlayFabRequestEvent<GetCharacterInventoryRequest> OnServerGetCharacterInventoryRequestEvent;
         public event PlayFabResultEvent<GetCharacterInventoryResult> OnServerGetCharacterInventoryResultEvent;
+        public event PlayFabRequestEvent<GetRandomResultTablesRequest> OnServerGetRandomResultTablesRequestEvent;
+        public event PlayFabResultEvent<GetRandomResultTablesResult> OnServerGetRandomResultTablesResultEvent;
         public event PlayFabRequestEvent<GetUserInventoryRequest> OnServerGetUserInventoryRequestEvent;
         public event PlayFabResultEvent<GetUserInventoryResult> OnServerGetUserInventoryResultEvent;
         public event PlayFabRequestEvent<GrantItemsToCharacterRequest> OnServerGrantItemsToCharacterRequestEvent;

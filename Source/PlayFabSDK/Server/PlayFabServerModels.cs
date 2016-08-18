@@ -1363,6 +1363,28 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class GetRandomResultTablesRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Specifies the catalog version that should be used to retrieve the Random Result Tables.  If unspecified, uses default/primary catalog.
+        /// </summary>
+        public string CatalogVersion { get; set;}
+        /// <summary>
+        /// The unique identifier of the Random Result Table to use.
+        /// </summary>
+        public List<string> TableIDs { get; set;}
+    }
+
+    [Serializable]
+    public class GetRandomResultTablesResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// array of random result tables currently available
+        /// </summary>
+        public Dictionary<string,RandomResultTableListing> Tables { get; set;}
+    }
+
+    [Serializable]
     public class GetSegmentResult : PlayFabResultCommon
     {
         /// <summary>
@@ -2267,6 +2289,23 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class RandomResultTableListing : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Catalog version this table is associated with
+        /// </summary>
+        public string CatalogVersion { get; set;}
+        /// <summary>
+        /// Unique name for this drop table
+        /// </summary>
+        public string TableId { get; set;}
+        /// <summary>
+        /// Child nodes that indicate what kind of drop table item this actually is.
+        /// </summary>
+        public List<ResultTableNode> Nodes { get; set;}
+    }
+
+    [Serializable]
     public class RedeemCouponRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2372,6 +2411,29 @@ namespace PlayFab.ServerModels
         /// The number of remaining reports which may be filed today by this reporting player.
         /// </summary>
         public int SubmissionsRemaining { get; set;}
+    }
+
+    [Serializable]
+    public class ResultTableNode : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Whether this entry in the table is an item or a link to another table
+        /// </summary>
+        public ResultTableNodeType ResultItemType { get; set;}
+        /// <summary>
+        /// Either an ItemId, or the TableId of another random result table
+        /// </summary>
+        public string ResultItem { get; set;}
+        /// <summary>
+        /// How likely this is to be rolled - larger numbers add more weight
+        /// </summary>
+        public int Weight { get; set;}
+    }
+
+    public enum ResultTableNodeType
+    {
+        ItemId,
+        TableId
     }
 
     [Serializable]

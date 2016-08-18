@@ -404,6 +404,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the configuration information for the specified random results tables for the title, including all ItemId values and weights
+        /// </summary>
+        public static void GetRandomResultTables(GetRandomResultTablesRequest request, Action<GetRandomResultTablesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetRandomResultTables", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Retrieves the specified user's current inventory of virtual goods
         /// </summary>
         public static void GetUserInventory(GetUserInventoryRequest request, Action<GetUserInventoryResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
