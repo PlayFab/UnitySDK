@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "779562779264",
+    "firebase_url": "https://playfabfirebasetesting.firebaseio.com",
+    "project_id": "playfabfirebasetesting",
+    "storage_bucket": "playfabfirebasetesting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779562779264:android:4103b027e0cd9d4a",
+        "android_client_info": {
+          "package_name": "com.playfab.unityplugin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779562779264-sfpqqshe8d31c1qcrr779ebmpr8j7qo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNmU7OYLsEVYW0PVrE2B15HVUU8sWCXqg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
