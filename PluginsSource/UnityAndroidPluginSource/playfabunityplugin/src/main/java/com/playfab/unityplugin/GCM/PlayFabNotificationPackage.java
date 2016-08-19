@@ -7,10 +7,20 @@ package com.playfab.unityplugin.GCM;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 /**
  * Custom class that maps to the strigified json message sent by push notifications
 */
 public class PlayFabNotificationPackage implements Parcelable {
+    public enum ScheduleTypes {
+        None,
+        ScheduledDate
+    }
+
+    public Date ScheduleDate;
+    public ScheduleTypes ScheduleType;
+    public String ScheduleInterval;
     public String Sound;                   // do not set this to use the default device sound; otherwise the sound you provide needs to exist in Android/res/raw/_____.mp3, .wav, .ogg
     public String Title;                // title of this message
     public String Icon;                 // to use the default app icon use app_icon, otherwise send the name of the custom image. Image must be in Android/res/drawable/_____.png, .jpg
@@ -20,7 +30,10 @@ public class PlayFabNotificationPackage implements Parcelable {
 
     public PlayFabNotificationPackage(){}
 
-    public PlayFabNotificationPackage(String sound, String title, String icon, String message, String customData){
+    public PlayFabNotificationPackage(Date scheduleDate, ScheduleTypes scheduleType, String scheduleInterval , String sound, String title, String icon, String message, String customData){
+        this.ScheduleDate  = scheduleDate;
+        this.ScheduleType = scheduleType;
+        this.ScheduleInterval = scheduleInterval;
         this.Sound = sound;
         this.Title = title;
         this.Icon = icon;

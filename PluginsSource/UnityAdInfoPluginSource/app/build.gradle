@@ -26,6 +26,7 @@ dependencies {
 //task to delete the old jar
 task deleteOldJar(type: Delete) {
     delete 'release/PlayFabAdInfo.jar'
+    delete 'release/PlayFabAdInfo.aar'
 }
 
 //task to export contents as jar
@@ -35,4 +36,10 @@ task exportJar(type: Copy) {
     include('classes.jar')
     ///Rename the jar
     rename('classes.jar', 'PlayFabAdInfo.jar')
+
+    from('build/outputs/aar')
+    into('release/')
+    include('playfabaddinfo-release.aar')
+    rename('playfabaddinfo-release.aar','PlayFabAdInfo.aar')
+
 }
