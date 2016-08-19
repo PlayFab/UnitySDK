@@ -1629,6 +1629,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public Dictionary<string,uint> ValuesToDate { get; set;}
         /// <summary>
+        /// List of player's tags for segmentation.
+        /// </summary>
+        public List<string> Tags { get; set;}
+        /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
         public Dictionary<string,int> VirtualCurrencyBalances { get; set;}

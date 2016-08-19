@@ -255,6 +255,18 @@ namespace PlayFab.PlayStreamModels
         public int? StatisticPreviousValue;
         public string TitleId;
     }
+    public class PlayerTagAddedEventData : PlayStreamEventBase
+    {
+        public string TagName;
+        public string Namespace;
+        public string TitleId;
+    }
+    public class PlayerTagRemovedEventData : PlayStreamEventBase
+    {
+        public string TagName;
+        public string Namespace;
+        public string TitleId;
+    }
     public class PlayerTriggeredActionExecutedCloudScriptEventData : PlayStreamEventBase
     {
         public string FunctionName;
@@ -834,6 +846,10 @@ namespace PlayFab.PlayStreamModels
         /// Dictionary of player's total currency purchases. The key VTD is a sum of all player_realmoney_purchase events OrderTotals.
         /// </summary>
         public Dictionary<string,uint> ValuesToDate { get; set;}
+        /// <summary>
+        /// List of player's tags for segmentation.
+        /// </summary>
+        public List<string> Tags { get; set;}
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
