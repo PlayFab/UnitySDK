@@ -5,12 +5,22 @@ namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
+        public event PlayFabRequestEvent<BanUsersRequest> OnAdminBanUsersRequestEvent;
+        public event PlayFabResultEvent<BanUsersResult> OnAdminBanUsersResultEvent;
         public event PlayFabRequestEvent<LookupUserAccountInfoRequest> OnAdminGetUserAccountInfoRequestEvent;
         public event PlayFabResultEvent<LookupUserAccountInfoResult> OnAdminGetUserAccountInfoResultEvent;
+        public event PlayFabRequestEvent<GetUserBansRequest> OnAdminGetUserBansRequestEvent;
+        public event PlayFabResultEvent<GetUserBansResult> OnAdminGetUserBansResultEvent;
         public event PlayFabRequestEvent<ResetUsersRequest> OnAdminResetUsersRequestEvent;
         public event PlayFabResultEvent<BlankResult> OnAdminResetUsersResultEvent;
+        public event PlayFabRequestEvent<RevokeAllBansForUserRequest> OnAdminRevokeAllBansForUserRequestEvent;
+        public event PlayFabResultEvent<RevokeAllBansForUserResult> OnAdminRevokeAllBansForUserResultEvent;
+        public event PlayFabRequestEvent<RevokeBansRequest> OnAdminRevokeBansRequestEvent;
+        public event PlayFabResultEvent<RevokeBansResult> OnAdminRevokeBansResultEvent;
         public event PlayFabRequestEvent<SendAccountRecoveryEmailRequest> OnAdminSendAccountRecoveryEmailRequestEvent;
         public event PlayFabResultEvent<SendAccountRecoveryEmailResult> OnAdminSendAccountRecoveryEmailResultEvent;
+        public event PlayFabRequestEvent<UpdateBansRequest> OnAdminUpdateBansRequestEvent;
+        public event PlayFabResultEvent<UpdateBansResult> OnAdminUpdateBansResultEvent;
         public event PlayFabRequestEvent<UpdateUserTitleDisplayNameRequest> OnAdminUpdateUserTitleDisplayNameRequestEvent;
         public event PlayFabResultEvent<UpdateUserTitleDisplayNameResult> OnAdminUpdateUserTitleDisplayNameResultEvent;
         public event PlayFabRequestEvent<CreatePlayerStatisticDefinitionRequest> OnAdminCreatePlayerStatisticDefinitionRequestEvent;

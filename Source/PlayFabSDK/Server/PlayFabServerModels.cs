@@ -132,6 +132,92 @@ namespace PlayFab.ServerModels
     }
 
     /// <summary>
+    /// Contains information for a ban.
+    /// </summary>
+    [Serializable]
+    public class BanInfo
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// The unique Ban Id associated with this ban.
+        /// </summary>
+        public string BanId { get; set;}
+        /// <summary>
+        /// The IP address on which the ban was applied. May affect multiple players.
+        /// </summary>
+        public string IPAddress { get; set;}
+        /// <summary>
+        /// The MAC address on which the ban was applied. May affect multiple players.
+        /// </summary>
+        public string MACAddress { get; set;}
+        /// <summary>
+        /// The time when this ban was applied.
+        /// </summary>
+        public DateTime? Created { get; set;}
+        /// <summary>
+        /// The time when this ban expires. Permanent bans do not have expiration date.
+        /// </summary>
+        public DateTime? Expires { get; set;}
+        /// <summary>
+        /// The reason why this ban was applied.
+        /// </summary>
+        public string Reason { get; set;}
+        /// <summary>
+        /// The active state of this ban. Expired bans may still have this value set to true but they will have no effect.
+        /// </summary>
+        public bool Active { get; set;}
+    }
+
+    /// <summary>
+    /// Represents a single ban request.
+    /// </summary>
+    [Serializable]
+    public class BanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// IP address to be banned. May affect multiple players.
+        /// </summary>
+        public string IPAddress { get; set;}
+        /// <summary>
+        /// MAC address to be banned. May affect multiple players.
+        /// </summary>
+        public string MACAddress { get; set;}
+        /// <summary>
+        /// The reason for this ban. Maximum 140 characters.
+        /// </summary>
+        public string Reason { get; set;}
+        /// <summary>
+        /// The duration in hours for the ban. Leave this blank for a permanent ban.
+        /// </summary>
+        public uint? DurationInHours { get; set;}
+    }
+
+    [Serializable]
+    public class BanUsersRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// List of ban requests to be applied. Maximum 100.
+        /// </summary>
+        public List<BanRequest> Bans { get; set;}
+    }
+
+    [Serializable]
+    public class BanUsersResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were applied
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
+    /// <summary>
     /// A purchasable item from the item catalog
     /// </summary>
     [Serializable]
@@ -1486,6 +1572,24 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class GetUserBansRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
+    [Serializable]
+    public class GetUserBansResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information about the bans
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
+    [Serializable]
     public class GetUserDataRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2441,6 +2545,42 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class RevokeAllBansForUserRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
+    [Serializable]
+    public class RevokeAllBansForUserResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were revoked.
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
+    [Serializable]
+    public class RevokeBansRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Ids of the bans to be revoked. Maximum 100.
+        /// </summary>
+        public List<string> BanIds { get; set;}
+    }
+
+    [Serializable]
+    public class RevokeBansResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were revoked
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
+    [Serializable]
     public class RevokeInventoryItemRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2792,6 +2932,60 @@ namespace PlayFab.ServerModels
         /// Virtual currency granted to the player as a result of unlocking the container.
         /// </summary>
         public Dictionary<string,uint> VirtualCurrency { get; set;}
+    }
+
+    /// <summary>
+    /// Represents a single update ban request.
+    /// </summary>
+    [Serializable]
+    public class UpdateBanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The id of the ban to be updated.
+        /// </summary>
+        public string BanId { get; set;}
+        /// <summary>
+        /// The updated reason for the ban to be updated. Maximum 140 characters. Null for no change.
+        /// </summary>
+        public string Reason { get; set;}
+        /// <summary>
+        /// The updated expiration date for the ban. Null for no change.
+        /// </summary>
+        public DateTime? Expires { get; set;}
+        /// <summary>
+        /// The updated IP address for the ban. Null for no change.
+        /// </summary>
+        public string IPAddress { get; set;}
+        /// <summary>
+        /// The updated MAC address for the ban. Null for no change.
+        /// </summary>
+        public string MACAddress { get; set;}
+        /// <summary>
+        /// Whether to make this ban permanent. Set to true to make this ban permanent. This will not modify Active state.
+        /// </summary>
+        public bool? Permanent { get; set;}
+        /// <summary>
+        /// The updated active state for the ban. Null for no change.
+        /// </summary>
+        public bool? Active { get; set;}
+    }
+
+    [Serializable]
+    public class UpdateBansRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// List of bans to be updated. Maximum 100.
+        /// </summary>
+        public List<UpdateBanRequest> Bans { get; set;}
+    }
+
+    [Serializable]
+    public class UpdateBansResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were updated
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
     }
 
     [Serializable]
