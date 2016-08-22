@@ -300,9 +300,9 @@ namespace PlayFab.UUnit
             }
 
             var getRequest = new GetPlayerStatisticsRequest();
-            PlayFabClientAPI.GetPlayerStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetPlayerStatisticsResult>(testContext, GetUserStatsCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            PlayFabClientAPI.GetPlayerStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetPlayerStatisticsResult>(testContext, GetPlayerStatsCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void GetUserStatsCallback1(GetPlayerStatisticsResult result)
+        private void GetPlayerStatsCallback1(GetPlayerStatisticsResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
             _testInteger = 0;
@@ -318,16 +318,16 @@ namespace PlayFab.UUnit
                     new StatisticUpdate { StatisticName = TEST_STAT_NAME, Value = _testInteger }
                 }
             };
-            PlayFabClientAPI.UpdatePlayerStatistics(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<UpdatePlayerStatisticsResult>(testContext, UpdateUserStatsCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            PlayFabClientAPI.UpdatePlayerStatistics(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<UpdatePlayerStatisticsResult>(testContext, UpdatePlayerStatsCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void UpdateUserStatsCallback(UpdatePlayerStatisticsResult result)
+        private void UpdatePlayerStatsCallback(UpdatePlayerStatisticsResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
             var getRequest = new GetPlayerStatisticsRequest();
-            PlayFabClientAPI.GetPlayerStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetPlayerStatisticsResult>(testContext, GetUserStatsCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            PlayFabClientAPI.GetPlayerStatistics(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetPlayerStatisticsResult>(testContext, GetPlayerStatsCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void GetUserStatsCallback2(GetPlayerStatisticsResult result)
+        private void GetPlayerStatsCallback2(GetPlayerStatisticsResult result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 

@@ -7,14 +7,24 @@ namespace PlayFab.Events
     {
         public event PlayFabRequestEvent<AuthenticateSessionTicketRequest> OnServerAuthenticateSessionTicketRequestEvent;
         public event PlayFabResultEvent<AuthenticateSessionTicketResult> OnServerAuthenticateSessionTicketResultEvent;
+        public event PlayFabRequestEvent<BanUsersRequest> OnServerBanUsersRequestEvent;
+        public event PlayFabResultEvent<BanUsersResult> OnServerBanUsersResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromFacebookIDsRequest> OnServerGetPlayFabIDsFromFacebookIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromFacebookIDsResult> OnServerGetPlayFabIDsFromFacebookIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromSteamIDsRequest> OnServerGetPlayFabIDsFromSteamIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromSteamIDsResult> OnServerGetPlayFabIDsFromSteamIDsResultEvent;
         public event PlayFabRequestEvent<GetUserAccountInfoRequest> OnServerGetUserAccountInfoRequestEvent;
         public event PlayFabResultEvent<GetUserAccountInfoResult> OnServerGetUserAccountInfoResultEvent;
+        public event PlayFabRequestEvent<GetUserBansRequest> OnServerGetUserBansRequestEvent;
+        public event PlayFabResultEvent<GetUserBansResult> OnServerGetUserBansResultEvent;
+        public event PlayFabRequestEvent<RevokeAllBansForUserRequest> OnServerRevokeAllBansForUserRequestEvent;
+        public event PlayFabResultEvent<RevokeAllBansForUserResult> OnServerRevokeAllBansForUserResultEvent;
+        public event PlayFabRequestEvent<RevokeBansRequest> OnServerRevokeBansRequestEvent;
+        public event PlayFabResultEvent<RevokeBansResult> OnServerRevokeBansResultEvent;
         public event PlayFabRequestEvent<SendPushNotificationRequest> OnServerSendPushNotificationRequestEvent;
         public event PlayFabResultEvent<SendPushNotificationResult> OnServerSendPushNotificationResultEvent;
+        public event PlayFabRequestEvent<UpdateBansRequest> OnServerUpdateBansRequestEvent;
+        public event PlayFabResultEvent<UpdateBansResult> OnServerUpdateBansResultEvent;
         public event PlayFabRequestEvent<DeleteUsersRequest> OnServerDeleteUsersRequestEvent;
         public event PlayFabResultEvent<DeleteUsersResult> OnServerDeleteUsersResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardRequest> OnServerGetLeaderboardRequestEvent;
@@ -83,6 +93,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EvaluateRandomResultTableResult> OnServerEvaluateRandomResultTableResultEvent;
         public event PlayFabRequestEvent<GetCharacterInventoryRequest> OnServerGetCharacterInventoryRequestEvent;
         public event PlayFabResultEvent<GetCharacterInventoryResult> OnServerGetCharacterInventoryResultEvent;
+        public event PlayFabRequestEvent<GetRandomResultTablesRequest> OnServerGetRandomResultTablesRequestEvent;
+        public event PlayFabResultEvent<GetRandomResultTablesResult> OnServerGetRandomResultTablesResultEvent;
         public event PlayFabRequestEvent<GetUserInventoryRequest> OnServerGetUserInventoryRequestEvent;
         public event PlayFabResultEvent<GetUserInventoryResult> OnServerGetUserInventoryResultEvent;
         public event PlayFabRequestEvent<GrantItemsToCharacterRequest> OnServerGrantItemsToCharacterRequestEvent;
