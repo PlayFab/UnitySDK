@@ -275,6 +275,7 @@ namespace PlayFab
         /// <summary>
         /// NOTE: This call will be deprecated soon. For fetching the data for a given user  use GetPlayerCombinedInfo. For looking up users from the client api, we are in the process of adding a new api call. Once that call is ready, this one will be deprecated.  Retrieves all requested data for a user in one unified request. By default, this API returns all  data for the locally signed-in user. The input parameters may be used to limit the data retrieved to any subset of the available data, as well as retrieve the available data for a different user. Note that certain data, including inventory, virtual currency balances, and personally identifying information, may only be retrieved for the locally signed-in user. In the example below, a request is made for the account details, virtual currency balances, and specified user data for the locally signed-in user.
         /// </summary>
+        [Obsolete("Use 'GetPlayerCombinedInfo' instead", false)]
         public static void GetUserCombinedInfo(GetUserCombinedInfoRequest request, Action<GetUserCombinedInfoResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
@@ -806,7 +807,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the Promotions->Coupons tab in the PlayFab Game Manager. See this post for more information on coupons:  https://playfab.com/blog/using-stores-and-coupons-game-manager/
+        /// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the Economy->Catalogs tab in the PlayFab Game Manager.
         /// </summary>
         public static void RedeemCoupon(RedeemCouponRequest request, Action<RedeemCouponResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {

@@ -89,26 +89,26 @@ namespace PlayFab.Json
     [Obsolete("Use PlayFab.SimpleJson")]
     public static class JsonConvert
     {
-        [Obsolete("Use PlayFab.JsonWrapper.SerializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.SerializeObject()")]
         public static string SerializeObject(object obj)
         {
             return JsonWrapper.SerializeObject(obj, PlayFabUtil.ApiSerializerStrategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.SerializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.SerializeObject()")]
         public static string SerializeObject(object obj, IJsonSerializerStrategy strategy)
         {
             return JsonWrapper.SerializeObject(obj, strategy);
         }
 
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject<t>()")]
         public static T DeserializeObject<T>(string json)
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject()")]
         public static object DeserializeObject(string json)
         {
             return JsonWrapper.DeserializeObject(json);
@@ -117,25 +117,25 @@ namespace PlayFab.Json
 
     public static class SimpleJson
     {
-        [Obsolete("Use PlayFab.JsonWrapper.SerializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.SerializeObject()")]
         public static string SerializeObject(object obj)
         {
             return JsonWrapper.SerializeObject(obj, PlayFabUtil.ApiSerializerStrategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject<t>()")]
         public static T DeserializeObject<T>(string json)
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject<t>()")]
         public static T DeserializeObject<T>(string json, IJsonSerializerStrategy strategy)
         {
             return JsonWrapper.DeserializeObject<T>(json, strategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject()")]
         public static object DeserializeObject(string json)
         {
             return JsonWrapper.DeserializeObject(json);
@@ -147,32 +147,32 @@ namespace PlayFab
 {
     public static class SimpleJson
     {
-        [Obsolete("Use PlayFab.JsonWrapper.SerializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.SerializeObject()")]
         public static string SerializeObject(object obj)
         {
             return JsonWrapper.SerializeObject(obj, PlayFabUtil.ApiSerializerStrategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.SerializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.SerializeObject()")]
         public static string SerializeObject(object obj, IJsonSerializerStrategy strategy)
         {
             return JsonWrapper.SerializeObject(obj, strategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject<t>()")]
         public static T DeserializeObject<T>(string json)
         {
             return JsonWrapper.DeserializeObject<T>(json, PlayFabUtil.ApiSerializerStrategy);
         }
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject<t>()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject<t>()")]
         public static T DeserializeObject<T>(string json, IJsonSerializerStrategy strategy)
         {
             return JsonWrapper.DeserializeObject<T>(json, strategy);
         }
 
 
-        [Obsolete("Use PlayFab.JsonWrapper.DeserializeObject()")]
+        [Obsolete("Use PlayFab.Json.JsonWrapper.DeserializeObject()")]
         public static object DeserializeObject(string json)
         {
             return JsonWrapper.DeserializeObject(json);

@@ -152,6 +152,92 @@ namespace PlayFab.AdminModels
         public List<VirtualCurrencyData> VirtualCurrencies { get; set;}
     }
 
+    /// <summary>
+    /// Contains information for a ban.
+    /// </summary>
+    [Serializable]
+    public class BanInfo
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// The unique Ban Id associated with this ban.
+        /// </summary>
+        public string BanId { get; set;}
+        /// <summary>
+        /// The IP address on which the ban was applied. May affect multiple players.
+        /// </summary>
+        public string IPAddress { get; set;}
+        /// <summary>
+        /// The MAC address on which the ban was applied. May affect multiple players.
+        /// </summary>
+        public string MACAddress { get; set;}
+        /// <summary>
+        /// The time when this ban was applied.
+        /// </summary>
+        public DateTime? Created { get; set;}
+        /// <summary>
+        /// The time when this ban expires. Permanent bans do not have expiration date.
+        /// </summary>
+        public DateTime? Expires { get; set;}
+        /// <summary>
+        /// The reason why this ban was applied.
+        /// </summary>
+        public string Reason { get; set;}
+        /// <summary>
+        /// The active state of this ban. Expired bans may still have this value set to true but they will have no effect.
+        /// </summary>
+        public bool Active { get; set;}
+    }
+
+    /// <summary>
+    /// Represents a single ban request.
+    /// </summary>
+    [Serializable]
+    public class BanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// IP address to be banned. May affect multiple players.
+        /// </summary>
+        public string IPAddress { get; set;}
+        /// <summary>
+        /// MAC address to be banned. May affect multiple players.
+        /// </summary>
+        public string MACAddress { get; set;}
+        /// <summary>
+        /// The reason for this ban. Maximum 140 characters.
+        /// </summary>
+        public string Reason { get; set;}
+        /// <summary>
+        /// The duration in hours for the ban. Leave this blank for a permanent ban.
+        /// </summary>
+        public uint? DurationInHours { get; set;}
+    }
+
+    [Serializable]
+    public class BanUsersRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// List of ban requests to be applied. Maximum 100.
+        /// </summary>
+        public List<BanRequest> Bans { get; set;}
+    }
+
+    [Serializable]
+    public class BanUsersResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were applied
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
     [Serializable]
     public class BlankResult : PlayFabResultCommon
     {
@@ -533,6 +619,24 @@ namespace PlayFab.AdminModels
         /// Key of the content item to be deleted
         /// </summary>
         public string Key { get; set;}
+    }
+
+    [Serializable]
+    public class DeleteStoreRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// catalog version of the store to delete. If null, uses the default catalog.
+        /// </summary>
+        public string CatalogVersion { get; set;}
+        /// <summary>
+        /// unqiue identifier for the store which is to be deleted
+        /// </summary>
+        public string StoreId { get; set;}
+    }
+
+    [Serializable]
+    public class DeleteStoreResult : PlayFabResultCommon
+    {
     }
 
     [Serializable]
@@ -1070,6 +1174,24 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class GetUserBansRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
+    [Serializable]
+    public class GetUserBansResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information about the bans
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
+    [Serializable]
     public class GetUserDataRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1583,6 +1705,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string DisplayName { get; set;}
         /// <summary>
+        /// Publisher this player belongs to
+        /// </summary>
+        public string PublisherId { get; set;}
+        /// <summary>
         /// Player account origination
         /// </summary>
         public LoginIdentityProvider? Origination { get; set;}
@@ -1606,6 +1732,10 @@ namespace PlayFab.AdminModels
         /// Dictionary of player's total currency purchases. The key VTD is a sum of all player_realmoney_purchase events OrderTotals.
         /// </summary>
         public Dictionary<string,uint> ValuesToDate { get; set;}
+        /// <summary>
+        /// List of player's tags for segmentation.
+        /// </summary>
+        public List<string> Tags { get; set;}
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
@@ -1855,6 +1985,42 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class RevokeAllBansForUserRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
+    [Serializable]
+    public class RevokeAllBansForUserResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were revoked.
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
+    [Serializable]
+    public class RevokeBansRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Ids of the bans to be revoked. Maximum 100.
+        /// </summary>
+        public List<string> BanIds { get; set;}
+    }
+
+    [Serializable]
+    public class RevokeBansResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were revoked
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
+    [Serializable]
     public class RevokeInventoryItemRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2050,6 +2216,60 @@ namespace PlayFab.AdminModels
         RevokedSteam
     }
 
+    /// <summary>
+    /// Represents a single update ban request.
+    /// </summary>
+    [Serializable]
+    public class UpdateBanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The id of the ban to be updated.
+        /// </summary>
+        public string BanId { get; set;}
+        /// <summary>
+        /// The updated reason for the ban to be updated. Maximum 140 characters. Null for no change.
+        /// </summary>
+        public string Reason { get; set;}
+        /// <summary>
+        /// The updated expiration date for the ban. Null for no change.
+        /// </summary>
+        public DateTime? Expires { get; set;}
+        /// <summary>
+        /// The updated IP address for the ban. Null for no change.
+        /// </summary>
+        public string IPAddress { get; set;}
+        /// <summary>
+        /// The updated MAC address for the ban. Null for no change.
+        /// </summary>
+        public string MACAddress { get; set;}
+        /// <summary>
+        /// Whether to make this ban permanent. Set to true to make this ban permanent. This will not modify Active state.
+        /// </summary>
+        public bool? Permanent { get; set;}
+        /// <summary>
+        /// The updated active state for the ban. Null for no change.
+        /// </summary>
+        public bool? Active { get; set;}
+    }
+
+    [Serializable]
+    public class UpdateBansRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// List of bans to be updated. Maximum 100.
+        /// </summary>
+        public List<UpdateBanRequest> Bans { get; set;}
+    }
+
+    [Serializable]
+    public class UpdateBansResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the bans that were updated
+        /// </summary>
+        public List<BanInfo> BanData { get; set;}
+    }
+
     [Serializable]
     public class UpdateCatalogItemsRequest : PlayFabRequestCommon
     {
@@ -2057,6 +2277,10 @@ namespace PlayFab.AdminModels
         /// Which catalog is being updated. If null, uses the default catalog.
         /// </summary>
         public string CatalogVersion { get; set;}
+        /// <summary>
+        /// Should this catalog be set as the default catalog. Defaults to true. If there is currently no default catalog, this will always set it.
+        /// </summary>
+        public bool? SetAsDefaultCatalog { get; set;}
         /// <summary>
         /// Array of catalog items to be submitted. Note that while CatalogItem has a parameter for CatalogVersion, it is not required and ignored in this call.
         /// </summary>
@@ -2072,8 +2296,9 @@ namespace PlayFab.AdminModels
     public class UpdateCloudScriptRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Deprecated - unused
+        /// Deprecated - Do not use
         /// </summary>
+        [Obsolete("No longer available", false)]
         public int? Version { get; set;}
         /// <summary>
         /// List of Cloud Script files to upload to create the new revision. Must have at least one file.
