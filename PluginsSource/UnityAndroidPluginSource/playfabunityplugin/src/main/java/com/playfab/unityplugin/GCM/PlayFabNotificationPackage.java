@@ -6,7 +6,9 @@ package com.playfab.unityplugin.GCM;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -19,8 +21,7 @@ public class PlayFabNotificationPackage implements Parcelable {
     }
 
     public Date ScheduleDate;
-    public ScheduleTypes ScheduleType;
-    public String ScheduleInterval;
+    public ScheduleTypes ScheduleType = ScheduleTypes.None;
     public String Sound;                   // do not set this to use the default device sound; otherwise the sound you provide needs to exist in Android/res/raw/_____.mp3, .wav, .ogg
     public String Title;                // title of this message
     public String Icon;                 // to use the default app icon use app_icon, otherwise send the name of the custom image. Image must be in Android/res/drawable/_____.png, .jpg
@@ -28,14 +29,13 @@ public class PlayFabNotificationPackage implements Parcelable {
     public String CustomData;           // arbitrary key value pairs for game specific usage
     public String Id;
     public boolean Delivered;
-
+    private Date DeliveryDate;
 
     public PlayFabNotificationPackage(){}
 
     public PlayFabNotificationPackage(String id, Date scheduleDate, ScheduleTypes scheduleType, String scheduleInterval , String sound, String title, String icon, String message, String customData){
         this.ScheduleDate  = scheduleDate;
         this.ScheduleType = scheduleType;
-        this.ScheduleInterval = scheduleInterval;
         this.Sound = sound;
         this.Title = title;
         this.Icon = icon;
@@ -74,6 +74,21 @@ public class PlayFabNotificationPackage implements Parcelable {
 
     public void SetDelivered(){
         this.Delivered = true;
+    }
+
+    public void SetDeliveryDate(Date date){
+        this.DeliveryDate = date;
+    }
+
+    public void SetScheduleDate(String date){
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss");
+        try {
+            Date parsedDate = sdf.parse(date);
+            Log.i("PlayFabGCM","Id: " + this.Id + " - " + parsedDate.toString());
+            this.ScheduleDate = parsedDate;
+        }catch(Exception e){
+            Log.i("PlayFabGCM", "Could not parse date.  use format  MM-dd-yyy hh:mm:ss");
+        }
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

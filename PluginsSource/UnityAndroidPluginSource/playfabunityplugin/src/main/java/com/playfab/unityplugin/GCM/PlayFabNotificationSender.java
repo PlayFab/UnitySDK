@@ -30,6 +30,49 @@ import java.util.List;
 public class PlayFabNotificationSender {
     private static final String TAG = "PlayFabGCM";
     private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
+    private static final String DATE_FORMAT_STRING = "dd-M-yyyy HH:mm:ss";
+    public static void sendNotificationById(Context intent, String id) {
+        //PlayFabRegistrationIntentService intent = PlayFabRegistrationIntentService.GetInstance();
+        PendingIntent pendingIntent = PendingIntent.getActivity(intent, REQUEST_CODE_UNITY_ACTIVITY,
+                intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        List<PlayFabNotificationPackage> notificationList = PlayFabPushCache.getPushCache();
+        PlayFabNotificationPackage pushNotificationPackage = null;
+        for(PlayFabNotificationPackage p : notificationList){
+           if(p.Id == id) {
+               pushNotificationPackage = p;
+           }
+        }
+        if(pushNotificationPackage == null){
+            Log.i(TAG,"Push Notification Package not found.");
+            return;
+        }
+
+        String appIcon = pushNotificationPackage.Icon;
+        //Log.i(TAG,"Setting App Icon: " + appIcon);
+        String title = pushNotificationPackage.Title;
+        //Log.i(TAG,"Setting Title: " + title);
+        Uri defaultSoundUri = Uri.parse(pushNotificationPackage.Sound);
+        //Log.i(TAG,"Setting Sound Uri: " + defaultSoundUri);
+        String message = pushNotificationPackage.Message;
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent)
+                .setSmallIcon(intent.getResources().getIdentifier(appIcon, "drawable", intent.getPackageName()))
+                .setContentTitle(title)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentText(message)
+                .setSound(defaultSoundUri)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) intent.getSystemService(Context.NOTIFICATION_SERVICE);
+        int notificationId = getNotificationId(intent);
+        notificationManager.notify(notificationId, notificationBuilder.build()); //ID_NOTIFICATION
+        pushNotificationPackage.SetDelivered();
+    }
 
     public static void sendNotification(Context intent) {
         //PlayFabRegistrationIntentService intent = PlayFabRegistrationIntentService.GetInstance();
@@ -71,6 +114,9 @@ public class PlayFabNotificationSender {
         mPackage.Message = message;
         mPackage.Sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString();
 
+        //Log.i(TAG, mPackage.Sound);
+        //Log.i(TAG, mPackage.Icon);
+
         SetPackageFromJson(intent,message,mPackage);
         return mPackage;
     }
@@ -91,21 +137,13 @@ public class PlayFabNotificationSender {
         if(isJSONValid(message)){
             try {
                 JSONObject jObj = new JSONObject(message);
+                //Log.i(TAG,message);
                 Log.i(PlayFabUnityAndroidPlugin.TAG,"Message was JSON");
                 //This is so that the ENTIRE JSON message is not in the notification should someone forget to send the "Message" attribute.
                 mPackage.Message = "";
 
-                if(jObj.has("ScheduledType")){
+                if(jObj.has("ScheduleType") && jObj.getInt("ScheduleType") > 0 ){
                     mPackage.ScheduleType = PlayFabNotificationPackage.ScheduleTypes.values()[jObj.getInt("ScheduleType")];
-                    if(mPackage.ScheduleType == PlayFabNotificationPackage.ScheduleTypes.ScheduledDate) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-                        try {
-                            mPackage.ScheduleDate = sdf.parse(jObj.getString("ScheduleDate"));
-                        } catch (Exception e) {
-                            mPackage.ScheduleType = PlayFabNotificationPackage.ScheduleTypes.None;
-                            Log.i(TAG, "Scheduled Date could not be parsed, invalided format.");
-                        }
-                    }
                 }
 
                 if(jObj.has("Id")){
@@ -120,15 +158,17 @@ public class PlayFabNotificationSender {
                     mPackage.Message = jObj.getString("Message");
                 }
 
-                if(jObj.has("Icon")){
+                if(jObj.has("Icon") && jObj.getString("Icon") != null && !jObj.getString("Icon").isEmpty() && jObj.getString("Icon") != "null" ){
+                    //Log.i(TAG,jObj.getString("Icon"));
                     mPackage.Icon = jObj.getString("Icon");
                 }
 
-                if(jObj.has("Sound")){
+                if(jObj.has("Sound") && jObj.getString("Sound") != null && !jObj.getString("Sound").isEmpty() && jObj.getString("Sound") != "null") {
+                    //Log.i(TAG,jObj.getString("Sound"));
                     mPackage.Sound = Uri.parse("android.resource://" + intent.getPackageName() + "/" + jObj.getString("Sound")).toString();
                 }
 
-                if(jObj.has("CustomData")){
+                if(jObj.has("CustomData") && jObj.getString("CustomData") != null && !jObj.getString("CustomData").isEmpty() && jObj.getString("CustomData") != "null"){
                     mPackage.CustomData = jObj.getString("CustomData");
                 }
             }catch(JSONException e){
@@ -174,10 +214,11 @@ public class PlayFabNotificationSender {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT );
-
         try {
+            Log.i(TAG,"Schedule Type: " + notifyPackage.ScheduleType);
             if(notifyPackage.ScheduleType == PlayFabNotificationPackage.ScheduleTypes.ScheduledDate){
-                ScheduleNotification(intent,  notifyPackage.ScheduleDate, notifyPackage);
+                String formattedDate = new SimpleDateFormat(DATE_FORMAT_STRING).format(notifyPackage.ScheduleDate);
+                ScheduleNotification(intent,  formattedDate, notifyPackage);
             }else {
                 long futureMillis = 0;
                 AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
@@ -189,21 +230,25 @@ public class PlayFabNotificationSender {
 
     }
 
-    public static void ScheduleNotification(Context intent, Date date, PlayFabNotificationPackage notifyPackage ){
+    public static void ScheduleNotification(Context intent, String dateString, PlayFabNotificationPackage notifyPackage ){
         Log.i(TAG,"Scheduling future notification");
         Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT );
         try{
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_STRING);
+            Date date = sdf.parse(dateString);
+
             Calendar c = Calendar.getInstance();
             c.setTime(date);
             long futureMillis = c.getTimeInMillis();
+            long nowMillis = System.currentTimeMillis();
+
             AlarmManager alarmManager = (AlarmManager)intent.getSystemService(intent.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, futureMillis, pendingIntent);
-            Log.i(TAG, "Alarm was set to: " + date.toString() + " : " + futureMillis);
+            Log.i(TAG, "Alarm was set to: " + date.toString() + " : future - " + futureMillis + ": now - " + nowMillis);
         }catch(Exception e){
             Log.d(TAG, e.getMessage());
         }

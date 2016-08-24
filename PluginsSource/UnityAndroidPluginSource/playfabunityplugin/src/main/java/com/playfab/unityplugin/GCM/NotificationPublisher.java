@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Marco on 8/5/2016.
  */
@@ -18,8 +21,9 @@ public class NotificationPublisher extends BroadcastReceiver{
         Log.i(TAG,"OnRecieve Notification Publisher Sending Notification..");
         String notificationId = intent.getParcelableExtra(NOTIFICATION_ID);
         PlayFabNotificationPackage notification = intent.getParcelableExtra(NOTIFICATION);
+        notification.SetDeliveryDate(new Date());
+        notification.SetDelivered();
         PlayFabPushCache.setPushCache(notification);
-        PlayFabNotificationSender.sendNotification(context);
-
+        PlayFabNotificationSender.sendNotificationById(context, notification.Id);
     }
 }

@@ -22,7 +22,7 @@ public class PlayFabPushCache {
         return mPushCache == null ? new ArrayList<PlayFabNotificationPackage>() : mPushCache;
     }
 
-    public static void CleanPushCache(){
+    public static void clearPushCache(){
         List<PlayFabNotificationPackage> mLoopList = mPushCache;
         for( PlayFabNotificationPackage mPushCacheItem  : mLoopList){
             if(mPushCacheItem.Delivered){
