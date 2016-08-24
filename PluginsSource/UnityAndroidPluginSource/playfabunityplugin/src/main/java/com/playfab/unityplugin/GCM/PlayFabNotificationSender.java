@@ -146,6 +146,26 @@ public class PlayFabNotificationSender {
                     mPackage.ScheduleType = PlayFabNotificationPackage.ScheduleTypes.values()[jObj.getInt("ScheduleType")];
                 }
 
+                if(jObj.has("ScheduleDate")){
+                    try{
+                        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_STRING);
+                        Date date = sdf.parse(jObj.getString("ScheduleDate"));
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(date);
+                        long futureMillis = c.getTimeInMillis();
+                        long nowMillis = System.currentTimeMillis();
+                        if(futureMillis < nowMillis){
+                            mPackage.ScheduleType = PlayFabNotificationPackage.ScheduleTypes.None;
+                            mPackage.ScheduleDate = new Date();
+                        }else{
+                            mPackage.ScheduleDate = date;
+                        }
+                    }catch(Exception e){
+                        Log.i(TAG,"Could not parse date time from Push Notification: use format: " + DATE_FORMAT_STRING);
+                    }
+                }
+
+
                 if(jObj.has("Id")){
                     mPackage.Id = jObj.getString("Id");
                 }
