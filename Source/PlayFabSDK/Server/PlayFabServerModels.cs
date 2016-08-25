@@ -44,6 +44,24 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class AddPlayerTagRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique tag for player profile.
+        /// </summary>
+        public string TagName { get; set;}
+    }
+
+    [Serializable]
+    public class AddPlayerTagResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class AddSharedGroupMembersRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1390,6 +1408,32 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class GetPlayerTagsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Optional namespace to filter results by
+        /// </summary>
+        public string Namespace { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerTagsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Canonical tags (including namespace and tag's name) for the requested user
+        /// </summary>
+        public List<string> Tags { get; set;}
+    }
+
+    [Serializable]
     public class GetPlayFabIDsFromFacebookIDsRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2467,6 +2511,24 @@ namespace PlayFab.ServerModels
         /// User account information for the user validated.
         /// </summary>
         public UserAccountInfo UserInfo { get; set;}
+    }
+
+    [Serializable]
+    public class RemovePlayerTagRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique tag for player profile.
+        /// </summary>
+        public string TagName { get; set;}
+    }
+
+    [Serializable]
+    public class RemovePlayerTagResult : PlayFabResultCommon
+    {
     }
 
     [Serializable]

@@ -247,7 +247,8 @@ namespace PlayFab
         SessionLogNotFound = 1244,
         InvalidSearchTerm = 1245,
         TwoFactorAuthenticationTokenRequired = 1246,
-        GameServerHostCountLimitExceeded = 1247
+        GameServerHostCountLimitExceeded = 1247,
+        PlayerTagCountLimitExceeded = 1248
     }
 
     public delegate void ErrorCallback(PlayFabError error);

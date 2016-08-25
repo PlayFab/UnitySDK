@@ -1634,6 +1634,32 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class GetPlayerTagsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Optional namespace to filter results by
+        /// </summary>
+        public string Namespace { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerTagsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Canonical tags (including namespace and tag's name) for the requested user
+        /// </summary>
+        public List<string> Tags { get; set;}
+    }
+
+    [Serializable]
     public class GetPlayerTradesRequest : PlayFabRequestCommon
     {
         /// <summary>
