@@ -59,7 +59,6 @@ namespace PlayFab.Internal
         public Action DeserializeResultJson;
         public Action InvokeSuccessCallback;
         public Action<PlayFabError> ErrorCallback;
-        public int RetryTimeoutCounter = 0;
         public object CustomData = null;
 
         public CallRequestContainer()

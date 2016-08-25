@@ -153,9 +153,10 @@ namespace PlayFab.Internal
 
             Action<string> wwwErrorCallback = (errorCb) =>
             {
+                reqContainer.JsonResponse = errorCb;
                 if (reqContainer.ErrorCallback != null)
                 {
-                    reqContainer.Error = PlayFabHttp.GeneratePlayFabErrorGeneric(errorCb, null, reqContainer.CustomData);
+                    reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.JsonResponse, reqContainer.CustomData);
                     PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
                     reqContainer.ErrorCallback(reqContainer.Error);
                 }
