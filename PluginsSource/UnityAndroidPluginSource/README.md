@@ -232,6 +232,8 @@ As a json string, this would look like the following.
 
 Note we left out Sound & Icon to use the Default values.
 
+We can use this format in [Game Manager](http://developer.playfab.com) and / or cloudscript to send a push notification to a device.  The json above would go in the message field.  Title is still required, but is overridden by the values in the json.
+
 
 7. Resolving .JAR & .AAR Conflicts
 ----
