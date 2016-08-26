@@ -305,8 +305,11 @@ namespace PlayFab.PlayStreamModels
     #region session
     public class SessionEndedEventData : PlayStreamEventBase
     {
+        public DateTime EndTime;
         public string UserId;
-        public string BytesWritten;
+        public double? KilobytesWritten;
+        public double SessionLengthMs;
+        public bool Crashed;
         public string TitleId;
     }
     public class SessionStartedEventData : PlayStreamEventBase
