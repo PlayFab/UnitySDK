@@ -1181,7 +1181,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoRequestParams : PlayFabRequestCommon
+    public class GetPlayerCombinedInfoRequestParams
     {
         /// <summary>
         /// Whether to get the player's account Info. Defaults to false
@@ -1251,7 +1251,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoResultPayload : PlayFabResultCommon
+    public class GetPlayerCombinedInfoResultPayload
     {
         /// <summary>
         /// Account information for the user. This is always retrieved.
@@ -2441,7 +2441,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class RandomResultTableListing : PlayFabResultCommon
+    public class RandomResultTableListing
     {
         /// <summary>
         /// Catalog version this table is associated with
@@ -2584,7 +2584,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class ResultTableNode : PlayFabResultCommon
+    public class ResultTableNode
     {
         /// <summary>
         /// Whether this entry in the table is an item or a link to another table

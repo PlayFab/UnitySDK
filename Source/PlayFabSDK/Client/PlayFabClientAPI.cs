@@ -2,6 +2,7 @@
 using System;
 using PlayFab.ClientModels;
 using PlayFab.Internal;
+using PlayFab.Json;
 
 namespace PlayFab
 {
@@ -1085,6 +1086,24 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/ExecuteCloudScript", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        public static void ExecuteCloudScript<TOut>(ExecuteCloudScriptRequest request, Action<ExecuteCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+        Action<ExecuteCloudScriptResult> wrappedResultCallback = (wrappedResult) =>
+        {
+            var wrappedJson = JsonWrapper.SerializeObject(wrappedResult.FunctionResult, PlayFabUtil.ApiSerializerStrategy);
+            try {
+                wrappedResult.FunctionResult = JsonWrapper.DeserializeObject<TOut>(wrappedJson, PlayFabUtil.ApiSerializerStrategy);
+            }
+            catch (Exception)
+            {
+                wrappedResult.FunctionResult = wrappedJson;
+                wrappedResult.Logs.Add(new LogStatement{ Level = "Warning", Data = wrappedJson, Message = "Sdk Message: Could not deserialize result as: " + typeof (TOut).Name });
+            }
+            resultCallback(wrappedResult);
+        };
+        ExecuteCloudScript(request, wrappedResultCallback, errorCallback, customData);
         }
 
         /// <summary>

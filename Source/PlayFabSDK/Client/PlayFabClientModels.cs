@@ -1457,7 +1457,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoRequestParams : PlayFabRequestCommon
+    public class GetPlayerCombinedInfoRequestParams
     {
         /// <summary>
         /// Whether to get the player's account Info. Defaults to false
@@ -1527,7 +1527,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoResultPayload : PlayFabResultCommon
+    public class GetPlayerCombinedInfoResultPayload
     {
         /// <summary>
         /// Account information for the user. This is always retrieved.

@@ -82,9 +82,6 @@ namespace PlayFab.Internal
             if (_internalHttp == null)
                 _internalHttp = new PlayFabWww();
 
-#if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API
-            _internalHttp.DevKey = PlayFabSettings.DeveloperSecretKey;
-#endif
             _internalHttp.InitializeHttp();
             CreateInstance(); // Invoke the SingletonMonoBehaviour
         }

@@ -7,7 +7,6 @@ namespace PlayFab.Internal
     {
         bool SessionStarted { get; set; }
         string AuthKey { get; set; }
-        string DevKey { get; set; }
         void InitializeHttp();
 
         // Mirroring MonoBehaviour - Relayed from PlayFabHTTP

@@ -1901,7 +1901,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class RandomResultTable : PlayFabResultCommon
+    public class RandomResultTable
     {
         /// <summary>
         /// Unique name for this drop table
@@ -1914,7 +1914,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class RandomResultTableListing : PlayFabResultCommon
+    public class RandomResultTableListing
     {
         /// <summary>
         /// Catalog version this table is associated with
@@ -2024,7 +2024,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ResultTableNode : PlayFabResultCommon
+    public class ResultTableNode
     {
         /// <summary>
         /// Whether this entry in the table is an item or a link to another table

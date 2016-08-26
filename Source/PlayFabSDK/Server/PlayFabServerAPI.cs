@@ -2,6 +2,7 @@
 using System;
 using PlayFab.ServerModels;
 using PlayFab.Internal;
+using PlayFab.Json;
 
 namespace PlayFab
 {
@@ -782,6 +783,24 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/ExecuteCloudScript", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        public static void ExecuteCloudScript<TOut>(ExecuteCloudScriptServerRequest request, Action<ExecuteCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+        Action<ExecuteCloudScriptResult> wrappedResultCallback = (wrappedResult) =>
+        {
+            var wrappedJson = JsonWrapper.SerializeObject(wrappedResult.FunctionResult, PlayFabUtil.ApiSerializerStrategy);
+            try {
+                wrappedResult.FunctionResult = JsonWrapper.DeserializeObject<TOut>(wrappedJson, PlayFabUtil.ApiSerializerStrategy);
+            }
+            catch (Exception)
+            {
+                wrappedResult.FunctionResult = wrappedJson;
+                wrappedResult.Logs.Add(new LogStatement{ Level = "Warning", Data = wrappedJson, Message = "Sdk Message: Could not deserialize result as: " + typeof (TOut).Name });
+            }
+            resultCallback(wrappedResult);
+        };
+        ExecuteCloudScript(request, wrappedResultCallback, errorCallback, customData);
         }
 
         /// <summary>

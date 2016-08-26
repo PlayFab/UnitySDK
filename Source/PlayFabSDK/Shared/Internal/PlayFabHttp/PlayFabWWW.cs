@@ -17,7 +17,6 @@ namespace PlayFab.Internal
         private int _pendingWwwMessages = 0;
         public bool SessionStarted { get; set; }
         public string AuthKey { get; set; }
-        public string DevKey { get; set; }
 
         public void InitializeHttp() { }
         public void Update() { }
@@ -29,7 +28,9 @@ namespace PlayFab.Internal
             var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
             if (reqContainer.AuthKey == AuthType.DevSecretKey)
             {
-                headers.Add("X-SecretKey", DevKey);
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
+                headers.Add("X-SecretKey", PlayFabSettings.DeveloperSecretKey);
+#endif
             }
             else if (reqContainer.AuthKey == AuthType.LoginSession)
             {

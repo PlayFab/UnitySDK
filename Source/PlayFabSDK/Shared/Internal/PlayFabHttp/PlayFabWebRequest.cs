@@ -29,11 +29,9 @@ namespace PlayFab.Internal
         private static string _unityVersion;
 
         private static string _authKey;
-        private static string _devKey;
         private static bool _sessionStarted;
         public bool SessionStarted { get { return _sessionStarted; } set { _sessionStarted = value; } }
         public string AuthKey { get { return _authKey; } set { _authKey = value; } }
-        public string DevKey { get { return _devKey; } set { _devKey = value; } }
 
         public void InitializeHttp()
         {
@@ -188,7 +186,9 @@ namespace PlayFab.Internal
 
                 switch (reqContainer.AuthKey)
                 {
-                    case AuthType.DevSecretKey: reqContainer.HttpRequest.Headers.Add("X-SecretKey", _devKey); break;
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
+                    case AuthType.DevSecretKey: reqContainer.HttpRequest.Headers.Add("X-SecretKey", PlayFabSettings.DeveloperSecretKey); break;
+#endif
                     case AuthType.LoginSession: reqContainer.HttpRequest.Headers.Add("X-Authorization", _authKey); break;
                 }
 
