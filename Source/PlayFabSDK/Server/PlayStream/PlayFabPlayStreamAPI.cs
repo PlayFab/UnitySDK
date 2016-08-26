@@ -23,7 +23,6 @@ namespace PlayFab
 
         /// <summary>
         /// <para />This is the event when a PlayStream event is received from the server.
-        /// <para />The connection will automatically start when this event is subscribed. Check the status of the connection by subscribing to OnSubscribed and OnFailed.
         /// </summary>
         public static event Action<PlayStreamNotification> OnPlayStreamEvent;
 
@@ -52,13 +51,14 @@ namespace PlayFab
         #endregion
 
         /// <summary>
-        /// Start the SignalR connection asynchronously and subscribe to PlayStream events if successfully connected. This is called automatically by subscribing to OnPlayStreamEvents.
+        /// Start the SignalR connection asynchronously and subscribe to PlayStream events if successfully connected.
+        /// Optionally pass an filter id to only be subscribed to specific types of PlayStream events. Event filters can be configured on GameManager.
         /// </summary>
-        public static void Start(string filter = null)
+        public static void Start(string eventFilterId = null)
         {
             Action connetionCallback = () =>
             {
-                OnConnectedCallback(filter);
+                OnConnectedCallback(eventFilterId);
             };
             PlayFabHttp.InitializeSignalR(PlayFabSettings.ProductionEnvironmentPlayStreamUrl, "EventStreamsHub", connetionCallback, OnReceivedCallback, OnReconnectedCallback, OnDisconnectedCallback, OnErrorCallback);
         }
