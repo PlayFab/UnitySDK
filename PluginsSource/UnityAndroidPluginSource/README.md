@@ -115,6 +115,8 @@ GCM.PlayFabGcmListenerService.java | This class receives messages and sends them
 PlayFabGoogleCloudMessaging.java | Allows you to call .getToken() to receive the GCM token and send it back to Unity.
 PlayFabPushCache.java | Allows you to get the Cached push notification after it has been sent / received.
 PlayFabNotificationPackage.java | Data model for holding push notification data
+PlayFabNotificationSender.java | **new** Helper class for sending notifications both from java & JNI via Unity, supports scheduled push notifications using the Alarm Manager and local notifications set via Unity.
+NotificationPublisher.java | **new** broadcast receiver for sending notifications (required manifest change)
 
 ###Compiling in Android Studio
 *	Open the project in Android Studio
@@ -124,7 +126,114 @@ PlayFabNotificationPackage.java | Data model for holding push notification data
 *	Double-click exportJar. This will compile the plugin and export the UnityAndroidPlugin.jar & the Android.manifest files into the /releases folder in the root of your project.  These files need to be copied into your unity /assets/plugins/Android/  folder.
 
 
-5. Resolving .JAR & .AAR Conflicts
+5. Sending local push notifications
+----
+new methods have been added to the C# side of the plugin that calls into the Java side via JNI.  Similar to how we are registering the device and get the GCM token for push notifications.  Local notifications do not need to be registered with GCM and allows the developer to send & schedule a local push notification.
+
+Here is how that works. We have three new methods in the PlayFabAndroid.cs file ( not included in the java source project, but it is included with the plugin package.
+
+* ScheduleNotification - This allows you to pass in a date and a json string representing the PlayFabNotificationPackage.
+* SendNotificationNow - Allows you to send a notification instantly, accepts a json string representing the PlayFabNotificationPackage.
+* CancelNotification - Allows you to cancel a scheduled notification, accepts a json string representing the previously created PlayFabNotificationPackage.
+
+
+```C#
+
+        public static void ScheduleNotification(string notification, DateTime date)
+        {
+            AndroidJavaClass clsUnity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject objActivity = clsUnity.GetStatic<AndroidJavaObject>("currentActivity");
+
+            var package = NotificationSender.CallStatic<AndroidJavaObject>("createNotificationPackage", new object[]
+            {
+                objActivity,
+                notification
+            });
+
+            var dateString = date.ToString("MM-dd-yyyy HH:mm:ss");
+            Debug.LogFormat("Setting Scheduled Date: {0}", dateString);
+            package.Call("SetScheduleDate", dateString);
+            
+            NotificationSender.CallStatic("Send", new object[]
+            {
+                objActivity,
+                package
+            });
+        }
+
+        public static void SendNotificationNow(string notification)
+        {
+            AndroidJavaClass clsUnity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject objActivity = clsUnity.GetStatic<AndroidJavaObject>("currentActivity");
+            
+            //AndroidJavaObject package = new AndroidJavaObject("com.playfab.unityplugin.GCM.PlayFabNotificationPackage");
+            var package = NotificationSender.CallStatic<AndroidJavaObject>("createNotificationPackage", new object[]
+            {
+                objActivity,
+                notification
+            });
+
+            NotificationSender.CallStatic("Send", new object[]
+            {
+                objActivity,
+                package
+            });
+        }
+
+        public static void CancelNotification(string notification)
+        {
+            AndroidJavaClass clsUnity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject objActivity = clsUnity.GetStatic<AndroidJavaObject>("currentActivity");
+            var package = NotificationSender.CallStatic<AndroidJavaObject>("createNotificationPackage", new object[]
+            {
+                objActivity,
+                notification
+            });
+            NotificationSender.CallStatic("CancelScheduledNotification", new object[]
+            {
+                objActivity,
+                package
+            });
+        }
+
+```
+
+6. Pushing a scheduled notification from Game Manager
+----
+Since we have the ability to schedule a notification for a future date,  you can now do this via a Push Notification.  The PlayFabNotificationPackage has the following fields and you can easily turn this into a json string.
+
+```C#
+
+    public DateTime ScheduleDate;
+    public ScheduleTypes ScheduleType; // 0=none | 1=ScheduledDate
+    public string Sound; // do not set this to use the default device sound; otherwise the sound you provide needs to exist in Android/res/raw/_____.mp3, .wav, .ogg
+	public string Title; // title of this message
+	public string Icon; // to use the default app icon use app_icon, otherwise send the name of the custom image. Image must be in Android/res/drawable/_____.png, .jpg
+	public string Message; // the actual message to transmit (this is what will be displayed in the notification area
+	public string CustomData; // arbitrary key value pairs for game specific usage
+    public string Id;
+    public Boolean Delivered;
+
+```
+
+As a json string, this would look like the following.
+
+```c#
+
+{
+	"ScheduleDate":"26-08-2016 13:00:00",
+	"ScheduleType:1,
+	"Title":"This is a scheduled Push",
+	"Message":"You will get gold if you click me now!",
+	"Id":"Custom ID for my Notification"
+}
+
+```
+
+Note we left out Sound & Icon to use the Default values.
+
+
+7. Resolving .JAR & .AAR Conflicts
 ----
 If your project is using multiple Android plugins, there is a good chance that you could have multiple copies of a given Android library. Having multiple copies of .JARs and .AARs will cause your builds to fail during the DEX compilation. 
 
