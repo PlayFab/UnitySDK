@@ -331,6 +331,10 @@ namespace PlayFab.AdminModels
         /// URL to the item image. For Facebook purchase to display the image on the item purchase page, this must be set to an HTTP URL.
         /// </summary>
         public string ItemImageUrl { get; set;}
+        /// <summary>
+        /// if true, then only a fixed number can ever be granted.
+        /// </summary>
+        public bool IsLimitedEdition { get; set;}
     }
 
     [Serializable]
