@@ -2,6 +2,7 @@
 using System;
 using PlayFab.MatchmakerModels;
 using PlayFab.Internal;
+using PlayFab.Json;
 
 namespace PlayFab
 {

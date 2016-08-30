@@ -44,6 +44,24 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class AddPlayerTagRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique tag for player profile.
+        /// </summary>
+        public string TagName { get; set;}
+    }
+
+    [Serializable]
+    public class AddPlayerTagResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class AddSharedGroupMembersRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -287,6 +305,10 @@ namespace PlayFab.ServerModels
         /// URL to the item image. For Facebook purchase to display the image on the item purchase page, this must be set to an HTTP URL.
         /// </summary>
         public string ItemImageUrl { get; set;}
+        /// <summary>
+        /// if true, then only a fixed number can ever be granted.
+        /// </summary>
+        public bool IsLimitedEdition { get; set;}
     }
 
     [Serializable]
@@ -1163,7 +1185,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoRequestParams : PlayFabRequestCommon
+    public class GetPlayerCombinedInfoRequestParams
     {
         /// <summary>
         /// Whether to get the player's account Info. Defaults to false
@@ -1233,7 +1255,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class GetPlayerCombinedInfoResultPayload : PlayFabResultCommon
+    public class GetPlayerCombinedInfoResultPayload
     {
         /// <summary>
         /// Account information for the user. This is always retrieved.
@@ -1387,6 +1409,32 @@ namespace PlayFab.ServerModels
         /// version change history of the statistic
         /// </summary>
         public List<PlayerStatisticVersion> StatisticVersions { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerTagsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Optional namespace to filter results by
+        /// </summary>
+        public string Namespace { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerTagsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Canonical tags (including namespace and tag's name) for the requested user
+        /// </summary>
+        public List<string> Tags { get; set;}
     }
 
     [Serializable]
@@ -2397,7 +2445,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class RandomResultTableListing : PlayFabResultCommon
+    public class RandomResultTableListing
     {
         /// <summary>
         /// Catalog version this table is associated with
@@ -2470,6 +2518,24 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class RemovePlayerTagRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique tag for player profile.
+        /// </summary>
+        public string TagName { get; set;}
+    }
+
+    [Serializable]
+    public class RemovePlayerTagResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class RemoveSharedGroupMembersRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2522,7 +2588,7 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class ResultTableNode : PlayFabResultCommon
+    public class ResultTableNode
     {
         /// <summary>
         /// Whether this entry in the table is an item or a link to another table

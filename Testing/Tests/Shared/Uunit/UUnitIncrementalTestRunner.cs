@@ -87,7 +87,7 @@ namespace PlayFab.UUnit
         {
             if (postResultsToCloudscript && result != null)
             {
-                Debug.Log("Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + PlayFabApiTest.PlayFabId);
+                Debug.Log("Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + ClientApiTests.PlayFabId);
                 if (result.Logs != null)
                     foreach (var eachLog in result.Logs)
                         Debug.Log("Cloud Log: " + eachLog.Message);

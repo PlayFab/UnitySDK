@@ -15,7 +15,7 @@ namespace PlayFab.UUnit
     /// The client logs in, which triggers a server, and then back and forth.
     /// For the purpose of testing, they each have pieces of information they share with one another, and that sharing makes various calls possible.
     /// </summary>
-    public class PlayFabApiTest : UUnitTestCase
+    public class ClientApiTests : UUnitTestCase
     {
         // Test-data constants
         private const string TEST_STAT_NAME = "str";
@@ -425,6 +425,32 @@ namespace PlayFab.UUnit
             var messageValue = jobj["messageValue"] as string;
             testContext.StringEquals("Hello " + PlayFabId + "!", messageValue);
             testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        /// <summary>
+        /// CLIENT API
+        /// Test that CloudScript can be properly set up and invoked
+        /// </summary>
+        [UUnitTest]
+        public void CloudScriptGeneric(UUnitTestContext testContext)
+        {
+            var request = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "helloWorld"
+            };
+            PlayFabClientAPI.ExecuteCloudScript<HelloWorldWrapper>(request, PlayFabUUnitUtils.ApiActionWrapper<ExecuteCloudScriptResult>(testContext, CloudScriptGenericHwCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+        }
+        private static void CloudScriptGenericHwCallback(ExecuteCloudScriptResult result)
+        {
+            var testContext = (UUnitTestContext)result.CustomData;
+            var hwResult = result.FunctionResult as HelloWorldWrapper;
+            testContext.NotNull(hwResult);
+            testContext.StringEquals("Hello " + PlayFabId + "!", hwResult.messageValue);
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+        private class HelloWorldWrapper
+        {
+            public string messageValue = null;
         }
 
         /// <summary>

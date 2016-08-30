@@ -248,6 +248,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<AttributeInstallResult> OnAttributeInstallResultEvent;
         public event PlayFabRequestEvent<GetPlayerSegmentsRequest> OnGetPlayerSegmentsRequestEvent;
         public event PlayFabResultEvent<GetPlayerSegmentsResult> OnGetPlayerSegmentsResultEvent;
+        public event PlayFabRequestEvent<GetPlayerTagsRequest> OnGetPlayerTagsRequestEvent;
+        public event PlayFabResultEvent<GetPlayerTagsResult> OnGetPlayerTagsResultEvent;
     }
 }
 #endif

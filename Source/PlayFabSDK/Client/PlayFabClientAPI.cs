@@ -2,6 +2,7 @@
 using System;
 using PlayFab.ClientModels;
 using PlayFab.Internal;
+using PlayFab.Json;
 
 namespace PlayFab
 {
@@ -1087,6 +1088,24 @@ namespace PlayFab
             PlayFabHttp.MakeApiCall("/Client/ExecuteCloudScript", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
         }
 
+        public static void ExecuteCloudScript<TOut>(ExecuteCloudScriptRequest request, Action<ExecuteCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+        Action<ExecuteCloudScriptResult> wrappedResultCallback = (wrappedResult) =>
+        {
+            var wrappedJson = JsonWrapper.SerializeObject(wrappedResult.FunctionResult, PlayFabUtil.ApiSerializerStrategy);
+            try {
+                wrappedResult.FunctionResult = JsonWrapper.DeserializeObject<TOut>(wrappedJson, PlayFabUtil.ApiSerializerStrategy);
+            }
+            catch (Exception)
+            {
+                wrappedResult.FunctionResult = wrappedJson;
+                wrappedResult.Logs.Add(new LogStatement{ Level = "Warning", Data = wrappedJson, Message = "Sdk Message: Could not deserialize result as: " + typeof (TOut).Name });
+            }
+            resultCallback(wrappedResult);
+        };
+        ExecuteCloudScript(request, wrappedResultCallback, errorCallback, customData);
+        }
+
         /// <summary>
         /// Retrieves the title-specific URL for Cloud Script servers. This must be queried once, prior  to making any calls to RunCloudScript.
         /// </summary>
@@ -1297,6 +1316,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/GetPlayerSegments", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Get all tags with a given Namespace (optional) from a player profile.
+        /// </summary>
+        public static void GetPlayerTags(GetPlayerTagsRequest request, Action<GetPlayerTagsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/GetPlayerTags", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
         }
 
 
