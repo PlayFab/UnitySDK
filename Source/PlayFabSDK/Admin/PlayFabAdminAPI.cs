@@ -113,7 +113,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Deletes the users for the provided game. Deletes custom data, all account linkages, and statistics.
+        /// Deletes the users for the provided game. Deletes custom data, all account linkages, and statistics. This method does not remove the player's event history, login history, inventory items, nor virtual currencies.
         /// </summary>
         public static void DeleteUsers(DeleteUsersRequest request, Action<DeleteUsersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
