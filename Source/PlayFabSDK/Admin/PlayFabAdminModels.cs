@@ -49,6 +49,24 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class AddPlayerTagRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique tag for player profile.
+        /// </summary>
+        public string TagName { get; set;}
+    }
+
+    [Serializable]
+    public class AddPlayerTagResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class AddServerBuildRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -313,6 +331,10 @@ namespace PlayFab.AdminModels
         /// URL to the item image. For Facebook purchase to display the image on the item purchase page, this must be set to an HTTP URL.
         /// </summary>
         public string ItemImageUrl { get; set;}
+        /// <summary>
+        /// if true, then only a fixed number can ever be granted.
+        /// </summary>
+        public bool IsLimitedEdition { get; set;}
     }
 
     [Serializable]
@@ -1010,6 +1032,32 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class GetPlayerTagsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Optional namespace to filter results by
+        /// </summary>
+        public string Namespace { get; set;}
+    }
+
+    [Serializable]
+    public class GetPlayerTagsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Canonical tags (including namespace and tag's name) for the requested user
+        /// </summary>
+        public List<string> Tags { get; set;}
+    }
+
+    [Serializable]
     public class GetPublisherDataRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1153,6 +1201,22 @@ namespace PlayFab.AdminModels
         /// Array of items which can be purchased from this store.
         /// </summary>
         public List<StoreItem> Store { get; set;}
+        /// <summary>
+        /// How the store was last updated (Admin or a third party).
+        /// </summary>
+        public SourceType? Source { get; set;}
+        /// <summary>
+        /// The base catalog that this store is a part of.
+        /// </summary>
+        public string CatalogVersion { get; set;}
+        /// <summary>
+        /// The ID of this store.
+        /// </summary>
+        public string StoreId { get; set;}
+        /// <summary>
+        /// Additional data about the store.
+        /// </summary>
+        public StoreMarketingModel MarketingData { get; set;}
     }
 
     [Serializable]
@@ -1857,7 +1921,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class RandomResultTable : PlayFabResultCommon
+    public class RandomResultTable
     {
         /// <summary>
         /// Unique name for this drop table
@@ -1870,7 +1934,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class RandomResultTableListing : PlayFabResultCommon
+    public class RandomResultTableListing
     {
         /// <summary>
         /// Catalog version this table is associated with
@@ -1895,6 +1959,24 @@ namespace PlayFab.AdminModels
         Japan,
         Brazil,
         Australia
+    }
+
+    [Serializable]
+    public class RemovePlayerTagRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique tag for player profile.
+        /// </summary>
+        public string TagName { get; set;}
+    }
+
+    [Serializable]
+    public class RemovePlayerTagResult : PlayFabResultCommon
+    {
     }
 
     [Serializable]
@@ -1962,7 +2044,7 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ResultTableNode : PlayFabResultCommon
+    public class ResultTableNode
     {
         /// <summary>
         /// Whether this entry in the table is an item or a link to another table
@@ -2144,6 +2226,16 @@ namespace PlayFab.AdminModels
         public string ARN { get; set;}
     }
 
+    public enum SourceType
+    {
+        Admin,
+        BackEnd,
+        GameClient,
+        GameServer,
+        Partner,
+        Stream
+    }
+
     public enum StatisticAggregationMethod
     {
         Last,
@@ -2177,17 +2269,45 @@ namespace PlayFab.AdminModels
     public class StoreItem
     {
         /// <summary>
-        /// unique identifier of the item as it exists in the catalog - note that this must exactly match the ItemId from the catalog
+        /// Unique identifier of the item as it exists in the catalog - note that this must exactly match the ItemId from the catalog
         /// </summary>
         public string ItemId { get; set;}
         /// <summary>
-        /// price of this item in virtual currencies and "RM" (the base Real Money purchase price, in USD pennies)
+        /// Override prices for this item in virtual currencies and "RM" (the base Real Money purchase price, in USD pennies)
         /// </summary>
         public Dictionary<string,uint> VirtualCurrencyPrices { get; set;}
         /// <summary>
-        /// override prices for this item for specific currencies
+        /// Override prices for this item for specific currencies
         /// </summary>
         public Dictionary<string,uint> RealCurrencyPrices { get; set;}
+        /// <summary>
+        /// Store specific custom data. The data only exists as part of this store; it is not transferred to item instances
+        /// </summary>
+        public object CustomData { get; set;}
+        /// <summary>
+        /// Intended display position for this item. Note that 0 is the first position
+        /// </summary>
+        public uint? DisplayPosition { get; set;}
+    }
+
+    /// <summary>
+    /// Marketing data about a specific store
+    /// </summary>
+    [Serializable]
+    public class StoreMarketingModel
+    {
+        /// <summary>
+        /// Display name of a store as it will appear to users.
+        /// </summary>
+        public string DisplayName { get; set;}
+        /// <summary>
+        /// Tagline for a store.
+        /// </summary>
+        public string Description { get; set;}
+        /// <summary>
+        /// Custom data about a store.
+        /// </summary>
+        public object Metadata { get; set;}
     }
 
     [Serializable]
@@ -2375,15 +2495,19 @@ namespace PlayFab.AdminModels
     public class UpdateStoreItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// catalog version of the store to update. If null, uses the default catalog.
+        /// Catalog version of the store to update. If null, uses the default catalog.
         /// </summary>
         public string CatalogVersion { get; set;}
         /// <summary>
-        /// unqiue identifier for the store which is to be updated
+        /// Unique identifier for the store which is to be updated
         /// </summary>
         public string StoreId { get; set;}
         /// <summary>
-        /// array of store items - references to catalog items, with specific pricing - to be added
+        /// Additional data about the store
+        /// </summary>
+        public StoreMarketingModel MarketingData { get; set;}
+        /// <summary>
+        /// Array of store items - references to catalog items, with specific pricing - to be added
         /// </summary>
         public List<StoreItem> Store { get; set;}
     }

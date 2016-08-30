@@ -189,12 +189,18 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateCharacterDataResult> OnServerUpdateCharacterInternalDataResultEvent;
         public event PlayFabRequestEvent<UpdateCharacterDataRequest> OnServerUpdateCharacterReadOnlyDataRequestEvent;
         public event PlayFabResultEvent<UpdateCharacterDataResult> OnServerUpdateCharacterReadOnlyDataResultEvent;
+        public event PlayFabRequestEvent<AddPlayerTagRequest> OnServerAddPlayerTagRequestEvent;
+        public event PlayFabResultEvent<AddPlayerTagResult> OnServerAddPlayerTagResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnServerGetAllSegmentsRequestEvent;
         public event PlayFabResultEvent<GetAllSegmentsResult> OnServerGetAllSegmentsResultEvent;
         public event PlayFabRequestEvent<GetPlayersSegmentsRequest> OnServerGetPlayerSegmentsRequestEvent;
         public event PlayFabResultEvent<GetPlayerSegmentsResult> OnServerGetPlayerSegmentsResultEvent;
         public event PlayFabRequestEvent<GetPlayersInSegmentRequest> OnServerGetPlayersInSegmentRequestEvent;
         public event PlayFabResultEvent<GetPlayersInSegmentResult> OnServerGetPlayersInSegmentResultEvent;
+        public event PlayFabRequestEvent<GetPlayerTagsRequest> OnServerGetPlayerTagsRequestEvent;
+        public event PlayFabResultEvent<GetPlayerTagsResult> OnServerGetPlayerTagsResultEvent;
+        public event PlayFabRequestEvent<RemovePlayerTagRequest> OnServerRemovePlayerTagRequestEvent;
+        public event PlayFabResultEvent<RemovePlayerTagResult> OnServerRemovePlayerTagResultEvent;
     }
 }
 #endif

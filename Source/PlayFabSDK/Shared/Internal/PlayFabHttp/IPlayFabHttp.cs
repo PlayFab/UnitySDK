@@ -7,7 +7,6 @@ namespace PlayFab.Internal
     {
         bool SessionStarted { get; set; }
         string AuthKey { get; set; }
-        string DevKey { get; set; }
         void InitializeHttp();
 
         // Mirroring MonoBehaviour - Relayed from PlayFabHTTP
@@ -59,7 +58,6 @@ namespace PlayFab.Internal
         public Action DeserializeResultJson;
         public Action InvokeSuccessCallback;
         public Action<PlayFabError> ErrorCallback;
-        public int RetryTimeoutCounter = 0;
         public object CustomData = null;
 
         public CallRequestContainer()

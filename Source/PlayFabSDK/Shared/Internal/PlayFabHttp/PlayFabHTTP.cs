@@ -13,8 +13,6 @@ namespace PlayFab.Internal
     /// </summary>
     public class PlayFabHttp : SingletonMonoBehaviour<PlayFabHttp>
     {
-        private static readonly StringBuilder Sb = new StringBuilder();
-
         private static IPlayFabHttp _internalHttp; //This is the default;
         private static List<CallRequestContainer> _apiCallQueue = new List<CallRequestContainer>(); // Starts initialized, and is nulled when it's flushed
 
@@ -84,9 +82,6 @@ namespace PlayFab.Internal
             if (_internalHttp == null)
                 _internalHttp = new PlayFabWww();
 
-#if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API
-            _internalHttp.DevKey = PlayFabSettings.DeveloperSecretKey;
-#endif
             _internalHttp.InitializeHttp();
             CreateInstance(); // Invoke the SingletonMonoBehaviour
         }
@@ -261,50 +256,31 @@ namespace PlayFab.Internal
             return _internalHttp != null && !string.IsNullOrEmpty(_internalHttp.AuthKey);
         }
 
-        protected internal static PlayFabError GeneratePlayFabErrorGeneric(string message, string stacktrace, object customData = null)
+        protected internal static PlayFabError GeneratePlayFabError(string json, object customData)
         {
-            var errorDetails = new Dictionary<string, List<string>>();
-            Sb.Length = 0;
-            Sb.Append(message);
-            if (!string.IsNullOrEmpty(stacktrace))
-            {
-                Sb.Append(" | See stack trace in errorDetails");
-                errorDetails.Add("stacktrace", new List<string>() { stacktrace });
-            }
-            return new PlayFabError()
-            {
-                Error = PlayFabErrorCode.InternalServerError,
-                ErrorMessage = Sb.ToString(),
-                ErrorDetails = errorDetails,
-                CustomData = customData ?? new object()
-            };
-        }
-
-        protected internal static PlayFabError GeneratePlayFabError(string json, object customData = null)
-        {
-            //deserialize the error
-            var errorDict = JsonWrapper.DeserializeObject<JsonObject>(json, PlayFabUtil.ApiSerializerStrategy);
-
+            JsonObject errorDict = null;
             Dictionary<string, List<string>> errorDetails = null;
-            if (errorDict.ContainsKey("errorDetails"))
+            try
             {
-                errorDetails = JsonWrapper.DeserializeObject<Dictionary<string, List<string>>>(errorDict["errorDetails"].ToString());
+                // Deserialize the error
+                errorDict = JsonWrapper.DeserializeObject<JsonObject>(json, PlayFabUtil.ApiSerializerStrategy);
             }
-            //create new error object
+            catch (Exception) { /* Unusual, but shouldn't actually matter */ }
+            try
+            {
+                if (errorDict != null && errorDict.ContainsKey("errorDetails"))
+                    errorDetails = JsonWrapper.DeserializeObject<Dictionary<string, List<string>>>(errorDict["errorDetails"].ToString());
+            }
+            catch (Exception) { /* Unusual, but shouldn't actually matter */ }
+
             return new PlayFabError
             {
-                HttpCode = errorDict.ContainsKey("code") ? Convert.ToInt32(errorDict["code"]) : 400,
-                HttpStatus = errorDict.ContainsKey("status")
-                    ? (string)errorDict["status"]
-                    : "BadRequest",
-                Error = errorDict.ContainsKey("errorCode")
-                    ? (PlayFabErrorCode)Convert.ToInt32(errorDict["errorCode"])
-                    : PlayFabErrorCode.ServiceUnavailable,
-                ErrorMessage = errorDict.ContainsKey("errorMessage")
-                    ? (string)errorDict["errorMessage"]
-                    : string.Empty,
+                HttpCode = errorDict != null && errorDict.ContainsKey("code") ? Convert.ToInt32(errorDict["code"]) : 400,
+                HttpStatus = errorDict != null && errorDict.ContainsKey("status") ? (string)errorDict["status"] : "BadRequest",
+                Error = errorDict != null && errorDict.ContainsKey("errorCode") ? (PlayFabErrorCode)Convert.ToInt32(errorDict["errorCode"]) : PlayFabErrorCode.ServiceUnavailable,
+                ErrorMessage = errorDict != null && errorDict.ContainsKey("errorMessage") ? (string)errorDict["errorMessage"] : json,
                 ErrorDetails = errorDetails,
-                CustomData = customData ?? new object()
+                CustomData = customData
             };
         }
 
