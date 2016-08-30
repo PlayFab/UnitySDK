@@ -791,6 +791,10 @@ namespace PlayFab.ClientModels
         /// </summary>
         public List<LogStatement> Logs { get; set;}
         public double ExecutionTimeSeconds { get; set;}
+        /// <summary>
+        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP requests.
+        /// </summary>
+        public double ProcessorTimeSeconds { get; set;}
         public uint MemoryConsumedBytes { get; set;}
         /// <summary>
         /// Number of PlayFab API requests issued by the CloudScript function
