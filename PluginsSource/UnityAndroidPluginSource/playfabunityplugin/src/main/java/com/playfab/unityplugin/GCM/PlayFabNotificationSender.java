@@ -32,7 +32,6 @@ public class PlayFabNotificationSender {
     private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
     private static final String DATE_FORMAT_STRING = "dd-M-yyyy HH:mm:ss";
     public static void sendNotificationById(Context intent, String id) {
-        //PlayFabRegistrationIntentService intent = PlayFabRegistrationIntentService.GetInstance();
         PendingIntent pendingIntent = PendingIntent.getActivity(intent, REQUEST_CODE_UNITY_ACTIVITY,
                 intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()),
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -50,11 +49,11 @@ public class PlayFabNotificationSender {
         }
 
         String appIcon = pushNotificationPackage.Icon;
-        //Log.i(TAG,"Setting App Icon: " + appIcon);
+        //Log.i(TAG,"Setting App Icon: " + appIcon); //Intentionally commented for debug purpose.
         String title = pushNotificationPackage.Title;
-        //Log.i(TAG,"Setting Title: " + title);
+        //Log.i(TAG,"Setting Title: " + title); //Intentionally commented for debug purpose.
         Uri defaultSoundUri = Uri.parse(pushNotificationPackage.Sound);
-        //Log.i(TAG,"Setting Sound Uri: " + defaultSoundUri);
+        //Log.i(TAG,"Setting Sound Uri: " + defaultSoundUri); //Intentionally commented for debug purpose.
         String message = pushNotificationPackage.Message;
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent)
@@ -75,7 +74,6 @@ public class PlayFabNotificationSender {
     }
 
     public static void sendNotification(Context intent) {
-        //PlayFabRegistrationIntentService intent = PlayFabRegistrationIntentService.GetInstance();
         PendingIntent pendingIntent = PendingIntent.getActivity(intent, REQUEST_CODE_UNITY_ACTIVITY,
                 intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()),
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -114,15 +112,14 @@ public class PlayFabNotificationSender {
         mPackage.Message = message;
         mPackage.Sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString();
 
-        //Log.i(TAG, mPackage.Sound);
-        //Log.i(TAG, mPackage.Icon);
+        //Log.i(TAG, mPackage.Sound); //Intentionally commented for debug purpose.
+        //Log.i(TAG, mPackage.Icon); //Intentionally commented for debug purpose.
 
         SetPackageFromJson(intent,message,mPackage);
         return mPackage;
     }
 
     public static void setNotificationPackage(Context intent, String message){
-        //PlayFabRegistrationIntentService intent = PlayFabRegistrationIntentService.GetInstance();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(intent);
         PlayFabNotificationPackage mPackage = new PlayFabNotificationPackage();
         mPackage.Title = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_GAME_TITLE, "");
@@ -137,7 +134,7 @@ public class PlayFabNotificationSender {
         if(isJSONValid(message)){
             try {
                 JSONObject jObj = new JSONObject(message);
-                //Log.i(TAG,message);
+                //Log.i(TAG,message); //Intentionally commented for debug purpose.
                 Log.i(PlayFabUnityAndroidPlugin.TAG,"Message was JSON");
                 //This is so that the ENTIRE JSON message is not in the notification should someone forget to send the "Message" attribute.
                 mPackage.Message = "";
