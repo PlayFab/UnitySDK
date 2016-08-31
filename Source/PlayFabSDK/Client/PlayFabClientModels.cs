@@ -298,9 +298,13 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string ItemImageUrl { get; set;}
         /// <summary>
-        /// if true, then only a fixed number can ever be granted.
+        /// BETA: If true, then only a fixed number can ever be granted.
         /// </summary>
         public bool IsLimitedEdition { get; set;}
+        /// <summary>
+        /// BETA: If IsLImitedEdition is true, then this determines amount of the item initially available. Note that this fieldis ignored if the catalog item already existed in this catalog, or the field is less than 1.
+        /// </summary>
+        public int InitialLimitedEditionCount { get; set;}
     }
 
     [Serializable]
