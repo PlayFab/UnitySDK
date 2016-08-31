@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="unity-android">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/unity-android.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
