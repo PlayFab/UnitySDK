@@ -862,6 +862,33 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class GetActionGroupResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Action Group name
+        /// </summary>
+        public string Name { get; set;}
+        /// <summary>
+        /// Action Group ID
+        /// </summary>
+        public string Id { get; set;}
+    }
+
+    [Serializable]
+    public class GetAllActionGroupsRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
+    public class GetAllActionGroupsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// List of Action Groups.
+        /// </summary>
+        public List<GetActionGroupResult> ActionGroups { get; set;}
+    }
+
+    [Serializable]
     public class GetAllSegmentsRequest : PlayFabRequestCommon
     {
     }

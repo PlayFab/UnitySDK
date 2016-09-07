@@ -191,6 +191,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateCharacterDataResult> OnServerUpdateCharacterReadOnlyDataResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnServerAddPlayerTagRequestEvent;
         public event PlayFabResultEvent<AddPlayerTagResult> OnServerAddPlayerTagResultEvent;
+        public event PlayFabRequestEvent<GetAllActionGroupsRequest> OnServerGetAllActionGroupsRequestEvent;
+        public event PlayFabResultEvent<GetAllActionGroupsResult> OnServerGetAllActionGroupsResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnServerGetAllSegmentsRequestEvent;
         public event PlayFabResultEvent<GetAllSegmentsResult> OnServerGetAllSegmentsResultEvent;
         public event PlayFabRequestEvent<GetPlayersSegmentsRequest> OnServerGetPlayerSegmentsRequestEvent;
