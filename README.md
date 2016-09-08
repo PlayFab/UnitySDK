@@ -1,6 +1,6 @@
 UnitySDK README
 ========
-Welcome to the PlayFab Unity SDK. The quickest way to get started is to import our asset package: [UnitySDK.unitypackage](https://github.com/PlayFab/UnitySDK/raw/master/Packages/UnitySDK.unitypackage).
+The easist way to get started is to use our [EditorExtensions plugin](https://github.com/PlayFab/UnityEditorExtensions). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
 
 1. Overview:
 ----
@@ -19,10 +19,12 @@ To connect to the PlayFab service, your machine must be running TLS v1.2 or bett
 
 3. Installing or Upgrading the PlayFab UnitySdk
 ---
-The easist way to stay up-to-date is to install our latest asset package.
+The easist way to get started is to use our [EditorExtensions plugin](https://github.com/PlayFab/UnityEditorExtensions). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
+
+Alternatively you can install the latest [Asset Package](https://api.playfab.com/sdks/download/unity-v2ap) directly. 
 
 Detailed Instructions:
-* Download [UnitySDK.unitypackage](https://github.com/PlayFab/UnitySDK/raw/master/Packages/UnitySDK.unitypackage) to a safe location.
+* Download [UnitySDK.unitypackage](https://api.playfab.com/sdks/download/unity-v2ap) to a safe location.
 * [Only When updating]: Delete your {ProjectLocation}/assets/PlayFab/ directory.
  * You may also need to delete PlayFab specific files in your {ProjectLocation}/assets/Plugins/ directory.
  * Failing to do this step may cause compiler errors and/or unexpected runtime errors
