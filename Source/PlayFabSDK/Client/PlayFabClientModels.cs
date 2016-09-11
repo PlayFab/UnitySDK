@@ -1789,7 +1789,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated: Please use SteamStringIDs
         /// </summary>
-        [Obsolete("Use 'SteamStringIDs' instead", false)]
+        [Obsolete("Use 'SteamStringIDs' instead", true)]
         public List<ulong> SteamIDs { get; set;}
         /// <summary>
         /// Array of unique Steam identifiers (Steam profile IDs) for which the title needs to get PlayFab identifiers.
@@ -2714,7 +2714,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated - Do not use
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public string PublisherId { get; set;}
         /// <summary>
         /// Flags for which pieces of info to return for the user.
@@ -2891,7 +2891,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated - Do not use
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public bool? EnableQueue { get; set;}
     }
 
@@ -3261,7 +3261,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The Origination of a user is determined by the API call used to create the account. In the case of RegisterPlayFabUser, it will be Organic.
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public string Origination { get; set;}
     }
 
@@ -3453,7 +3453,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated - Do not use
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public string PublisherId { get; set;}
     }
 
@@ -3660,7 +3660,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated: Please use SteamStringId
         /// </summary>
-        [Obsolete("Use 'SteamStringId' instead", false)]
+        [Obsolete("Use 'SteamStringId' instead", true)]
         public ulong SteamId { get; set;}
         /// <summary>
         /// Unique Steam identifier for a user.

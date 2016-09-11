@@ -2453,7 +2453,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// Deprecated - Do not use
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public int? Version { get; set;}
         /// <summary>
         /// List of Cloud Script files to upload to create the new revision. Must have at least one file.
