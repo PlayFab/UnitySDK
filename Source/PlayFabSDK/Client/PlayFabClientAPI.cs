@@ -120,7 +120,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. Unlike other login API calls, LoginWithEmailAddress does not permit the creation of new accounts via the CreateAccountFlag. Email accounts must be created using the RegisterPlayFabUser API or added to existing accounts using AddUsernamePassword.
         /// </summary>
         public static void LoginWithPlayFab(LoginWithPlayFabRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
@@ -516,7 +516,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves a list of ranked friends of the current player for the given statistic, centered on the currently signed-in user
         /// </summary>
-        [Obsolete("Use 'GetFriendLeaderboardAroundPlayer' instead", false)]
+        [Obsolete("Use 'GetFriendLeaderboardAroundPlayer' instead", true)]
         public static void GetFriendLeaderboardAroundCurrentUser(GetFriendLeaderboardAroundCurrentUserRequest request, Action<GetFriendLeaderboardAroundCurrentUserResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
@@ -547,7 +547,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves a list of ranked users for the given statistic, centered on the currently signed-in user
         /// </summary>
-        [Obsolete("Use 'GetLeaderboardAroundPlayer' instead", false)]
+        [Obsolete("Use 'GetLeaderboardAroundPlayer' instead", true)]
         public static void GetLeaderboardAroundCurrentUser(GetLeaderboardAroundCurrentUserRequest request, Action<GetLeaderboardAroundCurrentUserResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
@@ -628,7 +628,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves the details of all title-specific statistics for the user
         /// </summary>
-        [Obsolete("Use 'GetPlayerStatistics' instead", false)]
+        [Obsolete("Use 'GetPlayerStatistics' instead", true)]
         public static void GetUserStatistics(GetUserStatisticsRequest request, Action<GetUserStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
@@ -669,7 +669,7 @@ namespace PlayFab
         /// <summary>
         /// Updates the values of the specified title-specific statistics for the user. By default, clients are not permitted to update statistics. Developers may override this setting in the Game Manager > Settings > API Features.
         /// </summary>
-        [Obsolete("Use 'UpdatePlayerStatistics' instead", false)]
+        [Obsolete("Use 'UpdatePlayerStatistics' instead", true)]
         public static void UpdateUserStatistics(UpdateUserStatisticsRequest request, Action<UpdateUserStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
@@ -990,7 +990,7 @@ namespace PlayFab
         /// <summary>
         /// Logs a custom analytics event
         /// </summary>
-        [Obsolete("Use 'WritePlayerEvent' instead", false)]
+        [Obsolete("Use 'WritePlayerEvent' instead", true)]
         public static void LogEvent(LogEventRequest request, Action<LogEventResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
@@ -1109,7 +1109,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves the title-specific URL for Cloud Script servers. This must be queried once, prior  to making any calls to RunCloudScript.
         /// </summary>
-        [Obsolete("Use 'ExecuteCloudScript' instead", false)]
+        [Obsolete("Use 'ExecuteCloudScript' instead", true)]
         public static void GetCloudScriptUrl(GetCloudScriptUrlRequest request, Action<GetCloudScriptUrlResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
@@ -1120,7 +1120,7 @@ namespace PlayFab
         /// <summary>
         /// Triggers a particular server action, passing the provided inputs to the hosted Cloud Script. An action in this context is a handler in the JavaScript. NOTE: Before calling this API, you must call GetCloudScriptUrl to be assigned a Cloud Script server URL. When using an official PlayFab SDK, this URL is stored internally in the SDK, but GetCloudScriptUrl must still be manually called.
         /// </summary>
-        [Obsolete("Use 'ExecuteCloudScript' instead", false)]
+        [Obsolete("Use 'ExecuteCloudScript' instead", true)]
         public static void RunCloudScript(RunCloudScriptRequest request, Action<RunCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");

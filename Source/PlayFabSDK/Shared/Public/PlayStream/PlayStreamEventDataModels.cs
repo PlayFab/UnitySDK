@@ -713,6 +713,10 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public List<LogStatement> Logs { get; set;}
         public double ExecutionTimeSeconds { get; set;}
+        /// <summary>
+        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP requests.
+        /// </summary>
+        public double ProcessorTimeSeconds { get; set;}
         public uint MemoryConsumedBytes { get; set;}
         /// <summary>
         /// Number of PlayFab API requests issued by the CloudScript function
@@ -846,7 +850,11 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public Dictionary<string,int> Statistics { get; set;}
         /// <summary>
-        /// Dictionary of player's total currency purchases. The key VTD is a sum of all player_realmoney_purchase events OrderTotals.
+        /// A sum of player's total purchases in USD across all currencies.
+        /// </summary>
+        public uint? TotalValueToDateInUSD { get; set;}
+        /// <summary>
+        /// Dictionary of player's total purchases by currency.
         /// </summary>
         public Dictionary<string,uint> ValuesToDate { get; set;}
         /// <summary>

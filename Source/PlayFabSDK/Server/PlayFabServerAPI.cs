@@ -235,7 +235,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves the details of all title-specific statistics for the user
         /// </summary>
-        [Obsolete("Use 'GetPlayerStatistics' instead", false)]
+        [Obsolete("Use 'GetPlayerStatistics' instead", true)]
         public static void GetUserStatistics(GetUserStatisticsRequest request, Action<GetUserStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
@@ -316,7 +316,7 @@ namespace PlayFab
         /// <summary>
         /// Updates the values of the specified title-specific statistics for the user. By default, clients are not permitted to update statistics. Developers may override this setting in the Game Manager > Settings > API Features.
         /// </summary>
-        [Obsolete("Use 'UpdatePlayerStatistics' instead", false)]
+        [Obsolete("Use 'UpdatePlayerStatistics' instead", true)]
         public static void UpdateUserStatistics(UpdateUserStatisticsRequest request, Action<UpdateUserStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
@@ -677,7 +677,7 @@ namespace PlayFab
         /// <summary>
         /// Logs a custom analytics event
         /// </summary>
-        [Obsolete("Use 'WritePlayerEvent' instead", false)]
+        [Obsolete("Use 'WritePlayerEvent' instead", true)]
         public static void LogEvent(LogEventRequest request, Action<LogEventResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
@@ -961,6 +961,16 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/AddPlayerTag", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Retrieve a list of all PlayStream actions groups.
+        /// </summary>
+        public static void GetAllActionGroups(GetAllActionGroupsRequest request, Action<GetAllActionGroupsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetAllActionGroups", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
