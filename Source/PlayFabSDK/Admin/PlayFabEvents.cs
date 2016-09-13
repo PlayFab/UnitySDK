@@ -149,6 +149,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ResetCharacterStatisticsResult> OnAdminResetCharacterStatisticsResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnAdminAddPlayerTagRequestEvent;
         public event PlayFabResultEvent<AddPlayerTagResult> OnAdminAddPlayerTagResultEvent;
+        public event PlayFabRequestEvent<GetAllActionGroupsRequest> OnAdminGetAllActionGroupsRequestEvent;
+        public event PlayFabResultEvent<GetAllActionGroupsResult> OnAdminGetAllActionGroupsResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnAdminGetAllSegmentsRequestEvent;
         public event PlayFabResultEvent<GetAllSegmentsResult> OnAdminGetAllSegmentsResultEvent;
         public event PlayFabRequestEvent<GetPlayersSegmentsRequest> OnAdminGetPlayerSegmentsRequestEvent;
