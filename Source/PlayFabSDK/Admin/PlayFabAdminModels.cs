@@ -1985,6 +1985,32 @@ namespace PlayFab.AdminModels
         public List<ResultTableNode> Nodes { get; set;}
     }
 
+    [Serializable]
+    public class RefundPurchaseRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique order ID for the purchase in question.
+        /// </summary>
+        public string OrderId { get; set;}
+        /// <summary>
+        /// Reason for refund. In the case of Facebook this must match one of their refund or dispute resolution enums (See: https://developers.facebook.com/docs/payments/implementation-guide/handling-disputes-refunds)
+        /// </summary>
+        public string Reason { get; set;}
+    }
+
+    [Serializable]
+    public class RefundPurchaseResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The order's updated purchase status.
+        /// </summary>
+        public string PurchaseStatus { get; set;}
+    }
+
     public enum Region
     {
         USCentral,
@@ -2076,6 +2102,43 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class ResetUserStatisticsResult : PlayFabResultCommon
     {
+    }
+
+    public enum ResolutionOutcome
+    {
+        Revoke,
+        Reinstate,
+        Manual
+    }
+
+    [Serializable]
+    public class ResolvePurchaseDisputeRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Unique order ID for the purchase in question.
+        /// </summary>
+        public string OrderId { get; set;}
+        /// <summary>
+        /// Reason for refund. In the case of Facebook this must match one of their refund or dispute resolution enums (See: https://developers.facebook.com/docs/payments/implementation-guide/handling-disputes-refunds)
+        /// </summary>
+        public string Reason { get; set;}
+        /// <summary>
+        /// Enum for the desired purchase result state after notifying the payment provider. Valid values are Revoke, Reinstate and Manual. Manual will cause no change to the order state.
+        /// </summary>
+        public ResolutionOutcome Outcome { get; set;}
+    }
+
+    [Serializable]
+    public class ResolvePurchaseDisputeResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The order's updated purchase status.
+        /// </summary>
+        public string PurchaseStatus { get; set;}
     }
 
     [Serializable]
