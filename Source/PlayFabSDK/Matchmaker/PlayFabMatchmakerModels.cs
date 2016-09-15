@@ -27,6 +27,20 @@ namespace PlayFab.MatchmakerModels
         public string PlayFabId { get; set;}
     }
 
+    [Serializable]
+    public class DeregisterGameRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier for the Game Server Instance that is being deregistered.
+        /// </summary>
+        public string LobbyId { get; set;}
+    }
+
+    [Serializable]
+    public class DeregisterGameResponse : PlayFabResultCommon
+    {
+    }
+
     /// <summary>
     /// A unique instance of an item in a user's inventory. Note, to retrieve additional information for an item instance (such as Tags, Description, or Custom Data that are set on the root catalog item), a call to GetCatalogItems is required. The Item ID of the instance can then be matched to a catalog entry, which contains the additional information. Also note that Custom Data is only set here from a call to UpdateUserInventoryItemCustomData.
     /// </summary>
@@ -140,6 +154,44 @@ namespace PlayFab.MatchmakerModels
         Japan,
         Brazil,
         Australia
+    }
+
+    [Serializable]
+    public class RegisterGameRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// IP address of the Game Server Instance.
+        /// </summary>
+        public string ServerHost { get; set;}
+        /// <summary>
+        /// Port number for communication with the Game Server Instance.
+        /// </summary>
+        public string ServerPort { get; set;}
+        /// <summary>
+        /// Unique identifier of the build running on the Game Server Instance.
+        /// </summary>
+        public string Build { get; set;}
+        /// <summary>
+        /// Unique identifier of the build running on the Game Server Instance.
+        /// </summary>
+        public Region Region { get; set;}
+        /// <summary>
+        /// Unique identifier of the build running on the Game Server Instance.
+        /// </summary>
+        public string GameMode { get; set;}
+        /// <summary>
+        /// Tags for the Game Server Instance
+        /// </summary>
+        public Dictionary<string,string> Tags { get; set;}
+    }
+
+    [Serializable]
+    public class RegisterGameResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Unique identifier generated for the Game Server Instance that is registered.
+        /// </summary>
+        public string LobbyId { get; set;}
     }
 
     [Serializable]
