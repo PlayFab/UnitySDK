@@ -27,6 +27,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateBansResult> OnServerUpdateBansResultEvent;
         public event PlayFabRequestEvent<DeleteUsersRequest> OnServerDeleteUsersRequestEvent;
         public event PlayFabResultEvent<DeleteUsersResult> OnServerDeleteUsersResultEvent;
+        public event PlayFabRequestEvent<GetFriendLeaderboardRequest> OnServerGetFriendLeaderboardRequestEvent;
+        public event PlayFabResultEvent<GetLeaderboardResult> OnServerGetFriendLeaderboardResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardRequest> OnServerGetLeaderboardRequestEvent;
         public event PlayFabResultEvent<GetLeaderboardResult> OnServerGetLeaderboardResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardAroundUserRequest> OnServerGetLeaderboardAroundUserRequestEvent;
@@ -127,6 +129,12 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UnlockContainerItemResult> OnServerUnlockContainerItemResultEvent;
         public event PlayFabRequestEvent<UpdateUserInventoryItemDataRequest> OnServerUpdateUserInventoryItemCustomDataRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnServerUpdateUserInventoryItemCustomDataResultEvent;
+        public event PlayFabRequestEvent<AddFriendRequest> OnServerAddFriendRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerAddFriendResultEvent;
+        public event PlayFabRequestEvent<GetFriendsListRequest> OnServerGetFriendsListRequestEvent;
+        public event PlayFabResultEvent<GetFriendsListResult> OnServerGetFriendsListResultEvent;
+        public event PlayFabRequestEvent<RemoveFriendRequest> OnServerRemoveFriendRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerRemoveFriendResultEvent;
         public event PlayFabRequestEvent<DeregisterGameRequest> OnServerDeregisterGameRequestEvent;
         public event PlayFabResultEvent<DeregisterGameResponse> OnServerDeregisterGameResultEvent;
         public event PlayFabRequestEvent<NotifyMatchmakerPlayerLeftRequest> OnServerNotifyMatchmakerPlayerLeftRequestEvent;
