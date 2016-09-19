@@ -123,6 +123,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves a list of ranked friends of the given player for the given statistic, starting from the indicated point in the leaderboard
+        /// </summary>
+        public static void GetFriendLeaderboard(GetFriendLeaderboardRequest request, Action<GetLeaderboardResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetFriendLeaderboard", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Retrieves a list of ranked users for the given statistic, starting from the indicated point in the leaderboard
         /// </summary>
         public static void GetLeaderboard(GetLeaderboardRequest request, Action<GetLeaderboardResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -625,6 +635,46 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Adds the Friend user to the friendlist of the user with PlayFabId. At least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized.
+        /// </summary>
+        public static void AddFriend(AddFriendRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/AddFriend", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Retrieves the current friends for the user with PlayFabId, constrained to users who have PlayFab accounts. Friends from linked accounts (Facebook, Steam) are also included. You may optionally exclude some linked services' friends.
+        /// </summary>
+        public static void GetFriendsList(GetFriendsListRequest request, Action<GetFriendsListResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetFriendsList", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Removes the specified friend from the the user's friend list
+        /// </summary>
+        public static void RemoveFriend(RemoveFriendRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/RemoveFriend", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Inform the matchmaker that a Game Server Instance is removed.
+        /// </summary>
+        public static void DeregisterGame(DeregisterGameRequest request, Action<DeregisterGameResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/DeregisterGame", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Informs the PlayFab match-making service that the user specified has left the Game Server Instance
         /// </summary>
         public static void NotifyMatchmakerPlayerLeft(NotifyMatchmakerPlayerLeftRequest request, Action<NotifyMatchmakerPlayerLeftResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -645,6 +695,26 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Set the state of the indicated Game Server Instance. Also update the heartbeat for the instance.
+        /// </summary>
+        public static void RefreshGameServerInstanceHeartbeat(RefreshGameServerInstanceHeartbeatRequest request, Action<RefreshGameServerInstanceHeartbeatResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/RefreshGameServerInstanceHeartbeat", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Inform the matchmaker that a new Game Server Instance is added.
+        /// </summary>
+        public static void RegisterGame(RegisterGameRequest request, Action<RegisterGameResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/RegisterGame", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Sets the custom data of the indicated Game Server Instance
         /// </summary>
         public static void SetGameServerInstanceData(SetGameServerInstanceDataRequest request, Action<SetGameServerInstanceDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -662,6 +732,16 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/SetGameServerInstanceState", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Set custom tags for the specified Game Server Instance
+        /// </summary>
+        public static void SetGameServerInstanceTags(SetGameServerInstanceTagsRequest request, Action<SetGameServerInstanceTagsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/SetGameServerInstanceTags", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
