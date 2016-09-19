@@ -47,8 +47,12 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetUserDataResult> OnAdminGetUserReadOnlyDataResultEvent;
         public event PlayFabRequestEvent<IncrementPlayerStatisticVersionRequest> OnAdminIncrementPlayerStatisticVersionRequestEvent;
         public event PlayFabResultEvent<IncrementPlayerStatisticVersionResult> OnAdminIncrementPlayerStatisticVersionResultEvent;
+        public event PlayFabRequestEvent<RefundPurchaseRequest> OnAdminRefundPurchaseRequestEvent;
+        public event PlayFabResultEvent<RefundPurchaseResponse> OnAdminRefundPurchaseResultEvent;
         public event PlayFabRequestEvent<ResetUserStatisticsRequest> OnAdminResetUserStatisticsRequestEvent;
         public event PlayFabResultEvent<ResetUserStatisticsResult> OnAdminResetUserStatisticsResultEvent;
+        public event PlayFabRequestEvent<ResolvePurchaseDisputeRequest> OnAdminResolvePurchaseDisputeRequestEvent;
+        public event PlayFabResultEvent<ResolvePurchaseDisputeResponse> OnAdminResolvePurchaseDisputeResultEvent;
         public event PlayFabRequestEvent<UpdatePlayerStatisticDefinitionRequest> OnAdminUpdatePlayerStatisticDefinitionRequestEvent;
         public event PlayFabResultEvent<UpdatePlayerStatisticDefinitionResult> OnAdminUpdatePlayerStatisticDefinitionResultEvent;
         public event PlayFabRequestEvent<UpdateUserDataRequest> OnAdminUpdateUserDataRequestEvent;

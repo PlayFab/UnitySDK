@@ -44,6 +44,31 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class AddFriendRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// PlayFab identifier of the player to add a new friend.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// The PlayFab identifier of the user being added.
+        /// </summary>
+        public string FriendPlayFabId { get; set;}
+        /// <summary>
+        /// The PlayFab username of the user being added
+        /// </summary>
+        public string FriendUsername { get; set;}
+        /// <summary>
+        /// Email address of the user being added.
+        /// </summary>
+        public string FriendEmail { get; set;}
+        /// <summary>
+        /// Title-specific display name of the user to being added.
+        /// </summary>
+        public string FriendTitleDisplayName { get; set;}
+    }
+
+    [Serializable]
     public class AddPlayerTagRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -711,6 +736,20 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class DeregisterGameRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier for the Game Server Instance that is being deregistered.
+        /// </summary>
+        public string LobbyId { get; set;}
+    }
+
+    [Serializable]
+    public class DeregisterGameResponse : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class EmptyResult : PlayFabResultCommon
     {
     }
@@ -1092,6 +1131,61 @@ namespace PlayFab.ServerModels
         /// URL for downloading content via HTTP GET or HEAD method. The URL will expire in 1 hour.
         /// </summary>
         public string URL { get; set;}
+    }
+
+    [Serializable]
+    public class GetFriendLeaderboardRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The player whose friend leaderboard to get
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Statistic used to rank friends for this leaderboard.
+        /// </summary>
+        public string StatisticName { get; set;}
+        /// <summary>
+        /// Position in the leaderboard to start this listing (defaults to the first entry).
+        /// </summary>
+        public int StartPosition { get; set;}
+        /// <summary>
+        /// Maximum number of entries to retrieve.
+        /// </summary>
+        public int MaxResultsCount { get; set;}
+        /// <summary>
+        /// Indicates whether Steam service friends should be included in the response. Default is true.
+        /// </summary>
+        public bool? IncludeSteamFriends { get; set;}
+        /// <summary>
+        /// Indicates whether Facebook friends should be included in the response. Default is true.
+        /// </summary>
+        public bool? IncludeFacebookFriends { get; set;}
+    }
+
+    [Serializable]
+    public class GetFriendsListRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// PlayFab identifier of the player whose friend list to get.
+        /// </summary>
+        public string PlayFabId { get; set;}
+        /// <summary>
+        /// Indicates whether Steam service friends should be included in the response. Default is true.
+        /// </summary>
+        public bool? IncludeSteamFriends { get; set;}
+        /// <summary>
+        /// Indicates whether Facebook friends should be included in the response. Default is true.
+        /// </summary>
+        public bool? IncludeFacebookFriends { get; set;}
+    }
+
+    [Serializable]
+    public class GetFriendsListResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Array of friends found.
+        /// </summary>
+        public List<FriendInfo> Friends { get; set;}
     }
 
     [Serializable]
@@ -2557,6 +2651,82 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class RefreshGameServerInstanceHeartbeatRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier of the Game Server Instance for which the heartbeat is updated.
+        /// </summary>
+        public string LobbyId { get; set;}
+    }
+
+    [Serializable]
+    public class RefreshGameServerInstanceHeartbeatResult : PlayFabResultCommon
+    {
+    }
+
+    public enum Region
+    {
+        USCentral,
+        USEast,
+        EUWest,
+        Singapore,
+        Japan,
+        Brazil,
+        Australia
+    }
+
+    [Serializable]
+    public class RegisterGameRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// IP address of the Game Server Instance.
+        /// </summary>
+        public string ServerHost { get; set;}
+        /// <summary>
+        /// Port number for communication with the Game Server Instance.
+        /// </summary>
+        public string ServerPort { get; set;}
+        /// <summary>
+        /// Unique identifier of the build running on the Game Server Instance.
+        /// </summary>
+        public string Build { get; set;}
+        /// <summary>
+        /// Unique identifier of the build running on the Game Server Instance.
+        /// </summary>
+        public Region Region { get; set;}
+        /// <summary>
+        /// Unique identifier of the build running on the Game Server Instance.
+        /// </summary>
+        public string GameMode { get; set;}
+        /// <summary>
+        /// Tags for the Game Server Instance
+        /// </summary>
+        public Dictionary<string,string> Tags { get; set;}
+    }
+
+    [Serializable]
+    public class RegisterGameResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Unique identifier generated for the Game Server Instance that is registered.
+        /// </summary>
+        public string LobbyId { get; set;}
+    }
+
+    [Serializable]
+    public class RemoveFriendRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// PlayFab identifier of the friend account which is to be removed.
+        /// </summary>
+        public string FriendPlayFabId { get; set;}
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId { get; set;}
+    }
+
+    [Serializable]
     public class RemovePlayerTagRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2779,6 +2949,24 @@ namespace PlayFab.ServerModels
 
     [Serializable]
     public class SetGameServerInstanceStateResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class SetGameServerInstanceTagsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier of the Game Server Instance to be updated.
+        /// </summary>
+        public string LobbyId { get; set;}
+        /// <summary>
+        /// Tags to set for the specified Game Server Instance. Note that this is the complete list of tags to be associated with the Game Server Instance.
+        /// </summary>
+        public Dictionary<string,string> Tags { get; set;}
+    }
+
+    [Serializable]
+    public class SetGameServerInstanceTagsResult : PlayFabResultCommon
     {
     }
 
