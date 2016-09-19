@@ -308,7 +308,7 @@ namespace PlayFab.Internal
                 reqContainer.ApiResult.CustomData = reqContainer.CustomData;
 
 #if !DISABLE_PLAYFABCLIENT_API
-                UserSettings userSettings = null;
+                ClientModels.UserSettings userSettings = null;
                 var res = reqContainer.ApiResult as LoginResult;
                 var regRes = reqContainer.ApiResult as RegisterPlayFabUserResult;
                 if (res != null)
