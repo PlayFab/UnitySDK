@@ -308,9 +308,9 @@ namespace PlayFab.Internal
                 reqContainer.ApiResult.CustomData = reqContainer.CustomData;
 
 #if !DISABLE_PLAYFABCLIENT_API
-                UserSettings userSettings = null;
-                var res = reqContainer.ApiResult as LoginResult;
-                var regRes = reqContainer.ApiResult as RegisterPlayFabUserResult;
+                ClientModels.UserSettings userSettings = null;
+                var res = reqContainer.ApiResult as ClientModels.LoginResult;
+                var regRes = reqContainer.ApiResult as ClientModels.RegisterPlayFabUserResult;
                 if (res != null)
                 {
                     userSettings = res.SettingsForUser;
@@ -330,7 +330,7 @@ namespace PlayFab.Internal
                     }
                 }
 
-                var cloudScriptUrl = reqContainer.ApiResult as GetCloudScriptUrlResult;
+                var cloudScriptUrl = reqContainer.ApiResult as ClientModels.GetCloudScriptUrlResult;
                 if (cloudScriptUrl != null)
                 {
                     PlayFabSettings.LogicServerUrl = cloudScriptUrl.Url;
