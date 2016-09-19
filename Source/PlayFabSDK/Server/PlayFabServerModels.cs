@@ -2650,6 +2650,20 @@ namespace PlayFab.ServerModels
         public UserAccountInfo UserInfo { get; set;}
     }
 
+    [Serializable]
+    public class RefreshGameServerInstanceHeartbeatRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier of the Game Server Instance for which the heartbeat is updated.
+        /// </summary>
+        public string LobbyId { get; set;}
+    }
+
+    [Serializable]
+    public class RefreshGameServerInstanceHeartbeatResult : PlayFabResultCommon
+    {
+    }
+
     public enum Region
     {
         USCentral,
@@ -2935,6 +2949,24 @@ namespace PlayFab.ServerModels
 
     [Serializable]
     public class SetGameServerInstanceStateResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class SetGameServerInstanceTagsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier of the Game Server Instance to be updated.
+        /// </summary>
+        public string LobbyId { get; set;}
+        /// <summary>
+        /// Tags to set for the specified Game Server Instance. Note that this is the complete list of tags to be associated with the Game Server Instance.
+        /// </summary>
+        public Dictionary<string,string> Tags { get; set;}
+    }
+
+    [Serializable]
+    public class SetGameServerInstanceTagsResult : PlayFabResultCommon
     {
     }
 
