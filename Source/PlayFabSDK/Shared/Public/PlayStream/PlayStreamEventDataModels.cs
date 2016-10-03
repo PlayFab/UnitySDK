@@ -430,6 +430,7 @@ namespace PlayFab.PlayStreamModels
     }
     public class TitleScheduledCloudScriptExecutedEventData : PlayStreamEventBase
     {
+        public NameId ScheduledTask;
         public string FunctionName;
         public ExecuteCloudScriptResult CloudScriptExecutionResult;
     }
@@ -944,14 +945,20 @@ namespace PlayFab.PlayStreamModels
         Month
     }
 
+    [Serializable]
+    public class NameId
+    {
+        public string Name { get; set;}
+        public string Id { get; set;}
+    }
+
     public enum SourceType
     {
         Admin,
         BackEnd,
         GameClient,
         GameServer,
-        Partner,
-        Stream
+        Partner
     }
 
     [Serializable]

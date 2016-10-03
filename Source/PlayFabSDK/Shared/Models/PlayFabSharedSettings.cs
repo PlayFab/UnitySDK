@@ -24,6 +24,4 @@ public class PlayFabSharedSettings : ScriptableObject
     public int LoggerPort = 0;
     public bool EnableRealTimeLogging = false;
     public int LogCapLimit = 30;
-
-    public bool IsTesting;
 }

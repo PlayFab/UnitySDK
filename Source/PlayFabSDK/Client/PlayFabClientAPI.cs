@@ -708,6 +708,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the current server time
+        /// </summary>
+        public static void GetTime(GetTimeRequest request, Action<GetTimeResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/GetTime", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Retrieves the key-value store of custom title settings
         /// </summary>
         public static void GetTitleData(GetTitleDataRequest request, Action<GetTitleDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)

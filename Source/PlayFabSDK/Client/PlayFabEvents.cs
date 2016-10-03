@@ -130,6 +130,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPublisherDataResult> OnGetPublisherDataResultEvent;
         public event PlayFabRequestEvent<GetStoreItemsRequest> OnGetStoreItemsRequestEvent;
         public event PlayFabResultEvent<GetStoreItemsResult> OnGetStoreItemsResultEvent;
+        public event PlayFabRequestEvent<GetTimeRequest> OnGetTimeRequestEvent;
+        public event PlayFabResultEvent<GetTimeResult> OnGetTimeResultEvent;
         public event PlayFabRequestEvent<GetTitleDataRequest> OnGetTitleDataRequestEvent;
         public event PlayFabResultEvent<GetTitleDataResult> OnGetTitleDataResultEvent;
         public event PlayFabRequestEvent<GetTitleNewsRequest> OnGetTitleNewsRequestEvent;

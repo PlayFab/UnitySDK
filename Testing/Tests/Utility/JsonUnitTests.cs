@@ -306,5 +306,16 @@ namespace PlayFab.UUnit
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
+
+        [UUnitTest]
+        public void TestDeserializeToObject(UUnitTestContext testContext)
+        {
+            var testInt = PlayFabSimpleJson.DeserializeObject<object>("1");
+            var testString = PlayFabSimpleJson.DeserializeObject<object>("\"a string\"");
+            testContext.IntEquals((int)(ulong)testInt, 1);
+            testContext.StringEquals((string)testString, "a string");
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
     }
 }

@@ -2330,8 +2330,7 @@ namespace PlayFab.AdminModels
         BackEnd,
         GameClient,
         GameServer,
-        Partner,
-        Stream
+        Partner
     }
 
     public enum StatisticAggregationMethod

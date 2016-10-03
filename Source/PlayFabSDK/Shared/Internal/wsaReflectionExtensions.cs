@@ -27,6 +27,10 @@ public static class UUnitWsaReflectionExtensions
         return delegateInstance.Method.Name;
     }
 #else
+    public static bool IsInstanceOfType(this Type type, object obj)
+    {
+        return obj != null && type.GetTypeInfo().IsAssignableFrom(obj.GetType().GetTypeInfo());
+    }
     public static string GetDelegateName(this Delegate delegateInstance)
     {
         return delegateInstance.ToString();
