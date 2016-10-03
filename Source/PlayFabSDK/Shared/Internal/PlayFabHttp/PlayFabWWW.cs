@@ -175,10 +175,11 @@ namespace PlayFab.Internal
             }
             else
             {
-#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
-                if (PlayFabSettings.CompressApiData)
+                try
                 {
-                    try
+#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
+                    string encoding;
+                    if (www.responseHeaders.TryGetValue("Content-Encoding", out encoding) && encoding.ToLower() == "gzip")
                     {
                         var stream = new MemoryStream(www.bytes);
                         using (var gZipStream = new GZipStream(stream, CompressionMode.Decompress, false))
@@ -199,19 +200,16 @@ namespace PlayFab.Internal
                             }
                         }
                     }
-                    catch
+                    else
+#endif
                     {
-                        //if this was not a valid GZip response, then send the message back as text to the call back.
                         wwwSuccessCallback(www.text);
                     }
                 }
-                else
+                catch (Exception e)
                 {
-#endif
-                    wwwSuccessCallback(www.text);
-#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
+                    wwwErrorCallback("Unhandled error in PlayFabWWW: " + e);
                 }
-#endif
             }
         }
 
