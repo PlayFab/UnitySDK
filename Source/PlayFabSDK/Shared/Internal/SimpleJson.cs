@@ -1378,8 +1378,9 @@ namespace PlayFab.Json
         public virtual object DeserializeObject(object value, Type type)
         {
             if (type == null) throw new ArgumentNullException("type");
-            string str = value as string;
+            if (value != null && type.IsInstanceOfType(value)) return value;
 
+            string str = value as string;
             if (type == typeof(Guid) && string.IsNullOrEmpty(str))
                 return default(Guid);
 

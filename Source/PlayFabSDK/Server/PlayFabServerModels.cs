@@ -1695,6 +1695,20 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class GetTimeRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
+    public class GetTimeResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Current server time when the request was received, in UTC
+        /// </summary>
+        public DateTime Time { get; set;}
+    }
+
+    [Serializable]
     public class GetTitleDataRequest : PlayFabRequestCommon
     {
         /// <summary>

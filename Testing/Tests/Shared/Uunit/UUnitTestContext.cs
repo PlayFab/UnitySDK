@@ -221,7 +221,9 @@ namespace PlayFab.UUnit
 
         public void ObjEquals(object wanted, object got, string message = null)
         {
-            if (wanted.Equals(got))
+            if (wanted == null && got == null)
+                return;
+            if (wanted != null && got != null && wanted.Equals(got))
                 return;
 
             if (string.IsNullOrEmpty(message))

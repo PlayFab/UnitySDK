@@ -73,6 +73,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetCatalogItemsResult> OnServerGetCatalogItemsResultEvent;
         public event PlayFabRequestEvent<GetPublisherDataRequest> OnServerGetPublisherDataRequestEvent;
         public event PlayFabResultEvent<GetPublisherDataResult> OnServerGetPublisherDataResultEvent;
+        public event PlayFabRequestEvent<GetTimeRequest> OnServerGetTimeRequestEvent;
+        public event PlayFabResultEvent<GetTimeResult> OnServerGetTimeResultEvent;
         public event PlayFabRequestEvent<GetTitleDataRequest> OnServerGetTitleDataRequestEvent;
         public event PlayFabResultEvent<GetTitleDataResult> OnServerGetTitleDataResultEvent;
         public event PlayFabRequestEvent<GetTitleDataRequest> OnServerGetTitleInternalDataRequestEvent;
