@@ -88,6 +88,9 @@ namespace PlayFab.UUnit
         }
         private void TestInstCallbacks_GeneralOnly_OnGlobalEventHandler(ApiProcessingEventArgs eventArgs)
         {
+            if (eventArgs.ApiEndpoint != "/Client/LoginWithCustomID")
+                return;
+
             if (eventArgs.EventType == ApiProcessingEventType.Pre)
             {
                 Callbacks.Add("OnRequest_InstGl");

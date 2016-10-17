@@ -51,7 +51,7 @@ namespace PlayFab.Internal
             }
         }
 
-        protected bool initialized { get; set; }
+        protected bool initialized;
 
         protected virtual void Initialize() { }
     }

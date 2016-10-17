@@ -11,7 +11,7 @@ namespace PlayFab.Internal
             var attribRequest = new AttributeInstallRequest();
             switch (PlayFabSettings.AdvertisingIdType)
             {
-                case PlayFabSettings.AD_TYPE_ANDROID_ID: attribRequest.Android_Id = PlayFabSettings.AdvertisingIdValue; break;
+                case PlayFabSettings.AD_TYPE_ANDROID_ID: attribRequest.Adid = PlayFabSettings.AdvertisingIdValue; break;
                 case PlayFabSettings.AD_TYPE_IDFA: attribRequest.Idfa = PlayFabSettings.AdvertisingIdValue; break;
             }
             PlayFabClientAPI.AttributeInstall(attribRequest, OnAttributeInstall, null);

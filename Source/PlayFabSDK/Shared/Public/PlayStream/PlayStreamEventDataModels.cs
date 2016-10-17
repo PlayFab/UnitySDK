@@ -35,6 +35,7 @@ namespace PlayFab.PlayStreamModels
     public class CharacterCreatedEventData : PlayStreamEventBase
     {
         public DateTime Created;
+        public string CharacterName;
         public string TitleId;
         public string PlayerId;
     }
@@ -98,11 +99,68 @@ namespace PlayFab.PlayStreamModels
         public string CampaignId;
         public string TitleId;
     }
+    public class PlayerAdClosedEventData : PlayStreamEventBase
+    {
+        public string AdPlacementId;
+        public string AdPlacementName;
+        public string RewardId;
+        public string RewardName;
+        public string AdUnit;
+        public string TitleId;
+    }
     public class PlayerAddedTitleEventData : PlayStreamEventBase
     {
         public LoginIdentityProvider? Platform;
         public string PlatformUserId;
         public string DisplayName;
+        public string TitleId;
+    }
+    public class PlayerAdEndedEventData : PlayStreamEventBase
+    {
+        public string AdPlacementId;
+        public string AdPlacementName;
+        public string RewardId;
+        public string RewardName;
+        public string AdUnit;
+        public string TitleId;
+    }
+    public class PlayerAdOpenedEventData : PlayStreamEventBase
+    {
+        public string AdPlacementId;
+        public string AdPlacementName;
+        public string RewardId;
+        public string RewardName;
+        public string AdUnit;
+        public string TitleId;
+    }
+    public class PlayerAdRewardedEventData : PlayStreamEventBase
+    {
+        public int? ViewsRemainingThisPeriod;
+        public List<string> ActionGroupDebugMessages;
+        public string AdPlacementId;
+        public string AdPlacementName;
+        public string RewardId;
+        public string RewardName;
+        public string AdUnit;
+        public string TitleId;
+    }
+    public class PlayerAdRewardValuedEventData : PlayStreamEventBase
+    {
+        public double RevenueShare;
+        public string AdPlacementId;
+        public string AdPlacementName;
+        public string RewardId;
+        public string RewardName;
+        public string AdUnit;
+        public string TitleId;
+    }
+    public class PlayerAdStartedEventData : PlayStreamEventBase
+    {
+        public string AdPlacementId;
+        public string AdPlacementName;
+        public string RewardId;
+        public string RewardName;
+        public string AdUnit;
         public string TitleId;
     }
     public class PlayerBannedEventData : PlayStreamEventBase
@@ -171,6 +229,10 @@ namespace PlayFab.PlayStreamModels
         public string LobbyId;
         public string GameMode;
         public string Region;
+        public string ServerBuildVersion;
+        public string ServerHost;
+        public uint ServerPort;
+        public string ServerHostInstanceId;
         public string TitleId;
     }
     public class PlayerLeftLobbyEventData : PlayStreamEventBase
@@ -178,6 +240,10 @@ namespace PlayFab.PlayStreamModels
         public string LobbyId;
         public string GameMode;
         public string Region;
+        public string ServerBuildVersion;
+        public string ServerHost;
+        public uint ServerPort;
+        public string ServerHostInstanceId;
         public string TitleId;
     }
     public class PlayerLinkedAccountEventData : PlayStreamEventBase
@@ -199,6 +265,10 @@ namespace PlayFab.PlayStreamModels
         public string LobbyId;
         public string GameMode;
         public string Region;
+        public string ServerBuildVersion;
+        public string ServerHost;
+        public uint ServerPort;
+        public string ServerHostInstanceId;
         public string TitleId;
     }
     public class PlayerPasswordResetLinkSentEventData : PlayStreamEventBase
@@ -245,6 +315,7 @@ namespace PlayFab.PlayStreamModels
         public uint Version;
         public int StatisticValue;
         public int? StatisticPreviousValue;
+        public StatisticAggregationMethod? AggregationMethod;
         public string TitleId;
     }
     public class PlayerStatisticDeletedEventData : PlayStreamEventBase
@@ -303,6 +374,32 @@ namespace PlayFab.PlayStreamModels
     #endregion player
 
     #region session
+    public class GameLobbyEndedEventData : PlayStreamEventBase
+    {
+        public string TitleId;
+        public string GameMode;
+        public string Region;
+        public string ServerBuildVersion;
+        public string ServerHost;
+        public uint ServerPort;
+        public string ServerHostInstanceId;
+        public Dictionary<string,string> Tags;
+    }
+    public class GameLobbyStartedEventData : PlayStreamEventBase
+    {
+        public string GameServerData;
+        public string CustomCommandLineData;
+        public string CustomMatchmakerEndpoint;
+        public int? MaxPlayers;
+        public string TitleId;
+        public string GameMode;
+        public string Region;
+        public string ServerBuildVersion;
+        public string ServerHost;
+        public uint ServerPort;
+        public string ServerHostInstanceId;
+        public Dictionary<string,string> Tags;
+    }
     public class SessionEndedEventData : PlayStreamEventBase
     {
         public DateTime EndTime;
@@ -335,6 +432,13 @@ namespace PlayFab.PlayStreamModels
         public List<Region> Regions;
         public int MinFreeGameSlots;
         public int MaxGamesPerHost;
+        public string UserId;
+        public string DeveloperId;
+    }
+    public class TitleAPISettingsChangedEventData : PlayStreamEventBase
+    {
+        public APISettings PreviousSettingsValues;
+        public APISettings SettingsValues;
         public string UserId;
         public string DeveloperId;
     }
@@ -480,15 +584,15 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// Unique instance ID of the inventory item.
         /// </summary>
-        public string InstanceId { get; set;}
+        public string InstanceId;
         /// <summary>
         /// Catalog item ID of the inventory item.
         /// </summary>
-        public string ItemId { get; set;}
+        public string ItemId;
         /// <summary>
         /// Catalog version of the inventory item.
         /// </summary>
-        public string CatalogVersion { get; set;}
+        public string CatalogVersion;
     }
 
     public enum PaymentType
@@ -669,12 +773,12 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// 'Debug', 'Info', or 'Error'
         /// </summary>
-        public string Level { get; set;}
-        public string Message { get; set;}
+        public string Level;
+        public string Message;
         /// <summary>
         /// Optional object accompanying the message as contextual information
         /// </summary>
-        public object Data { get; set;}
+        public object Data;
     }
 
     [Serializable]
@@ -683,15 +787,15 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
         /// </summary>
-        public string Error { get; set;}
+        public string Error;
         /// <summary>
         /// Details about the error
         /// </summary>
-        public string Message { get; set;}
+        public string Message;
         /// <summary>
         /// Point during the execution of the script at which the error occurred, if any
         /// </summary>
-        public string StackTrace { get; set;}
+        public string StackTrace;
     }
 
     [Serializable]
@@ -700,37 +804,37 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// The name of the function that executed
         /// </summary>
-        public string FunctionName { get; set;}
+        public string FunctionName;
         /// <summary>
         /// The revision of the CloudScript that executed
         /// </summary>
-        public int Revision { get; set;}
+        public int Revision;
         /// <summary>
         /// The object returned from the CloudScript function, if any
         /// </summary>
-        public object FunctionResult { get; set;}
+        public object FunctionResult;
         /// <summary>
         /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
         /// </summary>
-        public List<LogStatement> Logs { get; set;}
-        public double ExecutionTimeSeconds { get; set;}
+        public List<LogStatement> Logs;
+        public double ExecutionTimeSeconds;
         /// <summary>
         /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP requests.
         /// </summary>
-        public double ProcessorTimeSeconds { get; set;}
-        public uint MemoryConsumedBytes { get; set;}
+        public double ProcessorTimeSeconds;
+        public uint MemoryConsumedBytes;
         /// <summary>
         /// Number of PlayFab API requests issued by the CloudScript function
         /// </summary>
-        public int APIRequestsIssued { get; set;}
+        public int APIRequestsIssued;
         /// <summary>
         /// Number of external HTTP requests issued by the CloudScript function
         /// </summary>
-        public int HttpRequestsIssued { get; set;}
+        public int HttpRequestsIssued;
         /// <summary>
         /// Information about the error, if any, that occured during execution
         /// </summary>
-        public ScriptExecutionError Error { get; set;}
+        public ScriptExecutionError Error;
     }
 
     [Serializable]
@@ -739,15 +843,15 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// Attribution network name
         /// </summary>
-        public string Platform { get; set;}
+        public string Platform;
         /// <summary>
         /// Attribution campaign identifier
         /// </summary>
-        public string CampaignId { get; set;}
+        public string CampaignId;
         /// <summary>
         /// UTC time stamp of attribution
         /// </summary>
-        public DateTime AttributedAt { get; set;}
+        public DateTime AttributedAt;
     }
 
     public enum PushNotificationPlatform
@@ -762,11 +866,11 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// Push notification platform
         /// </summary>
-        public PushNotificationPlatform? Platform { get; set;}
+        public PushNotificationPlatform? Platform;
         /// <summary>
         /// Notification configured endpoint
         /// </summary>
-        public string NotificationEndpointARN { get; set;}
+        public string NotificationEndpointARN;
     }
 
     [Serializable]
@@ -775,19 +879,19 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// Authentication platform
         /// </summary>
-        public LoginIdentityProvider? Platform { get; set;}
+        public LoginIdentityProvider? Platform;
         /// <summary>
         /// Platform user identifier
         /// </summary>
-        public string PlatformUserId { get; set;}
+        public string PlatformUserId;
         /// <summary>
         /// Linked account's username
         /// </summary>
-        public string Username { get; set;}
+        public string Username;
         /// <summary>
         /// Linked account's email
         /// </summary>
-        public string Email { get; set;}
+        public string Email;
     }
 
     [Serializable]
@@ -796,19 +900,19 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// Statistic ID
         /// </summary>
-        public string Id { get; set;}
+        public string Id;
         /// <summary>
         /// Statistic version (0 if not a versioned statistic)
         /// </summary>
-        public int StatisticVersion { get; set;}
+        public int StatisticVersion;
         /// <summary>
         /// Current statistic value
         /// </summary>
-        public int StatisticValue { get; set;}
+        public int StatisticValue;
         /// <summary>
         /// Statistic name
         /// </summary>
-        public string Name { get; set;}
+        public string Name;
     }
 
     [Serializable]
@@ -817,71 +921,116 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// PlayFab Player ID
         /// </summary>
-        public string PlayerId { get; set;}
+        public string PlayerId;
         /// <summary>
         /// Title ID this profile applies to
         /// </summary>
-        public string TitleId { get; set;}
+        public string TitleId;
         /// <summary>
         /// Player Display Name
         /// </summary>
-        public string DisplayName { get; set;}
+        public string DisplayName;
         /// <summary>
         /// Publisher this player belongs to
         /// </summary>
-        public string PublisherId { get; set;}
+        public string PublisherId;
         /// <summary>
         /// Player account origination
         /// </summary>
-        public LoginIdentityProvider? Origination { get; set;}
+        public LoginIdentityProvider? Origination;
         /// <summary>
         /// Player record created
         /// </summary>
-        public DateTime? Created { get; set;}
+        public DateTime? Created;
         /// <summary>
         /// Last login
         /// </summary>
-        public DateTime? LastLogin { get; set;}
+        public DateTime? LastLogin;
         /// <summary>
         /// Banned until UTC Date. If permanent ban this is set for 20 years after the original ban date.
         /// </summary>
-        public DateTime? BannedUntil { get; set;}
+        public DateTime? BannedUntil;
         /// <summary>
         /// Dictionary of player's statistics using only the latest version's value
         /// </summary>
-        public Dictionary<string,int> Statistics { get; set;}
+        public Dictionary<string,int> Statistics;
         /// <summary>
         /// A sum of player's total purchases in USD across all currencies.
         /// </summary>
-        public uint? TotalValueToDateInUSD { get; set;}
+        public uint? TotalValueToDateInUSD;
         /// <summary>
         /// Dictionary of player's total purchases by currency.
         /// </summary>
-        public Dictionary<string,uint> ValuesToDate { get; set;}
+        public Dictionary<string,uint> ValuesToDate;
         /// <summary>
         /// List of player's tags for segmentation.
         /// </summary>
-        public List<string> Tags { get; set;}
+        public List<string> Tags;
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
-        public Dictionary<string,int> VirtualCurrencyBalances { get; set;}
+        public Dictionary<string,int> VirtualCurrencyBalances;
         /// <summary>
         /// Array of ad campaigns player has been attributed to
         /// </summary>
-        public List<AdCampaignAttribution> AdCampaignAttributions { get; set;}
+        public List<AdCampaignAttribution> AdCampaignAttributions;
         /// <summary>
         /// Array of configured push notification end points
         /// </summary>
-        public List<PushNotificationRegistration> PushNotificationRegistrations { get; set;}
+        public List<PushNotificationRegistration> PushNotificationRegistrations;
         /// <summary>
         /// Array of third party accounts linked to this player
         /// </summary>
-        public List<PlayerLinkedAccount> LinkedAccounts { get; set;}
+        public List<PlayerLinkedAccount> LinkedAccounts;
         /// <summary>
         /// Array of player statistics
         /// </summary>
-        public List<PlayerStatistic> PlayerStatistics { get; set;}
+        public List<PlayerStatistic> PlayerStatistics;
+    }
+
+    [Serializable]
+    public class APISettings
+    {
+        /// <summary>
+        /// Allow game clients to add to virtual currency balances via API.
+        /// </summary>
+        public bool AllowClientToAddVirtualCurrency;
+        /// <summary>
+        /// Allow game clients to subtract from virtual currency balances via API.
+        /// </summary>
+        public bool AllowClientToSubtractVirtualCurrency;
+        /// <summary>
+        /// Allow game clients to update statistic values via API.
+        /// </summary>
+        public bool AllowClientToPostPlayerStatistics;
+        /// <summary>
+        /// Allow clients to start multiplayer game sessions via API.
+        /// </summary>
+        public bool AllowClientToStartGames;
+        /// <summary>
+        /// Allow game servers to delete player accounts via API.
+        /// </summary>
+        public bool AllowServerToDeleteUsers;
+        /// <summary>
+        /// Use payment provider's sandbox mode (if available) for real-money purchases. This can be useful when testing in-game purchasing in order to avoid being charged.
+        /// </summary>
+        public bool UseSandboxPayments;
+        /// <summary>
+        /// Multiplayer game sessions are hosted on servers external to PlayFab.
+        /// </summary>
+        public bool UseExternalGameServerProvider;
+        /// <summary>
+        /// Allow players to choose display names that may be in use by other players, i.e. do not enforce uniqueness of display names. Note: if this option is enabled, it cannot be disabled later.
+        /// </summary>
+        public bool AllowNonUniquePlayerDisplayNames;
+    }
+
+    public enum StatisticAggregationMethod
+    {
+        Last,
+        Min,
+        Max,
+        Sum
     }
 
     public enum Region
@@ -948,8 +1097,8 @@ namespace PlayFab.PlayStreamModels
     [Serializable]
     public class NameId
     {
-        public string Name { get; set;}
-        public string Id { get; set;}
+        public string Name;
+        public string Id;
     }
 
     public enum SourceType
@@ -967,15 +1116,15 @@ namespace PlayFab.PlayStreamModels
         /// <summary>
         /// The ID of the trigger that caused this event to be created.
         /// </summary>
-        public string ParentTriggerId { get; set;}
+        public string ParentTriggerId;
         /// <summary>
         /// The ID of the previous event that caused this event to be created by hitting a trigger.
         /// </summary>
-        public string ParentEventId { get; set;}
+        public string ParentEventId;
         /// <summary>
         /// If true, then this event was allowed to trigger subsequent events in a trigger.
         /// </summary>
-        public bool TriggeredEvents { get; set;}
+        public bool TriggeredEvents;
     }
 
 }

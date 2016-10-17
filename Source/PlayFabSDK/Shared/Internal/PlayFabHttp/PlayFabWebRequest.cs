@@ -329,12 +329,6 @@ namespace PlayFab.Internal
                         ResultQueue.Enqueue(PlayFabIdfa.OnPlayFabLogin);
                     }
                 }
-
-                var cloudScriptUrl = reqContainer.ApiResult as ClientModels.GetCloudScriptUrlResult;
-                if (cloudScriptUrl != null)
-                {
-                    PlayFabSettings.LogicServerUrl = cloudScriptUrl.Url;
-                }
 #endif
                 lock (ResultQueue)
                 {
@@ -348,7 +342,7 @@ namespace PlayFab.Internal
 #endif
                         try
                         {
-                            PlayFabHttp.SendEvent(reqContainer.ApiRequest, reqContainer.ApiResult, ApiProcessingEventType.Post);
+                            PlayFabHttp.SendEvent(reqContainer.ApiEndpoint, reqContainer.ApiRequest, reqContainer.ApiResult, ApiProcessingEventType.Post);
                             reqContainer.InvokeSuccessCallback();
                         }
                         catch (Exception e)
