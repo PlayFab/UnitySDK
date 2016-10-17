@@ -97,6 +97,8 @@ namespace PlayFab.UUnit
 
         public override void TearDown(UUnitTestContext testContext)
         {
+            PlayFabSettings.AdvertisingIdType = null;
+            PlayFabSettings.AdvertisingIdValue = null;
             tickAction = null;
         }
 
@@ -429,6 +431,28 @@ namespace PlayFab.UUnit
             var jobj = (JsonObject)result.FunctionResult;
             var messageValue = jobj["messageValue"] as string;
             testContext.StringEquals("Hello " + PlayFabId + "!", messageValue);
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        /// <summary>
+        /// CLIENT API
+        /// Test that CloudScript errors can be deciphered
+        /// </summary>
+        [UUnitTest]
+        public void CloudScriptError(UUnitTestContext testContext)
+        {
+            var request = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "throwError"
+            };
+            PlayFabClientAPI.ExecuteCloudScript(request, PlayFabUUnitUtils.ApiActionWrapper<ExecuteCloudScriptResult>(testContext, CloudScriptErrorCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+        }
+        private void CloudScriptErrorCallback(ExecuteCloudScriptResult result)
+        {
+            var testContext = (UUnitTestContext)result.CustomData;
+            testContext.IsNull(result.FunctionResult, "The result should be null because the function did not return properly.");
+            testContext.NotNull(result.Error, "The error should be defined because the function throws an error.");
+            testContext.StringEquals(result.Error.Error, "JavascriptException", result.Error.Error);
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 

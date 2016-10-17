@@ -101,16 +101,10 @@ namespace PlayFab.Internal
                         {
                             PlayFabIdfa.OnPlayFabLogin();
                         }
-
-                        var cloudScriptUrl = reqContainer.ApiResult as ClientModels.GetCloudScriptUrlResult;
-                        if (cloudScriptUrl != null)
-                        {
-                            PlayFabSettings.LogicServerUrl = cloudScriptUrl.Url;
-                        }
 #endif
                         try
                         {
-                            PlayFabHttp.SendEvent(reqContainer.ApiRequest, reqContainer.ApiResult, ApiProcessingEventType.Post);
+                            PlayFabHttp.SendEvent(reqContainer.ApiEndpoint, reqContainer.ApiRequest, reqContainer.ApiResult, ApiProcessingEventType.Post);
                         }
                         catch (Exception e)
                         {

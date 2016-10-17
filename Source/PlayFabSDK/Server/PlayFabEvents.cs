@@ -51,8 +51,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetUserDataResult> OnServerGetUserPublisherReadOnlyDataResultEvent;
         public event PlayFabRequestEvent<GetUserDataRequest> OnServerGetUserReadOnlyDataRequestEvent;
         public event PlayFabResultEvent<GetUserDataResult> OnServerGetUserReadOnlyDataResultEvent;
-        public event PlayFabRequestEvent<GetUserStatisticsRequest> OnServerGetUserStatisticsRequestEvent;
-        public event PlayFabResultEvent<GetUserStatisticsResult> OnServerGetUserStatisticsResultEvent;
         public event PlayFabRequestEvent<UpdatePlayerStatisticsRequest> OnServerUpdatePlayerStatisticsRequestEvent;
         public event PlayFabResultEvent<UpdatePlayerStatisticsResult> OnServerUpdatePlayerStatisticsResultEvent;
         public event PlayFabRequestEvent<UpdateUserDataRequest> OnServerUpdateUserDataRequestEvent;
@@ -67,8 +65,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateUserDataResult> OnServerUpdateUserPublisherReadOnlyDataResultEvent;
         public event PlayFabRequestEvent<UpdateUserDataRequest> OnServerUpdateUserReadOnlyDataRequestEvent;
         public event PlayFabResultEvent<UpdateUserDataResult> OnServerUpdateUserReadOnlyDataResultEvent;
-        public event PlayFabRequestEvent<UpdateUserStatisticsRequest> OnServerUpdateUserStatisticsRequestEvent;
-        public event PlayFabResultEvent<UpdateUserStatisticsResult> OnServerUpdateUserStatisticsResultEvent;
         public event PlayFabRequestEvent<GetCatalogItemsRequest> OnServerGetCatalogItemsRequestEvent;
         public event PlayFabResultEvent<GetCatalogItemsResult> OnServerGetCatalogItemsResultEvent;
         public event PlayFabRequestEvent<GetPublisherDataRequest> OnServerGetPublisherDataRequestEvent;
@@ -155,8 +151,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<SetGameServerInstanceTagsResult> OnServerSetGameServerInstanceTagsResultEvent;
         public event PlayFabRequestEvent<AwardSteamAchievementRequest> OnServerAwardSteamAchievementRequestEvent;
         public event PlayFabResultEvent<AwardSteamAchievementResult> OnServerAwardSteamAchievementResultEvent;
-        public event PlayFabRequestEvent<LogEventRequest> OnServerLogEventRequestEvent;
-        public event PlayFabResultEvent<LogEventResult> OnServerLogEventResultEvent;
         public event PlayFabRequestEvent<WriteServerCharacterEventRequest> OnServerWriteCharacterEventRequestEvent;
         public event PlayFabResultEvent<WriteEventResponse> OnServerWriteCharacterEventResultEvent;
         public event PlayFabRequestEvent<WriteServerPlayerEventRequest> OnServerWritePlayerEventRequestEvent;
