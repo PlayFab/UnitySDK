@@ -91,6 +91,12 @@ namespace PlayFab.PlayStreamModels
         public string PlayerId;
         public string DisplayName;
     }
+    public class PlayerPhotonSessionAuthenticatedEventData : PlayStreamEventBase
+    {
+        public string PhotonApplicationId;
+        public PhotonServicesEnum? PhotonApplicationType;
+        public string TitleId;
+    }
     #endregion partner
 
     #region player
@@ -258,6 +264,7 @@ namespace PlayFab.PlayStreamModels
     {
         public LoginIdentityProvider? Platform;
         public string PlatformUserId;
+        public EventLocation Location;
         public string TitleId;
     }
     public class PlayerMatchedWithLobbyEventData : PlayStreamEventBase
@@ -288,6 +295,7 @@ namespace PlayFab.PlayStreamModels
         public uint? TransactionTotal;
         public Currency? TransactionCurrency;
         public string OrderId;
+        public List<string> PurchasedProduct;
         public string TitleId;
     }
     public class PlayerRedeemedCouponEventData : PlayStreamEventBase
@@ -417,6 +425,12 @@ namespace PlayFab.PlayStreamModels
     #endregion session
 
     #region title
+    public class TitleAbortedTaskEventData : PlayStreamEventBase
+    {
+        public string TaskInstanceId;
+        public string UserId;
+        public string DeveloperId;
+    }
     public class TitleAddedCloudScriptEventData : PlayStreamEventBase
     {
         public int Version;
@@ -457,6 +471,27 @@ namespace PlayFab.PlayStreamModels
         public string ErrorCode;
         public AlertLevel? Level;
         public AlertStates? AlertState;
+    }
+    public class TitleCompletedTaskEventData : PlayStreamEventBase
+    {
+        public string TaskType;
+        public string TaskInstanceId;
+        public bool IsAborted;
+        public DateTime? AbortedAt;
+        public TaskInstanceStatus? Result;
+        public object Summary;
+    }
+    public class TitleCreatedTaskEventData : PlayStreamEventBase
+    {
+        public NameIdentifier ScheduledTask;
+        public string UserId;
+        public string DeveloperId;
+    }
+    public class TitleDeletedTaskEventData : PlayStreamEventBase
+    {
+        public NameIdentifier ScheduledTask;
+        public string UserId;
+        public string DeveloperId;
     }
     public class TitleExceededLimitEventData : PlayStreamEventBase
     {
@@ -538,6 +573,26 @@ namespace PlayFab.PlayStreamModels
         public string FunctionName;
         public ExecuteCloudScriptResult CloudScriptExecutionResult;
     }
+    public class TitleSecretKeyEventData : PlayStreamEventBase
+    {
+        public string SecretKeyId;
+        public string SecretKeyName;
+        public bool? Disabled;
+        public DateTime? ExpiryDate;
+        public bool? Deleted;
+        public string UserId;
+        public string DeveloperId;
+    }
+    public class TitleStartedTaskEventData : PlayStreamEventBase
+    {
+        public NameIdentifier ScheduledTask;
+        public string TaskType;
+        public object Parameter;
+        public string TaskInstanceId;
+        public string ScheduledByUserId;
+        public string UserId;
+        public string DeveloperId;
+    }
     public class TitleStatisticVersionChangedEventData : PlayStreamEventBase
     {
         public string StatisticName;
@@ -550,6 +605,13 @@ namespace PlayFab.PlayStreamModels
         public string CatalogVersion;
         public string StoreId;
         public bool Deleted;
+        public string UserId;
+        public string DeveloperId;
+    }
+    public class TitleUpdatedTaskEventData : PlayStreamEventBase
+    {
+        public NameIdentifier ScheduledTask;
+        public bool HasRenamed;
         public string UserId;
         public string DeveloperId;
     }
@@ -837,6 +899,295 @@ namespace PlayFab.PlayStreamModels
         public ScriptExecutionError Error;
     }
 
+    public enum ContinentCode
+    {
+        AF,
+        AN,
+        AS,
+        EU,
+        NA,
+        OC,
+        SA
+    }
+
+    public enum CountryCode
+    {
+        AF,
+        AX,
+        AL,
+        DZ,
+        AS,
+        AD,
+        AO,
+        AI,
+        AQ,
+        AG,
+        AR,
+        AM,
+        AW,
+        AU,
+        AT,
+        AZ,
+        BS,
+        BH,
+        BD,
+        BB,
+        BY,
+        BE,
+        BZ,
+        BJ,
+        BM,
+        BT,
+        BO,
+        BQ,
+        BA,
+        BW,
+        BV,
+        BR,
+        IO,
+        BN,
+        BG,
+        BF,
+        BI,
+        KH,
+        CM,
+        CA,
+        CV,
+        KY,
+        CF,
+        TD,
+        CL,
+        CN,
+        CX,
+        CC,
+        CO,
+        KM,
+        CG,
+        CD,
+        CK,
+        CR,
+        CI,
+        HR,
+        CU,
+        CW,
+        CY,
+        CZ,
+        DK,
+        DJ,
+        DM,
+        DO,
+        EC,
+        EG,
+        SV,
+        GQ,
+        ER,
+        EE,
+        ET,
+        FK,
+        FO,
+        FJ,
+        FI,
+        FR,
+        GF,
+        PF,
+        TF,
+        GA,
+        GM,
+        GE,
+        DE,
+        GH,
+        GI,
+        GR,
+        GL,
+        GD,
+        GP,
+        GU,
+        GT,
+        GG,
+        GN,
+        GW,
+        GY,
+        HT,
+        HM,
+        VA,
+        HN,
+        HK,
+        HU,
+        IS,
+        IN,
+        ID,
+        IR,
+        IQ,
+        IE,
+        IM,
+        IL,
+        IT,
+        JM,
+        JP,
+        JE,
+        JO,
+        KZ,
+        KE,
+        KI,
+        KP,
+        KR,
+        KW,
+        KG,
+        LA,
+        LV,
+        LB,
+        LS,
+        LR,
+        LY,
+        LI,
+        LT,
+        LU,
+        MO,
+        MK,
+        MG,
+        MW,
+        MY,
+        MV,
+        ML,
+        MT,
+        MH,
+        MQ,
+        MR,
+        MU,
+        YT,
+        MX,
+        FM,
+        MD,
+        MC,
+        MN,
+        ME,
+        MS,
+        MA,
+        MZ,
+        MM,
+        NA,
+        NR,
+        NP,
+        NL,
+        NC,
+        NZ,
+        NI,
+        NE,
+        NG,
+        NU,
+        NF,
+        MP,
+        NO,
+        OM,
+        PK,
+        PW,
+        PS,
+        PA,
+        PG,
+        PY,
+        PE,
+        PH,
+        PN,
+        PL,
+        PT,
+        PR,
+        QA,
+        RE,
+        RO,
+        RU,
+        RW,
+        BL,
+        SH,
+        KN,
+        LC,
+        MF,
+        PM,
+        VC,
+        WS,
+        SM,
+        ST,
+        SA,
+        SN,
+        RS,
+        SC,
+        SL,
+        SG,
+        SX,
+        SK,
+        SI,
+        SB,
+        SO,
+        ZA,
+        GS,
+        SS,
+        ES,
+        LK,
+        SD,
+        SR,
+        SJ,
+        SZ,
+        SE,
+        CH,
+        SY,
+        TW,
+        TJ,
+        TZ,
+        TH,
+        TL,
+        TG,
+        TK,
+        TO,
+        TT,
+        TN,
+        TR,
+        TM,
+        TC,
+        TV,
+        UG,
+        UA,
+        AE,
+        GB,
+        US,
+        UM,
+        UY,
+        UZ,
+        VU,
+        VE,
+        VN,
+        VG,
+        VI,
+        WF,
+        EH,
+        YE,
+        ZM,
+        ZW
+    }
+
+    [Serializable]
+    public class PlayerLocation
+    {
+        /// <summary>
+        /// The two-character continent code for this location
+        /// </summary>
+        public ContinentCode ContinentCode;
+        /// <summary>
+        /// The two-character ISO 3166-1 country code for the country associated with the location
+        /// </summary>
+        public CountryCode CountryCode;
+        /// <summary>
+        /// City of the player's geographic location.
+        /// </summary>
+        public string City;
+        /// <summary>
+        /// Latitude coordinate of the player's geographic location.
+        /// </summary>
+        public double? Latitude;
+        /// <summary>
+        /// Longitude coordinate of the player's geographic location.
+        /// </summary>
+        public double? Longitude;
+    }
+
     [Serializable]
     public class AdCampaignAttribution
     {
@@ -967,6 +1318,10 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public List<string> Tags;
         /// <summary>
+        /// Dictionary of player's locations by type.
+        /// </summary>
+        public Dictionary<string,PlayerLocation> Locations;
+        /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
         public Dictionary<string,int> VirtualCurrencyBalances;
@@ -986,6 +1341,16 @@ namespace PlayFab.PlayStreamModels
         /// Array of player statistics
         /// </summary>
         public List<PlayerStatistic> PlayerStatistics;
+    }
+
+    /// <summary>
+    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is immutable and unique.
+    /// </summary>
+    [Serializable]
+    public class NameIdentifier
+    {
+        public string Name;
+        public string Id;
     }
 
     [Serializable]
@@ -1025,12 +1390,47 @@ namespace PlayFab.PlayStreamModels
         public bool AllowNonUniquePlayerDisplayNames;
     }
 
+    public enum TaskInstanceStatus
+    {
+        Succeeded,
+        Starting,
+        InProgress,
+        Failed,
+        Aborted,
+        Pending
+    }
+
     public enum StatisticAggregationMethod
     {
         Last,
         Min,
         Max,
         Sum
+    }
+
+    [Serializable]
+    public class EventLocation
+    {
+        /// <summary>
+        /// Two-character code representing the continent of geographic location.
+        /// </summary>
+        public ContinentCode? ContinentCode;
+        /// <summary>
+        /// Two-character ISO 3166-1 code representing the country of the geographic location.
+        /// </summary>
+        public CountryCode? CountryCode;
+        /// <summary>
+        /// City of the geographic location.
+        /// </summary>
+        public string City;
+        /// <summary>
+        /// Latitude coordinate of the geographic location.
+        /// </summary>
+        public double? Latitude;
+        /// <summary>
+        /// Longitude coordinate of the geographic location.
+        /// </summary>
+        public double? Longitude;
     }
 
     public enum Region
@@ -1099,6 +1499,13 @@ namespace PlayFab.PlayStreamModels
     {
         public string Name;
         public string Id;
+    }
+
+    public enum PhotonServicesEnum
+    {
+        Realtime,
+        Turnbased,
+        Chat
     }
 
     public enum SourceType

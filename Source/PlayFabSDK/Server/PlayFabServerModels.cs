@@ -6,6 +6,59 @@ using PlayFab.SharedModels;
 namespace PlayFab.ServerModels
 {
     [Serializable]
+    public class ActionsOnPlayersInSegmentTaskSummary
+    {
+        /// <summary>
+        /// ID of the task instance.
+        /// </summary>
+        public string TaskInstanceId;
+        /// <summary>
+        /// Identifier of the task this instance belongs to.
+        /// </summary>
+        public NameIdentifier TaskIdentifier;
+        /// <summary>
+        /// UTC timestamp when the task started.
+        /// </summary>
+        public DateTime StartedAt;
+        /// <summary>
+        /// UTC timestamp when the task completed.
+        /// </summary>
+        public DateTime? CompletedAt;
+        /// <summary>
+        /// Current status of the task instance.
+        /// </summary>
+        public TaskInstanceStatus? Status;
+        /// <summary>
+        /// Progress represented as percentage.
+        /// </summary>
+        public double? PercentComplete;
+        /// <summary>
+        /// Estimated time remaining in seconds.
+        /// </summary>
+        public double? EstimatedSecondsRemaining;
+        /// <summary>
+        /// If manually scheduled, ID of user who scheduled the task.
+        /// </summary>
+        public string ScheduledByUserId;
+        /// <summary>
+        /// Error message for last processing attempt, if an error occured.
+        /// </summary>
+        public string ErrorMessage;
+        /// <summary>
+        /// Flag indicating if the error was fatal, if false job will be retried.
+        /// </summary>
+        public bool? ErrorWasFatal;
+        /// <summary>
+        /// Total players in segment when task was started.
+        /// </summary>
+        public int? TotalPlayersInSegment;
+        /// <summary>
+        /// Total number of players that have had the actions applied to.
+        /// </summary>
+        public int? TotalPlayersProcessed;
+    }
+
+    [Serializable]
     public class AdCampaignAttribution
     {
         /// <summary>
@@ -335,7 +388,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public bool IsLimitedEdition;
         /// <summary>
-        /// BETA: If IsLImitedEdition is true, then this determines amount of the item initially available. Note that this fieldis ignored if the catalog item already existed in this catalog, or the field is less than 1.
+        /// If IsLImitedEdition is true, then this determines amount of the item initially available. Note that this fieldis ignored if the catalog item already existed in this catalog, or the field is less than 1.
         /// </summary>
         public int InitialLimitedEditionCount;
     }
@@ -500,6 +553,270 @@ namespace PlayFab.ServerModels
         /// Number of uses remaining on the item.
         /// </summary>
         public int RemainingUses;
+    }
+
+    public enum ContinentCode
+    {
+        AF,
+        AN,
+        AS,
+        EU,
+        NA,
+        OC,
+        SA
+    }
+
+    public enum CountryCode
+    {
+        AF,
+        AX,
+        AL,
+        DZ,
+        AS,
+        AD,
+        AO,
+        AI,
+        AQ,
+        AG,
+        AR,
+        AM,
+        AW,
+        AU,
+        AT,
+        AZ,
+        BS,
+        BH,
+        BD,
+        BB,
+        BY,
+        BE,
+        BZ,
+        BJ,
+        BM,
+        BT,
+        BO,
+        BQ,
+        BA,
+        BW,
+        BV,
+        BR,
+        IO,
+        BN,
+        BG,
+        BF,
+        BI,
+        KH,
+        CM,
+        CA,
+        CV,
+        KY,
+        CF,
+        TD,
+        CL,
+        CN,
+        CX,
+        CC,
+        CO,
+        KM,
+        CG,
+        CD,
+        CK,
+        CR,
+        CI,
+        HR,
+        CU,
+        CW,
+        CY,
+        CZ,
+        DK,
+        DJ,
+        DM,
+        DO,
+        EC,
+        EG,
+        SV,
+        GQ,
+        ER,
+        EE,
+        ET,
+        FK,
+        FO,
+        FJ,
+        FI,
+        FR,
+        GF,
+        PF,
+        TF,
+        GA,
+        GM,
+        GE,
+        DE,
+        GH,
+        GI,
+        GR,
+        GL,
+        GD,
+        GP,
+        GU,
+        GT,
+        GG,
+        GN,
+        GW,
+        GY,
+        HT,
+        HM,
+        VA,
+        HN,
+        HK,
+        HU,
+        IS,
+        IN,
+        ID,
+        IR,
+        IQ,
+        IE,
+        IM,
+        IL,
+        IT,
+        JM,
+        JP,
+        JE,
+        JO,
+        KZ,
+        KE,
+        KI,
+        KP,
+        KR,
+        KW,
+        KG,
+        LA,
+        LV,
+        LB,
+        LS,
+        LR,
+        LY,
+        LI,
+        LT,
+        LU,
+        MO,
+        MK,
+        MG,
+        MW,
+        MY,
+        MV,
+        ML,
+        MT,
+        MH,
+        MQ,
+        MR,
+        MU,
+        YT,
+        MX,
+        FM,
+        MD,
+        MC,
+        MN,
+        ME,
+        MS,
+        MA,
+        MZ,
+        MM,
+        NA,
+        NR,
+        NP,
+        NL,
+        NC,
+        NZ,
+        NI,
+        NE,
+        NG,
+        NU,
+        NF,
+        MP,
+        NO,
+        OM,
+        PK,
+        PW,
+        PS,
+        PA,
+        PG,
+        PY,
+        PE,
+        PH,
+        PN,
+        PL,
+        PT,
+        PR,
+        QA,
+        RE,
+        RO,
+        RU,
+        RW,
+        BL,
+        SH,
+        KN,
+        LC,
+        MF,
+        PM,
+        VC,
+        WS,
+        SM,
+        ST,
+        SA,
+        SN,
+        RS,
+        SC,
+        SL,
+        SG,
+        SX,
+        SK,
+        SI,
+        SB,
+        SO,
+        ZA,
+        GS,
+        SS,
+        ES,
+        LK,
+        SD,
+        SR,
+        SJ,
+        SZ,
+        SE,
+        CH,
+        SY,
+        TW,
+        TJ,
+        TZ,
+        TH,
+        TL,
+        TG,
+        TK,
+        TO,
+        TT,
+        TN,
+        TR,
+        TM,
+        TC,
+        TV,
+        UG,
+        UA,
+        AE,
+        GB,
+        US,
+        UM,
+        UY,
+        UZ,
+        VU,
+        VE,
+        VN,
+        VG,
+        VI,
+        WF,
+        EH,
+        YE,
+        ZM,
+        ZW
     }
 
     [Serializable]
@@ -2311,6 +2628,16 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is immutable and unique.
+    /// </summary>
+    [Serializable]
+    public class NameIdentifier
+    {
+        public string Name;
+        public string Id;
+    }
+
     [Serializable]
     public class NotifyMatchmakerPlayerLeftRequest : PlayFabRequestCommon
     {
@@ -2384,6 +2711,31 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class PlayerLocation
+    {
+        /// <summary>
+        /// The two-character continent code for this location
+        /// </summary>
+        public ContinentCode ContinentCode;
+        /// <summary>
+        /// The two-character ISO 3166-1 country code for the country associated with the location
+        /// </summary>
+        public CountryCode CountryCode;
+        /// <summary>
+        /// City of the player's geographic location.
+        /// </summary>
+        public string City;
+        /// <summary>
+        /// Latitude coordinate of the player's geographic location.
+        /// </summary>
+        public double? Latitude;
+        /// <summary>
+        /// Longitude coordinate of the player's geographic location.
+        /// </summary>
+        public double? Longitude;
+    }
+
+    [Serializable]
     public class PlayerProfile
     {
         /// <summary>
@@ -2434,6 +2786,10 @@ namespace PlayFab.ServerModels
         /// List of player's tags for segmentation.
         /// </summary>
         public List<string> Tags;
+        /// <summary>
+        /// Dictionary of player's locations by type.
+        /// </summary>
+        public Dictionary<string,PlayerLocation> Locations;
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
@@ -2557,6 +2913,10 @@ namespace PlayFab.ServerModels
         /// Catalog version of the coupon.
         /// </summary>
         public string CatalogVersion;
+        /// <summary>
+        /// Optional identifier for the Character that should receive the item. If null, item is added to the player
+        /// </summary>
+        public string CharacterId;
     }
 
     [Serializable]
@@ -3073,6 +3433,16 @@ namespace PlayFab.ServerModels
         public int Amount;
     }
 
+    public enum TaskInstanceStatus
+    {
+        Succeeded,
+        Starting,
+        InProgress,
+        Failed,
+        Aborted,
+        Pending
+    }
+
     public enum TitleActivationStatus
     {
         None,
@@ -3291,6 +3661,10 @@ namespace PlayFab.ServerModels
         /// Statistics to be updated with the provided values
         /// </summary>
         public List<StatisticUpdate> Statistics;
+        /// <summary>
+        /// Indicates whether the statistics provided should be set, regardless of the aggregation method set on the statistic. Default is false.
+        /// </summary>
+        public bool? ForceUpdate;
     }
 
     [Serializable]
@@ -3710,7 +4084,7 @@ namespace PlayFab.ServerModels
     public class WriteEventResponse : PlayFabResultCommon
     {
         /// <summary>
-        /// The unique identifier of the event. This can be used to retrieve the event's properties using the GetEvent API. The values of this identifier consist of ASCII characters and are not constrained to any particular format.
+        /// The unique identifier of the event. The values of this identifier consist of ASCII characters and are not constrained to any particular format.
         /// </summary>
         public string EventId;
     }
