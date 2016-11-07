@@ -165,6 +165,26 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayerTagsResult> OnAdminGetPlayerTagsResultEvent;
         public event PlayFabRequestEvent<RemovePlayerTagRequest> OnAdminRemovePlayerTagRequestEvent;
         public event PlayFabResultEvent<RemovePlayerTagResult> OnAdminRemovePlayerTagResultEvent;
+        public event PlayFabRequestEvent<AbortTaskInstanceRequest> OnAdminAbortTaskInstanceRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnAdminAbortTaskInstanceResultEvent;
+        public event PlayFabRequestEvent<CreateActionsOnPlayerSegmentTaskRequest> OnAdminCreateActionsOnPlayersInSegmentTaskRequestEvent;
+        public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateActionsOnPlayersInSegmentTaskResultEvent;
+        public event PlayFabRequestEvent<CreateCloudScriptTaskRequest> OnAdminCreateCloudScriptTaskRequestEvent;
+        public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateCloudScriptTaskResultEvent;
+        public event PlayFabRequestEvent<DeleteTaskRequest> OnAdminDeleteTaskRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnAdminDeleteTaskResultEvent;
+        public event PlayFabRequestEvent<GetTaskInstanceRequest> OnAdminGetActionsOnPlayersInSegmentTaskInstanceRequestEvent;
+        public event PlayFabResultEvent<GetActionsOnPlayersInSegmentTaskInstanceResult> OnAdminGetActionsOnPlayersInSegmentTaskInstanceResultEvent;
+        public event PlayFabRequestEvent<GetTaskInstanceRequest> OnAdminGetCloudScriptTaskInstanceRequestEvent;
+        public event PlayFabResultEvent<GetCloudScriptTaskInstanceResult> OnAdminGetCloudScriptTaskInstanceResultEvent;
+        public event PlayFabRequestEvent<GetTaskInstancesRequest> OnAdminGetTaskInstancesRequestEvent;
+        public event PlayFabResultEvent<GetTaskInstancesResult> OnAdminGetTaskInstancesResultEvent;
+        public event PlayFabRequestEvent<GetTasksRequest> OnAdminGetTasksRequestEvent;
+        public event PlayFabResultEvent<GetTasksResult> OnAdminGetTasksResultEvent;
+        public event PlayFabRequestEvent<RunTaskRequest> OnAdminRunTaskRequestEvent;
+        public event PlayFabResultEvent<RunTaskResult> OnAdminRunTaskResultEvent;
+        public event PlayFabRequestEvent<UpdateTaskRequest> OnAdminUpdateTaskRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnAdminUpdateTaskResultEvent;
     }
 }
 #endif

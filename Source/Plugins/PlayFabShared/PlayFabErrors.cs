@@ -258,7 +258,11 @@ namespace PlayFab
         ScheduledTaskCreateConflict = 1255,
         InvalidScheduledTaskName = 1256,
         InvalidTaskSchedule = 1257,
-        SteamNotEnabledForTitle = 1258
+        SteamNotEnabledForTitle = 1258,
+        LimitNotAnUpgradeOption = 1259,
+        NoSecretKeyEnabledForCloudScript = 1260,
+        TaskNotFound = 1261,
+        TaskInstanceNotFound = 1262
     }
 
     public delegate void ErrorCallback(PlayFabError error);

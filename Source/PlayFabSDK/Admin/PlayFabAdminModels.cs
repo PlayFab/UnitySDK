@@ -6,6 +6,81 @@ using PlayFab.SharedModels;
 namespace PlayFab.AdminModels
 {
     [Serializable]
+    public class AbortTaskInstanceRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// ID of a task instance that is being aborted.
+        /// </summary>
+        public string TaskInstanceId;
+    }
+
+    [Serializable]
+    public class ActionsOnPlayersInSegmentTaskParameter
+    {
+        /// <summary>
+        /// ID of the segment to perform actions on.
+        /// </summary>
+        public string SegmentId;
+        /// <summary>
+        /// ID of the action to perform on each player in segment.
+        /// </summary>
+        public string ActionId;
+    }
+
+    [Serializable]
+    public class ActionsOnPlayersInSegmentTaskSummary
+    {
+        /// <summary>
+        /// ID of the task instance.
+        /// </summary>
+        public string TaskInstanceId;
+        /// <summary>
+        /// Identifier of the task this instance belongs to.
+        /// </summary>
+        public NameIdentifier TaskIdentifier;
+        /// <summary>
+        /// UTC timestamp when the task started.
+        /// </summary>
+        public DateTime StartedAt;
+        /// <summary>
+        /// UTC timestamp when the task completed.
+        /// </summary>
+        public DateTime? CompletedAt;
+        /// <summary>
+        /// Current status of the task instance.
+        /// </summary>
+        public TaskInstanceStatus? Status;
+        /// <summary>
+        /// Progress represented as percentage.
+        /// </summary>
+        public double? PercentComplete;
+        /// <summary>
+        /// Estimated time remaining in seconds.
+        /// </summary>
+        public double? EstimatedSecondsRemaining;
+        /// <summary>
+        /// If manually scheduled, ID of user who scheduled the task.
+        /// </summary>
+        public string ScheduledByUserId;
+        /// <summary>
+        /// Error message for last processing attempt, if an error occured.
+        /// </summary>
+        public string ErrorMessage;
+        /// <summary>
+        /// Flag indicating if the error was fatal, if false job will be retried.
+        /// </summary>
+        public bool? ErrorWasFatal;
+        /// <summary>
+        /// Total players in segment when task was started.
+        /// </summary>
+        public int? TotalPlayersInSegment;
+        /// <summary>
+        /// Total number of players that have had the actions applied to.
+        /// </summary>
+        public int? TotalPlayersProcessed;
+    }
+
+    [Serializable]
     public class AdCampaignAttribution
     {
         /// <summary>
@@ -336,7 +411,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public bool IsLimitedEdition;
         /// <summary>
-        /// BETA: If IsLImitedEdition is true, then this determines amount of the item initially available. Note that this fieldis ignored if the catalog item already existed in this catalog, or the field is less than 1.
+        /// If IsLImitedEdition is true, then this determines amount of the item initially available. Note that this fieldis ignored if the catalog item already existed in this catalog, or the field is less than 1.
         /// </summary>
         public int InitialLimitedEditionCount;
     }
@@ -413,6 +488,60 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class CloudScriptTaskParameter
+    {
+        /// <summary>
+        /// Name of the CloudScript function to execute.
+        /// </summary>
+        public string FunctionName;
+        /// <summary>
+        /// Argument to pass to the CloudScript function.
+        /// </summary>
+        public object Argument;
+    }
+
+    [Serializable]
+    public class CloudScriptTaskSummary
+    {
+        /// <summary>
+        /// ID of the task instance.
+        /// </summary>
+        public string TaskInstanceId;
+        /// <summary>
+        /// Identifier of the task this instance belongs to.
+        /// </summary>
+        public NameIdentifier TaskIdentifier;
+        /// <summary>
+        /// UTC timestamp when the task started.
+        /// </summary>
+        public DateTime StartedAt;
+        /// <summary>
+        /// UTC timestamp when the task completed.
+        /// </summary>
+        public DateTime? CompletedAt;
+        /// <summary>
+        /// Current status of the task instance.
+        /// </summary>
+        public TaskInstanceStatus? Status;
+        /// <summary>
+        /// Progress represented as percentage.
+        /// </summary>
+        public double? PercentComplete;
+        /// <summary>
+        /// Estimated time remaining in seconds.
+        /// </summary>
+        public double? EstimatedSecondsRemaining;
+        /// <summary>
+        /// If manually scheduled, ID of user who scheduled the task.
+        /// </summary>
+        public string ScheduledByUserId;
+        /// <summary>
+        /// Result of CloudScript execution
+        /// </summary>
+        public ExecuteCloudScriptResult Result;
+    }
+
+    [Serializable]
     public class CloudScriptVersionStatus
     {
         /// <summary>
@@ -446,6 +575,320 @@ namespace PlayFab.AdminModels
         public DateTime LastModified;
     }
 
+    public enum ContinentCode
+    {
+        AF,
+        AN,
+        AS,
+        EU,
+        NA,
+        OC,
+        SA
+    }
+
+    public enum CountryCode
+    {
+        AF,
+        AX,
+        AL,
+        DZ,
+        AS,
+        AD,
+        AO,
+        AI,
+        AQ,
+        AG,
+        AR,
+        AM,
+        AW,
+        AU,
+        AT,
+        AZ,
+        BS,
+        BH,
+        BD,
+        BB,
+        BY,
+        BE,
+        BZ,
+        BJ,
+        BM,
+        BT,
+        BO,
+        BQ,
+        BA,
+        BW,
+        BV,
+        BR,
+        IO,
+        BN,
+        BG,
+        BF,
+        BI,
+        KH,
+        CM,
+        CA,
+        CV,
+        KY,
+        CF,
+        TD,
+        CL,
+        CN,
+        CX,
+        CC,
+        CO,
+        KM,
+        CG,
+        CD,
+        CK,
+        CR,
+        CI,
+        HR,
+        CU,
+        CW,
+        CY,
+        CZ,
+        DK,
+        DJ,
+        DM,
+        DO,
+        EC,
+        EG,
+        SV,
+        GQ,
+        ER,
+        EE,
+        ET,
+        FK,
+        FO,
+        FJ,
+        FI,
+        FR,
+        GF,
+        PF,
+        TF,
+        GA,
+        GM,
+        GE,
+        DE,
+        GH,
+        GI,
+        GR,
+        GL,
+        GD,
+        GP,
+        GU,
+        GT,
+        GG,
+        GN,
+        GW,
+        GY,
+        HT,
+        HM,
+        VA,
+        HN,
+        HK,
+        HU,
+        IS,
+        IN,
+        ID,
+        IR,
+        IQ,
+        IE,
+        IM,
+        IL,
+        IT,
+        JM,
+        JP,
+        JE,
+        JO,
+        KZ,
+        KE,
+        KI,
+        KP,
+        KR,
+        KW,
+        KG,
+        LA,
+        LV,
+        LB,
+        LS,
+        LR,
+        LY,
+        LI,
+        LT,
+        LU,
+        MO,
+        MK,
+        MG,
+        MW,
+        MY,
+        MV,
+        ML,
+        MT,
+        MH,
+        MQ,
+        MR,
+        MU,
+        YT,
+        MX,
+        FM,
+        MD,
+        MC,
+        MN,
+        ME,
+        MS,
+        MA,
+        MZ,
+        MM,
+        NA,
+        NR,
+        NP,
+        NL,
+        NC,
+        NZ,
+        NI,
+        NE,
+        NG,
+        NU,
+        NF,
+        MP,
+        NO,
+        OM,
+        PK,
+        PW,
+        PS,
+        PA,
+        PG,
+        PY,
+        PE,
+        PH,
+        PN,
+        PL,
+        PT,
+        PR,
+        QA,
+        RE,
+        RO,
+        RU,
+        RW,
+        BL,
+        SH,
+        KN,
+        LC,
+        MF,
+        PM,
+        VC,
+        WS,
+        SM,
+        ST,
+        SA,
+        SN,
+        RS,
+        SC,
+        SL,
+        SG,
+        SX,
+        SK,
+        SI,
+        SB,
+        SO,
+        ZA,
+        GS,
+        SS,
+        ES,
+        LK,
+        SD,
+        SR,
+        SJ,
+        SZ,
+        SE,
+        CH,
+        SY,
+        TW,
+        TJ,
+        TZ,
+        TH,
+        TL,
+        TG,
+        TK,
+        TO,
+        TT,
+        TN,
+        TR,
+        TM,
+        TC,
+        TV,
+        UG,
+        UA,
+        AE,
+        GB,
+        US,
+        UM,
+        UY,
+        UZ,
+        VU,
+        VE,
+        VN,
+        VG,
+        VI,
+        WF,
+        EH,
+        YE,
+        ZM,
+        ZW
+    }
+
+    [Serializable]
+    public class CreateActionsOnPlayerSegmentTaskRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Name of the task. This is a unique identifier for tasks in the title.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Description the task
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Cron expression for the run schedule of the task. The expression should be in UTC.
+        /// </summary>
+        public string Schedule;
+        /// <summary>
+        /// Whether the schedule is active. Inactive schedule will not trigger task execution.
+        /// </summary>
+        public bool IsActive;
+        /// <summary>
+        /// Task details related to segment and action
+        /// </summary>
+        public ActionsOnPlayersInSegmentTaskParameter Parameter;
+    }
+
+    [Serializable]
+    public class CreateCloudScriptTaskRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Name of the task. This is a unique identifier for tasks in the title.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Description the task
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Cron expression for the run schedule of the task. The expression should be in UTC.
+        /// </summary>
+        public string Schedule;
+        /// <summary>
+        /// Whether the schedule is active. Inactive schedule will not trigger task execution.
+        /// </summary>
+        public bool IsActive;
+        /// <summary>
+        /// Task details related to CloudScript
+        /// </summary>
+        public CloudScriptTaskParameter Parameter;
+    }
+
     [Serializable]
     public class CreatePlayerStatisticDefinitionRequest : PlayFabRequestCommon
     {
@@ -470,6 +913,15 @@ namespace PlayFab.AdminModels
         /// created statistic definition
         /// </summary>
         public PlayerStatisticDefinition Statistic;
+    }
+
+    [Serializable]
+    public class CreateTaskResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// ID of the task
+        /// </summary>
+        public string TaskId;
     }
 
     public enum Currency
@@ -666,6 +1118,15 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class DeleteTaskRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Specify either the task ID or the name of task to be deleted.
+        /// </summary>
+        public NameIdentifier Identifier;
+    }
+
+    [Serializable]
     public class DeleteUsersRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -681,6 +1142,50 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class DeleteUsersResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class EmptyResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class ExecuteCloudScriptResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The name of the function that executed
+        /// </summary>
+        public string FunctionName;
+        /// <summary>
+        /// The revision of the CloudScript that executed
+        /// </summary>
+        public int Revision;
+        /// <summary>
+        /// The object returned from the CloudScript function, if any
+        /// </summary>
+        public object FunctionResult;
+        /// <summary>
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
+        /// </summary>
+        public List<LogStatement> Logs;
+        public double ExecutionTimeSeconds;
+        /// <summary>
+        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP requests.
+        /// </summary>
+        public double ProcessorTimeSeconds;
+        public uint MemoryConsumedBytes;
+        /// <summary>
+        /// Number of PlayFab API requests issued by the CloudScript function
+        /// </summary>
+        public int APIRequestsIssued;
+        /// <summary>
+        /// Number of external HTTP requests issued by the CloudScript function
+        /// </summary>
+        public int HttpRequestsIssued;
+        /// <summary>
+        /// Information about the error, if any, that occured during execution
+        /// </summary>
+        public ScriptExecutionError Error;
     }
 
     public enum GameBuildStatus
@@ -724,6 +1229,19 @@ namespace PlayFab.AdminModels
         /// Action Group ID
         /// </summary>
         public string Id;
+    }
+
+    [Serializable]
+    public class GetActionsOnPlayersInSegmentTaskInstanceResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Status summary of the actions-on-players-in-segment task instance
+        /// </summary>
+        public ActionsOnPlayersInSegmentTaskSummary Summary;
+        /// <summary>
+        /// Parameter of this task instance
+        /// </summary>
+        public ActionsOnPlayersInSegmentTaskParameter Parameter;
     }
 
     [Serializable]
@@ -808,6 +1326,19 @@ namespace PlayFab.AdminModels
         /// True if this is the currently published revision
         /// </summary>
         public bool IsPublished;
+    }
+
+    [Serializable]
+    public class GetCloudScriptTaskInstanceResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Status summary of the CloudScript task instance
+        /// </summary>
+        public CloudScriptTaskSummary Summary;
+        /// <summary>
+        /// Parameter of this task instance
+        /// </summary>
+        public CloudScriptTaskParameter Parameter;
     }
 
     [Serializable]
@@ -1251,6 +1782,63 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class GetTaskInstanceRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// ID of the requested task instance.
+        /// </summary>
+        public string TaskInstanceId;
+    }
+
+    [Serializable]
+    public class GetTaskInstancesRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Name or ID of the task whose instances are being queried. If not specified, return all task instances that satisfy conditions set by other filters.
+        /// </summary>
+        public NameIdentifier TaskIdentifier;
+        /// <summary>
+        /// Optional filter for task instances that are of a specific status.
+        /// </summary>
+        public TaskInstanceStatus? StatusFilter;
+        /// <summary>
+        /// Optional range-from filter for task instances' StartedAt timestamp.
+        /// </summary>
+        public DateTime? StartedAtRangeFrom;
+        /// <summary>
+        /// Optional range-to filter for task instances' StartedAt timestamp.
+        /// </summary>
+        public DateTime? StartedAtRangeTo;
+    }
+
+    [Serializable]
+    public class GetTaskInstancesResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Basic status summaries of the queried task instances. Empty If no task instances meets the filter criteria. To get detailed status summary, use Get*TaskInstance API according to task type (e.g. GetActionsOnPlayersInSegmentTaskInstance).
+        /// </summary>
+        public List<TaskInstanceBasicSummary> Summaries;
+    }
+
+    [Serializable]
+    public class GetTasksRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Provide either the task ID or the task name to get a specific task. If not specified, return all defined tasks.
+        /// </summary>
+        public NameIdentifier Identifier;
+    }
+
+    [Serializable]
+    public class GetTasksResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Result tasks. Empty if there is no task found.
+        /// </summary>
+        public List<ScheduledTask> Tasks;
+    }
+
+    [Serializable]
     public class GetTitleDataRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1613,6 +2201,20 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class LogStatement
+    {
+        /// <summary>
+        /// 'Debug', 'Info', or 'Error'
+        /// </summary>
+        public string Level;
+        public string Message;
+        /// <summary>
+        /// Optional object accompanying the message as contextual information
+        /// </summary>
+        public object Data;
+    }
+
+    [Serializable]
     public class LookupUserAccountInfoRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1763,6 +2365,16 @@ namespace PlayFab.AdminModels
         public int Balance;
     }
 
+    /// <summary>
+    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is immutable and unique.
+    /// </summary>
+    [Serializable]
+    public class NameIdentifier
+    {
+        public string Name;
+        public string Id;
+    }
+
     [Serializable]
     public class PlayerLinkedAccount
     {
@@ -1782,6 +2394,31 @@ namespace PlayFab.AdminModels
         /// Linked account's email
         /// </summary>
         public string Email;
+    }
+
+    [Serializable]
+    public class PlayerLocation
+    {
+        /// <summary>
+        /// The two-character continent code for this location
+        /// </summary>
+        public ContinentCode ContinentCode;
+        /// <summary>
+        /// The two-character ISO 3166-1 country code for the country associated with the location
+        /// </summary>
+        public CountryCode CountryCode;
+        /// <summary>
+        /// City of the player's geographic location.
+        /// </summary>
+        public string City;
+        /// <summary>
+        /// Latitude coordinate of the player's geographic location.
+        /// </summary>
+        public double? Latitude;
+        /// <summary>
+        /// Longitude coordinate of the player's geographic location.
+        /// </summary>
+        public double? Longitude;
     }
 
     [Serializable]
@@ -1835,6 +2472,10 @@ namespace PlayFab.AdminModels
         /// List of player's tags for segmentation.
         /// </summary>
         public List<string> Tags;
+        /// <summary>
+        /// Dictionary of player's locations by type.
+        /// </summary>
+        public Dictionary<string,PlayerLocation> Locations;
         /// <summary>
         /// Dictionary of player's virtual currency balances
         /// </summary>
@@ -2223,6 +2864,88 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class RunTaskRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Provide either the task ID or the task name to run a task.
+        /// </summary>
+        public NameIdentifier Identifier;
+    }
+
+    [Serializable]
+    public class RunTaskResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// ID of the task instance that is started. This can be used in Get*TaskInstance (e.g. GetCloudScriptTaskInstance) API call to retrieve status for the task instance.
+        /// </summary>
+        public string TaskInstanceId;
+    }
+
+    [Serializable]
+    public class ScheduledTask
+    {
+        /// <summary>
+        /// ID of the task
+        /// </summary>
+        public string TaskId;
+        /// <summary>
+        /// Name of the task. This is a unique identifier for tasks in the title.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Description the task
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Cron expression for the run schedule of the task. The expression should be in UTC.
+        /// </summary>
+        public string Schedule;
+        /// <summary>
+        /// Whether the schedule is active. Inactive schedule will not trigger task execution.
+        /// </summary>
+        public bool IsActive;
+        /// <summary>
+        /// Task type.
+        /// </summary>
+        public ScheduledTaskType? Type;
+        /// <summary>
+        /// Task parameter. Different types of task have different parameter structure. See each task type's create API documentation for the details.
+        /// </summary>
+        public object Parameter;
+        /// <summary>
+        /// UTC time of last run
+        /// </summary>
+        public DateTime? LastRunTime;
+        /// <summary>
+        /// UTC time of next run
+        /// </summary>
+        public DateTime? NextRunTime;
+    }
+
+    public enum ScheduledTaskType
+    {
+        CloudScript,
+        ActionsOnPlayerSegment
+    }
+
+    [Serializable]
+    public class ScriptExecutionError
+    {
+        /// <summary>
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// </summary>
+        public string Error;
+        /// <summary>
+        /// Details about the error
+        /// </summary>
+        public string Message;
+        /// <summary>
+        /// Point during the execution of the script at which the error occurred, if any
+        /// </summary>
+        public string StackTrace;
+    }
+
+    [Serializable]
     public class SendAccountRecoveryEmailRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2424,6 +3147,57 @@ namespace PlayFab.AdminModels
         public int Amount;
     }
 
+    [Serializable]
+    public class TaskInstanceBasicSummary
+    {
+        /// <summary>
+        /// ID of the task instance.
+        /// </summary>
+        public string TaskInstanceId;
+        /// <summary>
+        /// Identifier of the task this instance belongs to.
+        /// </summary>
+        public NameIdentifier TaskIdentifier;
+        /// <summary>
+        /// UTC timestamp when the task started.
+        /// </summary>
+        public DateTime StartedAt;
+        /// <summary>
+        /// UTC timestamp when the task completed.
+        /// </summary>
+        public DateTime? CompletedAt;
+        /// <summary>
+        /// Current status of the task instance.
+        /// </summary>
+        public TaskInstanceStatus? Status;
+        /// <summary>
+        /// Progress represented as percentage.
+        /// </summary>
+        public double? PercentComplete;
+        /// <summary>
+        /// Estimated time remaining in seconds.
+        /// </summary>
+        public double? EstimatedSecondsRemaining;
+        /// <summary>
+        /// If manually scheduled, ID of user who scheduled the task.
+        /// </summary>
+        public string ScheduledByUserId;
+        /// <summary>
+        /// Type of the task.
+        /// </summary>
+        public ScheduledTaskType? Type;
+    }
+
+    public enum TaskInstanceStatus
+    {
+        Succeeded,
+        Starting,
+        InProgress,
+        Failed,
+        Aborted,
+        Pending
+    }
+
     public enum TitleActivationStatus
     {
         None,
@@ -2607,6 +3381,39 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class UpdateStoreItemsResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class UpdateTaskRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Specify either the task ID or the name of the task to be updated.
+        /// </summary>
+        public NameIdentifier Identifier;
+        /// <summary>
+        /// Name of the task. This is a unique identifier for tasks in the title.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Description the task
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Cron expression for the run schedule of the task. The expression should be in UTC.
+        /// </summary>
+        public string Schedule;
+        /// <summary>
+        /// Whether the schedule is active. Inactive schedule will not trigger task execution.
+        /// </summary>
+        public bool IsActive;
+        /// <summary>
+        /// Task type.
+        /// </summary>
+        public ScheduledTaskType Type;
+        /// <summary>
+        /// Parameter object specific to the task type. See each task type's create API documentation for details.
+        /// </summary>
+        public object Parameter;
     }
 
     [Serializable]
