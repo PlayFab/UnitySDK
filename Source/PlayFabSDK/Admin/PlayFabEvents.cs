@@ -5,6 +5,10 @@ namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
+        public event PlayFabRequestEvent<GetPolicyRequest> OnAdminGetPolicyRequestEvent;
+        public event PlayFabResultEvent<GetPolicyResponse> OnAdminGetPolicyResultEvent;
+        public event PlayFabRequestEvent<UpdatePolicyRequest> OnAdminUpdatePolicyRequestEvent;
+        public event PlayFabResultEvent<UpdatePolicyResponse> OnAdminUpdatePolicyResultEvent;
         public event PlayFabRequestEvent<BanUsersRequest> OnAdminBanUsersRequestEvent;
         public event PlayFabResultEvent<BanUsersResult> OnAdminBanUsersResultEvent;
         public event PlayFabRequestEvent<LookupUserAccountInfoRequest> OnAdminGetUserAccountInfoRequestEvent;

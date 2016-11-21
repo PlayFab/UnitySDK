@@ -411,7 +411,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public bool IsLimitedEdition;
         /// <summary>
-        /// If IsLImitedEdition is true, then this determines amount of the item initially available. Note that this fieldis ignored if the catalog item already existed in this catalog, or the field is less than 1.
+        /// If the item has IsLImitedEdition set to true, and this is the first time this ItemId has been defined as a limited edition item, this value determines the total number of instances to allocate for the title. Once this limit has been reached, no more instances of this ItemId can be created, and attempts to purchase or grant it will return a Result of false for that ItemId. If the item has already been defined to have a limited edition count, or if this value is less than zero, it will be ignored.
         /// </summary>
         public int InitialLimitedEditionCount;
     }
@@ -441,7 +441,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public uint? UsageCount;
         /// <summary>
-        /// duration in seconds for how long the item will remain in the player inventory - once elapsed, the item will be removed
+        /// duration in seconds for how long the item will remain in the player inventory - once elapsed, the item will be removed (recommended minimum value is 5 seconds, as lower values can cause the item to expire before operations depending on this item's details have completed)
         /// </summary>
         public uint? UsagePeriod;
         /// <summary>
@@ -1144,6 +1144,11 @@ namespace PlayFab.AdminModels
     {
     }
 
+    public enum EffectType
+    {
+        Allow
+    }
+
     [Serializable]
     public class EmptyResult : PlayFabResultCommon
     {
@@ -1617,6 +1622,28 @@ namespace PlayFab.AdminModels
         /// Canonical tags (including namespace and tag's name) for the requested user
         /// </summary>
         public List<string> Tags;
+    }
+
+    [Serializable]
+    public class GetPolicyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The name of the policy to read. Only supported name is 'ApiPolicy'.
+        /// </summary>
+        public string PolicyName;
+    }
+
+    [Serializable]
+    public class GetPolicyResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The name of the policy read.
+        /// </summary>
+        public string PolicyName;
+        /// <summary>
+        /// The statements in the requested policy.
+        /// </summary>
+        public List<PermissionStatement> Statements;
     }
 
     [Serializable]
@@ -2373,6 +2400,31 @@ namespace PlayFab.AdminModels
     {
         public string Name;
         public string Id;
+    }
+
+    [Serializable]
+    public class PermissionStatement
+    {
+        /// <summary>
+        /// The resource this statements effects. The only supported resources look like 'pfrn:api--*' for all apis, or 'pfrn:api--/Client/ConfirmPurchase' for specific apis.
+        /// </summary>
+        public string Resource;
+        /// <summary>
+        /// The action this statement effects. The only supported action is 'Execute'.
+        /// </summary>
+        public string Action;
+        /// <summary>
+        /// The effect this statement will have. The only supported effect is 'Allow'.
+        /// </summary>
+        public EffectType Effect;
+        /// <summary>
+        /// The principal this statement will effect. The only supported principal is '*'.
+        /// </summary>
+        public string Principal;
+        /// <summary>
+        /// A comment about the statement. Intended solely for bookeeping and debugging.
+        /// </summary>
+        public string Comment;
     }
 
     [Serializable]
@@ -3340,6 +3392,36 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class UpdatePolicyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The name of the policy being updated. Only supported name is 'ApiPolicy'
+        /// </summary>
+        public string PolicyName;
+        /// <summary>
+        /// The new statements to include in the policy.
+        /// </summary>
+        public List<PermissionStatement> Statements;
+        /// <summary>
+        /// Whether to overwrite or append to the existing policy.
+        /// </summary>
+        public bool OverwritePolicy;
+    }
+
+    [Serializable]
+    public class UpdatePolicyResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The name of the policy that was updated.
+        /// </summary>
+        public string PolicyName;
+        /// <summary>
+        /// The statements included in the new version of the policy.
+        /// </summary>
+        public List<PermissionStatement> Statements;
+    }
+
+    [Serializable]
     public class UpdateRandomResultTablesRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3570,11 +3652,6 @@ namespace PlayFab.AdminModels
         /// Username of user to reset
         /// </summary>
         public string Username;
-        /// <summary>
-        /// Password for the PlayFab account
-        /// </summary>
-        [Obsolete("No longer available", false)]
-        public string Password;
     }
 
     [Serializable]
@@ -3796,7 +3873,7 @@ namespace PlayFab.AdminModels
     public class VirtualCurrencyData
     {
         /// <summary>
-        /// unique one- or two-character identifier for this currency type (e.g.: "CC", "G")
+        /// unique two-character identifier for this currency type (e.g.: "CC")
         /// </summary>
         public string CurrencyCode;
         /// <summary>
