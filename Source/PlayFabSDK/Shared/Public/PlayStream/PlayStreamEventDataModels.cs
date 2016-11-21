@@ -546,6 +546,13 @@ namespace PlayFab.PlayStreamModels
         public DateTime DateCreated;
         public NewsStatus? Status;
     }
+    public class TitlePermissionsPolicyChangedEventData : PlayStreamEventBase
+    {
+        public string PolicyName;
+        public string NewPolicy;
+        public string UserId;
+        public string DeveloperId;
+    }
     public class TitlePublishedCloudScriptEventData : PlayStreamEventBase
     {
         public int Revision;

@@ -33,6 +33,12 @@ namespace PlayFab.Events
             if (OnLoginResultEvent != null) { foreach (var each in OnLoginResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginResultEvent -= (PlayFabResultEvent<ClientModels.LoginResult>)each; } } }
 #endif
 #if ENABLE_PLAYFABADMIN_API
+            if (OnAdminGetPolicyRequestEvent != null) { foreach (var each in OnAdminGetPolicyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminGetPolicyRequestEvent -= (PlayFabRequestEvent<AdminModels.GetPolicyRequest>)each; } } }
+            if (OnAdminGetPolicyResultEvent != null) { foreach (var each in OnAdminGetPolicyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminGetPolicyResultEvent -= (PlayFabResultEvent<AdminModels.GetPolicyResponse>)each; } } }
+
+            if (OnAdminUpdatePolicyRequestEvent != null) { foreach (var each in OnAdminUpdatePolicyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdatePolicyRequestEvent -= (PlayFabRequestEvent<AdminModels.UpdatePolicyRequest>)each; } } }
+            if (OnAdminUpdatePolicyResultEvent != null) { foreach (var each in OnAdminUpdatePolicyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdatePolicyResultEvent -= (PlayFabResultEvent<AdminModels.UpdatePolicyResponse>)each; } } }
+
             if (OnAdminBanUsersRequestEvent != null) { foreach (var each in OnAdminBanUsersRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminBanUsersRequestEvent -= (PlayFabRequestEvent<AdminModels.BanUsersRequest>)each; } } }
             if (OnAdminBanUsersResultEvent != null) { foreach (var each in OnAdminBanUsersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminBanUsersResultEvent -= (PlayFabResultEvent<AdminModels.BanUsersResult>)each; } } }
 
@@ -1011,6 +1017,8 @@ namespace PlayFab.Events
             {
                 var type = e.Request.GetType();
 #if ENABLE_PLAYFABADMIN_API
+                if (type == typeof(AdminModels.GetPolicyRequest)) { if (_instance.OnAdminGetPolicyRequestEvent != null) { _instance.OnAdminGetPolicyRequestEvent((AdminModels.GetPolicyRequest)e.Request); return; } }
+                if (type == typeof(AdminModels.UpdatePolicyRequest)) { if (_instance.OnAdminUpdatePolicyRequestEvent != null) { _instance.OnAdminUpdatePolicyRequestEvent((AdminModels.UpdatePolicyRequest)e.Request); return; } }
                 if (type == typeof(AdminModels.BanUsersRequest)) { if (_instance.OnAdminBanUsersRequestEvent != null) { _instance.OnAdminBanUsersRequestEvent((AdminModels.BanUsersRequest)e.Request); return; } }
                 if (type == typeof(AdminModels.LookupUserAccountInfoRequest)) { if (_instance.OnAdminGetUserAccountInfoRequestEvent != null) { _instance.OnAdminGetUserAccountInfoRequestEvent((AdminModels.LookupUserAccountInfoRequest)e.Request); return; } }
                 if (type == typeof(AdminModels.GetUserBansRequest)) { if (_instance.OnAdminGetUserBansRequestEvent != null) { _instance.OnAdminGetUserBansRequestEvent((AdminModels.GetUserBansRequest)e.Request); return; } }
@@ -1346,6 +1354,8 @@ namespace PlayFab.Events
                 var type = e.Result.GetType();
 #if ENABLE_PLAYFABADMIN_API
 
+                if (type == typeof(AdminModels.GetPolicyResponse)) { if (_instance.OnAdminGetPolicyResultEvent != null) { _instance.OnAdminGetPolicyResultEvent((AdminModels.GetPolicyResponse)e.Result); return; } }
+                if (type == typeof(AdminModels.UpdatePolicyResponse)) { if (_instance.OnAdminUpdatePolicyResultEvent != null) { _instance.OnAdminUpdatePolicyResultEvent((AdminModels.UpdatePolicyResponse)e.Result); return; } }
                 if (type == typeof(AdminModels.BanUsersResult)) { if (_instance.OnAdminBanUsersResultEvent != null) { _instance.OnAdminBanUsersResultEvent((AdminModels.BanUsersResult)e.Result); return; } }
                 if (type == typeof(AdminModels.LookupUserAccountInfoResult)) { if (_instance.OnAdminGetUserAccountInfoResultEvent != null) { _instance.OnAdminGetUserAccountInfoResultEvent((AdminModels.LookupUserAccountInfoResult)e.Result); return; } }
                 if (type == typeof(AdminModels.GetUserBansResult)) { if (_instance.OnAdminGetUserBansResultEvent != null) { _instance.OnAdminGetUserBansResultEvent((AdminModels.GetUserBansResult)e.Result); return; } }
