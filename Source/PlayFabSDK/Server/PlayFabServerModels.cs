@@ -1650,7 +1650,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public bool GetUserData;
         /// <summary>
-        /// Specific keys to search for in the custom data. Leave null to get all keys. Has no effect if UserDataKeys is false
+        /// Specific keys to search for in the custom data. Leave null to get all keys. Has no effect if GetUserData is false
         /// </summary>
         public List<string> UserDataKeys;
         /// <summary>

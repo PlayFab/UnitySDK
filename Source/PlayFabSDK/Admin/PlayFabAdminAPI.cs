@@ -11,6 +11,7 @@ namespace PlayFab
     /// </summary>
     public static class PlayFabAdminAPI
     {
+        static PlayFabAdminAPI() {}
 
         /// <summary>
         /// Gets the requested policy.

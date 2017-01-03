@@ -11,6 +11,8 @@ namespace PlayFab.Internal
 {
     internal static class PlayFabUtil
     {
+        static PlayFabUtil() { }
+
         public static readonly string[] _defaultDateTimeFormats = new string[]{ // All parseable ISO 8601 formats for DateTime.[Try]ParseExact - Lets us deserialize any legacy timestamps in one of these formats
             // These are the standard format with ISO 8601 UTC markers (T/Z)
             "yyyy-MM-ddTHH:mm:ss.FFFFFFZ",

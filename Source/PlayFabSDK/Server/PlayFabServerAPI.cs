@@ -11,6 +11,7 @@ namespace PlayFab
     /// </summary>
     public static class PlayFabServerAPI
     {
+        static PlayFabServerAPI() {}
 
         /// <summary>
         /// Validated a client's session ticket, and if successful, returns details for that user

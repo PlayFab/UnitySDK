@@ -1427,7 +1427,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public bool GetUserData;
         /// <summary>
-        /// Specific keys to search for in the custom data. Leave null to get all keys. Has no effect if UserDataKeys is false
+        /// Specific keys to search for in the custom data. Leave null to get all keys. Has no effect if GetUserData is false
         /// </summary>
         public List<string> UserDataKeys;
         /// <summary>
@@ -1969,96 +1969,6 @@ namespace PlayFab.ClientModels
         /// Information about the requested trade.
         /// </summary>
         public TradeInfo Trade;
-    }
-
-    [Serializable]
-    public class GetUserCombinedInfoRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// Unique PlayFab identifier of the user whose info is being requested. Optional, defaults to the authenticated user if no other lookup identifier set.
-        /// </summary>
-        public string PlayFabId;
-        /// <summary>
-        /// PlayFab Username for the account to find (if no PlayFabId is specified).
-        /// </summary>
-        public string Username;
-        /// <summary>
-        /// User email address for the account to find (if no Username is specified).
-        /// </summary>
-        public string Email;
-        /// <summary>
-        /// Title-specific username for the account to find (if no Email is set).
-        /// </summary>
-        public string TitleDisplayName;
-        /// <summary>
-        /// If set to false, account info will not be returned. Defaults to true.
-        /// </summary>
-        public bool? GetAccountInfo;
-        /// <summary>
-        /// If set to false, inventory will not be returned. Defaults to true. Inventory will never be returned for users other than yourself.
-        /// </summary>
-        public bool? GetInventory;
-        /// <summary>
-        /// If set to false, virtual currency balances will not be returned. Defaults to true. Currency balances will never be returned for users other than yourself.
-        /// </summary>
-        public bool? GetVirtualCurrency;
-        /// <summary>
-        /// If set to false, custom user data will not be returned. Defaults to true.
-        /// </summary>
-        public bool? GetUserData;
-        /// <summary>
-        /// User custom data keys to return. If set to null, all keys will be returned. For users other than yourself, only public data will be returned.
-        /// </summary>
-        public List<string> UserDataKeys;
-        /// <summary>
-        /// If set to false, read-only user data will not be returned. Defaults to true.
-        /// </summary>
-        public bool? GetReadOnlyData;
-        /// <summary>
-        /// User read-only custom data keys to return. If set to null, all keys will be returned. For users other than yourself, only public data will be returned.
-        /// </summary>
-        public List<string> ReadOnlyDataKeys;
-    }
-
-    [Serializable]
-    public class GetUserCombinedInfoResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// Unique PlayFab identifier of the owner of the combined info.
-        /// </summary>
-        public string PlayFabId;
-        /// <summary>
-        /// Account information for the user.
-        /// </summary>
-        public UserAccountInfo AccountInfo;
-        /// <summary>
-        /// Array of inventory items in the user's current inventory.
-        /// </summary>
-        public List<ItemInstance> Inventory;
-        /// <summary>
-        /// Array of virtual currency balance(s) belonging to the user.
-        /// </summary>
-        public Dictionary<string,int> VirtualCurrency;
-        /// <summary>
-        /// Array of remaining times and timestamps for virtual currencies.
-        /// </summary>
-        public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes;
-        /// <summary>
-        /// User specific custom data.
-        /// </summary>
-        public Dictionary<string,UserDataRecord> Data;
-        /// <summary>
-        /// The version of the UserData that was returned.
-        /// </summary>
-        public uint DataVersion;
-        /// <summary>
-        /// User specific read-only data.
-        /// </summary>
-        public Dictionary<string,UserDataRecord> ReadOnlyData;
-        /// <summary>
-        /// The version of the Read-Only UserData that was returned.
-        /// </summary>
-        public uint ReadOnlyDataVersion;
     }
 
     [Serializable]
