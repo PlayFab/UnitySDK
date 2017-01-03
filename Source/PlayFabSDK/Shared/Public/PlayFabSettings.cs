@@ -24,10 +24,12 @@ namespace PlayFab
 
     public static partial class PlayFabSettings
     {
+        static PlayFabSettings() { }
+
         public static PlayFabSharedSettings PlayFabShared = GetSharedSettingsObject();
-        public const string SdkVersion = "2.13.161121";
-        public const string BuildIdentifier = "jbuild_unitysdk_0";
-        public const string VersionString = "UnitySDK-2.13.161121";
+        public const string SdkVersion = "2.14.170102";
+        public const string BuildIdentifier = "jbuild_unitysdk_1";
+        public const string VersionString = "UnitySDK-2.14.170102";
         public const string DefaultPlayFabApiUrl = ".playfabapi.com";
 
         public static PlayFabSharedSettings GetSharedSettingsObject()

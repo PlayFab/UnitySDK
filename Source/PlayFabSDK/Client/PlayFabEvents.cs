@@ -44,8 +44,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayFabIDsFromSteamIDsResult> OnGetPlayFabIDsFromSteamIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromTwitchIDsRequest> OnGetPlayFabIDsFromTwitchIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromTwitchIDsResult> OnGetPlayFabIDsFromTwitchIDsResultEvent;
-        public event PlayFabRequestEvent<GetUserCombinedInfoRequest> OnGetUserCombinedInfoRequestEvent;
-        public event PlayFabResultEvent<GetUserCombinedInfoResult> OnGetUserCombinedInfoResultEvent;
         public event PlayFabRequestEvent<LinkAndroidDeviceIDRequest> OnLinkAndroidDeviceIDRequestEvent;
         public event PlayFabResultEvent<LinkAndroidDeviceIDResult> OnLinkAndroidDeviceIDResultEvent;
         public event PlayFabRequestEvent<LinkCustomIDRequest> OnLinkCustomIDRequestEvent;

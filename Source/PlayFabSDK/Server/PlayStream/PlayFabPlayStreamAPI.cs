@@ -11,6 +11,8 @@ namespace PlayFab
     /// </summary>
     public static class PlayFabPlayStreamAPI
     {
+        static PlayFabPlayStreamAPI() { }
+
         /// <summary>
         /// The event when successfully subcribed to PlayStream.
         /// </summary>
@@ -26,7 +28,7 @@ namespace PlayFab
         /// </summary>
         public static event Action<PlayStreamNotification> OnPlayStreamEvent;
 
-        #region Connection Status Events
+#region Connection Status Events
 
         /// <summary>
         /// The debug event when reconnected to the PlayStream server. 
@@ -48,7 +50,7 @@ namespace PlayFab
         /// </summary>
         public static event Action OnDisconnected;
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Start the SignalR connection asynchronously and subscribe to PlayStream events if successfully connected.
@@ -71,7 +73,7 @@ namespace PlayFab
             PlayFabHttp.StopSignalR();
         }
 
-        #region Connection Callbacks
+#region Connection Callbacks
 
         private static void OnConnectedCallback(string filter)
         {
@@ -165,7 +167,7 @@ namespace PlayFab
         }
 
 
-        #endregion
+#endregion
 
     }
 

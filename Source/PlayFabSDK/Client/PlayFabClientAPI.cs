@@ -11,6 +11,7 @@ namespace PlayFab
     /// </summary>
     public static class PlayFabClientAPI
     {
+        static PlayFabClientAPI() {}
 
         /// <summary>
         /// Check to See if the client is logged in.
@@ -271,17 +272,6 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromTwitchIDs", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
-        }
-
-        /// <summary>
-        /// NOTE: This call will be deprecated soon. For fetching the data for a given user  use GetPlayerCombinedInfo. For looking up users from the client api, we are in the process of adding a new api call. Once that call is ready, this one will be deprecated.  Retrieves all requested data for a user in one unified request. By default, this API returns all  data for the locally signed-in user. The input parameters may be used to limit the data retrieved to any subset of the available data, as well as retrieve the available data for a different user. Note that certain data, including inventory, virtual currency balances, and personally identifying information, may only be retrieved for the locally signed-in user. In the example below, a request is made for the account details, virtual currency balances, and specified user data for the locally signed-in user.
-        /// </summary>
-        [Obsolete("Use 'GetPlayerCombinedInfo' instead", true)]
-        public static void GetUserCombinedInfo(GetUserCombinedInfoRequest request, Action<GetUserCombinedInfoResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
-        {
-            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
-
-            PlayFabHttp.MakeApiCall("/Client/GetUserCombinedInfo", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
         }
 
         /// <summary>

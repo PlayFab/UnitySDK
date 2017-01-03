@@ -91,7 +91,7 @@ Do you have ideas on how we can make our products and services better?
 
 Our Developer Success Team can assist with answering any questions as well as process any feedback you have about PlayFab services.
 
-[Forums, Support and Knowledge Base](https://community.playfab.com/hc/en-us)
+[Forums, Support and Knowledge Base](https://community.playfab.com/index.html)
 
 6. Copyright and Licensing Information:
 ----

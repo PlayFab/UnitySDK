@@ -11,6 +11,7 @@ namespace PlayFab
     /// </summary>
     public static class PlayFabMatchmakerAPI
     {
+        static PlayFabMatchmakerAPI() {}
 
         /// <summary>
         /// Validates a user with the PlayFab service
