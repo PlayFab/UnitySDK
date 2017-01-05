@@ -12,7 +12,7 @@ Unity Project Setup
   * We support all recent versions of Unity, some features work better with 5.3 or higher
   * Unity requires a license.  Pick personal or professional based on your preferences
   * Keep going until you can start a new project
-  * ![Unity image](/SdkQuickStart/images/Unity/UnityCreateProject.png)
+  * ![Unity image](/images/Unity/UnityCreateProject.png)
   * Finish creating a new empty project with a name and location of your choice
 * Download PlayFab UnitySdk Unitypackage
   * https://api.playfab.com/sdks/download/unity-v2ap
@@ -22,7 +22,7 @@ Unity Project Setup
     * Right click empty space in the Project panel in Unity -> Import Package -> Custom Package...
       * Find and select the PlayFab UnitySDK.unitypackage
   * Once you see this window, click Import:
-  * ![Unity image](/SdkQuickStart/images/Unity/UnityImport.png)
+  * ![Unity image](/images/Unity/UnityImport.png)
 * PlayFab installation complete
 
 Set up your first API call
@@ -32,7 +32,7 @@ This guide will provide the minimum steps to make your first PlayFab API call, w
 
 * Find the Project panel
 * Create a new C# script named "PlayFabLogin"
-  * ![Unity image](/SdkQuickStart/images/Unity/FirstScript.png)
+  * ![Unity image](/images/Unity/FirstScript.png)
 * In Unity, Double click this file to open it in a code-editor
   * Depending on your settings/installed-programs, this will likely be Visual Studio or MonoDevelop
 * Replace the contents of PlayFabLogin.cs with the following:
@@ -80,7 +80,7 @@ Finish and Execute
 * Save all files, and return to the Unity Editor
 * Press the Play button at the top of the editor
 * Ideally you should see the following in your Unity Console panel:
-  * ![Unity image](/SdkQuickStart/images/Unity/FirstCallLog.png)
+  * ![Unity image](/images/Unity/FirstCallLog.png)
 * At this point, you can start making other API calls, and building your game
 * For a list of all available client API calls, see our documentation:
   * https://api.playfab.com/
