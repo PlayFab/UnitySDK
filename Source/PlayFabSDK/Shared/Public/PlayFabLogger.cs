@@ -44,7 +44,7 @@ namespace PlayFab.Public
 
         protected PlayFabLoggerBase()
         {
-            PlayFabDataGatherer gatherer = new PlayFabDataGatherer();
+            var gatherer = new PlayFabDataGatherer();
             gatherer.GatherData();
             var message = gatherer.GenerateReport();
             lock (LogMessageQueue)

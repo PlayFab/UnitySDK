@@ -61,8 +61,8 @@ namespace PlayFab.UUnit
                 // line for each test report
                 if (sb.Length != 0)
                     sb.Append("\n");
-                string ms = (eachEndTime - eachStartTime).TotalMilliseconds.ToString("0");
-                for (int i = ms.Length; i < TIME_ALIGNMENT_WIDTH; i++)
+                var ms = (eachEndTime - eachStartTime).TotalMilliseconds.ToString("0");
+                for (var i = ms.Length; i < TIME_ALIGNMENT_WIDTH; i++)
                     sb.Append(' ');
                 sb.Append(ms).Append(" ms - ").Append(eachContext.FinishState);
                 sb.Append(" - ").Append(eachContext.Name);
@@ -94,7 +94,7 @@ namespace PlayFab.UUnit
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var eachAssembly in assemblies)
 #endif
-            FindAndAddAllTestCases(eachAssembly, parent, filter);
+                FindAndAddAllTestCases(eachAssembly, parent, filter);
         }
 
         public void FindAndAddAllTestCases(Assembly assembly, Type parent, string filter = null)
@@ -129,7 +129,7 @@ namespace PlayFab.UUnit
 
             var methods = testCaseType.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             List<object> attributesList = new List<object>();
-            foreach (MethodInfo methodInfo in methods)
+            foreach (var methodInfo in methods)
             {
                 attributesList.Clear();
                 attributesList.AddRange(methodInfo.GetCustomAttributes(typeof(UUnitTestAttribute), false));
@@ -151,21 +151,21 @@ namespace PlayFab.UUnit
             }
             catch (Exception e)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append(typeName).Append(".").Append(methodInfo.Name).Append(" must match the test delegate signature: Action<T>");
-                sb.Append("\n").Append(e);
+                var sb2 = new StringBuilder();
+                sb2.Append(typeName).Append(".").Append(methodInfo.Name).Append(" must match the test delegate signature: Action<T>");
+                sb2.Append("\n").Append(e);
 
-                sb.Append("\nExpected Params: [");
+                sb2.Append("\nExpected Params: [");
                 var actionInfo = typeof(Action<T>).GetMethod("Invoke");
                 foreach (var param in actionInfo.GetParameters())
-                    sb.Append(param.Name).Append(",");
-                sb.Append("]");
+                    sb2.Append(param.Name).Append(",");
+                sb2.Append("]");
 
-                sb.Append("\nActual Params: [");
+                sb2.Append("\nActual Params: [");
                 foreach (var param in methodInfo.GetParameters())
-                    sb.Append(param.Name).Append(",");
-                sb.Append("]");
-                throw new Exception(sb.ToString());
+                    sb2.Append(param.Name).Append(",");
+                sb2.Append("]");
+                throw new Exception(sb2.ToString());
             }
             return eachTestDelegate;
         }
@@ -211,7 +211,7 @@ namespace PlayFab.UUnit
             if (_suiteState == UUnitActiveState.PENDING)
                 _suiteState = UUnitActiveState.ACTIVE;
 
-            UUnitTestContext nextTest = _activeIndex < _testContexts.Count ? _testContexts[_activeIndex] : null;
+            var nextTest = _activeIndex < _testContexts.Count ? _testContexts[_activeIndex] : null;
             if (nextTest != null && nextTest.ActiveState == UUnitActiveState.COMPLETE)
             {
                 _activeIndex++;
@@ -223,7 +223,7 @@ namespace PlayFab.UUnit
             else if (nextTest != null)
                 TickTest(nextTest);
 
-            bool testsDone = _activeIndex >= _testContexts.Count;
+            var testsDone = _activeIndex >= _testContexts.Count;
             if (testsDone && _suiteState == UUnitActiveState.ACTIVE)
             {
                 _suiteState = UUnitActiveState.READY;
@@ -293,8 +293,8 @@ namespace PlayFab.UUnit
 
         private void TickTest(UUnitTestContext testContext)
         {
-            DateTime now = DateTime.UtcNow;
-            bool timedOut = (now - testContext.StartTime) > TestTimeout;
+            var now = DateTime.UtcNow;
+            var timedOut = (now - testContext.StartTime) > TestTimeout;
             if (testContext.ActiveState != UUnitActiveState.READY && !timedOut) // Not finished & not timed out
             {
                 testContext.TestInstance.Tick(testContext);

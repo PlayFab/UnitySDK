@@ -15,7 +15,7 @@ namespace PlayFab.Json
     }
 
 
-    public class JsonWrapper
+    public static class JsonWrapper
     {
         private static ISerializer _instance = new SimpleJsonInstance();
 

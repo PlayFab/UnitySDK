@@ -1,5 +1,4 @@
 using System;
-using PlayFab.Internal;
 
 namespace PlayFab.UUnit
 {

@@ -25,11 +25,11 @@ namespace PlayFab.UUnit
 
             if (textDisplay == null)
             {
-                Canvas canvas = new GameObject("Canvas", typeof(Canvas)).GetComponent<Canvas>();
+                var canvas = new GameObject("Canvas", typeof(Canvas)).GetComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                 textDisplay = new GameObject("Test Report", typeof(Text)).GetComponent<Text>();
                 textDisplay.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
-                RectTransform textTransform = textDisplay.rectTransform;
+                var textTransform = textDisplay.rectTransform;
                 textTransform.SetParent(canvas.transform, false);
                 textTransform.anchorMin = new Vector2(0, 0);
                 textTransform.anchorMax = new Vector2(1, 1);
@@ -72,9 +72,9 @@ namespace PlayFab.UUnit
                 OnCloudScriptSubmit(null);
         }
 
-        public void PostTestResultsToCloudScript(TestSuiteReport testReport)
+        private void PostTestResultsToCloudScript(TestSuiteReport testReport)
         {
-            ExecuteCloudScriptRequest request = new ExecuteCloudScriptRequest
+            var request = new ExecuteCloudScriptRequest
             {
                 FunctionName = "SaveTestData",
                 FunctionParameter = new Dictionary<string, object> { { "customId", PlayFabSettings.BuildIdentifier }, { "testReport", new[] { testReport } } },
@@ -83,7 +83,7 @@ namespace PlayFab.UUnit
             PlayFabClientAPI.ExecuteCloudScript(request, OnCloudScriptSubmit, OnCloudScriptError);
         }
 
-        public void OnCloudScriptSubmit(ExecuteCloudScriptResult result)
+        private void OnCloudScriptSubmit(ExecuteCloudScriptResult result)
         {
             if (postResultsToCloudscript && result != null)
             {
@@ -99,7 +99,7 @@ namespace PlayFab.UUnit
                 throw new Exception("Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier);
         }
 
-        public void OnCloudScriptError(PlayFabError error)
+        private void OnCloudScriptError(PlayFabError error)
         {
             Debug.LogWarning("Error posting results to Cloud Script:" + error.GenerateErrorReport());
 

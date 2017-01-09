@@ -40,7 +40,7 @@ namespace PlayFab.UUnit
 
         public void TestComplete(string testName, UUnitFinishState finishState, long stopwatchMs, string message, string stacktrace)
         {
-            TestCaseReport report = new TestCaseReport
+            var report = new TestCaseReport
             {
                 message = message,
                 classname = InternalReport.name,

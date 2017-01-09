@@ -42,16 +42,16 @@ namespace PlayFab.Internal
             DateTime actualTime;
             var formats = PlayFabUtil._defaultDateTimeFormats;
 
-            for (int i = 0; i < _examples.Length; i++)
+            for (var i = 0; i < _examples.Length; i++)
             {
-                string expectedFormat = i < formats.Length ? formats[i] : "default";
+                var expectedFormat = i < formats.Length ? formats[i] : "default";
                 testContext.True(DateTime.TryParseExact(_examples[i], formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i] + " with " + expectedFormat);
             }
 
-            DateTime expectedTime = DateTime.Now;
-            for (int i = 0; i < formats.Length; i++)
+            var expectedTime = DateTime.Now;
+            for (var i = 0; i < formats.Length; i++)
             {
-                string timeString = expectedTime.ToString(formats[i], CultureInfo.CurrentCulture);
+                var timeString = expectedTime.ToString(formats[i], CultureInfo.CurrentCulture);
                 testContext.True(DateTime.TryParseExact(timeString, formats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out actualTime), "Index: " + i + "/" + formats.Length + ", " + formats[i] + " with " + timeString);
                 testContext.True((actualTime - expectedTime).TotalSeconds < 1, "Expected: " + expectedTime + " vs actual:" + actualTime);
             }
@@ -63,9 +63,9 @@ namespace PlayFab.Internal
         {
             string expectedJson, actualJson;
             DateTime expectedTime;
-            ObjWithTimes actualObj = new ObjWithTimes();
+            ObjWithTimes actualObj;
 
-            for (int i = 0; i < _examples.Length; i++)
+            for (var i = 0; i < _examples.Length; i++)
             {
                 // Define the time deserialization expectation
                 testContext.True(DateTime.TryParseExact(_examples[i], PlayFabUtil._defaultDateTimeFormats, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out expectedTime), "Index: " + i + "/" + _examples.Length + ", " + _examples[i]);
@@ -79,7 +79,7 @@ namespace PlayFab.Internal
                     testContext.StringEquals(expectedJson, actualJson);
 
                 // Verify that the times match
-                double diff = (expectedTime - actualObj.timestamp).TotalSeconds; // We expect that we have parsed the time correctly according to expectations
+                var diff = (expectedTime - actualObj.timestamp).TotalSeconds; // We expect that we have parsed the time correctly according to expectations
                 testContext.True(diff < 1,
                     "\nActual time: " + actualObj.timestamp + " vs Expected time: " + expectedTime + ", diff: " + diff +
                     "\nActual json: " + actualJson + " vs Expected json: " + expectedJson
@@ -107,16 +107,16 @@ namespace PlayFab.Internal
 
             public override bool Equals(object obj)
             {
-                if (object.ReferenceEquals(obj, null) || !(obj is EnumConversionTestClass))
+                if (ReferenceEquals(obj, null) || !(obj is EnumConversionTestClass))
                     return false;
-                EnumConversionTestClass other = (EnumConversionTestClass)obj;
+                var other = (EnumConversionTestClass)obj;
                 if (enumList.Count != other.enumList.Count || enumArray.Length != other.enumArray.Length)
                     return false;
 
-                for (int i = 0; i < enumList.Count; i++)
+                for (var i = 0; i < enumList.Count; i++)
                     if (enumList[i] != other.enumList[i])
                         return false;
-                for (int i = 0; i < enumArray.Length; i++)
+                for (var i = 0; i < enumArray.Length; i++)
                     if (enumArray[i] != other.enumArray[i])
                         return false;
                 if (enumValue != other.enumValue || optEnumValue != other.optEnumValue)
@@ -165,7 +165,7 @@ namespace PlayFab.Internal
             expectedObj.enumValue = testRegion.Australia;
             expectedObj.optEnumValue = null;
 
-            string inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
+            var inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
             actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(inputJson, PlayFabUtil.ApiSerializerStrategy);
             testContext.ObjEquals(expectedObj, actualObj);
             testContext.EndTest(UUnitFinishState.PASSED, null);
@@ -174,11 +174,13 @@ namespace PlayFab.Internal
         [UUnitTest]
         public void EnumConversionTest_OptionalEnum(UUnitTestContext testContext)
         {
-            EnumConversionTestClass expectedObj = new EnumConversionTestClass();
-            expectedObj.enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
-            expectedObj.enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan };
-            expectedObj.enumValue = testRegion.Australia;
-            expectedObj.optEnumValue = null;
+            var expectedObj = new EnumConversionTestClass
+            {
+                enumList = new List<testRegion>() { testRegion.USEast, testRegion.USCentral, testRegion.Japan },
+                enumArray = new testRegion[] { testRegion.USEast, testRegion.USCentral, testRegion.Japan },
+                enumValue = testRegion.Australia,
+                optEnumValue = null,
+            };
 
             var actualJson = JsonWrapper.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy);
             var actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(actualJson, PlayFabUtil.ApiSerializerStrategy);

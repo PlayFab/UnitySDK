@@ -6,8 +6,6 @@
  * http://creativecommons.org/licenses/by-sa/3.0/
 */
 
-using System;
-
 namespace PlayFab.UUnit
 {
     public class UUnitTestCase

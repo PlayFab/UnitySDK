@@ -21,11 +21,11 @@ namespace PlayFab.Internal
             if (_instance == null)
             {
                 //find existing instance
-                _instance = GameObject.FindObjectOfType<T>();
+                _instance = FindObjectOfType<T>();
                 if (_instance == null)
                 {
                     //create new instance
-                    GameObject go = new GameObject(typeof(T).Name);
+                    var go = new GameObject(typeof(T).Name);
                     _instance = go.AddComponent<T>();
                 }
                 //initialize instance if necessary

@@ -1,10 +1,8 @@
 #if !DISABLE_PLAYFABCLIENT_API
 using PlayFab.ClientModels;
-using PlayFab.Internal;
 using PlayFab.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace PlayFab.UUnit
 {
@@ -17,92 +15,41 @@ namespace PlayFab.UUnit
     /// </summary>
     public class ClientApiTests : UUnitTestCase
     {
-        private Action tickAction = null;
+        private Action _tickAction = null;
 
         // Test-data constants
         private const string TEST_STAT_NAME = "str";
         private const string TEST_DATA_KEY = "testCounter";
 
-        // Functional
-        private static bool _execOnce = true;
-        private static bool _titleInfoSet = false;
-
         // Fixed values provided from testInputs
-        private static string userEmail;
-
-        // Information fetched by appropriate API calls
-        public static string PlayFabId;
+        private static string _userEmail;
+        public static string PlayFabId; // Public because the test framework uses this when tests are complete (could be better)
 
         // This test operates multi-threaded, so keep some thread-transfer varaibles
         private int _testInteger;
 
-        /// <summary>
-        /// PlayFab Title cannot be created from SDK tests, so you must provide your titleId to run unit tests.
-        /// (Also, we don't want lots of excess unused titles)
-        /// </summary>
-        public static void SetTitleInfo(Dictionary<string, string> testInputs)
-        {
-            string eachValue;
-
-            _titleInfoSet = true;
-            // Parse all the inputs
-            _titleInfoSet &= testInputs.TryGetValue("titleId", out eachValue);
-            PlayFabSettings.TitleId = eachValue;
-
-            _titleInfoSet &= testInputs.TryGetValue("userEmail", out userEmail);
-
-            // Verify all the inputs won't cause crashes in the tests
-            _titleInfoSet &= !string.IsNullOrEmpty(PlayFabSettings.TitleId)
-                && !string.IsNullOrEmpty(userEmail);
-        }
-
         public override void SetUp(UUnitTestContext testContext)
         {
-            if (_execOnce)
-            {
-                Dictionary<string, string> testInputs;
-                var filename = "testTitleData.json"; // default to local file if PF_TEST_TITLE_DATA_JSON env-var does not exist
+            var titleData = TestTitleDataLoader.LoadTestTitleData();
+            _userEmail = titleData.userEmail;
 
-#if UNITY_STANDALONE_WIN
-                // Prefer to load path from environment variable, if present
-                var tempFilename = Environment.GetEnvironmentVariable("PF_TEST_TITLE_DATA_JSON");
-                if (!string.IsNullOrEmpty(tempFilename))
-                    filename = tempFilename;
-#endif
-
-                if (File.Exists(filename))
-                {
-                    var testInputsFile = PlayFabUtil.ReadAllFileText(filename);
-
-                    testInputs = JsonWrapper.DeserializeObject<Dictionary<string, string>>(testInputsFile, PlayFabUtil.ApiSerializerStrategy);
-                }
-                else
-                {
-                    // NOTE FOR DEVELOPERS: POPULATE THIS SECTION WITH REAL INFORMATION (or set up a testTitleData file, and set your PF_TEST_TITLE_DATA_JSON to the path for that file)
-                    testInputs = new Dictionary<string, string>();
-                    //Debug.LogError("Loading testSettings file failed: " + filename + ", loading defaults.");
-                    //testInputs["titleId"] = "your title id here";
-                    //testInputs["userEmail"] = "yourTest@email.com";
-                }
-                SetTitleInfo(testInputs);
-                _execOnce = false;
-            }
-
-            if (!_titleInfoSet)
+            // Verify all the inputs won't cause crashes in the tests
+            var titleInfoSet = !string.IsNullOrEmpty(PlayFabSettings.TitleId) && !string.IsNullOrEmpty(_userEmail);
+            if (!titleInfoSet)
                 testContext.Skip(); // We cannot do client tests if the titleId is not given
         }
 
         public override void Tick(UUnitTestContext testContext)
         {
-            if (tickAction != null)
-                tickAction();
+            if (_tickAction != null)
+                _tickAction();
         }
 
         public override void TearDown(UUnitTestContext testContext)
         {
             PlayFabSettings.AdvertisingIdType = null;
             PlayFabSettings.AdvertisingIdValue = null;
-            tickAction = null;
+            _tickAction = null;
         }
 
         private void SharedErrorCallback(PlayFabError error)
@@ -120,10 +67,12 @@ namespace PlayFab.UUnit
         public void InvalidLogin(UUnitTestContext testContext)
         {
             // If the setup failed to log in a user, we need to create one.
-            var request = new LoginWithEmailAddressRequest();
-            request.TitleId = PlayFabSettings.TitleId;
-            request.Email = userEmail;
-            request.Password = "INVALID";
+            var request = new LoginWithEmailAddressRequest
+            {
+                TitleId = PlayFabSettings.TitleId,
+                Email = _userEmail,
+                Password = "INVALID",
+            };
             PlayFabClientAPI.LoginWithEmailAddress(request, PlayFabUUnitUtils.ApiActionWrapper<LoginResult>(testContext, InvalidLoginCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ExpectedLoginErrorCallback), testContext);
         }
         private void InvalidLoginCallback(LoginResult result)
@@ -148,11 +97,12 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void InvalidRegistration(UUnitTestContext testContext)
         {
-            var registerRequest = new RegisterPlayFabUserRequest();
-            registerRequest.TitleId = PlayFabSettings.TitleId;
-            registerRequest.Username = "x"; // Provide invalid inputs for multiple parameters, which will show up in errorDetails
-            registerRequest.Email = "x"; // Provide invalid inputs for multiple parameters, which will show up in errorDetails
-            registerRequest.Password = "x"; // Provide invalid inputs for multiple parameters, which will show up in errorDetails
+            var registerRequest = new RegisterPlayFabUserRequest
+            {
+                Username = "x", // Provide invalid inputs for multiple parameters, which will show up in errorDetails
+                Email = "x", // Provide invalid inputs for multiple parameters, which will show up in errorDetails
+                Password = "x", // Provide invalid inputs for multiple parameters, which will show up in errorDetails
+            };
             PlayFabClientAPI.RegisterPlayFabUser(registerRequest, PlayFabUUnitUtils.ApiActionWrapper<RegisterPlayFabUserResult>(testContext, InvalidRegistrationCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ExpectedRegisterErrorCallback), testContext);
         }
         private void InvalidRegistrationCallback(RegisterPlayFabUserResult result)
@@ -179,9 +129,11 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void LoginOrRegister(UUnitTestContext testContext)
         {
-            var loginRequest = new LoginWithCustomIDRequest();
-            loginRequest.CustomId = PlayFabSettings.BuildIdentifier;
-            loginRequest.CreateAccount = true;
+            var loginRequest = new LoginWithCustomIDRequest
+            {
+                CustomId = PlayFabSettings.BuildIdentifier,
+                CreateAccount = true,
+            };
             PlayFabClientAPI.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiActionWrapper<LoginResult>(testContext, LoginCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void LoginCallback(LoginResult result)
@@ -220,7 +172,8 @@ namespace PlayFab.UUnit
 
             var target = PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful";
             var failTime = DateTime.UtcNow + TimeSpan.FromSeconds(10);
-            tickAction = () => {
+            _tickAction = () =>
+            {
                 if (target == PlayFabSettings.AdvertisingIdType)
                     testContext.EndTest(UUnitFinishState.PASSED, PlayFabSettings.AdvertisingIdValue);
                 if (DateTime.UtcNow > failTime)
@@ -272,15 +225,15 @@ namespace PlayFab.UUnit
             var testContext = (UUnitTestContext)result.CustomData;
 
             UserDataRecord userDataRecord;
-            int actualValue = 0; // Default if the data isn't present
+            var actualValue = 0; // Default if the data isn't present
             if (result.Data.TryGetValue(TEST_DATA_KEY, out userDataRecord))
                 int.TryParse(userDataRecord.Value, out actualValue);
             testContext.IntEquals(_testInteger, actualValue);
             testContext.NotNull(userDataRecord, "UserData record not found");
 
-            DateTime timeUpdated = userDataRecord.LastUpdated;
-            DateTime minTest = DateTime.UtcNow - TimeSpan.FromMinutes(5);
-            DateTime maxTest = DateTime.UtcNow + TimeSpan.FromMinutes(5);
+            var timeUpdated = userDataRecord.LastUpdated;
+            var minTest = DateTime.UtcNow - TimeSpan.FromMinutes(5);
+            var maxTest = DateTime.UtcNow + TimeSpan.FromMinutes(5);
             testContext.True(minTest <= timeUpdated && timeUpdated <= maxTest);
 
             testContext.True(Math.Abs((DateTime.UtcNow - timeUpdated).TotalMinutes) < 5); // Make sure that this timestamp is recent - This must also account for the difference between local machine time and server time
@@ -346,8 +299,10 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void UserCharacter(UUnitTestContext testContext)
         {
-            var request = new ListUsersCharactersRequest();
-            request.PlayFabId = PlayFabId; // Received from client upon login
+            var request = new ListUsersCharactersRequest
+            {
+                PlayFabId = PlayFabId // Received from client upon login
+            };
             PlayFabClientAPI.GetAllUsersCharacters(request, PlayFabUUnitUtils.ApiActionWrapper<ListUsersCharactersResult>(testContext, GetCharsCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void GetCharsCallback(ListUsersCharactersResult result)
@@ -363,9 +318,11 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void ClientLeaderBoard(UUnitTestContext testContext)
         {
-            var clientRequest = new GetLeaderboardRequest();
-            clientRequest.MaxResultsCount = 3;
-            clientRequest.StatisticName = TEST_STAT_NAME;
+            var clientRequest = new GetLeaderboardRequest
+            {
+                MaxResultsCount = 3,
+                StatisticName = TEST_STAT_NAME,
+            };
             PlayFabClientAPI.GetLeaderboard(clientRequest, PlayFabUUnitUtils.ApiActionWrapper<GetLeaderboardResult>(testContext, GetClientLbCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void GetClientLbCallback(GetLeaderboardResult result)
@@ -384,7 +341,7 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void AccountInfo(UUnitTestContext testContext)
         {
-            GetAccountInfoRequest request = new GetAccountInfoRequest
+            var request = new GetAccountInfoRequest
             {
                 PlayFabId = PlayFabId
             };
@@ -392,7 +349,7 @@ namespace PlayFab.UUnit
         }
         private void AcctInfoCallback(GetAccountInfoResult result)
         {
-            bool enumCorrect = (result.AccountInfo != null
+            var enumCorrect = (result.AccountInfo != null
                 && result.AccountInfo.TitleInfo != null
                 && result.AccountInfo.TitleInfo.Origination != null
                 && Enum.IsDefined(typeof(UserOrigination), result.AccountInfo.TitleInfo.Origination.Value));

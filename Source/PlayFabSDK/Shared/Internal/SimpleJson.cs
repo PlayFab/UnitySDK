@@ -595,7 +595,7 @@ namespace PlayFab.Json
             return success;
         }
 
-        public static object DeserializeObject(string json, Type type, IJsonSerializerStrategy jsonSerializerStrategy)
+        public static object DeserializeObject(string json, Type type, IJsonSerializerStrategy jsonSerializerStrategy = null)
         {
             object jsonObject = DeserializeObject(json);
             if (type == null || jsonObject != null && ReflectionUtils.IsAssignableFrom(jsonObject.GetType(), type))
@@ -603,19 +603,9 @@ namespace PlayFab.Json
             return (jsonSerializerStrategy ?? CurrentJsonSerializerStrategy).DeserializeObject(jsonObject, type);
         }
 
-        public static object DeserializeObject(string json, Type type)
-        {
-            return DeserializeObject(json, type, null);
-        }
-
-        public static T DeserializeObject<T>(string json, IJsonSerializerStrategy jsonSerializerStrategy)
+        public static T DeserializeObject<T>(string json, IJsonSerializerStrategy jsonSerializerStrategy = null)
         {
             return (T)DeserializeObject(json, typeof(T), jsonSerializerStrategy);
-        }
-
-        public static T DeserializeObject<T>(string json)
-        {
-            return (T)DeserializeObject(json, typeof(T), null);
         }
 
         /// <summary>

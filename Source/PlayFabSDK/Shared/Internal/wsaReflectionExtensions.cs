@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-public static class UUnitWsaReflectionExtensions
+public static class WsaReflectionExtensions
 {
 #if !NETFX_CORE
     public static Delegate CreateDelegate(this MethodInfo methodInfo, Type delegateType, object instance)

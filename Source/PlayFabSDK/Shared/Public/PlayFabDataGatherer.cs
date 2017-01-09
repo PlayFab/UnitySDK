@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine.Rendering;
 #if NETFX_CORE
@@ -118,7 +117,7 @@ namespace PlayFab
 
         public string GenerateReport()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("Logging System Info: ========================================\n");
             foreach (var field in GetType().GetTypeInfo().GetFields())
             {
