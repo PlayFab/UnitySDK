@@ -15,7 +15,7 @@ namespace PlayFab.UUnit
     /// </summary>
     public class UUnitException : Exception
     {
-        public UUnitException(string message) : base(message) { }
+        protected UUnitException(string message) : base(message) { }
     }
 
     /// <summary>

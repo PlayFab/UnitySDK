@@ -27,12 +27,12 @@ namespace PlayFab.UUnit
 
         public UUnitActiveState ActiveState;
         public UUnitFinishState FinishState;
-        public Action<UUnitTestContext> TestDelegate;
-        public UUnitTestCase TestInstance;
+        public readonly Action<UUnitTestContext> TestDelegate;
+        public readonly UUnitTestCase TestInstance;
         public DateTime StartTime;
         public DateTime EndTime;
         public string TestResultMsg;
-        public string Name;
+        public readonly string Name;
 
         public UUnitTestContext(UUnitTestCase testInstance, Action<UUnitTestContext> testDelegate, string name)
         {
@@ -237,7 +237,7 @@ namespace PlayFab.UUnit
             var gEnum = got.GetEnumerator();
 
             bool wNext, gNext;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 wNext = wEnum.MoveNext();

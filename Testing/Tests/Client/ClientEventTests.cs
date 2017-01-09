@@ -43,7 +43,7 @@ namespace PlayFab.UUnit
 
         public override void SetUp(UUnitTestContext testContext)
         {
-            PlayFabSettings.TitleId = "6195";
+            TestTitleDataLoader.LoadTestTitleData();
 
             _listener = new EventInstanceListener();
             Callbacks.Clear();
@@ -77,7 +77,7 @@ namespace PlayFab.UUnit
             _listener.Register();
             PlayFabHttp.ApiProcessingEventHandler += TestInstCallbacks_GeneralOnly_OnGlobalEventHandler;
 
-            var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = PlayFabSettings.BuildIdentifier, TitleId = "6195" };
+            var request = new LoginWithCustomIDRequest { CreateAccount = true, CustomId = PlayFabSettings.BuildIdentifier };
             PlayFabClientAPI.LoginWithCustomID(request,
                 PlayFabUUnitUtils.ApiActionWrapper<LoginResult>(testContext, TestInstCallbacks_GeneralOnlyCallback),
                 PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
@@ -121,7 +121,7 @@ namespace PlayFab.UUnit
         {
             PlayFabHttp.ApiProcessingEventHandler += TestCallbackFailuresGlobal_OnGlobalEventHandler;
 
-            GetCatalogItemsRequest catalogRequest = new GetCatalogItemsRequest();
+            var catalogRequest = new GetCatalogItemsRequest();
             PlayFabClientAPI.GetCatalogItems(catalogRequest,
                 PlayFabUUnitUtils.ApiActionWrapper<GetCatalogItemsResult>(testContext, GetCatalogItemsCallback_Single),
                 PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback),
@@ -153,7 +153,7 @@ namespace PlayFab.UUnit
         {
             PlayFabHttp.ApiProcessingErrorEventHandler += SharedError_Global;
 
-            RegisterPlayFabUserRequest registerRequest = new RegisterPlayFabUserRequest(); // A bad request that will fail
+            var registerRequest = new RegisterPlayFabUserRequest(); // A bad request that will fail
             PlayFabClientAPI.RegisterPlayFabUser(registerRequest, null, PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedError_Single), testContext);
         }
         private static void SharedError_Global(PlayFabRequestCommon request, PlayFabError error)

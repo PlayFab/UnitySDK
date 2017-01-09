@@ -1,8 +1,6 @@
-using PlayFab;
-
 namespace PlayFab.Internal
 {
-    public class Log
+    public static class Log
     {
         public static void Debug(string text, params object[] args)
         {

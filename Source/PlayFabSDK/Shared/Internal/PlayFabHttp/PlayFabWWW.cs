@@ -48,7 +48,7 @@ namespace PlayFab.Internal
 
                 using (var stream = new MemoryStream())
                 {
-                    using (GZipStream zipstream = new GZipStream(stream, CompressionMode.Compress, CompressionLevel.BestCompression))
+                    using (var zipstream = new GZipStream(stream, CompressionMode.Compress, CompressionLevel.BestCompression))
                     {
                         zipstream.Write(reqContainer.Payload, 0, reqContainer.Payload.Length);
                     }
@@ -187,7 +187,7 @@ namespace PlayFab.Internal
                                     output.Write(buffer, 0, read);
                                 }
                                 output.Seek(0, SeekOrigin.Begin);
-                                var streamReader = new System.IO.StreamReader(output);
+                                var streamReader = new StreamReader(output);
                                 var jsonResponse = streamReader.ReadToEnd();
                                 //Debug.Log(jsonResponse);
                                 wwwSuccessCallback(jsonResponse);

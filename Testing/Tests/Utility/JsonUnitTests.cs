@@ -112,7 +112,7 @@ namespace PlayFab.UUnit
         public void JsonPropertyTest(UUnitTestContext testContext)
         {
             var expectedObject = new JsonPropertyAttrTestClass { InvalidField = "asdf", InvalidProperty = "fdsa" };
-            string json = JsonWrapper.SerializeObject(expectedObject);
+            var json = JsonWrapper.SerializeObject(expectedObject);
             // Verify that the field names have been transformed by the JsonProperty attribute
             testContext.False(json.ToLower().Contains("invalid"), json);
             testContext.False(json.ToLower().Contains("hidenull"), json);
@@ -130,7 +130,7 @@ namespace PlayFab.UUnit
         public void TestObjNumField(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { ObjNumFieldTest.Max, ObjNumFieldTest.Min, ObjNumFieldTest.Zero };
-            for (int i = 0; i < expectedObjects.Length; i++)
+            for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
                 var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
@@ -154,7 +154,7 @@ namespace PlayFab.UUnit
         public void TestObjNumProp(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { ObjNumPropTest.Max, ObjNumPropTest.Min, ObjNumPropTest.Zero };
-            for (int i = 0; i < expectedObjects.Length; i++)
+            for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
                 var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
@@ -178,7 +178,7 @@ namespace PlayFab.UUnit
         public void TestStructNumField(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { StructNumFieldTest.Max, StructNumFieldTest.Min, StructNumFieldTest.Zero };
-            for (int i = 0; i < expectedObjects.Length; i++)
+            for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
                 var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
@@ -202,7 +202,7 @@ namespace PlayFab.UUnit
         public void TestObjOptNumField(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { ObjOptNumFieldTest.Max, ObjOptNumFieldTest.Min, ObjOptNumFieldTest.Zero, ObjOptNumFieldTest.Null };
-            for (int i = 0; i < expectedObjects.Length; i++)
+            for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
                 var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
@@ -249,7 +249,7 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void ArrayAsObject(UUnitTestContext testContext)
         {
-            string json = "{\"Version\": \"2016-06-21_23-57-16\", \"ObjectArray\": [{\"Id\": 2, \"Name\": \"Stunned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Stunned\", \"EN_reminder\": \"Can\'t attack, block, or activate\"}, {\"Id\": 3, \"Name\": \"Poisoned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Poisoned\", \"EN_reminder\": \"Takes {N} damage at the start of each turn. Wears off over time.\" }], \"StringArray\": [\"NoSubtype\", \"Aircraft\"]}";
+            var json = "{\"Version\": \"2016-06-21_23-57-16\", \"ObjectArray\": [{\"Id\": 2, \"Name\": \"Stunned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Stunned\", \"EN_reminder\": \"Can\'t attack, block, or activate\"}, {\"Id\": 3, \"Name\": \"Poisoned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Poisoned\", \"EN_reminder\": \"Takes {N} damage at the start of each turn. Wears off over time.\" }], \"StringArray\": [\"NoSubtype\", \"Aircraft\"]}";
             var result = JsonWrapper.DeserializeObject<Dictionary<string, object>>(json);
             var version = result["Version"] as string;
             var objArray = result["ObjectArray"] as List<object>;
@@ -266,9 +266,9 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void TimeSpanJson(UUnitTestContext testContext)
         {
-            TimeSpan span = TimeSpan.FromSeconds(5);
-            string actualJson = JsonWrapper.SerializeObject(span, PlayFabUtil.ApiSerializerStrategy);
-            string expectedJson = "5";
+            var span = TimeSpan.FromSeconds(5);
+            var actualJson = JsonWrapper.SerializeObject(span, PlayFabUtil.ApiSerializerStrategy);
+            var expectedJson = "5";
             testContext.StringEquals(expectedJson, actualJson, actualJson);
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
@@ -277,7 +277,7 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void ArrayOfObjects(UUnitTestContext testContext)
         {
-            string actualJson = "[{\"a\":\"aValue\"}, {\"b\":\"bValue\"}]";
+            var actualJson = "[{\"a\":\"aValue\"}, {\"b\":\"bValue\"}]";
             var actualObjectList = JsonWrapper.DeserializeObject<List<object>>(actualJson);
             var actualObjectArray = JsonWrapper.DeserializeObject<object[]>(actualJson);
 

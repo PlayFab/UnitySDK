@@ -7,13 +7,13 @@ namespace PlayFab.UUnit
 {
     public static class StaticTestRunner
     {
-        private static UUnitIncrementalTestRunner[] testers = null;
+        private static UUnitIncrementalTestRunner[] _testers = null;
 
         private static void ClearDebugLog()
         {
-            Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
-            Type type = assembly.GetType("UnityEditorInternal.LogEntries");
-            MethodInfo method = type.GetMethod("Clear");
+            var assembly = Assembly.GetAssembly(typeof(SceneView));
+            var type = assembly.GetType("UnityEditorInternal.LogEntries");
+            var method = type.GetMethod("Clear");
             method.Invoke(new object(), null);
         }
 
@@ -22,11 +22,11 @@ namespace PlayFab.UUnit
         {
             ClearDebugLog();
 
-            testers = UnityEngine.Object.FindObjectsOfType<UUnitIncrementalTestRunner>();
-            if (testers.Length == 0)
+            _testers = UnityEngine.Object.FindObjectsOfType<UUnitIncrementalTestRunner>();
+            if (_testers.Length == 0)
             {
-                testers = new[] { new GameObject("UUnitRunner", typeof(UUnitIncrementalTestRunner)).GetComponent<UUnitIncrementalTestRunner>() };
-                testers[0].autoQuit = true;
+                _testers = new[] { new GameObject("UUnitRunner", typeof(UUnitIncrementalTestRunner)).GetComponent<UUnitIncrementalTestRunner>() };
+                _testers[0].autoQuit = true;
             }
 
             EditorApplication.isPlaying = true;

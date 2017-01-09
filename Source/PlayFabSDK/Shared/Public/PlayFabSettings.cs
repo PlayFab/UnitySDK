@@ -1,5 +1,4 @@
 using System;
-using PlayFab.Public;
 using UnityEngine;
 
 namespace PlayFab
@@ -26,13 +25,18 @@ namespace PlayFab
     {
         static PlayFabSettings() { }
 
-        public static PlayFabSharedSettings PlayFabShared = GetSharedSettingsObject();
-        public const string SdkVersion = "2.14.170102";
+        private static PlayFabSharedSettings _playFabShared = null;
+        private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
+        [Obsolete("This field will become private after Mar 1, 2017", false)]
+        public static PlayFabSharedSettings PlayFabShared { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
+        public const string SdkVersion = "2.15.170109";
         public const string BuildIdentifier = "jbuild_unitysdk_1";
-        public const string VersionString = "UnitySDK-2.14.170102";
-        public const string DefaultPlayFabApiUrl = ".playfabapi.com";
+        public const string VersionString = "UnitySDK-2.15.170109";
+        private const string DefaultPlayFabApiUrlPrivate = ".playfabapi.com";
+        [Obsolete("This field will become private after Mar 1, 2017", false)]
+        public static string DefaultPlayFabApiUrl { get { return DefaultPlayFabApiUrlPrivate; } }
 
-        public static PlayFabSharedSettings GetSharedSettingsObject()
+        private static PlayFabSharedSettings GetSharedSettingsObjectPrivate()
         {
             var settingsList = Resources.LoadAll<PlayFabSharedSettings>("PlayFabSharedSettings");
             if (settingsList.Length != 1)
@@ -40,14 +44,19 @@ namespace PlayFab
                 throw new Exception("Either Missing PlayFabSharedSettings data file or multiple data files exist.");
             }
             return settingsList[0];
+        }
+        [Obsolete("This field will become private after Mar 1, 2017", false)]
+        public static PlayFabSharedSettings GetSharedSettingsObject()
+        {
+            return GetSharedSettingsObjectPrivate();
         } 
 
 
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
         public static string DeveloperSecretKey
         {
-            set { PlayFabShared.DeveloperSecretKey = value;}
-            internal get { return PlayFabShared.DeveloperSecretKey; }
+            set { PlayFabSharedPrivate.DeveloperSecretKey = value;}
+            internal get { return PlayFabSharedPrivate.DeveloperSecretKey; }
         }
 #endif
 
@@ -70,79 +79,85 @@ namespace PlayFab
         }
 
 
+        private static string ProductionEnvironmentUrlPrivate
+        {
+            get { return !string.IsNullOrEmpty(PlayFabSharedPrivate.ProductionEnvironmentUrl) ? PlayFabSharedPrivate.ProductionEnvironmentUrl : DefaultPlayFabApiUrlPrivate; }
+            set { PlayFabSharedPrivate.ProductionEnvironmentUrl = value; }
+        }
+        [Obsolete("This field will become private after Mar 1, 2017", false)]
         public static string ProductionEnvironmentUrl
         {
-            get { return !string.IsNullOrEmpty(PlayFabShared.ProductionEnvironmentUrl) ? PlayFabShared.ProductionEnvironmentUrl : DefaultPlayFabApiUrl; }
-            set { PlayFabShared.ProductionEnvironmentUrl = value; }
+            get { return ProductionEnvironmentUrlPrivate; }
+            set { ProductionEnvironmentUrlPrivate = value; }
         }
 
         // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
         public static string TitleId
         {
-            get { return PlayFabShared.TitleId; }
-            set { PlayFabShared.TitleId = value; }
+            get { return PlayFabSharedPrivate.TitleId; }
+            set { PlayFabSharedPrivate.TitleId = value; }
         }
 
         public static PlayFabLogLevel LogLevel
         {
-            get { return PlayFabShared.LogLevel; }
-            set { PlayFabShared.LogLevel = value; }
+            get { return PlayFabSharedPrivate.LogLevel; }
+            set { PlayFabSharedPrivate.LogLevel = value; }
         }
 
         public static WebRequestType RequestType
         {
-            get { return PlayFabShared.RequestType; }
-            set { PlayFabShared.RequestType = value; }
+            get { return PlayFabSharedPrivate.RequestType; }
+            set { PlayFabSharedPrivate.RequestType = value; }
         }
 
         public static int RequestTimeout
         {
-            get { return PlayFabShared.RequestTimeout; }
-            set { PlayFabShared.RequestTimeout = value; }
+            get { return PlayFabSharedPrivate.RequestTimeout; }
+            set { PlayFabSharedPrivate.RequestTimeout = value; }
 
         }
 
         public static bool RequestKeepAlive
         {
-            get { return PlayFabShared.RequestKeepAlive; }
-            set { PlayFabShared.RequestKeepAlive = value; }
+            get { return PlayFabSharedPrivate.RequestKeepAlive; }
+            set { PlayFabSharedPrivate.RequestKeepAlive = value; }
         }
 
         public static bool CompressApiData
         {
-            get { return PlayFabShared.CompressApiData; }
-            set { PlayFabShared.CompressApiData = value; }
+            get { return PlayFabSharedPrivate.CompressApiData; }
+            set { PlayFabSharedPrivate.CompressApiData = value; }
         }
 
         public static string LoggerHost
         {
-            get { return PlayFabShared.LoggerHost; }
-            set { PlayFabShared.LoggerHost = value; }
+            get { return PlayFabSharedPrivate.LoggerHost; }
+            set { PlayFabSharedPrivate.LoggerHost = value; }
 
         }
 
         public static int LoggerPort
         {
-            get { return PlayFabShared.LoggerPort; }
-            set { PlayFabShared.LoggerPort = value; }
+            get { return PlayFabSharedPrivate.LoggerPort; }
+            set { PlayFabSharedPrivate.LoggerPort = value; }
         }
 
         public static bool EnableRealTimeLogging
         {
-            get { return PlayFabShared.EnableRealTimeLogging; }
-            set { PlayFabShared.EnableRealTimeLogging = value; }
+            get { return PlayFabSharedPrivate.EnableRealTimeLogging; }
+            set { PlayFabSharedPrivate.EnableRealTimeLogging = value; }
         }
 
         public static int LogCapLimit
         {
-            get { return PlayFabShared.LogCapLimit; }
-            set { PlayFabShared.LogCapLimit = value; }
+            get { return PlayFabSharedPrivate.LogCapLimit; }
+            set { PlayFabSharedPrivate.LogCapLimit = value; }
         }
 
         public static string GetFullUrl(string apiCall)
         {
             string output;
-            var baseUrl = ProductionEnvironmentUrl;
+            var baseUrl = ProductionEnvironmentUrlPrivate;
             if (baseUrl.StartsWith("http"))
                 output = baseUrl + apiCall;
             else

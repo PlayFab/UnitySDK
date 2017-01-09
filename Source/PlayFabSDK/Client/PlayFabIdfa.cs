@@ -19,7 +19,7 @@ namespace PlayFab.Internal
             PlayFabClientAPI.AttributeInstall(attribRequest, OnAttributeInstall, null);
         }
 
-        public static void OnAttributeInstall(AttributeInstallResult result)
+        private static void OnAttributeInstall(AttributeInstallResult result)
         {
             // This is for internal testing.
             PlayFabSettings.AdvertisingIdType += "_Successful";

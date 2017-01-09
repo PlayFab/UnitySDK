@@ -61,11 +61,11 @@ namespace PlayFab.Internal
             /// </summary>
             public override object DeserializeObject(object value, Type type)
             {
-                string valueStr = value as string;
+                var valueStr = value as string;
                 if (valueStr == null) // For all of our custom conversions, value is a string
                     return base.DeserializeObject(value, type);
 
-                Type underType = Nullable.GetUnderlyingType(type);
+                var underType = Nullable.GetUnderlyingType(type);
                 if (underType != null)
                     return DeserializeObject(value, underType);
                 else if (type.GetTypeInfo().IsEnum)
@@ -73,14 +73,14 @@ namespace PlayFab.Internal
                 else if (type == typeof(DateTime))
                 {
                     DateTime output;
-                    bool result = DateTime.TryParseExact(valueStr, _defaultDateTimeFormats, CultureInfo.CurrentCulture, _dateTimeStyles, out output);
+                    var result = DateTime.TryParseExact(valueStr, _defaultDateTimeFormats, CultureInfo.CurrentCulture, _dateTimeStyles, out output);
                     if (result)
                         return output;
                 }
                 else if (type == typeof(DateTimeOffset))
                 {
                     DateTimeOffset output;
-                    bool result = DateTimeOffset.TryParseExact(valueStr, _defaultDateTimeFormats, CultureInfo.CurrentCulture, _dateTimeStyles, out output);
+                    var result = DateTimeOffset.TryParseExact(valueStr, _defaultDateTimeFormats, CultureInfo.CurrentCulture, _dateTimeStyles, out output);
                     if (result)
                         return output;
                 }
