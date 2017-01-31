@@ -288,8 +288,7 @@ namespace PlayFab.Internal
         {
             try
             {
-                var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(reqContainer.JsonResponse,
-                    PlayFabUtil.ApiSerializerStrategy);
+                var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(reqContainer.JsonResponse);
 
 #if PLAYFAB_REQUEST_TIMING
                 reqContainer.Timing.WorkerRequestMs = (int)reqContainer.Stopwatch.ElapsedMilliseconds;
@@ -302,7 +301,7 @@ namespace PlayFab.Internal
                     return;
                 }
 
-                reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
+                reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data);
                 reqContainer.DeserializeResultJson(); // Assigns Result with a properly typed object
                 reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                 reqContainer.ApiResult.CustomData = reqContainer.CustomData;

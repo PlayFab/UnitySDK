@@ -51,7 +51,7 @@ namespace PlayFab.UUnit
                 {
                     var testInputsFile = PlayFabUtil.ReadAllFileText(filename);
 
-                    testInputs = JsonWrapper.DeserializeObject<Dictionary<string, string>>(testInputsFile, PlayFabUtil.ApiSerializerStrategy);
+                    testInputs = JsonWrapper.DeserializeObject<Dictionary<string, string>>(testInputsFile);
                 }
                 else
                 {

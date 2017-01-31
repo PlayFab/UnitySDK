@@ -42,7 +42,7 @@ namespace PlayFab.UUnit
             {
                 var testInputsFile = PlayFabUtil.ReadAllFileText(filename);
 
-                _loadedData = JsonWrapper.DeserializeObject<TestTitleData>(testInputsFile, PlayFabUtil.ApiSerializerStrategy);
+                _loadedData = JsonWrapper.DeserializeObject<TestTitleData>(testInputsFile);
             }
             else
             {
