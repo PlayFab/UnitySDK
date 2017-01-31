@@ -85,7 +85,7 @@ namespace PlayFab.Internal
         public static void MakeWp8Build()
         {
             Setup();
-#if UNITY_5
+#if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7
             BuildTarget wsaBuildTarget = BuildTarget.WSAPlayer;
             EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.LocalMachineAndWindowsPhone;

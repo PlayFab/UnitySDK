@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
+
 #if NETFX_CORE
 using System.Reflection;
 #endif
@@ -36,7 +37,16 @@ namespace PlayFab.Internal
         };
         public const int DEFAULT_UTC_OUTPUT_INDEX = 2; // The default format everybody should use
         public const int DEFAULT_LOCAL_OUTPUT_INDEX = 8; // The default format if you want to use local time (This doesn't have universal support in all PlayFab code)
-        private static DateTimeStyles _dateTimeStyles = DateTimeStyles.RoundtripKind;
+        public static DateTimeStyles DateTimeStyles = DateTimeStyles.RoundtripKind;
+
+        /// <summary>
+        /// This field has moved!
+        /// However, most users shouldn't access this at all
+        /// JsonWrapper.Serialize, and JsonWrapper.Deserialize will always use it automatically (Unless you deliberately mess with them)
+        /// Any Serialization of an object in the PlayFab namespace should just use JsonWrapper
+        /// </summary>
+        [Obsolete(@"This field has moved to SimpleJsonInstance.ApiSerializerStrategy", false)]
+        public static SimpleJsonInstance.PlayFabSimpleJsonCuztomization ApiSerializerStrategy { get { return SimpleJsonInstance.ApiSerializerStrategy; } }
 
         public static string timeStamp
         {
@@ -51,75 +61,6 @@ namespace PlayFab.Internal
         public static string Format(string text, params object[] args)
         {
             return args.Length > 0 ? string.Format(text, args) : text;
-        }
-
-        public static MyJsonSerializerStrategy ApiSerializerStrategy = new MyJsonSerializerStrategy();
-        public class MyJsonSerializerStrategy : PocoJsonSerializerStrategy
-        {
-            /// <summary>
-            /// Convert the json value into the destination field/property
-            /// </summary>
-            public override object DeserializeObject(object value, Type type)
-            {
-                var valueStr = value as string;
-                if (valueStr == null) // For all of our custom conversions, value is a string
-                    return base.DeserializeObject(value, type);
-
-                var underType = Nullable.GetUnderlyingType(type);
-                if (underType != null)
-                    return DeserializeObject(value, underType);
-                else if (type.GetTypeInfo().IsEnum)
-                    return Enum.Parse(type, (string)value, true);
-                else if (type == typeof(DateTime))
-                {
-                    DateTime output;
-                    var result = DateTime.TryParseExact(valueStr, _defaultDateTimeFormats, CultureInfo.CurrentCulture, _dateTimeStyles, out output);
-                    if (result)
-                        return output;
-                }
-                else if (type == typeof(DateTimeOffset))
-                {
-                    DateTimeOffset output;
-                    var result = DateTimeOffset.TryParseExact(valueStr, _defaultDateTimeFormats, CultureInfo.CurrentCulture, _dateTimeStyles, out output);
-                    if (result)
-                        return output;
-                }
-                else if (type == typeof(TimeSpan))
-                {
-                    double seconds;
-                    if (double.TryParse(valueStr, out seconds))
-                        return TimeSpan.FromSeconds(seconds);
-                }
-                return base.DeserializeObject(value, type);
-            }
-
-            /// <summary>
-            /// Set output to a string that represents the input object
-            /// </summary>
-            protected override bool TrySerializeKnownTypes(object input, out object output)
-            {
-                if (input.GetType().GetTypeInfo().IsEnum)
-                {
-                    output = input.ToString();
-                    return true;
-                }
-                else if (input is DateTime)
-                {
-                    output = ((DateTime)input).ToString(_defaultDateTimeFormats[DEFAULT_UTC_OUTPUT_INDEX], CultureInfo.CurrentCulture);
-                    return true;
-                }
-                else if (input is DateTimeOffset)
-                {
-                    output = ((DateTimeOffset)input).ToString(_defaultDateTimeFormats[DEFAULT_UTC_OUTPUT_INDEX], CultureInfo.CurrentCulture);
-                    return true;
-                }
-                else if (input is TimeSpan)
-                {
-                    output = ((TimeSpan)input).TotalSeconds;
-                    return true;
-                }
-                return base.TrySerializeKnownTypes(input, out output);
-            }
         }
 
         [ThreadStatic]

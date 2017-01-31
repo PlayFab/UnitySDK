@@ -72,8 +72,8 @@ namespace PlayFab.Internal
 
                 // De-serialize the time using json
                 expectedJson = "{\"timestamp\":\"" + _examples[i] + "\"}"; // We are provided a json string with every random time format
-                actualObj = JsonWrapper.DeserializeObject<ObjWithTimes>(expectedJson, PlayFabUtil.ApiSerializerStrategy);
-                actualJson = JsonWrapper.SerializeObject(actualObj, PlayFabUtil.ApiSerializerStrategy);
+                actualObj = JsonWrapper.DeserializeObject<ObjWithTimes>(expectedJson);
+                actualJson = JsonWrapper.SerializeObject(actualObj);
 
                 if (i == PlayFabUtil.DEFAULT_UTC_OUTPUT_INDEX) // This is the only case where the json input will match the json output
                     testContext.StringEquals(expectedJson, actualJson);
@@ -145,8 +145,8 @@ namespace PlayFab.Internal
 
             expectedJson = "{\"enumList\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumArray\":[\"USEast\",\"USCentral\",\"Japan\"],\"enumValue\":\"Australia\",\"optEnumValue\":null}";
 
-            actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(expectedJson, PlayFabUtil.ApiSerializerStrategy);
-            actualJson = JsonWrapper.SerializeObject(actualObj, PlayFabUtil.ApiSerializerStrategy);
+            actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(expectedJson);
+            actualJson = JsonWrapper.SerializeObject(actualObj);
 
             testContext.StringEquals(expectedJson.Replace(" ", "").Replace("\n", ""), actualJson.Replace(" ", "").Replace("\n", ""));
             testContext.ObjEquals(expectedObj, actualObj);
@@ -166,7 +166,7 @@ namespace PlayFab.Internal
             expectedObj.optEnumValue = null;
 
             var inputJson = "{\"enumList\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumArray\":[" + ((int)testRegion.USEast) + "," + ((int)testRegion.USCentral) + "," + ((int)testRegion.Japan) + "],\"enumValue\":" + ((int)testRegion.Australia) + "}";
-            actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(inputJson, PlayFabUtil.ApiSerializerStrategy);
+            actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(inputJson);
             testContext.ObjEquals(expectedObj, actualObj);
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
@@ -182,13 +182,13 @@ namespace PlayFab.Internal
                 optEnumValue = null,
             };
 
-            var actualJson = JsonWrapper.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy);
-            var actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+            var actualJson = JsonWrapper.SerializeObject(expectedObj);
+            var actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(actualJson);
             testContext.ObjEquals(expectedObj, actualObj);
 
             expectedObj.optEnumValue = testRegion.Brazil;
-            actualJson = JsonWrapper.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy);
-            actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+            actualJson = JsonWrapper.SerializeObject(expectedObj);
+            actualObj = JsonWrapper.DeserializeObject<EnumConversionTestClass>(actualJson);
             testContext.ObjEquals(expectedObj, actualObj);
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }

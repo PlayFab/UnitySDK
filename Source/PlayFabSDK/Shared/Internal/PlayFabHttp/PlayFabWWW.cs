@@ -72,12 +72,12 @@ namespace PlayFab.Internal
 #if PLAYFAB_REQUEST_TIMING
                     var startTime = DateTime.UtcNow;
 #endif
-                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response, PlayFabUtil.ApiSerializerStrategy);
+                    var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response);
 
                     if (httpResult.code == 200)
                     {
                         // We have a good response from the server
-                        reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data, PlayFabUtil.ApiSerializerStrategy);
+                        reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data);
                         reqContainer.DeserializeResultJson();
                         reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                         reqContainer.ApiResult.CustomData = reqContainer.CustomData;

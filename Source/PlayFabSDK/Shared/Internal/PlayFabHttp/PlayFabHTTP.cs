@@ -144,7 +144,7 @@ namespace PlayFab.Internal
                 ApiEndpoint = apiEndpoint,
                 FullUrl = PlayFabSettings.GetFullUrl(apiEndpoint),
                 CustomData = customData,
-                Payload = Encoding.UTF8.GetBytes(JsonWrapper.SerializeObject(request, PlayFabUtil.ApiSerializerStrategy)),
+                Payload = Encoding.UTF8.GetBytes(JsonWrapper.SerializeObject(request)),
                 AuthKey = authType,
                 ApiRequest = request,
                 ErrorCallback = errorCallback,
@@ -157,7 +157,7 @@ namespace PlayFab.Internal
             // These closures preserve the TResult generic information in a way that's safe for all the devices
             reqContainer.DeserializeResultJson = () =>
             {
-                reqContainer.ApiResult = JsonWrapper.DeserializeObject<TResult>(reqContainer.JsonResponse, PlayFabUtil.ApiSerializerStrategy);
+                reqContainer.ApiResult = JsonWrapper.DeserializeObject<TResult>(reqContainer.JsonResponse);
             };
             reqContainer.InvokeSuccessCallback = () =>
             {
@@ -258,7 +258,7 @@ namespace PlayFab.Internal
             try
             {
                 // Deserialize the error
-                errorDict = JsonWrapper.DeserializeObject<JsonObject>(json, PlayFabUtil.ApiSerializerStrategy);
+                errorDict = JsonWrapper.DeserializeObject<JsonObject>(json);
             }
             catch (Exception) { /* Unusual, but shouldn't actually matter */ }
             try

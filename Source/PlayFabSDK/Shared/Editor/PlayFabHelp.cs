@@ -1,14 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace PlayFab.Editor
+namespace PlayFab.PfEditor
 {
-    public class PlayFabHelp : EditorWindow
+    public static class PlayFabHelp
     {
         [MenuItem("PlayFab/GettingStarted")]
         private static void GettingStarted()
         {
-            Application.OpenURL("https://playfab.com/docs/getting-started-with-playfab/");
+            Application.OpenURL("https://api.playfab.com/docs/beginners-guide");
         }
 
         [MenuItem("PlayFab/Docs")]

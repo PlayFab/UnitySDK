@@ -29,6 +29,8 @@ namespace PlayFab.UUnit
 
     internal class NullableTestClass
     {
+        public bool? BoolField = null;
+        public bool? BoolProperty { get; set; }
         public int? IntField = null;
         public int? IntProperty { get; set; }
         public DateTime? TimeField = null;
@@ -133,8 +135,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjNumFieldTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjNumFieldTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -157,8 +159,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -181,8 +183,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -205,8 +207,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i], PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjOptNumFieldTest>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = JsonWrapper.DeserializeObject<ObjOptNumFieldTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -234,8 +236,8 @@ namespace PlayFab.UUnit
                 TestString = "yup",
             };
             // Convert the object to json and back, and verify that everything is the same
-            var actualJson = JsonWrapper.SerializeObject(expectedObj, PlayFabUtil.ApiSerializerStrategy).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-            var actualObject = JsonWrapper.DeserializeObject<OtherSpecificDatatypes>(actualJson, PlayFabUtil.ApiSerializerStrategy);
+            var actualJson = JsonWrapper.SerializeObject(expectedObj).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+            var actualObject = JsonWrapper.DeserializeObject<OtherSpecificDatatypes>(actualJson);
 
             testContext.ObjEquals(expectedObj.TestString, actualObject.TestString);
             testContext.SequenceEquals(expectedObj.IntDict, actualObject.IntDict);
@@ -267,7 +269,7 @@ namespace PlayFab.UUnit
         public void TimeSpanJson(UUnitTestContext testContext)
         {
             var span = TimeSpan.FromSeconds(5);
-            var actualJson = JsonWrapper.SerializeObject(span, PlayFabUtil.ApiSerializerStrategy);
+            var actualJson = JsonWrapper.SerializeObject(span);
             var expectedJson = "5";
             testContext.StringEquals(expectedJson, actualJson, actualJson);
 
@@ -293,18 +295,51 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void NullableJson(UUnitTestContext testContext)
         {
-            var testObj = new NullableTestClass();
-            var actualJson = JsonWrapper.SerializeObject(testObj, PlayFabUtil.ApiSerializerStrategy);
-            var actualObj = JsonWrapper.DeserializeObject<NullableTestClass>(actualJson);
+            var testObjNull = new NullableTestClass();
+            var testObjInt = new NullableTestClass { IntField = 42, IntProperty = 42 };
+            var testObjTime = new NullableTestClass { TimeField = DateTime.UtcNow, TimeProperty = DateTime.UtcNow };
+            var testObjEnum = new NullableTestClass { EnumField = Region.Japan, EnumProperty = Region.Japan };
+            var testObjBool = new NullableTestClass { BoolField = true, BoolProperty = true };
+            var testObjs = new[] { testObjNull, testObjEnum, testObjBool, testObjInt, testObjTime };
 
-            testContext.IsNull(actualObj.IntField, "Nullable integer field does not serialize properly: " + testObj.IntField + ", from " + actualJson);
-            testContext.IsNull(actualObj.IntProperty, "Nullable integer property does not serialize properly: " + testObj.IntProperty + ", from " + actualJson);
-            testContext.IsNull(actualObj.TimeField, "Nullable struct field does not serialize properly: " + testObj.TimeField + ", from " + actualJson);
-            testContext.IsNull(actualObj.TimeProperty, "Nullable struct property does not serialize properly: " + testObj.TimeProperty + ", from " + actualJson);
-            testContext.IsNull(actualObj.EnumField, "Nullable enum field does not serialize properly: " + testObj.EnumField + ", from " + actualJson);
-            testContext.IsNull(actualObj.EnumProperty, "Nullable enum property does not serialize properly: " + testObj.EnumProperty + ", from " + actualJson);
+            List<string> failures = new List<string>();
 
-            testContext.EndTest(UUnitFinishState.PASSED, null);
+            foreach (var testObj in testObjs)
+            {
+                NullableTestClass actualObj = null;
+                var actualJson = JsonWrapper.SerializeObject(testObj);
+                try
+                {
+                    actualObj = JsonWrapper.DeserializeObject<NullableTestClass>(actualJson);
+                }
+                catch (Exception)
+                {
+                    failures.Add(actualJson + " Cannot be deserialized as NullableTestClass");
+                    continue;
+                }
+
+                if (testObj.BoolField != actualObj.BoolField) failures.Add("Nullable bool field does not serialize properly: " + testObj.BoolField + ", from " + actualJson);
+                if (testObj.BoolProperty != actualObj.BoolProperty) failures.Add("Nullable bool property does not serialize properly: " + testObj.BoolProperty + ", from " + actualJson);
+                if (testObj.IntField != actualObj.IntField) failures.Add("Nullable integer field does not serialize properly: " + testObj.IntField + ", from " + actualJson);
+                if (testObj.IntProperty != actualObj.IntProperty) failures.Add("Nullable integer property does not serialize properly: " + testObj.IntProperty + ", from " + actualJson);
+                if (testObj.EnumField != actualObj.EnumField) failures.Add("Nullable enum field does not serialize properly: " + testObj.EnumField + ", from " + actualJson);
+                if (testObj.EnumProperty != actualObj.EnumProperty) failures.Add("Nullable enum property does not serialize properly: " + testObj.EnumProperty + ", from " + actualJson);
+
+                if (testObj.TimeField.HasValue != actualObj.TimeField.HasValue)
+                    failures.Add("Nullable struct field does not serialize properly: " + testObj.TimeField + ", from " + actualJson);
+                if (testObj.TimeField.HasValue && Math.Abs((testObj.TimeField - actualObj.TimeField).Value.TotalSeconds) > 1)
+                    failures.Add("Nullable struct field does not serialize properly: " + testObj.TimeField + ", from " + actualJson);
+
+                if (testObj.TimeProperty.HasValue != actualObj.TimeProperty.HasValue)
+                    failures.Add("Nullable struct field does not serialize properly: " + testObj.TimeProperty + ", from " + actualJson);
+                if (testObj.TimeProperty.HasValue && Math.Abs((testObj.TimeProperty - actualObj.TimeProperty).Value.TotalSeconds) > 1)
+                    failures.Add("Nullable struct property does not serialize properly: " + testObj.TimeProperty + ", from " + actualJson);
+            }
+
+            if (failures.Count == 0)
+                testContext.EndTest(UUnitFinishState.PASSED, null);
+            else
+                testContext.EndTest(UUnitFinishState.FAILED, string.Join("\n", failures.ToArray()));
         }
 
         [UUnitTest]

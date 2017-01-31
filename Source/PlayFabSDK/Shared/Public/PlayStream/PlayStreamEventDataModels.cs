@@ -21,6 +21,63 @@ namespace PlayFab.PlayStreamModels
         public object Reserved;
     }
 
+    #region none
+    public class DeveloperLoggedInEventData : PlayStreamEventBase
+    {
+        public string PlayFabId;
+        public string Email;
+        public AuthenticationProvider? AuthenticationProvider;
+        public string AuthenticationProviderId;
+        public EventLocation Location;
+    }
+    public class DeveloperRegisteredEventData : PlayStreamEventBase
+    {
+        public string PlayFabId;
+        public string Email;
+        public AuthenticationProvider? AuthenticationProvider;
+        public string AuthenticationProviderId;
+        public EventLocation Location;
+    }
+    public class StudioCreatedEventData : PlayStreamEventBase
+    {
+        public string StudioName;
+        public string CreatorPlayFabId;
+        public string CreatorAuthenticationId;
+    }
+    public class StudioUserAddedEventData : PlayStreamEventBase
+    {
+        public string InvitationId;
+        public string AuthenticationId;
+        public string PlayFabId;
+        public string Email;
+        public AuthenticationProvider? AuthenticationProvider;
+        public string AuthenticationProviderId;
+        public List<string> StudioPermissions;
+        public Dictionary<string,string> TitlePermissions;
+    }
+    public class StudioUserInvitedEventData : PlayStreamEventBase
+    {
+        public string InvitorPlayFabId;
+        public string InvitationId;
+        public DateTime? InvitationExpires;
+        public string Email;
+        public bool InvitedExistingUser;
+        public AuthenticationProvider? AuthenticationProvider;
+        public string AuthenticationProviderId;
+        public List<string> StudioPermissions;
+        public Dictionary<string,string> TitlePermissions;
+    }
+    public class StudioUserRemovedEventData : PlayStreamEventBase
+    {
+        public string AuthenticationId;
+        public string PlayFabId;
+        public AuthenticationProvider? AuthenticationProvider;
+        public string AuthenticationProviderId;
+        public List<string> StudioPermissions;
+        public Dictionary<string,string> TitlePermissions;
+    }
+    #endregion none
+
     #region character
     public class CharacterConsumedItemEventData : PlayStreamEventBase
     {
@@ -1489,7 +1546,8 @@ namespace PlayFab.PlayStreamModels
         Gigabytes,
         Terabytes,
         Bytes_Per_Second,
-        MonthlyActiveUsers
+        MonthlyActiveUsers,
+        EnableDisable
     }
 
     public enum StatisticResetIntervalOption
@@ -1513,6 +1571,12 @@ namespace PlayFab.PlayStreamModels
         Realtime,
         Turnbased,
         Chat
+    }
+
+    public enum AuthenticationProvider
+    {
+        PlayFab,
+        SAML
     }
 
     public enum SourceType
