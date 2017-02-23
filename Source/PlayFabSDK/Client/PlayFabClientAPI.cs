@@ -33,6 +33,24 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Requests a challenge from the server to be signed by Windows Hello Passport service to authenticate.
+        /// </summary>
+        public static void GetWindowsHelloChallenge(GetWindowsHelloChallengeRequest request, Action<GetWindowsHelloChallengeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Client/GetWindowsHelloChallenge", request, AuthType.None, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Link Windows Hello to the current PlayFab Account
+        /// </summary>
+        public static void LinkWindowsHello(LinkWindowsHelloAccountRequest request, Action<LinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Client/LinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
         /// </summary>
         public static void LoginWithAndroidDeviceID(LoginWithAndroidDeviceIDRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -154,6 +172,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Completes the Windows Hello login flow by returning the signed value of the challange from GetWindowsHelloChallenge. Windows Hello has a 2 step client to server authentication scheme. Step one is to request from the server a challenge string. Step two is to request the user sign the string via Windows Hello and then send the signed value back to the server. 
+        /// </summary>
+        public static void LoginWithWindowsHello(LoginWithWindowsHelloRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+            if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/LoginWithWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Registers a new Playfab user account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. You must supply either a username or an email address.
         /// </summary>
         public static void RegisterPlayFabUser(RegisterPlayFabUserRequest request, Action<RegisterPlayFabUserResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -162,6 +191,26 @@ namespace PlayFab
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/RegisterPlayFabUser", request, AuthType.None, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Register using Windows Hello authentication. Before a user can request a challenge or perform a signin the user must first either register or link a Windows Hello account.
+        /// </summary>
+        public static void RegisterWithWindowsHello(RegisterWithWindowsHelloRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+            if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/RegisterWithWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Unlink Windows Hello from the current PlayFab Account
+        /// </summary>
+        public static void UnlinkWindowsHello(UnlinkWindowsHelloAccountRequest request, Action<UnlinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Client/UnlinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -481,6 +530,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/UnlinkTwitch", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Update the avatar URL of the player
+        /// </summary>
+        public static void UpdateAvatarUrl(UpdateAvatarUrlRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/UpdateAvatarUrl", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -1249,6 +1308,15 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/GetPlayerTags", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Validates with Windows that the receipt for an Windows App Store in-app purchase is valid and that it matches the purchased catalog item
+        /// </summary>
+        public static void ValidateWindowsStoreReceipt(ValidateWindowsReceiptRequest request, Action<ValidateWindowsReceiptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Client/ValidateWindowsStoreReceipt", request, AuthType.None, resultCallback, errorCallback, customData);
         }
 
 

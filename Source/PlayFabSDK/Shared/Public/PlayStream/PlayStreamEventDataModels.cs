@@ -234,6 +234,12 @@ namespace PlayFab.PlayStreamModels
         public string BanReason;
         public string TitleId;
     }
+    public class PlayerChangedAvatarEventData : PlayStreamEventBase
+    {
+        public string ImageUrl;
+        public string PreviousImageUrl;
+        public string TitleId;
+    }
     public class PlayerCompletedPasswordResetEventData : PlayStreamEventBase
     {
         public string RecoveryEmailAddress;
@@ -695,7 +701,8 @@ namespace PlayFab.PlayStreamModels
         Facebook,
         IOSDevice,
         AndroidDevice,
-        Twitch
+        Twitch,
+        WindowsHello
     }
 
     public enum PasswordResetInitiationSource
@@ -1365,6 +1372,10 @@ namespace PlayFab.PlayStreamModels
         /// Banned until UTC Date. If permanent ban this is set for 20 years after the original ban date.
         /// </summary>
         public DateTime? BannedUntil;
+        /// <summary>
+        /// Image URL of the player's avatar.
+        /// </summary>
+        public string AvatarUrl;
         /// <summary>
         /// Dictionary of player's statistics using only the latest version's value
         /// </summary>

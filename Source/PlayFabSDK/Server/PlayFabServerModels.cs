@@ -1477,6 +1477,18 @@ namespace PlayFab.ServerModels
         /// Indicates whether Facebook friends should be included in the response. Default is true.
         /// </summary>
         public bool? IncludeFacebookFriends;
+        /// <summary>
+        /// The version of the leaderboard to get, when UseSpecificVersion is true.
+        /// </summary>
+        public int Version;
+        /// <summary>
+        /// If true, uses the specified version. If false, gets the most recent version.
+        /// </summary>
+        public bool UseSpecificVersion;
+        /// <summary>
+        /// If non-null, this determines which properties of the profile to return. If null, playfab will only include display names.
+        /// </summary>
+        public PlayerProfileViewConstraints ProfileConstraints;
     }
 
     [Serializable]
@@ -1554,15 +1566,35 @@ namespace PlayFab.ServerModels
         /// Maximum number of entries to retrieve.
         /// </summary>
         public int MaxResultsCount;
+        /// <summary>
+        /// If non-null, this determines which properties of the profile to return. If null, playfab will only include display names.
+        /// </summary>
+        public PlayerProfileViewConstraints ProfileConstraints;
+        /// <summary>
+        /// The version of the leaderboard to get, when UseSpecificVersion is true.
+        /// </summary>
+        public int Version;
+        /// <summary>
+        /// If true, uses the specified version. If false, gets the most recent version.
+        /// </summary>
+        public bool UseSpecificVersion;
     }
 
     [Serializable]
     public class GetLeaderboardAroundUserResult : PlayFabResultCommon
     {
         /// <summary>
-        /// Ordered list of leaderboard entries.
+        /// Ordered listing of users and their positions in the requested leaderboard.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard;
+        /// <summary>
+        /// The version of the leaderboard returned.
+        /// </summary>
+        public int Version;
+        /// <summary>
+        /// The time the next scheduled reset will occur. Null if the leaderboard does not reset on a schedule.
+        /// </summary>
+        public DateTime? NextReset;
     }
 
     [Serializable]
@@ -1606,15 +1638,35 @@ namespace PlayFab.ServerModels
         /// Maximum number of entries to retrieve.
         /// </summary>
         public int MaxResultsCount;
+        /// <summary>
+        /// If non-null, this determines which properties of the profile to return. If null, playfab will only include display names.
+        /// </summary>
+        public PlayerProfileViewConstraints ProfileConstraints;
+        /// <summary>
+        /// The version of the leaderboard to get, when UseSpecificVersion is true.
+        /// </summary>
+        public int Version;
+        /// <summary>
+        /// If true, uses the specified version. If false, gets the most recent version.
+        /// </summary>
+        public bool UseSpecificVersion;
     }
 
     [Serializable]
     public class GetLeaderboardResult : PlayFabResultCommon
     {
         /// <summary>
-        /// Ordered list of leaderboard entries.
+        /// Ordered listing of users and their positions in the requested leaderboard.
         /// </summary>
         public List<PlayerLeaderboardEntry> Leaderboard;
+        /// <summary>
+        /// The version of the leaderboard returned.
+        /// </summary>
+        public int Version;
+        /// <summary>
+        /// The time the next scheduled reset will occur. Null if the leaderboard does not reset on a schedule.
+        /// </summary>
+        public DateTime? NextReset;
     }
 
     [Serializable]
@@ -2477,7 +2529,8 @@ namespace PlayFab.ServerModels
         Facebook,
         IOSDevice,
         AndroidDevice,
-        Twitch
+        Twitch,
+        WindowsHello
     }
 
     [Serializable]
@@ -2687,6 +2740,10 @@ namespace PlayFab.ServerModels
         /// User's overall position in the leaderboard.
         /// </summary>
         public int Position;
+        /// <summary>
+        /// The profile of the user, if requested. Note that this profile may have sensitive fields scrubbed.
+        /// </summary>
+        public PlayerProfile Profile;
     }
 
     [Serializable]
@@ -2771,6 +2828,10 @@ namespace PlayFab.ServerModels
         /// </summary>
         public DateTime? BannedUntil;
         /// <summary>
+        /// Image URL of the player's avatar.
+        /// </summary>
+        public string AvatarUrl;
+        /// <summary>
         /// Dictionary of player's statistics using only the latest version's value
         /// </summary>
         public Dictionary<string,int> Statistics;
@@ -2810,6 +2871,71 @@ namespace PlayFab.ServerModels
         /// Array of player statistics
         /// </summary>
         public List<PlayerStatistic> PlayerStatistics;
+    }
+
+    [Serializable]
+    public class PlayerProfileViewConstraints
+    {
+        /// <summary>
+        /// Whether to show the display name. Defaults to false
+        /// </summary>
+        public bool ShowDisplayName;
+        /// <summary>
+        /// Whether to show the created date. Defaults to false
+        /// </summary>
+        public bool ShowCreated;
+        /// <summary>
+        /// Whether to show origination. Defaults to false
+        /// </summary>
+        public bool ShowOrigination;
+        /// <summary>
+        /// Whether to show the last login time. Defaults to false
+        /// </summary>
+        public bool ShowLastLogin;
+        /// <summary>
+        /// Whether to show the banned until time. Defaults to false
+        /// </summary>
+        public bool ShowBannedUntil;
+        /// <summary>
+        /// Whether to show statistics, the most recent version of each stat. Defaults to false
+        /// </summary>
+        public bool ShowStatistics;
+        /// <summary>
+        /// Whether to show campaign attributions. Defaults to false
+        /// </summary>
+        public bool ShowCampaignAtributions;
+        /// <summary>
+        /// Whether to show push notification registrations. Defaults to false
+        /// </summary>
+        public bool ShowPushNotificationRegistrations;
+        /// <summary>
+        /// Whether to show the linked accounts. Defaults to false
+        /// </summary>
+        public bool ShowLinkedAccounts;
+        /// <summary>
+        /// Whether to show the total value to date in usd. Defaults to false
+        /// </summary>
+        public bool ShowTotalValueToDateInUsd;
+        /// <summary>
+        /// Whether to show the values to date. Defaults to false
+        /// </summary>
+        public bool ShowValuesToDate;
+        /// <summary>
+        /// Whether to show tags. Defaults to false
+        /// </summary>
+        public bool ShowTags;
+        /// <summary>
+        /// Whether to show the virtual currency balances. Defaults to false
+        /// </summary>
+        public bool ShowVirtualCurrencyBalances;
+        /// <summary>
+        /// Whether to show player's locations. Defaults to false
+        /// </summary>
+        public bool ShowLocations;
+        /// <summary>
+        /// Whether to show player's avatar URL. Defaults to false
+        /// </summary>
+        public bool ShowAvatarUrl;
     }
 
     [Serializable]
@@ -3225,6 +3351,23 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class SetFriendTagsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// PlayFab identifier of the player whose friend is to be updated.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// PlayFab identifier of the friend account to which the tag(s) should be applied.
+        /// </summary>
+        public string FriendPlayFabId;
+        /// <summary>
+        /// Array of tags to set on the friend account.
+        /// </summary>
+        public List<string> Tags;
+    }
+
+    [Serializable]
     public class SetGameServerInstanceDataRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3538,6 +3681,19 @@ namespace PlayFab.ServerModels
         /// Virtual currency granted to the player as a result of unlocking the container.
         /// </summary>
         public Dictionary<string,uint> VirtualCurrency;
+    }
+
+    [Serializable]
+    public class UpdateAvatarUrlRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// URL of the avatar image. If empty, it removes the existing avatar URL.
+        /// </summary>
+        public string ImageUrl;
     }
 
     /// <summary>
@@ -3966,7 +4122,8 @@ namespace PlayFab.ServerModels
         CustomId,
         XboxLive,
         Parse,
-        Twitch
+        Twitch,
+        WindowsHello
     }
 
     [Serializable]
@@ -4039,6 +4196,10 @@ namespace PlayFab.ServerModels
         /// boolean indicating whether or not the user is currently banned for a title
         /// </summary>
         public bool? isBanned;
+        /// <summary>
+        /// URL to the player's avatar.
+        /// </summary>
+        public string AvatarUrl;
     }
 
     [Serializable]

@@ -72,7 +72,6 @@ namespace PlayFab
 #if UNITY_5
             // UNITY_5 Application info
             ProductName = Application.productName;
-            ProductBundle = Application.bundleIdentifier; //Only Used on iOS & Android
             Version = Application.version;
             Company = Application.companyName;
             Platform = Application.platform;
@@ -81,6 +80,13 @@ namespace PlayFab
 #endif
 #if UNITY_5 && !UNITY_5_0
             GraphicsType = SystemInfo.graphicsDeviceType;
+#endif
+
+            //Only Used on iOS & Android
+#if UNITY_5_6_OR_NEWER && UNITY_ANDROID && (UNITY_IOS || UNITY_IPHONE)
+            ProductBundle = Application.identifier; 
+#elif UNITY_ANDROID && (UNITY_IOS || UNITY_IPHONE)
+            ProductBundle = Application.bundleIdentifier;
 #endif
 
             // Application info
