@@ -2224,7 +2224,8 @@ namespace PlayFab.AdminModels
         Facebook,
         IOSDevice,
         AndroidDevice,
-        Twitch
+        Twitch,
+        WindowsHello
     }
 
     [Serializable]
@@ -2508,6 +2509,10 @@ namespace PlayFab.AdminModels
         /// Banned until UTC Date. If permanent ban this is set for 20 years after the original ban date.
         /// </summary>
         public DateTime? BannedUntil;
+        /// <summary>
+        /// Image URL of the player's avatar.
+        /// </summary>
+        public string AvatarUrl;
         /// <summary>
         /// Dictionary of player's statistics using only the latest version's value
         /// </summary>
@@ -3772,7 +3777,8 @@ namespace PlayFab.AdminModels
         CustomId,
         XboxLive,
         Parse,
-        Twitch
+        Twitch,
+        WindowsHello
     }
 
     [Serializable]
@@ -3845,6 +3851,10 @@ namespace PlayFab.AdminModels
         /// boolean indicating whether or not the user is currently banned for a title
         /// </summary>
         public bool? isBanned;
+        /// <summary>
+        /// URL to the player's avatar.
+        /// </summary>
+        public string AvatarUrl;
     }
 
     [Serializable]

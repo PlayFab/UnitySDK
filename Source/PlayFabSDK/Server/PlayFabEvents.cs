@@ -23,6 +23,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RevokeBansResult> OnServerRevokeBansResultEvent;
         public event PlayFabRequestEvent<SendPushNotificationRequest> OnServerSendPushNotificationRequestEvent;
         public event PlayFabResultEvent<SendPushNotificationResult> OnServerSendPushNotificationResultEvent;
+        public event PlayFabRequestEvent<UpdateAvatarUrlRequest> OnServerUpdateAvatarUrlRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerUpdateAvatarUrlResultEvent;
         public event PlayFabRequestEvent<UpdateBansRequest> OnServerUpdateBansRequestEvent;
         public event PlayFabResultEvent<UpdateBansResult> OnServerUpdateBansResultEvent;
         public event PlayFabRequestEvent<DeleteUsersRequest> OnServerDeleteUsersRequestEvent;
@@ -133,6 +135,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetFriendsListResult> OnServerGetFriendsListResultEvent;
         public event PlayFabRequestEvent<RemoveFriendRequest> OnServerRemoveFriendRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnServerRemoveFriendResultEvent;
+        public event PlayFabRequestEvent<SetFriendTagsRequest> OnServerSetFriendTagsRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerSetFriendTagsResultEvent;
         public event PlayFabRequestEvent<DeregisterGameRequest> OnServerDeregisterGameRequestEvent;
         public event PlayFabResultEvent<DeregisterGameResponse> OnServerDeregisterGameResultEvent;
         public event PlayFabRequestEvent<NotifyMatchmakerPlayerLeftRequest> OnServerNotifyMatchmakerPlayerLeftRequestEvent;

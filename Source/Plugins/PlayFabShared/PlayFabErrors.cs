@@ -271,7 +271,11 @@ namespace PlayFab
         InvalidAdPlacementAndReward = 1268,
         AllAdPlacementViewsAlreadyConsumed = 1269,
         GoogleOAuthNotConfiguredForTitle = 1270,
-        GoogleOAuthError = 1271
+        GoogleOAuthError = 1271,
+        UserNotFriend = 1272,
+        InvalidSignature = 1273,
+        InvalidPublicKey = 1274,
+        GoogleOAuthNoIdTokenIncludedInResponse = 1275
     }
 
     public delegate void ErrorCallback(PlayFabError error);

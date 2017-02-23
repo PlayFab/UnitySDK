@@ -39,6 +39,73 @@ namespace PlayFab.Internal
         }
         #endregion Utility Functions
 
+        #region Unity Multi-version Utilities
+        private static void SetIdentifier(string identifier)
+        {
+#if UNITY_5_6_OR_NEWER
+            PlayerSettings.applicationIdentifier = identifier;
+#else
+            PlayerSettings.bundleIdentifier = identifier;
+#endif
+        }
+
+        private static void SetScriptingBackend(ScriptingImplementation mode, BuildTarget target, BuildTargetGroup group)
+        {
+#if UNITY_5_5_OR_NEWER
+            PlayerSettings.SetScriptingBackend(group, mode);
+#else
+            PlayerSettings.SetPropertyInt("ScriptingBackend", (int)mode, target);
+#endif
+        }
+
+        private static BuildTarget AppleBuildTarget
+        {
+            get
+            {
+#if UNITY_5
+                return BuildTarget.iOS;
+#else
+                return BuildTarget.iPhone;
+#endif
+            }
+        }
+        private static BuildTargetGroup AppleBuildTargetGroup
+        {
+            get
+            {
+#if UNITY_5
+                return BuildTargetGroup.iOS;
+#else
+                return BuildTargetGroup.iPhone;
+#endif
+            }
+        }
+
+        private static BuildTarget WsaBuildTarget
+        {
+            get
+            {
+#if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7
+                return BuildTarget.WSAPlayer;
+#else
+                return BuildTarget.WP8Player;
+#endif
+            }
+        }
+        private static BuildTargetGroup WsaBuildTargetGroup
+        {
+            get
+            {
+#if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7
+                return BuildTargetGroup.WSA;
+#else
+                return BuildTargetGroup.WP8;
+#endif
+            }
+        }
+
+        #endregion Unity Multi-version Utilities
+
         [MenuItem("PlayFab/Package SDK")]
         public static void PackagePlayFabSdk()
         {
@@ -52,8 +119,8 @@ namespace PlayFab.Internal
         public static void MakeAndroidBuild()
         {
             Setup();
-            PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.Mono2x, BuildTargetGroup.Android); // Ideal setting for Android
-            PlayerSettings.bundleIdentifier = "com.PlayFab.PlayFabTest";
+            SetScriptingBackend(ScriptingImplementation.Mono2x, BuildTarget.Android, BuildTargetGroup.Android); // Ideal setting for Android
+            SetIdentifier("com.PlayFab.PlayFabTest");
             var androidPackage = Path.Combine(GetBuildPath(), "PlayFabAndroid.apk");
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, androidPackage, BuildTarget.Android, BuildOptions.None);
@@ -65,18 +132,13 @@ namespace PlayFab.Internal
         public static void MakeIPhoneBuild()
         {
             Setup();
-#if UNITY_5
-            BuildTarget appleBuildTarget = BuildTarget.iOS;
-#else
-            BuildTarget appleBuildTarget = BuildTarget.iPhone;
-#endif
-
-            // PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.IL2CPP, appleBuildTarget); // Ideally we should be testing both at some point, but ...
-            PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.Mono2x, appleBuildTarget); // Mono2x is traditionally the one with issues, and it's a lot faster to build/test
+            // SetScriptingBackend(ScriptingImplementation.IL2CPP, AppleBuildTarget, AppleBuildTargetGroup); // Ideally we should be testing both at some point, but ...
+            SetScriptingBackend(ScriptingImplementation.Mono2x, AppleBuildTarget, AppleBuildTargetGroup); // Mono2x is traditionally the one with issues, and it's a lot faster to build/test
+            SetIdentifier("com.PlayFab.PlayFabTest");
             var iosPath = Path.Combine(GetBuildPath(), "PlayFabIOS");
             MkDir(GetBuildPath());
             MkDir(iosPath);
-            BuildPipeline.BuildPlayer(TestScenes, iosPath, appleBuildTarget, BuildOptions.None);
+            BuildPipeline.BuildPlayer(TestScenes, iosPath, AppleBuildTarget, BuildOptions.None);
             if (Directory.GetFiles(iosPath).Length == 0)
                 throw new Exception("Target directory is empty: " + iosPath + ", " + string.Join(",", Directory.GetFiles(iosPath)));
         }
@@ -86,19 +148,16 @@ namespace PlayFab.Internal
         {
             Setup();
 #if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7
-            BuildTarget wsaBuildTarget = BuildTarget.WSAPlayer;
             EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.LocalMachineAndWindowsPhone;
             EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
             PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
-#else
-            BuildTarget wsaBuildTarget = BuildTarget.WP8Player;
 #endif
 
             var wp8Path = Path.Combine(GetBuildPath(), "PlayFabWP8");
             MkDir(GetBuildPath());
             MkDir(wp8Path);
-            BuildPipeline.BuildPlayer(TestScenes, wp8Path, wsaBuildTarget, BuildOptions.None);
+            BuildPipeline.BuildPlayer(TestScenes, wp8Path, WsaBuildTarget, BuildOptions.None);
             if (Directory.GetFiles(wp8Path).Length == 0)
                 throw new Exception("Target directory is empty: " + wp8Path + ", " + string.Join(",", Directory.GetFiles(wp8Path)));
         }
@@ -107,7 +166,7 @@ namespace PlayFab.Internal
         public static void MakeWin32TestingBuild()
         {
             Setup();
-            PlayerSettings.SetPropertyInt("ScriptingBackend", (int)ScriptingImplementation.Mono2x, BuildTargetGroup.Standalone); // Ideal setting for Windows
+            SetScriptingBackend(ScriptingImplementation.Mono2x, BuildTarget.StandaloneWindows, BuildTargetGroup.Standalone);
             PlayerSettings.defaultIsFullScreen = false;
             PlayerSettings.defaultScreenHeight = 768;
             PlayerSettings.defaultScreenWidth = 1024;
