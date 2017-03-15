@@ -42,15 +42,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Link Windows Hello to the current PlayFab Account
-        /// </summary>
-        public static void LinkWindowsHello(LinkWindowsHelloAccountRequest request, Action<LinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Client/LinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
-        }
-
-        /// <summary>
         /// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
         /// </summary>
         public static void LoginWithAndroidDeviceID(LoginWithAndroidDeviceIDRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -73,7 +64,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. Unlike most other login API calls, LoginWithEmailAddress does not permit the  creation of new accounts via the CreateAccountFlag. Email addresses may be used to create accounts via RegisterPlayFabUser.
         /// </summary>
         public static void LoginWithEmailAddress(LoginWithEmailAddressRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
@@ -139,7 +130,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. Unlike other login API calls, LoginWithEmailAddress does not permit the creation of new accounts via the CreateAccountFlag. Email accounts must be created using the RegisterPlayFabUser API or added to existing accounts using AddUsernamePassword.
+        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. Unlike most other login API calls, LoginWithPlayFab does not permit the  creation of new accounts via the CreateAccountFlag. Username/Password credentials may be used to create accounts via  RegisterPlayFabUser, or added to existing accounts using AddUsernamePassword.
         /// </summary>
         public static void LoginWithPlayFab(LoginWithPlayFabRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
@@ -194,7 +185,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Register using Windows Hello authentication. Before a user can request a challenge or perform a signin the user must first either register or link a Windows Hello account.
+        /// Registers a new PlayFab user account using Windows Hello authentication, returning a session ticket  that can subsequently be used for API calls which require an authenticated user
         /// </summary>
         public static void RegisterWithWindowsHello(RegisterWithWindowsHelloRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
@@ -202,15 +193,6 @@ namespace PlayFab
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/RegisterWithWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
-        }
-
-        /// <summary>
-        /// Unlink Windows Hello from the current PlayFab Account
-        /// </summary>
-        public static void UnlinkWindowsHello(UnlinkWindowsHelloAccountRequest request, Action<UnlinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Client/UnlinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -414,6 +396,15 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Link Windows Hello authentication to the current PlayFab Account
+        /// </summary>
+        public static void LinkWindowsHello(LinkWindowsHelloAccountRequest request, Action<LinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Client/LinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
         /// Removes the specified generic service identifier from the player's PlayFab account.
         /// </summary>
         public static void RemoveGenericID(RemoveGenericIDRequest request, Action<RemoveGenericIDResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
@@ -530,6 +521,15 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/UnlinkTwitch", request, AuthType.LoginSession, resultCallback, errorCallback, customData);
+        }
+
+        /// <summary>
+        /// Unlink Windows Hello authentication from the current PlayFab Account
+        /// </summary>
+        public static void UnlinkWindowsHello(UnlinkWindowsHelloAccountRequest request, Action<UnlinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Client/UnlinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData);
         }
 
         /// <summary>
@@ -923,7 +923,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Restores all in-app purchases based on the given refresh receipt.
+        /// Restores all in-app purchases based on the given restore receipt
         /// </summary>
         public static void RestoreIOSPurchases(RestoreIOSPurchasesRequest request, Action<RestoreIOSPurchasesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
@@ -1231,7 +1231,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Accepts an open trade. If the call is successful, the offered and accepted items will be swapped between the two players' inventories.
+        /// Accepts an open trade (one that has not yet been accepted or cancelled), if the locally signed-in player is in the  allowed player list for the trade, or it is open to all players. If the call is successful, the offered and accepted items will be swapped  between the two players' inventories.
         /// </summary>
         public static void AcceptTrade(AcceptTradeRequest request, Action<AcceptTradeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
@@ -1241,7 +1241,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Cancels an open trade.
+        /// Cancels an open trade (one that has not yet been accepted or cancelled). Note that only the player who created the trade  can cancel it via this API call, to prevent griefing of the trade system (cancelling trades in order to prevent other players from accepting  them, for trades that can be claimed by more than one player).
         /// </summary>
         public static void CancelTrade(CancelTradeRequest request, Action<CancelTradeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
@@ -1271,7 +1271,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Opens a new outstanding trade.
+        /// Opens a new outstanding trade. Note that a given item instance may only be in one open trade at a time.
         /// </summary>
         public static void OpenTrade(OpenTradeRequest request, Action<OpenTradeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
