@@ -350,6 +350,15 @@ namespace PlayFab.PlayStreamModels
         public DateTime LinkExpiration;
         public string TitleId;
     }
+    public class PlayerRankedOnLeaderboardVersionEventData : PlayStreamEventBase
+    {
+        public uint Rank;
+        public int Value;
+        public uint Version;
+        public LeaderboardVersionChangeBehavior? VersionChangeBehavior;
+        public LeaderboardSource LeaderboardSource;
+        public string TitleId;
+    }
     public class PlayerRealMoneyPurchaseEventData : PlayStreamEventBase
     {
         public string PaymentProvider;
@@ -686,6 +695,39 @@ namespace PlayFab.PlayStreamModels
         public string DeveloperId;
     }
     #endregion title
+
+    public enum LeaderboardVersionChangeBehavior
+    {
+        ResetValues
+    }
+
+    /// <summary>
+    /// Statistic used as the source of leaderboard values.
+    /// </summary>
+    [Serializable]
+    public class StatisticLeaderboardSource
+    {
+        /// <summary>
+        /// Name of the statistic.
+        /// </summary>
+        public string StatisticName;
+        /// <summary>
+        /// Unique ID of the statistic.
+        /// </summary>
+        public uint StatisticId;
+    }
+
+    /// <summary>
+    /// The source of values for the leaderboard. The properties are mutually exclusive - only one of them will be set and the rest will be null.
+    /// </summary>
+    [Serializable]
+    public class LeaderboardSource
+    {
+        /// <summary>
+        /// Statistic associated with the leaderboard.
+        /// </summary>
+        public StatisticLeaderboardSource Statistic;
+    }
 
     public enum LoginIdentityProvider
     {

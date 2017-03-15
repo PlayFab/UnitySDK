@@ -40,10 +40,10 @@ namespace PlayFab.Internal
         #endregion Utility Functions
 
         #region Unity Multi-version Utilities
-        private static void SetIdentifier(string identifier)
+        private static void SetIdentifier(BuildTargetGroup targetGroup, string identifier)
         {
 #if UNITY_5_6_OR_NEWER
-            PlayerSettings.applicationIdentifier = identifier;
+            PlayerSettings.SetApplicationIdentifier(targetGroup, identifier);
 #else
             PlayerSettings.bundleIdentifier = identifier;
 #endif
@@ -85,7 +85,7 @@ namespace PlayFab.Internal
         {
             get
             {
-#if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7
+#if UNITY_5_2 || UNITY_5_3_OR_NEWER
                 return BuildTarget.WSAPlayer;
 #else
                 return BuildTarget.WP8Player;
@@ -96,7 +96,7 @@ namespace PlayFab.Internal
         {
             get
             {
-#if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7
+#if UNITY_5_2 || UNITY_5_3_OR_NEWER
                 return BuildTargetGroup.WSA;
 #else
                 return BuildTargetGroup.WP8;
@@ -120,7 +120,7 @@ namespace PlayFab.Internal
         {
             Setup();
             SetScriptingBackend(ScriptingImplementation.Mono2x, BuildTarget.Android, BuildTargetGroup.Android); // Ideal setting for Android
-            SetIdentifier("com.PlayFab.PlayFabTest");
+            SetIdentifier(BuildTargetGroup.Android, "com.PlayFab.PlayFabTest");
             var androidPackage = Path.Combine(GetBuildPath(), "PlayFabAndroid.apk");
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, androidPackage, BuildTarget.Android, BuildOptions.None);
@@ -134,7 +134,7 @@ namespace PlayFab.Internal
             Setup();
             // SetScriptingBackend(ScriptingImplementation.IL2CPP, AppleBuildTarget, AppleBuildTargetGroup); // Ideally we should be testing both at some point, but ...
             SetScriptingBackend(ScriptingImplementation.Mono2x, AppleBuildTarget, AppleBuildTargetGroup); // Mono2x is traditionally the one with issues, and it's a lot faster to build/test
-            SetIdentifier("com.PlayFab.PlayFabTest");
+            SetIdentifier(AppleBuildTargetGroup, "com.PlayFab.PlayFabTest");
             var iosPath = Path.Combine(GetBuildPath(), "PlayFabIOS");
             MkDir(GetBuildPath());
             MkDir(iosPath);
@@ -147,7 +147,7 @@ namespace PlayFab.Internal
         public static void MakeWp8Build()
         {
             Setup();
-#if UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5 || UNITY_5_6 || UNITY_5_7
+#if UNITY_5_2 || UNITY_5_3_OR_NEWER
             EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.LocalMachineAndWindowsPhone;
             EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
