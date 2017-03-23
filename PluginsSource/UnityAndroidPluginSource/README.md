@@ -1,41 +1,39 @@
-#PlayFab Push Notification Plugin
-##For Android build targets
+# PlayFab Push Notification Plugin
+
+## For Android build targets
 
   * The 5.0+ version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity5_0/AndroidPushPlugin.unitypackage)
   * The 4.7 version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity4_7/AndroidPushPlugin.unitypackage)
 
-1. Overview:
-----
+# 1. Overview:
+
 This section of the repository contains the source code and documentation for building our Android push notification plugin using Android Studio. 
 
 The document also contains instructions for developers to start using the plugin in their Unity games.
 
-2. Prerequisites:
-----
+# 2. Prerequisites:
+
 This document assumes familiarity with PlayFab, Unity3D, Java, Gradle & using Android Studio.  However, there is not much you'll have to do with Gradle since we've done all the work for you.  
 
 * Devices will not receive push notification until properly configured.
 
-####PlayFab Title Setup:
+#### PlayFab Title Setup:
   * Login to game manager and navigate to your title > Settings > Push Notifications.
   * Follow the instructions for linking your title to the GCM channel
   * Optionally, this can also be achieved via [SetupPushNotification](https://api.playfab.com/Documentation/Admin/method/SetupPushNotification) in our Admin API.
   * SetupPushNotification will reset your subscribed devices. After calling SetupPushNotification each device will need to re-subscribe. 
 
-####Unity Project Setup:
+#### Unity Project Setup:
 By default the Android Push plugin is not installed by default. It is included with the UnitySDK as an AssetPackage and must be manually unpacked after installing the UnitySDK. 
 
 Once unpacked you will need to initialize the plugin prior to use. These details are covered in the guides below.
 
-
-
-
-####For Additional Push-related information, see our guides:
+#### For Additional Push-related information, see our guides:
   * [Push Notification Basics](https://api.playfab.com/docs/push-basics)
   * [Push Notifications for Android](https://api.playfab.com/docs/push-for-android)
 
-3. Plugin Component Overview:
-----
+# 3. Plugin Component Overview:
+
 The source code is fairly simple and this version of the PlayFab Unity Android Plugin makes use of the new token based **GCM** (Google Cloud Messaging) service.  
 
 * **PlayFabUnityAndroidPlugin** -  We have created this class as a Service rather than an activity. Its purpose is to allow you to initialize the Plugin from within Unity.  You can accomplish this by making a call to the Android plugin as shown below from within unity.
@@ -104,8 +102,8 @@ Once a token has been acquired, then the registration callback will be triggered
 
 ![](http://i.imgur.com/zp6vHiu.png)
 
-4. Source Code Overview and Build Instructions
-----
+# 4. Source Code Overview and Build Instructions
+
 
 Source File | Description
 --- |  ---
@@ -118,7 +116,7 @@ PlayFabNotificationPackage.java | Data model for holding push notification data
 PlayFabNotificationSender.java | **new** Helper class for sending notifications both from java & JNI via Unity, supports scheduled push notifications using the Alarm Manager and local notifications set via Unity.
 NotificationPublisher.java | **new** broadcast receiver for sending notifications (required manifest change)
 
-###Compiling in Android Studio
+### Compiling in Android Studio
 *	Open the project in Android Studio
 *	On the far right of the editor there is a Gradle tab.  Click that and then click the "refresh all gradle projects" button.
 *	In the gradle projects window you should see two entries.  *UnityAndroidPluginSouce* & *:playfabunityplugin*. 
@@ -126,8 +124,8 @@ NotificationPublisher.java | **new** broadcast receiver for sending notification
 *	Double-click exportJar. This will compile the plugin and export the UnityAndroidPlugin.jar & the Android.manifest files into the /releases folder in the root of your project.  These files need to be copied into your unity /assets/plugins/Android/  folder.
 
 
-5. Sending local push notifications
-----
+# 5. Sending local push notifications
+
 new methods have been added to the C# side of the plugin that calls into the Java side via JNI.  Similar to how we are registering the device and get the GCM token for push notifications.  Local notifications do not need to be registered with GCM and allows the developer to send & schedule a local push notification.
 
 Here is how that works. We have three new methods in the PlayFabAndroid.cs file ( not included in the java source project, but it is included with the plugin package.
@@ -135,7 +133,6 @@ Here is how that works. We have three new methods in the PlayFabAndroid.cs file 
 * ScheduleNotification - This allows you to pass in a date and a json string representing the PlayFabNotificationPackage.
 * SendNotificationNow - Allows you to send a notification instantly, accepts a json string representing the PlayFabNotificationPackage.
 * CancelNotification - Allows you to cancel a scheduled notification, accepts a json string representing the previously created PlayFabNotificationPackage.
-
 
 ```C#
 
@@ -198,8 +195,8 @@ Here is how that works. We have three new methods in the PlayFabAndroid.cs file 
 
 ```
 
-6. Pushing a scheduled notification from Game Manager
-----
+# 6. Pushing a scheduled notification from Game Manager
+
 Since we have the ability to schedule a notification for a future date,  you can now do this via a Push Notification.  The PlayFabNotificationPackage has the following fields and you can easily turn this into a json string.
 
 ```C#
@@ -235,13 +232,13 @@ Note we left out Sound & Icon to use the Default values.
 We can use this format in [Game Manager](http://developer.playfab.com) and / or cloudscript to send a push notification to a device.  The json above would go in the message field.  Title is still required, but is overridden by the values in the json.
 
 
-7. Resolving .JAR & .AAR Conflicts
-----
+# 7. Resolving .JAR & .AAR Conflicts
+
 If your project is using multiple Android plugins, there is a good chance that you could have multiple copies of a given Android library. Having multiple copies of .JARs and .AARs will cause your builds to fail during the DEX compilation. 
 
 Review our Android SDK dependencies below. Some version of these files must be included before for push to work. We have not tested all permutations of libraries within the Android SDK. Please let us know if you run into any compatibility issues.
 
-####Android SDK dependencies (Unity 5.0+)
+#### Android SDK dependencies (Unity 5.0+)
 The 5.0+ version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity5_0/AndroidPushPlugin.unitypackage).
 
 Included Archive | Class Location
@@ -254,7 +251,7 @@ play-services-gcm-9.4.0.aar | com.google.android.gms.play-services.gcm
 play-services-iid-9.4.0.aar | com.google.android.gms.play-services.iid
 
 
-####Android SDK dependencies (Unity 4.7)
+#### Android SDK dependencies (Unity 4.7)
 Projects built using Unity versions < 5.0 do not support android .AAR files. Due to this fact, our plugin has the following .JAR dependencies. The 4.7 version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity4_7/AndroidPushPlugin.unitypackage).
 
 Included Archive | Class Location
@@ -264,7 +261,7 @@ support-v4.jar | com.android.support.support-v4
 support-v7-appcompat-7.22.0.jar | com.android.support.appcompat-v7 
 
 
-####To resolve conflicts follow these steps:
+#### To resolve conflicts follow these steps:
 Find duplicate copies of .AAR / .JAR files and remove them. There should be at most 1 copy of a given android library. Older .JAR files often map to multiple .AAR files. 
 
 Double-check your plug-in support resources to determine what dependencies your plug-ins are using and if they conflict with any of the above libraries, you should be able to remove either copy to resolve your DEX issues. 
