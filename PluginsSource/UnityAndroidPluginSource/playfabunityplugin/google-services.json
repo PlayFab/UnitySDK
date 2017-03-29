@@ -1,43 +1,73 @@
 {
   "project_info": {
-    "project_id": "api-showcase",
-    "project_number": "812844771935",
-    "name": "PlayFab SDK Testing"
+    "project_number": "1025856064630",
+    "firebase_url": "https://pushnotificationsample-70ae7.firebaseio.com",
+    "project_id": "pushnotificationsample-70ae7",
+    "storage_bucket": "pushnotificationsample-70ae7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1041795321728:android:5f05a8198acd38c2",
-        "client_id": "android:com.playfab.unityplugin",
-        "client_type": 1,
+        "mobilesdk_app_id": "1:1025856064630:android:827043c6554e8c08",
         "android_client_info": {
-          "package_name": "com.playfab.unityplugin",
-          "certificate_hash": []
+          "package_name": "com.playfab.PushNotificationSample"
         }
       },
-      "oauth_client": [],
-      "api_key": [],
+      "oauth_client": [
+        {
+          "client_id": "1025856064630-arpd0hc70t8fiahlecofij55qav0osl0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu_3IVeMp4aaw8mTthG5_K0iJ2NCiVhDg"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
-        },
-        "cloud_messaging_service": {
-          "status": 2,
-          "apns_config": []
         },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
         },
-        "google_signin_service": {
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025856064630:android:4103b027e0cd9d4a",
+        "android_client_info": {
+          "package_name": "com.playfab.unityplugin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1025856064630-arpd0hc70t8fiahlecofij55qav0osl0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu_3IVeMp4aaw8mTthG5_K0iJ2NCiVhDg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
           "status": 1
         },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }
