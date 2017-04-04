@@ -2628,7 +2628,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// status of the process of saving player statistic values of the previous version to a downloadable archive
         /// </summary>
-        [Obsolete("Use 'Status' instead", false)]
+        [Obsolete("Use 'Status' instead", true)]
         public StatisticVersionArchivalStatus? ArchivalStatus;
         /// <summary>
         /// status of the statistic version

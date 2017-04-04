@@ -148,6 +148,11 @@ namespace PlayFab.PlayStreamModels
         public string PlayerId;
         public string DisplayName;
     }
+    public class PlayerDisplayNameFilteredEventData : PlayStreamEventBase
+    {
+        public string DisplayName;
+        public string TitleId;
+    }
     public class PlayerPhotonSessionAuthenticatedEventData : PlayStreamEventBase
     {
         public string PhotonApplicationId;
@@ -696,6 +701,301 @@ namespace PlayFab.PlayStreamModels
     }
     #endregion title
 
+    public enum AuthenticationProvider
+    {
+        PlayFab,
+        SAML
+    }
+
+    public enum ContinentCode
+    {
+        AF,
+        AN,
+        AS,
+        EU,
+        NA,
+        OC,
+        SA
+    }
+
+    public enum CountryCode
+    {
+        AF,
+        AX,
+        AL,
+        DZ,
+        AS,
+        AD,
+        AO,
+        AI,
+        AQ,
+        AG,
+        AR,
+        AM,
+        AW,
+        AU,
+        AT,
+        AZ,
+        BS,
+        BH,
+        BD,
+        BB,
+        BY,
+        BE,
+        BZ,
+        BJ,
+        BM,
+        BT,
+        BO,
+        BQ,
+        BA,
+        BW,
+        BV,
+        BR,
+        IO,
+        BN,
+        BG,
+        BF,
+        BI,
+        KH,
+        CM,
+        CA,
+        CV,
+        KY,
+        CF,
+        TD,
+        CL,
+        CN,
+        CX,
+        CC,
+        CO,
+        KM,
+        CG,
+        CD,
+        CK,
+        CR,
+        CI,
+        HR,
+        CU,
+        CW,
+        CY,
+        CZ,
+        DK,
+        DJ,
+        DM,
+        DO,
+        EC,
+        EG,
+        SV,
+        GQ,
+        ER,
+        EE,
+        ET,
+        FK,
+        FO,
+        FJ,
+        FI,
+        FR,
+        GF,
+        PF,
+        TF,
+        GA,
+        GM,
+        GE,
+        DE,
+        GH,
+        GI,
+        GR,
+        GL,
+        GD,
+        GP,
+        GU,
+        GT,
+        GG,
+        GN,
+        GW,
+        GY,
+        HT,
+        HM,
+        VA,
+        HN,
+        HK,
+        HU,
+        IS,
+        IN,
+        ID,
+        IR,
+        IQ,
+        IE,
+        IM,
+        IL,
+        IT,
+        JM,
+        JP,
+        JE,
+        JO,
+        KZ,
+        KE,
+        KI,
+        KP,
+        KR,
+        KW,
+        KG,
+        LA,
+        LV,
+        LB,
+        LS,
+        LR,
+        LY,
+        LI,
+        LT,
+        LU,
+        MO,
+        MK,
+        MG,
+        MW,
+        MY,
+        MV,
+        ML,
+        MT,
+        MH,
+        MQ,
+        MR,
+        MU,
+        YT,
+        MX,
+        FM,
+        MD,
+        MC,
+        MN,
+        ME,
+        MS,
+        MA,
+        MZ,
+        MM,
+        NA,
+        NR,
+        NP,
+        NL,
+        NC,
+        NZ,
+        NI,
+        NE,
+        NG,
+        NU,
+        NF,
+        MP,
+        NO,
+        OM,
+        PK,
+        PW,
+        PS,
+        PA,
+        PG,
+        PY,
+        PE,
+        PH,
+        PN,
+        PL,
+        PT,
+        PR,
+        QA,
+        RE,
+        RO,
+        RU,
+        RW,
+        BL,
+        SH,
+        KN,
+        LC,
+        MF,
+        PM,
+        VC,
+        WS,
+        SM,
+        ST,
+        SA,
+        SN,
+        RS,
+        SC,
+        SL,
+        SG,
+        SX,
+        SK,
+        SI,
+        SB,
+        SO,
+        ZA,
+        GS,
+        SS,
+        ES,
+        LK,
+        SD,
+        SR,
+        SJ,
+        SZ,
+        SE,
+        CH,
+        SY,
+        TW,
+        TJ,
+        TZ,
+        TH,
+        TL,
+        TG,
+        TK,
+        TO,
+        TT,
+        TN,
+        TR,
+        TM,
+        TC,
+        TV,
+        UG,
+        UA,
+        AE,
+        GB,
+        US,
+        UM,
+        UY,
+        UZ,
+        VU,
+        VE,
+        VN,
+        VG,
+        VI,
+        WF,
+        EH,
+        YE,
+        ZM,
+        ZW
+    }
+
+    [Serializable]
+    public class EventLocation
+    {
+        /// <summary>
+        /// Two-character code representing the continent of geographic location.
+        /// </summary>
+        public ContinentCode? ContinentCode;
+        /// <summary>
+        /// Two-character ISO 3166-1 code representing the country of the geographic location.
+        /// </summary>
+        public CountryCode? CountryCode;
+        /// <summary>
+        /// City of the geographic location.
+        /// </summary>
+        public string City;
+        /// <summary>
+        /// Latitude coordinate of the geographic location.
+        /// </summary>
+        public double? Latitude;
+        /// <summary>
+        /// Longitude coordinate of the geographic location.
+        /// </summary>
+        public double? Longitude;
+    }
+
     public enum LeaderboardVersionChangeBehavior
     {
         ResetValues
@@ -1012,270 +1312,6 @@ namespace PlayFab.PlayStreamModels
         public ScriptExecutionError Error;
     }
 
-    public enum ContinentCode
-    {
-        AF,
-        AN,
-        AS,
-        EU,
-        NA,
-        OC,
-        SA
-    }
-
-    public enum CountryCode
-    {
-        AF,
-        AX,
-        AL,
-        DZ,
-        AS,
-        AD,
-        AO,
-        AI,
-        AQ,
-        AG,
-        AR,
-        AM,
-        AW,
-        AU,
-        AT,
-        AZ,
-        BS,
-        BH,
-        BD,
-        BB,
-        BY,
-        BE,
-        BZ,
-        BJ,
-        BM,
-        BT,
-        BO,
-        BQ,
-        BA,
-        BW,
-        BV,
-        BR,
-        IO,
-        BN,
-        BG,
-        BF,
-        BI,
-        KH,
-        CM,
-        CA,
-        CV,
-        KY,
-        CF,
-        TD,
-        CL,
-        CN,
-        CX,
-        CC,
-        CO,
-        KM,
-        CG,
-        CD,
-        CK,
-        CR,
-        CI,
-        HR,
-        CU,
-        CW,
-        CY,
-        CZ,
-        DK,
-        DJ,
-        DM,
-        DO,
-        EC,
-        EG,
-        SV,
-        GQ,
-        ER,
-        EE,
-        ET,
-        FK,
-        FO,
-        FJ,
-        FI,
-        FR,
-        GF,
-        PF,
-        TF,
-        GA,
-        GM,
-        GE,
-        DE,
-        GH,
-        GI,
-        GR,
-        GL,
-        GD,
-        GP,
-        GU,
-        GT,
-        GG,
-        GN,
-        GW,
-        GY,
-        HT,
-        HM,
-        VA,
-        HN,
-        HK,
-        HU,
-        IS,
-        IN,
-        ID,
-        IR,
-        IQ,
-        IE,
-        IM,
-        IL,
-        IT,
-        JM,
-        JP,
-        JE,
-        JO,
-        KZ,
-        KE,
-        KI,
-        KP,
-        KR,
-        KW,
-        KG,
-        LA,
-        LV,
-        LB,
-        LS,
-        LR,
-        LY,
-        LI,
-        LT,
-        LU,
-        MO,
-        MK,
-        MG,
-        MW,
-        MY,
-        MV,
-        ML,
-        MT,
-        MH,
-        MQ,
-        MR,
-        MU,
-        YT,
-        MX,
-        FM,
-        MD,
-        MC,
-        MN,
-        ME,
-        MS,
-        MA,
-        MZ,
-        MM,
-        NA,
-        NR,
-        NP,
-        NL,
-        NC,
-        NZ,
-        NI,
-        NE,
-        NG,
-        NU,
-        NF,
-        MP,
-        NO,
-        OM,
-        PK,
-        PW,
-        PS,
-        PA,
-        PG,
-        PY,
-        PE,
-        PH,
-        PN,
-        PL,
-        PT,
-        PR,
-        QA,
-        RE,
-        RO,
-        RU,
-        RW,
-        BL,
-        SH,
-        KN,
-        LC,
-        MF,
-        PM,
-        VC,
-        WS,
-        SM,
-        ST,
-        SA,
-        SN,
-        RS,
-        SC,
-        SL,
-        SG,
-        SX,
-        SK,
-        SI,
-        SB,
-        SO,
-        ZA,
-        GS,
-        SS,
-        ES,
-        LK,
-        SD,
-        SR,
-        SJ,
-        SZ,
-        SE,
-        CH,
-        SY,
-        TW,
-        TJ,
-        TZ,
-        TH,
-        TL,
-        TG,
-        TK,
-        TO,
-        TT,
-        TN,
-        TR,
-        TM,
-        TC,
-        TV,
-        UG,
-        UA,
-        AE,
-        GB,
-        US,
-        UM,
-        UY,
-        UZ,
-        VU,
-        VE,
-        VN,
-        VG,
-        VI,
-        WF,
-        EH,
-        YE,
-        ZM,
-        ZW
-    }
-
     [Serializable]
     public class PlayerLocation
     {
@@ -1505,6 +1541,18 @@ namespace PlayFab.PlayStreamModels
         /// Allow players to choose display names that may be in use by other players, i.e. do not enforce uniqueness of display names. Note: if this option is enabled, it cannot be disabled later.
         /// </summary>
         public bool AllowNonUniquePlayerDisplayNames;
+        /// <summary>
+        /// Reduce the precision of IP addresses collected from players' devices before they are stored or used to estimate geographic locations.
+        /// </summary>
+        public bool EnableClientIPAddressObfuscation;
+        /// <summary>
+        /// Require JSON format for data values associated with players, characters, inventories, and shared groups.
+        /// </summary>
+        public bool RequireCustomDataJSONFormat;
+        /// <summary>
+        /// Disable API access by returning errors to all API requests.
+        /// </summary>
+        public bool DisableAPIAccess;
     }
 
     public enum TaskInstanceStatus
@@ -1523,31 +1571,6 @@ namespace PlayFab.PlayStreamModels
         Min,
         Max,
         Sum
-    }
-
-    [Serializable]
-    public class EventLocation
-    {
-        /// <summary>
-        /// Two-character code representing the continent of geographic location.
-        /// </summary>
-        public ContinentCode? ContinentCode;
-        /// <summary>
-        /// Two-character ISO 3166-1 code representing the country of the geographic location.
-        /// </summary>
-        public CountryCode? CountryCode;
-        /// <summary>
-        /// City of the geographic location.
-        /// </summary>
-        public string City;
-        /// <summary>
-        /// Latitude coordinate of the geographic location.
-        /// </summary>
-        public double? Latitude;
-        /// <summary>
-        /// Longitude coordinate of the geographic location.
-        /// </summary>
-        public double? Longitude;
     }
 
     public enum Region
@@ -1624,12 +1647,6 @@ namespace PlayFab.PlayStreamModels
         Realtime,
         Turnbased,
         Chat
-    }
-
-    public enum AuthenticationProvider
-    {
-        PlayFab,
-        SAML
     }
 
     public enum SourceType
