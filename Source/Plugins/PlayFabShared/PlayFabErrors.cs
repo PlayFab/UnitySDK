@@ -287,7 +287,15 @@ namespace PlayFab
         ExpressionInvokeFailure = 1285,
         ExpressionTooLong = 1286,
         DataUpdateRateExceeded = 1287,
-        RestrictedEmailDomain = 1288
+        RestrictedEmailDomain = 1288,
+        EncryptionKeyDisabled = 1289,
+        EncryptionKeyMissing = 1290,
+        EncryptionKeyBroken = 1291,
+        NoSharedSecretKeyConfigured = 1292,
+        SecretKeyNotFound = 1293,
+        PlayerSecretAlreadyConfigured = 1294,
+        APIRequestsDisabledForTitle = 1295,
+        InvalidSharedSecretKey = 1296
     }
 
     public delegate void ErrorCallback(PlayFabError error);

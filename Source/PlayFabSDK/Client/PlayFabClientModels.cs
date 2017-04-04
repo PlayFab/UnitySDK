@@ -1493,11 +1493,11 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The version of the leaderboard to get, when UseSpecificVersion is true.
         /// </summary>
-        public int Version;
+        public int? Version;
         /// <summary>
         /// If true, uses the specified version. If false, gets the most recent version.
         /// </summary>
-        public bool UseSpecificVersion;
+        public bool? UseSpecificVersion;
         /// <summary>
         /// If non-null, this determines which properties of the profile to return. If null, playfab will only include display names. On client, only ShowDisplayName, ShowStatistics, ShowAvatarUrl are allowed.
         /// </summary>
@@ -1547,11 +1547,11 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The version of the leaderboard to get, when UseSpecificVersion is true.
         /// </summary>
-        public int Version;
+        public int? Version;
         /// <summary>
         /// If true, uses the specified version. If false, gets the most recent version.
         /// </summary>
-        public bool UseSpecificVersion;
+        public bool? UseSpecificVersion;
         /// <summary>
         /// If non-null, this determines which properties of the profile to return. If null, playfab will only include display names. On client, only ShowDisplayName, ShowStatistics, ShowAvatarUrl are allowed.
         /// </summary>
@@ -1628,11 +1628,11 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The version of the leaderboard to get, when UseSpecificVersion is true.
         /// </summary>
-        public int Version;
+        public int? Version;
         /// <summary>
         /// If true, uses the specified version. If false, gets the most recent version.
         /// </summary>
-        public bool UseSpecificVersion;
+        public bool? UseSpecificVersion;
         /// <summary>
         /// If non-null, this determines which properties of the profile to return. If null, playfab will only include display names. On client, only ShowDisplayName, ShowStatistics, ShowAvatarUrl are allowed.
         /// </summary>
@@ -1696,11 +1696,11 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// The version of the leaderboard to get, when UseSpecificVersion is true.
         /// </summary>
-        public int Version;
+        public int? Version;
         /// <summary>
         /// If true, uses the specified version. If false, gets the most recent version.
         /// </summary>
-        public bool UseSpecificVersion;
+        public bool? UseSpecificVersion;
         /// <summary>
         /// If non-null, this determines which properties of the profile to return. If null, playfab will only include display names. On client, only ShowDisplayName, ShowStatistics, ShowAvatarUrl are allowed.
         /// </summary>
@@ -2159,6 +2159,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Array of items purchased.
         /// </summary>
+        [Obsolete("Use '' instead", false)]
         public List<ItemInstance> Items;
     }
 
@@ -2651,11 +2652,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string ServerAuthCode;
         /// <summary>
-        /// OAuth 2.0 access token obtained on the client by calling the getAccessToken() Google client API.
-        /// </summary>
-        [Obsolete("Use 'ServerAuthCode' instead", true)]
-        public string AccessToken;
-        /// <summary>
         /// If another user is already linked to the account, unlink the other user and re-link.
         /// </summary>
         public bool? ForceLink;
@@ -2911,6 +2907,14 @@ namespace PlayFab.ClientModels
         /// </summary>
         public bool? CreateAccount;
         /// <summary>
+        /// Player secret that is used to verify API request signatures
+        /// </summary>
+        public string PlayerSecret;
+        /// <summary>
+        /// Base64 encoded body that is encrypted with the Title's public RSA key
+        /// </summary>
+        public string EncryptedRequest;
+        /// <summary>
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
@@ -2990,11 +2994,6 @@ namespace PlayFab.ClientModels
         /// OAuth 2.0 server authentication code obtained on the client by calling the getServerAuthCode() (https://developers.google.com/identity/sign-in/android/offline-access) Google client API.
         /// </summary>
         public string ServerAuthCode;
-        /// <summary>
-        /// OAuth 2.0 access token obtained on the client by calling the getAccessToken() Google client API.
-        /// </summary>
-        [Obsolete("Use 'ServerAuthCode' instead", true)]
-        public string AccessToken;
         /// <summary>
         /// Automatically create a PlayFab account if one is not currently linked to this Google account.
         /// </summary>
