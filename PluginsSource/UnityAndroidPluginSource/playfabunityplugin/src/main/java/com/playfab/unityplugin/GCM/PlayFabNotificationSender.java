@@ -6,8 +6,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -56,9 +59,17 @@ public class PlayFabNotificationSender {
         //Log.i(TAG,"Setting Sound Uri: " + defaultSoundUri); //Intentionally commented for debug purpose.
         String message = pushNotificationPackage.Message;
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent)
-                .setSmallIcon(intent.getResources().getIdentifier(appIcon, "drawable", intent.getPackageName()))
-                .setContentTitle(title)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            notificationBuilder.setSmallIcon(intent.getResources().getIdentifier(appIcon + "_transparent", "drawable", intent.getPackageName()));
+        }else{
+            notificationBuilder.setSmallIcon(intent.getResources().getIdentifier(appIcon, "drawable", intent.getPackageName()));
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Bitmap icon = BitmapFactory.decodeResource(intent.getResources(), intent.getResources().getIdentifier(appIcon, "drawable", intent.getPackageName()));
+            notificationBuilder.setLargeIcon(icon);
+        }
+        notificationBuilder.setContentTitle(title)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setContentText(message)
                 .setSound(defaultSoundUri)
@@ -227,7 +238,9 @@ public class PlayFabNotificationSender {
 
     public static void Send(Context intent, PlayFabNotificationPackage notifyPackage ){
         Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
+
+        byte[] bytes = ParcelableUtil.marshall(notifyPackage);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, bytes);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT );
@@ -250,7 +263,8 @@ public class PlayFabNotificationSender {
     public static void ScheduleNotification(Context intent, String dateString, PlayFabNotificationPackage notifyPackage ){
         Log.i(TAG,"Scheduling future notification");
         Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
+        byte[] bytes = ParcelableUtil.marshall(notifyPackage);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, bytes);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT );
