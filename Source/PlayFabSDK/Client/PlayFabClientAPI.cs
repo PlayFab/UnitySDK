@@ -783,7 +783,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a completed purchase along with its current PlayFab status.
+        /// Retrieves a purchase along with its current PlayFab status.
         /// </summary>
         public static void GetPurchase(GetPurchaseRequest request, Action<GetPurchaseResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null)
         {
