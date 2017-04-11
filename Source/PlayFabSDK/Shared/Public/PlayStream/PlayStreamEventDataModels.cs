@@ -375,6 +375,15 @@ namespace PlayFab.PlayStreamModels
         public List<string> PurchasedProduct;
         public string TitleId;
     }
+    public class PlayerReceiptValidationEventData : PlayStreamEventBase
+    {
+        public string PaymentProvider;
+        public PaymentType? PaymentType;
+        public string ReceiptContent;
+        public bool Valid;
+        public string Error;
+        public string TitleId;
+    }
     public class PlayerRedeemedCouponEventData : PlayStreamEventBase
     {
         public string CouponCode;
@@ -996,6 +1005,12 @@ namespace PlayFab.PlayStreamModels
         public double? Longitude;
     }
 
+    public enum PaymentType
+    {
+        Purchase,
+        ReceiptValidation
+    }
+
     public enum LeaderboardVersionChangeBehavior
     {
         ResetValues
@@ -1068,12 +1083,6 @@ namespace PlayFab.PlayStreamModels
         /// Catalog version of the inventory item.
         /// </summary>
         public string CatalogVersion;
-    }
-
-    public enum PaymentType
-    {
-        Purchase,
-        ReceiptValidation
     }
 
     public enum Currency
