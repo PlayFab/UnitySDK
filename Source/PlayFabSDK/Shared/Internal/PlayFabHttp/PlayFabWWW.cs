@@ -24,27 +24,13 @@ namespace PlayFab.Internal
 
         public void MakeApiCall(CallRequestContainer reqContainer)
         {
-            //Set headers
-            var headers = new Dictionary<string, string> { { "Content-Type", "application/json" } };
-            if (reqContainer.AuthKey == AuthType.DevSecretKey)
-            {
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
-                headers.Add("X-SecretKey", PlayFabSettings.DeveloperSecretKey);
-#endif
-            }
-            else if (reqContainer.AuthKey == AuthType.LoginSession)
-            {
-                headers.Add("X-Authorization", AuthKey);
-            }
-
-            headers.Add("X-ReportErrorAsSuccess", "true");
-            headers.Add("X-PlayFabSDK", PlayFabSettings.VersionString);
+            reqContainer.RequestHeaders["Content-Type"] = "application/json";
 
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
             if (PlayFabSettings.CompressApiData)
             {
-                headers.Add("Content-Encoding", "GZIP");
-                headers.Add("Accept-Encoding", "GZIP");
+                reqContainer.RequestHeaders["Content-Encoding"] = "GZIP";
+                reqContainer.RequestHeaders["Accept-Encoding"] = "GZIP";
 
                 using (var stream = new MemoryStream())
                 {
@@ -58,7 +44,7 @@ namespace PlayFab.Internal
 #endif
 
             //Debug.LogFormat("Posting {0} to Url: {1}", req.Trim(), url);
-            var www = new WWW(reqContainer.FullUrl, reqContainer.Payload, headers);
+            var www = new WWW(reqContainer.FullUrl, reqContainer.Payload, reqContainer.RequestHeaders);
 
 #if PLAYFAB_REQUEST_TIMING
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();

@@ -133,7 +133,7 @@ namespace PlayFab.Internal
         /// </summary>
         protected internal static void MakeApiCall<TResult>(string apiEndpoint,
             PlayFabRequestCommon request, AuthType authType, Action<TResult> resultCallback,
-            Action<PlayFabError> errorCallback, object customData = null, bool allowQueueing = false)
+            Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null, bool allowQueueing = false)
             where TResult : PlayFabResultCommon
         {
             InitializeHttp();
@@ -145,14 +145,25 @@ namespace PlayFab.Internal
                 FullUrl = PlayFabSettings.GetFullUrl(apiEndpoint),
                 CustomData = customData,
                 Payload = Encoding.UTF8.GetBytes(JsonWrapper.SerializeObject(request)),
-                AuthKey = authType,
                 ApiRequest = request,
                 ErrorCallback = errorCallback,
+                RequestHeaders = extraHeaders ?? new Dictionary<string, string>() // Use any headers provided by the customer
             };
 #if PLAYFAB_REQUEST_TIMING
             reqContainer.Timing.StartTimeUtc = DateTime.UtcNow;
             reqContainer.Timing.ApiEndpoint = apiEndpoint;
 #endif
+
+            // Add PlayFab Headers
+            reqContainer.RequestHeaders["X-ReportErrorAsSuccess"] = "true"; // Makes processing PlayFab errors a little easier
+            reqContainer.RequestHeaders["X-PlayFabSDK"] = PlayFabSettings.VersionString; // Tell PlayFab which SDK this is
+            switch (authType)
+            {
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
+                case AuthType.DevSecretKey: reqContainer.RequestHeaders["X-SecretKey"] = PlayFabSettings.DeveloperSecretKey; break;
+#endif
+                case AuthType.LoginSession: reqContainer.RequestHeaders["X-Authorization"] = _internalHttp.AuthKey; break;
+            }
 
             // These closures preserve the TResult generic information in a way that's safe for all the devices
             reqContainer.DeserializeResultJson = () =>

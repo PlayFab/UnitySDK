@@ -295,7 +295,8 @@ namespace PlayFab
         SecretKeyNotFound = 1293,
         PlayerSecretAlreadyConfigured = 1294,
         APIRequestsDisabledForTitle = 1295,
-        InvalidSharedSecretKey = 1296
+        InvalidSharedSecretKey = 1296,
+        PrizeTableHasNoRanks = 1297
     }
 
     public delegate void ErrorCallback(PlayFabError error);

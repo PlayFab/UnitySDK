@@ -109,10 +109,15 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Package SDK")]
         public static void PackagePlayFabSdk()
         {
+            var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable
+            if (string.IsNullOrEmpty(repoName))
+                repoName = "UnitySDK"; // Default if we aren't building something else
             Setup();
-            var packagePath = "C:/depot/sdks/UnitySDK/Packages/UnitySDK.unitypackage";
-            AssetDatabase.ExportPackage(SdkAssets, packagePath, ExportPackageOptions.Recurse);
-            Debug.Log("Package built: " + packagePath);
+            var packageFolder = Path.Combine(Path.Combine("C:/depot/sdks", repoName), "Packages");
+            MkDir(packageFolder);
+            var packageFullPath = Path.Combine(packageFolder, "UnitySDK.unitypackage");
+            AssetDatabase.ExportPackage(SdkAssets, packageFullPath, ExportPackageOptions.Recurse);
+            Debug.Log("Package built: " + packageFullPath);
         }
 
         [MenuItem("PlayFab/Testing/AndroidTestBuild")]

@@ -245,6 +245,15 @@ namespace PlayFab.AdminModels
         public List<VirtualCurrencyData> VirtualCurrencies;
     }
 
+    [Serializable]
+    public class ApiCondition
+    {
+        /// <summary>
+        /// Require that API calls contain an RSA encrypted payload or signed headers.
+        /// </summary>
+        public Conditionals? HasSignatureOrEncryption;
+    }
+
     /// <summary>
     /// Contains information for a ban.
     /// </summary>
@@ -556,6 +565,13 @@ namespace PlayFab.AdminModels
         /// Most recent revision for this Cloud Script version
         /// </summary>
         public int LatestRevision;
+    }
+
+    public enum Conditionals
+    {
+        Any,
+        True,
+        False
     }
 
     [Serializable]
@@ -2427,6 +2443,10 @@ namespace PlayFab.AdminModels
         /// A comment about the statement. Intended solely for bookeeping and debugging.
         /// </summary>
         public string Comment;
+        /// <summary>
+        /// Additional conditions to be applied for API Resources.
+        /// </summary>
+        public ApiCondition ApiConditions;
     }
 
     [Serializable]
