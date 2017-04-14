@@ -243,12 +243,12 @@ The 5.0+ version of our plugin can be found [here](https://github.com/PlayFab/Un
 
 Included Archive | Class Location
 --- |  ---
-appcompat-v7-24.1.1.aar | com.android.support.appcompat-v7 
-support-v4-24.1.1.aar | com.android.support.support-v4
-play-services-base-9.4.0.aar | com.google.android.gms.play-services-base
-play-services-basement-9.4.0.aar | com.google.android.gms.play-services-basement 
-play-services-gcm-9.4.0.aar | com.google.android.gms.play-services.gcm
-play-services-iid-9.4.0.aar | com.google.android.gms.play-services.iid
+appcompat-v7-25.1.1.aar | com.android.support.appcompat-v7 
+support-v4-25.1.1.aar | com.android.support.support-v4
+play-services-base-10.0.1.aar | com.google.android.gms.play-services-base
+play-services-basement-10.0.1.aar | com.google.android.gms.play-services-basement 
+play-services-gcm-10.0.1.aar | com.google.android.gms.play-services.gcm
+play-services-iid-10.0.1.aar | com.google.android.gms.play-services.iid
 
 
 #### Android SDK dependencies (Unity 4.7)
