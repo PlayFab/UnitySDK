@@ -67,10 +67,10 @@ Advanced users can still set their secret key anywhere in their game setup:
 
 You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://playfab.com/docs#/menu/1383/1383) for a complete list of available APIs.
 
-#####New Users:
+##### New Users:
 * Check out our Tutorials, Samples and more [here](https://playfab.com/docs/overview/)
 
-#####Using the Push Plugin for Android
+##### Using the Push Plugin for Android
   * View [this repository](https://github.com/PlayFab/UnitySdkV0/tree/master/UnityAndroidPluginSource) for complete details.
 
 ## 5. Troubleshooting:
