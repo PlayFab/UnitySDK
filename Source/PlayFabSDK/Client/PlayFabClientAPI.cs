@@ -401,8 +401,9 @@ namespace PlayFab
         /// </summary>
         public static void LinkWindowsHello(LinkWindowsHelloAccountRequest request, Action<LinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall("/Client/LinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+            PlayFabHttp.MakeApiCall("/Client/LinkWindowsHello", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -529,8 +530,9 @@ namespace PlayFab
         /// </summary>
         public static void UnlinkWindowsHello(UnlinkWindowsHelloAccountRequest request, Action<UnlinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall("/Client/UnlinkWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+            PlayFabHttp.MakeApiCall("/Client/UnlinkWindowsHello", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -784,7 +786,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a purchase along with its current PlayFab status.
+        /// Retrieves a purchase along with its current PlayFab status. Returns inventory items from the purchase that are still active.
         /// </summary>
         public static void GetPurchase(GetPurchaseRequest request, Action<GetPurchaseResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1316,8 +1318,9 @@ namespace PlayFab
         /// </summary>
         public static void ValidateWindowsStoreReceipt(ValidateWindowsReceiptRequest request, Action<ValidateWindowsReceiptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
-            PlayFabHttp.MakeApiCall("/Client/ValidateWindowsStoreReceipt", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+            PlayFabHttp.MakeApiCall("/Client/ValidateWindowsStoreReceipt", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
 

@@ -125,6 +125,7 @@ namespace PlayFab.PlayStreamModels
         public string PurchaseId;
         public string ItemId;
         public string CatalogVersion;
+        public string StoreId;
         public string CurrencyCode;
         public int Quantity;
         public uint UnitPrice;
@@ -452,6 +453,7 @@ namespace PlayFab.PlayStreamModels
         public string PurchaseId;
         public string ItemId;
         public string CatalogVersion;
+        public string StoreId;
         public string CurrencyCode;
         public int Quantity;
         public uint UnitPrice;
@@ -636,6 +638,14 @@ namespace PlayFab.PlayStreamModels
     {
         public string PolicyName;
         public string NewPolicy;
+        public string UserId;
+        public string DeveloperId;
+    }
+    public class TitleProfileViewConstraintsChangedEventData : PlayStreamEventBase
+    {
+        public string ProfileType;
+        public string PreviousProfileViewConstraints;
+        public string ProfileViewConstraints;
         public string UserId;
         public string DeveloperId;
     }
@@ -1298,9 +1308,17 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public object FunctionResult;
         /// <summary>
+        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event
+        /// </summary>
+        public bool? FunctionResultTooLarge;
+        /// <summary>
         /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
         /// </summary>
         public List<LogStatement> Logs;
+        /// <summary>
+        /// Flag indicating if the logs were too large and were subsequently dropped from this event
+        /// </summary>
+        public bool? LogsTooLarge;
         public double ExecutionTimeSeconds;
         /// <summary>
         /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP requests.
@@ -1316,7 +1334,7 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public int HttpRequestsIssued;
         /// <summary>
-        /// Information about the error, if any, that occured during execution
+        /// Information about the error, if any, that occurred during execution
         /// </summary>
         public ScriptExecutionError Error;
     }
