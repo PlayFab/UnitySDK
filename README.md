@@ -1,13 +1,15 @@
-UnitySDK README
-========
+# UnitySDK README
+
 The easist way to get started is to use our [EditorExtensions plugin](https://github.com/PlayFab/UnityEditorExtensions). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
 
-1. Overview:
-----
+
+## 1. Overview:
+
 This document describes the process of configuring and building the PlayFab Unity plugin binary and distribution package. The document also contains instructions for developers to start using the plugin in their Unity games.
 
-2. Prerequisites:
-----
+
+## 2. Prerequisites:
+
 This document assumes familiarity with the Unity game engine, MonoDevelop Unity .NET programming environment, and Mac OS X operating system environment.
 
 * Users should also be familiar with the topics covered in our [getting started guide](https://playfab.com/docs/getting-started-with-playfab/).
@@ -17,8 +19,9 @@ To connect to the PlayFab service, your machine must be running TLS v1.2 or bett
 * [Official Microsoft Documentation](https://msdn.microsoft.com/en-us/library/windows/desktop/aa380516%28v=vs.85%29.aspx)
 * [Support for SSL/TLS protocols on Windows](http://blogs.msdn.com/b/kaushal/archive/2011/10/02/support-for-ssl-tls-protocols-on-windows.aspx)
 
-3. Installing or Upgrading the PlayFab UnitySdk
----
+
+## 3. Installing or Upgrading the PlayFab UnitySdk
+
 The easist way to get started is to use our [EditorExtensions plugin](https://github.com/PlayFab/UnityEditorExtensions). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
 
 Alternatively you can install the latest [Asset Package](https://api.playfab.com/sdks/download/unity-v2ap) directly. 
@@ -60,8 +63,8 @@ Advanced users can still set their secret key anywhere in their game setup:
     PlayFabSettings.DeveloperSecretKey = "Find this in your dashboard/settings https://developer.playfab.com/title/properties/{your title Id}"; //your Developer Secret goes here.
 ```
 
-4. Usage Instructions:
-----
+## 4. Usage Instructions:
+
 You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://playfab.com/docs#/menu/1383/1383) for a complete list of available APIs.
 
 #####New Users:
@@ -70,8 +73,7 @@ You are now ready to begin making API calls using the PlayFabClientAPI class. Ch
 #####Using the Push Plugin for Android
   * View [this repository](https://github.com/PlayFab/UnitySdkV0/tree/master/UnityAndroidPluginSource) for complete details.
 
-5. Troubleshooting:
-----
+## 5. Troubleshooting:
 
 CASE: Follow these instructions to disable IDFA for your IOS release:
  * In Unity, navigate to and open: {YourUnityProject}/Assets/Plugins/iOS/PlayFabURLRequest.mm
@@ -93,8 +95,8 @@ Our Developer Success Team can assist with answering any questions as well as pr
 
 [Forums, Support and Knowledge Base](https://community.playfab.com/index.html)
 
-6. Copyright and Licensing Information:
-----
+## 6. Copyright and Licensing Information:
+
   Apache License -- 
   Version 2.0, January 2004
   http://www.apache.org/licenses/
