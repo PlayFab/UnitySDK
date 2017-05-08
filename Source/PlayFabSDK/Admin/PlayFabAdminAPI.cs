@@ -725,7 +725,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Delete a content file from the title
+        /// Delete a content file from the title. When deleting a file that does not exist, it returns success.
         /// </summary>
         public static void DeleteContent(DeleteContentRequest request, Action<BlankResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {

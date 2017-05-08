@@ -1187,9 +1187,17 @@ namespace PlayFab.AdminModels
         /// </summary>
         public object FunctionResult;
         /// <summary>
+        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event
+        /// </summary>
+        public bool? FunctionResultTooLarge;
+        /// <summary>
         /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
         /// </summary>
         public List<LogStatement> Logs;
+        /// <summary>
+        /// Flag indicating if the logs were too large and were subsequently dropped from this event
+        /// </summary>
+        public bool? LogsTooLarge;
         public double ExecutionTimeSeconds;
         /// <summary>
         /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP requests.
@@ -1205,7 +1213,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public int HttpRequestsIssued;
         /// <summary>
-        /// Information about the error, if any, that occured during execution
+        /// Information about the error, if any, that occurred during execution
         /// </summary>
         public ScriptExecutionError Error;
     }
@@ -2122,7 +2130,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string CharacterId;
         /// <summary>
-        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
+        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character or be null.
         /// </summary>
         public Dictionary<string,string> Data;
         /// <summary>
@@ -2645,11 +2653,6 @@ namespace PlayFab.AdminModels
         /// time when the statistic version became inactive due to statistic version incrementing
         /// </summary>
         public DateTime? DeactivationTime;
-        /// <summary>
-        /// status of the process of saving player statistic values of the previous version to a downloadable archive
-        /// </summary>
-        [Obsolete("Use 'Status' instead", true)]
-        public StatisticVersionArchivalStatus? ArchivalStatus;
         /// <summary>
         /// status of the statistic version
         /// </summary>
@@ -3546,7 +3549,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string PlayFabId;
         /// <summary>
-        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
+        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character or be null.
         /// </summary>
         public Dictionary<string,string> Data;
         /// <summary>
@@ -3576,7 +3579,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string PlayFabId;
         /// <summary>
-        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character.
+        /// Key-value pairs to be written to the custom data. Note that keys are trimmed of whitespace, are limited in size, and may not begin with a '!' character or be null.
         /// </summary>
         public Dictionary<string,string> Data;
         /// <summary>
