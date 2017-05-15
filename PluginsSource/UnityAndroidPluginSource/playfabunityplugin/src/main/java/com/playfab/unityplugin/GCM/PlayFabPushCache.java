@@ -13,34 +13,32 @@ import java.util.List;
 public class PlayFabPushCache {
     private static List<PlayFabNotificationPackage> mPushCache = new ArrayList<PlayFabNotificationPackage>();
 
-    public static void setPushCache(PlayFabNotificationPackage notification){
+    public static void setPushCache(PlayFabNotificationPackage notification) {
         mPushCache.add(notification);
     }
 
     // returns the entire push cache
-    public static List<PlayFabNotificationPackage> getPushCache(){
+    public static List<PlayFabNotificationPackage> getPushCache() {
         return mPushCache == null ? new ArrayList<PlayFabNotificationPackage>() : mPushCache;
     }
 
-    public static void clearPushCache(){
+    public static void clearPushCache() {
         List<PlayFabNotificationPackage> mLoopList = mPushCache;
-        for( PlayFabNotificationPackage mPushCacheItem  : mLoopList){
-            if(mPushCacheItem.Delivered){
+        for (PlayFabNotificationPackage mPushCacheItem : mLoopList) {
+            if (mPushCacheItem.Delivered) {
                 mPushCache.remove(mPushCacheItem);
             }
         }
     }
 
     // returns only the custom data portion of the cache
-    public static String getPushCacheData(String id){
+    public static String getPushCacheData(int id) {
         String CustomData = "";
-        for( PlayFabNotificationPackage mPushCacheItem  : mPushCache){
-            if(mPushCacheItem.Id == id){
+        for (PlayFabNotificationPackage mPushCacheItem : mPushCache) {
+            if (mPushCacheItem.Id == id) {
                 CustomData = mPushCacheItem.CustomData;
             }
         }
         return CustomData;
     }
-
 }
-

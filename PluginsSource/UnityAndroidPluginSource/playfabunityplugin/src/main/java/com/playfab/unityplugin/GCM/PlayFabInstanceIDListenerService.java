@@ -7,7 +7,7 @@ import com.google.android.gms.iid.InstanceIDListenerService;
 /**
  * Created by Marco on 8/19/2015.
  */
-public class PlayFabInstanceIDListenerService extends InstanceIDListenerService{
+public class PlayFabInstanceIDListenerService extends InstanceIDListenerService {
     /**
      * Called if InstanceID token is updated. This may occur if the security of
      * the previous token had been compromised. This call is initiated by the

@@ -24,8 +24,8 @@ public class PlayFabGoogleCloudMessaging {
     private static final String[] TOPICS = {"global"};  //Should we pass this in?
 
     // returns the push GCM token from google
-    public static void getToken(){
-        Log.i(TAG,"PlayFab GCM Get token has been requested.");
+    public static void getToken() {
+        Log.i(TAG, "PlayFab GCM Get token has been requested.");
         SharedPreferences sharedPreferences = PlayFabRegistrationIntentService.GetInstance().getPluginPreferences(); //PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
@@ -33,8 +33,8 @@ public class PlayFabGoogleCloudMessaging {
             // ensure that they are processed sequentially.
             synchronized (TAG) {
                 //Get Stored Sender Id in prefs.
-                String senderId = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_SENDER_ID,"0");
-                Log.i(TAG,"PlayFab GCM SenderID: " + senderId);
+                String senderId = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_SENDER_ID, "0");
+                Log.i(TAG, "PlayFab GCM SenderID: " + senderId);
                 //Get the InstanceID of Registration Intent Service and get the token.
                 InstanceID instanceID = PlayFabRegistrationIntentService.GetInstanceId();
                 String token = instanceID.getToken(senderId, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
@@ -59,7 +59,7 @@ public class PlayFabGoogleCloudMessaging {
 
     /**
      * Persist registration to third-party servers.
-     *
+     * <p>
      * Modify this method to associate the user's GCM registration token with any server-side account
      * maintained by your application.
      *

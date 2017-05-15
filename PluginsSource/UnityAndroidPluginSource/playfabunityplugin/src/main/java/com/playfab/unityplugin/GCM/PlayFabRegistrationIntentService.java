@@ -14,7 +14,7 @@ import com.google.android.gms.iid.InstanceID;
 import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
-public class PlayFabRegistrationIntentService extends IntentService{
+public class PlayFabRegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static InstanceID mInstanceID;
@@ -24,11 +24,11 @@ public class PlayFabRegistrationIntentService extends IntentService{
         super(TAG);
     }
 
-    public static PlayFabRegistrationIntentService GetInstance(){
+    public static PlayFabRegistrationIntentService GetInstance() {
         return mInstance;
     }
 
-    public static InstanceID GetInstanceId(){
+    public static InstanceID GetInstanceId() {
         return mInstanceID;
     }
 
@@ -43,7 +43,7 @@ public class PlayFabRegistrationIntentService extends IntentService{
 
 
     private void notifyRegistrationReady() {
-        Log.i(TAG,"PlayFab GCM Registration Ready, sending event to Unity GCMRegistrationReady");
+        Log.i(TAG, "PlayFab GCM Registration Ready, sending event to Unity GCMRegistrationReady");
         UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMRegistrationReady", "true");
     }
 

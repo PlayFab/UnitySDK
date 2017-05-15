@@ -222,7 +222,7 @@ As a json string, this would look like the following.
 	"ScheduleType":1,
 	"Title":"This is a scheduled Push",
 	"Message":"You will get gold if you click me now!",
-	"Id":"Custom ID for my Notification"
+	"Id":12345
 }
 
 ```
