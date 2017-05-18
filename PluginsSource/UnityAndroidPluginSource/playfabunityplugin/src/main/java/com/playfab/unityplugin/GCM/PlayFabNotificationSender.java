@@ -239,13 +239,11 @@ public class PlayFabNotificationSender {
 
     public static void ScheduleNotification(Context intent, String dateString, PlayFabNotificationPackage notifyPackage) {
         Log.i(TAG, "Scheduling future notification");
-        Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-        byte[] bytes = ParcelableUtil.marshall(notifyPackage);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, bytes);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         try {
+            Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
+            byte[] bytes = ParcelableUtil.marshall(notifyPackage);
+            notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, bytes);
+
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_STRING);
             Date date = sdf.parse(dateString);
 
@@ -254,6 +252,7 @@ public class PlayFabNotificationSender {
             long futureMillis = c.getTimeInMillis();
             long nowMillis = System.currentTimeMillis();
 
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, futureMillis, pendingIntent);
             Log.i(TAG, "Alarm was set to: " + date.toString() + " : future - " + futureMillis + ": now - " + nowMillis);
@@ -263,12 +262,10 @@ public class PlayFabNotificationSender {
     }
 
     public static void CancelScheduledNotification(Context intent, PlayFabNotificationPackage notifyPackage) {
-        Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         try {
+            Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
+            notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
         } catch (Exception e) {

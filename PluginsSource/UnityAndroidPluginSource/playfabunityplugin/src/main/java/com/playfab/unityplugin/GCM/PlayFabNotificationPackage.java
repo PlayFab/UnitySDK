@@ -89,8 +89,9 @@ public class PlayFabNotificationPackage implements Parcelable {
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
         try {
             Date parsedDate = sdf.parse(date);
-            Log.i("PlayFabGCM", "Id: " + this.Id + " - " + parsedDate.toString());
+            Log.i("PlayFabGCM", "SetScheduleDate Id: " + this.Id + " - " + parsedDate.toString());
             this.ScheduleDate = parsedDate;
+            this.ScheduleType = ScheduleTypes.ScheduledDate;
         } catch (Exception e) {
             Log.i("PlayFabGCM", "Could not parse date.  use format  MM-dd-yyyy HH:mm:ss");
         }

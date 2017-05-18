@@ -26,9 +26,9 @@ public class PlayFabGoogleCloudMessaging {
     // returns the push GCM token from google
     public static void getToken() {
         Log.i(TAG, "PlayFab GCM Get token has been requested.");
-        SharedPreferences sharedPreferences = PlayFabRegistrationIntentService.GetInstance().getPluginPreferences(); //PreferenceManager.getDefaultSharedPreferences(this);
-
+        SharedPreferences sharedPreferences = null;
         try {
+            sharedPreferences = PlayFabRegistrationIntentService.GetInstance().getPluginPreferences();
             // In the (unlikely) event that multiple refresh operations occur simultaneously,
             // ensure that they are processed sequentially.
             synchronized (TAG) {
@@ -52,7 +52,8 @@ public class PlayFabGoogleCloudMessaging {
             Log.d(TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
-            sharedPreferences.edit().putBoolean(PlayFabUnityAndroidPlugin.SENT_TOKEN_TO_SERVER, false).apply();
+            if (sharedPreferences != null)
+                sharedPreferences.edit().putBoolean(PlayFabUnityAndroidPlugin.SENT_TOKEN_TO_SERVER, false).apply();
         }
 
     }
@@ -84,6 +85,4 @@ public class PlayFabGoogleCloudMessaging {
         }
     }
     // [END subscribe_topics]
-
-
 }

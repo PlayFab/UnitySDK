@@ -1,5 +1,9 @@
 package com.playfab.unityplugin.GCM;
 
+import android.util.Log;
+
+import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +27,15 @@ public class PlayFabPushCache {
     }
 
     public static void clearPushCache() {
-        List<PlayFabNotificationPackage> mLoopList = mPushCache;
-        for (PlayFabNotificationPackage mPushCacheItem : mLoopList) {
-            if (mPushCacheItem.Delivered) {
-                mPushCache.remove(mPushCacheItem);
+        try {
+            List<PlayFabNotificationPackage> mLoopList = mPushCache;
+            for (PlayFabNotificationPackage mPushCacheItem : mLoopList) {
+                if (mPushCacheItem.Delivered) {
+                    mPushCache.remove(mPushCacheItem);
+                }
             }
+        } catch (Exception e) {
+            Log.e(PlayFabUnityAndroidPlugin.TAG, "PlayFab GCM clearPushCache exception: " + e.getMessage());
         }
     }
 
@@ -39,6 +47,7 @@ public class PlayFabPushCache {
                 CustomData = mPushCacheItem.CustomData;
             }
         }
+
         return CustomData;
     }
 }

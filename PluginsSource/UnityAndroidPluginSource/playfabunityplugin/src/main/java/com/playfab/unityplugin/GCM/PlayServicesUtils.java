@@ -23,19 +23,22 @@ public class PlayServicesUtils {
      * the Google Play Store or enable it in the device's system settings.
      */
     public static boolean isPlayServicesAvailable() {
-        Activity unityActivity = UnityPlayer.currentActivity;
-        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
-        int resultCode = googleAPI.isGooglePlayServicesAvailable(unityActivity);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (googleAPI.isUserResolvableError(resultCode)) {
-                googleAPI.getErrorDialog(unityActivity, resultCode,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                Log.i(PlayFabUnityAndroidPlugin.TAG, "This device is not supported.");
+        boolean available = false;
+        try {
+            Activity unityActivity = UnityPlayer.currentActivity;
+            GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
+            int resultCode = googleAPI.isGooglePlayServicesAvailable(unityActivity);
+            available = (resultCode == ConnectionResult.SUCCESS);
+            if (!available) {
+                if (googleAPI.isUserResolvableError(resultCode)) {
+                    googleAPI.getErrorDialog(unityActivity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                } else {
+                    Log.i(PlayFabUnityAndroidPlugin.TAG, "This device is not supported.");
+                }
             }
-            return false;
+        } catch (Exception e) {
+            Log.e(PlayFabUnityAndroidPlugin.TAG, "PlayFab GCM isPlayServicesAvailable exception: " + e.getMessage());
         }
-        return true;
+        return available;
     }
-
 }

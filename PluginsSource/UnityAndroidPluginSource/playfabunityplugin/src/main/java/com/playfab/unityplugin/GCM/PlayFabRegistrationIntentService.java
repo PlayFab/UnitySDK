@@ -15,7 +15,6 @@ import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
 public class PlayFabRegistrationIntentService extends IntentService {
-
     private static final String TAG = "RegIntentService";
     private static InstanceID mInstanceID;
     private static PlayFabRegistrationIntentService mInstance;
@@ -55,5 +54,4 @@ public class PlayFabRegistrationIntentService extends IntentService {
         //unityActivity.getSharedPreferences(SHARED_PREFS_TAG, Context.MODE_PRIVATE);
         return sharedPreferences;
     }
-
 }
