@@ -1,7 +1,3 @@
-/**
- * Created by Marco on 8/19/2015.
- */
-
 package com.playfab.unityplugin.GCM;
 
 import android.app.IntentService;

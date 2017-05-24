@@ -1,9 +1,5 @@
 package com.playfab.unityplugin.GCM;
 
-/**
- * Created by Marco on 8/19/2015.
- */
-
 import android.app.Activity;
 import android.util.Log;
 
@@ -14,7 +10,6 @@ import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
 public class PlayServicesUtils {
-
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     /**

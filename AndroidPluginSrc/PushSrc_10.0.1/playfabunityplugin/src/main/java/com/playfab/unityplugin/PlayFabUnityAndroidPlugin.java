@@ -1,6 +1,3 @@
-/**
- * Created by Marco on 8/19/2015.
- */
 package com.playfab.unityplugin;
 
 import android.app.Service;
@@ -13,7 +10,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import com.playfab.unityplugin.GCM.PlayFabRegistrationIntentService;
 import com.playfab.unityplugin.GCM.PlayServicesUtils;
 import com.unity3d.player.UnityPlayer;

@@ -3,10 +3,6 @@ package com.playfab.unityplugin.GCM;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by marcowilliams on 4/5/17.
- */
-
 public class ParcelableUtil {
     public static byte[] marshall(Parcelable parceable) {
         Parcel parcel = Parcel.obtain();

@@ -11,14 +11,9 @@ import com.unity3d.player.UnityPlayer;
 import java.util.Set;
 
 /**
- * Created by Marco on 8/18/2015.
- */
-
-/**
  * Monitors the Notification channel and listens for and processes incoming GCM notifications
  */
 public class PlayFabGcmListenerService extends GcmListenerService {
-    private static final String TAG = "PlayFabGCM";
     private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
     public static final String PROPERTY_NOTIFICATION_ID = "_PlayFab_notificationId";
 
@@ -36,8 +31,6 @@ public class PlayFabGcmListenerService extends GcmListenerService {
         Set<String> keys = data.keySet();
         for (String key : keys) {
             Object o = data.get(key);
-            //String output = String.format("Push Received: %1$", o.toString());
-            //Log.i("PlayFabPushMessage",output);
             Log.i("PlayFabPushMessage", key);
             Log.i("PlayFabPushMessage", o.getClass().toString());
             if (o.getClass().getName().contains("String")) {
@@ -55,9 +48,13 @@ public class PlayFabGcmListenerService extends GcmListenerService {
             message = data.getString("default");
         }
 
-        Log.i(PlayFabUnityAndroidPlugin.TAG, "Push Message Recieved: " + message);
+        int id = 0;
+        if (data.containsKey("Id"))
+            data.getInt("Id");
 
-        PlayFabNotificationPackage notification = PlayFabNotificationSender.createNotificationPackage(this, message);
+        Log.i(PlayFabUnityAndroidPlugin.TAG, "Push Message Received: " + message);
+
+        PlayFabNotificationPackage notification = PlayFabNotificationSender.createNotificationPackage(this, message, id);
         boolean sendToNotificationBar = PlayFabUnityAndroidPlugin.AlwaysShowOnNotificationBar || UnityPlayer.currentActivity != null;
 
         if (UnityPlayer.currentActivity != null) {
