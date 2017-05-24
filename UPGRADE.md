@@ -1,14 +1,14 @@
-UnitySDK Upgrade from v1 to v2 guide
-========
+# UnitySDK Upgrade from v1 to v2 guide
 
 Note: This is a guide and not necessarily a step by step solution.  Therefore each upgrade scenario might be slightly different.
 
-1. Overview:
-----
+
+## 1. Overview:
+
 Upgrading to the new  Unity SDK v2 is not difficult at all.  However, depending on how you were using the previous SDK and what usage and features of the previous JSON serializer there could be some pain points.  This guide's intent is to identify these potential pain points and give you (the developer) a clear path to upgrade.
 
-2. Prerequisites:
-----
+
+## 2. Prerequisites:
 
 This document assumes familiarity with the Unity game engine, MonoDevelop Unity .NET programming environment, and Mac OS X operating system environment.
 
@@ -20,8 +20,9 @@ To connect to the PlayFab service, your machine must be running TLS v1.2 or bett
 - [Official Microsoft Documentation](https://msdn.microsoft.com/en-us/library/windows/desktop/aa380516%28v=vs.85%29.aspx)
 - [Support for SSL/TLS protocols on Windows](http://blogs.msdn.com/b/kaushal/archive/2011/10/02/support-for-ssl-tls-protocols-on-windows.aspx)
 
-3. Installing or Upgrading the PlayFab UnitySdk
----
+
+## 3. Installing or Upgrading the PlayFab UnitySdk
+
 The most important part about upgrading to the new SDK is that you MUST remove the old SDK first.  **DO NOT**   just copy or import the new SDK over top of the old sdk.   That will not work at all.  In addition, I highly advise that you make a backup of your project prior to doin the upgrade.  Do this either with a repository, or the old fashioned way by copy & pasting your project to another location. But the last thing you want to do is try this upgrade and have no way to revert back. 
 
 So what do you need to remove?  Depending on which version of the SDK you have there are a few different file locations you should check for files.  In the future we will have a tool that will do this clean-up for you, but for now you have to do it manually.
@@ -49,8 +50,8 @@ So what do you need to remove?  Depending on which version of the SDK you have t
 	1. 	Once downloaded, import the unitypackage.  This can be done by double clicking on the file, or using the context menu in the unity project view - Import Package --> Custom Package [(read more about asset packages)](https://docs.unity3d.com/Manual/AssetPackages.html).
 
 
-4. ISerializer, SimpleJson & Json Libraries changed.		  
----
+## 4. ISerializer, SimpleJson & Json Libraries changed.		  
+
 So up until now, the instructions for upgrading have been fairly trivial.  Back up, nuke and replace files.  But depending on how extensively you were using the internal JSON libs that we provide you in previous versions of our SDK you may still have errors in the project. Don't worry this is normal and below I'll explain what to do. Yay!
 
 First, however, let me explain what we did.  
@@ -109,6 +110,7 @@ But as I said, you can also continue using JSON.net if you prefer, via the ISeri
 
 For other JSON serializers, the ISerializer package for JSON.net can be used as the framework & example for integration of any other library.
 
-5.Conclusion	  
----
+
+## 5.Conclusion
+
 So hopefully the information above is just what you needed to help you convert over to the new SDK.  There are always other scenarios that I probably have not covered here and we want to hear about them. The best thing to do for you is to post a question in our [Community Forum](http://community.playfab.com) and we will help you through your issues.  For bug reports, please post an issue on the respository and /or send an email to devrel@playfab.com.  
