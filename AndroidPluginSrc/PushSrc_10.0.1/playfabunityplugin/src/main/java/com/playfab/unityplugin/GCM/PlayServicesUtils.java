@@ -5,13 +5,10 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
 public class PlayServicesUtils {
-    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
     /**
      * Check the device to make sure it has the Google Play Services APK. If
      * it doesn't, display a dialog that allows users to download the APK from
@@ -26,7 +23,7 @@ public class PlayServicesUtils {
             available = (resultCode == ConnectionResult.SUCCESS);
             if (!available) {
                 if (googleAPI.isUserResolvableError(resultCode)) {
-                    googleAPI.getErrorDialog(unityActivity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                    googleAPI.getErrorDialog(unityActivity, resultCode, PlayFabConst.PLAY_SERVICES_RESOLUTION_REQUEST).show();
                 } else {
                     Log.i(PlayFabUnityAndroidPlugin.TAG, "This device is not supported.");
                 }

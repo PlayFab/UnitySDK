@@ -11,12 +11,11 @@ import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
 public class PlayFabRegistrationIntentService extends IntentService {
-    private static final String TAG = "RegIntentService";
     private static InstanceID mInstanceID;
     private static PlayFabRegistrationIntentService mInstance;
 
     public PlayFabRegistrationIntentService() {
-        super(TAG);
+        super(PlayFabConst.LOG_TAG);
     }
 
     public static PlayFabRegistrationIntentService GetInstance() {
@@ -29,7 +28,7 @@ public class PlayFabRegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i(TAG, "PlayFab GCM Registration Intent Service has been started.");
+        Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Registration Intent Service has been started.");
         //We are getting the instanceId and saving it for later and that is all we care about for now.
         mInstanceID = InstanceID.getInstance(this);
         mInstance = this;
@@ -38,7 +37,7 @@ public class PlayFabRegistrationIntentService extends IntentService {
 
 
     private void notifyRegistrationReady() {
-        Log.i(TAG, "PlayFab GCM Registration Ready, sending event to Unity GCMRegistrationReady");
+        Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Registration Ready, sending event to Unity GCMRegistrationReady");
         UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMRegistrationReady", "true");
     }
 

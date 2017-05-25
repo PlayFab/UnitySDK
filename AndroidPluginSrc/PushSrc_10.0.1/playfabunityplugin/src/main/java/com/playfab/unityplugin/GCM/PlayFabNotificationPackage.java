@@ -4,33 +4,26 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.GregorianCalendar;
 
 /**
  * Custom class that maps to the strigified json message sent by push notifications
  */
 public class PlayFabNotificationPackage implements Parcelable {
-    public static final String ScheduleTypeNone = "None";
-    public static final String ScheduleTypeScheduledUtc = "ScheduledUtc";
-    public static final String ScheduleTypeScheduledLocal = "ScheduledLocal";
-
-    public static boolean hideLogs = false;
-    public static final String DATE_LOCAL_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    public static final String DATE_UTC_FORMAT = "yyyy-MM-ddTHH:mm:ssZ"; // Supported in the PlayFab interface, but not by Java (unused: if it matches DATE_UTC_FORMAT, this plugin explicitly converts to DATE_LOCAL_FORMAT and accounts for the offset)
-
-    public Date ScheduleDate;
-    public String ScheduleType = ScheduleTypeNone;
+    public String ScheduleDate;
+    public String ScheduleType = PlayFabConst.ScheduleTypeNone;
     public String Sound;                // do not set this to use the default device sound; otherwise the sound you provide needs to exist in Android/res/raw/_____.mp3, .wav, .ogg
     public String Title;                // title of this message
     public String Icon;                 // to use the default app icon use app_icon, otherwise send the name of the custom image. Image must be in Android/res/drawable/_____.png, .jpg
     public String Message;              // the actual message to transmit (this is what will be displayed in the notification area
     public String CustomData;           // arbitrary key value pairs for game specific usage
     public int Id = 0;
-    public boolean Delivered;
 
     public PlayFabNotificationPackage() {
     }
@@ -41,9 +34,8 @@ public class PlayFabNotificationPackage implements Parcelable {
         this.Sound = data[0];
         this.Title = data[1];
         this.Icon = data[2];
-        SetMessage(data[3], 0);
+        setMessage(data[3], 0);
         this.CustomData = data[4];
-        this.Delivered = false;
     }
 
     @Override
@@ -62,16 +54,65 @@ public class PlayFabNotificationPackage implements Parcelable {
         });
     }
 
-    public void SetMessage(String message, int id) {
-        this.Message = message;
-        this.Id = (id == 0) ? message.hashCode() : id;
-        // if (!hideLogs)
-        Log.i(PlayFabNotificationSender.TAG, "Setting message and id, Message: " + this.Message + ", Id: " + this.Id);
+    public String toJson() {
+        // This makes me sad, because I can't find a better option without taking on other huge dependencies:
+        return "{"
+                + "\"ScheduleDate\": " + stringFieldToJson(ScheduleDate) + ", "
+                + "\"ScheduleType\": " + stringFieldToJson(ScheduleType) + ", "
+                + "\"Sound\": " + stringFieldToJson(Sound) + ", "
+                + "\"Title\": " + stringFieldToJson(Title) + ", "
+                + "\"Icon\": " + stringFieldToJson(Icon) + ", "
+                + "\"Message\": " + stringFieldToJson(Message) + ", "
+                + "\"CustomData\": " + stringFieldToJson(CustomData) + ", "
+                + "\"Id\": " + Id + "}";
     }
 
-    public void ClearScheduleDate() {
-        ScheduleType = PlayFabNotificationPackage.ScheduleTypeNone;
-        ScheduleDate = new Date();
+    private String stringFieldToJson(String field) {
+        if (field == null)
+            return "null";
+        return "\"" + field + "\"";
+    }
+
+    public static PlayFabNotificationPackage fromJson(String json) {
+        PlayFabNotificationPackage output = null;
+        try {
+            JSONObject jObj = new JSONObject(json);
+            output = new PlayFabNotificationPackage();
+
+            String message = GetJsonString(jObj, "Message");
+            int id = 0;
+            if (jObj.has("Id"))
+                id = jObj.getInt("Id");
+            output.setMessage(message, id);
+
+            output.setScheduleDate(GetJsonString(jObj, "ScheduleDate"));
+            output.Title = GetJsonString(jObj, "Title");
+            output.Icon = GetJsonString(jObj, "Icon");
+            output.Sound = GetJsonString(jObj, "Sound");
+            output.CustomData = GetJsonString(jObj, "CustomData");
+        } catch (JSONException e) {
+            return null;
+        }
+        return output;
+    }
+
+    private static String GetJsonString(JSONObject jObj, String fieldName) {
+        String fieldValue = null;
+        try {
+            fieldValue = jObj.getString(fieldName);
+        } catch (JSONException e) {
+            return null;
+        }
+        if (jObj.isNull(fieldName) || fieldValue == null || fieldValue == "null")
+            return null;
+        return fieldValue;
+    }
+
+    public void setMessage(String message, int id) {
+        this.Message = message;
+        this.Id = (id == 0) ? message.hashCode() : id;
+        if (!PlayFabConst.hideLogs)
+            Log.i(PlayFabConst.LOG_TAG, "Setting message and id, Message: " + this.Message + ", Id: " + this.Id);
     }
 
     public static long getUtcOffset() {
@@ -80,68 +121,39 @@ public class PlayFabNotificationPackage implements Parcelable {
         return tz1.getRawOffset() - tz2.getRawOffset() + tz1.getDSTSavings() - tz2.getDSTSavings();
     }
 
-    public void SetScheduleDate(String dateString) {
-        if (!hideLogs)
-            Log.i(PlayFabNotificationSender.TAG, "SetScheduleDate dateString: " + dateString);
-
-        if (dateString == null)
-        {
-            ScheduleType = ScheduleTypeNone;
-            ScheduleDate = new Date();
-            return;
+    public void setScheduleDate(String dateString) {
+        if (dateString == null) {
+            ScheduleType = PlayFabConst.ScheduleTypeNone;
+            ScheduleDate = null;
+        } else {
+            boolean isUtc = dateString.endsWith("Z");
+            ScheduleType = isUtc ? PlayFabConst.ScheduleTypeScheduledUtc : PlayFabConst.ScheduleTypeScheduledLocal;
+            ScheduleDate = dateString;
         }
+    }
 
+    public long getMsgDelayInMillis() {
+        if (ScheduleDate == null || ScheduleType == PlayFabConst.ScheduleTypeNone)
+            return 0;
+
+        String dateString = ScheduleDate;
         boolean isUtc = dateString.endsWith("Z");
-        ScheduleType = isUtc ? ScheduleTypeScheduledUtc : ScheduleTypeScheduledLocal;
-        Calendar c = Calendar.getInstance();
         long offset = 0;
-        String dateFormat;
         if (isUtc) {
             dateString = dateString.substring(0, dateString.length() - 1).replace("T", " ");
             offset = getUtcOffset();
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_LOCAL_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(PlayFabConst.DATE_LOCAL_FORMAT);
+        Date parsedDate;
         try {
-            Date parsedDate = new Date(sdf.parse(dateString).getTime() - offset);
-            c.setTime(parsedDate);
-            long futureMillis = c.getTimeInMillis();
-            long nowMillis = System.currentTimeMillis();
-            if (futureMillis <= nowMillis) {
-                ScheduleDate = parsedDate;
-            } else {
-                if (!hideLogs)
-                    Log.i(PlayFabNotificationSender.TAG, "SetScheduleDate Id: " + this.Id + ", delayMillis: " + (futureMillis - nowMillis) + ", input:" + dateString);
-                ScheduleDate = parsedDate;
-            }
+            parsedDate = new Date(sdf.parse(dateString).getTime() - offset);
         } catch (Exception e) {
-            ScheduleType = PlayFabNotificationPackage.ScheduleTypeNone;
-            ScheduleDate = new Date();
-            if (!hideLogs)
-                Log.i(PlayFabNotificationSender.TAG, "Could not parse date. Expected: " + DATE_LOCAL_FORMAT + ", Actual: " + dateString);
-        }
-    }
-
-    public String GetScheduleDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_LOCAL_FORMAT);
-        switch (ScheduleType) {
-            case ScheduleTypeScheduledLocal:
-                return sdf.format(ScheduleDate);
-            case ScheduleTypeScheduledUtc:
-                return sdf.format(new Date(ScheduleDate.getTime() + getUtcOffset())).replace(" ", "T") + "Z";
-            case ScheduleTypeNone:
-                return null;
-            default:
-                throw new IllegalArgumentException("Invalid ScheduleType: " + ScheduleType);
-        }
-    }
-
-    public long GetMsgDelayInMillis() {
-        if (ScheduleType == ScheduleTypeNone)
             return 0;
+        }
 
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        c.setTime(ScheduleDate);
+        Calendar c = Calendar.getInstance();
+        c.setTime(parsedDate);
         long futureMillis = c.getTimeInMillis();
         long nowMillis = System.currentTimeMillis();
         return Math.max(futureMillis - nowMillis, 0);

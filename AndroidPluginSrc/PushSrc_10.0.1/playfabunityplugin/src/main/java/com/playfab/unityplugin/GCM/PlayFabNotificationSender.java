@@ -22,12 +22,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PlayFabNotificationSender {
-    public static final String TAG = "PlayFabGCM";
-    private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
-
     public static void sendNotification(Context intent, PlayFabNotificationPackage pushNotificationPackage) {
         try {
-            PendingIntent pendingIntent = PendingIntent.getActivity(intent, REQUEST_CODE_UNITY_ACTIVITY,
+            PendingIntent pendingIntent = PendingIntent.getActivity(intent, PlayFabConst.REQUEST_CODE_UNITY_ACTIVITY,
                     intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()), PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent);
 
@@ -65,98 +62,48 @@ public class PlayFabNotificationSender {
             NotificationManager notificationManager = (NotificationManager) intent.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(pushNotificationPackage.Id, notificationBuilder.build());
         } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
+            Log.d(PlayFabConst.LOG_TAG, e.getMessage());
         }
     }
 
     public static PlayFabNotificationPackage createNotificationPackage(Context intent, String message, int id) {
-        PlayFabNotificationPackage mPackage = new PlayFabNotificationPackage();
-        if (isJSONValid(message)) {
-            try {
-                JSONObject jObj = new JSONObject(message);
-                // This is so that the ENTIRE JSON message is not in the notification should someone forget to send the "Message" attribute.
-                mPackage.SetMessage("", 0);
-
-                if (jObj.has("ScheduleDate")) {
-                    mPackage.SetScheduleDate(jObj.getString("ScheduleDate"));
-                }
-
-                if (jObj.has("Title")) {
-                    mPackage.Title = jObj.getString("Title");
-                }
-
-                if (jObj.has("Message")) {
-                    if (jObj.has("Id"))
-                        id = jObj.getInt("Id");
-                    mPackage.SetMessage(jObj.getString("Message"), id);
-                }
-
-                if (jObj.has("Icon") && jObj.getString("Icon") != null && !jObj.getString("Icon").isEmpty() && jObj.getString("Icon") != "null") {
-                    mPackage.Icon = jObj.getString("Icon");
-                }
-
-                if (jObj.has("Sound") && jObj.getString("Sound") != null && !jObj.getString("Sound").isEmpty() && jObj.getString("Sound") != "null") {
-                    mPackage.Sound = Uri.parse("android.resource://" + intent.getPackageName() + "/" + jObj.getString("Sound")).toString();
-                }
-
-                if (jObj.has("CustomData") && jObj.getString("CustomData") != null && !jObj.getString("CustomData").isEmpty() && jObj.getString("CustomData") != "null") {
-                    mPackage.CustomData = jObj.getString("CustomData");
-                }
-            } catch (JSONException e) {
-                //Could not parse json. Shouldn't happen since we checked in the isJSONValid
-            }
-        } else {
-            mPackage.SetMessage(message, id);
+        PlayFabNotificationPackage output = PlayFabNotificationPackage.fromJson(message);
+        if (output == null) {
+            output = new PlayFabNotificationPackage();
+            output.setMessage(message, id);
         }
-        return mPackage;
+        return output;
     }
 
-    private static boolean isJSONValid(String test) {
-        try {
-            new JSONObject(test);
-        } catch (JSONException ex) {
-            // edited, to include @Arthur's comment
-            // e.g. in case JSONArray is valid as well...
-            Log.i(PlayFabUnityAndroidPlugin.TAG, "Could not parse to JSONObject");
-            try {
-                new JSONArray(test);
-            } catch (JSONException ex1) {
-                Log.i(PlayFabUnityAndroidPlugin.TAG, "Could not parse to JSONArray");
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static void Send(Context intent, PlayFabNotificationPackage notifyPackage) {
+    public static void send(Context intent, PlayFabNotificationPackage notifyPackage) {
         try {
             Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
             byte[] bytes = ParcelableUtil.marshall(notifyPackage);
-            notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_JSON, bytes);
+            notificationIntent.putExtra(PlayFabConst.NOTIFICATION_JSON, bytes);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            long delayMillis = notifyPackage.GetMsgDelayInMillis();
+            long delayMillis = notifyPackage.getMsgDelayInMillis();
             if (delayMillis > 0) {
                 AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayMillis, pendingIntent);
-                Log.i(TAG, "Schedule Msg: " + notifyPackage.Message + ", Alarm was set to: " + notifyPackage.ScheduleDate + ", delayMillis: " + delayMillis);
+                Log.i(PlayFabConst.LOG_TAG, "Schedule Msg: " + notifyPackage.Message + ", Alarm was set to: " + notifyPackage.ScheduleDate + ", delayMillis: " + delayMillis);
             } else {
                 sendNotification(intent, notifyPackage);
             }
         } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
+            Log.d(PlayFabConst.LOG_TAG, e.getMessage());
         }
     }
 
-    public static void CancelScheduledNotification(Context intent, PlayFabNotificationPackage notifyPackage) {
+    public static void cancelScheduledNotification(Context intent, PlayFabNotificationPackage notifyPackage) {
         try {
             Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-            notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_JSON, notifyPackage);
+            notificationIntent.putExtra(PlayFabConst.NOTIFICATION_JSON, notifyPackage);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
         } catch (Exception e) {
-            Log.d(TAG, e.getMessage());
+            Log.d(PlayFabConst.LOG_TAG, e.getMessage());
         }
     }
 }

@@ -15,20 +15,18 @@ import java.io.IOException;
  * Used to communicate with the GCM service and obtain GCM tokens
  */
 public class PlayFabGoogleCloudMessaging {
-    private static final String[] TOPICS = {"global"};  //Should we pass this in?
-
     // returns the push GCM token from google
     public static void getToken() {
-        Log.i(PlayFabNotificationSender.TAG, "PlayFab GCM Get token has been requested.");
+        Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Get token has been requested.");
         SharedPreferences sharedPreferences = null;
         try {
             sharedPreferences = PlayFabRegistrationIntentService.GetInstance().getPluginPreferences();
             // In the (unlikely) event that multiple refresh operations occur simultaneously,
             // ensure that they are processed sequentially.
-            synchronized (PlayFabNotificationSender.TAG) {
+            synchronized (PlayFabConst.LOG_TAG) {
                 //Get Stored Sender Id in prefs.
                 String senderId = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_SENDER_ID, "0");
-                Log.i(PlayFabNotificationSender.TAG, "PlayFab GCM SenderID: " + senderId);
+                Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM SenderID: " + senderId);
                 //Get the InstanceID of Registration Intent Service and get the token.
                 InstanceID instanceID = PlayFabRegistrationIntentService.GetInstanceId();
                 String token = instanceID.getToken(senderId, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
@@ -43,7 +41,7 @@ public class PlayFabGoogleCloudMessaging {
                 sharedPreferences.edit().putBoolean(PlayFabUnityAndroidPlugin.SENT_TOKEN_TO_SERVER, true).apply();
             }
         } catch (Exception e) {
-            Log.d(PlayFabNotificationSender.TAG, "Failed to complete token refresh", e);
+            Log.d(PlayFabConst.LOG_TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             if (sharedPreferences != null)
@@ -73,7 +71,7 @@ public class PlayFabGoogleCloudMessaging {
      */
     // [START subscribe_topics]
     private static void subscribeTopics(String token) throws IOException {
-        for (String topic : TOPICS) {
+        for (String topic : PlayFabConst.TOPICS) {
             GcmPubSub pubSub = GcmPubSub.getInstance(PlayFabRegistrationIntentService.GetInstance());
             pubSub.subscribe(token, "/topics/" + topic, null);
         }

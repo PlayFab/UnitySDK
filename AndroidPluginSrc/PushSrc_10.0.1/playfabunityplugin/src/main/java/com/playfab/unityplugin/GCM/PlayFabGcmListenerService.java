@@ -1,6 +1,5 @@
 package com.playfab.unityplugin.GCM;
 
-
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,10 +13,6 @@ import java.util.Set;
  * Monitors the Notification channel and listens for and processes incoming GCM notifications
  */
 public class PlayFabGcmListenerService extends GcmListenerService {
-    private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
-    public static final String PROPERTY_NOTIFICATION_ID = "_PlayFab_notificationId";
-
-
     /**
      * Called when message is received.
      *
@@ -60,7 +55,7 @@ public class PlayFabGcmListenerService extends GcmListenerService {
         if (UnityPlayer.currentActivity != null) {
             try {
                 // Try to send the message to Unity if it is running
-                UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", message);
+                UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", notification.toJson());
                 Log.i(PlayFabUnityAndroidPlugin.TAG, "Sent push to Unity");
             } catch (Exception e) {
                 // If it fails, fall back on the Notification Bar
@@ -70,7 +65,7 @@ public class PlayFabGcmListenerService extends GcmListenerService {
 
         if (sendToNotificationBar) {
             try {
-                PlayFabNotificationSender.Send(this, notification);
+                PlayFabNotificationSender.send(this, notification);
                 Log.i(PlayFabUnityAndroidPlugin.TAG, "Sent push to Device Notification Bar");
             } catch (Exception e) {
                 Log.e(PlayFabUnityAndroidPlugin.TAG, "Failed to send push to Notification Bar");
