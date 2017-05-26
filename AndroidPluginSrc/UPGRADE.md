@@ -39,6 +39,7 @@ All of the classes are replaced with a single class. Most events have been repla
         * If you scheduled a message without specifying an Id, cancel by Message string like before
     * StopPlugin - *unchanged
       * previous version crashed the app if called, this one works.  Call Setup() again to re-initialize.
+      * Unneccessary in most cases
     * AlwaysShowOnNotificationBar - Replaces UpdateRouting
       * Delete any previous calls to UpdateRouting, as this serves an entirely different purpose
       * New Functionality: By default, messages are delivered to both your app and the device tray
