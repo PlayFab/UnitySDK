@@ -81,7 +81,6 @@ If your project is using multiple Android plugins, there is a good chance that y
 Review our Android SDK dependencies below. Some version of these files must be included before for push to work. We have not tested all permutations of libraries within the Android SDK. Please let us know if you run into any compatibility issues.
 
 #### Android SDK dependencies (Unity 5.0+)
-The 5.0+ version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity5_0/AndroidPushPlugin.unitypackage).
 
 Included Archive | Class Location
 --- |  ---
@@ -91,17 +90,6 @@ play-services-base-10.0.1.aar | com.google.android.gms.play-services-base
 play-services-basement-10.0.1.aar | com.google.android.gms.play-services-basement 
 play-services-gcm-10.0.1.aar | com.google.android.gms.play-services.gcm
 play-services-iid-10.0.1.aar | com.google.android.gms.play-services.iid
-
-
-#### Android SDK dependencies (Unity 4.7)
-Projects built using Unity versions < 5.0 do not support android .AAR files. Due to this fact, our plugin has the following .JAR dependencies. The 4.7 version of our plugin can be found [here](https://github.com/PlayFab/UnitySDK/raw/master/PlayFabClientSample/Assets/Plugins/Android/PushNotification_Unity4_7/AndroidPushPlugin.unitypackage).
-
-Included Archive | Class Location
---- |  ---
-play-services-7.8.0.jar | com.google.android.gms.play-services
-support-v4.jar | com.android.support.support-v4
-support-v7-appcompat-7.22.0.jar | com.android.support.appcompat-v7 
-
 
 #### To resolve conflicts follow these steps:
 Find duplicate copies of .AAR / .JAR files and remove them. There should be at most 1 copy of a given android library. Older .JAR files often map to multiple .AAR files. 
