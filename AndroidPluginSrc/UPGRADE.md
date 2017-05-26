@@ -79,4 +79,6 @@ OPTIONAL:
 * If you were calling UpdateRouting with the intention of hiding a message from the device tray (capturing only to the game)
   * Add a call: PlayFabAndroidPushPlugin.AlwaysShowOnNotificationBar(false)
   * You only need to call it once at program start
+  * You can reset it whenever you like: PlayFabAndroidPushPlugin.AlwaysShowOnNotificationBar(true/false)
+    * It's highly suggested you just call it once at program start with your preference
 
