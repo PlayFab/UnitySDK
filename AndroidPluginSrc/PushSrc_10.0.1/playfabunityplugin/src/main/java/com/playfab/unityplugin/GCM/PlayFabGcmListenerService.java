@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
-import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
-import com.unity3d.player.UnityPlayer;
 
 import java.util.Set;
 
@@ -47,29 +45,10 @@ public class PlayFabGcmListenerService extends GcmListenerService {
         if (data.containsKey("Id"))
             data.getInt("Id");
 
-        Log.i(PlayFabUnityAndroidPlugin.TAG, "Push Message Received: " + message);
+        if (!PlayFabConst.hideLogs)
+            Log.i(PlayFabConst.LOG_TAG, "Push Message Received: " + message);
 
         PlayFabNotificationPackage notification = PlayFabNotificationSender.createNotificationPackage(this, message, id);
-        boolean sendToNotificationBar = PlayFabUnityAndroidPlugin.AlwaysShowOnNotificationBar || UnityPlayer.currentActivity != null;
-
-        if (UnityPlayer.currentActivity != null) {
-            try {
-                // Try to send the message to Unity if it is running
-                UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMMessageReceived", notification.toJson());
-                Log.i(PlayFabUnityAndroidPlugin.TAG, "Sent push to Unity");
-            } catch (Exception e) {
-                // If it fails, fall back on the Notification Bar
-                sendToNotificationBar = true;
-            }
-        }
-
-        if (sendToNotificationBar) {
-            try {
-                PlayFabNotificationSender.send(this, notification);
-                Log.i(PlayFabUnityAndroidPlugin.TAG, "Sent push to Device Notification Bar");
-            } catch (Exception e) {
-                Log.e(PlayFabUnityAndroidPlugin.TAG, "Failed to send push to Notification Bar");
-            }
-        }
+        PlayFabNotificationSender.send(this, notification);
     }
 }

@@ -6,7 +6,6 @@ import android.util.Log;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
 import java.io.IOException;
@@ -17,7 +16,8 @@ import java.io.IOException;
 public class PlayFabGoogleCloudMessaging {
     // returns the push GCM token from google
     public static void getToken() {
-        Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Get token has been requested.");
+        if (!PlayFabConst.hideLogs)
+            Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Get token has been requested.");
         SharedPreferences sharedPreferences = null;
         try {
             sharedPreferences = PlayFabRegistrationIntentService.GetInstance().getPluginPreferences();
@@ -25,8 +25,9 @@ public class PlayFabGoogleCloudMessaging {
             // ensure that they are processed sequentially.
             synchronized (PlayFabConst.LOG_TAG) {
                 //Get Stored Sender Id in prefs.
-                String senderId = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_SENDER_ID, "0");
-                Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM SenderID: " + senderId);
+                String senderId = sharedPreferences.getString(PlayFabConst.PROPERTY_SENDER_ID, "0");
+                if (!PlayFabConst.hideLogs)
+                    Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM SenderID: " + senderId);
                 //Get the InstanceID of Registration Intent Service and get the token.
                 InstanceID instanceID = PlayFabRegistrationIntentService.GetInstanceId();
                 String token = instanceID.getToken(senderId, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
@@ -38,16 +39,15 @@ public class PlayFabGoogleCloudMessaging {
                 //subscribeTopics(token);
 
                 //Google recommends to do this, but we probably don't have to.
-                sharedPreferences.edit().putBoolean(PlayFabUnityAndroidPlugin.SENT_TOKEN_TO_SERVER, true).apply();
+                sharedPreferences.edit().putBoolean(PlayFabConst.SENT_TOKEN_TO_SERVER, true).apply();
             }
         } catch (Exception e) {
             Log.d(PlayFabConst.LOG_TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             if (sharedPreferences != null)
-                sharedPreferences.edit().putBoolean(PlayFabUnityAndroidPlugin.SENT_TOKEN_TO_SERVER, false).apply();
+                sharedPreferences.edit().putBoolean(PlayFabConst.SENT_TOKEN_TO_SERVER, false).apply();
         }
-
     }
 
     /**
@@ -60,7 +60,7 @@ public class PlayFabGoogleCloudMessaging {
      */
     private static void sendRegistrationToServer(String token) {
         //Unity will be responsible for using the PlayFabClientAPI to send the token back to the PlayFab Servers.
-        UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMRegistered", token);
+        UnityPlayer.UnitySendMessage(PlayFabConst.UNITY_EVENT_OBJECT, "GCMRegistered", token);
     }
 
     /**

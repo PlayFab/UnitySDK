@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
 public class PlayServicesUtils {
@@ -25,11 +24,11 @@ public class PlayServicesUtils {
                 if (googleAPI.isUserResolvableError(resultCode)) {
                     googleAPI.getErrorDialog(unityActivity, resultCode, PlayFabConst.PLAY_SERVICES_RESOLUTION_REQUEST).show();
                 } else {
-                    Log.i(PlayFabUnityAndroidPlugin.TAG, "This device is not supported.");
+                    Log.w(PlayFabConst.LOG_TAG, "This device is not supported.");
                 }
             }
         } catch (Exception e) {
-            Log.e(PlayFabUnityAndroidPlugin.TAG, "PlayFab GCM isPlayServicesAvailable exception: " + e.getMessage());
+            Log.e(PlayFabConst.LOG_TAG, "PlayFab GCM isPlayServicesAvailable exception: " + e.getMessage());
         }
         return available;
     }

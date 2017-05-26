@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.iid.InstanceID;
-import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
 import com.unity3d.player.UnityPlayer;
 
 public class PlayFabRegistrationIntentService extends IntentService {
@@ -28,17 +27,18 @@ public class PlayFabRegistrationIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Registration Intent Service has been started.");
+        if (!PlayFabConst.hideLogs)
+            Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Registration Intent Service has been started.");
         //We are getting the instanceId and saving it for later and that is all we care about for now.
         mInstanceID = InstanceID.getInstance(this);
         mInstance = this;
         notifyRegistrationReady();
     }
 
-
     private void notifyRegistrationReady() {
-        Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Registration Ready, sending event to Unity GCMRegistrationReady");
-        UnityPlayer.UnitySendMessage(PlayFabUnityAndroidPlugin.UNITY_EVENT_OBJECT, "GCMRegistrationReady", "true");
+        if (!PlayFabConst.hideLogs)
+            Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Registration Ready, sending event to Unity GCMRegistrationReady");
+        UnityPlayer.UnitySendMessage(PlayFabConst.UNITY_EVENT_OBJECT, "GCMRegistrationReady", "true");
     }
 
     public SharedPreferences getPluginPreferences() {

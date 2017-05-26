@@ -10,6 +10,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.playfab.unityplugin.GCM.PlayFabConst;
 import com.playfab.unityplugin.GCM.PlayFabRegistrationIntentService;
 import com.playfab.unityplugin.GCM.PlayServicesUtils;
 import com.unity3d.player.UnityPlayer;
@@ -18,14 +20,6 @@ import com.unity3d.player.UnityPlayer;
  * The main class for interfacing with the Unity environment
  */
 public class PlayFabUnityAndroidPlugin extends Service {
-    public static final String TAG = "PlayFabUAP"; //PlayFabUnityAndroidPlugin
-    public static final String UNITY_EVENT_OBJECT = "_PlayFabGO";
-    public static final String PROPERTY_GAME_TITLE = "_PlayFab_GameTitle";
-    public static final String PROPERTY_APP_ICON = "_PlayFab_AppIcon";
-    public static final String PROPERTY_SENDER_ID = "_PlayFab_SenderID";
-    public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
-    public static boolean AlwaysShowOnNotificationBar = true;
-
     private static boolean mServiceBound = false;
     private static PlayFabUnityAndroidPlugin mBoundService;
     private static String mGameTitle;
@@ -44,10 +38,10 @@ public class PlayFabUnityAndroidPlugin extends Service {
     public void onCreate() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(PROPERTY_SENDER_ID, mSenderId);
-        editor.putString(PROPERTY_GAME_TITLE, mGameTitle);
+        editor.putString(PlayFabConst.PROPERTY_SENDER_ID, mSenderId);
+        editor.putString(PlayFabConst.PROPERTY_GAME_TITLE, mGameTitle);
         if (mAppIcon != null) {
-            editor.putString(PROPERTY_APP_ICON, mAppIcon);
+            editor.putString(PlayFabConst.PROPERTY_APP_ICON, mAppIcon);
         }
         editor.commit();
 
@@ -83,13 +77,15 @@ public class PlayFabUnityAndroidPlugin extends Service {
     private static ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.i(TAG, "Service Connection Disconnected.");
+            if (!PlayFabConst.hideLogs)
+                Log.i(PlayFabConst.LOG_TAG, "Service Connection Disconnected.");
             mServiceBound = false;
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.i(TAG, "Service Connection Connected.");
+            if (!PlayFabConst.hideLogs)
+                Log.i(PlayFabConst.LOG_TAG, "Service Connection Connected.");
             LocalPlayFabBinder localPlayFabBinder = (LocalPlayFabBinder) service;
             mBoundService = localPlayFabBinder.getService();
             mServiceBound = true;
@@ -98,8 +94,10 @@ public class PlayFabUnityAndroidPlugin extends Service {
 
     public static void initGCM(String senderId, String gameTitle) {
         try {
-            Log.i(TAG, "PlayFab GCM Init, saving prefs.");
-            Log.i(TAG, "Setting SenderId: " + senderId);
+            if (!PlayFabConst.hideLogs)
+                Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Init, saving prefs.");
+            if (!PlayFabConst.hideLogs)
+                Log.i(PlayFabConst.LOG_TAG, "Setting SenderId: " + senderId);
             mSenderId = senderId;
             mGameTitle = gameTitle;
 
@@ -107,10 +105,11 @@ public class PlayFabUnityAndroidPlugin extends Service {
             Intent intent = new Intent(mUnityService, PlayFabUnityAndroidPlugin.class);
             mUnityService.startService(intent);
             //Binding to the Unity Activity so that no one else can use this service class but our calling game.
-            Log.i(TAG, "PlayFabUnityAndroidPlugin Service, Binding to Unity Activity");
+            if (!PlayFabConst.hideLogs)
+                Log.i(PlayFabConst.LOG_TAG, "PlayFabUnityAndroidPlugin Service, Binding to Unity Activity");
             mUnityService.bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
         } catch (Exception e) {
-            Log.e(TAG, "PlayFab GCM initGCM exception: " + e.getMessage());
+            Log.e(PlayFabConst.LOG_TAG, "PlayFab GCM initGCM exception: " + e.getMessage());
         }
     }
 
@@ -119,7 +118,7 @@ public class PlayFabUnityAndroidPlugin extends Service {
             mAppIcon = appIcon;
             initGCM(senderId, gameTitle);
         } catch (Exception e) {
-            Log.e(TAG, "PlayFab GCM initGCM exception: " + e.getMessage());
+            Log.e(PlayFabConst.LOG_TAG, "PlayFab GCM initGCM exception: " + e.getMessage());
         }
     }
 
@@ -133,11 +132,11 @@ public class PlayFabUnityAndroidPlugin extends Service {
                 mServiceBound = false;
             }
         } catch (Exception e) {
-            Log.e(TAG, "PlayFab GCM stopPluginService exception: " + e.getMessage());
+            Log.e(PlayFabConst.LOG_TAG, "PlayFab GCM stopPluginService exception: " + e.getMessage());
         }
     }
 
     public static void alwaysShowOnNotificationBar(boolean showAlways) {
-        AlwaysShowOnNotificationBar = showAlways;
+        PlayFabConst.AlwaysShowOnNotificationBar = showAlways;
     }
 }

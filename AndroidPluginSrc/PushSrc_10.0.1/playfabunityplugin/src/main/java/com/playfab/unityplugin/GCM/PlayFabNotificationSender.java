@@ -15,14 +15,30 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.unity3d.player.UnityPlayer;
 
 public class PlayFabNotificationSender {
-    public static void sendNotification(Context intent, PlayFabNotificationPackage pushNotificationPackage) {
+    /*
+     * Send the notification to Unity and/or the device
+     */
+    public static void sendNotificationNow(Context intent, PlayFabNotificationPackage notification) {
+        boolean sendToNotificationBar = PlayFabConst.AlwaysShowOnNotificationBar || UnityPlayer.currentActivity == null;
+        if (UnityPlayer.currentActivity != null) {
+            try {
+                // Try to send the message to Unity if it is running
+                UnityPlayer.UnitySendMessage(PlayFabConst.UNITY_EVENT_OBJECT, "GCMMessageReceived", notification.toJson());
+                if (!PlayFabConst.hideLogs) Log.i(PlayFabConst.LOG_TAG, "Sent push to Unity");
+            } catch (Exception e) {
+                // If it fails, fall back on the Notification Bar
+                sendToNotificationBar = true;
+            }
+        } else if (!PlayFabConst.hideLogs) Log.i(PlayFabConst.LOG_TAG, "Unity Context null");
+
+        if (sendToNotificationBar)
+            sendNotificationToDevice(intent, notification);
+    }
+
+    private static void sendNotificationToDevice(Context intent, PlayFabNotificationPackage notification) {
         try {
             PendingIntent pendingIntent = PendingIntent.getActivity(intent, PlayFabConst.REQUEST_CODE_UNITY_ACTIVITY,
                     intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()), PendingIntent.FLAG_UPDATE_CURRENT);
@@ -30,9 +46,9 @@ public class PlayFabNotificationSender {
 
             // Grab some strings from the message, or fall back on defaults
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(intent);
-            String appIcon = pushNotificationPackage.Icon == null || pushNotificationPackage.Icon.isEmpty() ? sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_APP_ICON, "app_icon") : pushNotificationPackage.Icon;
-            Uri defaultSoundUri = Uri.parse(pushNotificationPackage.Sound == null || pushNotificationPackage.Sound.isEmpty() ? RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString() : pushNotificationPackage.Sound);
-            String title = pushNotificationPackage.Title == null || pushNotificationPackage.Title.isEmpty() ? sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_GAME_TITLE, "") : pushNotificationPackage.Title;
+            String appIcon = notification.Icon == null || notification.Icon.isEmpty() ? sharedPreferences.getString(PlayFabConst.PROPERTY_APP_ICON, "app_icon") : notification.Icon;
+            Uri defaultSoundUri = Uri.parse(notification.Sound == null || notification.Sound.isEmpty() ? RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString() : notification.Sound);
+            String title = notification.Title == null || notification.Title.isEmpty() ? sharedPreferences.getString(PlayFabConst.PROPERTY_GAME_TITLE, "") : notification.Title;
 
             // Try to set small icon
             int iconIntT = intent.getResources().getIdentifier(appIcon + "_transparent", "drawable", intent.getPackageName());
@@ -51,8 +67,8 @@ public class PlayFabNotificationSender {
             }
 
             notificationBuilder.setContentTitle(title)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(pushNotificationPackage.Message))
-                    .setContentText(pushNotificationPackage.Message)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(notification.Message))
+                    .setContentText(notification.Message)
                     .setSound(defaultSoundUri)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -60,7 +76,7 @@ public class PlayFabNotificationSender {
                     .setContentIntent(pendingIntent);
 
             NotificationManager notificationManager = (NotificationManager) intent.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(pushNotificationPackage.Id, notificationBuilder.build());
+            notificationManager.notify(notification.Id, notificationBuilder.build());
         } catch (Exception e) {
             Log.d(PlayFabConst.LOG_TAG, e.getMessage());
         }
@@ -86,9 +102,10 @@ public class PlayFabNotificationSender {
             if (delayMillis > 0) {
                 AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayMillis, pendingIntent);
-                Log.i(PlayFabConst.LOG_TAG, "Schedule Msg: " + notifyPackage.Message + ", Alarm was set to: " + notifyPackage.ScheduleDate + ", delayMillis: " + delayMillis);
+                if (!PlayFabConst.hideLogs)
+                    Log.i(PlayFabConst.LOG_TAG, "Schedule Msg: " + notifyPackage.Message + ", Alarm was set to: " + notifyPackage.ScheduleDate + ", delayMillis: " + delayMillis);
             } else {
-                sendNotification(intent, notifyPackage);
+                sendNotificationNow(intent, notifyPackage);
             }
         } catch (Exception e) {
             Log.d(PlayFabConst.LOG_TAG, e.getMessage());

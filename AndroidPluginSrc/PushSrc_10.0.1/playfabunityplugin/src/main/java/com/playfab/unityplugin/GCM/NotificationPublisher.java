@@ -8,10 +8,11 @@ import android.util.Log;
 
 public class NotificationPublisher extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
-        Log.i(PlayFabConst.LOG_TAG, "OnRecieve Notification Publisher Sending Notification..");
+        if (!PlayFabConst.hideLogs)
+            Log.i(PlayFabConst.LOG_TAG, "OnRecieve Notification Publisher Sending Notification..");
         byte[] bytes = intent.getByteArrayExtra(PlayFabConst.NOTIFICATION_JSON);
         Parcel parcel = ParcelableUtil.unmarshall(bytes);
         PlayFabNotificationPackage notification = new PlayFabNotificationPackage(parcel);
-        PlayFabNotificationSender.sendNotification(context, notification);
+        PlayFabNotificationSender.sendNotificationNow(context, notification);
     }
 }
