@@ -45,7 +45,7 @@ All of the classes are replaced with a single class. Most events have been repla
       * New Functionality: By default, messages are delivered to both your app AND the device tray
         * If you wish to hide notifications when they are received by your app, call AlwaysShowOnNotificationBar(false)
         * They will still (always) display in the device tray when your app is closed or out of focus
-    * IsPlayServicesAvailable - Unchanged in purpose and signature
+    * IsPlayServicesAvailable - Unchanged in purpose and signature.  (Also doesn't crash the app if called before initialization)
 
 PlayFabNotificationPackage existed in the previous version and the current
 * The same parameters exist, but with slight differences:
