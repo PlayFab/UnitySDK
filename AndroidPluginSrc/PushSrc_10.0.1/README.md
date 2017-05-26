@@ -80,7 +80,7 @@ If your project is using multiple Android plugins, there is a good chance that y
 
 Review our Android SDK dependencies below. Some version of these files must be included before for push to work. We have not tested all permutations of libraries within the Android SDK. Please let us know if you run into any compatibility issues.
 
-#### Android SDK dependencies (Unity 5.0+)
+#### Android SDK dependencies (Unity 5.0+, GCM 10.0.1, appcompat/support 25.0)
 
 Included Archive | Class Location
 --- |  ---
