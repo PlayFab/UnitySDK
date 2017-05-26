@@ -79,24 +79,25 @@ public class PlayFabNotificationPackage implements Parcelable {
             JSONObject jObj = new JSONObject(json);
             output = new PlayFabNotificationPackage();
 
-            String message = GetJsonString(jObj, "Message");
+            String message = getJsonStringField(jObj, "Message");
             int id = 0;
             if (jObj.has("Id"))
                 id = jObj.getInt("Id");
             output.setMessage(message, id);
 
-            output.setScheduleDate(GetJsonString(jObj, "ScheduleDate"));
-            output.Title = GetJsonString(jObj, "Title");
-            output.Icon = GetJsonString(jObj, "Icon");
-            output.Sound = GetJsonString(jObj, "Sound");
-            output.CustomData = GetJsonString(jObj, "CustomData");
-        } catch (JSONException e) {
+            output.setScheduleDate(getJsonStringField(jObj, "ScheduleDate"));
+            output.Title = getJsonStringField(jObj, "Title");
+            output.Icon = getJsonStringField(jObj, "Icon");
+            output.Sound = getJsonStringField(jObj, "Sound");
+            output.CustomData = getJsonStringField(jObj, "CustomData");
+        } catch (Exception e) {
+            Log.e(PlayFabConst.LOG_TAG, e.getMessage());
             return null;
         }
         return output;
     }
 
-    private static String GetJsonString(JSONObject jObj, String fieldName) {
+    private static String getJsonStringField(JSONObject jObj, String fieldName) {
         String fieldValue = null;
         try {
             fieldValue = jObj.getString(fieldName);
@@ -110,7 +111,7 @@ public class PlayFabNotificationPackage implements Parcelable {
 
     public void setMessage(String message, int id) {
         this.Message = message;
-        this.Id = (id == 0) ? message.hashCode() : id;
+        this.Id = (id == 0) ? (message == null ? 0 : message.hashCode()) : id;
         if (!PlayFabConst.hideLogs)
             Log.i(PlayFabConst.LOG_TAG, "Setting message and id, Message: " + this.Message + ", Id: " + this.Id);
     }
