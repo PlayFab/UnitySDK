@@ -42,7 +42,7 @@ All of the classes are replaced with a single class. Most events have been repla
       * Unneccessary in most cases
     * AlwaysShowOnNotificationBar - Replaces UpdateRouting
       * Delete any previous calls to UpdateRouting, as this serves an entirely different purpose
-      * New Functionality: By default, messages are delivered to both your app and the device tray
+      * New Functionality: By default, messages are delivered to both your app AND the device tray
         * If you wish to hide notifications when they are received by your app, call AlwaysShowOnNotificationBar(false)
         * They will still (always) display in the device tray when your app is closed or out of focus
     * IsPlayServicesAvailable - Unchanged in purpose and signature
