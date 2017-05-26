@@ -21,7 +21,7 @@ All of the classes are replaced with a single class. Most events have been repla
   * EVENTS:
     * OnGcmMessage - Replaces _MessageCallback. Now receives a PlayFabNotificationPackage object instead of a string
     * OnGcmSetupStep - New. Used for debugging, lets you track what setup steps have occurred in the plugin
-    * OnGcmLog - Allows you to receive some log messages directly
+    * OnGcmLog - New. Allows you to receive some log messages directly
   * Initialization Functions:
     * Setup(pushSenderId) - REQUIRED. Replaces Init function(s) in previous plugin. Usually called before PlayFab Login
     * Init() - Only required if you call Setup after PlayFab Login (Required before login in this case)
