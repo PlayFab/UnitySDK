@@ -24,13 +24,15 @@ public class PlayFabGcmListenerService extends GcmListenerService {
         Set<String> keys = data.keySet();
         for (String key : keys) {
             Object o = data.get(key);
-            Log.i("PlayFabPushMessage", key);
-            Log.i("PlayFabPushMessage", o.getClass().toString());
+            if (!PlayFabConst.hideLogs) Log.i(PlayFabConst.LOG_TAG, key);
+            if (!PlayFabConst.hideLogs) Log.i(PlayFabConst.LOG_TAG, o.getClass().toString());
             if (o.getClass().getName().contains("String")) {
                 String msg = data.getString(key);
-                Log.i("PlayFabPushMessage", msg);
+                if (!PlayFabConst.hideLogs) Log.i(PlayFabConst.LOG_TAG, msg);
             }
         }
+
+        Log.i(PlayFabConst.LOG_TAG, "DEBUG THIS: " + data.toString());
 
         String message = "";
         //Check for message first, if this message was sent via GCM API then it will contain "message"

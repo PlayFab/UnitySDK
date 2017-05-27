@@ -29,13 +29,16 @@ public class PlayFabNotificationPackage implements Parcelable {
     }
 
     public PlayFabNotificationPackage(Parcel in) {
-        String[] data = new String[5];
+        String[] data = new String[8];
         in.readStringArray(data);
         this.Sound = data[0];
         this.Title = data[1];
         this.Icon = data[2];
-        setMessage(data[3], 0);
-        this.CustomData = data[4];
+        this.CustomData = data[3];
+        this.ScheduleDate = data[4];
+        this.ScheduleType = data[5];
+        setMessage(data[6], Integer.parseInt(data[7]));
+
     }
 
     @Override
@@ -49,8 +52,11 @@ public class PlayFabNotificationPackage implements Parcelable {
                 this.Sound,
                 this.Title,
                 this.Icon,
+                this.CustomData,
+                this.ScheduleDate,
+                this.ScheduleType,
                 this.Message,
-                this.CustomData
+                Integer.toString(this.Id)
         });
     }
 

@@ -25,7 +25,7 @@ public class PlayFabPluginTest {
     private PlayFabNotificationPackage MakeTestPackage() {
         PlayFabNotificationPackage pkg = new PlayFabNotificationPackage();
         pkg.setMessage("test message", 123);
-        pkg.setScheduleDate(localTestTime);
+        pkg.setScheduleDate(localSdf.format(new Date(new Date().getTime() + 60000)));
         pkg.Sound = "";
         pkg.Title = "";
         pkg.Icon = "";

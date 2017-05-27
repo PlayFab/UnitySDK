@@ -21,6 +21,6 @@ public class PlayFabConst {
     public static final String DATE_UTC_FORMAT = "yyyy-MM-ddTHH:mm:ssZ"; // Supported in the PlayFab interface, but not by Java (unused: if it matches DATE_UTC_FORMAT, this plugin explicitly converts to DATE_LOCAL_FORMAT and accounts for the offset)
 
     // Can be reset, but tends to be a consistent value
-    public static boolean hideLogs = true; // Not used consistently yet
+    public static boolean hideLogs = false;
     public static boolean AlwaysShowOnNotificationBar = true;
 }
