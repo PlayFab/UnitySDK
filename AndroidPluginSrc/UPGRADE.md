@@ -48,7 +48,7 @@ All of the classes are replaced with a single class. Most events have been repla
     * IsPlayServicesAvailable - Unchanged in purpose and signature.  (Also doesn't crash the app if called before initialization)
 
 PlayFabNotificationPackage existed in the previous version and the current
-* The same parameters exist, but with slight differences:
+* The same fields exist, but with slight differences:
   * Id is now an int
   * ScheduleDate - is now nullable (use null for immediate messages)
   * ScheduleType - Enum options slightly changed
