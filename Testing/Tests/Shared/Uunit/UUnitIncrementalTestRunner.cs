@@ -17,9 +17,12 @@ namespace PlayFab.UUnit
         public Text textDisplay = null;
         public string filter;
         public bool postResultsToCloudscript = true;
+        public TestTitleDataLoader.TestTitleData testTitleData;
+        public TextAsset testTitleDataAsset;
 
         public void Start()
         {
+            testTitleData = TestTitleDataLoader.LoadTestTitleData(testTitleDataAsset == null ? null : testTitleDataAsset.text);
             suite = new UUnitTestSuite();
             suite.FindAndAddAllTestCases(typeof(UUnitTestCase), filter);
 
@@ -35,11 +38,14 @@ namespace PlayFab.UUnit
                 textTransform.anchorMax = new Vector2(1, 1);
                 textTransform.pivot = new Vector2(0, 1);
                 textTransform.anchoredPosition = Vector2.zero;
+                textTransform.offsetMax = Vector2.zero;
+                textTransform.offsetMin = Vector2.zero;
             }
         }
 
         public void Update()
         {
+            textDisplay.fontSize = Math.Min(Screen.height / 42, Screen.width / 75 + 10);
             if (suiteFinished || textDisplay == null)
                 return;
 
@@ -67,20 +73,25 @@ namespace PlayFab.UUnit
         private void OnSuiteFinish()
         {
             if (postResultsToCloudscript)
-                PostTestResultsToCloudScript(suite.GetInternalReport());
+                PostTestResultsToCloudScript();
             else
                 OnCloudScriptSubmit(null);
         }
 
-        private void PostTestResultsToCloudScript(TestSuiteReport testReport)
+        private void PostTestResultsToCloudScript()
+        {
+            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CustomId = PlayFabSettings.BuildIdentifier }, OnLoginSuccess, OnPostTestResultsError, null, testTitleData.extraHeaders);
+        }
+
+        private void OnLoginSuccess(LoginResult result)
         {
             var request = new ExecuteCloudScriptRequest
             {
                 FunctionName = "SaveTestData",
-                FunctionParameter = new Dictionary<string, object> { { "customId", PlayFabSettings.BuildIdentifier }, { "testReport", new[] { testReport } } },
+                FunctionParameter = new Dictionary<string, object> { { "customId", PlayFabSettings.BuildIdentifier }, { "testReport", new[] { suite.GetInternalReport() } } },
                 GeneratePlayStreamEvent = true
             };
-            PlayFabClientAPI.ExecuteCloudScript(request, OnCloudScriptSubmit, OnCloudScriptError);
+            PlayFabClientAPI.ExecuteCloudScript(request, OnCloudScriptSubmit, OnPostTestResultsError, null, testTitleData.extraHeaders);
         }
 
         private void OnCloudScriptSubmit(ExecuteCloudScriptResult result)
@@ -99,7 +110,7 @@ namespace PlayFab.UUnit
                 throw new Exception("Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier);
         }
 
-        private void OnCloudScriptError(PlayFabError error)
+        private void OnPostTestResultsError(PlayFabError error)
         {
             Debug.LogWarning("Error posting results to Cloud Script:" + error.GenerateErrorReport());
 

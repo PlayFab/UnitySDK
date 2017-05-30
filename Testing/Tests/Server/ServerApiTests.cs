@@ -1,17 +1,11 @@
 #if ENABLE_PLAYFABSERVER_API
 using PlayFab.ServerModels;
-using PlayFab.Internal;
 using PlayFab.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace PlayFab.UUnit
 {
     public class ServerApiTests : UUnitTestCase
     {
-        private static bool _titleInfoSet = false;
-        private static bool _execOnce = true;
         private const string FakePlayFabId = "1337"; // A real playfabId here would be nice, but without a client login, it's hard to get one
 
         public override void SetUp(UUnitTestContext testContext)
@@ -29,10 +23,6 @@ namespace PlayFab.UUnit
         public override void Tick(UUnitTestContext testContext)
         {
             // No async work needed
-        }
-
-        public override void TearDown(UUnitTestContext testContext)
-        {
         }
 
         private void SharedErrorCallback(PlayFabError error)

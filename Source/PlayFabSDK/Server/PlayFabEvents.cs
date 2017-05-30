@@ -9,6 +9,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<AuthenticateSessionTicketResult> OnServerAuthenticateSessionTicketResultEvent;
         public event PlayFabRequestEvent<BanUsersRequest> OnServerBanUsersRequestEvent;
         public event PlayFabResultEvent<BanUsersResult> OnServerBanUsersResultEvent;
+        public event PlayFabRequestEvent<GetPlayerProfileRequest> OnServerGetPlayerProfileRequestEvent;
+        public event PlayFabResultEvent<GetPlayerProfileResult> OnServerGetPlayerProfileResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromFacebookIDsRequest> OnServerGetPlayFabIDsFromFacebookIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromFacebookIDsResult> OnServerGetPlayFabIDsFromFacebookIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromSteamIDsRequest> OnServerGetPlayFabIDsFromSteamIDsRequestEvent;

@@ -63,7 +63,6 @@ Advanced users can still set their secret key anywhere in their game setup:
     PlayFabSettings.DeveloperSecretKey = "Find this in your dashboard/settings https://developer.playfab.com/title/properties/{your title Id}"; //your Developer Secret goes here.
 ```
 
-
 ## 4. Usage Instructions:
 
 You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://playfab.com/docs#/menu/1383/1383) for a complete list of available APIs.
@@ -74,7 +73,6 @@ You are now ready to begin making API calls using the PlayFabClientAPI class. Ch
 ##### Using the Push Plugin for Android
   * View [this repository](https://github.com/PlayFab/UnitySdkV0/tree/master/UnityAndroidPluginSource) for complete details.
 
-  
 ## 5. Troubleshooting:
 
 CASE: Follow these instructions to disable IDFA for your IOS release:
@@ -89,8 +87,7 @@ CASE: Follow these instructions to disable IDFA for your IOS release:
 
 CASE: If you run into conflicts when upgrading SDKs, remove all files from previous versions and perform a fresh import of our unitypackage or SDK files. 
 
-## 6. Contact Us
-
+#### Contact Us
 We love to hear from our developer community! 
 Do you have ideas on how we can make our products and services better? 
 
@@ -98,8 +95,7 @@ Our Developer Success Team can assist with answering any questions as well as pr
 
 [Forums, Support and Knowledge Base](https://community.playfab.com/index.html)
 
-
-## 7. Copyright and Licensing Information:
+## 6. Copyright and Licensing Information:
 
   Apache License -- 
   Version 2.0, January 2004

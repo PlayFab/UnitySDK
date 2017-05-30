@@ -262,6 +262,12 @@ namespace PlayFab.Internal
             return _internalHttp != null && !string.IsNullOrEmpty(_internalHttp.AuthKey);
         }
 
+        public static void ForgetClientCredentials()
+        {
+            if (_internalHttp != null)
+                _internalHttp.AuthKey = null;
+        }
+
         protected internal static PlayFabError GeneratePlayFabError(string json, object customData)
         {
             JsonObject errorDict = null;

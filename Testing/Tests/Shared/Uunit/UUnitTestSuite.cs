@@ -297,7 +297,7 @@ namespace PlayFab.UUnit
             var timedOut = (now - testContext.StartTime) > TestTimeout;
             if (testContext.ActiveState != UUnitActiveState.READY && !timedOut) // Not finished & not timed out
             {
-                testContext.TestInstance.Tick(testContext);
+                Wrap(testContext, testContext.TestInstance.Tick);
                 return;
             }
             else if (testContext.ActiveState == UUnitActiveState.ACTIVE && timedOut)
@@ -306,8 +306,8 @@ namespace PlayFab.UUnit
             }
 
             testContext.EndTime = now;
-            testContext.ActiveState = UUnitActiveState.COMPLETE;
             Wrap(testContext, testContext.TestInstance.TearDown);
+            testContext.ActiveState = UUnitActiveState.COMPLETE;
             _testReport.TestComplete(testContext.TestDelegate.Target.GetType().Name + "." + testContext.Name, testContext.FinishState, (int)(testContext.EndTime - testContext.StartTime).TotalMilliseconds, testContext.TestResultMsg, null);
         }
     }

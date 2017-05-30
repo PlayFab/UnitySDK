@@ -25,7 +25,8 @@ namespace PlayFab.UUnit
             {
                 try
                 {
-                    myfunc(response);
+                    if (myfunc != null)
+                        myfunc(response);
                 }
                 catch (UUnitException uu)
                 {

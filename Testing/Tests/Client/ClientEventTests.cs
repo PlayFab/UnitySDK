@@ -61,6 +61,11 @@ namespace PlayFab.UUnit
             PlayFabHttp.ClearAllEvents();
         }
 
+        public override void ClassTearDown()
+        {
+            PlayFabClientAPI.ForgetClientCredentials();
+        }
+
         private void SharedErrorCallback(PlayFabError error)
         {
             ((UUnitTestContext)error.CustomData).Fail(error.GenerateErrorReport());
