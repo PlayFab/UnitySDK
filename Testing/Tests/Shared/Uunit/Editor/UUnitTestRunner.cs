@@ -17,7 +17,7 @@ namespace PlayFab.UUnit
             method.Invoke(new object(), null);
         }
 
-        [MenuItem("PlayFab/UUnit/Play and Run Tests%#t")]
+        [MenuItem("PlayFab/Testing/Play and Run Tests")]
         public static void TestImmediately()
         {
             ClearDebugLog();

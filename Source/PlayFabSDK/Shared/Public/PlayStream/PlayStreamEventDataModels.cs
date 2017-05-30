@@ -403,6 +403,12 @@ namespace PlayFab.PlayStreamModels
         public string Comment;
         public string TitleId;
     }
+    public class PlayerSetProfilePropertyEventData : PlayStreamEventBase
+    {
+        public PlayerProfileProperty? Property;
+        public object Value;
+        public string TitleId;
+    }
     public class PlayerStatisticChangedEventData : PlayStreamEventBase
     {
         public string StatisticName;
@@ -495,6 +501,30 @@ namespace PlayFab.PlayStreamModels
         public uint ServerPort;
         public string ServerHostInstanceId;
         public Dictionary<string,string> Tags;
+    }
+    public class GameServerHostStartedEventData : PlayStreamEventBase
+    {
+        public DateTime StartTime;
+        public string TitleId;
+        public string Region;
+        public string ServerBuildVersion;
+        public string ServerHost;
+        public string InstanceId;
+        public string InstanceProvider;
+        public string InstanceType;
+    }
+    public class GameServerHostStoppedEventData : PlayStreamEventBase
+    {
+        public DateTime StartTime;
+        public DateTime StopTime;
+        public GameServerHostStopReason? StopReason;
+        public string TitleId;
+        public string Region;
+        public string ServerBuildVersion;
+        public string ServerHost;
+        public string InstanceId;
+        public string InstanceProvider;
+        public string InstanceType;
     }
     public class SessionEndedEventData : PlayStreamEventBase
     {
@@ -719,6 +749,12 @@ namespace PlayFab.PlayStreamModels
         public string DeveloperId;
     }
     #endregion title
+
+    public enum PlayerProfileProperty
+    {
+        TotalValueToDateInUSD,
+        PlayerValuesToDate
+    }
 
     public enum AuthenticationProvider
     {
@@ -1015,6 +1051,14 @@ namespace PlayFab.PlayStreamModels
         public double? Longitude;
     }
 
+    public enum GameServerHostStopReason
+    {
+        Other,
+        ExcessCapacity,
+        LimitExceeded,
+        BuildNotActiveInRegion
+    }
+
     public enum PaymentType
     {
         Purchase,
@@ -1308,7 +1352,7 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public object FunctionResult;
         /// <summary>
-        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event
+        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if the total event size is larger than 350KB.
         /// </summary>
         public bool? FunctionResultTooLarge;
         /// <summary>
@@ -1316,7 +1360,7 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public List<LogStatement> Logs;
         /// <summary>
-        /// Flag indicating if the logs were too large and were subsequently dropped from this event
+        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total event size is larger than 350KB after the FunctionResult was removed.
         /// </summary>
         public bool? LogsTooLarge;
         public double ExecutionTimeSeconds;

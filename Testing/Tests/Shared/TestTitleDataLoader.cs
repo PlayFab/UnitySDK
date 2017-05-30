@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using PlayFab.Internal;
 using PlayFab.Json;
+using UnityEngine;
 
 namespace PlayFab.UUnit
 {
@@ -22,27 +24,35 @@ namespace PlayFab.UUnit
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
             public string developerSecretKey;
 #endif
+            public Dictionary<string, string> extraHeaders;
         }
 
-        public static TestTitleData LoadTestTitleData(bool setPlayFabSettings = true)
+        public static TestTitleData LoadTestTitleData(string testTitleDataContents = null, bool setPlayFabSettings = true)
         {
+            SetTitleId(setPlayFabSettings);
+
             if (_loadedData != null)
                 return _loadedData;
 
-            var filename = TestTitleDataDefaultFilename;
+            if (testTitleDataContents == null)
+            {
+                var filename = TestTitleDataDefaultFilename;
 
 #if UNITY_STANDALONE_WIN
-            // Prefer to load path from environment variable, if present
-            var tempFilename = Environment.GetEnvironmentVariable("PF_TEST_TITLE_DATA_JSON");
-            if (!string.IsNullOrEmpty(tempFilename))
-                filename = tempFilename;
+                // Prefer to load path from environment variable, if present
+                var tempFilename = Environment.GetEnvironmentVariable("PF_TEST_TITLE_DATA_JSON");
+                if (!string.IsNullOrEmpty(tempFilename))
+                    filename = tempFilename;
 #endif
+                if (File.Exists(filename))
+                {
+                    testTitleDataContents = PlayFabUtil.ReadAllFileText(filename);
+                }
+            }
 
-            if (File.Exists(filename))
+            if (!string.IsNullOrEmpty(testTitleDataContents))
             {
-                var testInputsFile = PlayFabUtil.ReadAllFileText(filename);
-
-                _loadedData = JsonWrapper.DeserializeObject<TestTitleData>(testInputsFile);
+                _loadedData = JsonWrapper.DeserializeObject<TestTitleData>(testTitleDataContents);
             }
             else
             {
@@ -54,15 +64,19 @@ namespace PlayFab.UUnit
                 };
             }
 
-            if (setPlayFabSettings)
-            {
-                PlayFabSettings.TitleId = _loadedData.titleId;
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
-                PlayFabSettings.DeveloperSecretKey = _loadedData.developerSecretKey;
-#endif
-            }
-
+            SetTitleId(setPlayFabSettings);
             return _loadedData;
+        }
+
+        private static void SetTitleId(bool setPlayFabSettings)
+        {
+            if (!setPlayFabSettings || _loadedData == null)
+                return;
+
+            PlayFabSettings.TitleId = _loadedData.titleId;
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
+            PlayFabSettings.DeveloperSecretKey = _loadedData.developerSecretKey;
+#endif
         }
     }
 }

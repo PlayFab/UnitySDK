@@ -302,7 +302,10 @@ namespace PlayFab
         InvalidEnvironmentForReceipt = 1300,
         EncryptedRequestNotAllowed = 1301,
         SignedRequestNotAllowed = 1302,
-        RequestViewConstraintParamsNotAllowed = 1303
+        RequestViewConstraintParamsNotAllowed = 1303,
+        BadPartnerConfiguration = 1304,
+        XboxBPCertificateFailure = 1305,
+        XboxXASSExchangeFailure = 1306
     }
 
     public delegate void ErrorCallback(PlayFabError error);

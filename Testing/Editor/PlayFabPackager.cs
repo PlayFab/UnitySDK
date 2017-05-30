@@ -106,7 +106,7 @@ namespace PlayFab.Internal
 
         #endregion Unity Multi-version Utilities
 
-        [MenuItem("PlayFab/Package SDK")]
+        [MenuItem("PlayFab/Testing/Build PlayFab UnitySDK Package")]
         public static void PackagePlayFabSdk()
         {
             var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable

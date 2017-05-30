@@ -21,6 +21,7 @@ namespace PlayFab.Internal
             "yyyy-MM-ddTHH:mm:ss.FFFZ", // DEFAULT_UTC_OUTPUT_INDEX
             "yyyy-MM-ddTHH:mm:ss.FFZ",
             "yyyy-MM-ddTHH:mm:ssZ",
+            "yyyy-MM-dd HH:mm:ssZ", // Added for Android Push Plugin
 
             // These are the standard format without ISO 8601 UTC markers (T/Z)
             "yyyy-MM-dd HH:mm:ss.FFFFFF",
@@ -36,7 +37,7 @@ namespace PlayFab.Internal
             "yyyy-MM-dd HH:mm.ss",
         };
         public const int DEFAULT_UTC_OUTPUT_INDEX = 2; // The default format everybody should use
-        public const int DEFAULT_LOCAL_OUTPUT_INDEX = 8; // The default format if you want to use local time (This doesn't have universal support in all PlayFab code)
+        public const int DEFAULT_LOCAL_OUTPUT_INDEX = 9; // The default format if you want to use local time (This doesn't have universal support in all PlayFab code)
         public static DateTimeStyles DateTimeStyles = DateTimeStyles.RoundtripKind;
 
         /// <summary>
