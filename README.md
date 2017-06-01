@@ -12,7 +12,7 @@ This document describes the process of configuring and building the PlayFab Unit
 
 This document assumes familiarity with the Unity game engine, MonoDevelop Unity .NET programming environment, and Mac OS X operating system environment.
 
-* Users should also be familiar with the topics covered in our [getting started guide](https://playfab.com/docs/getting-started-with-playfab/).
+* Users should also be familiar with the topics covered in our [getting started guide](https://api.playfab.com/docs/general-getting-started).
 
 To connect to the PlayFab service, your machine must be running TLS v1.2 or better.
 * For Windows, this means Windows 7 and above
@@ -65,13 +65,13 @@ Advanced users can still set their secret key anywhere in their game setup:
 
 ## 4. Usage Instructions:
 
-You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://playfab.com/docs#/menu/1383/1383) for a complete list of available APIs.
+You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://api.playfab.com/documentation/client) for a complete list of available APIs.
 
 ##### New Users:
-* Check out our Tutorials, Samples and more [here](https://playfab.com/docs/overview/)
+* Check out our Tutorials, Samples and more [here](https://api.playfab.com/docs/tutorials)
 
 ##### Using the Push Plugin for Android
-  * View [this repository](https://github.com/PlayFab/UnitySdkV0/tree/master/UnityAndroidPluginSource) for complete details.
+  * View [this repository](https://github.com/PlayFab/UnitySDK/tree/master/AndroidPluginSrc) for complete details.
 
 ## 5. Troubleshooting:
 
