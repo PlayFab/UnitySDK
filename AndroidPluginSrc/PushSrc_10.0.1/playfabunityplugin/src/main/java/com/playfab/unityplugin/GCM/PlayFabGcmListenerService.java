@@ -32,7 +32,7 @@ public class PlayFabGcmListenerService extends GcmListenerService {
             }
         }
 
-        Log.i(PlayFabConst.LOG_TAG, "DEBUG THIS: " + data.toString());
+        Log.i(PlayFabConst.LOG_TAG, "Raw Push text: " + data.toString());
 
         String message = "";
         //Check for message first, if this message was sent via GCM API then it will contain "message"

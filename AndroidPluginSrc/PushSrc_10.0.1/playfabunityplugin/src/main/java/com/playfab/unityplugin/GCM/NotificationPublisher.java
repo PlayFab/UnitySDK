@@ -12,7 +12,7 @@ public class NotificationPublisher extends BroadcastReceiver {
             Log.i(PlayFabConst.LOG_TAG, "OnRecieve Notification Publisher Sending Notification..");
         byte[] bytes = intent.getByteArrayExtra(PlayFabConst.NOTIFICATION_JSON);
         Parcel parcel = ParcelableUtil.unmarshall(bytes);
-        PlayFabNotificationPackage notification = new PlayFabNotificationPackage(parcel);
-        PlayFabNotificationSender.sendNotificationNow(context, notification);
+        PlayFabNotificationPackage notifyPackage = new PlayFabNotificationPackage(parcel);
+        PlayFabNotificationSender.sendNotificationNow(context, notifyPackage);
     }
 }

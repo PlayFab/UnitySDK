@@ -29,7 +29,6 @@ public class PlayFabRegistrationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (!PlayFabConst.hideLogs)
             Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Registration Intent Service has been started.");
-        //We are getting the instanceId and saving it for later and that is all we care about for now.
         mInstanceID = InstanceID.getInstance(this);
         mInstance = this;
         notifyRegistrationReady();

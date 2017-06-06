@@ -20,7 +20,6 @@ import com.unity3d.player.UnityPlayer;
  * The main class for interfacing with the Unity environment
  */
 public class PlayFabUnityAndroidPlugin extends Service {
-    private static boolean mServiceBound = false;
     private static PlayFabUnityAndroidPlugin mBoundService;
     private static String mGameTitle;
     private static String mSenderId;
@@ -58,19 +57,19 @@ public class PlayFabUnityAndroidPlugin extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i("TAG", "PlayFabUnityAndroidPlugin Service onBind");
+        Log.i(PlayFabConst.LOG_TAG, "PlayFabUnityAndroidPlugin Service onBind");
         return mBinder;
     }
 
     @Override
     public void onRebind(Intent intent) {
-        Log.i("TAG", "PlayFabUnityAndroidPlugin Service onRebind");
+        Log.i(PlayFabConst.LOG_TAG, "PlayFabUnityAndroidPlugin Service onRebind");
         super.onRebind(intent);
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        Log.i("TAG", "PlayFabUnityAndroidPlugin Service onUnbind");
+        Log.i(PlayFabConst.LOG_TAG, "PlayFabUnityAndroidPlugin Service onUnbind");
         return true;
     }
 
@@ -79,7 +78,6 @@ public class PlayFabUnityAndroidPlugin extends Service {
         public void onServiceDisconnected(ComponentName name) {
             if (!PlayFabConst.hideLogs)
                 Log.i(PlayFabConst.LOG_TAG, "Service Connection Disconnected.");
-            mServiceBound = false;
         }
 
         @Override
@@ -88,16 +86,13 @@ public class PlayFabUnityAndroidPlugin extends Service {
                 Log.i(PlayFabConst.LOG_TAG, "Service Connection Connected.");
             LocalPlayFabBinder localPlayFabBinder = (LocalPlayFabBinder) service;
             mBoundService = localPlayFabBinder.getService();
-            mServiceBound = true;
         }
     };
 
     public static void initGCM(String senderId, String gameTitle) {
         try {
             if (!PlayFabConst.hideLogs)
-                Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Init, saving prefs.");
-            if (!PlayFabConst.hideLogs)
-                Log.i(PlayFabConst.LOG_TAG, "Setting SenderId: " + senderId);
+                Log.i(PlayFabConst.LOG_TAG, "PlayFab GCM Init, Setting SenderId: " + senderId);
             mSenderId = senderId;
             mGameTitle = gameTitle;
 
@@ -124,12 +119,11 @@ public class PlayFabUnityAndroidPlugin extends Service {
 
     public static void stopPluginService() {
         try {
-            if (mServiceBound && mServiceConnection != null) {
+            if (mServiceConnection != null) {
                 Context mUnityService = UnityPlayer.currentActivity.getApplication().getApplicationContext();
                 Intent intent = new Intent(mUnityService, PlayFabUnityAndroidPlugin.class);
                 mUnityService.stopService(intent);
                 mUnityService.unbindService(mServiceConnection);
-                mServiceBound = false;
             }
         } catch (Exception e) {
             Log.e(PlayFabConst.LOG_TAG, "PlayFab GCM stopPluginService exception: " + e.getMessage());

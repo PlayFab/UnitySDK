@@ -76,5 +76,4 @@ public class PlayFabGoogleCloudMessaging {
             pubSub.subscribe(token, "/topics/" + topic, null);
         }
     }
-    // [END subscribe_topics]
 }
