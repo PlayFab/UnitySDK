@@ -17,7 +17,7 @@ There are several push plugins for Unity+Android+Push-Notifications, based on th
 
 | Unity Version | Android API Version | Google PlayServices Version | Package Filename |
 | --- | --- | --- | --- |
-| 5.0+ | Android 7.1.1 'Nougat' (API 25) | 10.0.1 | Push_Unity5_GPS10.0.1.unitypackage |
+| 5.0+ | Tested Android 5.0 'Lollipop' (API 21) thru Android 7.1.1 'Nougat' (API 25) | 10.0.1 | Push_Unity5_GPS10.0.1.unitypackage |
 | 5.0+ | Android 7.0 'Nougat' (API 24) | 8.4.0 | Push_Unity5_GPS8.4.0.unitypackage |
 
 If you have a version combination that is not listed above, then please post [here](https://community.playfab.com/questions/10840/android-plugin-upgrade-discussion.html)
