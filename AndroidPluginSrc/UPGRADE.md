@@ -1,8 +1,38 @@
 # PlayFab Unity Android Push - Upgrade guide
 
+## Upgrade Instructions
+
+This section has the fastest set of instructions, but with less detail:
+
+Most users will want to "burn everything with fire" and start from scratch.
+
+[See our guide for details](https://api.playfab.com/docs/tutorials/landing-players/push-notification-basics/push-notifications-for-android)
+
+Quick Reference:
+
+MANDATORY:
+
+* Always call before PlayFab Login: PlayFabAndroidPushPlugin.Setup(pushSenderId);
+* Call once per player after PlayFab Login: PlayFabAndroidPushPlugin.TriggerManualRegistration();
+* If you were calling UpdateRouting, just delete it.  It's automatic now.
+  * The plugin does not require any updates to determine if the app is in focus.
+
+OPTIONAL:
+
+* If you wish to be notified when push messages arrive:
+  * PlayFabAndroidPushPlugin.OnGcmMessage += MyCustomOnGcmMessageHandler
+  * Your old callback needs to be converted from a string parameter to PlayFabNotificationPackage
+  * Remove any calls to UpdateRouting for this use case. It's automatic now.
+* If you were calling UpdateRouting with the intention of hiding a message from the device tray (capturing only to the game)
+  * Add a call: PlayFabAndroidPushPlugin.AlwaysShowOnNotificationBar(false)
+  * You only need to call it once at program start
+  * You can reset it whenever you like: PlayFabAndroidPushPlugin.AlwaysShowOnNotificationBar(true/false)
+    * It's highly suggested you just call it once at program start with your preference
+
+
 ## Class Overview
 
-The previous plugin class-objects that you used in Unity include:
+This is a more detailed overview, but less direct instructions. The previous plugin class-objects that you used in Unity include:
 
 * CLASS: PlayFabAndroidPlugin
   * FUNTIONS: Init, IsPlayServicesAvailable, *StopPlugin, UpdateRouting, ScheduleNotification, SendNotificationNow, CancelNotification
@@ -54,31 +84,3 @@ PlayFabNotificationPackage existed in the previous version and the current
   * ScheduleType - Enum options slightly changed
     * None is only used if ScheduleDate is null
     * Scheduled is replaced with ScheduledUtc and ScheduledLocal, which define whether the timestamp represents local time or UTC time
-
-## Upgrade Instructions
-
-Most users will want to "burn everything with fire" and start from scratch.
-
-[See our guide for details](https://api.playfab.com/docs/tutorials/landing-players/push-notification-basics/push-notifications-for-android)
-
-Quick Reference:
-
-MANDATORY:
-
-* Always call before PlayFab Login: PlayFabAndroidPushPlugin.Setup(pushSenderId);
-* Call once per player after PlayFab Login: PlayFabAndroidPushPlugin.TriggerManualRegistration();
-* If you were calling UpdateRouting, just delete it.  It's automatic now.
-  * The plugin does not require any updates to determine if the app is in focus.
-
-OPTIONAL:
-
-* If you wish to be notified when push messages arrive:
-  * PlayFabAndroidPushPlugin.OnGcmMessage += MyCustomOnGcmMessageHandler
-  * Your old callback needs to be converted from a string parameter to PlayFabNotificationPackage
-  * Remove any calls to UpdateRouting for this use case. It's automatic now.
-* If you were calling UpdateRouting with the intention of hiding a message from the device tray (capturing only to the game)
-  * Add a call: PlayFabAndroidPushPlugin.AlwaysShowOnNotificationBar(false)
-  * You only need to call it once at program start
-  * You can reset it whenever you like: PlayFabAndroidPushPlugin.AlwaysShowOnNotificationBar(true/false)
-    * It's highly suggested you just call it once at program start with your preference
-
