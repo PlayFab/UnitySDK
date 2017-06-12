@@ -172,12 +172,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RemoveFriendResult> OnRemoveFriendResultEvent;
         public event PlayFabRequestEvent<SetFriendTagsRequest> OnSetFriendTagsRequestEvent;
         public event PlayFabResultEvent<SetFriendTagsResult> OnSetFriendTagsResultEvent;
-        public event PlayFabRequestEvent<RegisterForIOSPushNotificationRequest> OnRegisterForIOSPushNotificationRequestEvent;
-        public event PlayFabResultEvent<RegisterForIOSPushNotificationResult> OnRegisterForIOSPushNotificationResultEvent;
-        public event PlayFabRequestEvent<RestoreIOSPurchasesRequest> OnRestoreIOSPurchasesRequestEvent;
-        public event PlayFabResultEvent<RestoreIOSPurchasesResult> OnRestoreIOSPurchasesResultEvent;
-        public event PlayFabRequestEvent<ValidateIOSReceiptRequest> OnValidateIOSReceiptRequestEvent;
-        public event PlayFabResultEvent<ValidateIOSReceiptResult> OnValidateIOSReceiptResultEvent;
         public event PlayFabRequestEvent<CurrentGamesRequest> OnGetCurrentGamesRequestEvent;
         public event PlayFabResultEvent<CurrentGamesResult> OnGetCurrentGamesResultEvent;
         public event PlayFabRequestEvent<GameServerRegionsRequest> OnGetGameServerRegionsRequestEvent;
@@ -186,10 +180,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<MatchmakeResult> OnMatchmakeResultEvent;
         public event PlayFabRequestEvent<StartGameRequest> OnStartGameRequestEvent;
         public event PlayFabResultEvent<StartGameResult> OnStartGameResultEvent;
-        public event PlayFabRequestEvent<AndroidDevicePushNotificationRegistrationRequest> OnAndroidDevicePushNotificationRegistrationRequestEvent;
-        public event PlayFabResultEvent<AndroidDevicePushNotificationRegistrationResult> OnAndroidDevicePushNotificationRegistrationResultEvent;
-        public event PlayFabRequestEvent<ValidateGooglePlayPurchaseRequest> OnValidateGooglePlayPurchaseRequestEvent;
-        public event PlayFabResultEvent<ValidateGooglePlayPurchaseResult> OnValidateGooglePlayPurchaseResultEvent;
         public event PlayFabRequestEvent<WriteClientCharacterEventRequest> OnWriteCharacterEventRequestEvent;
         public event PlayFabResultEvent<WriteEventResponse> OnWriteCharacterEventResultEvent;
         public event PlayFabRequestEvent<WriteClientPlayerEventRequest> OnWritePlayerEventRequestEvent;
@@ -230,8 +220,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetCharacterDataResult> OnGetCharacterReadOnlyDataResultEvent;
         public event PlayFabRequestEvent<UpdateCharacterDataRequest> OnUpdateCharacterDataRequestEvent;
         public event PlayFabResultEvent<UpdateCharacterDataResult> OnUpdateCharacterDataResultEvent;
-        public event PlayFabRequestEvent<ValidateAmazonReceiptRequest> OnValidateAmazonIAPReceiptRequestEvent;
-        public event PlayFabResultEvent<ValidateAmazonReceiptResult> OnValidateAmazonIAPReceiptResultEvent;
         public event PlayFabRequestEvent<AcceptTradeRequest> OnAcceptTradeRequestEvent;
         public event PlayFabResultEvent<AcceptTradeResponse> OnAcceptTradeResultEvent;
         public event PlayFabRequestEvent<CancelTradeRequest> OnCancelTradeRequestEvent;
@@ -248,6 +236,18 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayerSegmentsResult> OnGetPlayerSegmentsResultEvent;
         public event PlayFabRequestEvent<GetPlayerTagsRequest> OnGetPlayerTagsRequestEvent;
         public event PlayFabResultEvent<GetPlayerTagsResult> OnGetPlayerTagsResultEvent;
+        public event PlayFabRequestEvent<AndroidDevicePushNotificationRegistrationRequest> OnAndroidDevicePushNotificationRegistrationRequestEvent;
+        public event PlayFabResultEvent<AndroidDevicePushNotificationRegistrationResult> OnAndroidDevicePushNotificationRegistrationResultEvent;
+        public event PlayFabRequestEvent<RegisterForIOSPushNotificationRequest> OnRegisterForIOSPushNotificationRequestEvent;
+        public event PlayFabResultEvent<RegisterForIOSPushNotificationResult> OnRegisterForIOSPushNotificationResultEvent;
+        public event PlayFabRequestEvent<RestoreIOSPurchasesRequest> OnRestoreIOSPurchasesRequestEvent;
+        public event PlayFabResultEvent<RestoreIOSPurchasesResult> OnRestoreIOSPurchasesResultEvent;
+        public event PlayFabRequestEvent<ValidateAmazonReceiptRequest> OnValidateAmazonIAPReceiptRequestEvent;
+        public event PlayFabResultEvent<ValidateAmazonReceiptResult> OnValidateAmazonIAPReceiptResultEvent;
+        public event PlayFabRequestEvent<ValidateGooglePlayPurchaseRequest> OnValidateGooglePlayPurchaseRequestEvent;
+        public event PlayFabResultEvent<ValidateGooglePlayPurchaseResult> OnValidateGooglePlayPurchaseResultEvent;
+        public event PlayFabRequestEvent<ValidateIOSReceiptRequest> OnValidateIOSReceiptRequestEvent;
+        public event PlayFabResultEvent<ValidateIOSReceiptResult> OnValidateIOSReceiptResultEvent;
         public event PlayFabRequestEvent<ValidateWindowsReceiptRequest> OnValidateWindowsStoreReceiptRequestEvent;
         public event PlayFabResultEvent<ValidateWindowsReceiptResult> OnValidateWindowsStoreReceiptResultEvent;
     }

@@ -6,283 +6,121 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.playfab.unityplugin.PlayFabUnityAndroidPlugin;
+import com.unity3d.player.UnityPlayer;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-/**
- * Created by Marco on 8/1/2016.
- */
 public class PlayFabNotificationSender {
-    private static final String TAG = "PlayFabGCM";
-    private static final int REQUEST_CODE_UNITY_ACTIVITY = 1001;
-    private static final String DATE_FORMAT_STRING = "dd-M-yyyy HH:mm:ss";
-    public static void sendNotificationById(Context intent, String id) {
-        PendingIntent pendingIntent = PendingIntent.getActivity(intent, REQUEST_CODE_UNITY_ACTIVITY,
-                intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        List<PlayFabNotificationPackage> notificationList = PlayFabPushCache.getPushCache();
-        PlayFabNotificationPackage pushNotificationPackage = null;
-        for(PlayFabNotificationPackage p : notificationList){
-           if(p.Id == id) {
-               pushNotificationPackage = p;
-           }
-        }
-        if(pushNotificationPackage == null){
-            Log.i(TAG,"Push Notification Package not found.");
-            return;
-        }
-
-        String appIcon = pushNotificationPackage.Icon;
-        //Log.i(TAG,"Setting App Icon: " + appIcon); //Intentionally commented for debug purpose.
-        String title = pushNotificationPackage.Title;
-        //Log.i(TAG,"Setting Title: " + title); //Intentionally commented for debug purpose.
-        Uri defaultSoundUri = Uri.parse(pushNotificationPackage.Sound);
-        //Log.i(TAG,"Setting Sound Uri: " + defaultSoundUri); //Intentionally commented for debug purpose.
-        String message = pushNotificationPackage.Message;
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent)
-                .setSmallIcon(intent.getResources().getIdentifier(appIcon, "drawable", intent.getPackageName()))
-                .setContentTitle(title)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message)
-                .setSound(defaultSoundUri)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) intent.getSystemService(Context.NOTIFICATION_SERVICE);
-        int notificationId = getNotificationId(intent);
-        notificationManager.notify(notificationId, notificationBuilder.build()); //ID_NOTIFICATION
-        pushNotificationPackage.SetDelivered();
-    }
-
-    public static void sendNotification(Context intent) {
-        PendingIntent pendingIntent = PendingIntent.getActivity(intent, REQUEST_CODE_UNITY_ACTIVITY,
-                intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        List<PlayFabNotificationPackage> notificationList = PlayFabPushCache.getPushCache();
-        PlayFabNotificationPackage pushNotificationPackage = notificationList.get(notificationList.size() -1);
-
-        String appIcon = pushNotificationPackage.Icon;
-        String title = pushNotificationPackage.Title;
-        Uri defaultSoundUri = Uri.parse(pushNotificationPackage.Sound);
-        String message = pushNotificationPackage.Message;
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent)
-                .setSmallIcon(intent.getResources().getIdentifier(appIcon, "drawable", intent.getPackageName()))
-                .setContentTitle(title)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message)
-                .setSound(defaultSoundUri)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) intent.getSystemService(Context.NOTIFICATION_SERVICE);
-        int notificationId = getNotificationId(intent);
-        notificationManager.notify(notificationId, notificationBuilder.build()); //ID_NOTIFICATION
-        pushNotificationPackage.SetDelivered();
-    }
-
-
-    public static PlayFabNotificationPackage createNotificationPackage(Context intent, String message){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(intent);
-        PlayFabNotificationPackage mPackage = new PlayFabNotificationPackage();
-        mPackage.Title = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_GAME_TITLE, "");
-        mPackage.Icon = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_APP_ICON, "app_icon");
-        mPackage.Message = message;
-        mPackage.Sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString();
-
-        //Log.i(TAG, mPackage.Sound); //Intentionally commented for debug purpose.
-        //Log.i(TAG, mPackage.Icon); //Intentionally commented for debug purpose.
-
-        SetPackageFromJson(intent,message,mPackage);
-        return mPackage;
-    }
-
-    public static void setNotificationPackage(Context intent, String message){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(intent);
-        PlayFabNotificationPackage mPackage = new PlayFabNotificationPackage();
-        mPackage.Title = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_GAME_TITLE, "");
-        mPackage.Icon = sharedPreferences.getString(PlayFabUnityAndroidPlugin.PROPERTY_APP_ICON, "app_icon");
-        mPackage.Message = message;
-        mPackage.Sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString();
-        SetPackageFromJson(intent,message,mPackage);
-        PlayFabPushCache.setPushCache(mPackage);
-    }
-
-    private static void SetPackageFromJson(Context intent, String message, PlayFabNotificationPackage mPackage){
-        if(isJSONValid(message)){
+    /*
+     * Send the notification to Unity and/or the device
+     */
+    public static void sendNotificationNow(Context intent, PlayFabNotificationPackage notification) {
+        boolean sendToNotificationBar = PlayFabConst.AlwaysShowOnNotificationBar || UnityPlayer.currentActivity == null;
+        if (UnityPlayer.currentActivity != null) {
             try {
-                JSONObject jObj = new JSONObject(message);
-                //Log.i(TAG,message); //Intentionally commented for debug purpose.
-                Log.i(PlayFabUnityAndroidPlugin.TAG,"Message was JSON");
-                //This is so that the ENTIRE JSON message is not in the notification should someone forget to send the "Message" attribute.
-                mPackage.Message = "";
-
-                if(jObj.has("ScheduleType") && jObj.getInt("ScheduleType") > 0 ){
-                    mPackage.ScheduleType = PlayFabNotificationPackage.ScheduleTypes.values()[jObj.getInt("ScheduleType")];
-                }
-
-                if(jObj.has("ScheduleDate")){
-                    try{
-                        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_STRING);
-                        Date date = sdf.parse(jObj.getString("ScheduleDate"));
-                        Calendar c = Calendar.getInstance();
-                        c.setTime(date);
-                        long futureMillis = c.getTimeInMillis();
-                        long nowMillis = System.currentTimeMillis();
-                        if(futureMillis < nowMillis){
-                            mPackage.ScheduleType = PlayFabNotificationPackage.ScheduleTypes.None;
-                            mPackage.ScheduleDate = new Date();
-                        }else{
-                            mPackage.ScheduleDate = date;
-                        }
-                    }catch(Exception e){
-                        Log.i(TAG,"Could not parse date time from Push Notification: use format: " + DATE_FORMAT_STRING);
-                    }
-                }
-
-
-                if(jObj.has("Id")){
-                    mPackage.Id = jObj.getString("Id");
-                }
-
-                if (jObj.has("Title")) {
-                    mPackage.Title = jObj.getString("Title");
-                }
-
-                if(jObj.has("Message")){
-                    mPackage.Message = jObj.getString("Message");
-                }
-
-                if(jObj.has("Icon") && jObj.getString("Icon") != null && !jObj.getString("Icon").isEmpty() && jObj.getString("Icon") != "null" ){
-                    //Log.i(TAG,jObj.getString("Icon"));
-                    mPackage.Icon = jObj.getString("Icon");
-                }
-
-                if(jObj.has("Sound") && jObj.getString("Sound") != null && !jObj.getString("Sound").isEmpty() && jObj.getString("Sound") != "null") {
-                    //Log.i(TAG,jObj.getString("Sound"));
-                    mPackage.Sound = Uri.parse("android.resource://" + intent.getPackageName() + "/" + jObj.getString("Sound")).toString();
-                }
-
-                if(jObj.has("CustomData") && jObj.getString("CustomData") != null && !jObj.getString("CustomData").isEmpty() && jObj.getString("CustomData") != "null"){
-                    mPackage.CustomData = jObj.getString("CustomData");
-                }
-            }catch(JSONException e){
-                //Could not parse json. Shouldn't happen since we checked in the isJSONValid
+                // Try to send the message to Unity if it is running
+                UnityPlayer.UnitySendMessage(PlayFabConst.UNITY_EVENT_OBJECT, "GCMMessageReceived", notification.toJson());
+                if (!PlayFabConst.hideLogs) Log.i(PlayFabConst.LOG_TAG, "Sent push to Unity");
+            } catch (Exception e) {
+                // If it fails, fall back on the Notification Bar
+                sendToNotificationBar = true;
             }
-        }
+        } else if (!PlayFabConst.hideLogs) Log.i(PlayFabConst.LOG_TAG, "Unity Context null");
+
+        if (sendToNotificationBar)
+            sendNotificationToDevice(intent, notification);
     }
 
-    public static synchronized int getNotificationId(Context intent) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(intent);
-        int id = 1;
-        int nextId = 1;
-        if(prefs.contains(PlayFabGcmListenerService.PROPERTY_NOTIFICATION_ID)) {
-            id = prefs.getInt(PlayFabGcmListenerService.PROPERTY_NOTIFICATION_ID, 1);
-            nextId = id + 1;
-        }
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PlayFabGcmListenerService.PROPERTY_NOTIFICATION_ID, nextId);
-        editor.commit();
-        return id;
-    }
-
-    private static boolean isJSONValid(String test) {
+    private static void sendNotificationToDevice(Context intent, PlayFabNotificationPackage notification) {
         try {
-            new JSONObject(test);
-        } catch (JSONException ex) {
-            // edited, to include @Arthur's comment
-            // e.g. in case JSONArray is valid as well...
-            Log.i(PlayFabUnityAndroidPlugin.TAG,"Could not parse to JSONObject");
-            try {
-                new JSONArray(test);
-            } catch (JSONException ex1) {
-                Log.i(PlayFabUnityAndroidPlugin.TAG,"Could not parse to JSONArray");
-                return false;
+            PendingIntent pendingIntent = PendingIntent.getActivity(intent, PlayFabConst.REQUEST_CODE_UNITY_ACTIVITY,
+                    intent.getPackageManager().getLaunchIntentForPackage(intent.getPackageName()), PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(intent);
+
+            // Grab some strings from the message, or fall back on defaults
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(intent);
+            String appIcon = notification.Icon == null || notification.Icon.isEmpty() ? sharedPreferences.getString(PlayFabConst.PROPERTY_APP_ICON, "app_icon") : notification.Icon;
+            Uri defaultSoundUri = Uri.parse(notification.Sound == null || notification.Sound.isEmpty() ? RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION).toString() : notification.Sound);
+            String title = notification.Title == null || notification.Title.isEmpty() ? sharedPreferences.getString(PlayFabConst.PROPERTY_GAME_TITLE, "") : notification.Title;
+
+            // Try to set small icon
+            int iconIntT = intent.getResources().getIdentifier(appIcon + "_transparent", "drawable", intent.getPackageName());
+            int iconInt = intent.getResources().getIdentifier(appIcon, "drawable", intent.getPackageName());
+            if (iconIntT != 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                notificationBuilder.setSmallIcon(iconIntT);
+            else if (iconInt != 0)
+                notificationBuilder.setSmallIcon(iconInt);
+            else
+                notificationBuilder.setSmallIcon(android.R.color.transparent);
+
+            // Set large icon
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && iconInt != 0) {
+                Bitmap bigIcon = BitmapFactory.decodeResource(intent.getResources(), iconInt);
+                notificationBuilder.setLargeIcon(bigIcon);
             }
+
+            notificationBuilder.setContentTitle(title)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(notification.Message))
+                    .setContentText(notification.Message)
+                    .setSound(defaultSoundUri)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent);
+
+            NotificationManager notificationManager = (NotificationManager) intent.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(notification.Id, notificationBuilder.build());
+        } catch (Exception e) {
+            Log.d(PlayFabConst.LOG_TAG, e.getMessage());
         }
-        return true;
     }
 
-    public static void Send(Context intent, PlayFabNotificationPackage notifyPackage ){
-        Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
+    public static PlayFabNotificationPackage createNotificationPackage(Context intent, String message, int id) {
+        PlayFabNotificationPackage output = PlayFabNotificationPackage.fromJson(message);
+        if (output == null) {
+            output = new PlayFabNotificationPackage();
+            output.setMessage(message, id);
+        }
+        return output;
+    }
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, 0,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT );
+    public static void send(Context intent, PlayFabNotificationPackage notifyPackage) {
         try {
-            Log.i(TAG,"Schedule Type: " + notifyPackage.ScheduleType);
-            if(notifyPackage.ScheduleType == PlayFabNotificationPackage.ScheduleTypes.ScheduledDate){
-                String formattedDate = new SimpleDateFormat(DATE_FORMAT_STRING).format(notifyPackage.ScheduleDate);
-                ScheduleNotification(intent,  formattedDate, notifyPackage);
-            }else {
-                long futureMillis = 0;
+            Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
+            byte[] bytes = ParcelableUtil.marshall(notifyPackage);
+            notificationIntent.putExtra(PlayFabConst.NOTIFICATION_JSON, bytes);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            long delayMillis = notifyPackage.getMsgDelayInMillis();
+            if (delayMillis > 0) {
                 AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureMillis, pendingIntent);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + delayMillis, pendingIntent);
+                if (!PlayFabConst.hideLogs)
+                    Log.i(PlayFabConst.LOG_TAG, "Schedule Msg: " + notifyPackage.Message + ", Alarm was set to: " + notifyPackage.ScheduleDate + ", delayMillis: " + delayMillis);
+            } else {
+                sendNotificationNow(intent, notifyPackage);
             }
-        }catch (Exception e){
-            Log.d(TAG, e.getMessage());
-        }
-
-    }
-
-    public static void ScheduleNotification(Context intent, String dateString, PlayFabNotificationPackage notifyPackage ){
-        Log.i(TAG,"Scheduling future notification");
-        Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, 0,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT );
-        try{
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_STRING);
-            Date date = sdf.parse(dateString);
-
-            Calendar c = Calendar.getInstance();
-            c.setTime(date);
-            long futureMillis = c.getTimeInMillis();
-            long nowMillis = System.currentTimeMillis();
-
-            AlarmManager alarmManager = (AlarmManager)intent.getSystemService(intent.ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, futureMillis, pendingIntent);
-            Log.i(TAG, "Alarm was set to: " + date.toString() + " : future - " + futureMillis + ": now - " + nowMillis);
-        }catch(Exception e){
-            Log.d(TAG, e.getMessage());
+        } catch (Exception e) {
+            Log.d(PlayFabConst.LOG_TAG, e.getMessage());
         }
     }
 
-    public static void CancelScheduledNotification(Context intent, PlayFabNotificationPackage notifyPackage){
-        Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notifyPackage);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, PlayFabNotificationSender.getNotificationId(intent),
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT );
-
-        try{
-            AlarmManager alarmManager = (AlarmManager)intent.getSystemService(intent.ALARM_SERVICE);
+    public static void cancelScheduledNotification(Context intent, PlayFabNotificationPackage notifyPackage) {
+        try {
+            Intent notificationIntent = new Intent(intent, NotificationPublisher.class);
+            notificationIntent.putExtra(PlayFabConst.NOTIFICATION_JSON, notifyPackage);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(intent, notifyPackage.Id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) intent.getSystemService(intent.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
-        }catch(Exception e){
-            Log.d(TAG, e.getMessage());
+        } catch (Exception e) {
+            Log.d(PlayFabConst.LOG_TAG, e.getMessage());
         }
     }
-
 }

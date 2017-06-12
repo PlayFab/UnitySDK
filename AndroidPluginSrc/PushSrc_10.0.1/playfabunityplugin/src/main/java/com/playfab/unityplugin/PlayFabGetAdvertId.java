@@ -17,7 +17,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 // This example built from:
 // http://stackoverflow.com/questions/20097506/using-the-new-android-advertiser-id-inside-an-sdk
 
-
 // <summary>
 // Fetch and expose the Google Advertising Id, and expose it to Unity
 // </summary>

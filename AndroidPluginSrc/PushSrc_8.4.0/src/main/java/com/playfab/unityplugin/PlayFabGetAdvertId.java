@@ -17,7 +17,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 // This example built from:
 // http://stackoverflow.com/questions/20097506/using-the-new-android-advertiser-id-inside-an-sdk
 
-
 // <summary>
 // Fetch and expose the Google Advertising Id, and expose it to Unity
 // </summary>
@@ -47,13 +46,13 @@ public final class PlayFabGetAdvertId {
     // Perform the work that fetches and stores the advertisingId
     // </summary>
     public static AdInfo getAdvertisingIdInfo(Context context) throws Exception {
-        if(Looper.myLooper() == Looper.getMainLooper())
+        if (Looper.myLooper() == Looper.getMainLooper())
             throw new IllegalStateException("Cannot be called from the main thread");
 
         try {
             PackageManager pm = context.getPackageManager();
             pm.getPackageInfo("com.android.vending", 0);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw e;
         }
 
@@ -61,12 +60,12 @@ public final class PlayFabGetAdvertId {
         Intent intent = new Intent("com.google.android.gms.ads.identifier.service.START");
         intent.setPackage("com.google.android.gms");
         try {
-            if(context.bindService(intent, connection, Context.BIND_AUTO_CREATE)) {
+            if (context.bindService(intent, connection, Context.BIND_AUTO_CREATE)) {
                 AdvertisingInterface adInterface = new AdvertisingInterface(connection.getBinder());
                 AdInfo adInfo = new AdInfo(adInterface.getId(), adInterface.isLimitAdTrackingEnabled(true));
                 return adInfo;
             }
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             throw exception;
         } finally {
             context.unbindService(connection);
@@ -82,16 +81,19 @@ public final class PlayFabGetAdvertId {
         private final LinkedBlockingQueue<IBinder> queue = new LinkedBlockingQueue<IBinder>(1);
 
         public void onServiceConnected(ComponentName name, IBinder service) {
-            try { this.queue.put(service); }
-            catch (InterruptedException localInterruptedException){}
+            try {
+                this.queue.put(service);
+            } catch (InterruptedException localInterruptedException) {
+            }
         }
 
-        public void onServiceDisconnected(ComponentName name){}
+        public void onServiceDisconnected(ComponentName name) {
+        }
 
         public IBinder getBinder() throws InterruptedException {
             if (this.retrieved) throw new IllegalStateException();
             this.retrieved = true;
-            return (IBinder)this.queue.take();
+            return (IBinder) this.queue.take();
         }
     }
 
