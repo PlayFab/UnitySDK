@@ -42,7 +42,7 @@ This portion of the guide provides a step-by-step for deleting an older PlayFab 
     * If you have other plugins, then you want to be EXTREMELY careful, and backup everything
       * Upgrading the PlayFab Push Plugin will be extremely risky, because of how Android dependencies work - Proceed at your own risk
       * Carefully delete any PlayFab related .cs source files, and try to determine if any Jar/Aar files are no longer used/required
-    * If PlayFab Push is your only Android Plugin, then just delete this folder
+    * If PlayFab Push is your only Android Plugin, then just delete the Assets/Plugins/Android folder
 * Go back to your code, and look for compile errors pertaining to the classes below
   * Most users will delete almost all references to those classes, and add ONLY two new lines:
     * When you set PlayFabSettings.TitleID, or somewhere very early in your project start up:
