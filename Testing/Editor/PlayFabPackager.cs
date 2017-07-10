@@ -65,7 +65,7 @@ namespace PlayFab.Internal
 #if UNITY_5
                 return BuildTarget.iOS;
 #else
-                return BuildTarget.iPhone;
+                return BuildTarget.iOS;
 #endif
             }
         }
@@ -76,7 +76,7 @@ namespace PlayFab.Internal
 #if UNITY_5
                 return BuildTargetGroup.iOS;
 #else
-                return BuildTargetGroup.iPhone;
+                return BuildTargetGroup.iOS;
 #endif
             }
         }

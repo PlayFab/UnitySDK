@@ -906,6 +906,24 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class CreatePlayerSharedSecretRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Friendly name for this key
+        /// </summary>
+        public string FriendlyName;
+    }
+
+    [Serializable]
+    public class CreatePlayerSharedSecretResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The player shared secret to use when calling Client/GetTitlePublicKey
+        /// </summary>
+        public string SecretKey;
+    }
+
+    [Serializable]
     public class CreatePlayerStatisticDefinitionRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1113,6 +1131,20 @@ namespace PlayFab.AdminModels
         /// Key of the content item to be deleted
         /// </summary>
         public string Key;
+    }
+
+    [Serializable]
+    public class DeletePlayerSharedSecretRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The shared secret key to delete
+        /// </summary>
+        public string SecretKey;
+    }
+
+    [Serializable]
+    public class DeletePlayerSharedSecretResult : PlayFabResultCommon
+    {
     }
 
     [Serializable]
@@ -1542,6 +1574,20 @@ namespace PlayFab.AdminModels
         /// Array of segments the requested player currently belongs to.
         /// </summary>
         public List<GetSegmentResult> Segments;
+    }
+
+    [Serializable]
+    public class GetPlayerSharedSecretsRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
+    public class GetPlayerSharedSecretsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The player shared secret to use when calling Client/GetTitlePublicKey
+        /// </summary>
+        public List<SharedSecret> SharedSecrets;
     }
 
     [Serializable]
@@ -2682,6 +2728,13 @@ namespace PlayFab.AdminModels
         public string NotificationEndpointARN;
     }
 
+    public enum PushSetupPlatform
+    {
+        GCM,
+        APNS,
+        APNS_SANDBOX
+    }
+
     [Serializable]
     public class RandomResultTable
     {
@@ -3046,6 +3099,24 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class SetPlayerSecretRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// </summary>
+        public string PlayerSecret;
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class SetPlayerSecretResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class SetPublishedRevisionRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3109,7 +3180,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// supported notification platforms are Apple Push Notification Service (APNS and APNS_SANDBOX) for iOS and Google Cloud Messaging (GCM) for Android
         /// </summary>
-        public string Platform;
+        public PushSetupPlatform Platform;
         /// <summary>
         /// for APNS, this is the PlatformPrincipal (SSL Certificate)
         /// </summary>
@@ -3131,6 +3202,23 @@ namespace PlayFab.AdminModels
         /// Amazon Resource Name for the created notification topic.
         /// </summary>
         public string ARN;
+    }
+
+    [Serializable]
+    public class SharedSecret
+    {
+        /// <summary>
+        /// The player shared secret to use when calling Client/GetTitlePublicKey
+        /// </summary>
+        public string SecretKey;
+        /// <summary>
+        /// Friendly name for this key
+        /// </summary>
+        public string FriendlyName;
+        /// <summary>
+        /// Flag to indicate if this key is disabled
+        /// </summary>
+        public bool Disabled;
     }
 
     public enum SourceType
@@ -3406,6 +3494,28 @@ namespace PlayFab.AdminModels
         /// New revision number created
         /// </summary>
         public int Revision;
+    }
+
+    [Serializable]
+    public class UpdatePlayerSharedSecretRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The shared secret key to update
+        /// </summary>
+        public string SecretKey;
+        /// <summary>
+        /// Friendly name for this key
+        /// </summary>
+        public string FriendlyName;
+        /// <summary>
+        /// Disable or Enable this key
+        /// </summary>
+        public bool Disabled;
+    }
+
+    [Serializable]
+    public class UpdatePlayerSharedSecretResult : PlayFabResultCommon
+    {
     }
 
     [Serializable]

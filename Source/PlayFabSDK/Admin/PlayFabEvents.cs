@@ -5,8 +5,18 @@ namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
+        public event PlayFabRequestEvent<CreatePlayerSharedSecretRequest> OnAdminCreatePlayerSharedSecretRequestEvent;
+        public event PlayFabResultEvent<CreatePlayerSharedSecretResult> OnAdminCreatePlayerSharedSecretResultEvent;
+        public event PlayFabRequestEvent<DeletePlayerSharedSecretRequest> OnAdminDeletePlayerSharedSecretRequestEvent;
+        public event PlayFabResultEvent<DeletePlayerSharedSecretResult> OnAdminDeletePlayerSharedSecretResultEvent;
+        public event PlayFabRequestEvent<GetPlayerSharedSecretsRequest> OnAdminGetPlayerSharedSecretsRequestEvent;
+        public event PlayFabResultEvent<GetPlayerSharedSecretsResult> OnAdminGetPlayerSharedSecretsResultEvent;
         public event PlayFabRequestEvent<GetPolicyRequest> OnAdminGetPolicyRequestEvent;
         public event PlayFabResultEvent<GetPolicyResponse> OnAdminGetPolicyResultEvent;
+        public event PlayFabRequestEvent<SetPlayerSecretRequest> OnAdminSetPlayerSecretRequestEvent;
+        public event PlayFabResultEvent<SetPlayerSecretResult> OnAdminSetPlayerSecretResultEvent;
+        public event PlayFabRequestEvent<UpdatePlayerSharedSecretRequest> OnAdminUpdatePlayerSharedSecretRequestEvent;
+        public event PlayFabResultEvent<UpdatePlayerSharedSecretResult> OnAdminUpdatePlayerSharedSecretResultEvent;
         public event PlayFabRequestEvent<UpdatePolicyRequest> OnAdminUpdatePolicyRequestEvent;
         public event PlayFabResultEvent<UpdatePolicyResponse> OnAdminUpdatePolicyResultEvent;
         public event PlayFabRequestEvent<BanUsersRequest> OnAdminBanUsersRequestEvent;

@@ -33,8 +33,23 @@ namespace PlayFab.Events
             if (OnLoginResultEvent != null) { foreach (var each in OnLoginResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginResultEvent -= (PlayFabResultEvent<ClientModels.LoginResult>)each; } } }
 #endif
 #if ENABLE_PLAYFABADMIN_API
+            if (OnAdminCreatePlayerSharedSecretRequestEvent != null) { foreach (var each in OnAdminCreatePlayerSharedSecretRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminCreatePlayerSharedSecretRequestEvent -= (PlayFabRequestEvent<AdminModels.CreatePlayerSharedSecretRequest>)each; } } }
+            if (OnAdminCreatePlayerSharedSecretResultEvent != null) { foreach (var each in OnAdminCreatePlayerSharedSecretResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminCreatePlayerSharedSecretResultEvent -= (PlayFabResultEvent<AdminModels.CreatePlayerSharedSecretResult>)each; } } }
+
+            if (OnAdminDeletePlayerSharedSecretRequestEvent != null) { foreach (var each in OnAdminDeletePlayerSharedSecretRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeletePlayerSharedSecretRequestEvent -= (PlayFabRequestEvent<AdminModels.DeletePlayerSharedSecretRequest>)each; } } }
+            if (OnAdminDeletePlayerSharedSecretResultEvent != null) { foreach (var each in OnAdminDeletePlayerSharedSecretResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeletePlayerSharedSecretResultEvent -= (PlayFabResultEvent<AdminModels.DeletePlayerSharedSecretResult>)each; } } }
+
+            if (OnAdminGetPlayerSharedSecretsRequestEvent != null) { foreach (var each in OnAdminGetPlayerSharedSecretsRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminGetPlayerSharedSecretsRequestEvent -= (PlayFabRequestEvent<AdminModels.GetPlayerSharedSecretsRequest>)each; } } }
+            if (OnAdminGetPlayerSharedSecretsResultEvent != null) { foreach (var each in OnAdminGetPlayerSharedSecretsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminGetPlayerSharedSecretsResultEvent -= (PlayFabResultEvent<AdminModels.GetPlayerSharedSecretsResult>)each; } } }
+
             if (OnAdminGetPolicyRequestEvent != null) { foreach (var each in OnAdminGetPolicyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminGetPolicyRequestEvent -= (PlayFabRequestEvent<AdminModels.GetPolicyRequest>)each; } } }
             if (OnAdminGetPolicyResultEvent != null) { foreach (var each in OnAdminGetPolicyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminGetPolicyResultEvent -= (PlayFabResultEvent<AdminModels.GetPolicyResponse>)each; } } }
+
+            if (OnAdminSetPlayerSecretRequestEvent != null) { foreach (var each in OnAdminSetPlayerSecretRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminSetPlayerSecretRequestEvent -= (PlayFabRequestEvent<AdminModels.SetPlayerSecretRequest>)each; } } }
+            if (OnAdminSetPlayerSecretResultEvent != null) { foreach (var each in OnAdminSetPlayerSecretResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminSetPlayerSecretResultEvent -= (PlayFabResultEvent<AdminModels.SetPlayerSecretResult>)each; } } }
+
+            if (OnAdminUpdatePlayerSharedSecretRequestEvent != null) { foreach (var each in OnAdminUpdatePlayerSharedSecretRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdatePlayerSharedSecretRequestEvent -= (PlayFabRequestEvent<AdminModels.UpdatePlayerSharedSecretRequest>)each; } } }
+            if (OnAdminUpdatePlayerSharedSecretResultEvent != null) { foreach (var each in OnAdminUpdatePlayerSharedSecretResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdatePlayerSharedSecretResultEvent -= (PlayFabResultEvent<AdminModels.UpdatePlayerSharedSecretResult>)each; } } }
 
             if (OnAdminUpdatePolicyRequestEvent != null) { foreach (var each in OnAdminUpdatePolicyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdatePolicyRequestEvent -= (PlayFabRequestEvent<AdminModels.UpdatePolicyRequest>)each; } } }
             if (OnAdminUpdatePolicyResultEvent != null) { foreach (var each in OnAdminUpdatePolicyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdatePolicyResultEvent -= (PlayFabResultEvent<AdminModels.UpdatePolicyResponse>)each; } } }
@@ -330,6 +345,9 @@ namespace PlayFab.Events
 #if ENABLE_PLAYFABSERVER_API
             if (OnServerAuthenticateSessionTicketRequestEvent != null) { foreach (var each in OnServerAuthenticateSessionTicketRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAuthenticateSessionTicketRequestEvent -= (PlayFabRequestEvent<ServerModels.AuthenticateSessionTicketRequest>)each; } } }
             if (OnServerAuthenticateSessionTicketResultEvent != null) { foreach (var each in OnServerAuthenticateSessionTicketResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAuthenticateSessionTicketResultEvent -= (PlayFabResultEvent<ServerModels.AuthenticateSessionTicketResult>)each; } } }
+
+            if (OnServerSetPlayerSecretRequestEvent != null) { foreach (var each in OnServerSetPlayerSecretRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSetPlayerSecretRequestEvent -= (PlayFabRequestEvent<ServerModels.SetPlayerSecretRequest>)each; } } }
+            if (OnServerSetPlayerSecretResultEvent != null) { foreach (var each in OnServerSetPlayerSecretResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSetPlayerSecretResultEvent -= (PlayFabResultEvent<ServerModels.SetPlayerSecretResult>)each; } } }
 
             if (OnServerBanUsersRequestEvent != null) { foreach (var each in OnServerBanUsersRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerBanUsersRequestEvent -= (PlayFabRequestEvent<ServerModels.BanUsersRequest>)each; } } }
             if (OnServerBanUsersResultEvent != null) { foreach (var each in OnServerBanUsersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerBanUsersResultEvent -= (PlayFabResultEvent<ServerModels.BanUsersResult>)each; } } }
@@ -657,6 +675,9 @@ namespace PlayFab.Events
             if (OnGetPhotonAuthenticationTokenRequestEvent != null) { foreach (var each in OnGetPhotonAuthenticationTokenRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGetPhotonAuthenticationTokenRequestEvent -= (PlayFabRequestEvent<ClientModels.GetPhotonAuthenticationTokenRequest>)each; } } }
             if (OnGetPhotonAuthenticationTokenResultEvent != null) { foreach (var each in OnGetPhotonAuthenticationTokenResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGetPhotonAuthenticationTokenResultEvent -= (PlayFabResultEvent<ClientModels.GetPhotonAuthenticationTokenResult>)each; } } }
 
+            if (OnGetTitlePublicKeyRequestEvent != null) { foreach (var each in OnGetTitlePublicKeyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGetTitlePublicKeyRequestEvent -= (PlayFabRequestEvent<ClientModels.GetTitlePublicKeyRequest>)each; } } }
+            if (OnGetTitlePublicKeyResultEvent != null) { foreach (var each in OnGetTitlePublicKeyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGetTitlePublicKeyResultEvent -= (PlayFabResultEvent<ClientModels.GetTitlePublicKeyResult>)each; } } }
+
             if (OnGetWindowsHelloChallengeRequestEvent != null) { foreach (var each in OnGetWindowsHelloChallengeRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGetWindowsHelloChallengeRequestEvent -= (PlayFabRequestEvent<ClientModels.GetWindowsHelloChallengeRequest>)each; } } }
             if (OnGetWindowsHelloChallengeResultEvent != null) { foreach (var each in OnGetWindowsHelloChallengeResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGetWindowsHelloChallengeResultEvent -= (PlayFabResultEvent<ClientModels.GetWindowsHelloChallengeResponse>)each; } } }
 
@@ -688,6 +709,9 @@ namespace PlayFab.Events
             if (OnRegisterPlayFabUserResultEvent != null) { foreach (var each in OnRegisterPlayFabUserResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnRegisterPlayFabUserResultEvent -= (PlayFabResultEvent<ClientModels.RegisterPlayFabUserResult>)each; } } }
 
             if (OnRegisterWithWindowsHelloRequestEvent != null) { foreach (var each in OnRegisterWithWindowsHelloRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnRegisterWithWindowsHelloRequestEvent -= (PlayFabRequestEvent<ClientModels.RegisterWithWindowsHelloRequest>)each; } } }
+
+            if (OnSetPlayerSecretRequestEvent != null) { foreach (var each in OnSetPlayerSecretRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnSetPlayerSecretRequestEvent -= (PlayFabRequestEvent<ClientModels.SetPlayerSecretRequest>)each; } } }
+            if (OnSetPlayerSecretResultEvent != null) { foreach (var each in OnSetPlayerSecretResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnSetPlayerSecretResultEvent -= (PlayFabResultEvent<ClientModels.SetPlayerSecretResult>)each; } } }
 
             if (OnAddGenericIDRequestEvent != null) { foreach (var each in OnAddGenericIDRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddGenericIDRequestEvent -= (PlayFabRequestEvent<ClientModels.AddGenericIDRequest>)each; } } }
             if (OnAddGenericIDResultEvent != null) { foreach (var each in OnAddGenericIDResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddGenericIDResultEvent -= (PlayFabResultEvent<ClientModels.AddGenericIDResult>)each; } } }
@@ -1045,7 +1069,12 @@ namespace PlayFab.Events
             {
                 var type = e.Request.GetType();
 #if ENABLE_PLAYFABADMIN_API
+                if (type == typeof(AdminModels.CreatePlayerSharedSecretRequest)) { if (_instance.OnAdminCreatePlayerSharedSecretRequestEvent != null) { _instance.OnAdminCreatePlayerSharedSecretRequestEvent((AdminModels.CreatePlayerSharedSecretRequest)e.Request); return; } }
+                if (type == typeof(AdminModels.DeletePlayerSharedSecretRequest)) { if (_instance.OnAdminDeletePlayerSharedSecretRequestEvent != null) { _instance.OnAdminDeletePlayerSharedSecretRequestEvent((AdminModels.DeletePlayerSharedSecretRequest)e.Request); return; } }
+                if (type == typeof(AdminModels.GetPlayerSharedSecretsRequest)) { if (_instance.OnAdminGetPlayerSharedSecretsRequestEvent != null) { _instance.OnAdminGetPlayerSharedSecretsRequestEvent((AdminModels.GetPlayerSharedSecretsRequest)e.Request); return; } }
                 if (type == typeof(AdminModels.GetPolicyRequest)) { if (_instance.OnAdminGetPolicyRequestEvent != null) { _instance.OnAdminGetPolicyRequestEvent((AdminModels.GetPolicyRequest)e.Request); return; } }
+                if (type == typeof(AdminModels.SetPlayerSecretRequest)) { if (_instance.OnAdminSetPlayerSecretRequestEvent != null) { _instance.OnAdminSetPlayerSecretRequestEvent((AdminModels.SetPlayerSecretRequest)e.Request); return; } }
+                if (type == typeof(AdminModels.UpdatePlayerSharedSecretRequest)) { if (_instance.OnAdminUpdatePlayerSharedSecretRequestEvent != null) { _instance.OnAdminUpdatePlayerSharedSecretRequestEvent((AdminModels.UpdatePlayerSharedSecretRequest)e.Request); return; } }
                 if (type == typeof(AdminModels.UpdatePolicyRequest)) { if (_instance.OnAdminUpdatePolicyRequestEvent != null) { _instance.OnAdminUpdatePolicyRequestEvent((AdminModels.UpdatePolicyRequest)e.Request); return; } }
                 if (type == typeof(AdminModels.BanUsersRequest)) { if (_instance.OnAdminBanUsersRequestEvent != null) { _instance.OnAdminBanUsersRequestEvent((AdminModels.BanUsersRequest)e.Request); return; } }
                 if (type == typeof(AdminModels.LookupUserAccountInfoRequest)) { if (_instance.OnAdminGetUserAccountInfoRequestEvent != null) { _instance.OnAdminGetUserAccountInfoRequestEvent((AdminModels.LookupUserAccountInfoRequest)e.Request); return; } }
@@ -1147,6 +1176,7 @@ namespace PlayFab.Events
 #endif
 #if ENABLE_PLAYFABSERVER_API
                 if (type == typeof(ServerModels.AuthenticateSessionTicketRequest)) { if (_instance.OnServerAuthenticateSessionTicketRequestEvent != null) { _instance.OnServerAuthenticateSessionTicketRequestEvent((ServerModels.AuthenticateSessionTicketRequest)e.Request); return; } }
+                if (type == typeof(ServerModels.SetPlayerSecretRequest)) { if (_instance.OnServerSetPlayerSecretRequestEvent != null) { _instance.OnServerSetPlayerSecretRequestEvent((ServerModels.SetPlayerSecretRequest)e.Request); return; } }
                 if (type == typeof(ServerModels.BanUsersRequest)) { if (_instance.OnServerBanUsersRequestEvent != null) { _instance.OnServerBanUsersRequestEvent((ServerModels.BanUsersRequest)e.Request); return; } }
                 if (type == typeof(ServerModels.GetPlayerProfileRequest)) { if (_instance.OnServerGetPlayerProfileRequestEvent != null) { _instance.OnServerGetPlayerProfileRequestEvent((ServerModels.GetPlayerProfileRequest)e.Request); return; } }
                 if (type == typeof(ServerModels.GetPlayFabIDsFromFacebookIDsRequest)) { if (_instance.OnServerGetPlayFabIDsFromFacebookIDsRequestEvent != null) { _instance.OnServerGetPlayFabIDsFromFacebookIDsRequestEvent((ServerModels.GetPlayFabIDsFromFacebookIDsRequest)e.Request); return; } }
@@ -1257,6 +1287,7 @@ namespace PlayFab.Events
 #endif
 #if !DISABLE_PLAYFABCLIENT_API
                 if (type == typeof(ClientModels.GetPhotonAuthenticationTokenRequest)) { if (_instance.OnGetPhotonAuthenticationTokenRequestEvent != null) { _instance.OnGetPhotonAuthenticationTokenRequestEvent((ClientModels.GetPhotonAuthenticationTokenRequest)e.Request); return; } }
+                if (type == typeof(ClientModels.GetTitlePublicKeyRequest)) { if (_instance.OnGetTitlePublicKeyRequestEvent != null) { _instance.OnGetTitlePublicKeyRequestEvent((ClientModels.GetTitlePublicKeyRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.GetWindowsHelloChallengeRequest)) { if (_instance.OnGetWindowsHelloChallengeRequestEvent != null) { _instance.OnGetWindowsHelloChallengeRequestEvent((ClientModels.GetWindowsHelloChallengeRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithAndroidDeviceIDRequest)) { if (_instance.OnLoginWithAndroidDeviceIDRequestEvent != null) { _instance.OnLoginWithAndroidDeviceIDRequestEvent((ClientModels.LoginWithAndroidDeviceIDRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithCustomIDRequest)) { if (_instance.OnLoginWithCustomIDRequestEvent != null) { _instance.OnLoginWithCustomIDRequestEvent((ClientModels.LoginWithCustomIDRequest)e.Request); return; } }
@@ -1272,6 +1303,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.LoginWithWindowsHelloRequest)) { if (_instance.OnLoginWithWindowsHelloRequestEvent != null) { _instance.OnLoginWithWindowsHelloRequestEvent((ClientModels.LoginWithWindowsHelloRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.RegisterPlayFabUserRequest)) { if (_instance.OnRegisterPlayFabUserRequestEvent != null) { _instance.OnRegisterPlayFabUserRequestEvent((ClientModels.RegisterPlayFabUserRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.RegisterWithWindowsHelloRequest)) { if (_instance.OnRegisterWithWindowsHelloRequestEvent != null) { _instance.OnRegisterWithWindowsHelloRequestEvent((ClientModels.RegisterWithWindowsHelloRequest)e.Request); return; } }
+                if (type == typeof(ClientModels.SetPlayerSecretRequest)) { if (_instance.OnSetPlayerSecretRequestEvent != null) { _instance.OnSetPlayerSecretRequestEvent((ClientModels.SetPlayerSecretRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.AddGenericIDRequest)) { if (_instance.OnAddGenericIDRequestEvent != null) { _instance.OnAddGenericIDRequestEvent((ClientModels.AddGenericIDRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.AddUsernamePasswordRequest)) { if (_instance.OnAddUsernamePasswordRequestEvent != null) { _instance.OnAddUsernamePasswordRequestEvent((ClientModels.AddUsernamePasswordRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.GetAccountInfoRequest)) { if (_instance.OnGetAccountInfoRequestEvent != null) { _instance.OnGetAccountInfoRequestEvent((ClientModels.GetAccountInfoRequest)e.Request); return; } }
@@ -1392,7 +1424,12 @@ namespace PlayFab.Events
                 var type = e.Result.GetType();
 #if ENABLE_PLAYFABADMIN_API
 
+                if (type == typeof(AdminModels.CreatePlayerSharedSecretResult)) { if (_instance.OnAdminCreatePlayerSharedSecretResultEvent != null) { _instance.OnAdminCreatePlayerSharedSecretResultEvent((AdminModels.CreatePlayerSharedSecretResult)e.Result); return; } }
+                if (type == typeof(AdminModels.DeletePlayerSharedSecretResult)) { if (_instance.OnAdminDeletePlayerSharedSecretResultEvent != null) { _instance.OnAdminDeletePlayerSharedSecretResultEvent((AdminModels.DeletePlayerSharedSecretResult)e.Result); return; } }
+                if (type == typeof(AdminModels.GetPlayerSharedSecretsResult)) { if (_instance.OnAdminGetPlayerSharedSecretsResultEvent != null) { _instance.OnAdminGetPlayerSharedSecretsResultEvent((AdminModels.GetPlayerSharedSecretsResult)e.Result); return; } }
                 if (type == typeof(AdminModels.GetPolicyResponse)) { if (_instance.OnAdminGetPolicyResultEvent != null) { _instance.OnAdminGetPolicyResultEvent((AdminModels.GetPolicyResponse)e.Result); return; } }
+                if (type == typeof(AdminModels.SetPlayerSecretResult)) { if (_instance.OnAdminSetPlayerSecretResultEvent != null) { _instance.OnAdminSetPlayerSecretResultEvent((AdminModels.SetPlayerSecretResult)e.Result); return; } }
+                if (type == typeof(AdminModels.UpdatePlayerSharedSecretResult)) { if (_instance.OnAdminUpdatePlayerSharedSecretResultEvent != null) { _instance.OnAdminUpdatePlayerSharedSecretResultEvent((AdminModels.UpdatePlayerSharedSecretResult)e.Result); return; } }
                 if (type == typeof(AdminModels.UpdatePolicyResponse)) { if (_instance.OnAdminUpdatePolicyResultEvent != null) { _instance.OnAdminUpdatePolicyResultEvent((AdminModels.UpdatePolicyResponse)e.Result); return; } }
                 if (type == typeof(AdminModels.BanUsersResult)) { if (_instance.OnAdminBanUsersResultEvent != null) { _instance.OnAdminBanUsersResultEvent((AdminModels.BanUsersResult)e.Result); return; } }
                 if (type == typeof(AdminModels.LookupUserAccountInfoResult)) { if (_instance.OnAdminGetUserAccountInfoResultEvent != null) { _instance.OnAdminGetUserAccountInfoResultEvent((AdminModels.LookupUserAccountInfoResult)e.Result); return; } }
@@ -1496,6 +1533,7 @@ namespace PlayFab.Events
 #if ENABLE_PLAYFABSERVER_API
 
                 if (type == typeof(ServerModels.AuthenticateSessionTicketResult)) { if (_instance.OnServerAuthenticateSessionTicketResultEvent != null) { _instance.OnServerAuthenticateSessionTicketResultEvent((ServerModels.AuthenticateSessionTicketResult)e.Result); return; } }
+                if (type == typeof(ServerModels.SetPlayerSecretResult)) { if (_instance.OnServerSetPlayerSecretResultEvent != null) { _instance.OnServerSetPlayerSecretResultEvent((ServerModels.SetPlayerSecretResult)e.Result); return; } }
                 if (type == typeof(ServerModels.BanUsersResult)) { if (_instance.OnServerBanUsersResultEvent != null) { _instance.OnServerBanUsersResultEvent((ServerModels.BanUsersResult)e.Result); return; } }
                 if (type == typeof(ServerModels.GetPlayerProfileResult)) { if (_instance.OnServerGetPlayerProfileResultEvent != null) { _instance.OnServerGetPlayerProfileResultEvent((ServerModels.GetPlayerProfileResult)e.Result); return; } }
                 if (type == typeof(ServerModels.GetPlayFabIDsFromFacebookIDsResult)) { if (_instance.OnServerGetPlayFabIDsFromFacebookIDsResultEvent != null) { _instance.OnServerGetPlayFabIDsFromFacebookIDsResultEvent((ServerModels.GetPlayFabIDsFromFacebookIDsResult)e.Result); return; } }
@@ -1608,8 +1646,10 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.LoginResult)) { if (_instance.OnLoginResultEvent != null) { _instance.OnLoginResultEvent((ClientModels.LoginResult)e.Result); return; } }
 
                 if (type == typeof(ClientModels.GetPhotonAuthenticationTokenResult)) { if (_instance.OnGetPhotonAuthenticationTokenResultEvent != null) { _instance.OnGetPhotonAuthenticationTokenResultEvent((ClientModels.GetPhotonAuthenticationTokenResult)e.Result); return; } }
+                if (type == typeof(ClientModels.GetTitlePublicKeyResult)) { if (_instance.OnGetTitlePublicKeyResultEvent != null) { _instance.OnGetTitlePublicKeyResultEvent((ClientModels.GetTitlePublicKeyResult)e.Result); return; } }
                 if (type == typeof(ClientModels.GetWindowsHelloChallengeResponse)) { if (_instance.OnGetWindowsHelloChallengeResultEvent != null) { _instance.OnGetWindowsHelloChallengeResultEvent((ClientModels.GetWindowsHelloChallengeResponse)e.Result); return; } }
                 if (type == typeof(ClientModels.RegisterPlayFabUserResult)) { if (_instance.OnRegisterPlayFabUserResultEvent != null) { _instance.OnRegisterPlayFabUserResultEvent((ClientModels.RegisterPlayFabUserResult)e.Result); return; } }
+                if (type == typeof(ClientModels.SetPlayerSecretResult)) { if (_instance.OnSetPlayerSecretResultEvent != null) { _instance.OnSetPlayerSecretResultEvent((ClientModels.SetPlayerSecretResult)e.Result); return; } }
                 if (type == typeof(ClientModels.AddGenericIDResult)) { if (_instance.OnAddGenericIDResultEvent != null) { _instance.OnAddGenericIDResultEvent((ClientModels.AddGenericIDResult)e.Result); return; } }
                 if (type == typeof(ClientModels.AddUsernamePasswordResult)) { if (_instance.OnAddUsernamePasswordResultEvent != null) { _instance.OnAddUsernamePasswordResultEvent((ClientModels.AddUsernamePasswordResult)e.Result); return; } }
                 if (type == typeof(ClientModels.GetAccountInfoResult)) { if (_instance.OnGetAccountInfoResultEvent != null) { _instance.OnGetAccountInfoResultEvent((ClientModels.GetAccountInfoResult)e.Result); return; } }

@@ -7,6 +7,8 @@ namespace PlayFab.Events
     {
         public event PlayFabRequestEvent<AuthenticateSessionTicketRequest> OnServerAuthenticateSessionTicketRequestEvent;
         public event PlayFabResultEvent<AuthenticateSessionTicketResult> OnServerAuthenticateSessionTicketResultEvent;
+        public event PlayFabRequestEvent<SetPlayerSecretRequest> OnServerSetPlayerSecretRequestEvent;
+        public event PlayFabResultEvent<SetPlayerSecretResult> OnServerSetPlayerSecretResultEvent;
         public event PlayFabRequestEvent<BanUsersRequest> OnServerBanUsersRequestEvent;
         public event PlayFabResultEvent<BanUsersResult> OnServerBanUsersResultEvent;
         public event PlayFabRequestEvent<GetPlayerProfileRequest> OnServerGetPlayerProfileRequestEvent;
