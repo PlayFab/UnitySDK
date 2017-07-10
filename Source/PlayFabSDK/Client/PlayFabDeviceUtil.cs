@@ -11,10 +11,13 @@ namespace PlayFab.Internal
         private const string GAME_OBJECT_NAME = "_PlayFabGO";
 
         private static GameObject _playFabAndroidPushGo;
+        private static bool _needsAttribution;
 
         #region Make Attribution API call
         private static void DoAttributeInstall()
         {
+            if (!_needsAttribution || PlayFabSettings.DisableAdvertising)
+                return; // Don't send this value to PlayFab if it's not required
             var attribRequest = new AttributeInstallRequest();
             switch (PlayFabSettings.AdvertisingIdType)
             {
@@ -55,48 +58,22 @@ namespace PlayFab.Internal
 
         public static void OnPlayFabLogin(LoginResult loginResult, RegisterPlayFabUserResult registerResult)
         {
-            var needsAttribution = false;
-            if (loginResult != null)
-                needsAttribution = loginResult.SettingsForUser.NeedsAttribution;
-            else if (registerResult != null)
-                needsAttribution = registerResult.SettingsForUser.NeedsAttribution;
+            _needsAttribution = false;
+            if (loginResult != null && loginResult.SettingsForUser != null)
+                _needsAttribution = loginResult.SettingsForUser.NeedsAttribution;
+            else if (registerResult != null && registerResult.SettingsForUser != null)
+                _needsAttribution = registerResult.SettingsForUser.NeedsAttribution;
 
-            List<PushNotificationRegistrationModel> pushNotificationRegistrations = null;
-            if (loginResult != null && loginResult.InfoResultPayload != null) // && res.InfoResultPayload.Profile != null) // TODO: FINISH THIS WHEN PROFILE IS READY
-            {
-                //pushNotificationRegistrations = res.InfoResultPayload.Profile.PushNotificationRegistrations;
-                pushNotificationRegistrations = new List<PushNotificationRegistrationModel>(); // TODO: This definitely isn't right
-            }
-
-            if (needsAttribution)
-                SetDeviceAttribution();
-
-            var androidPushTokens = new HashSet<string>();
-            if (pushNotificationRegistrations != null)
-                foreach (var each in pushNotificationRegistrations)
-                    if (each.Platform != null && each.Platform.Value == PushNotificationPlatform.GoogleCloudMessaging)
-                        androidPushTokens.Add(each.NotificationEndpointARN);
-            RegisterForAndroidPush(androidPushTokens);
-        }
-
-        private static void SetDeviceAttribution()
-        {
-            if (PlayFabSettings.DisableAdvertising)
-                return;
+            // Device attribution (adid or idfa)
             if (PlayFabSettings.AdvertisingIdType != null && PlayFabSettings.AdvertisingIdValue != null)
                 DoAttributeInstall();
             else
                 GetAdvertIdFromUnity();
-        }
 
-        private static void RegisterForAndroidPush(HashSet<string> androidPushTokens)
-        {
+            // Push Notification Plugin Setup
             _playFabAndroidPushGo = GameObject.Find(GAME_OBJECT_NAME);
             if (_playFabAndroidPushGo != null)
-            {
                 _playFabAndroidPushGo.BroadcastMessage("OnPlayFabLogin", (Action<string, bool, string>)RegisterForAndroidPush);
-                _playFabAndroidPushGo.BroadcastMessage("SetPushRegistrations", androidPushTokens);
-            }
         }
 
         private static void GetAdvertIdFromUnity()

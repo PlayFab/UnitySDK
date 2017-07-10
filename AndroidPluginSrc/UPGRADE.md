@@ -1,6 +1,6 @@
 # PlayFab Unity Android Push - Upgrade guide
 
-## Upgrade Instructions
+## Upgrade Instructions - Quick
 
 This section has the fastest set of instructions, but with less detail:
 
@@ -29,6 +29,27 @@ OPTIONAL:
   * You can reset it whenever you like: PlayFabAndroidPushPlugin.AlwaysShowOnNotificationBar(true/false)
     * It's highly suggested you just call it once at program start with your preference
 
+
+## Upgrade Instructions - Detailed
+
+This portion of the guide provides a step-by-step for deleting an older PlayFab Plugin, and replacing it with a new one.
+
+* First, you will want to find the Assets/Plugins Folder.
+* In that folder, there are two folders used by PlayFab: Android and PlayFabShared
+  * PlayFabShared should contain exactly one file: PlayFabErrors
+    * Do not delete this file - It is a PlayFab SDK file, and is not part of the Push Plugin
+  * Everything in the Android folder gets mixed with every other Android Plugin you may have, and all the dependencies become undefined
+    * If you have other plugins, then you want to be EXTREMELY careful, and backup everything
+      * Upgrading the PlayFab Push Plugin will be extremely risky, because of how Android dependencies work - Proceed at your own risk
+      * Carefully delete any PlayFab related .cs source files, and try to determine if any Jar/Aar files are no longer used/required
+    * If PlayFab Push is your only Android Plugin, then just delete the Assets/Plugins/Android folder
+* Go back to your code, and look for compile errors pertaining to the classes below
+  * Most users will delete almost all references to those classes, and add ONLY two new lines:
+    * When you set PlayFabSettings.TitleID, or somewhere very early in your project start up:
+      * PlayFabAndroidPushPlugin.Setup(pushSenderId); // This initializes the plugin
+    * After PlayFab login, and verifying that user wants push notifications:
+      * PlayFabAndroidPushPlugin.TriggerManualRegistration();
+      * That user verification step is important, as it's a contract violation between you and Google if you don't get the user's permission
 
 ## Class Overview
 

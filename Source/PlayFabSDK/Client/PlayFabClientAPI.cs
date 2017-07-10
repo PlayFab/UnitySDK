@@ -42,6 +42,15 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Returns the title's base 64 encoded RSA CSP blob.
+        /// </summary>
+        public static void GetTitlePublicKey(GetTitlePublicKeyRequest request, Action<GetTitlePublicKeyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Client/GetTitlePublicKey", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Requests a challenge from the server to be signed by Windows Hello Passport service to authenticate.
         /// </summary>
         public static void GetWindowsHelloChallenge(GetWindowsHelloChallengeRequest request, Action<GetWindowsHelloChallengeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -202,6 +211,16 @@ namespace PlayFab
             if (request.TitleId == null) throw new Exception("Must be have PlayFabSettings.TitleId set to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/RegisterWithWindowsHello", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Sets the player's secret if it is not already set. Player secrets are used to sign API requests. To reset a player's secret use the Admin or Server API method SetPlayerSecret.
+        /// </summary>
+        public static void SetPlayerSecret(SetPlayerSecretRequest request, Action<SetPlayerSecretResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/SetPlayerSecret", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
