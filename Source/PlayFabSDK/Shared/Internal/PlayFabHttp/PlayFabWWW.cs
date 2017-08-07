@@ -76,7 +76,8 @@ namespace PlayFab.Internal
                         else if (regRes != null)
                             AuthKey = regRes.SessionTicket;
 
-                        PlayFabDeviceUtil.OnPlayFabLogin(res, regRes);
+                        if (res != null || regRes != null)
+                            PlayFabDeviceUtil.OnPlayFabLogin(res, regRes);
 #endif
                         try
                         {
@@ -149,7 +150,7 @@ namespace PlayFab.Internal
                 {
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
                     string encoding;
-                    if (www.responseHeaders.TryGetValue("Content-Encoding", out encoding) && encoding.ToLower() == "gzip")
+                    if (www.responseHeaders.TryGetValue("Content-Encoding", out encoding) && encoding.ToLowerInvariant() == "gzip")
                     {
                         var stream = new MemoryStream(www.bytes);
                         using (var gZipStream = new GZipStream(stream, CompressionMode.Decompress, false))

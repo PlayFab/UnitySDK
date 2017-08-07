@@ -116,9 +116,9 @@ namespace PlayFab.UUnit
             var expectedObject = new JsonPropertyAttrTestClass { InvalidField = "asdf", InvalidProperty = "fdsa" };
             var json = JsonWrapper.SerializeObject(expectedObject);
             // Verify that the field names have been transformed by the JsonProperty attribute
-            testContext.False(json.ToLower().Contains("invalid"), json);
-            testContext.False(json.ToLower().Contains("hidenull"), json);
-            testContext.True(json.ToLower().Contains("shownull"), json);
+            testContext.False(json.ToLowerInvariant().Contains("invalid"), json);
+            testContext.False(json.ToLowerInvariant().Contains("hidenull"), json);
+            testContext.True(json.ToLowerInvariant().Contains("shownull"), json);
 
             // Verify that the fields are re-serialized into the proper locations by the JsonProperty attribute
             var actualObject = JsonWrapper.DeserializeObject<JsonPropertyAttrTestClass>(json);

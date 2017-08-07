@@ -575,6 +575,23 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class ContactEmailInfo
+    {
+        /// <summary>
+        /// The name of the email info data
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// The email address
+        /// </summary>
+        public string EmailAddress;
+        /// <summary>
+        /// The verification status of the email
+        /// </summary>
+        public EmailVerificationStatus? VerificationStatus;
+    }
+
+    [Serializable]
     public class ContentInfo
     {
         /// <summary>
@@ -1134,6 +1151,20 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class DeletePlayerRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class DeletePlayerResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class DeletePlayerSharedSecretRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1196,6 +1227,13 @@ namespace PlayFab.AdminModels
     {
         Allow,
         Deny
+    }
+
+    public enum EmailVerificationStatus
+    {
+        Unverified,
+        Pending,
+        Confirmed
     }
 
     [Serializable]
@@ -2628,6 +2666,10 @@ namespace PlayFab.AdminModels
         /// Array of player statistics
         /// </summary>
         public List<PlayerStatistic> PlayerStatistics;
+        /// <summary>
+        /// Array of contact email addresses associated with the player
+        /// </summary>
+        public List<ContactEmailInfo> ContactEmailAddresses;
     }
 
     [Serializable]

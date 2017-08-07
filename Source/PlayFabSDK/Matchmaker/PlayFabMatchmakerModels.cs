@@ -113,11 +113,11 @@ namespace PlayFab.MatchmakerModels
     public class PlayerJoinedRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Unique identifier of the Game Server Instance the user is joining.
+        /// Unique identifier of the Game Server Instance the user is joining. This must be a Game Server Instance started with the Matchmaker/StartGame API.
         /// </summary>
         public string LobbyId;
         /// <summary>
-        /// PlayFab unique identifier for the user joining.
+        /// PlayFab unique identifier for the player joining.
         /// </summary>
         public string PlayFabId;
     }
@@ -131,11 +131,11 @@ namespace PlayFab.MatchmakerModels
     public class PlayerLeftRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Unique identifier of the Game Server Instance the user is leaving.
+        /// Unique identifier of the Game Server Instance the user is leaving. This must be a Game Server Instance started with the Matchmaker/StartGame API.
         /// </summary>
         public string LobbyId;
         /// <summary>
-        /// PlayFab unique identifier for the user leaving.
+        /// PlayFab unique identifier for the player leaving.
         /// </summary>
         public string PlayFabId;
     }
