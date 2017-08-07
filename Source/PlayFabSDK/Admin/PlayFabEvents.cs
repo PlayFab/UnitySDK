@@ -21,6 +21,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdatePolicyResponse> OnAdminUpdatePolicyResultEvent;
         public event PlayFabRequestEvent<BanUsersRequest> OnAdminBanUsersRequestEvent;
         public event PlayFabResultEvent<BanUsersResult> OnAdminBanUsersResultEvent;
+        public event PlayFabRequestEvent<DeletePlayerRequest> OnAdminDeletePlayerRequestEvent;
+        public event PlayFabResultEvent<DeletePlayerResult> OnAdminDeletePlayerResultEvent;
         public event PlayFabRequestEvent<LookupUserAccountInfoRequest> OnAdminGetUserAccountInfoRequestEvent;
         public event PlayFabResultEvent<LookupUserAccountInfoResult> OnAdminGetUserAccountInfoResultEvent;
         public event PlayFabRequestEvent<GetUserBansRequest> OnAdminGetUserBansRequestEvent;

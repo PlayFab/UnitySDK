@@ -3975,7 +3975,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Deprecated: Always true
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public bool? Updated;
         /// <summary>
         /// The number of remaining reports which may be filed today.

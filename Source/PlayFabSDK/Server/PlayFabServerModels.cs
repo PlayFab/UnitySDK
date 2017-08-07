@@ -572,6 +572,23 @@ namespace PlayFab.ServerModels
         public int RemainingUses;
     }
 
+    [Serializable]
+    public class ContactEmailInfo
+    {
+        /// <summary>
+        /// The name of the email info data
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// The email address
+        /// </summary>
+        public string EmailAddress;
+        /// <summary>
+        /// The verification status of the email
+        /// </summary>
+        public EmailVerificationStatus? VerificationStatus;
+    }
+
     public enum ContinentCode
     {
         AF,
@@ -1081,6 +1098,13 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class DeregisterGameResponse : PlayFabResultCommon
     {
+    }
+
+    public enum EmailVerificationStatus
+    {
+        Unverified,
+        Pending,
+        Confirmed
     }
 
     [Serializable]
@@ -2964,6 +2988,10 @@ namespace PlayFab.ServerModels
         /// Array of player statistics
         /// </summary>
         public List<PlayerStatistic> PlayerStatistics;
+        /// <summary>
+        /// Array of contact email addresses associated with the player
+        /// </summary>
+        public List<ContactEmailInfo> ContactEmailAddresses;
     }
 
     [Serializable]
@@ -3431,7 +3459,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Deprecated: Always true
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public bool? Updated;
         /// <summary>
         /// The number of remaining reports which may be filed today by this reporting player.
@@ -3547,7 +3575,6 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Text of message to send.
         /// </summary>
-        [Obsolete("Use 'Package' instead", false)]
         public string Message;
         /// <summary>
         /// Defines all possible push attributes like message, title, icon, etc
