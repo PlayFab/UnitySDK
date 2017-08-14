@@ -498,6 +498,7 @@ namespace PlayFab.PlayStreamModels
     }
     public class SentEmailEventData : PlayStreamEventBase
     {
+        public string EmailTemplateId;
         public string EmailTemplateName;
         public EmailTemplateType? EmailTemplateType;
         public bool Success;
@@ -1693,6 +1694,10 @@ namespace PlayFab.PlayStreamModels
         /// Disable API access by returning errors to all API requests.
         /// </summary>
         public bool DisableAPIAccess;
+        /// <summary>
+        /// Display name randomly-generated suffix length.
+        /// </summary>
+        public int? DisplayNameRandomSuffixLength;
     }
 
     public enum TaskInstanceStatus

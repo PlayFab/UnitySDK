@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using PlayFab.Internal;
 using PlayFab.Json;
 
 namespace PlayFab.UUnit
@@ -106,6 +105,11 @@ namespace PlayFab.UUnit
         public Dictionary<string, uint> UintDict { get; set; }
         public Dictionary<string, Region> EnumDict { get; set; }
         public string TestString { get; set; }
+    }
+
+    internal class SerializeJsonSubOjbect
+    {
+        public object SubObject;
     }
 
     public class JsonFeatureTests : UUnitTestCase
@@ -349,6 +353,22 @@ namespace PlayFab.UUnit
             var testString = PlayFabSimpleJson.DeserializeObject<object>("\"a string\"");
             testContext.IntEquals((int)(ulong)testInt, 1);
             testContext.StringEquals((string)testString, "a string");
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
+        }
+
+        [UUnitTest]
+        public void TestJsonSubObject(UUnitTestContext testContext)
+        {
+            // actualObj contains a real ObjNumFieldTest within subObject
+            var expectedObj = new SerializeJsonSubOjbect { SubObject = new ObjNumFieldTest { ByteValue = 1, DoubleValue = 1, FloatValue = 1, IntValue = 1, LongValue = 1, SbyteValue = 1, ShortValue = 1, UintValue = 1, UlongValue = 1, UshortValue = 1 } };
+            var expectedJson = JsonWrapper.SerializeObject(expectedObj);
+            // Convert back to SerializeJsonSubOjbect which will serialize the original ObjNumFieldTest to a SimpleJson.JsonObject (or equivalent in another serializer)
+            var actualObj = JsonWrapper.DeserializeObject<SerializeJsonSubOjbect>(expectedJson);
+            testContext.False(actualObj.SubObject is ObjNumFieldTest, "ObjNumFieldTest should have deserialized as a generic JsonObject");
+            var actualJson = JsonWrapper.SerializeObject(actualObj);
+            // The real test is that reserializing actualObj should produce identical json
+            testContext.StringEquals(expectedJson, actualJson, actualJson);
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
