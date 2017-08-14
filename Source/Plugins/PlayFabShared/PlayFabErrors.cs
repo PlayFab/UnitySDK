@@ -324,7 +324,11 @@ namespace PlayFab
         AccountDeleted = 1322,
         PlayerSecretNotConfigured = 1323,
         InvalidSignatureTime = 1324,
-        NoContactEmailAddressFound = 1325
+        NoContactEmailAddressFound = 1325,
+        InvalidAuthToken = 1326,
+        AuthTokenDoesNotExist = 1327,
+        AuthTokenExpired = 1328,
+        AuthTokenAlreadyUsedToResetPassword = 1329
     }
 
     public delegate void ErrorCallback(PlayFabError error);

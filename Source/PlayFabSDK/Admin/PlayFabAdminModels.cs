@@ -3748,7 +3748,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string PlayFabId;
         /// <summary>
-        /// new title display name for the user - must be between 3 and 25 characters
+        /// New title display name for the user - must be between 3 and 25 characters
         /// </summary>
         public string DisplayName;
     }
