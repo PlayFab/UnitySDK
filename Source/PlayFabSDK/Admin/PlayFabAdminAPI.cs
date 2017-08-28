@@ -839,6 +839,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieve a list of all PlayStream actions groups.
         /// </summary>
+        [Obsolete("Use 'GetTasks' instead", false)]
         public static void GetAllActionGroups(GetAllActionGroupsRequest request, Action<GetAllActionGroupsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
@@ -939,6 +940,7 @@ namespace PlayFab
         /// <summary>
         /// Get information about a ActionsOnPlayersInSegment task instance.
         /// </summary>
+        [Obsolete("Use 'GetTasks' instead", false)]
         public static void GetActionsOnPlayersInSegmentTaskInstance(GetTaskInstanceRequest request, Action<GetActionsOnPlayersInSegmentTaskInstanceResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");

@@ -38,6 +38,14 @@ namespace PlayFab.PlayStreamModels
         public string AuthenticationProviderId;
         public EventLocation Location;
     }
+    public class EntityCreatedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+    }
+    public class EntityLoggedInEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+    }
     public class StudioCreatedEventData : PlayStreamEventBase
     {
         public string StudioName;

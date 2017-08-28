@@ -63,7 +63,7 @@ namespace PlayFab.Public
             yield return new WaitForEndOfFrame(); // Effectively just a short wait before activating this registration
             if (!string.IsNullOrEmpty(PlayFabSettings.LoggerHost))
             {
-#if UNITY_5
+#if UNITY_5 || UNITY_2017
                 Application.logMessageReceivedThreaded += HandleUnityLog;
 #else
                 Application.RegisterLogCallback(HandleUnityLog);
@@ -75,7 +75,7 @@ namespace PlayFab.Public
         {
             if (!string.IsNullOrEmpty(PlayFabSettings.LoggerHost))
             {
-#if UNITY_5
+#if UNITY_5 || UNITY_2017
                 Application.logMessageReceivedThreaded -= HandleUnityLog;
 #else
                 Application.RegisterLogCallback(null);

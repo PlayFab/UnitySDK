@@ -328,7 +328,15 @@ namespace PlayFab
         InvalidAuthToken = 1326,
         AuthTokenDoesNotExist = 1327,
         AuthTokenExpired = 1328,
-        AuthTokenAlreadyUsedToResetPassword = 1329
+        AuthTokenAlreadyUsedToResetPassword = 1329,
+        MembershipNameTooLong = 1330,
+        MembershipNotFound = 1331,
+        GoogleServiceAccountInvalid = 1332,
+        GoogleServiceAccountParseFailure = 1333,
+        EntityTokenMissing = 1334,
+        EntityTokenInvalid = 1335,
+        EntityTokenExpired = 1336,
+        EntityTokenRevoked = 1337
     }
 
     public delegate void ErrorCallback(PlayFabError error);

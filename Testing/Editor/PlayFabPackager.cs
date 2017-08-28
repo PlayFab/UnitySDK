@@ -37,6 +37,14 @@ namespace PlayFab.Internal
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
+
+        private static string PathCombine(params string[] elements)
+        {
+            string output = null;
+            foreach (var element in elements)
+                output = string.IsNullOrEmpty(output) ? element : Path.Combine(output, element);
+            return output;
+        }
         #endregion Utility Functions
 
         #region Unity Multi-version Utilities
@@ -109,11 +117,15 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Testing/Build PlayFab UnitySDK Package")]
         public static void PackagePlayFabSdk()
         {
+            var workspacePath = Environment.GetEnvironmentVariable("WORKSPACE"); // This is a Jenkins-Build environment variable
+            if (string.IsNullOrEmpty(workspacePath))
+                workspacePath = "C:/depot"; // Expected typical location
             var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable
             if (string.IsNullOrEmpty(repoName))
                 repoName = "UnitySDK"; // Default if we aren't building something else
+
             Setup();
-            var packageFolder = Path.Combine(Path.Combine("C:/depot/sdks", repoName), "Packages");
+            var packageFolder = PathCombine(workspacePath, "sdks", repoName, "Packages");
             MkDir(packageFolder);
             var packageFullPath = Path.Combine(packageFolder, "UnitySDK.unitypackage");
             AssetDatabase.ExportPackage(SdkAssets, packageFullPath, ExportPackageOptions.Recurse);
@@ -152,8 +164,10 @@ namespace PlayFab.Internal
         public static void MakeWp8Build()
         {
             Setup();
-#if UNITY_5_2 || UNITY_5_3_OR_NEWER
+#if (UNITY_5_2 || UNITY_5_3_OR_NEWER) && !UNITY_2017
             EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
+#endif
+#if UNITY_5_2 || UNITY_5_3_OR_NEWER
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.LocalMachineAndWindowsPhone;
             EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
             PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
