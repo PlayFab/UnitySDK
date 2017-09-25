@@ -5,7 +5,7 @@ The easist way to get started is to use our [EditorExtensions plugin](https://gi
 
 ## 1. Overview:
 
-This document describes the process of configuring and building the PlayFab Unity plugin binary and distribution package. The document also contains instructions for developers to start using the plugin in their Unity games.
+This document describes the process of configuring and building the PlayFab Unity package and distribution package. The document also contains instructions for developers to start using the package in their Unity games.
 
 
 ## 2. Prerequisites:
@@ -70,20 +70,13 @@ You are now ready to begin making API calls using the PlayFabClientAPI class. Ch
 ##### New Users:
 * Check out our Tutorials, Samples and more [here](https://api.playfab.com/docs/tutorials)
 
-##### Using the Push Plugin for Android
-  * View [this repository](https://github.com/PlayFab/UnitySDK/tree/master/AndroidPluginSrc) for complete details.
-
 ## 5. Troubleshooting:
 
 CASE: Follow these instructions to disable IDFA for your IOS release:
- * In Unity, navigate to and open: {YourUnityProject}/Assets/Plugins/iOS/PlayFabURLRequest.mm
-  * Uncomment the first line:  // #define DISABLE_IDFA // If you need to disable IDFA for your game, uncomment this
- * In Unity, view the inspector window when you select (do not open): {YourUnityProject}/Assets/Plugins/iOS/PlayFabURLRequest.mm
-  * Uncheck the "AdSupport" option under "Platform settings"
- * In Unity, Edit -> Project Settings -> Player
-  * Select the iOS tab
-  * Scripting Define Symbols
-  * Add this: DISABLE_IDFA
+ * Do a global code search in the C# project for: #define DISABLE_IDFA
+  * Uncomment any of these defines you find.
+ * Alternately, you can add DISABLE_IDFA to the "Scripting Define Symbols" in the Build settings,
+ * Or, Check the same API Settings option in our Editor Extension plugin
 
 CASE: If you run into conflicts when upgrading SDKs, remove all files from previous versions and perform a fresh import of our unitypackage or SDK files. 
 
