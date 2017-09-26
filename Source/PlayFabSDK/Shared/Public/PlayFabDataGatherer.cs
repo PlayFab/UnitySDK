@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Text;
+using PlayFab.SharedModels;
 using UnityEngine.Rendering;
 #if NETFX_CORE
 using System.Reflection;
@@ -9,7 +10,16 @@ namespace PlayFab
 {
     public class PlayFabDataGatherer
     {
-#if !UNITY_5
+#if UNITY_5 || UNITY_5_3_OR_NEWER
+        // UNITY_5 Application info
+        public string ProductName;
+        public string ProductBundle;
+        public string Version;
+        public string Company;
+        public RuntimePlatform Platform;
+        // UNITY_5 Graphics Abilities
+        public bool GraphicsMultiThreaded;
+#else
         public enum GraphicsDeviceType
         {
             OpenGL2 = 0, Direct3D9 = 1, Direct3D11 = 2, PlayStation3 = 3, Null = 4, Xbox360 = 6, OpenGLES2 = 8, OpenGLES3 = 11, PlayStationVita = 12,
@@ -22,17 +32,8 @@ namespace PlayFab
         // WSAPlayerX86 = 18, MetroPlayerX64 = 19,WSAPlayerX64 = 19, MetroPlayerARM = 20, WSAPlayerARM = 20, WP8Player = 21,
         // EditorBrowsable(EditorBrowsableState.Never)] BB10Player = 22, BlackBerryPlayer = 22, TizenPlayer = 23, PSP2 = 24, PS4 = 25,
         // PSM = 26, XboxOne = 27, SamsungTVPlayer = 28, WiiU = 30, tvOS = 31
-#elif UNITY_5
-        // UNITY_5 Application info
-        public string ProductName;
-        public string ProductBundle;
-        public string Version;
-        public string Company;
-        public RuntimePlatform Platform;
-        // UNITY_5 Graphics Abilities
-        public bool GraphicsMultiThreaded;
 #endif
-#if UNITY_5 && !UNITY_5_0
+#if !UNITY_5_0 && (UNITY_5 || UNITY_5_3_OR_NEWER)
         public GraphicsDeviceType GraphicsType;
 #endif
 
@@ -67,9 +68,9 @@ namespace PlayFab
         public bool SupportsGyroscope;
         public bool SupportsLocationService;
 
-        public void GatherData()
+        public PlayFabDataGatherer()
         {
-#if UNITY_5
+#if UNITY_5 || UNITY_5_3_OR_NEWER
             // UNITY_5 Application info
             ProductName = Application.productName;
             Version = Application.version;
@@ -78,7 +79,7 @@ namespace PlayFab
             // UNITY_5 Graphics Abilities
             GraphicsMultiThreaded = SystemInfo.graphicsMultiThreaded;
 #endif
-#if UNITY_5 && !UNITY_5_0
+#if !UNITY_5_0 && (UNITY_5 || UNITY_5_3_OR_NEWER)
             GraphicsType = SystemInfo.graphicsDeviceType;
 #endif
 

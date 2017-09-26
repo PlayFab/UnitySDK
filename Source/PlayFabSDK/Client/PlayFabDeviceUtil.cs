@@ -1,7 +1,7 @@
 #if !DISABLE_PLAYFABCLIENT_API
 using System;
-using System.Collections.Generic;
 using PlayFab.ClientModels;
+using PlayFab.SharedModels;
 using UnityEngine;
 
 namespace PlayFab.Internal
@@ -12,6 +12,7 @@ namespace PlayFab.Internal
 
         private static GameObject _playFabAndroidPushGo;
         private static bool _needsAttribution;
+        private static bool _gatherInfo;
 
         #region Make Attribution API call
         private static void DoAttributeInstall()
@@ -56,13 +57,44 @@ namespace PlayFab.Internal
         }
         #endregion Make Push Registration API call
 
+        #region Scrape Device Info
+        private class DeviceInfoRequest : PlayFabRequestCommon
+        {
+            public PlayFabDataGatherer Info;
+        }
+
+        private static void SendDeviceInfoToPlayFab()
+        {
+            if (PlayFabSettings.DisableDeviceInfo || !_gatherInfo) return;
+
+            var request = new DeviceInfoRequest
+            {
+                Info = new PlayFabDataGatherer()
+            };
+            PlayFabHttp.MakeApiCall<EmptyResult>("/Client/ReportDeviceInfo", request, AuthType.LoginSession, OnGatherSuccess, OnGatherFail);
+        }
+        private static void OnGatherSuccess(EmptyResult result)
+        {
+            Debug.Log("OnGatherSuccess");
+        }
+        private static void OnGatherFail(PlayFabError error)
+        {
+            Debug.Log("OnGatherFail: " + error.GenerateErrorReport());
+        }
+        #endregion
+
         public static void OnPlayFabLogin(LoginResult loginResult, RegisterPlayFabUserResult registerResult)
         {
             _needsAttribution = false;
+            _gatherInfo = false;
             if (loginResult != null && loginResult.SettingsForUser != null)
                 _needsAttribution = loginResult.SettingsForUser.NeedsAttribution;
             else if (registerResult != null && registerResult.SettingsForUser != null)
                 _needsAttribution = registerResult.SettingsForUser.NeedsAttribution;
+            if (loginResult != null && loginResult.SettingsForUser != null)
+                _gatherInfo = loginResult.SettingsForUser.GatherDeviceInfo;
+            else if (registerResult != null && registerResult.SettingsForUser != null)
+                _gatherInfo = registerResult.SettingsForUser.GatherDeviceInfo;
 
             // Device attribution (adid or idfa)
             if (PlayFabSettings.AdvertisingIdType != null && PlayFabSettings.AdvertisingIdValue != null)
@@ -74,6 +106,9 @@ namespace PlayFab.Internal
             _playFabAndroidPushGo = GameObject.Find(GAME_OBJECT_NAME);
             if (_playFabAndroidPushGo != null)
                 _playFabAndroidPushGo.BroadcastMessage("OnPlayFabLogin", (Action<string, bool, string>)RegisterForAndroidPush);
+
+            // Device information gathering
+            SendDeviceInfoToPlayFab();
         }
 
         private static void GetAdvertIdFromUnity()
