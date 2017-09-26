@@ -45,7 +45,6 @@ namespace PlayFab.Public
         protected PlayFabLoggerBase()
         {
             var gatherer = new PlayFabDataGatherer();
-            gatherer.GatherData();
             var message = gatherer.GenerateReport();
             lock (LogMessageQueue)
             {
@@ -63,7 +62,7 @@ namespace PlayFab.Public
             yield return new WaitForEndOfFrame(); // Effectively just a short wait before activating this registration
             if (!string.IsNullOrEmpty(PlayFabSettings.LoggerHost))
             {
-#if UNITY_5 || UNITY_2017
+#if UNITY_5 || UNITY_5_3_OR_NEWER
                 Application.logMessageReceivedThreaded += HandleUnityLog;
 #else
                 Application.RegisterLogCallback(HandleUnityLog);
@@ -75,7 +74,7 @@ namespace PlayFab.Public
         {
             if (!string.IsNullOrEmpty(PlayFabSettings.LoggerHost))
             {
-#if UNITY_5 || UNITY_2017
+#if UNITY_5 || UNITY_5_3_OR_NEWER
                 Application.logMessageReceivedThreaded -= HandleUnityLog;
 #else
                 Application.RegisterLogCallback(null);

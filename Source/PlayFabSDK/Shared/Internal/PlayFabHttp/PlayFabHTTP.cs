@@ -20,6 +20,7 @@ namespace PlayFab.Internal
         public delegate void ApiProcessErrorEvent(PlayFabRequestCommon request, PlayFabError error);
         public static event ApiProcessingEvent<ApiProcessingEventArgs> ApiProcessingEventHandler;
         public static event ApiProcessErrorEvent ApiProcessingErrorEventHandler;
+        public static readonly Dictionary<string, string> GlobalHeaderInjection = new Dictionary<string, string>();
 
 #if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
         private static IPlayFabSignalR _internalSignalR;
@@ -149,6 +150,11 @@ namespace PlayFab.Internal
                 ErrorCallback = errorCallback,
                 RequestHeaders = extraHeaders ?? new Dictionary<string, string>() // Use any headers provided by the customer
             };
+            // Append any additional headers
+            foreach (var pair in GlobalHeaderInjection)
+                if (!reqContainer.RequestHeaders.ContainsKey(pair.Key))
+                    reqContainer.RequestHeaders[pair.Key] = pair.Value;
+
 #if PLAYFAB_REQUEST_TIMING
             reqContainer.Timing.StartTimeUtc = DateTime.UtcNow;
             reqContainer.Timing.ApiEndpoint = apiEndpoint;
