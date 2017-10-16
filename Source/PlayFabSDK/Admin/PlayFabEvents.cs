@@ -41,8 +41,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<DeleteUsersResult> OnAdminDeleteUsersResultEvent;
         public event PlayFabRequestEvent<GetTaskInstanceRequest> OnAdminGetActionsOnPlayersInSegmentTaskInstanceRequestEvent;
         public event PlayFabResultEvent<GetActionsOnPlayersInSegmentTaskInstanceResult> OnAdminGetActionsOnPlayersInSegmentTaskInstanceResultEvent;
-        public event PlayFabRequestEvent<GetAllActionGroupsRequest> OnAdminGetAllActionGroupsRequestEvent;
-        public event PlayFabResultEvent<GetAllActionGroupsResult> OnAdminGetAllActionGroupsResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnAdminGetAllSegmentsRequestEvent;
         public event PlayFabResultEvent<GetAllSegmentsResult> OnAdminGetAllSegmentsResultEvent;
         public event PlayFabRequestEvent<GetCatalogItemsRequest> OnAdminGetCatalogItemsRequestEvent;

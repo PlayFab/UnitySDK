@@ -150,7 +150,13 @@ namespace PlayFab.Internal
                 {
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
                     string encoding;
-                    if (www.responseHeaders.TryGetValue("Content-Encoding", out encoding) && encoding.ToLowerInvariant() == "gzip")
+                    Dictionary<string, string> responseHeaders = null;
+                    try
+                    {
+                        responseHeaders = www.responseHeaders;
+                    }
+                    catch (Exception) { }
+                    if (responseHeaders != null && responseHeaders.TryGetValue("Content-Encoding", out encoding) && encoding.ToLower() == "gzip")
                     {
                         var stream = new MemoryStream(www.bytes);
                         using (var gZipStream = new GZipStream(stream, CompressionMode.Decompress, false))

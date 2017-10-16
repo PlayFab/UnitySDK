@@ -37,8 +37,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EvaluateRandomResultTableResult> OnServerEvaluateRandomResultTableResultEvent;
         public event PlayFabRequestEvent<ExecuteCloudScriptServerRequest> OnServerExecuteCloudScriptRequestEvent;
         public event PlayFabResultEvent<ExecuteCloudScriptResult> OnServerExecuteCloudScriptResultEvent;
-        public event PlayFabRequestEvent<GetAllActionGroupsRequest> OnServerGetAllActionGroupsRequestEvent;
-        public event PlayFabResultEvent<GetAllActionGroupsResult> OnServerGetAllActionGroupsResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnServerGetAllSegmentsRequestEvent;
         public event PlayFabResultEvent<GetAllSegmentsResult> OnServerGetAllSegmentsResultEvent;
         public event PlayFabRequestEvent<ListUsersCharactersRequest> OnServerGetAllUsersCharactersRequestEvent;

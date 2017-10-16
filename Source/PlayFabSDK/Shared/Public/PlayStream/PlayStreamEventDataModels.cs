@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PlayFab.PlayStreamModels
@@ -29,6 +29,11 @@ namespace PlayFab.PlayStreamModels
     public class EntityLoggedInEventData : PlayStreamEventBase
     {
         public string EntityChain;
+    }
+    public class EntityObjectsSetEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public List<ObjectSet> Objects;
     }
     public class StudioCreatedEventData : PlayStreamEventBase
     {
@@ -348,6 +353,20 @@ namespace PlayFab.PlayStreamModels
         public string RecoveryEmailAddress;
         public string TitleId;
     }
+    public class PlayerPayForPurchaseEventData : PlayStreamEventBase
+    {
+        public string OrderId;
+        public string ProviderData;
+        public string ProviderName;
+        public string ProviderToken;
+        public string PurchaseConfirmationPageURL;
+        public string PurchaseCurrency;
+        public uint PurchasePrice;
+        public TransactionStatus? Status;
+        public string TitleId;
+        public Dictionary<string,int> VCAmount;
+        public Dictionary<string,int> VirtualCurrency;
+    }
     public class PlayerRankedOnLeaderboardVersionEventData : PlayStreamEventBase
     {
         public LeaderboardSource LeaderboardSource;
@@ -405,6 +424,14 @@ namespace PlayFab.PlayStreamModels
         public PlayerProfileProperty? Property;
         public string TitleId;
         public object Value;
+    }
+    public class PlayerStartPurchaseEventData : PlayStreamEventBase
+    {
+        public string CatalogVersion;
+        public List<CartItem> Contents;
+        public string OrderId;
+        public string StoreId;
+        public string TitleId;
     }
     public class PlayerStatisticChangedEventData : PlayStreamEventBase
     {
@@ -753,6 +780,31 @@ namespace PlayFab.PlayStreamModels
     }
     #endregion title
 
+    public enum OperationTypes
+    {
+        Created,
+        Updated,
+        Deleted,
+        None
+    }
+
+    [Serializable]
+    public class ObjectSet
+    {
+        /// <summary>
+        /// The name of this object.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// The JSON Object that was last set on the profile.
+        /// </summary>
+        public object Object;
+        /// <summary>
+        /// The operation that was performed.
+        /// </summary>
+        public OperationTypes? Operation;
+    }
+
     public enum PlayerProfileProperty
     {
         TotalValueToDateInUSD,
@@ -763,6 +815,67 @@ namespace PlayFab.PlayStreamModels
     {
         PlayFab,
         SAML
+    }
+
+    public enum TransactionStatus
+    {
+        CreateCart,
+        Init,
+        Approved,
+        Succeeded,
+        FailedByProvider,
+        DisputePending,
+        RefundPending,
+        Refunded,
+        RefundFailed,
+        ChargedBack,
+        FailedByUber,
+        FailedByPlayFab,
+        Revoked,
+        TradePending,
+        Traded,
+        Upgraded,
+        StackPending,
+        Stacked,
+        Other,
+        Failed
+    }
+
+    [Serializable]
+    public class CartItem
+    {
+        /// <summary>
+        /// Description of the catalog item.
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Display name for the catalog item.
+        /// </summary>
+        public string DisplayName;
+        /// <summary>
+        /// Class name to which catalog item belongs.
+        /// </summary>
+        public string ItemClass;
+        /// <summary>
+        /// Unique identifier for the catalog item.
+        /// </summary>
+        public string ItemId;
+        /// <summary>
+        /// Unique instance identifier for this catalog item.
+        /// </summary>
+        public string ItemInstanceId;
+        /// <summary>
+        /// Cost of the catalog item for each applicable real world currency.
+        /// </summary>
+        public Dictionary<string,uint> RealCurrencyPrices;
+        /// <summary>
+        /// Amount of each applicable virtual currency which will be received as a result of purchasing this catalog item.
+        /// </summary>
+        public Dictionary<string,uint> VCAmount;
+        /// <summary>
+        /// Cost of the catalog item for each applicable virtual currency.
+        /// </summary>
+        public Dictionary<string,uint> VirtualCurrencyPrices;
     }
 
     public enum GameServerHostStopReason

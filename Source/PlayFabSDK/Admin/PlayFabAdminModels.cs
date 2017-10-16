@@ -1349,19 +1349,6 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class GetActionGroupResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// Action Group ID
-        /// </summary>
-        public string Id;
-        /// <summary>
-        /// Action Group name
-        /// </summary>
-        public string Name;
-    }
-
-    [Serializable]
     public class GetActionsOnPlayersInSegmentTaskInstanceResult : PlayFabResultCommon
     {
         /// <summary>
@@ -1372,20 +1359,6 @@ namespace PlayFab.AdminModels
         /// Status summary of the actions-on-players-in-segment task instance
         /// </summary>
         public ActionsOnPlayersInSegmentTaskSummary Summary;
-    }
-
-    [Serializable]
-    public class GetAllActionGroupsRequest : PlayFabRequestCommon
-    {
-    }
-
-    [Serializable]
-    public class GetAllActionGroupsResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// List of Action Groups.
-        /// </summary>
-        public List<GetActionGroupResult> ActionGroups;
     }
 
     [Serializable]
