@@ -1244,33 +1244,6 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
-    public class GetActionGroupResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// Action Group ID
-        /// </summary>
-        public string Id;
-        /// <summary>
-        /// Action Group name
-        /// </summary>
-        public string Name;
-    }
-
-    [Serializable]
-    public class GetAllActionGroupsRequest : PlayFabRequestCommon
-    {
-    }
-
-    [Serializable]
-    public class GetAllActionGroupsResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// List of Action Groups.
-        /// </summary>
-        public List<GetActionGroupResult> ActionGroups;
-    }
-
-    [Serializable]
     public class GetAllSegmentsRequest : PlayFabRequestCommon
     {
     }
@@ -3198,27 +3171,32 @@ namespace PlayFab.ServerModels
     public class PushNotificationPackage
     {
         /// <summary>
-        /// Arbitrary string that will be delivered with the message. Suggested use: JSON formatted object
+        /// Numerical badge to display on App icon (iOS only)
+        /// </summary>
+        public int Badge;
+        /// <summary>
+        /// This must be a JSON formatted object. For use with developer-created custom Push Notification plugins
         /// </summary>
         public string CustomData;
         /// <summary>
-        /// Icon file to display with the message
+        /// Icon file to display with the message (Not supported for iOS)
         /// </summary>
         public string Icon;
         /// <summary>
-        /// Content of the message
+        /// Content of the message (all platforms)
         /// </summary>
         public string Message;
         /// <summary>
-        /// If set, represents a timestamp for when the device should display the message. Local format should be formatted as: yyyy-MM-dd HH:mm:ss or UTC timestamp formatted as yyyy-MM-ddTHH:mm:ssZ. Delivery is not delayed, scheduling is expected to be handled by the device.
+        /// This field was solely for use with the PlayFab custom Push Plugin, which has been deprecated in favor of the supported platform-specific fields
         /// </summary>
+        [Obsolete("Use 'CustomData' instead", false)]
         public string ScheduleDate;
         /// <summary>
-        /// Sound file to play with the message
+        /// Sound file to play with the message (all platforms)
         /// </summary>
         public string Sound;
         /// <summary>
-        /// Title/Subject of the message
+        /// Title/Subject of the message. Not supported for iOS
         /// </summary>
         public string Title;
     }
@@ -3584,7 +3562,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string Message;
         /// <summary>
-        /// Defines all possible push attributes like message, title, icon, etc. Not fully supported for iOS devices.
+        /// Defines all possible push attributes like message, title, icon, etc. Some parameters are device specific - please see the PushNotificationPackage documentation for details.
         /// </summary>
         public PushNotificationPackage Package;
         /// <summary>
@@ -3592,7 +3570,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string Recipient;
         /// <summary>
-        /// Subject of message to send (may not be displayed in all platforms.
+        /// Subject of message to send (may not be displayed in all platforms)
         /// </summary>
         public string Subject;
         /// <summary>
