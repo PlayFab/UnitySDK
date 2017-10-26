@@ -55,7 +55,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the relevant details for a specified user, which the external match-making service can then use to compute effective matches
+        /// Retrieves the relevant details for a specified user, which the external match-making service can then use to compute
+        /// effective matches
         /// </summary>
         public static void UserInfo(UserInfoRequest request, Action<UserInfoResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {

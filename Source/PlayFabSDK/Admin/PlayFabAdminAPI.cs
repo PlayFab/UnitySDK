@@ -45,7 +45,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a client is permitted to request in a call to StartGame
+        /// Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a
+        /// client is permitted to request in a call to StartGame
         /// </summary>
         public static void AddServerBuild(AddServerBuildRequest request, Action<AddServerBuildResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -65,7 +66,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds one or more virtual currencies to the set defined for the title. Virtual Currencies have a maximum value of 2,147,483,647 when granted to a player. Any value over that will be discarded.
+        /// Adds one or more virtual currencies to the set defined for the title. Virtual Currencies have a maximum value of
+        /// 2,147,483,647 when granted to a player. Any value over that will be discarded.
         /// </summary>
         public static void AddVirtualCurrencyTypes(AddVirtualCurrencyTypesRequest request, Action<BlankResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -105,7 +107,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Creates a new Player Shared Secret Key. It may take up to 5 minutes for this key to become generally available after this API returns.
+        /// Creates a new Player Shared Secret Key. It may take up to 5 minutes for this key to become generally available after
+        /// this API returns.
         /// </summary>
         public static void CreatePlayerSharedSecret(CreatePlayerSharedSecretRequest request, Action<CreatePlayerSharedSecretResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -115,7 +118,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds a new player statistic configuration to the title, optionally allowing the developer to specify a reset interval and an aggregation method.
+        /// Adds a new player statistic configuration to the title, optionally allowing the developer to specify a reset interval
+        /// and an aggregation method.
         /// </summary>
         public static void CreatePlayerStatisticDefinition(CreatePlayerStatisticDefinitionRequest request, Action<CreatePlayerStatisticDefinitionResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -145,7 +149,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Deletes an existing Player Shared Secret Key. It may take up to 5 minutes for this delete to be reflected after this API returns.
+        /// Deletes an existing Player Shared Secret Key. It may take up to 5 minutes for this delete to be reflected after this API
+        /// returns.
         /// </summary>
         public static void DeletePlayerSharedSecret(DeletePlayerSharedSecretRequest request, Action<DeletePlayerSharedSecretResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -175,14 +180,13 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Deletes the users for the provided game. Deletes custom data, all account linkages, and statistics. This method does not remove the player's event history, login history, inventory items, nor virtual currencies.
+        /// Permanently deletes a title and all associated configuration
         /// </summary>
-        [Obsolete("Use 'DeleteUser' instead", true)]
-        public static void DeleteUsers(DeleteUsersRequest request, Action<DeleteUsersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void DeleteTitle(DeleteTitleRequest request, Action<DeleteTitleResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
-            PlayFabHttp.MakeApiCall("/Admin/DeleteUsers", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+            PlayFabHttp.MakeApiCall("/Admin/DeleteTitle", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -196,7 +200,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves an array of player segment definitions. Results from this can be used in subsequent API calls such as GetPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not change.
+        /// Retrieves an array of player segment definitions. Results from this can be used in subsequent API calls such as
+        /// GetPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not change.
         /// </summary>
         public static void GetAllSegments(GetAllSegmentsRequest request, Action<GetAllSegmentsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -236,7 +241,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Lists all the current cloud script versions. For each version, information about the current published and latest revisions is also listed.
+        /// Lists all the current cloud script versions. For each version, information about the current published and latest
+        /// revisions is also listed.
         /// </summary>
         public static void GetCloudScriptVersions(GetCloudScriptVersionsRequest request, Action<GetCloudScriptVersionsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -256,7 +262,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the pre-signed URL for uploading a content file. A subsequent HTTP PUT to the returned URL uploads the  content. Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply.
+        /// Retrieves the pre-signed URL for uploading a content file. A subsequent HTTP PUT to the returned URL uploads the
+        /// content. Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN
+        /// rates apply.
         /// </summary>
         public static void GetContentUploadUrl(GetContentUploadUrlRequest request, Action<GetContentUploadUrlResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -316,7 +324,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Allows for paging through all players in a given segment. This API creates a snapshot of all player profiles that match the segment definition at the time of its creation and lives through the Total Seconds to Live, refreshing its life span on each subsequent use of the Continuation Token. Profiles that change during the course of paging will not be reflected in the results. AB Test segments are currently not supported by this operation.
+        /// Allows for paging through all players in a given segment. This API creates a snapshot of all player profiles that match
+        /// the segment definition at the time of its creation and lives through the Total Seconds to Live, refreshing its life span
+        /// on each subsequent use of the Continuation Token. Profiles that change during the course of paging will not be reflected
+        /// in the results. AB Test segments are currently not supported by this operation.
         /// </summary>
         public static void GetPlayersInSegment(GetPlayersInSegmentRequest request, Action<GetPlayersInSegmentResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -326,7 +337,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the configuration information for all player statistics defined in the title, regardless of whether they have a reset interval.
+        /// Retrieves the configuration information for all player statistics defined in the title, regardless of whether they have
+        /// a reset interval.
         /// </summary>
         public static void GetPlayerStatisticDefinitions(GetPlayerStatisticDefinitionsRequest request, Action<GetPlayerStatisticDefinitionsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -396,7 +408,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for use - see AddServerBuild)
+        /// Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for
+        /// use - see AddServerBuild)
         /// </summary>
         public static void GetServerBuildUploadUrl(GetServerBuildUploadURLRequest request, Action<GetServerBuildUploadURLResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -626,7 +639,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Removes the game server executable specified from the set of those a client is permitted to request in a call to StartGame
+        /// Removes the game server executable specified from the set of those a client is permitted to request in a call to
+        /// StartGame
         /// </summary>
         public static void RemoveServerBuild(RemoveServerBuildRequest request, Action<RemoveServerBuildResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -653,17 +667,6 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Admin/ResetCharacterStatistics", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Resets all title-specific information about a particular account, including user data, virtual currency balances, inventory, purchase history, and statistics
-        /// </summary>
-        [Obsolete("Use 'DeletePlayer' instead", true)]
-        public static void ResetUsers(ResetUsersRequest request, Action<BlankResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
-
-            PlayFabHttp.MakeApiCall("/Admin/ResetUsers", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -727,7 +730,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Forces an email to be sent to the registered email address for the specified account, with a link allowing the user to change the password
+        /// Forces an email to be sent to the registered email address for the specified account, with a link allowing the user to
+        /// change the password
         /// </summary>
         public static void SendAccountRecoveryEmail(SendAccountRecoveryEmailRequest request, Action<SendAccountRecoveryEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -807,7 +811,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Sets the Amazon Resource Name (ARN) for iOS and Android push notifications. Documentation on the exact restrictions can be found at: http://docs.aws.amazon.com/sns/latest/api/API_CreatePlatformApplication.html. Currently, Amazon device Messaging is not supported.
+        /// Sets the Amazon Resource Name (ARN) for iOS and Android push notifications. Documentation on the exact restrictions can
+        /// be found at: http://docs.aws.amazon.com/sns/latest/api/API_CreatePlatformApplication.html. Currently, Amazon device
+        /// Messaging is not supported.
         /// </summary>
         public static void SetupPushNotification(SetupPushNotificationRequest request, Action<SetupPushNotificationResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -847,7 +853,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Creates a new Cloud Script revision and uploads source code to it. Note that at this time, only one file should be submitted in the revision.
+        /// Creates a new Cloud Script revision and uploads source code to it. Note that at this time, only one file should be
+        /// submitted in the revision.
         /// </summary>
         public static void UpdateCloudScript(UpdateCloudScriptRequest request, Action<UpdateCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -857,7 +864,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates a existing Player Shared Secret Key. It may take up to 5 minutes for this update to become generally available after this API returns.
+        /// Updates a existing Player Shared Secret Key. It may take up to 5 minutes for this update to become generally available
+        /// after this API returns.
         /// </summary>
         public static void UpdatePlayerSharedSecret(UpdatePlayerSharedSecretRequest request, Action<UpdatePlayerSharedSecretResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
