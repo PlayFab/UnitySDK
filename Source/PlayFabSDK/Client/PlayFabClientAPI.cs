@@ -8,7 +8,8 @@ using PlayFab.Json;
 namespace PlayFab
 {
     /// <summary>
-    /// APIs which provide the full range of PlayFab features available to the client - authentication, account and data management, inventory, friends, matchmaking, reporting, and platform-specific functionality
+    /// APIs which provide the full range of PlayFab features available to the client - authentication, account and data
+    /// management, inventory, friends, matchmaking, reporting, and platform-specific functionality
     /// </summary>
     public static class PlayFabClientAPI
     {
@@ -32,7 +33,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Accepts an open trade (one that has not yet been accepted or cancelled), if the locally signed-in player is in the  allowed player list for the trade, or it is open to all players. If the call is successful, the offered and accepted items will be swapped  between the two players' inventories.
+        /// Accepts an open trade (one that has not yet been accepted or cancelled), if the locally signed-in player is in the
+        /// allowed player list for the trade, or it is open to all players. If the call is successful, the offered and accepted
+        /// items will be swapped  between the two players' inventories.
         /// </summary>
         public static void AcceptTrade(AcceptTradeRequest request, Action<AcceptTradeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -42,7 +45,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds the PlayFab user, based upon a match against a supplied unique identifier, to the friend list of the local user. At least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized.
+        /// Adds the PlayFab user, based upon a match against a supplied unique identifier, to the friend list of the local user. At
+        /// least one of FriendPlayFabId,FriendUsername,FriendEmail, or FriendTitleDisplayName should be initialized.
         /// </summary>
         public static void AddFriend(AddFriendRequest request, Action<AddFriendResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -52,7 +56,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds the specified generic service identifier to the player's PlayFab account. This is designed to allow for a PlayFab ID lookup of any arbitrary service identifier a title wants to add. This identifier should never be used as authentication credentials, as the intent is that it is easily accessible by other players.
+        /// Adds the specified generic service identifier to the player's PlayFab account. This is designed to allow for a PlayFab
+        /// ID lookup of any arbitrary service identifier a title wants to add. This identifier should never be used as
+        /// authentication credentials, as the intent is that it is easily accessible by other players.
         /// </summary>
         public static void AddGenericID(AddGenericIDRequest request, Action<AddGenericIDResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -62,7 +68,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds users to the set of those able to update both the shared data, as well as the set of users  in the group. Only users in the group can add new members. Shared Groups are designed for sharing data between a very  small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
+        /// Adds users to the set of those able to update both the shared data, as well as the set of users  in the group. Only
+        /// users in the group can add new members. Shared Groups are designed for sharing data between a very  small number of
+        /// players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void AddSharedGroupMembers(AddSharedGroupMembersRequest request, Action<AddSharedGroupMembersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -72,7 +80,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds playfab username/password auth to an existing account created via an anonymous auth method, e.g. automatic device ID login.
+        /// Adds playfab username/password auth to an existing account created via an anonymous auth method, e.g. automatic device
+        /// ID login.
         /// </summary>
         public static void AddUsernamePassword(AddUsernamePasswordRequest request, Action<AddUsernamePasswordResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -112,7 +121,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Cancels an open trade (one that has not yet been accepted or cancelled). Note that only the player who created the trade  can cancel it via this API call, to prevent griefing of the trade system (cancelling trades in order to prevent other players from accepting  them, for trades that can be claimed by more than one player).
+        /// Cancels an open trade (one that has not yet been accepted or cancelled). Note that only the player who created the trade
+        /// can cancel it via this API call, to prevent griefing of the trade system (cancelling trades in order to prevent other
+        /// players from accepting  them, for trades that can be claimed by more than one player).
         /// </summary>
         public static void CancelTrade(CancelTradeRequest request, Action<CancelTradeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -122,7 +133,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Confirms with the payment provider that the purchase was approved (if applicable) and adjusts inventory and  virtual currency balances as appropriate
+        /// Confirms with the payment provider that the purchase was approved (if applicable) and adjusts inventory and  virtual
+        /// currency balances as appropriate
         /// </summary>
         public static void ConfirmPurchase(ConfirmPurchaseRequest request, Action<ConfirmPurchaseResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -142,7 +154,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Requests the creation of a shared group object, containing key/value pairs which may be updated by  all members of the group. Upon creation, the current user will be the only member of the group. Shared Groups are designed  for sharing data between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
+        /// Requests the creation of a shared group object, containing key/value pairs which may be updated by  all members of the
+        /// group. Upon creation, the current user will be the only member of the group. Shared Groups are designed  for sharing
+        /// data between a very small number of players, please see our guide:
+        /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void CreateSharedGroup(CreateSharedGroupRequest request, Action<CreateSharedGroupResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -190,7 +205,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Lists all of the characters that belong to a specific user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness.
+        /// Lists all of the characters that belong to a specific user. CharacterIds are not globally unique; characterId must be
+        /// evaluated with the parent PlayFabId to guarantee uniqueness.
         /// </summary>
         public static void GetAllUsersCharacters(ListUsersCharactersRequest request, Action<ListUsersCharactersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -260,7 +276,13 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded, the query to retrieve the data will fail. See this post for more information:  https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service.  Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply.
+        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned
+        /// URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the
+        /// content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded,
+        /// the query to retrieve the data will fail. See this post for more information:
+        /// https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service.
+        /// Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates
+        /// apply.
         /// </summary>
         public static void GetContentDownloadUrl(GetContentDownloadUrlRequest request, Action<GetContentDownloadUrlResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -280,7 +302,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a list of ranked friends of the current player for the given statistic, starting from the indicated point in the leaderboard
+        /// Retrieves a list of ranked friends of the current player for the given statistic, starting from the indicated point in
+        /// the leaderboard
         /// </summary>
         public static void GetFriendLeaderboard(GetFriendLeaderboardRequest request, Action<GetLeaderboardResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -290,7 +313,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a list of ranked friends of the current player for the given statistic, centered on the requested PlayFab user. If PlayFabId is empty or null will return currently logged in user.
+        /// Retrieves a list of ranked friends of the current player for the given statistic, centered on the requested PlayFab
+        /// user. If PlayFabId is empty or null will return currently logged in user.
         /// </summary>
         public static void GetFriendLeaderboardAroundPlayer(GetFriendLeaderboardAroundPlayerRequest request, Action<GetFriendLeaderboardAroundPlayerResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -300,7 +324,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the current friend list for the local user, constrained to users who have PlayFab accounts. Friends from linked accounts (Facebook, Steam) are also included. You may optionally exclude some linked services' friends.
+        /// Retrieves the current friend list for the local user, constrained to users who have PlayFab accounts. Friends from
+        /// linked accounts (Facebook, Steam) are also included. You may optionally exclude some linked services' friends.
         /// </summary>
         public static void GetFriendsList(GetFriendsListRequest request, Action<GetFriendsListResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -310,7 +335,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        ///  Get details about the regions hosting game servers matching the given parameters.
+        /// Get details about the regions hosting game servers matching the given parameters.
         /// </summary>
         public static void GetGameServerRegions(GameServerRegionsRequest request, Action<GameServerRegionsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -340,7 +365,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a list of ranked users for the given statistic, centered on the requested player. If PlayFabId is empty or null will return currently logged in user.
+        /// Retrieves a list of ranked users for the given statistic, centered on the requested player. If PlayFabId is empty or
+        /// null will return currently logged in user.
         /// </summary>
         public static void GetLeaderboardAroundPlayer(GetLeaderboardAroundPlayerRequest request, Action<GetLeaderboardAroundPlayerResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -360,7 +386,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Gets a Photon custom authentication token that can be used to securely join the player into a Photon room. See https://api.playfab.com/docs/using-photon-with-playfab/ for more details.
+        /// Gets a Photon custom authentication token that can be used to securely join the player into a Photon room. See
+        /// https://api.playfab.com/docs/using-photon-with-playfab/ for more details.
         /// </summary>
         public static void GetPhotonAuthenticationToken(GetPhotonAuthenticationTokenRequest request, Action<GetPhotonAuthenticationTokenResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -400,7 +427,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the indicated statistics (current version and values for all statistics, if none are specified), for the local player.
+        /// Retrieves the indicated statistics (current version and values for all statistics, if none are specified), for the local
+        /// player.
         /// </summary>
         public static void GetPlayerStatistics(GetPlayerStatisticsRequest request, Action<GetPlayerStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -450,7 +478,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the unique PlayFab identifiers for the given set of Game Center identifiers (referenced in the Game Center Programming Guide as the Player Identifier).
+        /// Retrieves the unique PlayFab identifiers for the given set of Game Center identifiers (referenced in the Game Center
+        /// Programming Guide as the Player Identifier).
         /// </summary>
         public static void GetPlayFabIDsFromGameCenterIDs(GetPlayFabIDsFromGameCenterIDsRequest request, Action<GetPlayFabIDsFromGameCenterIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -460,7 +489,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the unique PlayFab identifiers for the given set of generic service identifiers. A generic identifier is the service name plus the service-specific ID for the player, as specified by the title when the generic identifier was added to the player account.
+        /// Retrieves the unique PlayFab identifiers for the given set of generic service identifiers. A generic identifier is the
+        /// service name plus the service-specific ID for the player, as specified by the title when the generic identifier was
+        /// added to the player account.
         /// </summary>
         public static void GetPlayFabIDsFromGenericIDs(GetPlayFabIDsFromGenericIDsRequest request, Action<GetPlayFabIDsFromGenericIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -470,7 +501,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the unique PlayFab identifiers for the given set of Google identifiers. The Google identifiers are the IDs for the user accounts, available as "id" in the Google+ People API calls.
+        /// Retrieves the unique PlayFab identifiers for the given set of Google identifiers. The Google identifiers are the IDs for
+        /// the user accounts, available as "id" in the Google+ People API calls.
         /// </summary>
         public static void GetPlayFabIDsFromGoogleIDs(GetPlayFabIDsFromGoogleIDsRequest request, Action<GetPlayFabIDsFromGoogleIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -480,7 +512,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the unique PlayFab identifiers for the given set of Kongregate identifiers. The Kongregate identifiers are the IDs for the user accounts, available as "user_id" from the Kongregate API methods(ex: http://developers.kongregate.com/docs/client/getUserId).
+        /// Retrieves the unique PlayFab identifiers for the given set of Kongregate identifiers. The Kongregate identifiers are the
+        /// IDs for the user accounts, available as "user_id" from the Kongregate API methods(ex:
+        /// http://developers.kongregate.com/docs/client/getUserId).
         /// </summary>
         public static void GetPlayFabIDsFromKongregateIDs(GetPlayFabIDsFromKongregateIDsRequest request, Action<GetPlayFabIDsFromKongregateIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -490,7 +524,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers  are the profile IDs for the user accounts, available as SteamId in the Steamworks Community API calls.
+        /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers  are the profile
+        /// IDs for the user accounts, available as SteamId in the Steamworks Community API calls.
         /// </summary>
         public static void GetPlayFabIDsFromSteamIDs(GetPlayFabIDsFromSteamIDsRequest request, Action<GetPlayFabIDsFromSteamIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -500,7 +535,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the unique PlayFab identifiers for the given set of Twitch identifiers. The Twitch identifiers are the IDs for the user accounts, available as "_id" from the Twitch API methods (ex: https://github.com/justintv/Twitch-API/blob/master/v3_resources/users.md#get-usersuser).
+        /// Retrieves the unique PlayFab identifiers for the given set of Twitch identifiers. The Twitch identifiers are the IDs for
+        /// the user accounts, available as "_id" from the Twitch API methods (ex:
+        /// https://github.com/justintv/Twitch-API/blob/master/v3_resources/users.md#get-usersuser).
         /// </summary>
         public static void GetPlayFabIDsFromTwitchIDs(GetPlayFabIDsFromTwitchIDsRequest request, Action<GetPlayFabIDsFromTwitchIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -520,7 +557,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a purchase along with its current PlayFab status. Returns inventory items from the purchase that are still active.
+        /// Retrieves a purchase along with its current PlayFab status. Returns inventory items from the purchase that are still
+        /// active.
         /// </summary>
         public static void GetPurchase(GetPurchaseRequest request, Action<GetPurchaseResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -530,7 +568,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves data stored in a shared group object, as well as the list of members in  the group. Non-members of the group may use this to retrieve group data, including membership, but they  will not receive data for keys marked as private. Shared Groups are designed for sharing data between a  very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
+        /// Retrieves data stored in a shared group object, as well as the list of members in  the group. Non-members of the group
+        /// may use this to retrieve group data, including membership, but they  will not receive data for keys marked as private.
+        /// Shared Groups are designed for sharing data between a  very small number of players, please see our guide:
+        /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void GetSharedGroupData(GetSharedGroupDataRequest request, Action<GetSharedGroupDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -658,7 +699,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Grants the specified character type to the user. CharacterIds are not globally unique; characterId must be evaluated with the parent PlayFabId to guarantee uniqueness.
+        /// Grants the specified character type to the user. CharacterIds are not globally unique; characterId must be evaluated
+        /// with the parent PlayFabId to guarantee uniqueness.
         /// </summary>
         public static void GrantCharacterToUser(GrantCharacterToUserRequest request, Action<GrantCharacterToUserResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -768,7 +810,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for
+        /// API calls which require an authenticated user
         /// </summary>
         public static void LoginWithAndroidDeviceID(LoginWithAndroidDeviceIDRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -779,7 +822,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user in using a custom unique identifier generated by the title, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user in using a custom unique identifier generated by the title, returning a session identifier that can
+        /// subsequently be used for API calls which require an authenticated user
         /// </summary>
         public static void LoginWithCustomID(LoginWithCustomIDRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -790,7 +834,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. Unlike most other login API calls, LoginWithEmailAddress does not permit the  creation of new accounts via the CreateAccountFlag. Email addresses may be used to create accounts via RegisterPlayFabUser.
+        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls
+        /// which require an authenticated user. Unlike most other login API calls, LoginWithEmailAddress does not permit the
+        /// creation of new accounts via the CreateAccountFlag. Email addresses may be used to create accounts via
+        /// RegisterPlayFabUser.
         /// </summary>
         public static void LoginWithEmailAddress(LoginWithEmailAddressRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -801,7 +848,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user in using a Facebook access token, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user in using a Facebook access token, returning a session identifier that can subsequently be used for API
+        /// calls which require an authenticated user
         /// </summary>
         public static void LoginWithFacebook(LoginWithFacebookRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -812,7 +860,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user in using an iOS Game Center player identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user in using an iOS Game Center player identifier, returning a session identifier that can subsequently be
+        /// used for API calls which require an authenticated user
         /// </summary>
         public static void LoginWithGameCenter(LoginWithGameCenterRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -834,7 +883,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user in using the vendor-specific iOS device identifier, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user in using the vendor-specific iOS device identifier, returning a session identifier that can subsequently
+        /// be used for API calls which require an authenticated user
         /// </summary>
         public static void LoginWithIOSDeviceID(LoginWithIOSDeviceIDRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -856,7 +906,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. Unlike most other login API calls, LoginWithPlayFab does not permit the  creation of new accounts via the CreateAccountFlag. Username/Password credentials may be used to create accounts via  RegisterPlayFabUser, or added to existing accounts using AddUsernamePassword.
+        /// Signs the user into the PlayFab account, returning a session identifier that can subsequently be used for API calls
+        /// which require an authenticated user. Unlike most other login API calls, LoginWithPlayFab does not permit the  creation
+        /// of new accounts via the CreateAccountFlag. Username/Password credentials may be used to create accounts via
+        /// RegisterPlayFabUser, or added to existing accounts using AddUsernamePassword.
         /// </summary>
         public static void LoginWithPlayFab(LoginWithPlayFabRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -867,7 +920,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs the user in using a Steam authentication ticket, returning a session identifier that can subsequently be used for API calls which require an authenticated user
+        /// Signs the user in using a Steam authentication ticket, returning a session identifier that can subsequently be used for
+        /// API calls which require an authenticated user
         /// </summary>
         public static void LoginWithSteam(LoginWithSteamRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -889,7 +943,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Completes the Windows Hello login flow by returning the signed value of the challange from GetWindowsHelloChallenge. Windows Hello has a 2 step client to server authentication scheme. Step one is to request from the server a challenge string. Step two is to request the user sign the string via Windows Hello and then send the signed value back to the server. 
+        /// Completes the Windows Hello login flow by returning the signed value of the challange from GetWindowsHelloChallenge.
+        /// Windows Hello has a 2 step client to server authentication scheme. Step one is to request from the server a challenge
+        /// string. Step two is to request the user sign the string via Windows Hello and then send the signed value back to the
+        /// server.
         /// </summary>
         public static void LoginWithWindowsHello(LoginWithWindowsHelloRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -900,7 +957,12 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Attempts to locate a game session matching the given parameters. If the goal is to match the player into a specific active session, only the LobbyId is required. Otherwise, the BuildVersion, GameMode, and Region are all required parameters. Note that parameters specified in the search are required (they are not weighting factors). If a slot is found in a server instance matching the parameters, the slot will be assigned to that player, removing it from the availabe set. In that case, the information on the game session will be returned, otherwise the Status returned will be GameNotFound.
+        /// Attempts to locate a game session matching the given parameters. If the goal is to match the player into a specific
+        /// active session, only the LobbyId is required. Otherwise, the BuildVersion, GameMode, and Region are all required
+        /// parameters. Note that parameters specified in the search are required (they are not weighting factors). If a slot is
+        /// found in a server instance matching the parameters, the slot will be assigned to that player, removing it from the
+        /// availabe set. In that case, the information on the game session will be returned, otherwise the Status returned will be
+        /// GameNotFound.
         /// </summary>
         public static void Matchmake(MatchmakeRequest request, Action<MatchmakeResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -930,7 +992,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Buys a single item with virtual currency. You must specify both the virtual currency to use to purchase,  as well as what the client believes the price to be. This lets the server fail the purchase if the price has changed.
+        /// Buys a single item with virtual currency. You must specify both the virtual currency to use to purchase,  as well as
+        /// what the client believes the price to be. This lets the server fail the purchase if the price has changed.
         /// </summary>
         public static void PurchaseItem(PurchaseItemRequest request, Action<PurchaseItemResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -940,7 +1003,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the Economy->Catalogs tab in the PlayFab Game Manager.
+        /// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the
+        /// Economy->Catalogs tab in the PlayFab Game Manager.
         /// </summary>
         public static void RedeemCoupon(RedeemCouponRequest request, Action<RedeemCouponResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -960,7 +1024,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Registers a new Playfab user account, returning a session identifier that can subsequently be used for API calls which require an authenticated user. You must supply either a username or an email address.
+        /// Registers a new Playfab user account, returning a session identifier that can subsequently be used for API calls which
+        /// require an authenticated user. You must supply either a username or an email address.
         /// </summary>
         public static void RegisterPlayFabUser(RegisterPlayFabUserRequest request, Action<RegisterPlayFabUserResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -971,7 +1036,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Registers a new PlayFab user account using Windows Hello authentication, returning a session ticket  that can subsequently be used for API calls which require an authenticated user
+        /// Registers a new PlayFab user account using Windows Hello authentication, returning a session ticket  that can
+        /// subsequently be used for API calls which require an authenticated user
         /// </summary>
         public static void RegisterWithWindowsHello(RegisterWithWindowsHelloRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1002,7 +1068,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Removes users from the set of those able to update the shared data and the set of users  in the group. Only users in the group can remove members. If as a result of the call, zero users remain with  access, the group and its associated data will be deleted. Shared Groups are designed for sharing data between  a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
+        /// Removes users from the set of those able to update the shared data and the set of users  in the group. Only users in the
+        /// group can remove members. If as a result of the call, zero users remain with  access, the group and its associated data
+        /// will be deleted. Shared Groups are designed for sharing data between  a very small number of players, please see our
+        /// guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void RemoveSharedGroupMembers(RemoveSharedGroupMembersRequest request, Action<RemoveSharedGroupMembersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1012,7 +1081,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Submit a report for another player (due to bad bahavior, etc.), so that customer service representatives for the title can take action concerning potentially toxic players.
+        /// Submit a report for another player (due to bad bahavior, etc.), so that customer service representatives for the title
+        /// can take action concerning potentially toxic players.
         /// </summary>
         public static void ReportPlayer(ReportPlayerClientRequest request, Action<ReportPlayerClientResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1032,7 +1102,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Forces an email to be sent to the registered email address for the user's account, with a link allowing the user to change the password
+        /// Forces an email to be sent to the registered email address for the user's account, with a link allowing the user to
+        /// change the password
         /// </summary>
         public static void SendAccountRecoveryEmail(SendAccountRecoveryEmailRequest request, Action<SendAccountRecoveryEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1051,7 +1122,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Sets the player's secret if it is not already set. Player secrets are used to sign API requests. To reset a player's secret use the Admin or Server API method SetPlayerSecret.
+        /// Sets the player's secret if it is not already set. Player secrets are used to sign API requests. To reset a player's
+        /// secret use the Admin or Server API method SetPlayerSecret.
         /// </summary>
         public static void SetPlayerSecret(SetPlayerSecretRequest request, Action<SetPlayerSecretResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1081,7 +1153,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Decrements the user's balance of the specified virtual currency by the stated amount
+        /// Decrements the user's balance of the specified virtual currency by the stated amount. It is possible to make a VC
+        /// balance negative with this API.
         /// </summary>
         public static void SubtractUserVirtualCurrency(SubtractUserVirtualCurrencyRequest request, Action<ModifyUserVirtualCurrencyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1131,7 +1204,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Unlinks the related Google account from the user's PlayFab account (https://developers.google.com/android/reference/com/google/android/gms/auth/GoogleAuthUtil#public-methods).
+        /// Unlinks the related Google account from the user's PlayFab account
+        /// (https://developers.google.com/android/reference/com/google/android/gms/auth/GoogleAuthUtil#public-methods).
         /// </summary>
         public static void UnlinkGoogleAccount(UnlinkGoogleAccountRequest request, Action<UnlinkGoogleAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1191,7 +1265,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Opens the specified container, with the specified key (when required), and returns the contents of the opened container. If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
+        /// Opens the specified container, with the specified key (when required), and returns the contents of the opened container.
+        /// If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented,
+        /// consistent with the operation of ConsumeItem.
         /// </summary>
         public static void UnlockContainerInstance(UnlockContainerInstanceRequest request, Action<UnlockContainerItemResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1201,7 +1277,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Searches target inventory for an ItemInstance matching the given CatalogItemId, if necessary unlocks it using an appropriate key, and returns the contents of the opened container. If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
+        /// Searches target inventory for an ItemInstance matching the given CatalogItemId, if necessary unlocks it using an
+        /// appropriate key, and returns the contents of the opened container. If the container (and key when relevant) are
+        /// consumable (RemainingUses > 0), their RemainingUses will be decremented, consistent with the operation of ConsumeItem.
         /// </summary>
         public static void UnlockContainerItem(UnlockContainerItemRequest request, Action<UnlockContainerItemResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1221,7 +1299,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Creates and updates the title-specific custom data for the user's character which is readable  and writable by the client
+        /// Creates and updates the title-specific custom data for the user's character which is readable  and writable by the
+        /// client
         /// </summary>
         public static void UpdateCharacterData(UpdateCharacterDataRequest request, Action<UpdateCharacterDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1231,7 +1310,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the values of the specified title-specific statistics for the specific character. By default, clients are not permitted to update statistics. Developers may override this setting in the Game Manager > Settings > API Features.
+        /// Updates the values of the specified title-specific statistics for the specific character. By default, clients are not
+        /// permitted to update statistics. Developers may override this setting in the Game Manager > Settings > API Features.
         /// </summary>
         public static void UpdateCharacterStatistics(UpdateCharacterStatisticsRequest request, Action<UpdateCharacterStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1241,7 +1321,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the values of the specified title-specific statistics for the user. By default, clients are not permitted to update statistics. Developers may override this setting in the Game Manager > Settings > API Features.
+        /// Updates the values of the specified title-specific statistics for the user. By default, clients are not permitted to
+        /// update statistics. Developers may override this setting in the Game Manager > Settings > API Features.
         /// </summary>
         public static void UpdatePlayerStatistics(UpdatePlayerStatisticsRequest request, Action<UpdatePlayerStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1251,7 +1332,11 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated or added in this call will be readable by users not in the group. By default, data permissions are set to Private. Regardless of the permission setting, only members of the group can update the data. Shared Groups are designed  for sharing data between a very small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
+        /// Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated
+        /// or added in this call will be readable by users not in the group. By default, data permissions are set to Private.
+        /// Regardless of the permission setting, only members of the group can update the data. Shared Groups are designed  for
+        /// sharing data between a very small number of players, please see our guide:
+        /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void UpdateSharedGroupData(UpdateSharedGroupDataRequest request, Action<UpdateSharedGroupDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1291,7 +1376,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Validates with Amazon that the receipt for an Amazon App Store in-app purchase is valid and that it matches the purchased catalog item
+        /// Validates with Amazon that the receipt for an Amazon App Store in-app purchase is valid and that it matches the
+        /// purchased catalog item
         /// </summary>
         public static void ValidateAmazonIAPReceipt(ValidateAmazonReceiptRequest request, Action<ValidateAmazonReceiptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1311,7 +1397,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Validates with the Apple store that the receipt for an iOS in-app purchase is valid and that it matches the purchased catalog item
+        /// Validates with the Apple store that the receipt for an iOS in-app purchase is valid and that it matches the purchased
+        /// catalog item
         /// </summary>
         public static void ValidateIOSReceipt(ValidateIOSReceiptRequest request, Action<ValidateIOSReceiptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1321,7 +1408,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Validates with Windows that the receipt for an Windows App Store in-app purchase is valid and that it matches the purchased catalog item
+        /// Validates with Windows that the receipt for an Windows App Store in-app purchase is valid and that it matches the
+        /// purchased catalog item
         /// </summary>
         public static void ValidateWindowsStoreReceipt(ValidateWindowsReceiptRequest request, Action<ValidateWindowsReceiptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {

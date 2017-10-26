@@ -30,7 +30,7 @@ namespace PlayFab.UUnit
         private UUnitActiveState _suiteState = UUnitActiveState.PENDING;
         private UUnitTestCase activeTestInstance = null;
 
-        public string GenerateSummary()
+        public string GenerateTestSummary()
         {
             sb.Length = 0;
 

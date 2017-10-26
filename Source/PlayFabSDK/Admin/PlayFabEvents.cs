@@ -37,8 +37,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<DeleteStoreResult> OnAdminDeleteStoreResultEvent;
         public event PlayFabRequestEvent<DeleteTaskRequest> OnAdminDeleteTaskRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnAdminDeleteTaskResultEvent;
-        public event PlayFabRequestEvent<DeleteUsersRequest> OnAdminDeleteUsersRequestEvent;
-        public event PlayFabResultEvent<DeleteUsersResult> OnAdminDeleteUsersResultEvent;
+        public event PlayFabRequestEvent<DeleteTitleRequest> OnAdminDeleteTitleRequestEvent;
+        public event PlayFabResultEvent<DeleteTitleResult> OnAdminDeleteTitleResultEvent;
         public event PlayFabRequestEvent<GetTaskInstanceRequest> OnAdminGetActionsOnPlayersInSegmentTaskInstanceRequestEvent;
         public event PlayFabResultEvent<GetActionsOnPlayersInSegmentTaskInstanceResult> OnAdminGetActionsOnPlayersInSegmentTaskInstanceResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnAdminGetAllSegmentsRequestEvent;
@@ -133,8 +133,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<BlankResult> OnAdminRemoveVirtualCurrencyTypesResultEvent;
         public event PlayFabRequestEvent<ResetCharacterStatisticsRequest> OnAdminResetCharacterStatisticsRequestEvent;
         public event PlayFabResultEvent<ResetCharacterStatisticsResult> OnAdminResetCharacterStatisticsResultEvent;
-        public event PlayFabRequestEvent<ResetUsersRequest> OnAdminResetUsersRequestEvent;
-        public event PlayFabResultEvent<BlankResult> OnAdminResetUsersResultEvent;
         public event PlayFabRequestEvent<ResetUserStatisticsRequest> OnAdminResetUserStatisticsRequestEvent;
         public event PlayFabResultEvent<ResetUserStatisticsResult> OnAdminResetUserStatisticsResultEvent;
         public event PlayFabRequestEvent<ResolvePurchaseDisputeRequest> OnAdminResolvePurchaseDisputeRequestEvent;

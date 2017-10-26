@@ -304,6 +304,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
     }
@@ -315,6 +316,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
     }
@@ -341,6 +343,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
     }
@@ -364,8 +367,8 @@ namespace PlayFab.PlayStreamModels
         public uint PurchasePrice;
         public TransactionStatus? Status;
         public string TitleId;
-        public Dictionary<string,int> VCAmount;
-        public Dictionary<string,int> VirtualCurrency;
+        public Dictionary<string,int> VirtualCurrencyBalances;
+        public Dictionary<string,int> VirtualCurrencyGrants;
     }
     public class PlayerRankedOnLeaderboardVersionEventData : PlayStreamEventBase
     {
@@ -513,6 +516,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
         public string TitleId;
@@ -528,6 +532,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
         public string TitleId;
@@ -540,6 +545,7 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
+        public string ServerIPV6Address;
         public DateTime StartTime;
         public string TitleId;
     }
@@ -551,6 +557,7 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
+        public string ServerIPV6Address;
         public DateTime StartTime;
         public GameServerHostStopReason? StopReason;
         public DateTime StopTime;
@@ -634,6 +641,9 @@ namespace PlayFab.PlayStreamModels
         public string DeveloperId;
         public NameIdentifier ScheduledTask;
         public string UserId;
+    }
+    public class TitleDeletedEventData : PlayStreamEventBase
+    {
     }
     public class TitleDeletedTaskEventData : PlayStreamEventBase
     {
@@ -915,7 +925,8 @@ namespace PlayFab.PlayStreamModels
     }
 
     /// <summary>
-    /// The source of values for the leaderboard. The properties are mutually exclusive - only one of them will be set and the rest will be null.
+    /// The source of values for the leaderboard. The properties are mutually exclusive - only one of them will be set and the
+    /// rest will be null.
     /// </summary>
     [Serializable]
     public class LeaderboardSource
@@ -1151,7 +1162,8 @@ namespace PlayFab.PlayStreamModels
     public class ScriptExecutionError
     {
         /// <summary>
-        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded, CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded,
+        /// CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
         /// </summary>
         public string Error;
         /// <summary>
@@ -1185,7 +1197,8 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public object FunctionResult;
         /// <summary>
-        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if the total event size is larger than 350KB.
+        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if
+        /// the total event size is larger than 350KB.
         /// </summary>
         public bool? FunctionResultTooLarge;
         /// <summary>
@@ -1193,16 +1206,19 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public int HttpRequestsIssued;
         /// <summary>
-        /// Entries logged during the function execution. These include both entries logged in the function code using log.info() and log.error() and error entries for API and HTTP request failures.
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info()
+        /// and log.error() and error entries for API and HTTP request failures.
         /// </summary>
         public List<LogStatement> Logs;
         /// <summary>
-        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total event size is larger than 350KB after the FunctionResult was removed.
+        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total
+        /// event size is larger than 350KB after the FunctionResult was removed.
         /// </summary>
         public bool? LogsTooLarge;
         public uint MemoryConsumedBytes;
         /// <summary>
-        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP requests.
+        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP
+        /// requests.
         /// </summary>
         public double ProcessorTimeSeconds;
         /// <summary>
@@ -1688,7 +1704,8 @@ namespace PlayFab.PlayStreamModels
     }
 
     /// <summary>
-    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is immutable and unique.
+    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is
+    /// immutable and unique.
     /// </summary>
     [Serializable]
     public class NameIdentifier
@@ -1717,7 +1734,8 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public bool AllowClientToSubtractVirtualCurrency;
         /// <summary>
-        /// Allow players to choose display names that may be in use by other players, i.e. do not enforce uniqueness of display names. Note: if this option is enabled, it cannot be disabled later.
+        /// Allow players to choose display names that may be in use by other players, i.e. do not enforce uniqueness of display
+        /// names. Note: if this option is enabled, it cannot be disabled later.
         /// </summary>
         public bool AllowNonUniquePlayerDisplayNames;
         /// <summary>
@@ -1733,7 +1751,8 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public int? DisplayNameRandomSuffixLength;
         /// <summary>
-        /// Reduce the precision of IP addresses collected from players' devices before they are stored or used to estimate geographic locations.
+        /// Reduce the precision of IP addresses collected from players' devices before they are stored or used to estimate
+        /// geographic locations.
         /// </summary>
         public bool EnableClientIPAddressObfuscation;
         /// <summary>
@@ -1745,7 +1764,8 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public bool UseExternalGameServerProvider;
         /// <summary>
-        /// Use payment provider's sandbox mode (if available) for real-money purchases. This can be useful when testing in-game purchasing in order to avoid being charged.
+        /// Use payment provider's sandbox mode (if available) for real-money purchases. This can be useful when testing in-game
+        /// purchasing in order to avoid being charged.
         /// </summary>
         public bool UseSandboxPayments;
     }

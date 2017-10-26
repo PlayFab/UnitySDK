@@ -50,7 +50,7 @@ namespace PlayFab.UUnit
                 return;
 
             suiteFinished = suite.TickTestSuite();
-            summary = suite.GenerateSummary();
+            summary = suite.GenerateTestSummary();
             textDisplay.text = summary;
 
             if (suiteFinished)
