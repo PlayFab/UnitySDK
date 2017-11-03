@@ -17,6 +17,7 @@ namespace PlayFab.Internal
         private int _pendingWwwMessages = 0;
         public bool SessionStarted { get; set; }
         public string AuthKey { get; set; }
+        public string EntityToken { get; set; }
 
         public void InitializeHttp() { }
         public void Update() { }
@@ -68,17 +69,11 @@ namespace PlayFab.Internal
                         reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                         reqContainer.ApiResult.CustomData = reqContainer.CustomData;
 
+                        PlayFabHttp.instance.OnPlayFabApiResult(reqContainer.ApiResult);
 #if !DISABLE_PLAYFABCLIENT_API
-                        var res = reqContainer.ApiResult as ClientModels.LoginResult;
-                        var regRes = reqContainer.ApiResult as ClientModels.RegisterPlayFabUserResult;
-                        if (res != null)
-                            AuthKey = res.SessionTicket;
-                        else if (regRes != null)
-                            AuthKey = regRes.SessionTicket;
-
-                        if (res != null || regRes != null)
-                            PlayFabDeviceUtil.OnPlayFabLogin(res, regRes);
+                        PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult);
 #endif
+
                         try
                         {
                             PlayFabHttp.SendEvent(reqContainer.ApiEndpoint, reqContainer.ApiRequest, reqContainer.ApiResult, ApiProcessingEventType.Post);

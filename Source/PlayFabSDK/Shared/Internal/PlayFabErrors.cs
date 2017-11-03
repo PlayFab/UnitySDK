@@ -348,7 +348,10 @@ namespace PlayFab
         FileTooLarge = 1346,
         TitleDeleted = 1347,
         TitleContainsUserAccounts = 1348,
-        TitleDeletionPlayerCleanupFailure = 1349
+        TitleDeletionPlayerCleanupFailure = 1349,
+        EntityFileOperationPending = 1350,
+        NoEntityFileOperationPending = 1351,
+        EntityProfileVersionMismatch = 1352
     }
 
     public delegate void ErrorCallback(PlayFabError error);

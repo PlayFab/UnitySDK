@@ -15,6 +15,15 @@ namespace PlayFab
         static PlayFabMatchmakerAPI() {}
 
         /// <summary>
+        /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
+        /// A new/fresh login will be required after calling this.
+        /// </summary>
+        public static void ForgetAllCredentials()
+        {
+            PlayFabHttp.ForgetAllCredentials();
+        }
+
+        /// <summary>
         /// Validates a user with the PlayFab service
         /// </summary>
         public static void AuthUser(AuthUserRequest request, Action<AuthUserResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)

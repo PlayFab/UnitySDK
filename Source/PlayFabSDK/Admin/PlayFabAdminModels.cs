@@ -276,6 +276,11 @@ namespace PlayFab.AdminModels
         public Conditionals? HasSignatureOrEncryption;
     }
 
+    public enum AuthTokenType
+    {
+        Email
+    }
+
     /// <summary>
     /// Contains information for a ban.
     /// </summary>
@@ -1651,6 +1656,28 @@ namespace PlayFab.AdminModels
         /// array of game modes available for the specified build
         /// </summary>
         public List<GameModeInfo> GameModes;
+    }
+
+    [Serializable]
+    public class GetPlayerIdFromAuthTokenRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The auth token of the player requesting the password reset.
+        /// </summary>
+        public string Token;
+        /// <summary>
+        /// The type of auth token of the player requesting the password reset.
+        /// </summary>
+        public AuthTokenType TokenType;
+    }
+
+    [Serializable]
+    public class GetPlayerIdFromAuthTokenResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The player ID from the token passed in
+        /// </summary>
+        public string PlayFabId;
     }
 
     [Serializable]
@@ -3235,6 +3262,24 @@ namespace PlayFab.AdminModels
 
     [Serializable]
     public class ResetCharacterStatisticsResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class ResetPasswordRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The new password for the player.
+        /// </summary>
+        public string Password;
+        /// <summary>
+        /// The token of the player requesting the password reset.
+        /// </summary>
+        public string Token;
+    }
+
+    [Serializable]
+    public class ResetPasswordResult : PlayFabResultCommon
     {
     }
 

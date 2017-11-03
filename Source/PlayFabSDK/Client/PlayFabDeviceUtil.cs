@@ -1,5 +1,4 @@
 #if !DISABLE_PLAYFABCLIENT_API
-using System;
 using PlayFab.ClientModels;
 using PlayFab.SharedModels;
 using UnityEngine;
@@ -8,9 +7,6 @@ namespace PlayFab.Internal
 {
     public static class PlayFabDeviceUtil
     {
-        private const string GAME_OBJECT_NAME = "_PlayFabGO";
-
-        private static GameObject _playFabAndroidPushGo;
         private static bool _needsAttribution;
         private static bool _gatherInfo;
 
@@ -33,29 +29,6 @@ namespace PlayFab.Internal
             PlayFabSettings.AdvertisingIdType += "_Successful";
         }
         #endregion Make Attribution API call
-
-        #region Make Push Registration API call
-        private static void RegisterForAndroidPush(string token, bool sendConfirmation, string confirmationMessage)
-        {
-            var request = new AndroidDevicePushNotificationRegistrationRequest
-            {
-                SendPushNotificationConfirmation = sendConfirmation,
-                ConfirmationMessage = confirmationMessage,
-                DeviceToken = token
-            };
-            PlayFabClientAPI.AndroidDevicePushNotificationRegistration(request, OnAndroidPushRegister, OnApiFail, token);
-        }
-        private static void OnAndroidPushRegister(AndroidDevicePushNotificationRegistrationResult result)
-        {
-            _playFabAndroidPushGo = GameObject.Find(GAME_OBJECT_NAME);
-            if (_playFabAndroidPushGo != null)
-                _playFabAndroidPushGo.BroadcastMessage("OnRegisterApiSuccess", result.CustomData);
-        }
-        private static void OnApiFail(PlayFabError error)
-        {
-            Debug.Log("Android Push Register failed: " + error.GenerateErrorReport());
-        }
-        #endregion Make Push Registration API call
 
         #region Scrape Device Info
         private class DeviceInfoRequest : PlayFabRequestCommon
@@ -83,8 +56,13 @@ namespace PlayFab.Internal
         }
         #endregion
 
-        public static void OnPlayFabLogin(LoginResult loginResult, RegisterPlayFabUserResult registerResult)
+        public static void OnPlayFabLogin(PlayFabResultCommon result)
         {
+            var loginResult = result as LoginResult;
+            var registerResult = result as RegisterPlayFabUserResult;
+            if (loginResult == null && registerResult == null)
+                return;
+
             _needsAttribution = false;
             _gatherInfo = false;
             if (loginResult != null && loginResult.SettingsForUser != null)
@@ -101,11 +79,6 @@ namespace PlayFab.Internal
                 DoAttributeInstall();
             else
                 GetAdvertIdFromUnity();
-
-            // Push Notification Plugin Setup
-            _playFabAndroidPushGo = GameObject.Find(GAME_OBJECT_NAME);
-            if (_playFabAndroidPushGo != null)
-                _playFabAndroidPushGo.BroadcastMessage("OnPlayFabLogin", (Action<string, bool, string>)RegisterForAndroidPush);
 
             // Device information gathering
             SendDeviceInfoToPlayFab();

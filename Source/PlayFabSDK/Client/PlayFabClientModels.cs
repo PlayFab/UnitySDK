@@ -94,6 +94,20 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class AddOrUpdateContactEmailRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The new contact email to associate with the player.
+        /// </summary>
+        public string EmailAddress;
+    }
+
+    [Serializable]
+    public class AddOrUpdateContactEmailResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class AddSharedGroupMembersRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -4078,6 +4092,16 @@ namespace PlayFab.ClientModels
         /// Player's user name used by Windows Hello.
         /// </summary>
         public string UserName;
+    }
+
+    [Serializable]
+    public class RemoveContactEmailRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
+    public class RemoveContactEmailResult : PlayFabResultCommon
+    {
     }
 
     [Serializable]
