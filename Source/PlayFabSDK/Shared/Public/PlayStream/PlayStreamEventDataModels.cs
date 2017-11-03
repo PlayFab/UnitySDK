@@ -160,6 +160,12 @@ namespace PlayFab.PlayStreamModels
     #endregion partner
 
     #region player
+    public class AuthTokenValidatedEventData : PlayStreamEventBase
+    {
+        public string EmailTemplateId;
+        public string TitleId;
+        public string Token;
+    }
     public class PlayerAdCampaignAttributionEventData : PlayStreamEventBase
     {
         public string CampaignId;
@@ -481,6 +487,13 @@ namespace PlayFab.PlayStreamModels
         public string OriginationUserId;
         public string TitleId;
     }
+    public class PlayerUpdatedContactEmailEventData : PlayStreamEventBase
+    {
+        public string EmailName;
+        public string NewEmailAddress;
+        public string PreviousEmailAddress;
+        public string TitleId;
+    }
     public class PlayerVCPurchaseEventData : PlayStreamEventBase
     {
         public string CatalogVersion;
@@ -505,6 +518,18 @@ namespace PlayFab.PlayStreamModels
         public int VirtualCurrencyBalance;
         public string VirtualCurrencyName;
         public int VirtualCurrencyPreviousBalance;
+    }
+    public class SentEmailEventData : PlayStreamEventBase
+    {
+        public string EmailName;
+        public string EmailTemplateId;
+        public string EmailTemplateName;
+        public EmailTemplateType? EmailTemplateType;
+        public string ErrorMessage;
+        public string ErrorName;
+        public bool Success;
+        public string TitleId;
+        public string Token;
     }
     #endregion player
 
@@ -819,6 +844,13 @@ namespace PlayFab.PlayStreamModels
     {
         TotalValueToDateInUSD,
         PlayerValuesToDate
+    }
+
+    public enum EmailTemplateType
+    {
+        AccountRecovery,
+        EmailVerification,
+        Custom
     }
 
     public enum AuthenticationProvider

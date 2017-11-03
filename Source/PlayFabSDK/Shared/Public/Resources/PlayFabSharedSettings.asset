@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: PlayFabSharedSettings
   m_EditorClassIdentifier: 
   TitleId: 
+  DeveloperSecretKey: 
   ProductionEnvironmentUrl: 
   RequestType: 0
   RequestTimeout: 2000

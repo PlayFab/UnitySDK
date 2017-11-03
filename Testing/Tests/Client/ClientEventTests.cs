@@ -63,7 +63,7 @@ namespace PlayFab.UUnit
 
         public override void ClassTearDown()
         {
-            PlayFabClientAPI.ForgetClientCredentials();
+            PlayFabClientAPI.ForgetAllCredentials();
         }
 
         private void SharedErrorCallback(PlayFabError error)

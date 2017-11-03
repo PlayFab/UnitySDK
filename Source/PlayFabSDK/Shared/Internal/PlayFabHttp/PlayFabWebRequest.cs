@@ -28,10 +28,10 @@ namespace PlayFab.Internal
 
         private static string _unityVersion;
 
-        private static string _authKey;
         private static bool _sessionStarted;
         public bool SessionStarted { get { return _sessionStarted; } set { _sessionStarted = value; } }
-        public string AuthKey { get { return _authKey; } set { _authKey = value; } }
+        public string AuthKey { get; set; }
+        public string EntityToken { get; set; }
 
         public void InitializeHttp()
         {
@@ -298,20 +298,12 @@ namespace PlayFab.Internal
                 reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                 reqContainer.ApiResult.CustomData = reqContainer.CustomData;
 
-#if !DISABLE_PLAYFABCLIENT_API
-                var res = reqContainer.ApiResult as ClientModels.LoginResult;
-                var regRes = reqContainer.ApiResult as ClientModels.RegisterPlayFabUserResult;
-                if (res != null)
-                    _authKey = res.SessionTicket;
-                else if (regRes != null)
-                    _authKey = regRes.SessionTicket;
+                PlayFabHttp.instance.OnPlayFabApiResult(reqContainer.ApiResult);
 
-                if (res != null || regRes != null)
+#if !DISABLE_PLAYFABCLIENT_API
+                lock (ResultQueue)
                 {
-                    lock (ResultQueue)
-                    {
-                        ResultQueue.Enqueue(() => { PlayFabDeviceUtil.OnPlayFabLogin(res, regRes); });
-                    }
+                    ResultQueue.Enqueue(() => { PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult); });
                 }
 #endif
                 lock (ResultQueue)

@@ -8,6 +8,7 @@ namespace PlayFab.Internal
     {
         bool SessionStarted { get; set; }
         string AuthKey { get; set; }
+        string EntityToken { get; set; }
         void InitializeHttp();
 
         // Mirroring MonoBehaviour - Relayed from PlayFabHTTP
@@ -25,6 +26,7 @@ namespace PlayFab.Internal
         PreLoginSession, // Not yet defined
         LoginSession, // "X-Authorization"
         DevSecretKey, // "X-SecretKey"
+        EntityToken, // "X-EntityToken"
     }
 
 

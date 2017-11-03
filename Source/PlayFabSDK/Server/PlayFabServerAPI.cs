@@ -16,6 +16,15 @@ namespace PlayFab
         static PlayFabServerAPI() {}
 
         /// <summary>
+        /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
+        /// A new/fresh login will be required after calling this.
+        /// </summary>
+        public static void ForgetAllCredentials()
+        {
+            PlayFabHttp.ForgetAllCredentials();
+        }
+
+        /// <summary>
         /// Increments  the character's balance of the specified virtual currency by the stated amount
         /// </summary>
         public static void AddCharacterVirtualCurrency(AddCharacterVirtualCurrencyRequest request, Action<ModifyCharacterVirtualCurrencyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -834,6 +843,17 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/RevokeInventoryItem", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Forces an email to be sent to the registered contact email address for the user's account based on an account recovery
+        /// email template
+        /// </summary>
+        public static void SendCustomAccountRecoveryEmail(SendCustomAccountRecoveryEmailRequest request, Action<SendCustomAccountRecoveryEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new Exception("Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/SendCustomAccountRecoveryEmail", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>

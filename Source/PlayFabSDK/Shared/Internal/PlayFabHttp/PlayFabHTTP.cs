@@ -169,6 +169,7 @@ namespace PlayFab.Internal
                 case AuthType.DevSecretKey: reqContainer.RequestHeaders["X-SecretKey"] = PlayFabSettings.DeveloperSecretKey; break;
 #endif
                 case AuthType.LoginSession: reqContainer.RequestHeaders["X-Authorization"] = _internalHttp.AuthKey; break;
+                case AuthType.EntityToken: reqContainer.RequestHeaders["X-EntityToken"] = _internalHttp.EntityToken; break;
             }
 
             // These closures preserve the TResult generic information in a way that's safe for all the devices
@@ -196,9 +197,29 @@ namespace PlayFab.Internal
         }
 
         /// <summary>
+        /// Internal code shared by IPlayFabHTTP implementations
+        /// </summary>
+        internal void OnPlayFabApiResult(PlayFabResultCommon result)
+        {
+#if ENABLE_PLAYFABENTITY_API
+            var entRes = result as EntityModels.GetEntityTokenResponse;
+            if (entRes != null)
+                _internalHttp.EntityToken = entRes.EntityToken;
+#endif
+#if !DISABLE_PLAYFABCLIENT_API
+            var logRes = result as ClientModels.LoginResult;
+            var regRes = result as ClientModels.RegisterPlayFabUserResult;
+            if (logRes != null)
+                _internalHttp.AuthKey = logRes.SessionTicket;
+            else if (regRes != null)
+                _internalHttp.AuthKey = regRes.SessionTicket;
+#endif
+        }
+
+        /// <summary>
         /// MonoBehaviour OnEnable Method
         /// </summary>
-        public void OnEnable()
+        private void OnEnable()
         {
             if (_logger != null)
             {
@@ -209,7 +230,7 @@ namespace PlayFab.Internal
         /// <summary>
         /// MonoBehaviour OnDisable
         /// </summary>
-        public void OnDisable()
+        private void OnDisable()
         {
             if (_logger != null)
             {
@@ -220,7 +241,7 @@ namespace PlayFab.Internal
         /// <summary>
         /// MonoBehaviour OnDestroy
         /// </summary>
-        public void OnDestroy()
+        private void OnDestroy()
         {
             if (_internalHttp != null)
             {
@@ -241,7 +262,7 @@ namespace PlayFab.Internal
         /// <summary>
         /// MonoBehaviour Update
         /// </summary>
-        public void Update()
+        private void Update()
         {
             if (_internalHttp != null)
             {
@@ -268,10 +289,13 @@ namespace PlayFab.Internal
             return _internalHttp != null && !string.IsNullOrEmpty(_internalHttp.AuthKey);
         }
 
-        public static void ForgetClientCredentials()
+        public static void ForgetAllCredentials()
         {
             if (_internalHttp != null)
+            {
                 _internalHttp.AuthKey = null;
+                _internalHttp.EntityToken = null;
+            }
         }
 
         protected internal static PlayFabError GeneratePlayFabError(string json, object customData)

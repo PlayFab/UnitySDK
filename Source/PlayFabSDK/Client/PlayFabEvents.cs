@@ -13,6 +13,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<AddFriendResult> OnAddFriendResultEvent;
         public event PlayFabRequestEvent<AddGenericIDRequest> OnAddGenericIDRequestEvent;
         public event PlayFabResultEvent<AddGenericIDResult> OnAddGenericIDResultEvent;
+        public event PlayFabRequestEvent<AddOrUpdateContactEmailRequest> OnAddOrUpdateContactEmailRequestEvent;
+        public event PlayFabResultEvent<AddOrUpdateContactEmailResult> OnAddOrUpdateContactEmailResultEvent;
         public event PlayFabRequestEvent<AddSharedGroupMembersRequest> OnAddSharedGroupMembersRequestEvent;
         public event PlayFabResultEvent<AddSharedGroupMembersResult> OnAddSharedGroupMembersResultEvent;
         public event PlayFabRequestEvent<AddUsernamePasswordRequest> OnAddUsernamePasswordRequestEvent;
@@ -178,6 +180,8 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<RegisterPlayFabUserRequest> OnRegisterPlayFabUserRequestEvent;
         public event PlayFabResultEvent<RegisterPlayFabUserResult> OnRegisterPlayFabUserResultEvent;
         public event PlayFabRequestEvent<RegisterWithWindowsHelloRequest> OnRegisterWithWindowsHelloRequestEvent;
+        public event PlayFabRequestEvent<RemoveContactEmailRequest> OnRemoveContactEmailRequestEvent;
+        public event PlayFabResultEvent<RemoveContactEmailResult> OnRemoveContactEmailResultEvent;
         public event PlayFabRequestEvent<RemoveFriendRequest> OnRemoveFriendRequestEvent;
         public event PlayFabResultEvent<RemoveFriendResult> OnRemoveFriendResultEvent;
         public event PlayFabRequestEvent<RemoveGenericIDRequest> OnRemoveGenericIDRequestEvent;

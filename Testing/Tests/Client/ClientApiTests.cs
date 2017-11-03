@@ -59,7 +59,7 @@ namespace PlayFab.UUnit
 
         public override void ClassTearDown()
         {
-            PlayFabClientAPI.ForgetClientCredentials();
+            PlayFabClientAPI.ForgetAllCredentials();
         }
 
         private void SharedErrorCallback(PlayFabError error)
@@ -179,6 +179,7 @@ namespace PlayFab.UUnit
             PlayFabId = result.PlayFabId;
             var testContext = (UUnitTestContext)result.CustomData;
             testContext.True(PlayFabClientAPI.IsClientLoggedIn(), "User login failed");
+            testContext.True(result.SettingsForUser.NeedsAttribution, "This title is not configured for advertisements.");
 
             var target = PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful";
             var failTime = DateTime.UtcNow + TimeSpan.FromSeconds(10);
