@@ -63,6 +63,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetMatchmakerGameModesResult> OnAdminGetMatchmakerGameModesResultEvent;
         public event PlayFabRequestEvent<GetPlayerIdFromAuthTokenRequest> OnAdminGetPlayerIdFromAuthTokenRequestEvent;
         public event PlayFabResultEvent<GetPlayerIdFromAuthTokenResult> OnAdminGetPlayerIdFromAuthTokenResultEvent;
+        public event PlayFabRequestEvent<GetPlayerProfileRequest> OnAdminGetPlayerProfileRequestEvent;
+        public event PlayFabResultEvent<GetPlayerProfileResult> OnAdminGetPlayerProfileResultEvent;
         public event PlayFabRequestEvent<GetPlayersSegmentsRequest> OnAdminGetPlayerSegmentsRequestEvent;
         public event PlayFabResultEvent<GetPlayerSegmentsResult> OnAdminGetPlayerSegmentsResultEvent;
         public event PlayFabRequestEvent<GetPlayerSharedSecretsRequest> OnAdminGetPlayerSharedSecretsRequestEvent;
