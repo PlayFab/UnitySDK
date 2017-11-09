@@ -35,7 +35,7 @@ Detailed Instructions:
 
 Advanced users can copy the contents of https://github.com/PlayFab/UnitySDK/raw/master/Source into their existing project.
 
-#### Configuration:
+#### PlayFab Configuration:
 You must configure the SDK with you unique TitleId.  This is done via the PlayFabSharedSettings ScriptableObject.
 
 In your Unity Project tab, navigate to: assets/PlayFabSDK/Shared/Public/Resources and select the PlayFabSharedSettings ScriptableObject.
@@ -46,8 +46,19 @@ Advanced users can still add this line of code anywhere in their game setup:
 PlayFabSettings.TitleId = "AD08";
 ```
 
-To make server API calls:
-This guide will direct you how to find the "Scripting Define Symbols": https://docs.unity3d.com/Manual/PlatformDependentCompilation.html, under the heading "Platform Custom Defines".
+#### HTTP Request Configuration:
+
+From the EdEx panel (Settings -> Project), or the PlayFabSharedSettings scriptable object, you can define one of two options for making your HTTPS Rest calls to PlayFab.
+
+The UnityWww option uses the Unity WWW class to make web requests. This is the more stable option, but all requests are made using the main Unity thread.
+
+The HttpWebRequest option uses the C# native HttpRequest library. This option is multi-threaded, and most of the request will not execute on the main thread. Additionally, advanced users can use PlayFabSettings to customize their request timeouts and other HttpRequest settings (not documented). There is currently a bug in this option where performance will degrade for long running GameServers, or clients that run for more than 24 hours. For these situations, please use UnityWWW.
+
+#### To make server API calls:
+
+The best way to do this is enable it from the PlayFab Editor Extensions Panel (PlayFab Panel -> Settings -> API).
+
+Non EdEx panel users: This guide will direct you how to find the "Scripting Define Symbols": https://docs.unity3d.com/Manual/PlatformDependentCompilation.html, under the heading "Platform Custom Defines".
 
 The Unity setting you need to modify is:
 Edit -> Projet Settings -> Player -> "PC & Mac & Linux Standalone" -> "Platform Custom Defines"
@@ -68,6 +79,7 @@ Advanced users can still set their secret key anywhere in their game setup:
 You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://api.playfab.com/documentation/client) for a complete list of available APIs.
 
 ##### New Users:
+
 * Check out our Tutorials, Samples and more [here](https://api.playfab.com/docs/tutorials)
 
 ## 5. Troubleshooting:
