@@ -3108,10 +3108,6 @@ namespace PlayFab.ServerModels
         /// List of the player's lifetime purchase totals, summed by real-money currency
         /// </summary>
         public List<ValueToDateModel> ValuesToDate;
-        /// <summary>
-        /// List of the player's virtual currency balances
-        /// </summary>
-        public List<VirtualCurrencyBalanceModel> VirtualCurrencyBalances;
     }
 
     [Serializable]
@@ -3252,12 +3248,6 @@ namespace PlayFab.ServerModels
         /// Content of the message (all platforms)
         /// </summary>
         public string Message;
-        /// <summary>
-        /// This field was solely for use with the PlayFab custom Push Plugin, which has been deprecated in favor of the supported
-        /// platform-specific fields
-        /// </summary>
-        [Obsolete("Use 'CustomData' instead", true)]
-        public string ScheduleDate;
         /// <summary>
         /// Sound file to play with the message (all platforms)
         /// </summary>
@@ -4695,19 +4685,6 @@ namespace PlayFab.ServerModels
         /// dollars and ninety-nine cents when Currency is 'USD'.
         /// </summary>
         public string TotalValueAsDecimal;
-    }
-
-    [Serializable]
-    public class VirtualCurrencyBalanceModel
-    {
-        /// <summary>
-        /// Name of the virtual currency
-        /// </summary>
-        public string Currency;
-        /// <summary>
-        /// Balance of the virtual currency
-        /// </summary>
-        public int TotalValue;
     }
 
     [Serializable]

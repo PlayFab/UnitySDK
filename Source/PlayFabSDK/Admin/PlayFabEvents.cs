@@ -19,6 +19,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<BlankResult> OnAdminAddVirtualCurrencyTypesResultEvent;
         public event PlayFabRequestEvent<BanUsersRequest> OnAdminBanUsersRequestEvent;
         public event PlayFabResultEvent<BanUsersResult> OnAdminBanUsersResultEvent;
+        public event PlayFabRequestEvent<CheckLimitedEditionItemAvailabilityRequest> OnAdminCheckLimitedEditionItemAvailabilityRequestEvent;
+        public event PlayFabResultEvent<CheckLimitedEditionItemAvailabilityResult> OnAdminCheckLimitedEditionItemAvailabilityResultEvent;
         public event PlayFabRequestEvent<CreateActionsOnPlayerSegmentTaskRequest> OnAdminCreateActionsOnPlayersInSegmentTaskRequestEvent;
         public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateActionsOnPlayersInSegmentTaskResultEvent;
         public event PlayFabRequestEvent<CreateCloudScriptTaskRequest> OnAdminCreateCloudScriptTaskRequestEvent;
@@ -117,6 +119,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetUserDataResult> OnAdminGetUserReadOnlyDataResultEvent;
         public event PlayFabRequestEvent<GrantItemsToUsersRequest> OnAdminGrantItemsToUsersRequestEvent;
         public event PlayFabResultEvent<GrantItemsToUsersResult> OnAdminGrantItemsToUsersResultEvent;
+        public event PlayFabRequestEvent<IncrementLimitedEditionItemAvailabilityRequest> OnAdminIncrementLimitedEditionItemAvailabilityRequestEvent;
+        public event PlayFabResultEvent<IncrementLimitedEditionItemAvailabilityResult> OnAdminIncrementLimitedEditionItemAvailabilityResultEvent;
         public event PlayFabRequestEvent<IncrementPlayerStatisticVersionRequest> OnAdminIncrementPlayerStatisticVersionRequestEvent;
         public event PlayFabResultEvent<IncrementPlayerStatisticVersionResult> OnAdminIncrementPlayerStatisticVersionResultEvent;
         public event PlayFabRequestEvent<ListBuildsRequest> OnAdminListServerBuildsRequestEvent;

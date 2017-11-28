@@ -68,7 +68,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds or updates a contact email to the player's profile
+        /// Adds or updates a contact email to the player's profile.
         /// </summary>
         public static void AddOrUpdateContactEmail(AddOrUpdateContactEmailRequest request, Action<AddOrUpdateContactEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -393,6 +393,18 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/GetLeaderboardForUserCharacters", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// For payments flows where the provider requires playfab (the fulfiller) to initiate the transaction, but the client
+        /// completes the rest of the flow. In the Xsolla case, the token returned here will be passed to Xsolla by the client to
+        /// create a cart. Poll GetPurchase using the returned OrderId once you've completed the payment.
+        /// </summary>
+        public static void GetPaymentToken(GetPaymentTokenRequest request, Action<GetPaymentTokenResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/GetPaymentToken", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -1058,7 +1070,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Removes a contact email from the player's profile
+        /// Removes a contact email from the player's profile.
         /// </summary>
         public static void RemoveContactEmail(RemoveContactEmailRequest request, Action<RemoveContactEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1098,6 +1110,17 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/RemoveSharedGroupMembers", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Write a PlayStream event to describe the provided player device information. This API method is not designed to be
+        /// called directly by developers. Each PlayFab client SDK will eventually report this information automatically.
+        /// </summary>
+        public static void ReportDeviceInfo(DeviceInfoRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new Exception("Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/ReportDeviceInfo", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>

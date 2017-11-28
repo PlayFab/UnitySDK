@@ -121,7 +121,7 @@ namespace PlayFab.UUnit
             _testInteger = 0; // Default if the data isn't present
             foreach (var eachObj in result.Objects)
                 if (eachObj.ObjectName == TEST_OBJ_NAME)
-                    int.TryParse(eachObj.EscapedObject, out _testInteger);
+                    int.TryParse(eachObj.EscapedDataObject, out _testInteger);
 
             _testInteger = (_testInteger + 1) % 100; // This test is about the Expected value changing - but not testing more complicated issues like bounds
 
@@ -130,7 +130,7 @@ namespace PlayFab.UUnit
                 EntityId = entityId,
                 EntityType = entityType,
                 Objects = new List<SetObject> {
-                    new SetObject{ ObjectName = TEST_OBJ_NAME, Object = _testInteger }
+                    new SetObject{ ObjectName = TEST_OBJ_NAME, DataObject = _testInteger }
                 }
             };
             PlayFabEntityAPI.SetObjects(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<SetObjectsResponse>(testContext, UpdateObjectCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
@@ -149,7 +149,7 @@ namespace PlayFab.UUnit
             _testInteger = -100; // Default if the data isn't present
             foreach (var eachObj in result.Objects)
                 if (eachObj.ObjectName == TEST_OBJ_NAME)
-                    _testInteger = int.Parse(eachObj.EscapedObject);
+                    _testInteger = int.Parse(eachObj.EscapedDataObject);
             testContext.True(_testInteger != -100, "Entity object not set");
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
