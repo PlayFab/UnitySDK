@@ -71,6 +71,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetLeaderboardAroundPlayerResult> OnGetLeaderboardAroundPlayerResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardForUsersCharactersRequest> OnGetLeaderboardForUserCharactersRequestEvent;
         public event PlayFabResultEvent<GetLeaderboardForUsersCharactersResult> OnGetLeaderboardForUserCharactersResultEvent;
+        public event PlayFabRequestEvent<GetPaymentTokenRequest> OnGetPaymentTokenRequestEvent;
+        public event PlayFabResultEvent<GetPaymentTokenResult> OnGetPaymentTokenResultEvent;
         public event PlayFabRequestEvent<GetPhotonAuthenticationTokenRequest> OnGetPhotonAuthenticationTokenRequestEvent;
         public event PlayFabResultEvent<GetPhotonAuthenticationTokenResult> OnGetPhotonAuthenticationTokenResultEvent;
         public event PlayFabRequestEvent<GetPlayerCombinedInfoRequest> OnGetPlayerCombinedInfoRequestEvent;
@@ -188,6 +190,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RemoveGenericIDResult> OnRemoveGenericIDResultEvent;
         public event PlayFabRequestEvent<RemoveSharedGroupMembersRequest> OnRemoveSharedGroupMembersRequestEvent;
         public event PlayFabResultEvent<RemoveSharedGroupMembersResult> OnRemoveSharedGroupMembersResultEvent;
+        public event PlayFabRequestEvent<DeviceInfoRequest> OnReportDeviceInfoRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnReportDeviceInfoResultEvent;
         public event PlayFabRequestEvent<ReportPlayerClientRequest> OnReportPlayerRequestEvent;
         public event PlayFabResultEvent<ReportPlayerClientResult> OnReportPlayerResultEvent;
         public event PlayFabRequestEvent<RestoreIOSPurchasesRequest> OnRestoreIOSPurchasesRequestEvent;

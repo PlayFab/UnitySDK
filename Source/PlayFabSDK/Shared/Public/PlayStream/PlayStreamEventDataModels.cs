@@ -829,13 +829,13 @@ namespace PlayFab.PlayStreamModels
     public class ObjectSet
     {
         /// <summary>
+        /// The JSON Object that was last set on the profile.
+        /// </summary>
+        public object DataObject;
+        /// <summary>
         /// The name of this object.
         /// </summary>
         public string Name;
-        /// <summary>
-        /// The JSON Object that was last set on the profile.
-        /// </summary>
-        public object Object;
         /// <summary>
         /// The operation that was performed.
         /// </summary>

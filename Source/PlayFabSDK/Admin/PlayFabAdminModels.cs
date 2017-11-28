@@ -529,6 +529,28 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class CheckLimitedEditionItemAvailabilityRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Which catalog is being updated. If null, uses the default catalog.
+        /// </summary>
+        public string CatalogVersion;
+        /// <summary>
+        /// The item to check for.
+        /// </summary>
+        public string ItemId;
+    }
+
+    [Serializable]
+    public class CheckLimitedEditionItemAvailabilityResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The amount of the specified resource remaining.
+        /// </summary>
+        public int Amount;
+    }
+
+    [Serializable]
     public class CloudScriptFile
     {
         /// <summary>
@@ -2286,6 +2308,28 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class IncrementLimitedEditionItemAvailabilityRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Amount to increase availability by.
+        /// </summary>
+        public int Amount;
+        /// <summary>
+        /// Which catalog is being updated. If null, uses the default catalog.
+        /// </summary>
+        public string CatalogVersion;
+        /// <summary>
+        /// The item which needs more availability.
+        /// </summary>
+        public string ItemId;
+    }
+
+    [Serializable]
+    public class IncrementLimitedEditionItemAvailabilityResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class IncrementPlayerStatisticVersionRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2945,10 +2989,6 @@ namespace PlayFab.AdminModels
         /// List of the player's lifetime purchase totals, summed by real-money currency
         /// </summary>
         public List<ValueToDateModel> ValuesToDate;
-        /// <summary>
-        /// List of the player's virtual currency balances
-        /// </summary>
-        public List<VirtualCurrencyBalanceModel> VirtualCurrencyBalances;
     }
 
     [Serializable]
@@ -4543,19 +4583,6 @@ namespace PlayFab.AdminModels
         /// dollars and ninety-nine cents when Currency is 'USD'.
         /// </summary>
         public string TotalValueAsDecimal;
-    }
-
-    [Serializable]
-    public class VirtualCurrencyBalanceModel
-    {
-        /// <summary>
-        /// Name of the virtual currency
-        /// </summary>
-        public string Currency;
-        /// <summary>
-        /// Balance of the virtual currency
-        /// </summary>
-        public int TotalValue;
     }
 
     [Serializable]
