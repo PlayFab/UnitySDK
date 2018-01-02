@@ -80,6 +80,10 @@ namespace PlayFab.Internal
             if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
                 _internalHttp = new PlayFabWebRequest();
 #endif
+#if UNITY_2017_1_OR_NEWER
+            if (PlayFabSettings.RequestType == WebRequestType.UnityWebRequest)
+                _internalHttp = new PlayFabUnityHttp();
+#endif
             if (_internalHttp == null)
                 _internalHttp = new PlayFabWww();
 

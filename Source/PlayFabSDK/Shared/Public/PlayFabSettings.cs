@@ -7,6 +7,9 @@ namespace PlayFab
     {
         UnityWww, // High compatability Unity api calls
         HttpWebRequest, // High performance multi-threaded api calls
+#if UNITY_2017_1_OR_NEWER
+        UnityWebRequest, // Modern unity HTTP component
+#endif
         CustomHttp //If this is used, you must set the Http to an IPlayFabHttp object.
     }
 
@@ -29,9 +32,9 @@ namespace PlayFab
         private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
         [Obsolete("This field will become private after Mar 1, 2017", false)]
         public static PlayFabSharedSettings PlayFabShared { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
-        public const string SdkVersion = "2.33.171127";
+        public const string SdkVersion = "2.34.180102";
         public const string BuildIdentifier = "jbuild_unitysdk__0";
-        public const string VersionString = "UnitySDK-2.33.171127";
+        public const string VersionString = "UnitySDK-2.34.180102";
         private const string DefaultPlayFabApiUrlPrivate = ".playfabapi.com";
         [Obsolete("This field will become private after Mar 1, 2017", false)]
         public static string DefaultPlayFabApiUrl { get { return DefaultPlayFabApiUrlPrivate; } }
@@ -49,7 +52,7 @@ namespace PlayFab
         public static PlayFabSharedSettings GetSharedSettingsObject()
         {
             return GetSharedSettingsObjectPrivate();
-        } 
+        }
 
 
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
