@@ -451,7 +451,6 @@ namespace PlayFab.UUnit
             var request = new WriteClientPlayerEventRequest
             {
                 EventName = "ForumPostEvent",
-                Timestamp = DateTime.UtcNow,
                 Body = new Dictionary<string, object>
                 {
                     { "Subject", "My First Post" },

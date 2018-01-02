@@ -148,7 +148,8 @@ namespace PlayFab.Internal
                     Dictionary<string, string> responseHeaders = null;
                     try
                     {
-                        responseHeaders = www.responseHeaders;
+                        if (PlayFabSettings.CompressApiData)
+                            responseHeaders = www.responseHeaders;
                     }
                     catch (Exception) { }
                     if (responseHeaders != null && responseHeaders.TryGetValue("Content-Encoding", out encoding) && encoding.ToLower() == "gzip")

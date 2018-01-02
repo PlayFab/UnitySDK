@@ -233,5 +233,5 @@ namespace SignalR.Client._20.Http
             return Encoding.UTF8.GetBytes(_stringB.ToString());
         }
     }
-} 
+}
 #endif
