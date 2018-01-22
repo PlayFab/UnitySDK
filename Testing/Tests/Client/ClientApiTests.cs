@@ -40,8 +40,9 @@ namespace PlayFab.UUnit
             if (!titleInfoSet)
                 testContext.Skip(); // We cannot do client tests if the titleId is not given
 
-            foreach (var pair in testTitleData.extraHeaders)
-                PlayFabHttp.GlobalHeaderInjection[pair.Key] = pair.Value;
+            if (testTitleData.extraHeaders != null)
+                foreach (var pair in testTitleData.extraHeaders)
+                    PlayFabHttp.GlobalHeaderInjection[pair.Key] = pair.Value;
         }
 
         public override void Tick(UUnitTestContext testContext)

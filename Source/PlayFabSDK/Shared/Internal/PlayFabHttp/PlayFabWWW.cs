@@ -106,7 +106,7 @@ namespace PlayFab.Internal
                     {
                         if (reqContainer.ErrorCallback != null)
                         {
-                            reqContainer.Error = PlayFabHttp.GeneratePlayFabError(response, reqContainer.CustomData);
+                            reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, response, reqContainer.CustomData);
                             PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
                             reqContainer.ErrorCallback(reqContainer.Error);
                         }
@@ -123,16 +123,16 @@ namespace PlayFab.Internal
                 reqContainer.JsonResponse = errorCb;
                 if (reqContainer.ErrorCallback != null)
                 {
-                    reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.JsonResponse, reqContainer.CustomData);
+                    reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, reqContainer.JsonResponse, reqContainer.CustomData);
                     PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
                     reqContainer.ErrorCallback(reqContainer.Error);
                 }
             };
 
-            PlayFabHttp.instance.StartCoroutine(Post(www, wwwSuccessCallback, wwwErrorCallback));
+            PlayFabHttp.instance.StartCoroutine(PostPlayFabApiCall(www, wwwSuccessCallback, wwwErrorCallback));
         }
 
-        private IEnumerator Post(WWW www, Action<string> wwwSuccessCallback, Action<string> wwwErrorCallback)
+        private IEnumerator PostPlayFabApiCall(WWW www, Action<string> wwwSuccessCallback, Action<string> wwwErrorCallback)
         {
             yield return www;
             if (!string.IsNullOrEmpty(www.error))

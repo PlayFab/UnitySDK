@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 #if !DISABLE_PLAYFABCLIENT_API
@@ -45,7 +46,9 @@ namespace PlayFab.UUnit
 
         public void Update()
         {
-            textDisplay.fontSize = Math.Min(Screen.height / 42, Screen.width / 75 + 10);
+            var linecount = string.IsNullOrEmpty(summary) ? 1000 : summary.Count(f => f == '\n') * 100 / 60;
+            textDisplay.fontSize = Math.Min(Screen.height / linecount - 3, Screen.width / 75 + 10);
+
             if (suiteFinished || textDisplay == null)
                 return;
 

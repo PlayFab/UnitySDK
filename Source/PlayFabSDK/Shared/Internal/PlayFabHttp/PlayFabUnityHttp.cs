@@ -118,6 +118,7 @@ namespace PlayFab.Internal
                     OnError("Unhandled error in PlayFabWWW: " + e, reqContainer);
                 }
             }
+            www.Dispose();
         }
 
         public int GetPendingMessages()
@@ -169,7 +170,7 @@ namespace PlayFab.Internal
                 {
                     if (reqContainer.ErrorCallback != null)
                     {
-                        reqContainer.Error = PlayFabHttp.GeneratePlayFabError(response, reqContainer.CustomData);
+                        reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, response, reqContainer.CustomData);
                         PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
                         reqContainer.ErrorCallback(reqContainer.Error);
                     }
@@ -187,7 +188,7 @@ namespace PlayFab.Internal
             if (reqContainer.ErrorCallback != null)
             {
                 reqContainer.Error =
-                    PlayFabHttp.GeneratePlayFabError(reqContainer.JsonResponse, reqContainer.CustomData);
+                    PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, reqContainer.JsonResponse, reqContainer.CustomData);
                 PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
                 reqContainer.ErrorCallback(reqContainer.Error);
             }
