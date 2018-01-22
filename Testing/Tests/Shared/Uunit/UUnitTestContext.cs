@@ -42,7 +42,7 @@ namespace PlayFab.UUnit
             Name = name;
         }
 
-        internal void EndTest(UUnitFinishState finishState, string resultMsg)
+        public void EndTest(UUnitFinishState finishState, string resultMsg)
         {
             EndTime = DateTime.UtcNow;
             TestResultMsg = resultMsg;

@@ -354,13 +354,15 @@ namespace PlayFab
         EntityProfileVersionMismatch = 1352,
         TemplateVersionTooOld = 1353,
         MembershipDefinitionInUse = 1354,
-        PaymentPageNotConfigured = 1355
+        PaymentPageNotConfigured = 1355,
+        FailedLoginAttemptRateLimitExceeded = 1356
     }
 
     public delegate void ErrorCallback(PlayFabError error);
 
     public class PlayFabError
     {
+        public string ApiEndpoint;
         public int HttpCode;
         public string HttpStatus;
         public PlayFabErrorCode Error;
@@ -378,7 +380,7 @@ namespace PlayFab
                     sb.Append(" | ");
                 }
             }
-            return string.Format("PlayFabError({0}, {1}, {2} {3}", Error, ErrorMessage, HttpCode, HttpStatus) + (sb.Length > 0 ? " - Details: " + sb.ToString() + ")" : ")");
+            return string.Format("{0} PlayFabError({1}, {2}, {3} {4}", ApiEndpoint, Error, ErrorMessage, HttpCode, HttpStatus) + (sb.Length > 0 ? " - Details: " + sb.ToString() + ")" : ")");
         }
 
         [ThreadStatic]
@@ -388,12 +390,29 @@ namespace PlayFab
             if (_tempSb == null)
                 _tempSb = new StringBuilder();
             _tempSb.Length = 0;
-            _tempSb.Append(ErrorMessage);
+            _tempSb.Append(ApiEndpoint).Append(": ").Append(ErrorMessage);
             if (ErrorDetails != null)
                 foreach (var pair in ErrorDetails)
                     foreach (var msg in pair.Value)
                         _tempSb.Append("\n").Append(pair.Key).Append(": ").Append(msg);
             return _tempSb.ToString();
         }
+    }
+
+    public class PlayFabException : Exception
+    {
+        public readonly PlayFabExceptionCode Code;
+        public PlayFabException(PlayFabExceptionCode code, string message) : base(message)
+        {
+            Code = code;
+        }
+    }
+
+    public enum PlayFabExceptionCode
+    {
+        DeveloperKeyNotSet,
+        EntityTokenNotSet,
+        NotLoggedIn,
+        TitleNotSet,
     }
 }

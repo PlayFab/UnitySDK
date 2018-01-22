@@ -253,7 +253,7 @@ namespace PlayFab.Internal
         /// </summary>
         private static void QueueRequestError(CallRequestContainer reqContainer)
         {
-            reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.JsonResponse, reqContainer.CustomData); // Decode the server-json error
+            reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, reqContainer.JsonResponse, reqContainer.CustomData); // Decode the server-json error
             reqContainer.HttpState = HttpRequestState.Error;
             lock (ResultQueue)
             {
