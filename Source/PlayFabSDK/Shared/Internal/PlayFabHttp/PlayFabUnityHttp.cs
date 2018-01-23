@@ -1,4 +1,4 @@
-#if UNITY_2017_1_OR_NEWER
+#if UNITY_2017_2_OR_NEWER
 using PlayFab.Json;
 using PlayFab.SharedModels;
 using System;
