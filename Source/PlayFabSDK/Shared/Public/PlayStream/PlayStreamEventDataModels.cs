@@ -26,6 +26,11 @@ namespace PlayFab.PlayStreamModels
     {
         public string EntityChain;
     }
+    public class EntityFilesSetEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public List<FileSet> Files;
+    }
     public class EntityLoggedInEventData : PlayStreamEventBase
     {
         public string EntityChain;
@@ -34,6 +39,79 @@ namespace PlayFab.PlayStreamModels
     {
         public string EntityChain;
         public List<ObjectSet> Objects;
+    }
+    public class EntityRoleCreatedEventData : PlayStreamEventBase
+    {
+        public string CreatorEntityId;
+        public string CreatorEntityType;
+        public string DisplayName;
+        public string EntityChain;
+        public string GroupEntityId;
+    }
+    public class EntityRoleDeletedEventData : PlayStreamEventBase
+    {
+        public string DeleterEntityId;
+        public string DeleterEntityType;
+        public string DisplayName;
+        public string EntityChain;
+        public string GroupEntityId;
+    }
+    public class EntityRoleMemberAddedEventData : PlayStreamEventBase
+    {
+        public string DisplayName;
+        public string EntityChain;
+        public string GroupEntityId;
+        public List<Member> Members;
+    }
+    public class EntityRoleMemberRemovedEventData : PlayStreamEventBase
+    {
+        public string DisplayName;
+        public string EntityChain;
+        public string GroupEntityId;
+        public List<Member> Members;
+    }
+    public class EntityRoleUpdatedEventData : PlayStreamEventBase
+    {
+        public string DisplayName;
+        public string EntityChain;
+        public string GroupEntityId;
+        public Dictionary<string,ChangedValuePair> Properties;
+        public string UpdaterEntityId;
+        public string UpdaterEntityType;
+    }
+    public class GroupCreatedEventData : PlayStreamEventBase
+    {
+        public string CreatorEntityId;
+        public string CreatorEntityType;
+        public string DisplayName;
+        public string EntityChain;
+    }
+    public class GroupDeletedEventData : PlayStreamEventBase
+    {
+        public string DeleterEntityId;
+        public string DeleterEntityType;
+        public string DisplayName;
+        public string EntityChain;
+    }
+    public class GroupMemberAddedEventData : PlayStreamEventBase
+    {
+        public string DisplayName;
+        public string EntityChain;
+        public List<Member> Members;
+    }
+    public class GroupMemberRemovedEventData : PlayStreamEventBase
+    {
+        public string DisplayName;
+        public string EntityChain;
+        public List<Member> Members;
+    }
+    public class GroupUpdatedEventData : PlayStreamEventBase
+    {
+        public string DisplayName;
+        public string EntityChain;
+        public Dictionary<string,ChangedValuePair> Properties;
+        public string UpdaterEntityId;
+        public string UpdaterEntityType;
     }
     public class StudioCreatedEventData : PlayStreamEventBase
     {
@@ -823,6 +901,63 @@ namespace PlayFab.PlayStreamModels
         Updated,
         Deleted,
         None
+    }
+
+    [Serializable]
+    public class FileSet
+    {
+        /// <summary>
+        /// The storage size according to the underlying provider.
+        /// </summary>
+        public int ByteCount;
+        /// <summary>
+        /// The checksum according to the underlying provider.
+        /// </summary>
+        public string Checksum;
+        /// <summary>
+        /// File that was updated.
+        /// </summary>
+        public string FileName;
+        /// <summary>
+        /// The operation that was performed.
+        /// </summary>
+        public OperationTypes? Operation;
+        /// <summary>
+        /// The storage size of the old file, if there was one.
+        /// </summary>
+        public int? PreviousByteCount;
+        /// <summary>
+        /// The storage size of the old file, if there was one.
+        /// </summary>
+        public string PreviousChecksum;
+        /// <summary>
+        /// The old file's unique storage path that was deleted by this operation, if there was one.
+        /// </summary>
+        public string PreviousStoragePath;
+        /// <summary>
+        /// The unique storage path for this set operation.
+        /// </summary>
+        public string StoragePath;
+    }
+
+    [Serializable]
+    public class Member
+    {
+        /// <summary>
+        /// The identifier for the member entity.
+        /// </summary>
+        public string EntityId;
+        /// <summary>
+        /// The type of member entity.
+        /// </summary>
+        public string EntityType;
+    }
+
+    [Serializable]
+    public class ChangedValuePair
+    {
+        public string NewValue;
+        public string OldValue;
     }
 
     [Serializable]

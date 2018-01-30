@@ -355,7 +355,19 @@ namespace PlayFab
         TemplateVersionTooOld = 1353,
         MembershipDefinitionInUse = 1354,
         PaymentPageNotConfigured = 1355,
-        FailedLoginAttemptRateLimitExceeded = 1356
+        FailedLoginAttemptRateLimitExceeded = 1356,
+        EntityBlockedByGroup = 1357,
+        EntityIsNotGroupOrRole = 1358,
+        EntityIsAlreadyMember = 1359,
+        MalformedGroupTemplate = 1360,
+        GroupInvitationNotFound = 1361,
+        GroupJoinRequestNotFound = 1362,
+        OutstandingInvitationAcceptedInstead = 1363,
+        OutstandingJoinRequestAcceptedInstead = 1364,
+        RoleIsGroupDefaultMember = 1365,
+        RoleIsGroupAdmin = 1366,
+        RoleNameNotAvailable = 1367,
+        GroupNameNotAvailable = 1368
     }
 
     public delegate void ErrorCallback(PlayFabError error);

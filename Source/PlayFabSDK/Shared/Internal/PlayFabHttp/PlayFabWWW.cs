@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using PlayFab.Json;
 using PlayFab.SharedModels;
@@ -143,18 +142,15 @@ namespace PlayFab.Internal
             {
                 try
                 {
+                    byte[] responseBytes = www.bytes;
+                    bool isGzipCompressed = responseBytes != null && responseBytes[0] == 31 && responseBytes[1] == 139;
+                    string responseText = "Unexpected error: cannot decompress GZIP stream.";
+                    if (!isGzipCompressed && responseBytes != null)
+                        responseText = System.Text.Encoding.UTF8.GetString(responseBytes, 0, responseBytes.Length);
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
-                    string encoding;
-                    Dictionary<string, string> responseHeaders = null;
-                    try
+                    if (isGzipCompressed)
                     {
-                        if (PlayFabSettings.CompressApiData)
-                            responseHeaders = www.responseHeaders;
-                    }
-                    catch (Exception) { }
-                    if (responseHeaders != null && responseHeaders.TryGetValue("Content-Encoding", out encoding) && encoding.ToLower() == "gzip")
-                    {
-                        var stream = new MemoryStream(www.bytes);
+                        var stream = new MemoryStream(responseBytes);
                         using (var gZipStream = new GZipStream(stream, CompressionMode.Decompress, false))
                         {
                             var buffer = new byte[4096];
@@ -162,9 +158,7 @@ namespace PlayFab.Internal
                             {
                                 int read;
                                 while ((read = gZipStream.Read(buffer, 0, buffer.Length)) > 0)
-                                {
                                     output.Write(buffer, 0, read);
-                                }
                                 output.Seek(0, SeekOrigin.Begin);
                                 var streamReader = new StreamReader(output);
                                 var jsonResponse = streamReader.ReadToEnd();
@@ -176,7 +170,7 @@ namespace PlayFab.Internal
                     else
 #endif
                     {
-                        wwwSuccessCallback(www.text);
+                        wwwSuccessCallback(responseText);
                     }
                 }
                 catch (Exception e)

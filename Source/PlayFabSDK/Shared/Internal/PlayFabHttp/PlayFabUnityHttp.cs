@@ -53,6 +53,7 @@ namespace PlayFab.Internal
         {
 #if PLAYFAB_REQUEST_TIMING
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            var startTime = DateTime.UtcNow;
 #endif
 
             var www = new UnityWebRequest(reqContainer.FullUrl)
@@ -86,11 +87,15 @@ namespace PlayFab.Internal
             {
                 try
                 {
+                    byte[] responseBytes = www.downloadHandler.data;
+                    bool isGzipCompressed = responseBytes != null && responseBytes[0] == 31 && responseBytes[1] == 139;
+                    string responseText = "Unexpected error: cannot decompress GZIP stream.";
+                    if (!isGzipCompressed && responseBytes != null)
+                        responseText = System.Text.Encoding.UTF8.GetString(responseBytes, 0, responseBytes.Length);
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
-                    string encoding;
-                    if (www.GetResponseHeaders().TryGetValue("Content-Encoding", out encoding) && encoding.ToLower() == "gzip")
+                    if (isGzipCompressed)
                     {
-                        var stream = new MemoryStream(www.downloadHandler.data);
+                        var stream = new MemoryStream(responseBytes);
                         using (var gZipStream = new Ionic.Zlib.GZipStream(stream, Ionic.Zlib.CompressionMode.Decompress, false))
                         {
                             var buffer = new byte[4096];
@@ -104,18 +109,19 @@ namespace PlayFab.Internal
                                 var jsonResponse = streamReader.ReadToEnd();
                                 //Debug.Log(jsonResponse);
                                 OnResponse(jsonResponse, reqContainer);
+                                Debug.Log("Successful UnityHttp decompress for: " + www.url);
                             }
                         }
                     }
                     else
 #endif
                     {
-                        OnResponse(www.downloadHandler.text, reqContainer);
+                        OnResponse(responseText, reqContainer);
                     }
                 }
                 catch (Exception e)
                 {
-                    OnError("Unhandled error in PlayFabWWW: " + e, reqContainer);
+                    OnError("Unhandled error in PlayFabUnityHttp: " + e, reqContainer);
                 }
             }
             www.Dispose();
@@ -187,8 +193,7 @@ namespace PlayFab.Internal
             reqContainer.JsonResponse = error;
             if (reqContainer.ErrorCallback != null)
             {
-                reqContainer.Error =
-                    PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, reqContainer.JsonResponse, reqContainer.CustomData);
+                reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, reqContainer.JsonResponse, reqContainer.CustomData);
                 PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
                 reqContainer.ErrorCallback(reqContainer.Error);
             }
