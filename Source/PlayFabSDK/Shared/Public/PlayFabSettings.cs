@@ -32,9 +32,9 @@ namespace PlayFab
         private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
         [Obsolete("This field will become private after Mar 1, 2017", false)]
         public static PlayFabSharedSettings PlayFabShared { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
-        public const string SdkVersion = "2.36.180123";
+        public const string SdkVersion = "2.37.180129";
         public const string BuildIdentifier = "jbuild_unitysdk_sdk-unity-2-slave_0";
-        public const string VersionString = "UnitySDK-2.36.180123";
+        public const string VersionString = "UnitySDK-2.37.180129";
         private const string DefaultPlayFabApiUrlPrivate = ".playfabapi.com";
         [Obsolete("This field will become private after Mar 1, 2017", false)]
         public static string DefaultPlayFabApiUrl { get { return DefaultPlayFabApiUrlPrivate; } }
