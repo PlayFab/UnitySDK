@@ -36,7 +36,7 @@ Detailed Instructions:
 Advanced users can copy the contents of https://github.com/PlayFab/UnitySDK/raw/master/Source into their existing project.
 
 #### PlayFab Configuration:
-You must configure the SDK with you unique TitleId.  This is done via the PlayFabSharedSettings ScriptableObject.
+You must configure the SDK with your unique TitleId.  This is done via the PlayFabSharedSettings ScriptableObject.
 
 In your Unity Project tab, navigate to: assets/PlayFabSDK/Shared/Public/Resources and select the PlayFabSharedSettings ScriptableObject.
 
