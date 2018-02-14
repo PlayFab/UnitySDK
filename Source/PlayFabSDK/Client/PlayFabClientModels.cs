@@ -4321,6 +4321,10 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string Email;
         /// <summary>
+        /// The email template id of the account recovery email template to send.
+        /// </summary>
+        public string EmailTemplateId;
+        /// <summary>
         /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
         /// title has been selected.
         /// </summary>

@@ -367,7 +367,9 @@ namespace PlayFab
         RoleIsGroupDefaultMember = 1365,
         RoleIsGroupAdmin = 1366,
         RoleNameNotAvailable = 1367,
-        GroupNameNotAvailable = 1368
+        GroupNameNotAvailable = 1368,
+        EmailReportAlreadySent = 1369,
+        EmailReportRecipientBlacklisted = 1370
     }
 
     public delegate void ErrorCallback(PlayFabError error);

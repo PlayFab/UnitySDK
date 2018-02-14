@@ -1147,7 +1147,8 @@ namespace PlayFab
 
         /// <summary>
         /// Forces an email to be sent to the registered email address for the user's account, with a link allowing the user to
-        /// change the password
+        /// change the password.If an account recovery email template ID is provided, an email using the custom email template will
+        /// be used.
         /// </summary>
         public static void SendAccountRecoveryEmail(SendAccountRecoveryEmailRequest request, Action<SendAccountRecoveryEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
