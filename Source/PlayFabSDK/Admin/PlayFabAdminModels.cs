@@ -3549,6 +3549,10 @@ namespace PlayFab.AdminModels
         /// User email address attached to their account
         /// </summary>
         public string Email;
+        /// <summary>
+        /// The email template id of the account recovery email template to send.
+        /// </summary>
+        public string EmailTemplateId;
     }
 
     [Serializable]
