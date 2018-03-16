@@ -40,76 +40,85 @@ namespace PlayFab.PlayStreamModels
         public string EntityChain;
         public List<ObjectSet> Objects;
     }
-    public class EntityRoleCreatedEventData : PlayStreamEventBase
-    {
-        public string CreatorEntityId;
-        public string CreatorEntityType;
-        public string DisplayName;
-        public string EntityChain;
-        public string GroupEntityId;
-    }
-    public class EntityRoleDeletedEventData : PlayStreamEventBase
-    {
-        public string DeleterEntityId;
-        public string DeleterEntityType;
-        public string DisplayName;
-        public string EntityChain;
-        public string GroupEntityId;
-    }
-    public class EntityRoleMemberAddedEventData : PlayStreamEventBase
-    {
-        public string DisplayName;
-        public string EntityChain;
-        public string GroupEntityId;
-        public List<Member> Members;
-    }
-    public class EntityRoleMemberRemovedEventData : PlayStreamEventBase
-    {
-        public string DisplayName;
-        public string EntityChain;
-        public string GroupEntityId;
-        public List<Member> Members;
-    }
-    public class EntityRoleUpdatedEventData : PlayStreamEventBase
-    {
-        public string DisplayName;
-        public string EntityChain;
-        public string GroupEntityId;
-        public Dictionary<string,ChangedValuePair> Properties;
-        public string UpdaterEntityId;
-        public string UpdaterEntityType;
-    }
     public class GroupCreatedEventData : PlayStreamEventBase
     {
         public string CreatorEntityId;
         public string CreatorEntityType;
-        public string DisplayName;
         public string EntityChain;
+        public string GroupName;
     }
     public class GroupDeletedEventData : PlayStreamEventBase
     {
         public string DeleterEntityId;
         public string DeleterEntityType;
-        public string DisplayName;
         public string EntityChain;
+        public string GroupName;
     }
-    public class GroupMemberAddedEventData : PlayStreamEventBase
+    public class GroupMembersAddedEventData : PlayStreamEventBase
     {
-        public string DisplayName;
         public string EntityChain;
+        public string GroupName;
+        public List<Member> Members;
+        public string RoleId;
+        public string RoleName;
+    }
+    public class GroupMembersRemovedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public string GroupName;
         public List<Member> Members;
     }
-    public class GroupMemberRemovedEventData : PlayStreamEventBase
+    public class GroupRoleCreatedEventData : PlayStreamEventBase
     {
-        public string DisplayName;
+        public string CreatorEntityId;
+        public string CreatorEntityType;
         public string EntityChain;
+        public string GroupName;
+        public string RoleId;
+        public string RoleName;
+    }
+    public class GroupRoleDeletedEventData : PlayStreamEventBase
+    {
+        public string DeleterEntityId;
+        public string DeleterEntityType;
+        public string EntityChain;
+        public string GroupName;
+        public string RoleId;
+        public string RoleName;
+    }
+    public class GroupRoleMembersAddedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public string GroupName;
         public List<Member> Members;
+        public string RoleId;
+        public string RoleName;
+    }
+    public class GroupRoleMembersRemovedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public string GroupName;
+        public List<Member> Members;
+        public string RoleId;
+        public string RoleName;
+    }
+    public class GroupRoleUpdatedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public string GroupName;
+        public RolePropertyValues NewValues;
+        public RolePropertyValues OldValues;
+        public string RoleId;
+        public string RoleName;
+        public string UpdaterEntityId;
+        public string UpdaterEntityType;
     }
     public class GroupUpdatedEventData : PlayStreamEventBase
     {
-        public string DisplayName;
         public string EntityChain;
-        public Dictionary<string,ChangedValuePair> Properties;
+        public string GroupName;
+        public GroupPropertyValues NewValues;
+        public GroupPropertyValues OldValues;
         public string UpdaterEntityId;
         public string UpdaterEntityType;
     }
@@ -954,10 +963,17 @@ namespace PlayFab.PlayStreamModels
     }
 
     [Serializable]
-    public class ChangedValuePair
+    public class RolePropertyValues
     {
-        public string NewValue;
-        public string OldValue;
+        public string RoleName;
+    }
+
+    [Serializable]
+    public class GroupPropertyValues
+    {
+        public string AdminRoleId;
+        public string GroupName;
+        public string MemberRoleId;
     }
 
     [Serializable]

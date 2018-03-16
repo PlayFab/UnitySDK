@@ -1115,7 +1115,7 @@ namespace PlayFab.ServerModels
     public class EvaluateRandomResultTableRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Specifies the catalog version that should be used to evaluate the Random Result Table.  If unspecified, uses
+        /// Specifies the catalog version that should be used to evaluate the Random Result Table. If unspecified, uses
         /// default/primary catalog.
         /// </summary>
         public string CatalogVersion;
@@ -1275,6 +1275,370 @@ namespace PlayFab.ServerModels
     {
         Open,
         Closed
+    }
+
+    public enum GenericErrorCodes
+    {
+        Success,
+        InvalidParams,
+        AccountNotFound,
+        AccountBanned,
+        InvalidUsernameOrPassword,
+        InvalidTitleId,
+        InvalidEmailAddress,
+        EmailAddressNotAvailable,
+        InvalidUsername,
+        InvalidPassword,
+        UsernameNotAvailable,
+        InvalidSteamTicket,
+        AccountAlreadyLinked,
+        LinkedAccountAlreadyClaimed,
+        InvalidFacebookToken,
+        AccountNotLinked,
+        FailedByPaymentProvider,
+        CouponCodeNotFound,
+        InvalidContainerItem,
+        ContainerNotOwned,
+        KeyNotOwned,
+        InvalidItemIdInTable,
+        InvalidReceipt,
+        ReceiptAlreadyUsed,
+        ReceiptCancelled,
+        GameNotFound,
+        GameModeNotFound,
+        InvalidGoogleToken,
+        UserIsNotPartOfDeveloper,
+        InvalidTitleForDeveloper,
+        TitleNameConflicts,
+        UserisNotValid,
+        ValueAlreadyExists,
+        BuildNotFound,
+        PlayerNotInGame,
+        InvalidTicket,
+        InvalidDeveloper,
+        InvalidOrderInfo,
+        RegistrationIncomplete,
+        InvalidPlatform,
+        UnknownError,
+        SteamApplicationNotOwned,
+        WrongSteamAccount,
+        TitleNotActivated,
+        RegistrationSessionNotFound,
+        NoSuchMod,
+        FileNotFound,
+        DuplicateEmail,
+        ItemNotFound,
+        ItemNotOwned,
+        ItemNotRecycleable,
+        ItemNotAffordable,
+        InvalidVirtualCurrency,
+        WrongVirtualCurrency,
+        WrongPrice,
+        NonPositiveValue,
+        InvalidRegion,
+        RegionAtCapacity,
+        ServerFailedToStart,
+        NameNotAvailable,
+        InsufficientFunds,
+        InvalidDeviceID,
+        InvalidPushNotificationToken,
+        NoRemainingUses,
+        InvalidPaymentProvider,
+        PurchaseInitializationFailure,
+        DuplicateUsername,
+        InvalidBuyerInfo,
+        NoGameModeParamsSet,
+        BodyTooLarge,
+        ReservedWordInBody,
+        InvalidTypeInBody,
+        InvalidRequest,
+        ReservedEventName,
+        InvalidUserStatistics,
+        NotAuthenticated,
+        StreamAlreadyExists,
+        ErrorCreatingStream,
+        StreamNotFound,
+        InvalidAccount,
+        PurchaseDoesNotExist,
+        InvalidPurchaseTransactionStatus,
+        APINotEnabledForGameClientAccess,
+        NoPushNotificationARNForTitle,
+        BuildAlreadyExists,
+        BuildPackageDoesNotExist,
+        CustomAnalyticsEventsNotEnabledForTitle,
+        InvalidSharedGroupId,
+        NotAuthorized,
+        MissingTitleGoogleProperties,
+        InvalidItemProperties,
+        InvalidPSNAuthCode,
+        InvalidItemId,
+        PushNotEnabledForAccount,
+        PushServiceError,
+        ReceiptDoesNotContainInAppItems,
+        ReceiptContainsMultipleInAppItems,
+        InvalidBundleID,
+        JavascriptException,
+        InvalidSessionTicket,
+        UnableToConnectToDatabase,
+        InternalServerError,
+        InvalidReportDate,
+        ReportNotAvailable,
+        DatabaseThroughputExceeded,
+        InvalidGameTicket,
+        ExpiredGameTicket,
+        GameTicketDoesNotMatchLobby,
+        LinkedDeviceAlreadyClaimed,
+        DeviceAlreadyLinked,
+        DeviceNotLinked,
+        PartialFailure,
+        PublisherNotSet,
+        ServiceUnavailable,
+        VersionNotFound,
+        RevisionNotFound,
+        InvalidPublisherId,
+        DownstreamServiceUnavailable,
+        APINotIncludedInTitleUsageTier,
+        DAULimitExceeded,
+        APIRequestLimitExceeded,
+        InvalidAPIEndpoint,
+        BuildNotAvailable,
+        ConcurrentEditError,
+        ContentNotFound,
+        CharacterNotFound,
+        CloudScriptNotFound,
+        ContentQuotaExceeded,
+        InvalidCharacterStatistics,
+        PhotonNotEnabledForTitle,
+        PhotonApplicationNotFound,
+        PhotonApplicationNotAssociatedWithTitle,
+        InvalidEmailOrPassword,
+        FacebookAPIError,
+        InvalidContentType,
+        KeyLengthExceeded,
+        DataLengthExceeded,
+        TooManyKeys,
+        FreeTierCannotHaveVirtualCurrency,
+        MissingAmazonSharedKey,
+        AmazonValidationError,
+        InvalidPSNIssuerId,
+        PSNInaccessible,
+        ExpiredAuthToken,
+        FailedToGetEntitlements,
+        FailedToConsumeEntitlement,
+        TradeAcceptingUserNotAllowed,
+        TradeInventoryItemIsAssignedToCharacter,
+        TradeInventoryItemIsBundle,
+        TradeStatusNotValidForCancelling,
+        TradeStatusNotValidForAccepting,
+        TradeDoesNotExist,
+        TradeCancelled,
+        TradeAlreadyFilled,
+        TradeWaitForStatusTimeout,
+        TradeInventoryItemExpired,
+        TradeMissingOfferedAndAcceptedItems,
+        TradeAcceptedItemIsBundle,
+        TradeAcceptedItemIsStackable,
+        TradeInventoryItemInvalidStatus,
+        TradeAcceptedCatalogItemInvalid,
+        TradeAllowedUsersInvalid,
+        TradeInventoryItemDoesNotExist,
+        TradeInventoryItemIsConsumed,
+        TradeInventoryItemIsStackable,
+        TradeAcceptedItemsMismatch,
+        InvalidKongregateToken,
+        FeatureNotConfiguredForTitle,
+        NoMatchingCatalogItemForReceipt,
+        InvalidCurrencyCode,
+        NoRealMoneyPriceForCatalogItem,
+        TradeInventoryItemIsNotTradable,
+        TradeAcceptedCatalogItemIsNotTradable,
+        UsersAlreadyFriends,
+        LinkedIdentifierAlreadyClaimed,
+        CustomIdNotLinked,
+        TotalDataSizeExceeded,
+        DeleteKeyConflict,
+        InvalidXboxLiveToken,
+        ExpiredXboxLiveToken,
+        ResettableStatisticVersionRequired,
+        NotAuthorizedByTitle,
+        NoPartnerEnabled,
+        InvalidPartnerResponse,
+        APINotEnabledForGameServerAccess,
+        StatisticNotFound,
+        StatisticNameConflict,
+        StatisticVersionClosedForWrites,
+        StatisticVersionInvalid,
+        APIClientRequestRateLimitExceeded,
+        InvalidJSONContent,
+        InvalidDropTable,
+        StatisticVersionAlreadyIncrementedForScheduledInterval,
+        StatisticCountLimitExceeded,
+        StatisticVersionIncrementRateExceeded,
+        ContainerKeyInvalid,
+        CloudScriptExecutionTimeLimitExceeded,
+        NoWritePermissionsForEvent,
+        CloudScriptFunctionArgumentSizeExceeded,
+        CloudScriptAPIRequestCountExceeded,
+        CloudScriptAPIRequestError,
+        CloudScriptHTTPRequestError,
+        InsufficientGuildRole,
+        GuildNotFound,
+        OverLimit,
+        EventNotFound,
+        InvalidEventField,
+        InvalidEventName,
+        CatalogNotConfigured,
+        OperationNotSupportedForPlatform,
+        SegmentNotFound,
+        StoreNotFound,
+        InvalidStatisticName,
+        TitleNotQualifiedForLimit,
+        InvalidServiceLimitLevel,
+        ServiceLimitLevelInTransition,
+        CouponAlreadyRedeemed,
+        GameServerBuildSizeLimitExceeded,
+        GameServerBuildCountLimitExceeded,
+        VirtualCurrencyCountLimitExceeded,
+        VirtualCurrencyCodeExists,
+        TitleNewsItemCountLimitExceeded,
+        InvalidTwitchToken,
+        TwitchResponseError,
+        ProfaneDisplayName,
+        UserAlreadyAdded,
+        InvalidVirtualCurrencyCode,
+        VirtualCurrencyCannotBeDeleted,
+        IdentifierAlreadyClaimed,
+        IdentifierNotLinked,
+        InvalidContinuationToken,
+        ExpiredContinuationToken,
+        InvalidSegment,
+        InvalidSessionId,
+        SessionLogNotFound,
+        InvalidSearchTerm,
+        TwoFactorAuthenticationTokenRequired,
+        GameServerHostCountLimitExceeded,
+        PlayerTagCountLimitExceeded,
+        RequestAlreadyRunning,
+        ActionGroupNotFound,
+        MaximumSegmentBulkActionJobsRunning,
+        NoActionsOnPlayersInSegmentJob,
+        DuplicateStatisticName,
+        ScheduledTaskNameConflict,
+        ScheduledTaskCreateConflict,
+        InvalidScheduledTaskName,
+        InvalidTaskSchedule,
+        SteamNotEnabledForTitle,
+        LimitNotAnUpgradeOption,
+        NoSecretKeyEnabledForCloudScript,
+        TaskNotFound,
+        TaskInstanceNotFound,
+        InvalidIdentityProviderId,
+        MisconfiguredIdentityProvider,
+        InvalidScheduledTaskType,
+        BillingInformationRequired,
+        LimitedEditionItemUnavailable,
+        InvalidAdPlacementAndReward,
+        AllAdPlacementViewsAlreadyConsumed,
+        GoogleOAuthNotConfiguredForTitle,
+        GoogleOAuthError,
+        UserNotFriend,
+        InvalidSignature,
+        InvalidPublicKey,
+        GoogleOAuthNoIdTokenIncludedInResponse,
+        StatisticUpdateInProgress,
+        LeaderboardVersionNotAvailable,
+        StatisticAlreadyHasPrizeTable,
+        PrizeTableHasOverlappingRanks,
+        PrizeTableHasMissingRanks,
+        PrizeTableRankStartsAtZero,
+        InvalidStatistic,
+        ExpressionParseFailure,
+        ExpressionInvokeFailure,
+        ExpressionTooLong,
+        DataUpdateRateExceeded,
+        RestrictedEmailDomain,
+        EncryptionKeyDisabled,
+        EncryptionKeyMissing,
+        EncryptionKeyBroken,
+        NoSharedSecretKeyConfigured,
+        SecretKeyNotFound,
+        PlayerSecretAlreadyConfigured,
+        APIRequestsDisabledForTitle,
+        InvalidSharedSecretKey,
+        PrizeTableHasNoRanks,
+        ProfileDoesNotExist,
+        ContentS3OriginBucketNotConfigured,
+        InvalidEnvironmentForReceipt,
+        EncryptedRequestNotAllowed,
+        SignedRequestNotAllowed,
+        RequestViewConstraintParamsNotAllowed,
+        BadPartnerConfiguration,
+        XboxBPCertificateFailure,
+        XboxXASSExchangeFailure,
+        InvalidEntityId,
+        StatisticValueAggregationOverflow,
+        EmailMessageFromAddressIsMissing,
+        EmailMessageToAddressIsMissing,
+        SmtpServerAuthenticationError,
+        SmtpServerLimitExceeded,
+        SmtpServerInsufficientStorage,
+        SmtpServerCommunicationError,
+        SmtpServerGeneralFailure,
+        EmailClientTimeout,
+        EmailClientCanceledTask,
+        EmailTemplateMissing,
+        InvalidHostForTitleId,
+        EmailConfirmationTokenDoesNotExist,
+        EmailConfirmationTokenExpired,
+        AccountDeleted,
+        PlayerSecretNotConfigured,
+        InvalidSignatureTime,
+        NoContactEmailAddressFound,
+        InvalidAuthToken,
+        AuthTokenDoesNotExist,
+        AuthTokenExpired,
+        AuthTokenAlreadyUsedToResetPassword,
+        MembershipNameTooLong,
+        MembershipNotFound,
+        GoogleServiceAccountInvalid,
+        GoogleServiceAccountParseFailure,
+        EntityTokenMissing,
+        EntityTokenInvalid,
+        EntityTokenExpired,
+        EntityTokenRevoked,
+        InvalidProductForSubscription,
+        XboxInaccessible,
+        SubscriptionAlreadyTaken,
+        SmtpAddonNotEnabled,
+        APIConcurrentRequestLimitExceeded,
+        XboxRejectedXSTSExchangeRequest,
+        VariableNotDefined,
+        TemplateVersionNotDefined,
+        FileTooLarge,
+        TitleDeleted,
+        TitleContainsUserAccounts,
+        TitleDeletionPlayerCleanupFailure,
+        EntityFileOperationPending,
+        NoEntityFileOperationPending,
+        EntityProfileVersionMismatch,
+        TemplateVersionTooOld,
+        MembershipDefinitionInUse,
+        PaymentPageNotConfigured,
+        FailedLoginAttemptRateLimitExceeded,
+        EntityBlockedByGroup,
+        RoleDoesNotExist,
+        EntityIsAlreadyMember,
+        DuplicateRoleId,
+        GroupInvitationNotFound,
+        GroupApplicationNotFound,
+        OutstandingInvitationAcceptedInstead,
+        OutstandingApplicationAcceptedInstead,
+        RoleIsGroupDefaultMember,
+        RoleIsGroupAdmin,
+        RoleNameNotAvailable,
+        GroupNameNotAvailable,
+        EmailReportAlreadySent,
+        EmailReportRecipientBlacklisted
     }
 
     [Serializable]
@@ -2070,7 +2434,7 @@ namespace PlayFab.ServerModels
     public class GetRandomResultTablesRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Specifies the catalog version that should be used to retrieve the Random Result Tables.  If unspecified, uses
+        /// Specifies the catalog version that should be used to retrieve the Random Result Tables. If unspecified, uses
         /// default/primary catalog.
         /// </summary>
         public string CatalogVersion;
@@ -2503,8 +2867,8 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string ItemId;
         /// <summary>
-        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language
-        /// constraints.  Use this to delete the keys directly.
+        /// Optional list of Data-keys to remove from UserData. Some SDKs cannot insert null-values into Data due to language
+        /// constraints. Use this to delete the keys directly.
         /// </summary>
         public List<string> KeysToRemove;
         /// <summary>
@@ -3101,7 +3465,7 @@ namespace PlayFab.ServerModels
         public string TitleId;
         /// <summary>
         /// Sum of the player's purchases made with real-money currencies, converted to US dollars equivalent and represented as a
-        /// whole number of cents (1/100 USD).              For example, 999 indicates nine dollars and ninety-nine cents.
+        /// whole number of cents (1/100 USD).       For example, 999 indicates nine dollars and ninety-nine cents.
         /// </summary>
         public uint? TotalValueToDateInUSD;
         /// <summary>
@@ -3576,6 +3940,23 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class RevokeInventoryItem
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID for a specific character owned by a user
+        /// </summary>
+        public string CharacterId;
+        /// <summary>
+        /// Unique PlayFab assigned instance identifier of the item
+        /// </summary>
+        public string ItemInstanceId;
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
     public class RevokeInventoryItemRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3593,8 +3974,39 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class RevokeInventoryItemsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Array of player items to revoke, between 1 and 25 items.
+        /// </summary>
+        public List<RevokeInventoryItem> Items;
+    }
+
+    [Serializable]
+    public class RevokeInventoryItemsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Collection of any errors that occurred during processing.
+        /// </summary>
+        public List<RevokeItemError> Errors;
+    }
+
+    [Serializable]
     public class RevokeInventoryResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class RevokeItemError
+    {
+        /// <summary>
+        /// Specific error that was encountered.
+        /// </summary>
+        public GenericErrorCodes? Error;
+        /// <summary>
+        /// Item information that failed to be revoked.
+        /// </summary>
+        public RevokeInventoryItem Item;
     }
 
     [Serializable]
@@ -4044,7 +4456,7 @@ namespace PlayFab.ServerModels
     public class UnlockContainerInstanceRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Specifies the catalog version that should be used to determine container contents.  If unspecified, uses catalog
+        /// Specifies the catalog version that should be used to determine container contents. If unspecified, uses catalog
         /// associated with the item instance.
         /// </summary>
         public string CatalogVersion;
@@ -4057,7 +4469,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string ContainerItemInstanceId;
         /// <summary>
-        /// ItemInstanceId of the key that will be consumed by unlocking this container.  If the container requires a key, this
+        /// ItemInstanceId of the key that will be consumed by unlocking this container. If the container requires a key, this
         /// parameter is required.
         /// </summary>
         public string KeyItemInstanceId;
@@ -4071,7 +4483,7 @@ namespace PlayFab.ServerModels
     public class UnlockContainerItemRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Specifies the catalog version that should be used to determine container contents.  If unspecified, uses default/primary
+        /// Specifies the catalog version that should be used to determine container contents. If unspecified, uses default/primary
         /// catalog.
         /// </summary>
         public string CatalogVersion;
@@ -4190,8 +4602,8 @@ namespace PlayFab.ServerModels
         /// </summary>
         public Dictionary<string,string> Data;
         /// <summary>
-        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language
-        /// constraints.  Use this to delete the keys directly.
+        /// Optional list of Data-keys to remove from UserData. Some SDKs cannot insert null-values into Data due to language
+        /// constraints. Use this to delete the keys directly.
         /// </summary>
         public List<string> KeysToRemove;
         /// <summary>
@@ -4268,8 +4680,8 @@ namespace PlayFab.ServerModels
         /// </summary>
         public Dictionary<string,string> Data;
         /// <summary>
-        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language
-        /// constraints.  Use this to delete the keys directly.
+        /// Optional list of Data-keys to remove from UserData. Some SDKs cannot insert null-values into Data due to language
+        /// constraints. Use this to delete the keys directly.
         /// </summary>
         public List<string> KeysToRemove;
         /// <summary>
@@ -4296,8 +4708,8 @@ namespace PlayFab.ServerModels
         /// </summary>
         public Dictionary<string,string> Data;
         /// <summary>
-        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language
-        /// constraints.  Use this to delete the keys directly.
+        /// Optional list of Data-keys to remove from UserData. Some SDKs cannot insert null-values into Data due to language
+        /// constraints. Use this to delete the keys directly.
         /// </summary>
         public List<string> KeysToRemove;
         /// <summary>
@@ -4329,8 +4741,8 @@ namespace PlayFab.ServerModels
         /// </summary>
         public Dictionary<string,string> Data;
         /// <summary>
-        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language
-        /// constraints.  Use this to delete the keys directly.
+        /// Optional list of Data-keys to remove from UserData. Some SDKs cannot insert null-values into Data due to language
+        /// constraints. Use this to delete the keys directly.
         /// </summary>
         public List<string> KeysToRemove;
         /// <summary>
@@ -4356,8 +4768,8 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string ItemInstanceId;
         /// <summary>
-        /// Optional list of Data-keys to remove from UserData.  Some SDKs cannot insert null-values into Data due to language
-        /// constraints.  Use this to delete the keys directly.
+        /// Optional list of Data-keys to remove from UserData. Some SDKs cannot insert null-values into Data due to language
+        /// constraints. Use this to delete the keys directly.
         /// </summary>
         public List<string> KeysToRemove;
         /// <summary>

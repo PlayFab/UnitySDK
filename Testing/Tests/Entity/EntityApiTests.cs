@@ -1,20 +1,11 @@
 #if !DISABLE_PLAYFABCLIENT_API && ENABLE_PLAYFABENTITY_API
 using PlayFab.EntityModels;
 using PlayFab.Internal;
-using System;
 using System.Collections.Generic;
-using PlayFab.Json;
-using UnityEngine;
+using System.Linq;
 
 namespace PlayFab.UUnit
 {
-    /// <summary>
-    /// A real system would potentially run only the client or server API, and not both.
-    /// But, they still interact with eachother directly.
-    /// The tests can't be independent for Client/Server, as the sequence of calls isn't really independent for real-world scenarios.
-    /// The client logs in, which triggers a server, and then back and forth.
-    /// For the purpose of testing, they each have pieces of information they share with one another, and that sharing makes various calls possible.
-    /// </summary>
     public class EntityApiTests : UUnitTestCase
     {
         private TestTitleDataLoader.TestTitleData testTitleData;
@@ -22,7 +13,7 @@ namespace PlayFab.UUnit
         // Test-data constants
         private const string TEST_OBJ_NAME = "testCounter";
         // Test variables
-        private string _entityId;
+        private EntityKey _entityKey;
         private string _testFileUrl;
         private string _testFileChecksum;
         private int _testInteger;
@@ -92,8 +83,9 @@ namespace PlayFab.UUnit
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            _entityId = result.EntityId;
-            testContext.StringEquals(EntityTypes.title_player_account.ToString(), result.EntityType, "GetEntityToken EntityType not expected: " + result.EntityType);
+            _entityKey = result.Entity;
+            testContext.StringEquals(EntityTypes.title_player_account.ToString(), result.Entity.TypeString, "GetEntityToken EntityType not expected: " + result.Entity.TypeString);
+            testContext.StringEquals(EntityTypes.title_player_account.ToString(), result.Entity.Type.ToString(), "GetEntityToken EntityType not expected: " + result.Entity.Type);
 
             testContext.True(PlayFabClientAPI.IsClientLoggedIn(), "Get Entity Token failed");
             testContext.EndTest(UUnitFinishState.PASSED, PlayFabSettings.TitleId + ", " + result.EntityToken);
@@ -108,7 +100,7 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void ObjectApi(UUnitTestContext testContext)
         {
-            var getRequest = new GetObjectsRequest { EntityId = _entityId, EntityType = EntityTypes.title_player_account, EscapeObject = true };
+            var getRequest = new GetObjectsRequest { Entity = _entityKey, EscapeObject = true };
             PlayFabEntityAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetObjectsResponse>(testContext, GetObjectCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void GetObjectCallback1(GetObjectsResponse result)
@@ -116,18 +108,17 @@ namespace PlayFab.UUnit
             var testContext = (UUnitTestContext)result.CustomData;
 
             _testInteger = 0; // Default if the data isn't present
-            foreach (var eachObj in result.Objects)
-                if (eachObj.ObjectName == TEST_OBJ_NAME)
-                    int.TryParse(eachObj.EscapedDataObject, out _testInteger);
+            foreach (var eachObjPair in result.Objects)
+                if (eachObjPair.Key == TEST_OBJ_NAME)
+                    int.TryParse(eachObjPair.Value.EscapedDataObject, out _testInteger);
 
             _testInteger = (_testInteger + 1) % 100; // This test is about the Expected value changing - but not testing more complicated issues like bounds
 
             var updateRequest = new SetObjectsRequest
             {
-                EntityId = _entityId,
-                EntityType = EntityTypes.title_player_account,
+                Entity = _entityKey,
                 Objects = new List<SetObject> {
-                    new SetObject{ ObjectName = TEST_OBJ_NAME, Unstructured = true, DataObject = _testInteger }
+                    new SetObject{ ObjectName = TEST_OBJ_NAME, DataObject = _testInteger }
                 }
             };
             PlayFabEntityAPI.SetObjects(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<SetObjectsResponse>(testContext, UpdateObjectCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
@@ -136,21 +127,19 @@ namespace PlayFab.UUnit
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            var getRequest = new GetObjectsRequest { EntityId = _entityId, EntityType = EntityTypes.title_player_account, EscapeObject = true };
+            var getRequest = new GetObjectsRequest { Entity = _entityKey, EscapeObject = true };
             PlayFabEntityAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetObjectsResponse>(testContext, GetObjectCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void GetObjectCallback2(GetObjectsResponse result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            var actualInteger = -100; // Default if the data isn't present
             testContext.IntEquals(result.Objects.Count, 1, "Incorrect number of entity objects: " + result.Objects.Count);
-            testContext.StringEquals(result.Objects[0].ObjectName, TEST_OBJ_NAME, "Expected Test object not found: " + result.Objects[0].ObjectName);
-            actualInteger = int.Parse(result.Objects[0].EscapedDataObject);
-            testContext.True(actualInteger != -100, "Entity object not set");
+            testContext.True(result.Objects.ContainsKey(TEST_OBJ_NAME), "Expected Test object not found: " + result.Objects.Keys.FirstOrDefault());
+            var actualInteger = int.Parse(result.Objects[TEST_OBJ_NAME].EscapedDataObject);
             testContext.IntEquals(_testInteger, actualInteger, "Entity Object was not updated: " + actualInteger + "!=" + _testInteger);
 
-            testContext.EndTest(UUnitFinishState.PASSED, null);
+            testContext.EndTest(UUnitFinishState.PASSED, actualInteger.ToString());
         }
     }
 }

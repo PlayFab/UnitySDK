@@ -26,7 +26,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Increments  the character's balance of the specified virtual currency by the stated amount
+        /// Increments the character's balance of the specified virtual currency by the stated amount
         /// </summary>
         public static void AddCharacterVirtualCurrency(AddCharacterVirtualCurrencyRequest request, Action<ModifyCharacterVirtualCurrencyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -57,9 +57,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds users to the set of those able to update both the shared data, as well as the set of users  in the group. Only
-        /// users in the group (and the server) can add new members. Shared Groups are designed for sharing data  between a very
-        /// small number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
+        /// Adds users to the set of those able to update both the shared data, as well as the set of users in the group. Only users
+        /// in the group (and the server) can add new members. Shared Groups are designed for sharing data between a very small
+        /// number of players, please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void AddSharedGroupMembers(AddSharedGroupMembersRequest request, Action<AddSharedGroupMembersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -69,7 +69,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Increments  the user's balance of the specified virtual currency by the stated amount
+        /// Increments the user's balance of the specified virtual currency by the stated amount
         /// </summary>
         public static void AddUserVirtualCurrency(AddUserVirtualCurrencyRequest request, Action<ModifyUserVirtualCurrencyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -119,8 +119,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Requests the creation of a shared group object, containing key/value pairs which may  be updated by all members of the
-        /// group. When created by a server, the group will initially have no members.  Shared Groups are designed for sharing data
+        /// Requests the creation of a shared group object, containing key/value pairs which may be updated by all members of the
+        /// group. When created by a server, the group will initially have no members. Shared Groups are designed for sharing data
         /// between a very small number of players, please see our guide:
         /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
@@ -142,7 +142,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Deletes a shared group, freeing up the shared group ID to be reused for a new group.  Shared Groups are designed for
+        /// Deletes a shared group, freeing up the shared group ID to be reused for a new group. Shared Groups are designed for
         /// sharing data between a very small number of players, please see our guide:
         /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
@@ -305,13 +305,12 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent  HTTP GET to the returned
-        /// URL will attempt to download the content. A HEAD query to the returned URL will attempt to  retrieve the metadata of the
-        /// content. Note that a successful result does not guarantee the existence of this content -  if it has not been uploaded,
+        /// This API retrieves a pre-signed URL for accessing a content file for the title. A subsequent HTTP GET to the returned
+        /// URL will attempt to download the content. A HEAD query to the returned URL will attempt to retrieve the metadata of the
+        /// content. Note that a successful result does not guarantee the existence of this content - if it has not been uploaded,
         /// the query to retrieve the data will fail. See this post for more information:
-        /// https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service.
-        /// Also, please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates
-        /// apply.
+        /// https://community.playfab.com/hc/en-us/community/posts/205469488-How-to-upload-files-to-PlayFab-s-Content-Service. Also,
+        /// please be aware that the Content service is specifically PlayFab's CDN offering, for which standard CDN rates apply.
         /// </summary>
         public static void GetContentDownloadUrl(GetContentDownloadUrlRequest request, Action<GetContentDownloadUrlResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -467,7 +466,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers  are the profile
+        /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers are the profile
         /// IDs for the user accounts, available as SteamId in the Steamworks Community API calls.
         /// </summary>
         public static void GetPlayFabIDsFromSteamIDs(GetPlayFabIDsFromSteamIDsRequest request, Action<GetPlayFabIDsFromSteamIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -499,8 +498,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves data stored in a shared group object, as well as the list of members in the group.  The server can access all
-        /// public and private group data. Shared Groups are designed for sharing data between a very  small number of players,
+        /// Retrieves data stored in a shared group object, as well as the list of members in the group. The server can access all
+        /// public and private group data. Shared Groups are designed for sharing data between a very small number of players,
         /// please see our guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void GetSharedGroupData(GetSharedGroupDataRequest request, Action<GetSharedGroupDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -732,7 +731,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated  via the
+        /// Adds the virtual goods associated with the coupon to the user's inventory. Coupons can be generated via the
         /// Economy->Catalogs tab in the PlayFab Game Manager.
         /// </summary>
         public static void RedeemCoupon(RedeemCouponRequest request, Action<RedeemCouponResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -795,7 +794,7 @@ namespace PlayFab
         /// <summary>
         /// Removes users from the set of those able to update the shared data and the set of users in the group. Only users in the
         /// group can remove members. If as a result of the call, zero users remain with access, the group and its associated data
-        /// will be deleted. Shared Groups are designed for sharing data between a very small number of players,  please see our
+        /// will be deleted. Shared Groups are designed for sharing data between a very small number of players, please see our
         /// guide: https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>
         public static void RemoveSharedGroupMembers(RemoveSharedGroupMembersRequest request, Action<RemoveSharedGroupMembersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -844,6 +843,16 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/RevokeInventoryItem", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Revokes access for up to 25 items across multiple users and characters.
+        /// </summary>
+        public static void RevokeInventoryItems(RevokeInventoryItemsRequest request, Action<RevokeInventoryItemsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/RevokeInventoryItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -1037,7 +1046,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the title-specific custom data for the user's character which cannot  be accessed by the client
+        /// Updates the title-specific custom data for the user's character which cannot be accessed by the client
         /// </summary>
         public static void UpdateCharacterInternalData(UpdateCharacterDataRequest request, Action<UpdateCharacterDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1079,7 +1088,7 @@ namespace PlayFab
         /// <summary>
         /// Adds, updates, and removes data keys for a shared group object. If the permission is set to Public, all fields updated
         /// or added in this call will be readable by users not in the group. By default, data permissions are set to Private.
-        /// Regardless of the permission setting, only members of the group (and the server) can update the data.  Shared Groups are
+        /// Regardless of the permission setting, only members of the group (and the server) can update the data. Shared Groups are
         /// designed for sharing data between a very small number of players, please see our guide:
         /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
         /// </summary>

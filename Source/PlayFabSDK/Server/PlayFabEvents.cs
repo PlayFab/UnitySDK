@@ -159,6 +159,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RevokeBansResult> OnServerRevokeBansResultEvent;
         public event PlayFabRequestEvent<RevokeInventoryItemRequest> OnServerRevokeInventoryItemRequestEvent;
         public event PlayFabResultEvent<RevokeInventoryResult> OnServerRevokeInventoryItemResultEvent;
+        public event PlayFabRequestEvent<RevokeInventoryItemsRequest> OnServerRevokeInventoryItemsRequestEvent;
+        public event PlayFabResultEvent<RevokeInventoryItemsResult> OnServerRevokeInventoryItemsResultEvent;
         public event PlayFabRequestEvent<SendCustomAccountRecoveryEmailRequest> OnServerSendCustomAccountRecoveryEmailRequestEvent;
         public event PlayFabResultEvent<SendCustomAccountRecoveryEmailResult> OnServerSendCustomAccountRecoveryEmailResultEvent;
         public event PlayFabRequestEvent<SendEmailFromTemplateRequest> OnServerSendEmailFromTemplateRequestEvent;
