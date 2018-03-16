@@ -4,7 +4,11 @@ using System.IO;
 using PlayFab.Json;
 using PlayFab.SharedModels;
 using UnityEngine;
-
+#if UNITY_5_4_OR_NEWER
+using UnityEngine.Networking;
+#else
+using UnityEngine.Experimental.Networking;
+#endif
 #if !UNITY_WSA && !UNITY_WP8
 using Ionic.Zlib;
 #endif
@@ -21,6 +25,44 @@ namespace PlayFab.Internal
         public void InitializeHttp() { }
         public void Update() { }
         public void OnDestroy() { }
+
+        public void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, null, successCallback, errorCallback));
+        }
+
+        public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        {
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, payload, (result) => { successCallback(); }, errorCallback));
+        }
+
+        private static IEnumerator SimpleCallCoroutine(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            if (payload == null)
+            {
+                var www = new WWW(fullUrl);
+                yield return www;
+                if (!string.IsNullOrEmpty(www.error))
+                    errorCallback(www.error);
+                else
+                    successCallback(www.bytes);
+            }
+            else
+            {
+                var putRequest = UnityWebRequest.Put(fullUrl, payload);
+#if UNITY_2017_2_OR_NEWER
+                putRequest.SendWebRequest();
+#else
+                putRequest.Send();
+#endif
+                while (putRequest.uploadProgress < 1 && putRequest.downloadProgress < 1)
+                    yield return 1;
+                if (!string.IsNullOrEmpty(putRequest.error))
+                    errorCallback(putRequest.error);
+                else
+                    successCallback(null);
+            }
+        }
 
         public void MakeApiCall(CallRequestContainer reqContainer)
         {

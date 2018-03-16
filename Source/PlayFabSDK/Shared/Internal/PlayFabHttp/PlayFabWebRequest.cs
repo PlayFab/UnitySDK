@@ -62,6 +62,85 @@ namespace PlayFab.Internal
             // These are performance Optimizations for HttpWebRequests.
             ServicePointManager.DefaultConnectionLimit = 10;
             ServicePointManager.Expect100Continue = false;
+
+            //Support for SSL	
+            var rcvc = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications); //(sender, cert, chain, ssl) => true	
+            ServicePointManager.ServerCertificateValidationCallback = rcvc;
+        }
+
+        private static bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+
+        public void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            // This needs to be improved to use a decent thread-pool, but it can be improved invisibly later
+            var newThread = new Thread(() => SimpleHttpsWorker("GET", fullUrl, null, successCallback, errorCallback));
+            newThread.Start();
+        }
+
+        public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        {
+            // This needs to be improved to use a decent thread-pool, but it can be improved invisibly later
+            var newThread = new Thread(() => SimpleHttpsWorker("PUT", fullUrl, payload, (result) => { successCallback(); }, errorCallback));
+            newThread.Start();
+        }
+
+        private void SimpleHttpsWorker(string httpMethod, string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            // This should also use a pooled HttpWebRequest object, but that too can be improved invisibly later
+            var httpRequest = (HttpWebRequest)WebRequest.Create(fullUrl);
+            httpRequest.UserAgent = "UnityEngine-Unity; Version: " + _unityVersion;
+            httpRequest.Method = httpMethod;
+            httpRequest.KeepAlive = PlayFabSettings.RequestKeepAlive;
+            httpRequest.Timeout = PlayFabSettings.RequestTimeout;
+            httpRequest.AllowWriteStreamBuffering = false;
+            httpRequest.ReadWriteTimeout = PlayFabSettings.RequestTimeout;
+
+            if (payload != null)
+            {
+                httpRequest.ContentLength = payload.LongLength;
+                using (var stream = httpRequest.GetRequestStream())
+                {
+                    stream.Write(payload, 0, payload.Length);
+                }
+            }
+
+            try
+            {
+                var response = httpRequest.GetResponse();
+                byte[] output = null;
+                using (var responseStream = response.GetResponseStream())
+                {
+                    if (responseStream != null)
+                    {
+                        output = new byte[response.ContentLength];
+                        responseStream.Read(output, 0, output.Length);
+                    }
+                }
+                successCallback(output);
+            }
+            catch (WebException webException)
+            {
+                try
+                {
+                    using (var responseStream = webException.Response.GetResponseStream())
+                    {
+                        if (responseStream != null)
+                            using (var stream = new StreamReader(responseStream))
+                                errorCallback(stream.ReadToEnd());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
         }
 
         public void MakeApiCall(CallRequestContainer reqContainer)

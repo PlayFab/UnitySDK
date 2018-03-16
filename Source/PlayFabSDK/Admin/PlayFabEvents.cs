@@ -153,6 +153,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RevokeBansResult> OnAdminRevokeBansResultEvent;
         public event PlayFabRequestEvent<RevokeInventoryItemRequest> OnAdminRevokeInventoryItemRequestEvent;
         public event PlayFabResultEvent<RevokeInventoryResult> OnAdminRevokeInventoryItemResultEvent;
+        public event PlayFabRequestEvent<RevokeInventoryItemsRequest> OnAdminRevokeInventoryItemsRequestEvent;
+        public event PlayFabResultEvent<RevokeInventoryItemsResult> OnAdminRevokeInventoryItemsResultEvent;
         public event PlayFabRequestEvent<RunTaskRequest> OnAdminRunTaskRequestEvent;
         public event PlayFabResultEvent<RunTaskResult> OnAdminRunTaskResultEvent;
         public event PlayFabRequestEvent<SendAccountRecoveryEmailRequest> OnAdminSendAccountRecoveryEmailRequestEvent;
