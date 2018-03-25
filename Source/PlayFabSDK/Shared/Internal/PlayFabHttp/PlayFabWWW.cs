@@ -109,7 +109,7 @@ namespace PlayFab.Internal
                         reqContainer.DeserializeResultJson();
                         reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                         reqContainer.ApiResult.CustomData = reqContainer.CustomData;
-
+                        reqContainer.ApiResult.ResponseHeaders = www.responseHeaders;
                         PlayFabHttp.instance.OnPlayFabApiResult(reqContainer.ApiResult);
 #if !DISABLE_PLAYFABCLIENT_API
                         PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult);
@@ -218,6 +218,9 @@ namespace PlayFab.Internal
                 catch (Exception e)
                 {
                     wwwErrorCallback("Unhandled error in PlayFabWWW: " + e);
+                }finally
+                {
+                    www.Dispose();
                 }
             }
         }
