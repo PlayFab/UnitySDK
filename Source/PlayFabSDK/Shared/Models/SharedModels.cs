@@ -15,5 +15,7 @@ namespace PlayFab.SharedModels
     {
         public PlayFabRequestCommon Request;
         public object CustomData;
+        public Dictionary<string, string> ResponseHeaders;
+
     }
 }
