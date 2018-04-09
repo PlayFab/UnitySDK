@@ -153,8 +153,10 @@ namespace PlayFab
             if (authType == AuthType.None && PlayFabClientAPI.IsClientLoggedIn())
                 authType = AuthType.LoginSession;
 #endif
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABMATCHMAKER_API || UNITY_EDITOR
             if (authType == AuthType.None && !string.IsNullOrEmpty(PlayFabSettings.DeveloperSecretKey))
                 authType = AuthType.DevSecretKey;
+#endif
 
             PlayFabHttp.MakeApiCall("/Authentication/GetEntityToken", request, authType, resultCallback, errorCallback, customData, extraHeaders);
         }

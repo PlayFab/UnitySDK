@@ -31,7 +31,6 @@ namespace PlayFab.Internal
         EntityToken, // "X-EntityToken"
     }
 
-
     public enum HttpRequestState
     {
         Sent,

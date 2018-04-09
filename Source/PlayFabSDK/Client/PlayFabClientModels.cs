@@ -5478,6 +5478,10 @@ namespace PlayFab.ClientModels
         /// source by which the user first joined the game, if known
         /// </summary>
         public UserOrigination? Origination;
+        /// <summary>
+        /// Title player account entity for this user
+        /// </summary>
+        public EntityKey TitlePlayerAccount;
     }
 
     [Serializable]

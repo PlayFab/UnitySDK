@@ -220,6 +220,7 @@ namespace PlayFab.Internal
                     wwwErrorCallback("Unhandled error in PlayFabWWW: " + e);
                 }
             }
+            www.Dispose();
         }
 
         public int GetPendingMessages()
