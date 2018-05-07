@@ -4173,6 +4173,11 @@ namespace PlayFab.ClientModels
     public class RegisterPlayFabUserResult : PlayFabResultCommon
     {
         /// <summary>
+        /// If LoginTitlePlayerAccountEntity flag is set on the login request the title_player_account will also be logged in and
+        /// returned.
+        /// </summary>
+        public EntityTokenResponse EntityToken;
+        /// <summary>
         /// PlayFab unique identifier for this newly created account.
         /// </summary>
         public string PlayFabId;

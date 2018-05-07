@@ -26,6 +26,12 @@ namespace PlayFab.PlayStreamModels
     {
         public string EntityChain;
     }
+    public class EntityExecutedCloudScriptEventData : PlayStreamEventBase
+    {
+        public ExecuteCloudScriptResult CloudScriptExecutionResult;
+        public string EntityChain;
+        public string FunctionName;
+    }
     public class EntityFilesSetEventData : PlayStreamEventBase
     {
         public string EntityChain;
@@ -950,6 +956,89 @@ namespace PlayFab.PlayStreamModels
     }
 
     [Serializable]
+    public class LogStatement
+    {
+        /// <summary>
+        /// Optional object accompanying the message as contextual information
+        /// </summary>
+        public object Data;
+        /// <summary>
+        /// 'Debug', 'Info', or 'Error'
+        /// </summary>
+        public string Level;
+        public string Message;
+    }
+
+    [Serializable]
+    public class ScriptExecutionError
+    {
+        /// <summary>
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded,
+        /// CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// </summary>
+        public string Error;
+        /// <summary>
+        /// Details about the error
+        /// </summary>
+        public string Message;
+        /// <summary>
+        /// Point during the execution of the script at which the error occurred, if any
+        /// </summary>
+        public string StackTrace;
+    }
+
+    [Serializable]
+    public class ExecuteCloudScriptResult
+    {
+        /// <summary>
+        /// Number of PlayFab API requests issued by the CloudScript function
+        /// </summary>
+        public int APIRequestsIssued;
+        /// <summary>
+        /// Information about the error, if any, that occurred during execution
+        /// </summary>
+        public ScriptExecutionError Error;
+        public double ExecutionTimeSeconds;
+        /// <summary>
+        /// The name of the function that executed
+        /// </summary>
+        public string FunctionName;
+        /// <summary>
+        /// The object returned from the CloudScript function, if any
+        /// </summary>
+        public object FunctionResult;
+        /// <summary>
+        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if
+        /// the total event size is larger than 350KB.
+        /// </summary>
+        public bool? FunctionResultTooLarge;
+        /// <summary>
+        /// Number of external HTTP requests issued by the CloudScript function
+        /// </summary>
+        public int HttpRequestsIssued;
+        /// <summary>
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info()
+        /// and log.error() and error entries for API and HTTP request failures.
+        /// </summary>
+        public List<LogStatement> Logs;
+        /// <summary>
+        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total
+        /// event size is larger than 350KB after the FunctionResult was removed.
+        /// </summary>
+        public bool? LogsTooLarge;
+        public uint MemoryConsumedBytes;
+        /// <summary>
+        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP
+        /// requests.
+        /// </summary>
+        public double ProcessorTimeSeconds;
+        /// <summary>
+        /// The revision of the CloudScript that executed
+        /// </summary>
+        public int Revision;
+    }
+
+    [Serializable]
     public class Member
     {
         /// <summary>
@@ -1327,89 +1416,6 @@ namespace PlayFab.PlayStreamModels
         ZAR,
         ZMW,
         ZWD
-    }
-
-    [Serializable]
-    public class LogStatement
-    {
-        /// <summary>
-        /// Optional object accompanying the message as contextual information
-        /// </summary>
-        public object Data;
-        /// <summary>
-        /// 'Debug', 'Info', or 'Error'
-        /// </summary>
-        public string Level;
-        public string Message;
-    }
-
-    [Serializable]
-    public class ScriptExecutionError
-    {
-        /// <summary>
-        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded,
-        /// CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
-        /// </summary>
-        public string Error;
-        /// <summary>
-        /// Details about the error
-        /// </summary>
-        public string Message;
-        /// <summary>
-        /// Point during the execution of the script at which the error occurred, if any
-        /// </summary>
-        public string StackTrace;
-    }
-
-    [Serializable]
-    public class ExecuteCloudScriptResult
-    {
-        /// <summary>
-        /// Number of PlayFab API requests issued by the CloudScript function
-        /// </summary>
-        public int APIRequestsIssued;
-        /// <summary>
-        /// Information about the error, if any, that occurred during execution
-        /// </summary>
-        public ScriptExecutionError Error;
-        public double ExecutionTimeSeconds;
-        /// <summary>
-        /// The name of the function that executed
-        /// </summary>
-        public string FunctionName;
-        /// <summary>
-        /// The object returned from the CloudScript function, if any
-        /// </summary>
-        public object FunctionResult;
-        /// <summary>
-        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if
-        /// the total event size is larger than 350KB.
-        /// </summary>
-        public bool? FunctionResultTooLarge;
-        /// <summary>
-        /// Number of external HTTP requests issued by the CloudScript function
-        /// </summary>
-        public int HttpRequestsIssued;
-        /// <summary>
-        /// Entries logged during the function execution. These include both entries logged in the function code using log.info()
-        /// and log.error() and error entries for API and HTTP request failures.
-        /// </summary>
-        public List<LogStatement> Logs;
-        /// <summary>
-        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total
-        /// event size is larger than 350KB after the FunctionResult was removed.
-        /// </summary>
-        public bool? LogsTooLarge;
-        public uint MemoryConsumedBytes;
-        /// <summary>
-        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP
-        /// requests.
-        /// </summary>
-        public double ProcessorTimeSeconds;
-        /// <summary>
-        /// The revision of the CloudScript that executed
-        /// </summary>
-        public int Revision;
     }
 
     public enum ContinentCode

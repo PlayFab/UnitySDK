@@ -207,6 +207,15 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the entity's profile.
+        /// </summary>
+        public static void GetProfiles(GetEntityProfilesRequest request, Action<GetEntityProfilesResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Profile/GetProfiles", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Initiates file uploads to an entity's profile.
         /// </summary>
         public static void InitiateFileUploads(InitiateFileUploadsRequest request, Action<InitiateFileUploadsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)

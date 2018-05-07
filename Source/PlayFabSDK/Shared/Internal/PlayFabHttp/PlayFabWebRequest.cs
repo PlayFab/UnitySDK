@@ -15,10 +15,47 @@ namespace PlayFab.Internal
 {
     public class PlayFabWebRequest : IPlayFabHttp
     {
-        private static readonly Queue<Action> ResultQueue = new Queue<Action>();
-        private static readonly Queue<Action> _tempActions = new Queue<Action>();
+        /// <summary>
+        /// Disable encryption certificate validation within PlayFabWebRequest using this request.
+        /// This is not generally recommended.
+        /// As of early 2018:
+        ///   None of the built-in Unity mechanisms validate the certificate, using .Net 3.5 equivalent runtime
+        ///   It is also not currently feasible to provide a single cross platform solution that will correctly validate a certificate.
+        /// The Risk:
+        ///   All Unity HTTPS mechanisms are vulnerable to Man-In-The-Middle attacks.
+        ///   The only more-secure option is to define a custom CustomCertValidationHook, specifically tailored to the platforms you support,
+        ///   which validate the cert based on a list of trusted certificate providers. This list of providers must be able to update itself, as the
+        ///   base certificates for those providers will also expire and need updating on a regular basis.
+        /// </summary>
+        public static void SkipCertificateValidation()
+        {
+            var rcvc = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications); //(sender, cert, chain, ssl) => true	
+            ServicePointManager.ServerCertificateValidationCallback = rcvc;
+            certValidationSet = true;
+        }
+
+        /// <summary>
+        /// Provide PlayFabWebRequest with a custom ServerCertificateValidationCallback which can be used to validate the PlayFab encryption certificate.
+        /// Please do not:
+        ///   - Hard code the current PlayFab certificate information - The PlayFab certificate updates itself on a regular schedule, and your game will fail and require a republish to fix
+        ///   - Hard code a list of static certificate authorities - Any single exported list of certificate authorities will become out of date, and have the same problem when the CA cert expires
+        /// Real solution:
+        ///   - A mechanism where a valid certificate authority list can be securely downloaded and updated without republishing the client when existing certificates expire.
+        /// </summary>
+        public static System.Net.Security.RemoteCertificateValidationCallback CustomCertValidationHook
+        {
+            set
+            {
+                ServicePointManager.ServerCertificateValidationCallback = value;
+                certValidationSet = true;
+            }
+        }
+
+        private static readonly Queue<Action> ResultQueueTransferThread = new Queue<Action>();
+        private static readonly Queue<Action> ResultQueueMainThread = new Queue<Action>();
         private static readonly List<CallRequestContainer> ActiveRequests = new List<CallRequestContainer>();
 
+        private static bool certValidationSet = false;
         private static Thread _requestQueueThread;
         private static readonly object _ThreadLock = new object();
         private static readonly TimeSpan ThreadKillTimeout = TimeSpan.FromSeconds(60);
@@ -43,9 +80,9 @@ namespace PlayFab.Internal
         public void OnDestroy()
         {
             _isApplicationPlaying = false;
-            lock (ResultQueue)
+            lock (ResultQueueTransferThread)
             {
-                ResultQueue.Clear();
+                ResultQueueTransferThread.Clear();
             }
             lock (ActiveRequests)
             {
@@ -63,11 +100,16 @@ namespace PlayFab.Internal
             ServicePointManager.DefaultConnectionLimit = 10;
             ServicePointManager.Expect100Continue = false;
 
-            //Support for SSL	
-            var rcvc = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications); //(sender, cert, chain, ssl) => true	
-            ServicePointManager.ServerCertificateValidationCallback = rcvc;
+            if (!certValidationSet)
+            {
+                Debug.LogWarning("PlayFab API calls will likely fail because you have not set up a HttpWebRequest certificate validation mechanism");
+                Debug.LogWarning("Please set a validation callback into PlayFab.Internal.PlayFabWebRequest.CustomCertValidationHook, or set PlayFab.Internal.PlayFabWebRequest.SkipCertificateValidation()");
+            }
         }
 
+        /// <summary>
+        /// This disables certificate validation, if it's been activated by a customer via SkipCertificateValidation()
+        /// </summary>
         private static bool AcceptAllCertifications(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
         {
             return true;
@@ -334,10 +376,10 @@ namespace PlayFab.Internal
         {
             reqContainer.Error = PlayFabHttp.GeneratePlayFabError(reqContainer.ApiEndpoint, reqContainer.JsonResponse, reqContainer.CustomData); // Decode the server-json error
             reqContainer.HttpState = HttpRequestState.Error;
-            lock (ResultQueue)
+            lock (ResultQueueTransferThread)
             {
                 //Queue The result callbacks to run on the main thread.
-                ResultQueue.Enqueue(() =>
+                ResultQueueTransferThread.Enqueue(() =>
                 {
                     PlayFabHttp.SendErrorEvent(reqContainer.ApiRequest, reqContainer.Error);
                     if (reqContainer.ErrorCallback != null)
@@ -371,15 +413,15 @@ namespace PlayFab.Internal
                 PlayFabHttp.instance.OnPlayFabApiResult(reqContainer.ApiResult);
 
 #if !DISABLE_PLAYFABCLIENT_API
-                lock (ResultQueue)
+                lock (ResultQueueTransferThread)
                 {
-                    ResultQueue.Enqueue(() => { PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult); });
+                    ResultQueueTransferThread.Enqueue(() => { PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult); });
                 }
 #endif
-                lock (ResultQueue)
+                lock (ResultQueueTransferThread)
                 {
                     //Queue The result callbacks to run on the main thread.
-                    ResultQueue.Enqueue(() =>
+                    ResultQueueTransferThread.Enqueue(() =>
                     {
 #if PLAYFAB_REQUEST_TIMING
                         reqContainer.Stopwatch.Stop();
@@ -410,18 +452,18 @@ namespace PlayFab.Internal
 
         public void Update()
         {
-            lock (ResultQueue)
+            lock (ResultQueueTransferThread)
             {
-                while (ResultQueue.Count > 0)
+                while (ResultQueueTransferThread.Count > 0)
                 {
-                    var actionToQueue = ResultQueue.Dequeue();
-                    _tempActions.Enqueue(actionToQueue);
+                    var actionToQueue = ResultQueueTransferThread.Dequeue();
+                    ResultQueueMainThread.Enqueue(actionToQueue);
                 }
             }
 
-            while (_tempActions.Count > 0)
+            while (ResultQueueMainThread.Count > 0)
             {
-                var finishedRequest = _tempActions.Dequeue();
+                var finishedRequest = ResultQueueMainThread.Dequeue();
                 finishedRequest();
             }
         }
@@ -475,8 +517,8 @@ namespace PlayFab.Internal
             var count = 0;
             lock (ActiveRequests)
                 count += ActiveRequests.Count + _activeCallCount;
-            lock (ResultQueue)
-                count += ResultQueue.Count;
+            lock (ResultQueueTransferThread)
+                count += ResultQueueTransferThread.Count;
             return count;
         }
     }

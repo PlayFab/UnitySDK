@@ -25,6 +25,9 @@ namespace PlayFab.UUnit
 
         public override void SetUp(UUnitTestContext testContext)
         {
+#if !UNITY_WSA && !UNITY_WP8
+            PlayFabWebRequest.SkipCertificateValidation(); // Internal testing doesn't have a good answer for this yet
+#endif
             testTitleData = TestTitleDataLoader.LoadTestTitleData();
             _userEmail = testTitleData.userEmail;
 

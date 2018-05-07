@@ -525,6 +525,29 @@ namespace PlayFab.EntityModels
     }
 
     [Serializable]
+    public class GetEntityProfilesRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Determines whether the objects will be returned as an escaped JSON string or as a un-escaped JSON object. Default is
+        /// JSON string.
+        /// </summary>
+        public bool? DataAsObject;
+        /// <summary>
+        /// Entity keys of the profiles to load. Must be between 1 and 25
+        /// </summary>
+        public List<EntityKey> Entities;
+    }
+
+    [Serializable]
+    public class GetEntityProfilesResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Entity profiles
+        /// </summary>
+        public List<EntityProfileBody> Profiles;
+    }
+
+    [Serializable]
     public class GetEntityTokenRequest : PlayFabRequestCommon
     {
         /// <summary>
