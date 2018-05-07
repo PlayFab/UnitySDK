@@ -43,6 +43,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetObjectsResponse> OnEntityGetObjectsResultEvent;
         public event PlayFabRequestEvent<GetEntityProfileRequest> OnEntityGetProfileRequestEvent;
         public event PlayFabResultEvent<GetEntityProfileResponse> OnEntityGetProfileResultEvent;
+        public event PlayFabRequestEvent<GetEntityProfilesRequest> OnEntityGetProfilesRequestEvent;
+        public event PlayFabResultEvent<GetEntityProfilesResponse> OnEntityGetProfilesResultEvent;
         public event PlayFabRequestEvent<InitiateFileUploadsRequest> OnEntityInitiateFileUploadsRequestEvent;
         public event PlayFabResultEvent<InitiateFileUploadsResponse> OnEntityInitiateFileUploadsResultEvent;
         public event PlayFabRequestEvent<InviteToGroupRequest> OnEntityInviteToGroupRequestEvent;

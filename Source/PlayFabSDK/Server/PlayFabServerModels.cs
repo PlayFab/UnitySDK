@@ -1309,6 +1309,7 @@ namespace PlayFab.ServerModels
     public enum GenericErrorCodes
     {
         Success,
+        UnkownError,
         InvalidParams,
         AccountNotFound,
         AccountBanned,
@@ -1669,7 +1670,13 @@ namespace PlayFab.ServerModels
         EmailReportAlreadySent,
         EmailReportRecipientBlacklisted,
         EventNamespaceNotAllowed,
-        EventEntityNotAllowed
+        EventEntityNotAllowed,
+        InvalidEntityType,
+        NullTokenResultFromAad,
+        InvalidTokenResultFromAad,
+        NoValidCertificateForAad,
+        InvalidCertificateForAad,
+        DuplicateDropTableId
     }
 
     [Serializable]
