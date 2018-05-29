@@ -1144,7 +1144,8 @@ namespace PlayFab.ClientModels
         master_player_account,
         title_player_account,
         character,
-        group
+        group,
+        service
     }
 
     [Serializable]
@@ -1263,6 +1264,10 @@ namespace PlayFab.ClientModels
         /// </summary>
         public PlayerProfileModel Profile;
         /// <summary>
+        /// Available PSN information, if the user and PlayFab friend are both connected to PSN.
+        /// </summary>
+        public UserPsnInfo PSNInfo;
+        /// <summary>
         /// Available Steam information (if the user and PlayFab friend are also connected in Steam).
         /// </summary>
         public UserSteamInfo SteamInfo;
@@ -1278,6 +1283,10 @@ namespace PlayFab.ClientModels
         /// PlayFab unique username for this friend.
         /// </summary>
         public string Username;
+        /// <summary>
+        /// Available Xbox information, if the user and PlayFab friend are both connected to Xbox Live.
+        /// </summary>
+        public UserXboxInfo XboxInfo;
     }
 
     [Serializable]
@@ -1645,6 +1654,10 @@ namespace PlayFab.ClientModels
         /// The version of the leaderboard to get.
         /// </summary>
         public int? Version;
+        /// <summary>
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// </summary>
+        public string XboxToken;
     }
 
     [Serializable]
@@ -1697,6 +1710,10 @@ namespace PlayFab.ClientModels
         /// The version of the leaderboard to get.
         /// </summary>
         public int? Version;
+        /// <summary>
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// </summary>
+        public string XboxToken;
     }
 
     [Serializable]
@@ -1716,6 +1733,10 @@ namespace PlayFab.ClientModels
         /// the Game Manager "Client Profile Options" tab in the "Settings" section.
         /// </summary>
         public PlayerProfileViewConstraints ProfileConstraints;
+        /// <summary>
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// </summary>
+        public string XboxToken;
     }
 
     [Serializable]

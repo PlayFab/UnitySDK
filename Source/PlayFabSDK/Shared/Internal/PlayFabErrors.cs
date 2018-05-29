@@ -378,7 +378,17 @@ namespace PlayFab
         InvalidTokenResultFromAad = 1375,
         NoValidCertificateForAad = 1376,
         InvalidCertificateForAad = 1377,
-        DuplicateDropTableId = 1378
+        DuplicateDropTableId = 1378,
+        ComputeOK = 1379,
+        ComputeAccepted = 1380,
+        ComputeNoContent = 1381,
+        ComputeBadRequest = 1382,
+        ComputeUnauthorized = 1383,
+        ComputeForbidden = 1384,
+        ComputeNotFound = 1385,
+        ComputeConflict = 1386,
+        ComputeInternalServerError = 1387,
+        ComputeServiceUnavailable = 1388
     }
 
     public delegate void ErrorCallback(PlayFabError error);
