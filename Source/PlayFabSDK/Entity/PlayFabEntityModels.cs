@@ -452,7 +452,8 @@ namespace PlayFab.EntityModels
         master_player_account,
         title_player_account,
         character,
-        group
+        group,
+        service
     }
 
     /// <summary>

@@ -369,6 +369,13 @@ namespace PlayFab.PlayStreamModels
         public string PublisherId;
         public string TitleId;
     }
+    public class PlayerDataExportedEventData : PlayStreamEventBase
+    {
+        public string ExportDownloadUrl;
+        public string JobReceiptId;
+        public DateTime RequestTime;
+        public string TitleId;
+    }
     public class PlayerDisplayNameChangedEventData : PlayStreamEventBase
     {
         public string DisplayName;

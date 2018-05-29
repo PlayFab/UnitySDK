@@ -1137,7 +1137,8 @@ namespace PlayFab.ServerModels
         master_player_account,
         title_player_account,
         character,
-        group
+        group,
+        service
     }
 
     [Serializable]
@@ -1283,6 +1284,10 @@ namespace PlayFab.ServerModels
         /// </summary>
         public PlayerProfileModel Profile;
         /// <summary>
+        /// Available PSN information, if the user and PlayFab friend are both connected to PSN.
+        /// </summary>
+        public UserPsnInfo PSNInfo;
+        /// <summary>
         /// Available Steam information (if the user and PlayFab friend are also connected in Steam).
         /// </summary>
         public UserSteamInfo SteamInfo;
@@ -1298,6 +1303,10 @@ namespace PlayFab.ServerModels
         /// PlayFab unique username for this friend.
         /// </summary>
         public string Username;
+        /// <summary>
+        /// Available Xbox information, if the user and PlayFab friend are both connected to Xbox Live.
+        /// </summary>
+        public UserXboxInfo XboxInfo;
     }
 
     public enum GameInstanceState
@@ -1676,7 +1685,17 @@ namespace PlayFab.ServerModels
         InvalidTokenResultFromAad,
         NoValidCertificateForAad,
         InvalidCertificateForAad,
-        DuplicateDropTableId
+        DuplicateDropTableId,
+        ComputeOK,
+        ComputeAccepted,
+        ComputeNoContent,
+        ComputeBadRequest,
+        ComputeUnauthorized,
+        ComputeForbidden,
+        ComputeNotFound,
+        ComputeConflict,
+        ComputeInternalServerError,
+        ComputeServiceUnavailable
     }
 
     [Serializable]
@@ -1925,6 +1944,10 @@ namespace PlayFab.ServerModels
         /// The version of the leaderboard to get.
         /// </summary>
         public int? Version;
+        /// <summary>
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// </summary>
+        public string XboxToken;
     }
 
     [Serializable]
@@ -1948,6 +1971,10 @@ namespace PlayFab.ServerModels
         /// the Game Manager "Client Profile Options" tab in the "Settings" section.
         /// </summary>
         public PlayerProfileViewConstraints ProfileConstraints;
+        /// <summary>
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// </summary>
+        public string XboxToken;
     }
 
     [Serializable]

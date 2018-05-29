@@ -31,6 +31,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<CreatePlayerStatisticDefinitionResult> OnAdminCreatePlayerStatisticDefinitionResultEvent;
         public event PlayFabRequestEvent<DeleteContentRequest> OnAdminDeleteContentRequestEvent;
         public event PlayFabResultEvent<BlankResult> OnAdminDeleteContentResultEvent;
+        public event PlayFabRequestEvent<DeleteMasterPlayerAccountRequest> OnAdminDeleteMasterPlayerAccountRequestEvent;
+        public event PlayFabResultEvent<DeleteMasterPlayerAccountResult> OnAdminDeleteMasterPlayerAccountResultEvent;
         public event PlayFabRequestEvent<DeletePlayerRequest> OnAdminDeletePlayerRequestEvent;
         public event PlayFabResultEvent<DeletePlayerResult> OnAdminDeletePlayerResultEvent;
         public event PlayFabRequestEvent<DeletePlayerSharedSecretRequest> OnAdminDeletePlayerSharedSecretRequestEvent;
@@ -41,6 +43,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResult> OnAdminDeleteTaskResultEvent;
         public event PlayFabRequestEvent<DeleteTitleRequest> OnAdminDeleteTitleRequestEvent;
         public event PlayFabResultEvent<DeleteTitleResult> OnAdminDeleteTitleResultEvent;
+        public event PlayFabRequestEvent<ExportMasterPlayerDataRequest> OnAdminExportMasterPlayerDataRequestEvent;
+        public event PlayFabResultEvent<ExportMasterPlayerDataResult> OnAdminExportMasterPlayerDataResultEvent;
         public event PlayFabRequestEvent<GetTaskInstanceRequest> OnAdminGetActionsOnPlayersInSegmentTaskInstanceRequestEvent;
         public event PlayFabResultEvent<GetActionsOnPlayersInSegmentTaskInstanceResult> OnAdminGetActionsOnPlayersInSegmentTaskInstanceResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnAdminGetAllSegmentsRequestEvent;
@@ -63,6 +67,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetMatchmakerGameInfoResult> OnAdminGetMatchmakerGameInfoResultEvent;
         public event PlayFabRequestEvent<GetMatchmakerGameModesRequest> OnAdminGetMatchmakerGameModesRequestEvent;
         public event PlayFabResultEvent<GetMatchmakerGameModesResult> OnAdminGetMatchmakerGameModesResultEvent;
+        public event PlayFabRequestEvent<GetPlayedTitleListRequest> OnAdminGetPlayedTitleListRequestEvent;
+        public event PlayFabResultEvent<GetPlayedTitleListResult> OnAdminGetPlayedTitleListResultEvent;
         public event PlayFabRequestEvent<GetPlayerIdFromAuthTokenRequest> OnAdminGetPlayerIdFromAuthTokenRequestEvent;
         public event PlayFabResultEvent<GetPlayerIdFromAuthTokenResult> OnAdminGetPlayerIdFromAuthTokenResultEvent;
         public event PlayFabRequestEvent<GetPlayerProfileRequest> OnAdminGetPlayerProfileRequestEvent;
