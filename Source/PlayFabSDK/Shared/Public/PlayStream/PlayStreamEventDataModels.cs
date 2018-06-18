@@ -1908,7 +1908,13 @@ namespace PlayFab.PlayStreamModels
     [Serializable]
     public class NameIdentifier
     {
+        /// <summary>
+        /// Id Identifier, if present
+        /// </summary>
         public string Id;
+        /// <summary>
+        /// Name Identifier, if present
+        /// </summary>
         public string Name;
     }
 
