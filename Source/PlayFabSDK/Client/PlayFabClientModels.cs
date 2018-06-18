@@ -3675,17 +3675,6 @@ namespace PlayFab.ClientModels
         public string VirtualCurrency;
     }
 
-    /// <summary>
-    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is
-    /// immutable and unique.
-    /// </summary>
-    [Serializable]
-    public class NameIdentifier
-    {
-        public string Id;
-        public string Name;
-    }
-
     [Serializable]
     public class OpenTradeRequest : PlayFabRequestCommon
     {
