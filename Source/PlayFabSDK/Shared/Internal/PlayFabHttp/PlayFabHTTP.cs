@@ -2,6 +2,7 @@ using PlayFab.Json;
 using PlayFab.Public;
 using PlayFab.SharedModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -27,6 +28,10 @@ namespace PlayFab.Internal
 #endif
 
         private static IPlayFabLogger _logger;
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+        private static IScreenTimeTracker screenTimeTracker = new ScreenTimeTracker();
+        private const float delayBetweenBatches = 5.0f;
+#endif
 
 #if PLAYFAB_REQUEST_TIMING
         public struct RequestTiming
@@ -104,6 +109,34 @@ namespace PlayFab.Internal
                 setLogger = new PlayFabLogger();
             _logger = setLogger;
         }
+
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+        /// <summary>
+        /// This initializes ScreenTimeTracker object and notifying it to start sending info.
+        /// </summary>
+        /// <param name="entityKey">Result of the user's login, consist of entity info</param>
+        /// <param name="playFabUserId">Result of the user's login, represent user ID</param>
+        public static void InitializeScreenTimeTracker(EntityModels.EntityKey entityKey, string playFabUserId)
+        {
+            screenTimeTracker.ClientSessionStart(entityKey, playFabUserId);
+            instance.StartCoroutine(SendScreenTimeEvents(delayBetweenBatches));
+        }
+
+        /// <summary>
+        /// This function will send Screen Time events on a periodic basis.
+        /// </summary>
+        /// <param name="secondsBetweenBatches">Delay between batches, in seconds</param>
+        private static IEnumerator SendScreenTimeEvents(float secondsBetweenBatches)
+        {
+            WaitForSeconds delay = new WaitForSeconds(secondsBetweenBatches);
+
+            while (!PlayFabSettings.DisableFocusTimeCollection)
+            {
+                screenTimeTracker.Send();
+                yield return delay;
+            }
+        }
+#endif
 
 #if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
         public static void InitializeSignalR(string baseUrl, string hubName, Action onConnected, Action<string>onReceived, Action onReconnected, Action onDisconnected, Action<Exception> onError)
@@ -199,7 +232,9 @@ namespace PlayFab.Internal
             reqContainer.InvokeSuccessCallback = () =>
             {
                 if (resultCallback != null)
+                {
                     resultCallback((TResult)reqContainer.ApiResult);
+                }
             };
 
             if (allowQueueing && _apiCallQueue != null && !_internalHttp.SessionStarted)
@@ -252,6 +287,13 @@ namespace PlayFab.Internal
             {
                 _logger.OnEnable();
             }
+
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+            if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
+            {
+                screenTimeTracker.OnEnable();
+            }
+#endif
         }
 
         /// <summary>
@@ -263,6 +305,13 @@ namespace PlayFab.Internal
             {
                 _logger.OnDisable();
             }
+
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+            if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
+            {
+                screenTimeTracker.OnDisable();
+            }
+#endif
         }
 
         /// <summary>
@@ -284,6 +333,39 @@ namespace PlayFab.Internal
             {
                 _logger.OnDestroy();
             }
+
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+            if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
+            {
+                screenTimeTracker.OnDestroy();
+            }
+#endif
+        }
+
+        /// <summary>
+        /// MonoBehaviour OnApplicationFocus
+        /// </summary>
+        public void OnApplicationFocus(bool isFocused)
+        {
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+            if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
+            {
+                screenTimeTracker.OnApplicationFocus(isFocused);
+            }
+#endif
+        }
+
+        /// <summary>
+        /// MonoBehaviour OnApplicationQuit
+        /// </summary>
+        public void OnApplicationQuit()
+        {
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+            if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
+            {
+                screenTimeTracker.OnApplicationQuit();
+            }
+#endif
         }
 
         /// <summary>
