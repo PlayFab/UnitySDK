@@ -1,7 +1,7 @@
-#if !UNITY_5
-using UnityEngine;
-using System.Collections;
+#if UNITY_2017_1_OR_NEWER
+using PlayFab.PfEditor;
 using UnityEditor;
+using UnityEngine;
 
 public class MakeScriptableObject
 {
@@ -10,7 +10,7 @@ public class MakeScriptableObject
     {
         PlayFabSharedSettings asset = ScriptableObject.CreateInstance<PlayFabSharedSettings>();
 
-        AssetDatabase.CreateAsset(asset, "Assets/PlayFabSdk/Shared/Public/Resources/PlayFabSharedSettings.asset");
+        AssetDatabase.CreateAsset(asset, "Assets/PlayFabSdk/Shared/Public/Resources/PlayFabSharedSettings.asset"); // TODO: Path should not be hard coded
         AssetDatabase.SaveAssets();
 
         EditorUtility.FocusProjectWindow();

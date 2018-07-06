@@ -1,14 +1,15 @@
 #if !DISABLE_PLAYFABCLIENT_API
 using PlayFab.ClientModels;
 using PlayFab.SharedModels;
+using PlayFab.Json;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace PlayFab.Internal
 {
     public static class PlayFabDeviceUtil
     {
-        private static bool _needsAttribution;
-        private static bool _gatherInfo;
+        private static bool _needsAttribution, _gatherInfo, _gatherScreenTime;
 
         #region Make Attribution API call
         private static void DoAttributeInstall()
@@ -31,20 +32,15 @@ namespace PlayFab.Internal
         #endregion Make Attribution API call
 
         #region Scrape Device Info
-        private class DeviceInfoRequest : PlayFabRequestCommon
-        {
-            public PlayFabDataGatherer Info;
-        }
-
         private static void SendDeviceInfoToPlayFab()
         {
             if (PlayFabSettings.DisableDeviceInfo || !_gatherInfo) return;
 
             var request = new DeviceInfoRequest
             {
-                Info = new PlayFabDataGatherer()
+                Info = JsonWrapper.DeserializeObject<Dictionary<string, object>>(JsonWrapper.SerializeObject(new PlayFabDataGatherer()))
             };
-            PlayFabHttp.MakeApiCall<EmptyResult>("/Client/ReportDeviceInfo", request, AuthType.LoginSession, OnGatherSuccess, OnGatherFail);
+            PlayFabClientAPI.ReportDeviceInfo(request, OnGatherSuccess, OnGatherFail);
         }
         private static void OnGatherSuccess(EmptyResult result)
         {
@@ -63,8 +59,7 @@ namespace PlayFab.Internal
             if (loginResult == null && registerResult == null)
                 return;
 
-            _needsAttribution = false;
-            _gatherInfo = false;
+            _needsAttribution = _gatherInfo = _gatherScreenTime = false;
             if (loginResult != null && loginResult.SettingsForUser != null)
                 _needsAttribution = loginResult.SettingsForUser.NeedsAttribution;
             else if (registerResult != null && registerResult.SettingsForUser != null)
@@ -73,6 +68,11 @@ namespace PlayFab.Internal
                 _gatherInfo = loginResult.SettingsForUser.GatherDeviceInfo;
             else if (registerResult != null && registerResult.SettingsForUser != null)
                 _gatherInfo = registerResult.SettingsForUser.GatherDeviceInfo;
+            // TODO: Uncomment when GatherFocusInfo field is released
+            //if (loginResult != null && loginResult.SettingsForUser != null)
+            //    _gatherInfo = loginResult.SettingsForUser.GatherFocusInfo;
+            //else if (registerResult != null && registerResult.SettingsForUser != null)
+            //    _gatherInfo = registerResult.SettingsForUser.GatherFocusInfo;
 
             // Device attribution (adid or idfa)
             if (PlayFabSettings.AdvertisingIdType != null && PlayFabSettings.AdvertisingIdValue != null)
@@ -82,6 +82,23 @@ namespace PlayFab.Internal
 
             // Device information gathering
             SendDeviceInfoToPlayFab();
+
+#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+            string playFabUserId = loginResult.PlayFabId;
+            EntityModels.EntityKey entityKey = new EntityModels.EntityKey();
+            if (loginResult.EntityToken != null && _gatherInfo)
+            {
+                entityKey.Id = loginResult.EntityToken.Entity.Id;
+                entityKey.Type = (PlayFab.EntityModels.EntityTypes)(int)loginResult.EntityToken.Entity.Type; // possible loss of data 
+                entityKey.TypeString = loginResult.EntityToken.Entity.TypeString;
+
+                PlayFabHttp.InitializeScreenTimeTracker(entityKey, playFabUserId);
+            }
+            else
+            {
+                PlayFabSettings.DisableFocusTimeCollection = true;
+            }
+#endif
         }
 
         private static void GetAdvertIdFromUnity()

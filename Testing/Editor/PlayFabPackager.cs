@@ -164,15 +164,14 @@ namespace PlayFab.Internal
         public static void MakeWp8Build()
         {
             Setup();
-#if (UNITY_5_2 || UNITY_5_3_OR_NEWER) && !UNITY_2017
-            EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
-#endif
-#if UNITY_5_2 || UNITY_5_3_OR_NEWER
+#if UNITY_2017_1_OR_NEWER
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.LocalMachineAndWindowsPhone;
+            EditorUserBuildSettings.wsaSubtarget = WSASubtarget.AnyDevice;
             EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
             PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
+#elif UNITY_5_2 || UNITY_5_3_OR_NEWER
+            EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
 #endif
-
             var wp8Path = Path.Combine(GetBuildPath(), "PlayFabWP8");
             MkDir(GetBuildPath());
             MkDir(wp8Path);
@@ -186,7 +185,11 @@ namespace PlayFab.Internal
         {
             Setup();
             SetScriptingBackend(ScriptingImplementation.Mono2x, BuildTarget.StandaloneWindows, BuildTargetGroup.Standalone);
+#if UNITY_2018_1_OR_NEWER
+            PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
+#else
             PlayerSettings.defaultIsFullScreen = false;
+#endif
             PlayerSettings.defaultScreenHeight = 768;
             PlayerSettings.defaultScreenWidth = 1024;
             PlayerSettings.runInBackground = true;
