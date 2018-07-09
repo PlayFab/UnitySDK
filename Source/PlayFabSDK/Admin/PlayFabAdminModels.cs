@@ -1474,7 +1474,6 @@ namespace PlayFab.AdminModels
     public enum GenericErrorCodes
     {
         Success,
-        MatchmakingHopperIdInvalid,
         UnkownError,
         InvalidParams,
         AccountNotFound,
@@ -1853,9 +1852,11 @@ namespace PlayFab.AdminModels
         GameServerConflict,
         GameServerInternalServerError,
         GameServerServiceUnavailable,
-        MatchmakingInvalidEntityKeyList,
-        MatchmakingInvalidTicketCreatorProfile,
-        MatchmakingInvalidUserAttributes,
+        ExplicitContentDetected,
+        PIIContentDetected,
+        InvalidScheduledTaskParameter,
+        MatchmakingEntityInvalid,
+        MatchmakingPlayerAttributesInvalid,
         MatchmakingCreateRequestMissing,
         MatchmakingCreateRequestCreatorMissing,
         MatchmakingCreateRequestCreatorIdMissing,
@@ -1867,7 +1868,7 @@ namespace PlayFab.AdminModels
         MatchmakingHopperIdMissing,
         MatchmakingTitleIdMissing,
         MatchmakingTicketIdIdMissing,
-        MatchmakingUserIdMissing,
+        MatchmakingPlayerIdMissing,
         MatchmakingJoinRequestUserMissing,
         MatchmakingHopperConfigNotFound,
         MatchmakingMatchNotFound,
@@ -1880,10 +1881,12 @@ namespace PlayFab.AdminModels
         MatchmakingCancelTicketServerIdentityInvalid,
         MatchmakingCancelTicketUserIdentityMismatch,
         MatchmakingGetMatchIdentityMismatch,
-        MatchmakingUserIdentityMismatch,
+        MatchmakingPlayerIdentityMismatch,
         MatchmakingAlreadyJoinedTicket,
         MatchmakingTicketAlreadyCompleted,
-        MatchmakingHopperConfigInvalid
+        MatchmakingHopperIdInvalid,
+        MatchmakingHopperConfigInvalid,
+        MatchmakingMemberProfileInvalid
     }
 
     [Serializable]
@@ -4236,7 +4239,9 @@ namespace PlayFab.AdminModels
         BackEnd,
         GameClient,
         GameServer,
-        Partner
+        Partner,
+        Custom,
+        API
     }
 
     public enum StatisticAggregationMethod

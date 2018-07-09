@@ -10,7 +10,7 @@ namespace PlayFab
 {
     /// <summary>
     /// PlayFab Entity APIs provide a variety of core PlayFab features and work consistently across a broad set of entities,
-    /// such as titles, players, characters, and more.
+    /// such as titles, players, characters, and more. API methods for executing CloudScript with an Entity Profile
     /// </summary>
     public static class PlayFabEntityAPI
     {
@@ -131,6 +131,15 @@ namespace PlayFab
         {
 
             PlayFabHttp.MakeApiCall("/Group/DeleteRole", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Executes CloudScript using the Entity Profile
+        /// </summary>
+        public static void ExecuteEntityCloudScript(ExecuteEntityCloudScriptRequest request, Action<ExecuteCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/CloudScript/ExecuteEntityCloudScript", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -375,6 +384,15 @@ namespace PlayFab
         {
 
             PlayFabHttp.MakeApiCall("/Group/UpdateRole", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Write batches of entity based events to PlayStream.
+        /// </summary>
+        public static void WriteEvents(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
         }
 
 
