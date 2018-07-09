@@ -68,11 +68,10 @@ namespace PlayFab.Internal
                 _gatherInfo = loginResult.SettingsForUser.GatherDeviceInfo;
             else if (registerResult != null && registerResult.SettingsForUser != null)
                 _gatherInfo = registerResult.SettingsForUser.GatherDeviceInfo;
-            // TODO: Uncomment when GatherFocusInfo field is released
-            //if (loginResult != null && loginResult.SettingsForUser != null)
-            //    _gatherInfo = loginResult.SettingsForUser.GatherFocusInfo;
-            //else if (registerResult != null && registerResult.SettingsForUser != null)
-            //    _gatherInfo = registerResult.SettingsForUser.GatherFocusInfo;
+            if (loginResult != null && loginResult.SettingsForUser != null)
+                _gatherScreenTime = loginResult.SettingsForUser.GatherFocusInfo;
+            else if (registerResult != null && registerResult.SettingsForUser != null)
+                _gatherScreenTime = registerResult.SettingsForUser.GatherFocusInfo;
 
             // Device attribution (adid or idfa)
             if (PlayFabSettings.AdvertisingIdType != null && PlayFabSettings.AdvertisingIdValue != null)
@@ -83,10 +82,10 @@ namespace PlayFab.Internal
             // Device information gathering
             SendDeviceInfoToPlayFab();
 
-#if ENABLE_PLAYFABENTITY_API && ENABLE_PLAYFAB_BETA
+#if ENABLE_PLAYFABENTITY_API
             string playFabUserId = loginResult.PlayFabId;
             EntityModels.EntityKey entityKey = new EntityModels.EntityKey();
-            if (loginResult.EntityToken != null && _gatherInfo)
+            if (loginResult.EntityToken != null && _gatherScreenTime)
             {
                 entityKey.Id = loginResult.EntityToken.Entity.Id;
                 entityKey.Type = (PlayFab.EntityModels.EntityTypes)(int)loginResult.EntityToken.Entity.Type; // possible loss of data 

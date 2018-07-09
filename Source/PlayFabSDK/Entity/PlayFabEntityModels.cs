@@ -154,6 +154,13 @@ namespace PlayFab.EntityModels
         public string OriginRoleId;
     }
 
+    public enum CloudScriptRevisionOption
+    {
+        Live,
+        Latest,
+        Specific
+    }
+
     [Serializable]
     public class CreateGroupRequest : PlayFabRequestCommon
     {
@@ -470,6 +477,125 @@ namespace PlayFab.EntityModels
         /// Dictionary of entity keys for related entities. Dictionary key is entity type.
         /// </summary>
         public Dictionary<string,EntityKey> Lineage;
+    }
+
+    [Serializable]
+    public class EventContents
+    {
+        /// <summary>
+        /// Entity associated with the event
+        /// </summary>
+        public EntityKey Entity;
+        /// <summary>
+        /// The namespace in which the event is defined. It must be prepended with 'com.playfab.events.'
+        /// </summary>
+        public string EventNamespace;
+        /// <summary>
+        /// The name of this event.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// The original unique identifier associated with this event before it was posted to PlayFab. The value might differ from
+        /// the EventId value, which is assigned when the event is received by the server.
+        /// </summary>
+        public string OriginalId;
+        /// <summary>
+        /// The time (in UTC) associated with this event when it occurred. If specified, this value is stored in the
+        /// OriginalTimestamp property of the PlayStream event.
+        /// </summary>
+        public DateTime? OriginalTimestamp;
+        /// <summary>
+        /// Arbitrary data associated with the event. Only one of Payload or PayloadJSON is allowed.
+        /// </summary>
+        public object Payload;
+        /// <summary>
+        /// Arbitrary data associated with the event, represented as a JSON serialized string. Only one of Payload or PayloadJSON is
+        /// allowed.
+        /// </summary>
+        public string PayloadJSON;
+    }
+
+    [Serializable]
+    public class ExecuteCloudScriptResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Number of PlayFab API requests issued by the CloudScript function
+        /// </summary>
+        public int APIRequestsIssued;
+        /// <summary>
+        /// Information about the error, if any, that occurred during execution
+        /// </summary>
+        public ScriptExecutionError Error;
+        public double ExecutionTimeSeconds;
+        /// <summary>
+        /// The name of the function that executed
+        /// </summary>
+        public string FunctionName;
+        /// <summary>
+        /// The object returned from the CloudScript function, if any
+        /// </summary>
+        public object FunctionResult;
+        /// <summary>
+        /// Flag indicating if the FunctionResult was too large and was subsequently dropped from this event. This only occurs if
+        /// the total event size is larger than 350KB.
+        /// </summary>
+        public bool? FunctionResultTooLarge;
+        /// <summary>
+        /// Number of external HTTP requests issued by the CloudScript function
+        /// </summary>
+        public int HttpRequestsIssued;
+        /// <summary>
+        /// Entries logged during the function execution. These include both entries logged in the function code using log.info()
+        /// and log.error() and error entries for API and HTTP request failures.
+        /// </summary>
+        public List<LogStatement> Logs;
+        /// <summary>
+        /// Flag indicating if the logs were too large and were subsequently dropped from this event. This only occurs if the total
+        /// event size is larger than 350KB after the FunctionResult was removed.
+        /// </summary>
+        public bool? LogsTooLarge;
+        public uint MemoryConsumedBytes;
+        /// <summary>
+        /// Processor time consumed while executing the function. This does not include time spent waiting on API calls or HTTP
+        /// requests.
+        /// </summary>
+        public double ProcessorTimeSeconds;
+        /// <summary>
+        /// The revision of the CloudScript that executed
+        /// </summary>
+        public int Revision;
+    }
+
+    [Serializable]
+    public class ExecuteEntityCloudScriptRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The entity to perform this action on.
+        /// </summary>
+        public EntityKey Entity;
+        /// <summary>
+        /// The name of the CloudScript function to execute
+        /// </summary>
+        public string FunctionName;
+        /// <summary>
+        /// Object that is passed in to the function as the first argument
+        /// </summary>
+        public object FunctionParameter;
+        /// <summary>
+        /// Generate a 'entity_executed_cloudscript' PlayStream event containing the results of the function execution and other
+        /// contextual information. This event will show up in the PlayStream debugger console for the player in Game Manager.
+        /// </summary>
+        public bool? GeneratePlayStreamEvent;
+        /// <summary>
+        /// Option for which revision of the CloudScript to execute. 'Latest' executes the most recently created revision, 'Live'
+        /// executes the current live, published revision, and 'Specific' executes the specified revision. The default value is
+        /// 'Specific', if the SpecificRevision parameter is specified, otherwise it is 'Live'.
+        /// </summary>
+        public CloudScriptRevisionOption? RevisionSelection;
+        /// <summary>
+        /// The specific revision to execute, when RevisionSelection is set to 'Specific'
+        /// </summary>
+        public int? SpecificRevision;
     }
 
     [Serializable]
@@ -1058,6 +1184,20 @@ namespace PlayFab.EntityModels
     }
 
     [Serializable]
+    public class LogStatement
+    {
+        /// <summary>
+        /// Optional object accompanying the message as contextual information
+        /// </summary>
+        public object Data;
+        /// <summary>
+        /// 'Debug', 'Info', or 'Error'
+        /// </summary>
+        public string Level;
+        public string Message;
+    }
+
+    [Serializable]
     public class ObjectResult : PlayFabResultCommon
     {
         /// <summary>
@@ -1123,6 +1263,24 @@ namespace PlayFab.EntityModels
         /// The ID of the role to remove the entities from.
         /// </summary>
         public string RoleId;
+    }
+
+    [Serializable]
+    public class ScriptExecutionError
+    {
+        /// <summary>
+        /// Error code, such as CloudScriptNotFound, JavascriptException, CloudScriptFunctionArgumentSizeExceeded,
+        /// CloudScriptAPIRequestCountExceeded, CloudScriptAPIRequestError, or CloudScriptHTTPRequestError
+        /// </summary>
+        public string Error;
+        /// <summary>
+        /// Details about the error
+        /// </summary>
+        public string Message;
+        /// <summary>
+        /// Point during the execution of the script at which the error occurred, if any
+        /// </summary>
+        public string StackTrace;
     }
 
     [Serializable]
@@ -1329,6 +1487,25 @@ namespace PlayFab.EntityModels
         /// Indicates which operation was completed, either Created, Updated, Deleted or None.
         /// </summary>
         public OperationTypes? SetResult;
+    }
+
+    [Serializable]
+    public class WriteEventsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Collection of events to write to PlayStream.
+        /// </summary>
+        public List<EventContents> Events;
+    }
+
+    [Serializable]
+    public class WriteEventsResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The unique identifiers assigned by the server to the events, in the same order as the events in the request. Only
+        /// returned if FlushToPlayStream option is true.
+        /// </summary>
+        public List<string> AssignedEventIds;
     }
 }
 #endif

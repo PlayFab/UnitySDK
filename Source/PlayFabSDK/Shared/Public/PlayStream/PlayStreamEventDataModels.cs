@@ -25,25 +25,30 @@ namespace PlayFab.PlayStreamModels
     public class EntityCreatedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
     }
     public class EntityExecutedCloudScriptEventData : PlayStreamEventBase
     {
         public ExecuteCloudScriptResult CloudScriptExecutionResult;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string FunctionName;
     }
     public class EntityFilesSetEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public List<FileSet> Files;
     }
     public class EntityLoggedInEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
     }
     public class EntityObjectsSetEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public List<ObjectSet> Objects;
     }
     public class GroupCreatedEventData : PlayStreamEventBase
@@ -51,6 +56,7 @@ namespace PlayFab.PlayStreamModels
         public string CreatorEntityId;
         public string CreatorEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
     }
     public class GroupDeletedEventData : PlayStreamEventBase
@@ -58,11 +64,13 @@ namespace PlayFab.PlayStreamModels
         public string DeleterEntityId;
         public string DeleterEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
     }
     public class GroupMembersAddedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
         public string RoleId;
@@ -71,6 +79,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupMembersRemovedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
     }
@@ -79,6 +88,7 @@ namespace PlayFab.PlayStreamModels
         public string CreatorEntityId;
         public string CreatorEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public string RoleId;
         public string RoleName;
@@ -88,6 +98,7 @@ namespace PlayFab.PlayStreamModels
         public string DeleterEntityId;
         public string DeleterEntityType;
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public string RoleId;
         public string RoleName;
@@ -95,6 +106,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupRoleMembersAddedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
         public string RoleId;
@@ -103,6 +115,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupRoleMembersRemovedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public List<Member> Members;
         public string RoleId;
@@ -111,6 +124,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupRoleUpdatedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public RolePropertyValues NewValues;
         public RolePropertyValues OldValues;
@@ -122,6 +136,7 @@ namespace PlayFab.PlayStreamModels
     public class GroupUpdatedEventData : PlayStreamEventBase
     {
         public string EntityChain;
+        public EntityLineage EntityLineage;
         public string GroupName;
         public GroupPropertyValues NewValues;
         public GroupPropertyValues OldValues;
@@ -796,6 +811,13 @@ namespace PlayFab.PlayStreamModels
         public string GraphUrl;
         public AlertLevel? Level;
     }
+    public class TitleHopperConfigUpdatedEventData : PlayStreamEventBase
+    {
+        public bool Deleted;
+        public string DeveloperId;
+        public string MatchHopperId;
+        public string UserId;
+    }
     public class TitleInitiatedPlayerPasswordResetEventData : PlayStreamEventBase
     {
         public string DeveloperId;
@@ -960,6 +982,35 @@ namespace PlayFab.PlayStreamModels
         /// The unique storage path for this set operation.
         /// </summary>
         public string StoragePath;
+    }
+
+    [Serializable]
+    public class EntityLineage
+    {
+        /// <summary>
+        /// The Character Id of the associated entity.
+        /// </summary>
+        public string CharacterId;
+        /// <summary>
+        /// The Group Id of the associated entity.
+        /// </summary>
+        public string GroupId;
+        /// <summary>
+        /// The Master Player Account Id of the associated entity.
+        /// </summary>
+        public string MasterPlayerAccountId;
+        /// <summary>
+        /// The Namespace Id of the associated entity.
+        /// </summary>
+        public string NamespaceId;
+        /// <summary>
+        /// The Title Id of the associated entity.
+        /// </summary>
+        public string TitleId;
+        /// <summary>
+        /// The Title Player Account Id of the associated entity.
+        /// </summary>
+        public string TitlePlayerAccountId;
     }
 
     [Serializable]
@@ -2099,7 +2150,9 @@ namespace PlayFab.PlayStreamModels
         BackEnd,
         GameClient,
         GameServer,
-        Partner
+        Partner,
+        Custom,
+        API
     }
 
     [Serializable]
