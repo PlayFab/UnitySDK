@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+﻿#if ENABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
 using PlayFab.EntityModels;
@@ -31,13 +31,14 @@ namespace PlayFab.Public
         private Guid focusId;
         private Guid gameSessionID;
         private bool initialFocus = true;
+        private bool isSending = false;
         private DateTime focusOffDateTime = DateTime.UtcNow;
         private DateTime focusOnDateTime = DateTime.UtcNow;
 
         private Queue<EventContents> eventsRequests = new Queue<EventContents>();
 
         private EntityModels.EntityKey entityInfo = new EntityModels.EntityKey();
-        private const String eventNamespace = "com.playfab.events.";
+        private const String eventNamespace = "com.playfab.events.sessions";
         private const int maxBatchSizeInEvents = 10;
 
         /// <summary>
@@ -53,9 +54,10 @@ namespace PlayFab.Public
 
             EventContents eventInfo = new EventContents();
 
-            eventInfo.Name = "cient_session_start";
+            eventInfo.Name = "client_session_start";
             eventInfo.EventNamespace = eventNamespace;
             eventInfo.Entity = entityInfo;
+            eventInfo.OriginalTimestamp = DateTime.UtcNow;
 
             var payload = new Dictionary<string, object>
                 {
@@ -78,6 +80,7 @@ namespace PlayFab.Public
         public void OnApplicationFocus(bool isFocused)
         {
             EventContents eventInfo = new EventContents();
+            DateTime currentUtcDateTime = DateTime.UtcNow;
 
             eventInfo.Name = "client_focus_change";
             eventInfo.EventNamespace = eventNamespace;
@@ -85,18 +88,23 @@ namespace PlayFab.Public
 
             double focusStateDuration = 0.0;
 
+            if (initialFocus)
+            {
+                focusId = Guid.NewGuid();
+            }
+
             if (isFocused)
             {
                 // start counting focus-on time
-                focusOnDateTime = DateTime.UtcNow;
+                focusOnDateTime = currentUtcDateTime;
 
                 // new id per focus
                 focusId = Guid.NewGuid();
 
                 if (!initialFocus)
                 {
-                    focusStateDuration = (DateTime.UtcNow - focusOffDateTime).TotalSeconds;
-                    
+                    focusStateDuration = (currentUtcDateTime - focusOffDateTime).TotalSeconds;
+
                     // this check safeguards from manual time changes while app is running
                     if (focusStateDuration < 0)
                     {
@@ -106,8 +114,8 @@ namespace PlayFab.Public
             }
             else
             {
-                focusStateDuration = (DateTime.UtcNow - focusOnDateTime).TotalSeconds;
-                
+                focusStateDuration = (currentUtcDateTime - focusOnDateTime).TotalSeconds;
+
                 // this check safeguards from manual time changes while app is running                
                 if (focusStateDuration < 0)
                 {
@@ -115,17 +123,18 @@ namespace PlayFab.Public
                 }
 
                 // start counting focus-off time
-                focusOffDateTime = DateTime.UtcNow;
+                focusOffDateTime = currentUtcDateTime;
             }
 
             var payload = new Dictionary<string, object> {
                     { "FocusID", focusId },
                     { "FocusState", isFocused },
                     { "FocusStateDuration", focusStateDuration },
-                    { "EventTimestamp", DateTime.UtcNow },
+                    { "EventTimestamp", currentUtcDateTime },
                     { "ClientSessionID", gameSessionID },
                 };
 
+            eventInfo.OriginalTimestamp = currentUtcDateTime;
             eventInfo.Payload = payload;
             eventsRequests.Enqueue(eventInfo);
 
@@ -137,21 +146,25 @@ namespace PlayFab.Public
         /// </summary>
         public void Send()
         {
-            if (PlayFabClientAPI.IsClientLoggedIn())
+            if ((PlayFabClientAPI.IsClientLoggedIn()) && (isSending == false))
             {
-                int eventsInTheBatch = 0;
+                isSending = true;
+
                 WriteEventsRequest request = new WriteEventsRequest();
                 request.Events = new List<EventContents>();
 
-                while ((eventsRequests.Count > 0) && (eventsInTheBatch < maxBatchSizeInEvents))
+                while ((eventsRequests.Count > 0) && (request.Events.Count < maxBatchSizeInEvents))
                 {
                     EventContents eventInfo = eventsRequests.Dequeue();
                     request.Events.Add(eventInfo);
-
-                    eventsInTheBatch++;
                 }
 
-                PlayFabEntityAPI.WriteEvents(request, EventSentSuccessfulCallback, EventSentErrorCallback);
+                if (request.Events.Count > 0)
+                {
+                    PlayFabEntityAPI.WriteEvents(request, EventSentSuccessfulCallback, EventSentErrorCallback);
+                }
+
+                isSending = false;
             }
         }
 
@@ -173,7 +186,7 @@ namespace PlayFab.Public
             Debug.LogWarning("Failed to send session data. Error: " + response.GenerateErrorReport());
         }
 
-#region Unused MonoBehaviour compatibility  methods
+        #region Unused MonoBehaviour compatibility  methods
         /// <summary>
         /// Unused
         /// Name mimics MonoBehaviour method, for ease of integration.
@@ -200,7 +213,7 @@ namespace PlayFab.Public
         {
             // add code sending events on destroy
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// Trying to send event during game exit. Note: works only on certain platforms.
@@ -208,7 +221,8 @@ namespace PlayFab.Public
         /// </summary>
         public void OnApplicationQuit()
         {
-            // add code sending events on app quit
+            // trying to send events during game exit
+            Send();
         }
     }
 }
