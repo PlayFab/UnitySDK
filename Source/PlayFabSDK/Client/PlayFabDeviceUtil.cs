@@ -1,22 +1,21 @@
 #if !DISABLE_PLAYFABCLIENT_API
-using PlayFab.ClientModels;
-using PlayFab.SharedModels;
-using PlayFab.Json;
-using UnityEngine;
 using System.Collections.Generic;
+using PlayFab.Json;
+using PlayFab.SharedModels;
+using UnityEngine;
 
 namespace PlayFab.Internal
 {
     public static class PlayFabDeviceUtil
     {
-        private static bool _needsAttribution, _gatherInfo, _gatherScreenTime;
+        private static bool _needsAttribution, _gatherDeviceInfo, _gatherScreenTime;
 
         #region Make Attribution API call
         private static void DoAttributeInstall()
         {
             if (!_needsAttribution || PlayFabSettings.DisableAdvertising)
                 return; // Don't send this value to PlayFab if it's not required
-            var attribRequest = new AttributeInstallRequest();
+            var attribRequest = new ClientModels.AttributeInstallRequest();
             switch (PlayFabSettings.AdvertisingIdType)
             {
                 case PlayFabSettings.AD_TYPE_ANDROID_ID: attribRequest.Adid = PlayFabSettings.AdvertisingIdValue; break;
@@ -24,7 +23,7 @@ namespace PlayFab.Internal
             }
             PlayFabClientAPI.AttributeInstall(attribRequest, OnAttributeInstall, null);
         }
-        private static void OnAttributeInstall(AttributeInstallResult result)
+        private static void OnAttributeInstall(ClientModels.AttributeInstallResult result)
         {
             // This is for internal testing.
             PlayFabSettings.AdvertisingIdType += "_Successful";
@@ -34,17 +33,17 @@ namespace PlayFab.Internal
         #region Scrape Device Info
         private static void SendDeviceInfoToPlayFab()
         {
-            if (PlayFabSettings.DisableDeviceInfo || !_gatherInfo) return;
+            if (PlayFabSettings.DisableDeviceInfo || !_gatherDeviceInfo) return;
 
-            var request = new DeviceInfoRequest
+            var request = new ClientModels.DeviceInfoRequest
             {
                 Info = JsonWrapper.DeserializeObject<Dictionary<string, object>>(JsonWrapper.SerializeObject(new PlayFabDataGatherer()))
             };
             PlayFabClientAPI.ReportDeviceInfo(request, OnGatherSuccess, OnGatherFail);
         }
-        private static void OnGatherSuccess(EmptyResult result)
+        private static void OnGatherSuccess(ClientModels.EmptyResult result)
         {
-            Debug.Log("OnGatherSuccess");
+            //Debug.Log("OnGatherSuccess");
         }
         private static void OnGatherFail(PlayFabError error)
         {
@@ -52,26 +51,53 @@ namespace PlayFab.Internal
         }
         #endregion
 
+        /// <summary>
+        /// When a PlayFab login occurs, check the result information, and
+        ///   relay it to _OnPlayFabLogin where the information is used
+        /// </summary>
+        /// <param name="result"></param>
         public static void OnPlayFabLogin(PlayFabResultCommon result)
         {
-            var loginResult = result as LoginResult;
-            var registerResult = result as RegisterPlayFabUserResult;
+            var loginResult = result as ClientModels.LoginResult;
+            var registerResult = result as ClientModels.RegisterPlayFabUserResult;
             if (loginResult == null && registerResult == null)
                 return;
 
-            _needsAttribution = _gatherInfo = _gatherScreenTime = false;
-            if (loginResult != null && loginResult.SettingsForUser != null)
-                _needsAttribution = loginResult.SettingsForUser.NeedsAttribution;
-            else if (registerResult != null && registerResult.SettingsForUser != null)
-                _needsAttribution = registerResult.SettingsForUser.NeedsAttribution;
-            if (loginResult != null && loginResult.SettingsForUser != null)
-                _gatherInfo = loginResult.SettingsForUser.GatherDeviceInfo;
-            else if (registerResult != null && registerResult.SettingsForUser != null)
-                _gatherInfo = registerResult.SettingsForUser.GatherDeviceInfo;
-            if (loginResult != null && loginResult.SettingsForUser != null)
-                _gatherScreenTime = loginResult.SettingsForUser.GatherFocusInfo;
-            else if (registerResult != null && registerResult.SettingsForUser != null)
-                _gatherScreenTime = registerResult.SettingsForUser.GatherFocusInfo;
+            // Gather things common to the result types
+            ClientModels.UserSettings settingsForUser = null;
+            string playFabId = null;
+            ClientModels.EntityTokenResponse entityInfo = null;
+
+            if (loginResult != null)
+            {
+                settingsForUser = loginResult.SettingsForUser;
+                playFabId = loginResult.PlayFabId;
+                entityInfo = loginResult.EntityToken;
+            }
+            else if (registerResult != null)
+            {
+                settingsForUser = registerResult.SettingsForUser;
+                playFabId = registerResult.PlayFabId;
+                entityInfo = registerResult.EntityToken;
+            }
+
+            _OnPlayFabLogin(settingsForUser, playFabId, entityInfo);
+        }
+
+        /// <summary>
+        /// Separated from OnPlayFabLogin, to explicitly lose the refs to loginResult and registerResult, because
+        ///   only one will be defined, but both usually have all the information we REALLY need here.
+        /// But the result signatures are different and clunky, so do the separation above, and processing here
+        /// </summary>
+        private static void _OnPlayFabLogin(ClientModels.UserSettings settingsForUser, string playFabId, ClientModels.EntityTokenResponse entityInfo)
+        {
+            _needsAttribution = _gatherDeviceInfo = _gatherScreenTime = false;
+            if (settingsForUser != null)
+            {
+                _needsAttribution = settingsForUser.NeedsAttribution;
+                _gatherDeviceInfo = settingsForUser.GatherDeviceInfo;
+                _gatherScreenTime = settingsForUser.GatherFocusInfo;
+            }
 
             // Device attribution (adid or idfa)
             if (PlayFabSettings.AdvertisingIdType != null && PlayFabSettings.AdvertisingIdValue != null)
@@ -83,13 +109,13 @@ namespace PlayFab.Internal
             SendDeviceInfoToPlayFab();
 
 #if ENABLE_PLAYFABENTITY_API
-            string playFabUserId = loginResult.PlayFabId;
+            string playFabUserId = playFabId;
             EntityModels.EntityKey entityKey = new EntityModels.EntityKey();
-            if (loginResult.EntityToken != null && _gatherScreenTime)
+            if (entityInfo != null && _gatherScreenTime)
             {
-                entityKey.Id = loginResult.EntityToken.Entity.Id;
-                entityKey.Type = (PlayFab.EntityModels.EntityTypes)(int)loginResult.EntityToken.Entity.Type; // possible loss of data 
-                entityKey.TypeString = loginResult.EntityToken.Entity.TypeString;
+                entityKey.Id = entityInfo.Entity.Id;
+                entityKey.Type = (EntityModels.EntityTypes)(int)entityInfo.Entity.Type; // possible loss of data 
+                entityKey.TypeString = entityInfo.Entity.TypeString;
 
                 PlayFabHttp.InitializeScreenTimeTracker(entityKey, playFabUserId);
             }

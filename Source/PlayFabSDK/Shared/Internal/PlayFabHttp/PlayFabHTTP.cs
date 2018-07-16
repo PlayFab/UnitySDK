@@ -28,7 +28,7 @@ namespace PlayFab.Internal
 #endif
 
         private static IPlayFabLogger _logger;
-#if ENABLE_PLAYFABENTITY_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
         private static IScreenTimeTracker screenTimeTracker = new ScreenTimeTracker();
         private const float delayBetweenBatches = 5.0f;
 #endif
@@ -110,7 +110,7 @@ namespace PlayFab.Internal
             _logger = setLogger;
         }
 
-#if ENABLE_PLAYFABENTITY_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
         /// <summary>
         /// This initializes ScreenTimeTracker object and notifying it to start sending info.
         /// </summary>
@@ -272,8 +272,8 @@ namespace PlayFab.Internal
             else if (regRes != null)
             {
                 _internalHttp.AuthKey = regRes.SessionTicket;
-                //if (regRes.EntityToken != null)
-                //    _internalHttp.EntityToken = logRes.EntityToken.EntityToken;
+                if (regRes.EntityToken != null)
+                    _internalHttp.EntityToken = regRes.EntityToken.EntityToken;
             }
 #endif
         }
@@ -288,7 +288,7 @@ namespace PlayFab.Internal
                 _logger.OnEnable();
             }
 
-#if ENABLE_PLAYFABENTITY_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
             {
                 screenTimeTracker.OnEnable();
@@ -306,7 +306,7 @@ namespace PlayFab.Internal
                 _logger.OnDisable();
             }
 
-#if ENABLE_PLAYFABENTITY_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
             {
                 screenTimeTracker.OnDisable();
@@ -334,7 +334,7 @@ namespace PlayFab.Internal
                 _logger.OnDestroy();
             }
 
-#if ENABLE_PLAYFABENTITY_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
             {
                 screenTimeTracker.OnDestroy();
@@ -347,7 +347,7 @@ namespace PlayFab.Internal
         /// </summary>
         public void OnApplicationFocus(bool isFocused)
         {
-#if ENABLE_PLAYFABENTITY_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
             {
                 screenTimeTracker.OnApplicationFocus(isFocused);
@@ -360,7 +360,7 @@ namespace PlayFab.Internal
         /// </summary>
         public void OnApplicationQuit()
         {
-#if ENABLE_PLAYFABENTITY_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && (!PlayFabSettings.DisableFocusTimeCollection != false))
             {
                 screenTimeTracker.OnApplicationQuit();
