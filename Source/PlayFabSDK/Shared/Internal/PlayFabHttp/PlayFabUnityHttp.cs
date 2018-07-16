@@ -106,7 +106,12 @@ namespace PlayFab.Internal
             };
 
             foreach (var headerPair in reqContainer.RequestHeaders)
-                www.SetRequestHeader(headerPair.Key, headerPair.Value);
+            {
+                if (!string.IsNullOrEmpty(headerPair.Key) && !string.IsNullOrEmpty(headerPair.Value))
+                    www.SetRequestHeader(headerPair.Key, headerPair.Value);
+                else
+                    Debug.LogWarning("Null header: " + headerPair.Key + " = " + headerPair.Value);
+            }
 
 #if UNITY_2017_2_OR_NEWER
             yield return www.SendWebRequest();
@@ -155,7 +160,7 @@ namespace PlayFab.Internal
                                 var jsonResponse = streamReader.ReadToEnd();
                                 //Debug.Log(jsonResponse);
                                 OnResponse(jsonResponse, reqContainer);
-                                Debug.Log("Successful UnityHttp decompress for: " + www.url);
+                                //Debug.Log("Successful UnityHttp decompress for: " + www.url);
                             }
                         }
                     }

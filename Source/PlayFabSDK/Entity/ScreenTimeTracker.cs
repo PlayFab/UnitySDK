@@ -1,4 +1,4 @@
-﻿#if ENABLE_PLAYFABENTITY_API
+﻿#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
 using System;
 using System.Collections.Generic;
 using PlayFab.EntityModels;
