@@ -15,7 +15,7 @@ using Ionic.Zlib;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabWww : IPlayFabHttp
+    public class PlayFabWww : ITransportPlugin
     {
         private int _pendingWwwMessages = 0;
         public bool SessionStarted { get; set; }

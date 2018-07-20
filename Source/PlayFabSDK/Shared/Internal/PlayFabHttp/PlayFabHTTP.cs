@@ -14,7 +14,7 @@ namespace PlayFab.Internal
     /// </summary>
     public class PlayFabHttp : SingletonMonoBehaviour<PlayFabHttp>
     {
-        private static IPlayFabHttp _internalHttp; //This is the default;
+        private static ITransportPlugin _internalHttp; //This is the default;
         private static List<CallRequestContainer> _apiCallQueue = new List<CallRequestContainer>(); // Starts initialized, and is nulled when it's flushed
 
         public delegate void ApiProcessingEvent<in TEventArgs>(TEventArgs e);
@@ -58,8 +58,9 @@ namespace PlayFab.Internal
         /// <summary>
         /// Optional redirect to allow mocking of _internalHttp calls, or use a custom _internalHttp utility
         /// </summary>
-        public static void SetHttp<THttpObject>(THttpObject httpObj) where THttpObject : IPlayFabHttp
+        public static void SetHttp<THttpObject>(THttpObject httpObj) where THttpObject : ITransportPlugin
         {
+            PluginManager.SetPlugin(httpObj, PluginContract.PlayFab_Transport);
             _internalHttp = httpObj;
         }
 
@@ -83,17 +84,8 @@ namespace PlayFab.Internal
                 return;
 
             Application.runInBackground = true; // Http requests respond even if you lose focus
-#if !UNITY_WSA && !UNITY_WP8
-            if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
-                _internalHttp = new PlayFabWebRequest();
-#endif
-#if UNITY_2017_2_OR_NEWER
-            if (PlayFabSettings.RequestType == WebRequestType.UnityWebRequest)
-                _internalHttp = new PlayFabUnityHttp();
-#endif
-            if (_internalHttp == null)
-                _internalHttp = new PlayFabWww();
 
+            _internalHttp = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
             _internalHttp.InitializeHttp();
             CreateInstance(); // Invoke the SingletonMonoBehaviour
         }

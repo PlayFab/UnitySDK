@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabUnityHttp : IPlayFabHttp
+    public class PlayFabUnityHttp : ITransportPlugin
     {
         private readonly int _pendingWwwMessages = 0;
 

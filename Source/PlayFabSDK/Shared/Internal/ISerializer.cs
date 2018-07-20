@@ -1,32 +1,25 @@
-using PlayFab.Internal;
 using System;
 using System.Globalization;
 using System.Reflection;
+using PlayFab.Internal;
 
 namespace PlayFab.Json
 {
-    public interface ISerializer
+    [Obsolete("This interface is deprecated, please use PlayFab.Internal.ISerializerPlugin instead.", false)]
+    public interface ISerializer: ISerializerPlugin
     {
-        T DeserializeObject<T>(string json);
-        T DeserializeObject<T>(string json, object jsonSerializerStrategy);
-        object DeserializeObject(string json);
-
-        string SerializeObject(object json);
-        string SerializeObject(object json, object jsonSerializerStrategy);
     }
-
 
     public static class JsonWrapper
     {
-        private static ISerializer _instance = new SimpleJsonInstance();
+        private static ISerializerPlugin _instance = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
 
         /// <summary>
         /// Use this property to override the Serialization for the SDK.
         /// </summary>
-        public static ISerializer Instance
+        public static ISerializerPlugin Instance
         {
             get { return _instance; }
-            set { _instance = value; }
         }
 
         public static T DeserializeObject<T>(string json)
@@ -55,7 +48,7 @@ namespace PlayFab.Json
         }
     }
 
-    public class SimpleJsonInstance : ISerializer
+    public class SimpleJsonInstance : ISerializerPlugin
     {
         /// <summary>
         /// Most users shouldn't access this

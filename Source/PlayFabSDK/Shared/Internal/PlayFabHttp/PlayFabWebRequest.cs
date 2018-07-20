@@ -13,7 +13,7 @@ using PlayFab.Json;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabWebRequest : IPlayFabHttp
+    public class PlayFabWebRequest : ITransportPlugin
     {
         /// <summary>
         /// Disable encryption certificate validation within PlayFabWebRequest using this request.
