@@ -91,11 +91,15 @@ namespace PlayFab.Internal
                 transport = new PlayFabWebRequest();
 #endif
 #if UNITY_2017_2_OR_NEWER
-            if (PlayFabSettings.RequestType == WebRequestType.UnityWebRequest)
+            if (PlayFabSettings.RequestType == WebRequestType.UnityWww)
+                transport = new PlayFabWww();
+
+            if (transport == null)
                 transport = new PlayFabUnityHttp();
-#endif
+#else
             if (transport == null)
                 transport = new PlayFabWww();
+#endif
 
             return transport;
         }

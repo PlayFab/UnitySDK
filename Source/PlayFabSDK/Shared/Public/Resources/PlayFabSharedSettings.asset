@@ -14,7 +14,7 @@ MonoBehaviour:
   TitleId: 
   DeveloperSecretKey: 
   ProductionEnvironmentUrl: 
-  RequestType: 0
+  RequestType: 2
   RequestTimeout: 2000
   RequestKeepAlive: 1
   CompressApiData: 0

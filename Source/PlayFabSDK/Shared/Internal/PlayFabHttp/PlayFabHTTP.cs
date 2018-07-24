@@ -1,10 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
 using PlayFab.Json;
 using PlayFab.Public;
 using PlayFab.SharedModels;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace PlayFab.Internal
@@ -14,7 +13,7 @@ namespace PlayFab.Internal
     /// </summary>
     public class PlayFabHttp : SingletonMonoBehaviour<PlayFabHttp>
     {
-        private static ITransportPlugin _internalHttp; //This is the default;
+        private static bool _isTransportInitialized = false;
         private static List<CallRequestContainer> _apiCallQueue = new List<CallRequestContainer>(); // Starts initialized, and is nulled when it's flushed
 
         public delegate void ApiProcessingEvent<in TEventArgs>(TEventArgs e);
@@ -52,16 +51,15 @@ namespace PlayFab.Internal
         /// <returns></returns>
         public static int GetPendingMessages()
         {
-            return _internalHttp == null ? 0 : _internalHttp.GetPendingMessages();
+            return _isTransportInitialized ? PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).GetPendingMessages() : 0;
         }
 
         /// <summary>
-        /// Optional redirect to allow mocking of _internalHttp calls, or use a custom _internalHttp utility
+        /// Optional redirect to allow mocking of transport calls, or use a custom transport utility
         /// </summary>
         public static void SetHttp<THttpObject>(THttpObject httpObj) where THttpObject : ITransportPlugin
         {
             PluginManager.SetPlugin(httpObj, PluginContract.PlayFab_Transport);
-            _internalHttp = httpObj;
         }
 
         /// <summary>
@@ -70,7 +68,7 @@ namespace PlayFab.Internal
         /// <param name="authKey"></param>
         public static void SetAuthKey(string authKey)
         {
-            _internalHttp.AuthKey = authKey;
+            PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).AuthKey = authKey;
         }
 
         /// <summary>
@@ -80,13 +78,14 @@ namespace PlayFab.Internal
         {
             if (string.IsNullOrEmpty(PlayFabSettings.TitleId))
                 throw new PlayFabException(PlayFabExceptionCode.TitleNotSet, "You must set PlayFabSettings.TitleId before making API Calls.");
-            if (_internalHttp != null)
+            if (_isTransportInitialized)
                 return;
 
             Application.runInBackground = true; // Http requests respond even if you lose focus
 
-            _internalHttp = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
-            _internalHttp.InitializeHttp();
+            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+            transport.InitializeHttp();
+            _isTransportInitialized = true;
             CreateInstance(); // Invoke the SingletonMonoBehaviour
         }
 
@@ -163,14 +162,14 @@ namespace PlayFab.Internal
         public static void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback)
         {
             InitializeHttp();
-            _internalHttp.SimpleGetCall(fullUrl, successCallback, errorCallback);
+            PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).SimpleGetCall(fullUrl, successCallback, errorCallback);
         }
 
 
         public static void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
         {
             InitializeHttp();
-            _internalHttp.SimplePutCall(fullUrl, payload, successCallback, errorCallback);
+            PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).SimplePutCall(fullUrl, payload, successCallback, errorCallback);
         }
 
         /// <summary>
@@ -205,6 +204,7 @@ namespace PlayFab.Internal
 #endif
 
             // Add PlayFab Headers
+            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
             reqContainer.RequestHeaders["X-ReportErrorAsSuccess"] = "true"; // Makes processing PlayFab errors a little easier
             reqContainer.RequestHeaders["X-PlayFabSDK"] = PlayFabSettings.VersionString; // Tell PlayFab which SDK this is
             switch (authType)
@@ -212,8 +212,8 @@ namespace PlayFab.Internal
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABMATCHMAKER_API || UNITY_EDITOR
                 case AuthType.DevSecretKey: reqContainer.RequestHeaders["X-SecretKey"] = PlayFabSettings.DeveloperSecretKey; break;
 #endif
-                case AuthType.LoginSession: reqContainer.RequestHeaders["X-Authorization"] = _internalHttp.AuthKey; break;
-                case AuthType.EntityToken: reqContainer.RequestHeaders["X-EntityToken"] = _internalHttp.EntityToken; break;
+                case AuthType.LoginSession: reqContainer.RequestHeaders["X-Authorization"] = transport.AuthKey; break;
+                case AuthType.EntityToken: reqContainer.RequestHeaders["X-EntityToken"] = transport.EntityToken; break;
             }
 
             // These closures preserve the TResult generic information in a way that's safe for all the devices
@@ -229,7 +229,7 @@ namespace PlayFab.Internal
                 }
             };
 
-            if (allowQueueing && _apiCallQueue != null && !_internalHttp.SessionStarted)
+            if (allowQueueing && _apiCallQueue != null && !transport.SessionStarted)
             {
                 for (var i = _apiCallQueue.Count - 1; i >= 0; i--)
                     if (_apiCallQueue[i].ApiEndpoint == apiEndpoint)
@@ -238,7 +238,7 @@ namespace PlayFab.Internal
             }
             else
             {
-                _internalHttp.MakeApiCall(reqContainer);
+                transport.MakeApiCall(reqContainer);
             }
         }
 
@@ -250,22 +250,27 @@ namespace PlayFab.Internal
 #if ENABLE_PLAYFABENTITY_API
             var entRes = result as EntityModels.GetEntityTokenResponse;
             if (entRes != null)
-                _internalHttp.EntityToken = entRes.EntityToken;
+            {
+                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                transport.EntityToken = entRes.EntityToken;
+            }
 #endif
 #if !DISABLE_PLAYFABCLIENT_API
             var logRes = result as ClientModels.LoginResult;
             var regRes = result as ClientModels.RegisterPlayFabUserResult;
             if (logRes != null)
             {
-                _internalHttp.AuthKey = logRes.SessionTicket;
+                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                transport.AuthKey = logRes.SessionTicket;
                 if (logRes.EntityToken != null)
-                    _internalHttp.EntityToken = logRes.EntityToken.EntityToken;
+                    transport.EntityToken = logRes.EntityToken.EntityToken;
             }
             else if (regRes != null)
             {
-                _internalHttp.AuthKey = regRes.SessionTicket;
+                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                transport.AuthKey = regRes.SessionTicket;
                 if (regRes.EntityToken != null)
-                    _internalHttp.EntityToken = regRes.EntityToken.EntityToken;
+                    transport.EntityToken = regRes.EntityToken.EntityToken;
             }
 #endif
         }
@@ -311,9 +316,9 @@ namespace PlayFab.Internal
         /// </summary>
         private void OnDestroy()
         {
-            if (_internalHttp != null)
+            if (_isTransportInitialized)
             {
-                _internalHttp.OnDestroy();
+                PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).OnDestroy();
             }
 #if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
             if (_internalSignalR != null)
@@ -365,15 +370,16 @@ namespace PlayFab.Internal
         /// </summary>
         private void Update()
         {
-            if (_internalHttp != null)
+            if (_isTransportInitialized)
             {
-                if (!_internalHttp.SessionStarted && _apiCallQueue != null)
+                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                if (!transport.SessionStarted && _apiCallQueue != null)
                 {
                     foreach (var eachRequest in _apiCallQueue)
-                        _internalHttp.MakeApiCall(eachRequest); // Flush the queue
+                        transport.MakeApiCall(eachRequest); // Flush the queue
                     _apiCallQueue = null; // null this after it's flushed
                 }
-                _internalHttp.Update();
+                transport.Update();
             }
 
 #if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
@@ -387,15 +393,16 @@ namespace PlayFab.Internal
         #region Helpers
         public static bool IsClientLoggedIn()
         {
-            return _internalHttp != null && !string.IsNullOrEmpty(_internalHttp.AuthKey);
+            return _isTransportInitialized && !string.IsNullOrEmpty(PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).AuthKey);
         }
 
         public static void ForgetAllCredentials()
         {
-            if (_internalHttp != null)
+            if (_isTransportInitialized)
             {
-                _internalHttp.AuthKey = null;
-                _internalHttp.EntityToken = null;
+                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                transport.AuthKey = null;
+                transport.EntityToken = null;
             }
         }
 
