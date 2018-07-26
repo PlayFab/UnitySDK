@@ -9,15 +9,17 @@ using UnityEngine.Networking;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabUnityHttp : IPlayFabHttp
+    public class PlayFabUnityHttp : IPlayFabTransportPlugin
     {
+        private bool _isInitialized = false;
         private readonly int _pendingWwwMessages = 0;
 
-        public bool SessionStarted { get; set; }
         public string AuthKey { get; set; }
         public string EntityToken { get; set; }
 
-        public void InitializeHttp() { }
+        public bool IsInitialized { get { return _isInitialized; } }
+
+        public void Initialize() { _isInitialized = true; }
 
         public void Update() { }
 
@@ -65,8 +67,9 @@ namespace PlayFab.Internal
             }
         }
 
-        public void MakeApiCall(CallRequestContainer reqContainer)
+        public void MakeApiCall(object reqContainerObj)
         {
+            CallRequestContainer reqContainer = (CallRequestContainer)reqContainerObj;
             reqContainer.RequestHeaders["Content-Type"] = "application/json";
 
 #if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
@@ -190,12 +193,13 @@ namespace PlayFab.Internal
 #if PLAYFAB_REQUEST_TIMING
                 var startTime = DateTime.UtcNow;
 #endif
-                var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response);
+                var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+                var httpResult = serializer.DeserializeObject<HttpResponseObject>(response);
 
                 if (httpResult.code == 200)
                 {
                     // We have a good response from the server
-                    reqContainer.JsonResponse = JsonWrapper.SerializeObject(httpResult.data);
+                    reqContainer.JsonResponse = serializer.SerializeObject(httpResult.data);
                     reqContainer.DeserializeResultJson();
                     reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                     reqContainer.ApiResult.CustomData = reqContainer.CustomData;

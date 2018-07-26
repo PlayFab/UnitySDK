@@ -1,61 +1,54 @@
-using PlayFab.Internal;
 using System;
 using System.Globalization;
 using System.Reflection;
+using PlayFab.Internal;
 
 namespace PlayFab.Json
 {
-    public interface ISerializer
+    [Obsolete("This interface is deprecated, please use PlayFab.ISerializerPlugin instead.", false)]
+    public interface ISerializer: ISerializerPlugin
     {
-        T DeserializeObject<T>(string json);
-        T DeserializeObject<T>(string json, object jsonSerializerStrategy);
-        object DeserializeObject(string json);
-
-        string SerializeObject(object json);
-        string SerializeObject(object json, object jsonSerializerStrategy);
     }
 
-
+    [Obsolete("This class is deprecated, please use PlayFab.PluginManager.GetPlugin(..) instead.", false)]
     public static class JsonWrapper
     {
-        private static ISerializer _instance = new SimpleJsonInstance();
-
         /// <summary>
         /// Use this property to override the Serialization for the SDK.
         /// </summary>
-        public static ISerializer Instance
+        [Obsolete("This property is deprecated, please use PlayFab.PluginManager.GetPlugin(..) instead.", false)]
+        public static ISerializerPlugin Instance
         {
-            get { return _instance; }
-            set { _instance = value; }
+            get { return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer); }
         }
 
         public static T DeserializeObject<T>(string json)
         {
-            return _instance.DeserializeObject<T>(json);
+            return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<T>(json);
         }
 
         public static T DeserializeObject<T>(string json, object jsonSerializerStrategy)
         {
-            return _instance.DeserializeObject<T>(json, jsonSerializerStrategy);
+            return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<T>(json, jsonSerializerStrategy);
         }
 
         public static object DeserializeObject(string json)
         {
-            return _instance.DeserializeObject(json);
+            return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject(json);
         }
 
         public static string SerializeObject(object json)
         {
-            return _instance.SerializeObject(json);
+            return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(json);
         }
 
         public static string SerializeObject(object json, object jsonSerializerStrategy)
         {
-            return _instance.SerializeObject(json, jsonSerializerStrategy);
+            return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(json, jsonSerializerStrategy);
         }
     }
 
-    public class SimpleJsonInstance : ISerializer
+    public class SimpleJsonInstance : ISerializerPlugin
     {
         /// <summary>
         /// Most users shouldn't access this

@@ -35,9 +35,10 @@ namespace PlayFab.Internal
         {
             if (PlayFabSettings.DisableDeviceInfo || !_gatherDeviceInfo) return;
 
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
             var request = new ClientModels.DeviceInfoRequest
             {
-                Info = JsonWrapper.DeserializeObject<Dictionary<string, object>>(JsonWrapper.SerializeObject(new PlayFabDataGatherer()))
+                Info = serializer.DeserializeObject<Dictionary<string, object>>(serializer.SerializeObject(new PlayFabDataGatherer()))
             };
             PlayFabClientAPI.ReportDeviceInfo(request, OnGatherSuccess, OnGatherFail);
         }
