@@ -1,4 +1,4 @@
-﻿namespace PlayFab.Internal
+﻿namespace PlayFab
 {
     public enum PluginContract
     {

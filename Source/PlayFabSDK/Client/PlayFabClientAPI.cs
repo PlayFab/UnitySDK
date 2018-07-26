@@ -191,9 +191,10 @@ namespace PlayFab
         {
         Action<ExecuteCloudScriptResult> wrappedResultCallback = (wrappedResult) =>
         {
-            var wrappedJson = JsonWrapper.SerializeObject(wrappedResult.FunctionResult);
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+            var wrappedJson = serializer.SerializeObject(wrappedResult.FunctionResult);
             try {
-                wrappedResult.FunctionResult = JsonWrapper.DeserializeObject<TOut>(wrappedJson);
+                wrappedResult.FunctionResult = serializer.DeserializeObject<TOut>(wrappedJson);
             }
             catch (Exception)
             {

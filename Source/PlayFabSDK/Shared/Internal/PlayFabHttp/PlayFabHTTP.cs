@@ -1,9 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using PlayFab.Json;
 using PlayFab.Public;
 using PlayFab.SharedModels;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace PlayFab.Internal
@@ -13,7 +14,6 @@ namespace PlayFab.Internal
     /// </summary>
     public class PlayFabHttp : SingletonMonoBehaviour<PlayFabHttp>
     {
-        private static bool _isTransportInitialized = false;
         private static List<CallRequestContainer> _apiCallQueue = new List<CallRequestContainer>(); // Starts initialized, and is nulled when it's flushed
 
         public delegate void ApiProcessingEvent<in TEventArgs>(TEventArgs e);
@@ -51,12 +51,14 @@ namespace PlayFab.Internal
         /// <returns></returns>
         public static int GetPendingMessages()
         {
-            return _isTransportInitialized ? PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).GetPendingMessages() : 0;
+            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+            return transport.IsInitialized ? transport.GetPendingMessages() : 0;
         }
 
         /// <summary>
         /// Optional redirect to allow mocking of transport calls, or use a custom transport utility
         /// </summary>
+        [Obsolete("This method is deprecated, please use PlayFab.PluginManager.SetPlugin(..) instead.", false)]
         public static void SetHttp<THttpObject>(THttpObject httpObj) where THttpObject : ITransportPlugin
         {
             PluginManager.SetPlugin(httpObj, PluginContract.PlayFab_Transport);
@@ -66,9 +68,10 @@ namespace PlayFab.Internal
         /// Optional redirect to allow mocking of AuthKey
         /// </summary>
         /// <param name="authKey"></param>
+        [Obsolete("This method is deprecated, please use PlayFab.IPlayFabTransportPlugin.AuthKey property instead.", false)]
         public static void SetAuthKey(string authKey)
         {
-            PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).AuthKey = authKey;
+            PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport).AuthKey = authKey;
         }
 
         /// <summary>
@@ -78,14 +81,13 @@ namespace PlayFab.Internal
         {
             if (string.IsNullOrEmpty(PlayFabSettings.TitleId))
                 throw new PlayFabException(PlayFabExceptionCode.TitleNotSet, "You must set PlayFabSettings.TitleId before making API Calls.");
-            if (_isTransportInitialized)
+            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+            if (transport.IsInitialized)
                 return;
 
             Application.runInBackground = true; // Http requests respond even if you lose focus
 
-            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
-            transport.InitializeHttp();
-            _isTransportInitialized = true;
+            transport.Initialize();
             CreateInstance(); // Invoke the SingletonMonoBehaviour
         }
 
@@ -183,12 +185,13 @@ namespace PlayFab.Internal
             InitializeHttp();
             SendEvent(apiEndpoint, request, null, ApiProcessingEventType.Pre);
 
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
             var reqContainer = new CallRequestContainer
             {
                 ApiEndpoint = apiEndpoint,
                 FullUrl = PlayFabSettings.GetFullUrl(apiEndpoint),
                 CustomData = customData,
-                Payload = Encoding.UTF8.GetBytes(JsonWrapper.SerializeObject(request)),
+                Payload = Encoding.UTF8.GetBytes(serializer.SerializeObject(request)),
                 ApiRequest = request,
                 ErrorCallback = errorCallback,
                 RequestHeaders = extraHeaders ?? new Dictionary<string, string>() // Use any headers provided by the customer
@@ -204,7 +207,7 @@ namespace PlayFab.Internal
 #endif
 
             // Add PlayFab Headers
-            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+            var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
             reqContainer.RequestHeaders["X-ReportErrorAsSuccess"] = "true"; // Makes processing PlayFab errors a little easier
             reqContainer.RequestHeaders["X-PlayFabSDK"] = PlayFabSettings.VersionString; // Tell PlayFab which SDK this is
             switch (authType)
@@ -219,7 +222,7 @@ namespace PlayFab.Internal
             // These closures preserve the TResult generic information in a way that's safe for all the devices
             reqContainer.DeserializeResultJson = () =>
             {
-                reqContainer.ApiResult = JsonWrapper.DeserializeObject<TResult>(reqContainer.JsonResponse);
+                reqContainer.ApiResult = serializer.DeserializeObject<TResult>(reqContainer.JsonResponse);
             };
             reqContainer.InvokeSuccessCallback = () =>
             {
@@ -229,7 +232,7 @@ namespace PlayFab.Internal
                 }
             };
 
-            if (allowQueueing && _apiCallQueue != null && !transport.SessionStarted)
+            if (allowQueueing && _apiCallQueue != null)
             {
                 for (var i = _apiCallQueue.Count - 1; i >= 0; i--)
                     if (_apiCallQueue[i].ApiEndpoint == apiEndpoint)
@@ -251,7 +254,7 @@ namespace PlayFab.Internal
             var entRes = result as EntityModels.GetEntityTokenResponse;
             if (entRes != null)
             {
-                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
                 transport.EntityToken = entRes.EntityToken;
             }
 #endif
@@ -260,14 +263,14 @@ namespace PlayFab.Internal
             var regRes = result as ClientModels.RegisterPlayFabUserResult;
             if (logRes != null)
             {
-                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
                 transport.AuthKey = logRes.SessionTicket;
                 if (logRes.EntityToken != null)
                     transport.EntityToken = logRes.EntityToken.EntityToken;
             }
             else if (regRes != null)
             {
-                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+                var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
                 transport.AuthKey = regRes.SessionTicket;
                 if (regRes.EntityToken != null)
                     transport.EntityToken = regRes.EntityToken.EntityToken;
@@ -316,9 +319,10 @@ namespace PlayFab.Internal
         /// </summary>
         private void OnDestroy()
         {
-            if (_isTransportInitialized)
+            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+            if (transport.IsInitialized)
             {
-                PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).OnDestroy();
+                transport.OnDestroy();
             }
 #if ENABLE_PLAYFABPLAYSTREAM_API && ENABLE_PLAYFABSERVER_API
             if (_internalSignalR != null)
@@ -370,10 +374,10 @@ namespace PlayFab.Internal
         /// </summary>
         private void Update()
         {
-            if (_isTransportInitialized)
+            var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
+            if (transport.IsInitialized)
             {
-                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
-                if (!transport.SessionStarted && _apiCallQueue != null)
+                if (_apiCallQueue != null)
                 {
                     foreach (var eachRequest in _apiCallQueue)
                         transport.MakeApiCall(eachRequest); // Flush the queue
@@ -393,14 +397,15 @@ namespace PlayFab.Internal
         #region Helpers
         public static bool IsClientLoggedIn()
         {
-            return _isTransportInitialized && !string.IsNullOrEmpty(PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).AuthKey);
+            var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
+            return transport.IsInitialized && !string.IsNullOrEmpty(transport.AuthKey);
         }
 
         public static void ForgetAllCredentials()
         {
-            if (_isTransportInitialized)
+            var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
+            if (transport.IsInitialized)
             {
-                var transport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
                 transport.AuthKey = null;
                 transport.EntityToken = null;
             }
@@ -410,16 +415,17 @@ namespace PlayFab.Internal
         {
             JsonObject errorDict = null;
             Dictionary<string, List<string>> errorDetails = null;
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
             try
             {
                 // Deserialize the error
-                errorDict = JsonWrapper.DeserializeObject<JsonObject>(json);
+                errorDict = serializer.DeserializeObject<JsonObject>(json);
             }
             catch (Exception) { /* Unusual, but shouldn't actually matter */ }
             try
             {
                 if (errorDict != null && errorDict.ContainsKey("errorDetails"))
-                    errorDetails = JsonWrapper.DeserializeObject<Dictionary<string, List<string>>>(errorDict["errorDetails"].ToString());
+                    errorDetails = serializer.DeserializeObject<Dictionary<string, List<string>>>(errorDict["errorDetails"].ToString());
             }
             catch (Exception) { /* Unusual, but shouldn't actually matter */ }
 

@@ -4,7 +4,7 @@ using PlayFab.SharedModels;
 
 namespace PlayFab.Internal
 {
-    [Obsolete("This interface is deprecated, please use PlayFab.Internal.ITransportPlugin instead.", false)]
+    [Obsolete("This interface is deprecated, please use PlayFab.ITransportPlugin instead.", false)]
     public interface IPlayFabHttp: ITransportPlugin
     {
     }

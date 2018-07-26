@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PlayFab.Internal;
 using PlayFab.Json;
 
-namespace PlayFab.Internal
+namespace PlayFab
 {
     public class PluginManager
     {

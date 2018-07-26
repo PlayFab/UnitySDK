@@ -1,4 +1,4 @@
-﻿namespace PlayFab.Internal
+﻿namespace PlayFab
 {
     /// <summary>
     /// Base interface of any PlayFab SDK plugin.

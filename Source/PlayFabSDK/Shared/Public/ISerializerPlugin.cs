@@ -1,4 +1,4 @@
-﻿namespace PlayFab.Internal
+﻿namespace PlayFab
 {
     /// <summary>
     /// Interface of any data serializer SDK plugin.
