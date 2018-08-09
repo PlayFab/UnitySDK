@@ -52,7 +52,7 @@ namespace PlayFab.UUnit
 
             if (!string.IsNullOrEmpty(testTitleDataContents))
             {
-                _loadedData = JsonWrapper.DeserializeObject<TestTitleData>(testTitleDataContents);
+                _loadedData = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<TestTitleData>(testTitleDataContents);
             }
             else
             {

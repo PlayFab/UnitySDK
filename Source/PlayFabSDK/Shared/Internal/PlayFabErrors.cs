@@ -392,6 +392,12 @@ namespace PlayFab
         ExplicitContentDetected = 1389,
         PIIContentDetected = 1390,
         InvalidScheduledTaskParameter = 1391,
+        PerEntityEventRateLimitExceeded = 1392,
+        TitleDefaultLanguageNotSet = 1393,
+        EmailTemplateMissingDefaultVersion = 1394,
+        FacebookInstantGamesIdNotLinked = 1395,
+        InvalidFacebookInstantGamesSignature = 1396,
+        FacebookInstantGamesAuthNotConfiguredForTitle = 1397,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingCreateRequestMissing = 2003,
@@ -402,12 +408,12 @@ namespace PlayFab
         MatchmakingTicketIdMissing = 2008,
         MatchmakingMatchIdMissing = 2009,
         MatchmakingMatchIdIdMissing = 2010,
-        MatchmakingHopperIdMissing = 2011,
+        MatchmakingQueueNameMissing = 2011,
         MatchmakingTitleIdMissing = 2012,
         MatchmakingTicketIdIdMissing = 2013,
         MatchmakingPlayerIdMissing = 2014,
         MatchmakingJoinRequestUserMissing = 2015,
-        MatchmakingHopperConfigNotFound = 2016,
+        MatchmakingQueueConfigNotFound = 2016,
         MatchmakingMatchNotFound = 2017,
         MatchmakingTicketNotFound = 2018,
         MatchmakingCreateTicketServerIdentityInvalid = 2019,
@@ -421,9 +427,12 @@ namespace PlayFab
         MatchmakingPlayerIdentityMismatch = 2027,
         MatchmakingAlreadyJoinedTicket = 2028,
         MatchmakingTicketAlreadyCompleted = 2029,
-        MatchmakingHopperIdInvalid = 2030,
-        MatchmakingHopperConfigInvalid = 2031,
-        MatchmakingMemberProfileInvalid = 2032
+        MatchmakingQueueNameInvalid = 2030,
+        MatchmakingQueueConfigInvalid = 2031,
+        MatchmakingMemberProfileInvalid = 2032,
+        WriteAttemptedDuringExport = 2033,
+        NintendoSwitchDeviceIdNotLinked = 2034,
+        MatchmakingNotEnabled = 2035
     }
 
     public delegate void ErrorCallback(PlayFabError error);

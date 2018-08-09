@@ -185,7 +185,12 @@ namespace PlayFab.MatchmakerModels
         /// <summary>
         /// IPV4 address of the new Game Server Instance.
         /// </summary>
+        [Obsolete("Use 'ServerIPV4Address' instead", false)]
         public string ServerHostname;
+        /// <summary>
+        /// IPV4 address of the server
+        /// </summary>
+        public string ServerIPV4Address;
         /// <summary>
         /// IPV6 address of the new Game Server Instance.
         /// </summary>
@@ -194,6 +199,10 @@ namespace PlayFab.MatchmakerModels
         /// Port number for communication with the Game Server Instance.
         /// </summary>
         public uint ServerPort;
+        /// <summary>
+        /// Public DNS name (if any) of the server
+        /// </summary>
+        public string ServerPublicDNSName;
     }
 
     [Serializable]

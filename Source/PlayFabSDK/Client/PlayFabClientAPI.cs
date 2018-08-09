@@ -191,9 +191,10 @@ namespace PlayFab
         {
         Action<ExecuteCloudScriptResult> wrappedResultCallback = (wrappedResult) =>
         {
-            var wrappedJson = JsonWrapper.SerializeObject(wrappedResult.FunctionResult);
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+            var wrappedJson = serializer.SerializeObject(wrappedResult.FunctionResult);
             try {
-                wrappedResult.FunctionResult = JsonWrapper.DeserializeObject<TOut>(wrappedJson);
+                wrappedResult.FunctionResult = serializer.DeserializeObject<TOut>(wrappedJson);
             }
             catch (Exception)
             {
@@ -500,6 +501,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Facebook Instant Game identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromFacebookInstantGamesIds(GetPlayFabIDsFromFacebookInstantGamesIdsRequest request, Action<GetPlayFabIDsFromFacebookInstantGamesIdsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromFacebookInstantGamesIds", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Retrieves the unique PlayFab identifiers for the given set of Game Center identifiers (referenced in the Game Center
         /// Programming Guide as the Player Identifier).
         /// </summary>
@@ -543,6 +554,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromKongregateIDs", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Nintendo Switch identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromNintendoSwitchDeviceIds(GetPlayFabIDsFromNintendoSwitchDeviceIdsRequest request, Action<GetPlayFabIDsFromNintendoSwitchDeviceIdsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromNintendoSwitchDeviceIds", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -762,6 +783,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Links the Facebook Instant Games Id to the user's PlayFab account
+        /// </summary>
+        public static void LinkFacebookInstantGamesId(LinkFacebookInstantGamesIdRequest request, Action<LinkFacebookInstantGamesIdResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/LinkFacebookInstantGamesId", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Links the Game Center account associated with the provided Game Center ID to the user's PlayFab account
         /// </summary>
         public static void LinkGameCenterAccount(LinkGameCenterAccountRequest request, Action<LinkGameCenterAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -799,6 +830,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/LinkKongregate", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Links the NintendoSwitchDeviceId to the user's PlayFab account
+        /// </summary>
+        public static void LinkNintendoSwitchDeviceId(LinkNintendoSwitchDeviceIdRequest request, Action<LinkNintendoSwitchDeviceIdResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/LinkNintendoSwitchDeviceId", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -878,6 +919,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using a Facebook Instant Games ID, returning a session identifier that can subsequently be used for
+        /// API calls which require an authenticated user. Requires Facebook Instant Games to be configured.
+        /// </summary>
+        public static void LoginWithFacebookInstantGamesId(LoginWithFacebookInstantGamesIdRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+
+            PlayFabHttp.MakeApiCall("/Client/LoginWithFacebookInstantGamesId", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Signs the user in using an iOS Game Center player identifier, returning a session identifier that can subsequently be
         /// used for API calls which require an authenticated user
         /// </summary>
@@ -917,6 +969,17 @@ namespace PlayFab
             request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
 
             PlayFabHttp.MakeApiCall("/Client/LoginWithKongregate", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Signs the user in using a Nintendo Switch Device ID, returning a session identifier that can subsequently be used for
+        /// API calls which require an authenticated user
+        /// </summary>
+        public static void LoginWithNintendoSwitchDeviceId(LoginWithNintendoSwitchDeviceIdRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+
+            PlayFabHttp.MakeApiCall("/Client/LoginWithNintendoSwitchDeviceId", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -1224,6 +1287,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Unlinks the related Facebook Instant Game Ids from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkFacebookInstantGamesId(UnlinkFacebookInstantGamesIdRequest request, Action<UnlinkFacebookInstantGamesIdResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/UnlinkFacebookInstantGamesId", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Unlinks the related Game Center account from the user's PlayFab account
         /// </summary>
         public static void UnlinkGameCenterAccount(UnlinkGameCenterAccountRequest request, Action<UnlinkGameCenterAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -1262,6 +1335,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/UnlinkKongregate", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Unlinks the related NintendoSwitchDeviceId from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkNintendoSwitchDeviceId(UnlinkNintendoSwitchDeviceIdRequest request, Action<UnlinkNintendoSwitchDeviceIdResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/UnlinkNintendoSwitchDeviceId", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>

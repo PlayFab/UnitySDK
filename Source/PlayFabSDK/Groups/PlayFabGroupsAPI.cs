@@ -1,7 +1,7 @@
 #if ENABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
-using PlayFab.EntityModels;
+using PlayFab.GroupsModels;
 using PlayFab.Internal;
 using PlayFab.Json;
 using PlayFab.Public;
@@ -9,12 +9,13 @@ using PlayFab.Public;
 namespace PlayFab
 {
     /// <summary>
-    /// PlayFab Entity APIs provide a variety of core PlayFab features and work consistently across a broad set of entities,
-    /// such as titles, players, characters, and more. API methods for executing CloudScript with an Entity Profile
+    /// The Groups API is designed for any permanent or semi-permanent collections of Entities (Players, or non-players). If you
+    /// want to make Guilds/Clans/Corporations/etc, then you should use Groups. Groups can also be used to make chatrooms,
+    /// parties, or any other excuse you need to lump some Entites together in a persistent way.
     /// </summary>
-    public static class PlayFabEntityAPI
+    public static class PlayFabGroupsAPI
     {
-        static PlayFabEntityAPI() {}
+        static PlayFabGroupsAPI() {}
 
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
@@ -23,15 +24,6 @@ namespace PlayFab
         public static void ForgetAllCredentials()
         {
             PlayFabHttp.ForgetAllCredentials();
-        }
-
-        /// <summary>
-        /// Abort pending file uploads to an entity's profile.
-        /// </summary>
-        public static void AbortFileUploads(AbortFileUploadsRequest request, Action<AbortFileUploadsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/File/AbortFileUploads", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -107,15 +99,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Delete files on an entity's profile.
-        /// </summary>
-        public static void DeleteFiles(DeleteFilesRequest request, Action<DeleteFilesResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/File/DeleteFiles", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
         /// Deletes a group and all roles, invitations, join requests, and blocks associated with it.
         /// </summary>
         public static void DeleteGroup(DeleteGroupRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -134,103 +117,12 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Executes CloudScript using the Entity Profile
-        /// </summary>
-        public static void ExecuteEntityCloudScript(ExecuteEntityCloudScriptRequest request, Action<ExecuteCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/CloudScript/ExecuteEntityCloudScript", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Finalize file uploads to an entity's profile.
-        /// </summary>
-        public static void FinalizeFileUploads(FinalizeFileUploadsRequest request, Action<FinalizeFileUploadsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/File/FinalizeFileUploads", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Method to exchange a legacy AuthenticationTicket or title SecretKey for an Entity Token or to refresh a still valid
-        /// Entity Token.
-        /// </summary>
-        public static void GetEntityToken(GetEntityTokenRequest request, Action<GetEntityTokenResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            AuthType authType = AuthType.None;
-#if !DISABLE_PLAYFABCLIENT_API
-            if (authType == AuthType.None && PlayFabClientAPI.IsClientLoggedIn())
-                authType = AuthType.LoginSession;
-#endif
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABMATCHMAKER_API || UNITY_EDITOR
-            if (authType == AuthType.None && !string.IsNullOrEmpty(PlayFabSettings.DeveloperSecretKey))
-                authType = AuthType.DevSecretKey;
-#endif
-
-            PlayFabHttp.MakeApiCall("/Authentication/GetEntityToken", request, authType, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Retrieves file metadata from an entity's profile.
-        /// </summary>
-        public static void GetFiles(GetFilesRequest request, Action<GetFilesResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/File/GetFiles", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Gets the global title access policy
-        /// </summary>
-        public static void GetGlobalPolicy(GetGlobalPolicyRequest request, Action<GetGlobalPolicyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Profile/GetGlobalPolicy", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
         /// Gets information about a group and its roles
         /// </summary>
         public static void GetGroup(GetGroupRequest request, Action<GetGroupResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/GetGroup", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Retrieves objects from an entity's profile.
-        /// </summary>
-        public static void GetObjects(GetObjectsRequest request, Action<GetObjectsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Object/GetObjects", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Retrieves the entity's profile.
-        /// </summary>
-        public static void GetProfile(GetEntityProfileRequest request, Action<GetEntityProfileResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Profile/GetProfile", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Retrieves the entity's profile.
-        /// </summary>
-        public static void GetProfiles(GetEntityProfilesRequest request, Action<GetEntityProfilesResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Profile/GetProfiles", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Initiates file uploads to an entity's profile.
-        /// </summary>
-        public static void InitiateFileUploads(InitiateFileUploadsRequest request, Action<InitiateFileUploadsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/File/InitiateFileUploads", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -333,33 +225,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Sets the global title access policy
-        /// </summary>
-        public static void SetGlobalPolicy(SetGlobalPolicyRequest request, Action<SetGlobalPolicyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Profile/SetGlobalPolicy", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Sets objects on an entity's profile.
-        /// </summary>
-        public static void SetObjects(SetObjectsRequest request, Action<SetObjectsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Object/SetObjects", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Sets the profiles access policy
-        /// </summary>
-        public static void SetProfilePolicy(SetEntityProfilePolicyRequest request, Action<SetEntityProfilePolicyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Profile/SetProfilePolicy", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
         /// Unblocks a list of entities from joining a group
         /// </summary>
         public static void UnblockEntity(UnblockEntityRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -384,15 +249,6 @@ namespace PlayFab
         {
 
             PlayFabHttp.MakeApiCall("/Group/UpdateRole", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
-        }
-
-        /// <summary>
-        /// Write batches of entity based events to PlayStream.
-        /// </summary>
-        public static void WriteEvents(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-
-            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
         }
 
 

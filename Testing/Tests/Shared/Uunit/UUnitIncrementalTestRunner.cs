@@ -41,24 +41,24 @@ namespace PlayFab.UUnit
                 textTransform.anchoredPosition = Vector2.zero;
                 textTransform.offsetMax = Vector2.zero;
                 textTransform.offsetMin = Vector2.zero;
+                textDisplay.resizeTextForBestFit = true;
             }
         }
 
         public void Update()
         {
-            var linecount = string.IsNullOrEmpty(summary) ? 1000 : summary.Count(f => f == '\n') * 100 / 60;
-            textDisplay.fontSize = Math.Min(Screen.height / linecount - 3, Screen.width / 75 + 10);
-
             if (suiteFinished || textDisplay == null)
                 return;
 
             suiteFinished = suite.TickTestSuite();
             summary = suite.GenerateTestSummary();
             textDisplay.text = summary;
+            textDisplay.resizeTextForBestFit = true;
 
             if (suiteFinished)
             {
                 textDisplay.text += "\nThe UUnitRunner gameobject was added to the scene for these tests.  You must manually remove it from your scene.";
+                textDisplay.resizeTextForBestFit = true;
                 if (suite.AllTestsPassed())
                     Debug.Log(summary);
                 else

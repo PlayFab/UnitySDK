@@ -92,7 +92,7 @@ namespace PlayFab
 
         private static void OnPlayStreamNotificationCallback(object[] data)
         {
-            var notif = Json.JsonWrapper.DeserializeObject<PlayStreamNotification>(data[0].ToString());
+            var notif = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<PlayStreamNotification>(data[0].ToString());
             if (OnPlayStreamEvent != null)
             {
                 OnPlayStreamEvent(notif);
