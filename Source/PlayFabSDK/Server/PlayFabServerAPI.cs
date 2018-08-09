@@ -198,9 +198,10 @@ namespace PlayFab
         {
         Action<ExecuteCloudScriptResult> wrappedResultCallback = (wrappedResult) =>
         {
-            var wrappedJson = JsonWrapper.SerializeObject(wrappedResult.FunctionResult);
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+            var wrappedJson = serializer.SerializeObject(wrappedResult.FunctionResult);
             try {
-                wrappedResult.FunctionResult = JsonWrapper.DeserializeObject<TOut>(wrappedJson);
+                wrappedResult.FunctionResult = serializer.DeserializeObject<TOut>(wrappedJson);
             }
             catch (Exception)
             {
@@ -382,8 +383,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Returns whatever info is requested in the response for the user. Note that PII (like email address, facebook id)
-        /// may be returned. All parameters default to false.
+        /// Returns whatever info is requested in the response for the user. Note that PII (like email address, facebook id) may be
+        /// returned. All parameters default to false.
         /// </summary>
         public static void GetPlayerCombinedInfo(GetPlayerCombinedInfoRequest request, Action<GetPlayerCombinedInfoResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -463,6 +464,26 @@ namespace PlayFab
             if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
 
             PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromFacebookIDs", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Facebook Instant Games identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromFacebookInstantGamesIds(GetPlayFabIDsFromFacebookInstantGamesIdsRequest request, Action<GetPlayFabIDsFromFacebookInstantGamesIdsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromFacebookInstantGamesIds", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Nintendo Switch Device identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromNintendoSwitchDeviceIds(GetPlayFabIDsFromNintendoSwitchDeviceIdsRequest request, Action<GetPlayFabIDsFromNintendoSwitchDeviceIdsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromNintendoSwitchDeviceIds", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>

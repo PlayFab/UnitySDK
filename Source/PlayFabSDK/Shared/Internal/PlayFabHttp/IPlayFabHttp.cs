@@ -4,22 +4,9 @@ using PlayFab.SharedModels;
 
 namespace PlayFab.Internal
 {
-    public interface IPlayFabHttp
+    [Obsolete("This interface is deprecated, please use PlayFab.ITransportPlugin instead.", false)]
+    public interface IPlayFabHttp: ITransportPlugin
     {
-        bool SessionStarted { get; set; }
-        string AuthKey { get; set; }
-        string EntityToken { get; set; }
-        void InitializeHttp();
-
-        // Mirroring MonoBehaviour - Relayed from PlayFabHTTP
-        void Update();
-        void OnDestroy();
-
-        void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback);
-        void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback);
-        void MakeApiCall(CallRequestContainer reqContainer);
-
-        int GetPendingMessages();
     }
 
     public enum AuthType

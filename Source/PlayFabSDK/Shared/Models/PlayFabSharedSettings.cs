@@ -14,7 +14,11 @@ public class PlayFabSharedSettings : ScriptableObject
     public string ProductionEnvironmentPlayStreamUrl = "";
 #endif
     public string ProductionEnvironmentUrl = "";
+#if UNITY_2017_2_OR_NEWER
+    public WebRequestType RequestType = WebRequestType.UnityWebRequest;
+#else
     public WebRequestType RequestType = WebRequestType.UnityWww;
+#endif 
     public int RequestTimeout = 2000;
     public bool RequestKeepAlive = true;
     public bool CompressApiData = true;

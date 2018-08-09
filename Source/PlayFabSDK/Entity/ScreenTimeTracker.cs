@@ -1,7 +1,6 @@
-﻿#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
 using System;
 using System.Collections.Generic;
-using PlayFab.EntityModels;
 using UnityEngine;
 
 namespace PlayFab.Public
@@ -19,7 +18,7 @@ namespace PlayFab.Public
         void OnApplicationFocus(bool isFocused);
 
         // Class specific methods
-        void ClientSessionStart(EntityModels.EntityKey entityKey, string playFabUserId);
+        void ClientSessionStart(string entityId, string entityTypeString, string playFabUserId);
         void Send();
     }
 
@@ -35,28 +34,28 @@ namespace PlayFab.Public
         private DateTime focusOffDateTime = DateTime.UtcNow;
         private DateTime focusOnDateTime = DateTime.UtcNow;
 
-        private Queue<EventContents> eventsRequests = new Queue<EventContents>();
+        private Queue<EventsModels.EventContents> eventsRequests = new Queue<EventsModels.EventContents>();
 
-        private EntityModels.EntityKey entityInfo = new EntityModels.EntityKey();
+        private EventsModels.EntityKey entityKey = new EventsModels.EntityKey();
         private const String eventNamespace = "com.playfab.events.sessions";
         private const int maxBatchSizeInEvents = 10;
 
         /// <summary>
         /// Start session, the function responsible for creating SessionID and gathering information about user and device
         /// </summary>
-        /// <param name="entityKey">Result of the user's login, consist of entity info</param>
         /// <param name="playFabUserId">Result of the user's login, represent user ID</param>
-        public void ClientSessionStart(EntityModels.EntityKey entityKey, string playFabUserId)
+        public void ClientSessionStart(string entityId, string entityTypeString, string playFabUserId)
         {
             gameSessionID = Guid.NewGuid();
 
-            entityInfo = entityKey;
+            entityKey.Id = entityId;
+            entityKey.TypeString = entityTypeString;
 
-            EventContents eventInfo = new EventContents();
+            EventsModels.EventContents eventInfo = new EventsModels.EventContents();
 
             eventInfo.Name = "client_session_start";
             eventInfo.EventNamespace = eventNamespace;
-            eventInfo.Entity = entityInfo;
+            eventInfo.Entity = entityKey;
             eventInfo.OriginalTimestamp = DateTime.UtcNow;
 
             var payload = new Dictionary<string, object>
@@ -79,12 +78,12 @@ namespace PlayFab.Public
         /// <param name="isFocused">State of focus</param>
         public void OnApplicationFocus(bool isFocused)
         {
-            EventContents eventInfo = new EventContents();
+            EventsModels.EventContents eventInfo = new EventsModels.EventContents();
             DateTime currentUtcDateTime = DateTime.UtcNow;
 
             eventInfo.Name = "client_focus_change";
             eventInfo.EventNamespace = eventNamespace;
-            eventInfo.Entity = entityInfo;
+            eventInfo.Entity = entityKey;
 
             double focusStateDuration = 0.0;
 
@@ -150,18 +149,18 @@ namespace PlayFab.Public
             {
                 isSending = true;
 
-                WriteEventsRequest request = new WriteEventsRequest();
-                request.Events = new List<EventContents>();
+                EventsModels.WriteEventsRequest request = new EventsModels.WriteEventsRequest();
+                request.Events = new List<EventsModels.EventContents>();
 
                 while ((eventsRequests.Count > 0) && (request.Events.Count < maxBatchSizeInEvents))
                 {
-                    EventContents eventInfo = eventsRequests.Dequeue();
+                    EventsModels.EventContents eventInfo = eventsRequests.Dequeue();
                     request.Events.Add(eventInfo);
                 }
 
                 if (request.Events.Count > 0)
                 {
-                    PlayFabEntityAPI.WriteEvents(request, EventSentSuccessfulCallback, EventSentErrorCallback);
+                    PlayFabEventsAPI.WriteEvents(request, EventSentSuccessfulCallback, EventSentErrorCallback);
                 }
 
                 isSending = false;
@@ -172,7 +171,7 @@ namespace PlayFab.Public
         /// Callback to handle successful server interaction.
         /// </summary>
         /// <param name="response">Server response</param>
-        private void EventSentSuccessfulCallback(WriteEventsResponse response)
+        private void EventSentSuccessfulCallback(EventsModels.WriteEventsResponse response)
         {
             // add code to work with successful callback
         }
@@ -186,7 +185,7 @@ namespace PlayFab.Public
             Debug.LogWarning("Failed to send session data. Error: " + response.GenerateErrorReport());
         }
 
-        #region Unused MonoBehaviour compatibility  methods
+#region Unused MonoBehaviour compatibility  methods
         /// <summary>
         /// Unused
         /// Name mimics MonoBehaviour method, for ease of integration.
@@ -213,7 +212,7 @@ namespace PlayFab.Public
         {
             // add code sending events on destroy
         }
-        #endregion
+#endregion
 
         /// <summary>
         /// Trying to send event during game exit. Note: works only on certain platforms.

@@ -118,14 +118,14 @@ namespace PlayFab.UUnit
         public void JsonPropertyTest(UUnitTestContext testContext)
         {
             var expectedObject = new JsonPropertyAttrTestClass { InvalidField = "asdf", InvalidProperty = "fdsa" };
-            var json = JsonWrapper.SerializeObject(expectedObject);
+            var json = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(expectedObject);
             // Verify that the field names have been transformed by the JsonProperty attribute
             testContext.False(json.ToLowerInvariant().Contains("invalid"), json);
             testContext.False(json.ToLowerInvariant().Contains("hidenull"), json);
             testContext.True(json.ToLowerInvariant().Contains("shownull"), json);
 
             // Verify that the fields are re-serialized into the proper locations by the JsonProperty attribute
-            var actualObject = JsonWrapper.DeserializeObject<JsonPropertyAttrTestClass>(json);
+            var actualObject = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<JsonPropertyAttrTestClass>(json);
             testContext.StringEquals(expectedObject.InvalidField, actualObject.InvalidField, actualObject.InvalidField);
             testContext.StringEquals(expectedObject.InvalidProperty, actualObject.InvalidProperty, actualObject.InvalidProperty);
 
@@ -139,8 +139,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjNumFieldTest>(actualJson);
+                var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<ObjNumFieldTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -163,8 +163,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson);
+                var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<ObjNumPropTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -187,8 +187,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjNumPropTest>(actualJson);
+                var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<ObjNumPropTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -211,8 +211,8 @@ namespace PlayFab.UUnit
             for (var i = 0; i < expectedObjects.Length; i++)
             {
                 // Convert the object to json and back, and verify that everything is the same
-                var actualJson = JsonWrapper.SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-                var actualObject = JsonWrapper.DeserializeObject<ObjOptNumFieldTest>(actualJson);
+                var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(expectedObjects[i]).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+                var actualObject = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<ObjOptNumFieldTest>(actualJson);
 
                 testContext.SbyteEquals(expectedObjects[i].SbyteValue, actualObject.SbyteValue);
                 testContext.ByteEquals(expectedObjects[i].ByteValue, actualObject.ByteValue);
@@ -240,8 +240,8 @@ namespace PlayFab.UUnit
                 TestString = "yup",
             };
             // Convert the object to json and back, and verify that everything is the same
-            var actualJson = JsonWrapper.SerializeObject(expectedObj).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
-            var actualObject = JsonWrapper.DeserializeObject<OtherSpecificDatatypes>(actualJson);
+            var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(expectedObj).Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace("\t", "");
+            var actualObject = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<OtherSpecificDatatypes>(actualJson);
 
             testContext.ObjEquals(expectedObj.TestString, actualObject.TestString);
             testContext.SequenceEquals(expectedObj.IntDict, actualObject.IntDict);
@@ -256,7 +256,7 @@ namespace PlayFab.UUnit
         public void ArrayAsObject(UUnitTestContext testContext)
         {
             var json = "{\"Version\": \"2016-06-21_23-57-16\", \"ObjectArray\": [{\"Id\": 2, \"Name\": \"Stunned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Stunned\", \"EN_reminder\": \"Can\'t attack, block, or activate\"}, {\"Id\": 3, \"Name\": \"Poisoned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Poisoned\", \"EN_reminder\": \"Takes {N} damage at the start of each turn. Wears off over time.\" }], \"StringArray\": [\"NoSubtype\", \"Aircraft\"]}";
-            var result = JsonWrapper.DeserializeObject<Dictionary<string, object>>(json);
+            var result = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<Dictionary<string, object>>(json);
             var version = result["Version"] as string;
             var objArray = result["ObjectArray"] as List<object>;
             var strArray = result["StringArray"] as List<object>;
@@ -273,7 +273,7 @@ namespace PlayFab.UUnit
         public void TimeSpanJson(UUnitTestContext testContext)
         {
             var span = TimeSpan.FromSeconds(5);
-            var actualJson = JsonWrapper.SerializeObject(span);
+            var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(span);
             var expectedJson = "5";
             testContext.StringEquals(expectedJson, actualJson, actualJson);
 
@@ -284,8 +284,8 @@ namespace PlayFab.UUnit
         public void ArrayOfObjects(UUnitTestContext testContext)
         {
             var actualJson = "[{\"a\":\"aValue\"}, {\"b\":\"bValue\"}]";
-            var actualObjectList = JsonWrapper.DeserializeObject<List<object>>(actualJson);
-            var actualObjectArray = JsonWrapper.DeserializeObject<object[]>(actualJson);
+            var actualObjectList = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<List<object>>(actualJson);
+            var actualObjectArray = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<object[]>(actualJson);
 
             testContext.IntEquals(actualObjectList.Count, 2);
             testContext.IntEquals(actualObjectArray.Length, 2);
@@ -311,10 +311,10 @@ namespace PlayFab.UUnit
             foreach (var testObj in testObjs)
             {
                 NullableTestClass actualObj = null;
-                var actualJson = JsonWrapper.SerializeObject(testObj);
+                var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(testObj);
                 try
                 {
-                    actualObj = JsonWrapper.DeserializeObject<NullableTestClass>(actualJson);
+                    actualObj = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<NullableTestClass>(actualJson);
                 }
                 catch (Exception)
                 {
@@ -362,11 +362,11 @@ namespace PlayFab.UUnit
         {
             // actualObj contains a real ObjNumFieldTest within subObject
             var expectedObj = new SerializeJsonSubOjbect { SubObject = new ObjNumFieldTest { ByteValue = 1, DoubleValue = 1, FloatValue = 1, IntValue = 1, LongValue = 1, SbyteValue = 1, ShortValue = 1, UintValue = 1, UlongValue = 1, UshortValue = 1 } };
-            var expectedJson = JsonWrapper.SerializeObject(expectedObj);
+            var expectedJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(expectedObj);
             // Convert back to SerializeJsonSubOjbect which will serialize the original ObjNumFieldTest to a SimpleJson.JsonObject (or equivalent in another serializer)
-            var actualObj = JsonWrapper.DeserializeObject<SerializeJsonSubOjbect>(expectedJson);
+            var actualObj = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<SerializeJsonSubOjbect>(expectedJson);
             testContext.False(actualObj.SubObject is ObjNumFieldTest, "ObjNumFieldTest should have deserialized as a generic JsonObject");
-            var actualJson = JsonWrapper.SerializeObject(actualObj);
+            var actualJson = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).SerializeObject(actualObj);
             // The real test is that reserializing actualObj should produce identical json
             testContext.StringEquals(expectedJson, actualJson, actualJson);
 

@@ -1,8 +1,8 @@
 #if !DISABLE_PLAYFABCLIENT_API && ENABLE_PLAYFABENTITY_API
-using PlayFab.EntityModels;
 using PlayFab.Internal;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PlayFab.UUnit
 {
@@ -13,13 +13,17 @@ namespace PlayFab.UUnit
         // Test-data constants
         private const string TEST_OBJ_NAME = "testCounter";
         // Test variables
-        private EntityKey _entityKey;
-        private string _testFileUrl;
-        private string _testFileChecksum;
+        private string _entityId;
+        private string _entityTypeString;
+        private const string TEST_FILE_NAME = "testfile";
+        private const string _testPayload = "{123456789}";
         private int _testInteger;
+        private bool _shouldDeleteFiles;
 
         public override void SetUp(UUnitTestContext testContext)
         {
+            _shouldDeleteFiles = false; // Don't delete the file unless it was created
+
             testTitleData = TestTitleDataLoader.LoadTestTitleData();
 
             // Verify all the inputs won't cause crashes in the tests
@@ -37,9 +41,17 @@ namespace PlayFab.UUnit
             // Do nothing, because the test finishes asynchronously
         }
 
+        public override void TearDown(UUnitTestContext testContext)
+        {
+            // TearDown is not currently suited to handle async cases, though I think it's possible to handle the case
+            // For now, this is an example of bad test design (kicking off async work after the test stops),
+            //   but in this case, it should only happen if the test fails anyways, so it's... more tolerable
+            DeleteFiles(testContext, new List<string> { TEST_FILE_NAME }, false, UUnitFinishState.FAILED, "Problem in the test: Test state was failed in TearDown, and actual test state was lost");
+        }
+
         public override void ClassTearDown()
         {
-            PlayFabEntityAPI.ForgetAllCredentials();
+            PlayFabAuthenticationAPI.ForgetAllCredentials();
         }
 
         private void SharedErrorCallback(PlayFabError error)
@@ -76,19 +88,19 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void GetEntityToken(UUnitTestContext testContext)
         {
-            var tokenRequest = new GetEntityTokenRequest();
-            PlayFabEntityAPI.GetEntityToken(tokenRequest, PlayFabUUnitUtils.ApiActionWrapper<GetEntityTokenResponse>(testContext, GetTokenCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            var tokenRequest = new AuthenticationModels.GetEntityTokenRequest();
+            PlayFabAuthenticationAPI.GetEntityToken(tokenRequest, PlayFabUUnitUtils.ApiActionWrapper<AuthenticationModels.GetEntityTokenResponse>(testContext, GetTokenCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void GetTokenCallback(GetEntityTokenResponse result)
+        private void GetTokenCallback(AuthenticationModels.GetEntityTokenResponse result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            _entityKey = result.Entity;
-            testContext.StringEquals(EntityTypes.title_player_account.ToString(), result.Entity.TypeString, "GetEntityToken EntityType not expected: " + result.Entity.TypeString);
-            testContext.StringEquals(EntityTypes.title_player_account.ToString(), result.Entity.Type.ToString(), "GetEntityToken EntityType not expected: " + result.Entity.Type);
+            _entityId = result.Entity.Id;
+            _entityTypeString = result.Entity.TypeString;
+            testContext.StringEquals("title_player_account", result.Entity.TypeString, "GetEntityToken EntityTypeString not expected: " + result.Entity.TypeString);
 
             testContext.True(PlayFabClientAPI.IsClientLoggedIn(), "Get Entity Token failed");
-            testContext.EndTest(UUnitFinishState.PASSED, PlayFabSettings.TitleId + ", " + result.EntityToken);
+            testContext.EndTest(UUnitFinishState.PASSED, PlayFabSettings.TitleId + ", " + result.EntityToken.Substring(0, 25) + "...");
         }
 
         /// <summary>
@@ -100,10 +112,10 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void ObjectApi(UUnitTestContext testContext)
         {
-            var getRequest = new GetObjectsRequest { Entity = _entityKey, EscapeObject = true };
-            PlayFabEntityAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetObjectsResponse>(testContext, GetObjectCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            var getRequest = new DataModels.GetObjectsRequest { Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString }, EscapeObject = true };
+            PlayFabDataAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<DataModels.GetObjectsResponse>(testContext, GetObjectCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void GetObjectCallback1(GetObjectsResponse result)
+        private void GetObjectCallback1(DataModels.GetObjectsResponse result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
@@ -114,23 +126,23 @@ namespace PlayFab.UUnit
 
             _testInteger = (_testInteger + 1) % 100; // This test is about the Expected value changing - but not testing more complicated issues like bounds
 
-            var updateRequest = new SetObjectsRequest
+            var updateRequest = new DataModels.SetObjectsRequest
             {
-                Entity = _entityKey,
-                Objects = new List<SetObject> {
-                    new SetObject{ ObjectName = TEST_OBJ_NAME, DataObject = _testInteger }
+                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                Objects = new List<DataModels.SetObject> {
+                    new DataModels.SetObject{ ObjectName = TEST_OBJ_NAME, DataObject = _testInteger }
                 }
             };
-            PlayFabEntityAPI.SetObjects(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<SetObjectsResponse>(testContext, UpdateObjectCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            PlayFabDataAPI.SetObjects(updateRequest, PlayFabUUnitUtils.ApiActionWrapper<DataModels.SetObjectsResponse>(testContext, UpdateObjectCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void UpdateObjectCallback(SetObjectsResponse result)
+        private void UpdateObjectCallback(DataModels.SetObjectsResponse result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            var getRequest = new GetObjectsRequest { Entity = _entityKey, EscapeObject = true };
-            PlayFabEntityAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<GetObjectsResponse>(testContext, GetObjectCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            var getRequest = new DataModels.GetObjectsRequest { Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString }, EscapeObject = true };
+            PlayFabDataAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<DataModels.GetObjectsResponse>(testContext, GetObjectCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void GetObjectCallback2(GetObjectsResponse result)
+        private void GetObjectCallback2(DataModels.GetObjectsResponse result)
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
@@ -141,6 +153,197 @@ namespace PlayFab.UUnit
 
             testContext.EndTest(UUnitFinishState.PASSED, actualInteger.ToString());
         }
+        #region PUT_Verb_Test
+        /// <summary>
+        /// ENTITY PUT API
+        /// Tests a sequence of calls that upload file to a server via PUT.
+        /// Verifies that the file can be downloaded with the same information it's been saved with.
+        /// This sequence assumes that at test start, there are no files on the entity, and it will create and delete a file.
+        /// </summary>
+        [UUnitTest]
+        public void PutApi(UUnitTestContext testContext)
+        {
+            var loginRequest = new ClientModels.LoginWithCustomIDRequest
+            {
+                CustomId = PlayFabSettings.BuildIdentifier,
+                CreateAccount = true,
+                LoginTitlePlayerAccountEntity = true,
+            };
+
+            PlayFabClientAPI.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiActionWrapper<ClientModels.LoginResult>(testContext, LoginCallbackPutTest), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+        }
+        private void LoginCallbackPutTest(ClientModels.LoginResult result)
+        {
+            var testContext = (UUnitTestContext)result.CustomData;
+
+            if (result.EntityToken != null)
+            {
+                _entityId = result.EntityToken.Entity.Id;
+                _entityTypeString = result.EntityToken.Entity.TypeString;
+
+                LoadFiles(testContext);
+            }
+            else
+            {
+                testContext.Fail("Entity Token is null!");
+            }
+        }
+        private void LoadFiles(UUnitTestContext testContext)
+        {
+            var request = new DataModels.GetFilesRequest
+            {
+                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+            };
+
+            PlayFabDataAPI.GetFiles(request, PlayFabUUnitUtils.ApiActionWrapper<DataModels.GetFilesResponse>(testContext, OnGetFilesInfo), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+        }
+        void OnGetFilesInfo(DataModels.GetFilesResponse result)
+        {
+            var testContext = (UUnitTestContext)result.CustomData;
+            bool testFileFound = false;
+            DataModels.GetFileMetadata fileMetaData = new DataModels.GetFileMetadata();
+
+            foreach (var eachFilePair in result.Metadata)
+            {
+                if (eachFilePair.Key.Equals(TEST_FILE_NAME))
+                {
+                    testFileFound = true;
+                    _shouldDeleteFiles = true; // We attached a file to the player, teardown should delete the file if the test fails
+
+                    fileMetaData = eachFilePair.Value;
+                    break; // this test only support one file
+                }
+            }
+
+            if (!testFileFound)
+            {
+                UploadFile(testContext, TEST_FILE_NAME);
+            }
+            else
+            {
+                GetActualFile(testContext, fileMetaData);
+            }
+        }
+        void GetActualFile(UUnitTestContext testContext, DataModels.GetFileMetadata fileData)
+        {
+            PlayFabHttp.SimpleGetCall(fileData.DownloadUrl,
+                PlayFabUUnitUtils.SimpleApiActionWrapper<byte[]>(testContext, TestFileContent),
+                error =>
+                {
+                    testContext.Fail(error);
+                });
+        }
+        void UploadFile(UUnitTestContext testContext, string fileName)
+        {
+            var request = new DataModels.InitiateFileUploadsRequest
+            {
+                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                FileNames = new List<string>
+                {
+                    fileName
+                },
+            };
+
+            PlayFabDataAPI.InitiateFileUploads(request, PlayFabUUnitUtils.ApiActionWrapper<DataModels.InitiateFileUploadsResponse>(testContext, OnInitFileUpload), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, OnInitFailed), testContext);
+        }
+        void DeleteFiles(UUnitTestContext testContext, List<string> fileName, bool shouldEndTest, UUnitFinishState finishState, string finishMessage)
+        {
+            if (!_shouldDeleteFiles) // Only delete the file if it was created
+                return;
+
+            var request = new DataModels.DeleteFilesRequest
+            {
+                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                FileNames = fileName,
+            };
+
+            _shouldDeleteFiles = false; // We have successfully deleted the file, it should not try again in teardown
+            PlayFabDataAPI.DeleteFiles(request, result =>
+            {
+                if (shouldEndTest)
+                    testContext.EndTest(finishState, finishMessage);
+            },
+            PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+        }
+        void OnInitFailed(PlayFabError error)
+        {
+            var testContext = (UUnitTestContext)error.CustomData;
+
+            if (error.Error == PlayFabErrorCode.EntityFileOperationPending)
+            {
+                var request = new DataModels.AbortFileUploadsRequest
+                {
+                    Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                    FileNames = new List<string> { TEST_FILE_NAME },
+                };
+
+                PlayFabDataAPI.AbortFileUploads(request, PlayFabUUnitUtils.ApiActionWrapper<DataModels.AbortFileUploadsResponse>(testContext, OnAbortFileUpload), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            }
+            else
+            {
+                if (error.CustomData != null)
+                {
+                    SharedErrorCallback(error);
+                }
+                else
+                {
+                    testContext.Fail(error.ErrorMessage);
+                }
+            }
+        }
+        void OnAbortFileUpload(DataModels.AbortFileUploadsResponse result)
+        {
+            var testContext = (UUnitTestContext)result.CustomData;
+
+            UploadFile(testContext, TEST_FILE_NAME);
+        }
+        void OnInitFileUpload(DataModels.InitiateFileUploadsResponse response)
+        {
+            var testContext = (UUnitTestContext)response.CustomData;
+            var payload = Encoding.UTF8.GetBytes(_testPayload);
+
+            testContext.IntEquals(_testPayload.Length, payload.Length);
+            testContext.True(_testPayload.Length > 0);
+
+            PlayFabHttp.SimplePutCall(response.UploadDetails[0].UploadUrl,
+                payload,
+                PlayFabUUnitUtils.SimpleApiNoParamsActionWrapper(testContext, FinalizeUpload),
+                error =>
+                {
+                    testContext.Fail(error);
+                }
+            );
+        }
+        void FinalizeUpload(UUnitTestContext testContext)
+        {
+            var request = new DataModels.FinalizeFileUploadsRequest
+            {
+                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                FileNames = new List<string> { TEST_FILE_NAME },
+            };
+            PlayFabDataAPI.FinalizeFileUploads(request, PlayFabUUnitUtils.ApiActionWrapper<DataModels.FinalizeFileUploadsResponse>(testContext, OnUploadSuccess), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+        }
+        void OnUploadSuccess(DataModels.FinalizeFileUploadsResponse result)
+        {
+            _shouldDeleteFiles = true; // We attached a file to the player, teardown should delete the file if the test fails
+
+            var testContext = (UUnitTestContext)result.CustomData;
+
+            LoadFiles(testContext);
+        }
+        void TestFileContent(UUnitTestContext testContext, byte[] result)
+        {
+            var testFileData = Encoding.UTF8.GetString(result);
+
+            testContext.NotNull(result, "Raw file result was null");
+            testContext.NotNull(testFileData, "UTF8 conversion of result was null");
+            testContext.True(result.Length > 0, "Raw file result was zero length");
+            testContext.True(testFileData.Length > 0, "UTF8 conversion of result was zero length");
+
+            testContext.True(testFileData.Equals(_testPayload), testFileData);
+            DeleteFiles(testContext, new List<string> { TEST_FILE_NAME }, true, UUnitFinishState.PASSED, "File " + TEST_FILE_NAME + "was succesfully created and uploaded to server with PUT");
+        }
+        #endregion
     }
 }
 #endif

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace PlayFab
@@ -7,9 +9,7 @@ namespace PlayFab
     {
         UnityWww, // High compatability Unity api calls
         HttpWebRequest, // High performance multi-threaded api calls
-#if UNITY_2017_2_OR_NEWER
         UnityWebRequest, // Modern unity HTTP component
-#endif
         CustomHttp //If this is used, you must set the Http to an IPlayFabHttp object.
     }
 
@@ -32,9 +32,14 @@ namespace PlayFab
         private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
         [Obsolete("This field will become private after Mar 1, 2017", false)]
         public static PlayFabSharedSettings PlayFabShared { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
-        public const string SdkVersion = "2.47.180716";
-        public const string BuildIdentifier = "jbuild_unitysdk_sdk-unity-2-slave_0";
-        public const string VersionString = "UnitySDK-2.47.180716";
+        public const string SdkVersion = "2.48.180809";
+        public const string BuildIdentifier = "jbuild_unitysdk_sdk-unity-1-slave_0";
+        public const string VersionString = "UnitySDK-2.48.180809";
+
+        public static readonly Dictionary<string, string> RequestGetParams = new Dictionary<string, string> {
+            { "sdk", VersionString }
+        };
+
         private const string DefaultPlayFabApiUrlPrivate = ".playfabapi.com";
         [Obsolete("This field will become private after Mar 1, 2017", false)]
         public static string DefaultPlayFabApiUrl { get { return DefaultPlayFabApiUrlPrivate; } }
@@ -150,15 +155,35 @@ namespace PlayFab
             set { PlayFabSharedPrivate.LogCapLimit = value; }
         }
 
-        public static string GetFullUrl(string apiCall)
+        public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams)
         {
-            string output;
+            StringBuilder sb = new StringBuilder(1000);
+        
             var baseUrl = ProductionEnvironmentUrlPrivate;
-            if (baseUrl.StartsWith("http"))
-                output = baseUrl + apiCall;
-            else
-                output = "https://" + TitleId + baseUrl + apiCall;
-            return output;
+            if (!baseUrl.StartsWith("http"))
+                sb.Append("https://").Append(TitleId);
+        
+            sb.Append(baseUrl).Append(apiCall);
+        
+            if (getParams != null)
+            {
+                bool firstParam = true;
+                foreach (var paramPair in getParams)
+                {
+                    if (firstParam)
+                    {
+                        sb.Append("?");
+                        firstParam = false;
+                    }
+                    else
+                    {
+                        sb.Append("&");
+                    }
+                    sb.Append(paramPair.Key).Append("=").Append(paramPair.Value);
+                }
+            }
+        
+            return sb.ToString();
         }
     }
 }

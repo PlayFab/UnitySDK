@@ -85,6 +85,10 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayerTagsResult> OnServerGetPlayerTagsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromFacebookIDsRequest> OnServerGetPlayFabIDsFromFacebookIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromFacebookIDsResult> OnServerGetPlayFabIDsFromFacebookIDsResultEvent;
+        public event PlayFabRequestEvent<GetPlayFabIDsFromFacebookInstantGamesIdsRequest> OnServerGetPlayFabIDsFromFacebookInstantGamesIdsRequestEvent;
+        public event PlayFabResultEvent<GetPlayFabIDsFromFacebookInstantGamesIdsResult> OnServerGetPlayFabIDsFromFacebookInstantGamesIdsResultEvent;
+        public event PlayFabRequestEvent<GetPlayFabIDsFromNintendoSwitchDeviceIdsRequest> OnServerGetPlayFabIDsFromNintendoSwitchDeviceIdsRequestEvent;
+        public event PlayFabResultEvent<GetPlayFabIDsFromNintendoSwitchDeviceIdsResult> OnServerGetPlayFabIDsFromNintendoSwitchDeviceIdsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromSteamIDsRequest> OnServerGetPlayFabIDsFromSteamIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromSteamIDsResult> OnServerGetPlayFabIDsFromSteamIDsResultEvent;
         public event PlayFabRequestEvent<GetPublisherDataRequest> OnServerGetPublisherDataRequestEvent;
