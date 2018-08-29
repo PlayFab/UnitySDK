@@ -34,7 +34,7 @@ namespace PlayFab.Events
 #endif
 #if ENABLE_PLAYFABADMIN_API
             if (OnAdminAbortTaskInstanceRequestEvent != null) { foreach (var each in OnAdminAbortTaskInstanceRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminAbortTaskInstanceRequestEvent -= (PlayFabRequestEvent<AdminModels.AbortTaskInstanceRequest>)each; } } }
-            if (OnAdminAbortTaskInstanceResultEvent != null) { foreach (var each in OnAdminAbortTaskInstanceResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminAbortTaskInstanceResultEvent -= (PlayFabResultEvent<AdminModels.EmptyResult>)each; } } }
+            if (OnAdminAbortTaskInstanceResultEvent != null) { foreach (var each in OnAdminAbortTaskInstanceResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminAbortTaskInstanceResultEvent -= (PlayFabResultEvent<AdminModels.EmptyResponse>)each; } } }
 
             if (OnAdminAddNewsRequestEvent != null) { foreach (var each in OnAdminAddNewsRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminAddNewsRequestEvent -= (PlayFabRequestEvent<AdminModels.AddNewsRequest>)each; } } }
             if (OnAdminAddNewsResultEvent != null) { foreach (var each in OnAdminAddNewsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminAddNewsResultEvent -= (PlayFabResultEvent<AdminModels.AddNewsResult>)each; } } }
@@ -85,7 +85,7 @@ namespace PlayFab.Events
             if (OnAdminDeleteStoreResultEvent != null) { foreach (var each in OnAdminDeleteStoreResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeleteStoreResultEvent -= (PlayFabResultEvent<AdminModels.DeleteStoreResult>)each; } } }
 
             if (OnAdminDeleteTaskRequestEvent != null) { foreach (var each in OnAdminDeleteTaskRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeleteTaskRequestEvent -= (PlayFabRequestEvent<AdminModels.DeleteTaskRequest>)each; } } }
-            if (OnAdminDeleteTaskResultEvent != null) { foreach (var each in OnAdminDeleteTaskResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeleteTaskResultEvent -= (PlayFabResultEvent<AdminModels.EmptyResult>)each; } } }
+            if (OnAdminDeleteTaskResultEvent != null) { foreach (var each in OnAdminDeleteTaskResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeleteTaskResultEvent -= (PlayFabResultEvent<AdminModels.EmptyResponse>)each; } } }
 
             if (OnAdminDeleteTitleRequestEvent != null) { foreach (var each in OnAdminDeleteTitleRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeleteTitleRequestEvent -= (PlayFabRequestEvent<AdminModels.DeleteTitleRequest>)each; } } }
             if (OnAdminDeleteTitleResultEvent != null) { foreach (var each in OnAdminDeleteTitleResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminDeleteTitleResultEvent -= (PlayFabResultEvent<AdminModels.DeleteTitleResult>)each; } } }
@@ -325,7 +325,7 @@ namespace PlayFab.Events
             if (OnAdminUpdateStoreItemsResultEvent != null) { foreach (var each in OnAdminUpdateStoreItemsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdateStoreItemsResultEvent -= (PlayFabResultEvent<AdminModels.UpdateStoreItemsResult>)each; } } }
 
             if (OnAdminUpdateTaskRequestEvent != null) { foreach (var each in OnAdminUpdateTaskRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdateTaskRequestEvent -= (PlayFabRequestEvent<AdminModels.UpdateTaskRequest>)each; } } }
-            if (OnAdminUpdateTaskResultEvent != null) { foreach (var each in OnAdminUpdateTaskResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdateTaskResultEvent -= (PlayFabResultEvent<AdminModels.EmptyResult>)each; } } }
+            if (OnAdminUpdateTaskResultEvent != null) { foreach (var each in OnAdminUpdateTaskResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdateTaskResultEvent -= (PlayFabResultEvent<AdminModels.EmptyResponse>)each; } } }
 
             if (OnAdminUpdateUserDataRequestEvent != null) { foreach (var each in OnAdminUpdateUserDataRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdateUserDataRequestEvent -= (PlayFabRequestEvent<AdminModels.UpdateUserDataRequest>)each; } } }
             if (OnAdminUpdateUserDataResultEvent != null) { foreach (var each in OnAdminUpdateUserDataResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAdminUpdateUserDataResultEvent -= (PlayFabResultEvent<AdminModels.UpdateUserDataResult>)each; } } }
@@ -385,6 +385,9 @@ namespace PlayFab.Events
 
             if (OnConsumeItemRequestEvent != null) { foreach (var each in OnConsumeItemRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnConsumeItemRequestEvent -= (PlayFabRequestEvent<ClientModels.ConsumeItemRequest>)each; } } }
             if (OnConsumeItemResultEvent != null) { foreach (var each in OnConsumeItemResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnConsumeItemResultEvent -= (PlayFabResultEvent<ClientModels.ConsumeItemResult>)each; } } }
+
+            if (OnConsumeXboxEntitlementsRequestEvent != null) { foreach (var each in OnConsumeXboxEntitlementsRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnConsumeXboxEntitlementsRequestEvent -= (PlayFabRequestEvent<ClientModels.ConsumeXboxEntitlementsRequest>)each; } } }
+            if (OnConsumeXboxEntitlementsResultEvent != null) { foreach (var each in OnConsumeXboxEntitlementsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnConsumeXboxEntitlementsResultEvent -= (PlayFabResultEvent<ClientModels.ConsumeXboxEntitlementsResult>)each; } } }
 
             if (OnCreateSharedGroupRequestEvent != null) { foreach (var each in OnCreateSharedGroupRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnCreateSharedGroupRequestEvent -= (PlayFabRequestEvent<ClientModels.CreateSharedGroupRequest>)each; } } }
             if (OnCreateSharedGroupResultEvent != null) { foreach (var each in OnCreateSharedGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnCreateSharedGroupResultEvent -= (PlayFabResultEvent<ClientModels.CreateSharedGroupResult>)each; } } }
@@ -584,6 +587,9 @@ namespace PlayFab.Events
             if (OnLinkWindowsHelloRequestEvent != null) { foreach (var each in OnLinkWindowsHelloRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLinkWindowsHelloRequestEvent -= (PlayFabRequestEvent<ClientModels.LinkWindowsHelloAccountRequest>)each; } } }
             if (OnLinkWindowsHelloResultEvent != null) { foreach (var each in OnLinkWindowsHelloResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLinkWindowsHelloResultEvent -= (PlayFabResultEvent<ClientModels.LinkWindowsHelloAccountResponse>)each; } } }
 
+            if (OnLinkXboxAccountRequestEvent != null) { foreach (var each in OnLinkXboxAccountRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLinkXboxAccountRequestEvent -= (PlayFabRequestEvent<ClientModels.LinkXboxAccountRequest>)each; } } }
+            if (OnLinkXboxAccountResultEvent != null) { foreach (var each in OnLinkXboxAccountResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLinkXboxAccountResultEvent -= (PlayFabResultEvent<ClientModels.LinkXboxAccountResult>)each; } } }
+
             if (OnLoginWithAndroidDeviceIDRequestEvent != null) { foreach (var each in OnLoginWithAndroidDeviceIDRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithAndroidDeviceIDRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithAndroidDeviceIDRequest>)each; } } }
 
             if (OnLoginWithCustomIDRequestEvent != null) { foreach (var each in OnLoginWithCustomIDRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithCustomIDRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithCustomIDRequest>)each; } } }
@@ -611,6 +617,8 @@ namespace PlayFab.Events
             if (OnLoginWithTwitchRequestEvent != null) { foreach (var each in OnLoginWithTwitchRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithTwitchRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithTwitchRequest>)each; } } }
 
             if (OnLoginWithWindowsHelloRequestEvent != null) { foreach (var each in OnLoginWithWindowsHelloRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithWindowsHelloRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithWindowsHelloRequest>)each; } } }
+
+            if (OnLoginWithXboxRequestEvent != null) { foreach (var each in OnLoginWithXboxRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithXboxRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithXboxRequest>)each; } } }
 
             if (OnMatchmakeRequestEvent != null) { foreach (var each in OnMatchmakeRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnMatchmakeRequestEvent -= (PlayFabRequestEvent<ClientModels.MatchmakeRequest>)each; } } }
             if (OnMatchmakeResultEvent != null) { foreach (var each in OnMatchmakeResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnMatchmakeResultEvent -= (PlayFabResultEvent<ClientModels.MatchmakeResult>)each; } } }
@@ -648,7 +656,7 @@ namespace PlayFab.Events
             if (OnRemoveSharedGroupMembersResultEvent != null) { foreach (var each in OnRemoveSharedGroupMembersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnRemoveSharedGroupMembersResultEvent -= (PlayFabResultEvent<ClientModels.RemoveSharedGroupMembersResult>)each; } } }
 
             if (OnReportDeviceInfoRequestEvent != null) { foreach (var each in OnReportDeviceInfoRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnReportDeviceInfoRequestEvent -= (PlayFabRequestEvent<ClientModels.DeviceInfoRequest>)each; } } }
-            if (OnReportDeviceInfoResultEvent != null) { foreach (var each in OnReportDeviceInfoResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnReportDeviceInfoResultEvent -= (PlayFabResultEvent<ClientModels.EmptyResult>)each; } } }
+            if (OnReportDeviceInfoResultEvent != null) { foreach (var each in OnReportDeviceInfoResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnReportDeviceInfoResultEvent -= (PlayFabResultEvent<ClientModels.EmptyResponse>)each; } } }
 
             if (OnReportPlayerRequestEvent != null) { foreach (var each in OnReportPlayerRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnReportPlayerRequestEvent -= (PlayFabRequestEvent<ClientModels.ReportPlayerClientRequest>)each; } } }
             if (OnReportPlayerResultEvent != null) { foreach (var each in OnReportPlayerResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnReportPlayerResultEvent -= (PlayFabResultEvent<ClientModels.ReportPlayerClientResult>)each; } } }
@@ -710,6 +718,9 @@ namespace PlayFab.Events
             if (OnUnlinkWindowsHelloRequestEvent != null) { foreach (var each in OnUnlinkWindowsHelloRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUnlinkWindowsHelloRequestEvent -= (PlayFabRequestEvent<ClientModels.UnlinkWindowsHelloAccountRequest>)each; } } }
             if (OnUnlinkWindowsHelloResultEvent != null) { foreach (var each in OnUnlinkWindowsHelloResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUnlinkWindowsHelloResultEvent -= (PlayFabResultEvent<ClientModels.UnlinkWindowsHelloAccountResponse>)each; } } }
 
+            if (OnUnlinkXboxAccountRequestEvent != null) { foreach (var each in OnUnlinkXboxAccountRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUnlinkXboxAccountRequestEvent -= (PlayFabRequestEvent<ClientModels.UnlinkXboxAccountRequest>)each; } } }
+            if (OnUnlinkXboxAccountResultEvent != null) { foreach (var each in OnUnlinkXboxAccountResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUnlinkXboxAccountResultEvent -= (PlayFabResultEvent<ClientModels.UnlinkXboxAccountResult>)each; } } }
+
             if (OnUnlockContainerInstanceRequestEvent != null) { foreach (var each in OnUnlockContainerInstanceRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUnlockContainerInstanceRequestEvent -= (PlayFabRequestEvent<ClientModels.UnlockContainerInstanceRequest>)each; } } }
             if (OnUnlockContainerInstanceResultEvent != null) { foreach (var each in OnUnlockContainerInstanceResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUnlockContainerInstanceResultEvent -= (PlayFabResultEvent<ClientModels.UnlockContainerItemResult>)each; } } }
 
@@ -717,7 +728,7 @@ namespace PlayFab.Events
             if (OnUnlockContainerItemResultEvent != null) { foreach (var each in OnUnlockContainerItemResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUnlockContainerItemResultEvent -= (PlayFabResultEvent<ClientModels.UnlockContainerItemResult>)each; } } }
 
             if (OnUpdateAvatarUrlRequestEvent != null) { foreach (var each in OnUpdateAvatarUrlRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUpdateAvatarUrlRequestEvent -= (PlayFabRequestEvent<ClientModels.UpdateAvatarUrlRequest>)each; } } }
-            if (OnUpdateAvatarUrlResultEvent != null) { foreach (var each in OnUpdateAvatarUrlResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUpdateAvatarUrlResultEvent -= (PlayFabResultEvent<ClientModels.EmptyResult>)each; } } }
+            if (OnUpdateAvatarUrlResultEvent != null) { foreach (var each in OnUpdateAvatarUrlResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUpdateAvatarUrlResultEvent -= (PlayFabResultEvent<ClientModels.EmptyResponse>)each; } } }
 
             if (OnUpdateCharacterDataRequestEvent != null) { foreach (var each in OnUpdateCharacterDataRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUpdateCharacterDataRequestEvent -= (PlayFabRequestEvent<ClientModels.UpdateCharacterDataRequest>)each; } } }
             if (OnUpdateCharacterDataResultEvent != null) { foreach (var each in OnUpdateCharacterDataResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnUpdateCharacterDataResultEvent -= (PlayFabResultEvent<ClientModels.UpdateCharacterDataResult>)each; } } }
@@ -784,7 +795,7 @@ namespace PlayFab.Events
             if (OnServerAddCharacterVirtualCurrencyResultEvent != null) { foreach (var each in OnServerAddCharacterVirtualCurrencyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAddCharacterVirtualCurrencyResultEvent -= (PlayFabResultEvent<ServerModels.ModifyCharacterVirtualCurrencyResult>)each; } } }
 
             if (OnServerAddFriendRequestEvent != null) { foreach (var each in OnServerAddFriendRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAddFriendRequestEvent -= (PlayFabRequestEvent<ServerModels.AddFriendRequest>)each; } } }
-            if (OnServerAddFriendResultEvent != null) { foreach (var each in OnServerAddFriendResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAddFriendResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResult>)each; } } }
+            if (OnServerAddFriendResultEvent != null) { foreach (var each in OnServerAddFriendResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAddFriendResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResponse>)each; } } }
 
             if (OnServerAddPlayerTagRequestEvent != null) { foreach (var each in OnServerAddPlayerTagRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAddPlayerTagRequestEvent -= (PlayFabRequestEvent<ServerModels.AddPlayerTagRequest>)each; } } }
             if (OnServerAddPlayerTagResultEvent != null) { foreach (var each in OnServerAddPlayerTagResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerAddPlayerTagResultEvent -= (PlayFabResultEvent<ServerModels.AddPlayerTagResult>)each; } } }
@@ -814,7 +825,7 @@ namespace PlayFab.Events
             if (OnServerDeleteCharacterFromUserResultEvent != null) { foreach (var each in OnServerDeleteCharacterFromUserResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerDeleteCharacterFromUserResultEvent -= (PlayFabResultEvent<ServerModels.DeleteCharacterFromUserResult>)each; } } }
 
             if (OnServerDeleteSharedGroupRequestEvent != null) { foreach (var each in OnServerDeleteSharedGroupRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerDeleteSharedGroupRequestEvent -= (PlayFabRequestEvent<ServerModels.DeleteSharedGroupRequest>)each; } } }
-            if (OnServerDeleteSharedGroupResultEvent != null) { foreach (var each in OnServerDeleteSharedGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerDeleteSharedGroupResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResult>)each; } } }
+            if (OnServerDeleteSharedGroupResultEvent != null) { foreach (var each in OnServerDeleteSharedGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerDeleteSharedGroupResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResponse>)each; } } }
 
             if (OnServerDeleteUsersRequestEvent != null) { foreach (var each in OnServerDeleteUsersRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerDeleteUsersRequestEvent -= (PlayFabRequestEvent<ServerModels.DeleteUsersRequest>)each; } } }
             if (OnServerDeleteUsersResultEvent != null) { foreach (var each in OnServerDeleteUsersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerDeleteUsersResultEvent -= (PlayFabResultEvent<ServerModels.DeleteUsersResult>)each; } } }
@@ -997,7 +1008,7 @@ namespace PlayFab.Events
             if (OnServerRegisterGameResultEvent != null) { foreach (var each in OnServerRegisterGameResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerRegisterGameResultEvent -= (PlayFabResultEvent<ServerModels.RegisterGameResponse>)each; } } }
 
             if (OnServerRemoveFriendRequestEvent != null) { foreach (var each in OnServerRemoveFriendRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerRemoveFriendRequestEvent -= (PlayFabRequestEvent<ServerModels.RemoveFriendRequest>)each; } } }
-            if (OnServerRemoveFriendResultEvent != null) { foreach (var each in OnServerRemoveFriendResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerRemoveFriendResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResult>)each; } } }
+            if (OnServerRemoveFriendResultEvent != null) { foreach (var each in OnServerRemoveFriendResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerRemoveFriendResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResponse>)each; } } }
 
             if (OnServerRemovePlayerTagRequestEvent != null) { foreach (var each in OnServerRemovePlayerTagRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerRemovePlayerTagRequestEvent -= (PlayFabRequestEvent<ServerModels.RemovePlayerTagRequest>)each; } } }
             if (OnServerRemovePlayerTagResultEvent != null) { foreach (var each in OnServerRemovePlayerTagResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerRemovePlayerTagResultEvent -= (PlayFabResultEvent<ServerModels.RemovePlayerTagResult>)each; } } }
@@ -1030,7 +1041,7 @@ namespace PlayFab.Events
             if (OnServerSendPushNotificationResultEvent != null) { foreach (var each in OnServerSendPushNotificationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSendPushNotificationResultEvent -= (PlayFabResultEvent<ServerModels.SendPushNotificationResult>)each; } } }
 
             if (OnServerSetFriendTagsRequestEvent != null) { foreach (var each in OnServerSetFriendTagsRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSetFriendTagsRequestEvent -= (PlayFabRequestEvent<ServerModels.SetFriendTagsRequest>)each; } } }
-            if (OnServerSetFriendTagsResultEvent != null) { foreach (var each in OnServerSetFriendTagsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSetFriendTagsResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResult>)each; } } }
+            if (OnServerSetFriendTagsResultEvent != null) { foreach (var each in OnServerSetFriendTagsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSetFriendTagsResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResponse>)each; } } }
 
             if (OnServerSetGameServerInstanceDataRequestEvent != null) { foreach (var each in OnServerSetGameServerInstanceDataRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSetGameServerInstanceDataRequestEvent -= (PlayFabRequestEvent<ServerModels.SetGameServerInstanceDataRequest>)each; } } }
             if (OnServerSetGameServerInstanceDataResultEvent != null) { foreach (var each in OnServerSetGameServerInstanceDataResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerSetGameServerInstanceDataResultEvent -= (PlayFabResultEvent<ServerModels.SetGameServerInstanceDataResult>)each; } } }
@@ -1066,7 +1077,7 @@ namespace PlayFab.Events
             if (OnServerUnlockContainerItemResultEvent != null) { foreach (var each in OnServerUnlockContainerItemResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUnlockContainerItemResultEvent -= (PlayFabResultEvent<ServerModels.UnlockContainerItemResult>)each; } } }
 
             if (OnServerUpdateAvatarUrlRequestEvent != null) { foreach (var each in OnServerUpdateAvatarUrlRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateAvatarUrlRequestEvent -= (PlayFabRequestEvent<ServerModels.UpdateAvatarUrlRequest>)each; } } }
-            if (OnServerUpdateAvatarUrlResultEvent != null) { foreach (var each in OnServerUpdateAvatarUrlResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateAvatarUrlResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResult>)each; } } }
+            if (OnServerUpdateAvatarUrlResultEvent != null) { foreach (var each in OnServerUpdateAvatarUrlResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateAvatarUrlResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResponse>)each; } } }
 
             if (OnServerUpdateBansRequestEvent != null) { foreach (var each in OnServerUpdateBansRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateBansRequestEvent -= (PlayFabRequestEvent<ServerModels.UpdateBansRequest>)each; } } }
             if (OnServerUpdateBansResultEvent != null) { foreach (var each in OnServerUpdateBansResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateBansResultEvent -= (PlayFabResultEvent<ServerModels.UpdateBansResult>)each; } } }
@@ -1096,7 +1107,7 @@ namespace PlayFab.Events
             if (OnServerUpdateUserInternalDataResultEvent != null) { foreach (var each in OnServerUpdateUserInternalDataResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateUserInternalDataResultEvent -= (PlayFabResultEvent<ServerModels.UpdateUserDataResult>)each; } } }
 
             if (OnServerUpdateUserInventoryItemCustomDataRequestEvent != null) { foreach (var each in OnServerUpdateUserInventoryItemCustomDataRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateUserInventoryItemCustomDataRequestEvent -= (PlayFabRequestEvent<ServerModels.UpdateUserInventoryItemDataRequest>)each; } } }
-            if (OnServerUpdateUserInventoryItemCustomDataResultEvent != null) { foreach (var each in OnServerUpdateUserInventoryItemCustomDataResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateUserInventoryItemCustomDataResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResult>)each; } } }
+            if (OnServerUpdateUserInventoryItemCustomDataResultEvent != null) { foreach (var each in OnServerUpdateUserInventoryItemCustomDataResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateUserInventoryItemCustomDataResultEvent -= (PlayFabResultEvent<ServerModels.EmptyResponse>)each; } } }
 
             if (OnServerUpdateUserPublisherDataRequestEvent != null) { foreach (var each in OnServerUpdateUserPublisherDataRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateUserPublisherDataRequestEvent -= (PlayFabRequestEvent<ServerModels.UpdateUserDataRequest>)each; } } }
             if (OnServerUpdateUserPublisherDataResultEvent != null) { foreach (var each in OnServerUpdateUserPublisherDataResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerUpdateUserPublisherDataResultEvent -= (PlayFabResultEvent<ServerModels.UpdateUserDataResult>)each; } } }
@@ -1120,17 +1131,17 @@ namespace PlayFab.Events
             if (OnServerWriteTitleEventResultEvent != null) { foreach (var each in OnServerWriteTitleEventResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnServerWriteTitleEventResultEvent -= (PlayFabResultEvent<ServerModels.WriteEventResponse>)each; } } }
 
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
             if (OnAuthenticationGetEntityTokenRequestEvent != null) { foreach (var each in OnAuthenticationGetEntityTokenRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationGetEntityTokenRequestEvent -= (PlayFabRequestEvent<AuthenticationModels.GetEntityTokenRequest>)each; } } }
             if (OnAuthenticationGetEntityTokenResultEvent != null) { foreach (var each in OnAuthenticationGetEntityTokenResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationGetEntityTokenResultEvent -= (PlayFabResultEvent<AuthenticationModels.GetEntityTokenResponse>)each; } } }
 
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
             if (OnCloudScriptExecuteEntityCloudScriptRequestEvent != null) { foreach (var each in OnCloudScriptExecuteEntityCloudScriptRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnCloudScriptExecuteEntityCloudScriptRequestEvent -= (PlayFabRequestEvent<CloudScriptModels.ExecuteEntityCloudScriptRequest>)each; } } }
             if (OnCloudScriptExecuteEntityCloudScriptResultEvent != null) { foreach (var each in OnCloudScriptExecuteEntityCloudScriptResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnCloudScriptExecuteEntityCloudScriptResultEvent -= (PlayFabResultEvent<CloudScriptModels.ExecuteCloudScriptResult>)each; } } }
 
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
             if (OnDataAbortFileUploadsRequestEvent != null) { foreach (var each in OnDataAbortFileUploadsRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnDataAbortFileUploadsRequestEvent -= (PlayFabRequestEvent<DataModels.AbortFileUploadsRequest>)each; } } }
             if (OnDataAbortFileUploadsResultEvent != null) { foreach (var each in OnDataAbortFileUploadsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnDataAbortFileUploadsResultEvent -= (PlayFabResultEvent<DataModels.AbortFileUploadsResponse>)each; } } }
 
@@ -1153,29 +1164,29 @@ namespace PlayFab.Events
             if (OnDataSetObjectsResultEvent != null) { foreach (var each in OnDataSetObjectsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnDataSetObjectsResultEvent -= (PlayFabResultEvent<DataModels.SetObjectsResponse>)each; } } }
 
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
             if (OnEventsWriteEventsRequestEvent != null) { foreach (var each in OnEventsWriteEventsRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsWriteEventsRequestEvent -= (PlayFabRequestEvent<EventsModels.WriteEventsRequest>)each; } } }
             if (OnEventsWriteEventsResultEvent != null) { foreach (var each in OnEventsWriteEventsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsWriteEventsResultEvent -= (PlayFabResultEvent<EventsModels.WriteEventsResponse>)each; } } }
 
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
             if (OnGroupsAcceptGroupApplicationRequestEvent != null) { foreach (var each in OnGroupsAcceptGroupApplicationRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAcceptGroupApplicationRequestEvent -= (PlayFabRequestEvent<GroupsModels.AcceptGroupApplicationRequest>)each; } } }
-            if (OnGroupsAcceptGroupApplicationResultEvent != null) { foreach (var each in OnGroupsAcceptGroupApplicationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAcceptGroupApplicationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsAcceptGroupApplicationResultEvent != null) { foreach (var each in OnGroupsAcceptGroupApplicationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAcceptGroupApplicationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsAcceptGroupInvitationRequestEvent != null) { foreach (var each in OnGroupsAcceptGroupInvitationRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAcceptGroupInvitationRequestEvent -= (PlayFabRequestEvent<GroupsModels.AcceptGroupInvitationRequest>)each; } } }
-            if (OnGroupsAcceptGroupInvitationResultEvent != null) { foreach (var each in OnGroupsAcceptGroupInvitationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAcceptGroupInvitationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsAcceptGroupInvitationResultEvent != null) { foreach (var each in OnGroupsAcceptGroupInvitationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAcceptGroupInvitationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsAddMembersRequestEvent != null) { foreach (var each in OnGroupsAddMembersRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAddMembersRequestEvent -= (PlayFabRequestEvent<GroupsModels.AddMembersRequest>)each; } } }
-            if (OnGroupsAddMembersResultEvent != null) { foreach (var each in OnGroupsAddMembersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAddMembersResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsAddMembersResultEvent != null) { foreach (var each in OnGroupsAddMembersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsAddMembersResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsApplyToGroupRequestEvent != null) { foreach (var each in OnGroupsApplyToGroupRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsApplyToGroupRequestEvent -= (PlayFabRequestEvent<GroupsModels.ApplyToGroupRequest>)each; } } }
             if (OnGroupsApplyToGroupResultEvent != null) { foreach (var each in OnGroupsApplyToGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsApplyToGroupResultEvent -= (PlayFabResultEvent<GroupsModels.ApplyToGroupResponse>)each; } } }
 
             if (OnGroupsBlockEntityRequestEvent != null) { foreach (var each in OnGroupsBlockEntityRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsBlockEntityRequestEvent -= (PlayFabRequestEvent<GroupsModels.BlockEntityRequest>)each; } } }
-            if (OnGroupsBlockEntityResultEvent != null) { foreach (var each in OnGroupsBlockEntityResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsBlockEntityResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsBlockEntityResultEvent != null) { foreach (var each in OnGroupsBlockEntityResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsBlockEntityResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsChangeMemberRoleRequestEvent != null) { foreach (var each in OnGroupsChangeMemberRoleRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsChangeMemberRoleRequestEvent -= (PlayFabRequestEvent<GroupsModels.ChangeMemberRoleRequest>)each; } } }
-            if (OnGroupsChangeMemberRoleResultEvent != null) { foreach (var each in OnGroupsChangeMemberRoleResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsChangeMemberRoleResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsChangeMemberRoleResultEvent != null) { foreach (var each in OnGroupsChangeMemberRoleResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsChangeMemberRoleResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsCreateGroupRequestEvent != null) { foreach (var each in OnGroupsCreateGroupRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsCreateGroupRequestEvent -= (PlayFabRequestEvent<GroupsModels.CreateGroupRequest>)each; } } }
             if (OnGroupsCreateGroupResultEvent != null) { foreach (var each in OnGroupsCreateGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsCreateGroupResultEvent -= (PlayFabResultEvent<GroupsModels.CreateGroupResponse>)each; } } }
@@ -1184,10 +1195,10 @@ namespace PlayFab.Events
             if (OnGroupsCreateRoleResultEvent != null) { foreach (var each in OnGroupsCreateRoleResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsCreateRoleResultEvent -= (PlayFabResultEvent<GroupsModels.CreateGroupRoleResponse>)each; } } }
 
             if (OnGroupsDeleteGroupRequestEvent != null) { foreach (var each in OnGroupsDeleteGroupRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsDeleteGroupRequestEvent -= (PlayFabRequestEvent<GroupsModels.DeleteGroupRequest>)each; } } }
-            if (OnGroupsDeleteGroupResultEvent != null) { foreach (var each in OnGroupsDeleteGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsDeleteGroupResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsDeleteGroupResultEvent != null) { foreach (var each in OnGroupsDeleteGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsDeleteGroupResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsDeleteRoleRequestEvent != null) { foreach (var each in OnGroupsDeleteRoleRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsDeleteRoleRequestEvent -= (PlayFabRequestEvent<GroupsModels.DeleteRoleRequest>)each; } } }
-            if (OnGroupsDeleteRoleResultEvent != null) { foreach (var each in OnGroupsDeleteRoleResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsDeleteRoleResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsDeleteRoleResultEvent != null) { foreach (var each in OnGroupsDeleteRoleResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsDeleteRoleResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsGetGroupRequestEvent != null) { foreach (var each in OnGroupsGetGroupRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsGetGroupRequestEvent -= (PlayFabRequestEvent<GroupsModels.GetGroupRequest>)each; } } }
             if (OnGroupsGetGroupResultEvent != null) { foreach (var each in OnGroupsGetGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsGetGroupResultEvent -= (PlayFabResultEvent<GroupsModels.GetGroupResponse>)each; } } }
@@ -1217,16 +1228,16 @@ namespace PlayFab.Events
             if (OnGroupsListMembershipOpportunitiesResultEvent != null) { foreach (var each in OnGroupsListMembershipOpportunitiesResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsListMembershipOpportunitiesResultEvent -= (PlayFabResultEvent<GroupsModels.ListMembershipOpportunitiesResponse>)each; } } }
 
             if (OnGroupsRemoveGroupApplicationRequestEvent != null) { foreach (var each in OnGroupsRemoveGroupApplicationRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveGroupApplicationRequestEvent -= (PlayFabRequestEvent<GroupsModels.RemoveGroupApplicationRequest>)each; } } }
-            if (OnGroupsRemoveGroupApplicationResultEvent != null) { foreach (var each in OnGroupsRemoveGroupApplicationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveGroupApplicationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsRemoveGroupApplicationResultEvent != null) { foreach (var each in OnGroupsRemoveGroupApplicationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveGroupApplicationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsRemoveGroupInvitationRequestEvent != null) { foreach (var each in OnGroupsRemoveGroupInvitationRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveGroupInvitationRequestEvent -= (PlayFabRequestEvent<GroupsModels.RemoveGroupInvitationRequest>)each; } } }
-            if (OnGroupsRemoveGroupInvitationResultEvent != null) { foreach (var each in OnGroupsRemoveGroupInvitationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveGroupInvitationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsRemoveGroupInvitationResultEvent != null) { foreach (var each in OnGroupsRemoveGroupInvitationResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveGroupInvitationResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsRemoveMembersRequestEvent != null) { foreach (var each in OnGroupsRemoveMembersRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveMembersRequestEvent -= (PlayFabRequestEvent<GroupsModels.RemoveMembersRequest>)each; } } }
-            if (OnGroupsRemoveMembersResultEvent != null) { foreach (var each in OnGroupsRemoveMembersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveMembersResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsRemoveMembersResultEvent != null) { foreach (var each in OnGroupsRemoveMembersResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsRemoveMembersResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsUnblockEntityRequestEvent != null) { foreach (var each in OnGroupsUnblockEntityRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsUnblockEntityRequestEvent -= (PlayFabRequestEvent<GroupsModels.UnblockEntityRequest>)each; } } }
-            if (OnGroupsUnblockEntityResultEvent != null) { foreach (var each in OnGroupsUnblockEntityResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsUnblockEntityResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResult>)each; } } }
+            if (OnGroupsUnblockEntityResultEvent != null) { foreach (var each in OnGroupsUnblockEntityResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsUnblockEntityResultEvent -= (PlayFabResultEvent<GroupsModels.EmptyResponse>)each; } } }
 
             if (OnGroupsUpdateGroupRequestEvent != null) { foreach (var each in OnGroupsUpdateGroupRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsUpdateGroupRequestEvent -= (PlayFabRequestEvent<GroupsModels.UpdateGroupRequest>)each; } } }
             if (OnGroupsUpdateGroupResultEvent != null) { foreach (var each in OnGroupsUpdateGroupResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsUpdateGroupResultEvent -= (PlayFabResultEvent<GroupsModels.UpdateGroupResponse>)each; } } }
@@ -1235,7 +1246,7 @@ namespace PlayFab.Events
             if (OnGroupsUpdateRoleResultEvent != null) { foreach (var each in OnGroupsUpdateRoleResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnGroupsUpdateRoleResultEvent -= (PlayFabResultEvent<GroupsModels.UpdateGroupRoleResponse>)each; } } }
 
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
             if (OnProfilesGetGlobalPolicyRequestEvent != null) { foreach (var each in OnProfilesGetGlobalPolicyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnProfilesGetGlobalPolicyRequestEvent -= (PlayFabRequestEvent<ProfilesModels.GetGlobalPolicyRequest>)each; } } }
             if (OnProfilesGetGlobalPolicyResultEvent != null) { foreach (var each in OnProfilesGetGlobalPolicyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnProfilesGetGlobalPolicyResultEvent -= (PlayFabResultEvent<ProfilesModels.GetGlobalPolicyResponse>)each; } } }
 
@@ -1393,6 +1404,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.CancelTradeRequest)) { if (_instance.OnCancelTradeRequestEvent != null) { _instance.OnCancelTradeRequestEvent((ClientModels.CancelTradeRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.ConfirmPurchaseRequest)) { if (_instance.OnConfirmPurchaseRequestEvent != null) { _instance.OnConfirmPurchaseRequestEvent((ClientModels.ConfirmPurchaseRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.ConsumeItemRequest)) { if (_instance.OnConsumeItemRequestEvent != null) { _instance.OnConsumeItemRequestEvent((ClientModels.ConsumeItemRequest)e.Request); return; } }
+                if (type == typeof(ClientModels.ConsumeXboxEntitlementsRequest)) { if (_instance.OnConsumeXboxEntitlementsRequestEvent != null) { _instance.OnConsumeXboxEntitlementsRequestEvent((ClientModels.ConsumeXboxEntitlementsRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.CreateSharedGroupRequest)) { if (_instance.OnCreateSharedGroupRequestEvent != null) { _instance.OnCreateSharedGroupRequestEvent((ClientModels.CreateSharedGroupRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.ExecuteCloudScriptRequest)) { if (_instance.OnExecuteCloudScriptRequestEvent != null) { _instance.OnExecuteCloudScriptRequestEvent((ClientModels.ExecuteCloudScriptRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.GetAccountInfoRequest)) { if (_instance.OnGetAccountInfoRequestEvent != null) { _instance.OnGetAccountInfoRequestEvent((ClientModels.GetAccountInfoRequest)e.Request); return; } }
@@ -1459,6 +1471,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.LinkSteamAccountRequest)) { if (_instance.OnLinkSteamAccountRequestEvent != null) { _instance.OnLinkSteamAccountRequestEvent((ClientModels.LinkSteamAccountRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LinkTwitchAccountRequest)) { if (_instance.OnLinkTwitchRequestEvent != null) { _instance.OnLinkTwitchRequestEvent((ClientModels.LinkTwitchAccountRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LinkWindowsHelloAccountRequest)) { if (_instance.OnLinkWindowsHelloRequestEvent != null) { _instance.OnLinkWindowsHelloRequestEvent((ClientModels.LinkWindowsHelloAccountRequest)e.Request); return; } }
+                if (type == typeof(ClientModels.LinkXboxAccountRequest)) { if (_instance.OnLinkXboxAccountRequestEvent != null) { _instance.OnLinkXboxAccountRequestEvent((ClientModels.LinkXboxAccountRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithAndroidDeviceIDRequest)) { if (_instance.OnLoginWithAndroidDeviceIDRequestEvent != null) { _instance.OnLoginWithAndroidDeviceIDRequestEvent((ClientModels.LoginWithAndroidDeviceIDRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithCustomIDRequest)) { if (_instance.OnLoginWithCustomIDRequestEvent != null) { _instance.OnLoginWithCustomIDRequestEvent((ClientModels.LoginWithCustomIDRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithEmailAddressRequest)) { if (_instance.OnLoginWithEmailAddressRequestEvent != null) { _instance.OnLoginWithEmailAddressRequestEvent((ClientModels.LoginWithEmailAddressRequest)e.Request); return; } }
@@ -1473,6 +1486,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.LoginWithSteamRequest)) { if (_instance.OnLoginWithSteamRequestEvent != null) { _instance.OnLoginWithSteamRequestEvent((ClientModels.LoginWithSteamRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithTwitchRequest)) { if (_instance.OnLoginWithTwitchRequestEvent != null) { _instance.OnLoginWithTwitchRequestEvent((ClientModels.LoginWithTwitchRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithWindowsHelloRequest)) { if (_instance.OnLoginWithWindowsHelloRequestEvent != null) { _instance.OnLoginWithWindowsHelloRequestEvent((ClientModels.LoginWithWindowsHelloRequest)e.Request); return; } }
+                if (type == typeof(ClientModels.LoginWithXboxRequest)) { if (_instance.OnLoginWithXboxRequestEvent != null) { _instance.OnLoginWithXboxRequestEvent((ClientModels.LoginWithXboxRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.MatchmakeRequest)) { if (_instance.OnMatchmakeRequestEvent != null) { _instance.OnMatchmakeRequestEvent((ClientModels.MatchmakeRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.OpenTradeRequest)) { if (_instance.OnOpenTradeRequestEvent != null) { _instance.OnOpenTradeRequestEvent((ClientModels.OpenTradeRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.PayForPurchaseRequest)) { if (_instance.OnPayForPurchaseRequestEvent != null) { _instance.OnPayForPurchaseRequestEvent((ClientModels.PayForPurchaseRequest)e.Request); return; } }
@@ -1506,6 +1520,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.UnlinkSteamAccountRequest)) { if (_instance.OnUnlinkSteamAccountRequestEvent != null) { _instance.OnUnlinkSteamAccountRequestEvent((ClientModels.UnlinkSteamAccountRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.UnlinkTwitchAccountRequest)) { if (_instance.OnUnlinkTwitchRequestEvent != null) { _instance.OnUnlinkTwitchRequestEvent((ClientModels.UnlinkTwitchAccountRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.UnlinkWindowsHelloAccountRequest)) { if (_instance.OnUnlinkWindowsHelloRequestEvent != null) { _instance.OnUnlinkWindowsHelloRequestEvent((ClientModels.UnlinkWindowsHelloAccountRequest)e.Request); return; } }
+                if (type == typeof(ClientModels.UnlinkXboxAccountRequest)) { if (_instance.OnUnlinkXboxAccountRequestEvent != null) { _instance.OnUnlinkXboxAccountRequestEvent((ClientModels.UnlinkXboxAccountRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.UnlockContainerInstanceRequest)) { if (_instance.OnUnlockContainerInstanceRequestEvent != null) { _instance.OnUnlockContainerInstanceRequestEvent((ClientModels.UnlockContainerInstanceRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.UnlockContainerItemRequest)) { if (_instance.OnUnlockContainerItemRequestEvent != null) { _instance.OnUnlockContainerItemRequestEvent((ClientModels.UnlockContainerItemRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.UpdateAvatarUrlRequest)) { if (_instance.OnUpdateAvatarUrlRequestEvent != null) { _instance.OnUpdateAvatarUrlRequestEvent((ClientModels.UpdateAvatarUrlRequest)e.Request); return; } }
@@ -1646,13 +1661,13 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.WriteServerPlayerEventRequest)) { if (_instance.OnServerWritePlayerEventRequestEvent != null) { _instance.OnServerWritePlayerEventRequestEvent((ServerModels.WriteServerPlayerEventRequest)e.Request); return; } }
                 if (type == typeof(ServerModels.WriteTitleEventRequest)) { if (_instance.OnServerWriteTitleEventRequestEvent != null) { _instance.OnServerWriteTitleEventRequestEvent((ServerModels.WriteTitleEventRequest)e.Request); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(AuthenticationModels.GetEntityTokenRequest)) { if (_instance.OnAuthenticationGetEntityTokenRequestEvent != null) { _instance.OnAuthenticationGetEntityTokenRequestEvent((AuthenticationModels.GetEntityTokenRequest)e.Request); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(CloudScriptModels.ExecuteEntityCloudScriptRequest)) { if (_instance.OnCloudScriptExecuteEntityCloudScriptRequestEvent != null) { _instance.OnCloudScriptExecuteEntityCloudScriptRequestEvent((CloudScriptModels.ExecuteEntityCloudScriptRequest)e.Request); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(DataModels.AbortFileUploadsRequest)) { if (_instance.OnDataAbortFileUploadsRequestEvent != null) { _instance.OnDataAbortFileUploadsRequestEvent((DataModels.AbortFileUploadsRequest)e.Request); return; } }
                 if (type == typeof(DataModels.DeleteFilesRequest)) { if (_instance.OnDataDeleteFilesRequestEvent != null) { _instance.OnDataDeleteFilesRequestEvent((DataModels.DeleteFilesRequest)e.Request); return; } }
                 if (type == typeof(DataModels.FinalizeFileUploadsRequest)) { if (_instance.OnDataFinalizeFileUploadsRequestEvent != null) { _instance.OnDataFinalizeFileUploadsRequestEvent((DataModels.FinalizeFileUploadsRequest)e.Request); return; } }
@@ -1661,10 +1676,10 @@ namespace PlayFab.Events
                 if (type == typeof(DataModels.InitiateFileUploadsRequest)) { if (_instance.OnDataInitiateFileUploadsRequestEvent != null) { _instance.OnDataInitiateFileUploadsRequestEvent((DataModels.InitiateFileUploadsRequest)e.Request); return; } }
                 if (type == typeof(DataModels.SetObjectsRequest)) { if (_instance.OnDataSetObjectsRequestEvent != null) { _instance.OnDataSetObjectsRequestEvent((DataModels.SetObjectsRequest)e.Request); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(EventsModels.WriteEventsRequest)) { if (_instance.OnEventsWriteEventsRequestEvent != null) { _instance.OnEventsWriteEventsRequestEvent((EventsModels.WriteEventsRequest)e.Request); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(GroupsModels.AcceptGroupApplicationRequest)) { if (_instance.OnGroupsAcceptGroupApplicationRequestEvent != null) { _instance.OnGroupsAcceptGroupApplicationRequestEvent((GroupsModels.AcceptGroupApplicationRequest)e.Request); return; } }
                 if (type == typeof(GroupsModels.AcceptGroupInvitationRequest)) { if (_instance.OnGroupsAcceptGroupInvitationRequestEvent != null) { _instance.OnGroupsAcceptGroupInvitationRequestEvent((GroupsModels.AcceptGroupInvitationRequest)e.Request); return; } }
                 if (type == typeof(GroupsModels.AddMembersRequest)) { if (_instance.OnGroupsAddMembersRequestEvent != null) { _instance.OnGroupsAddMembersRequestEvent((GroupsModels.AddMembersRequest)e.Request); return; } }
@@ -1691,7 +1706,7 @@ namespace PlayFab.Events
                 if (type == typeof(GroupsModels.UpdateGroupRequest)) { if (_instance.OnGroupsUpdateGroupRequestEvent != null) { _instance.OnGroupsUpdateGroupRequestEvent((GroupsModels.UpdateGroupRequest)e.Request); return; } }
                 if (type == typeof(GroupsModels.UpdateGroupRoleRequest)) { if (_instance.OnGroupsUpdateRoleRequestEvent != null) { _instance.OnGroupsUpdateRoleRequestEvent((GroupsModels.UpdateGroupRoleRequest)e.Request); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(ProfilesModels.GetGlobalPolicyRequest)) { if (_instance.OnProfilesGetGlobalPolicyRequestEvent != null) { _instance.OnProfilesGetGlobalPolicyRequestEvent((ProfilesModels.GetGlobalPolicyRequest)e.Request); return; } }
                 if (type == typeof(ProfilesModels.GetEntityProfileRequest)) { if (_instance.OnProfilesGetProfileRequestEvent != null) { _instance.OnProfilesGetProfileRequestEvent((ProfilesModels.GetEntityProfileRequest)e.Request); return; } }
                 if (type == typeof(ProfilesModels.GetEntityProfilesRequest)) { if (_instance.OnProfilesGetProfilesRequestEvent != null) { _instance.OnProfilesGetProfilesRequestEvent((ProfilesModels.GetEntityProfilesRequest)e.Request); return; } }
@@ -1706,7 +1721,7 @@ namespace PlayFab.Events
                 var type = e.Result.GetType();
 #if ENABLE_PLAYFABADMIN_API
 
-                if (type == typeof(AdminModels.EmptyResult)) { if (_instance.OnAdminAbortTaskInstanceResultEvent != null) { _instance.OnAdminAbortTaskInstanceResultEvent((AdminModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(AdminModels.EmptyResponse)) { if (_instance.OnAdminAbortTaskInstanceResultEvent != null) { _instance.OnAdminAbortTaskInstanceResultEvent((AdminModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(AdminModels.AddNewsResult)) { if (_instance.OnAdminAddNewsResultEvent != null) { _instance.OnAdminAddNewsResultEvent((AdminModels.AddNewsResult)e.Result); return; } }
                 if (type == typeof(AdminModels.AddPlayerTagResult)) { if (_instance.OnAdminAddPlayerTagResultEvent != null) { _instance.OnAdminAddPlayerTagResultEvent((AdminModels.AddPlayerTagResult)e.Result); return; } }
                 if (type == typeof(AdminModels.AddServerBuildResult)) { if (_instance.OnAdminAddServerBuildResultEvent != null) { _instance.OnAdminAddServerBuildResultEvent((AdminModels.AddServerBuildResult)e.Result); return; } }
@@ -1723,7 +1738,7 @@ namespace PlayFab.Events
                 if (type == typeof(AdminModels.DeletePlayerResult)) { if (_instance.OnAdminDeletePlayerResultEvent != null) { _instance.OnAdminDeletePlayerResultEvent((AdminModels.DeletePlayerResult)e.Result); return; } }
                 if (type == typeof(AdminModels.DeletePlayerSharedSecretResult)) { if (_instance.OnAdminDeletePlayerSharedSecretResultEvent != null) { _instance.OnAdminDeletePlayerSharedSecretResultEvent((AdminModels.DeletePlayerSharedSecretResult)e.Result); return; } }
                 if (type == typeof(AdminModels.DeleteStoreResult)) { if (_instance.OnAdminDeleteStoreResultEvent != null) { _instance.OnAdminDeleteStoreResultEvent((AdminModels.DeleteStoreResult)e.Result); return; } }
-                if (type == typeof(AdminModels.EmptyResult)) { if (_instance.OnAdminDeleteTaskResultEvent != null) { _instance.OnAdminDeleteTaskResultEvent((AdminModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(AdminModels.EmptyResponse)) { if (_instance.OnAdminDeleteTaskResultEvent != null) { _instance.OnAdminDeleteTaskResultEvent((AdminModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(AdminModels.DeleteTitleResult)) { if (_instance.OnAdminDeleteTitleResultEvent != null) { _instance.OnAdminDeleteTitleResultEvent((AdminModels.DeleteTitleResult)e.Result); return; } }
                 if (type == typeof(AdminModels.ExportMasterPlayerDataResult)) { if (_instance.OnAdminExportMasterPlayerDataResultEvent != null) { _instance.OnAdminExportMasterPlayerDataResultEvent((AdminModels.ExportMasterPlayerDataResult)e.Result); return; } }
                 if (type == typeof(AdminModels.GetActionsOnPlayersInSegmentTaskInstanceResult)) { if (_instance.OnAdminGetActionsOnPlayersInSegmentTaskInstanceResultEvent != null) { _instance.OnAdminGetActionsOnPlayersInSegmentTaskInstanceResultEvent((AdminModels.GetActionsOnPlayersInSegmentTaskInstanceResult)e.Result); return; } }
@@ -1803,7 +1818,7 @@ namespace PlayFab.Events
                 if (type == typeof(AdminModels.UpdatePolicyResponse)) { if (_instance.OnAdminUpdatePolicyResultEvent != null) { _instance.OnAdminUpdatePolicyResultEvent((AdminModels.UpdatePolicyResponse)e.Result); return; } }
                 if (type == typeof(AdminModels.UpdateRandomResultTablesResult)) { if (_instance.OnAdminUpdateRandomResultTablesResultEvent != null) { _instance.OnAdminUpdateRandomResultTablesResultEvent((AdminModels.UpdateRandomResultTablesResult)e.Result); return; } }
                 if (type == typeof(AdminModels.UpdateStoreItemsResult)) { if (_instance.OnAdminUpdateStoreItemsResultEvent != null) { _instance.OnAdminUpdateStoreItemsResultEvent((AdminModels.UpdateStoreItemsResult)e.Result); return; } }
-                if (type == typeof(AdminModels.EmptyResult)) { if (_instance.OnAdminUpdateTaskResultEvent != null) { _instance.OnAdminUpdateTaskResultEvent((AdminModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(AdminModels.EmptyResponse)) { if (_instance.OnAdminUpdateTaskResultEvent != null) { _instance.OnAdminUpdateTaskResultEvent((AdminModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(AdminModels.UpdateUserDataResult)) { if (_instance.OnAdminUpdateUserDataResultEvent != null) { _instance.OnAdminUpdateUserDataResultEvent((AdminModels.UpdateUserDataResult)e.Result); return; } }
                 if (type == typeof(AdminModels.UpdateUserDataResult)) { if (_instance.OnAdminUpdateUserInternalDataResultEvent != null) { _instance.OnAdminUpdateUserInternalDataResultEvent((AdminModels.UpdateUserDataResult)e.Result); return; } }
                 if (type == typeof(AdminModels.UpdateUserDataResult)) { if (_instance.OnAdminUpdateUserPublisherDataResultEvent != null) { _instance.OnAdminUpdateUserPublisherDataResultEvent((AdminModels.UpdateUserDataResult)e.Result); return; } }
@@ -1827,6 +1842,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.CancelTradeResponse)) { if (_instance.OnCancelTradeResultEvent != null) { _instance.OnCancelTradeResultEvent((ClientModels.CancelTradeResponse)e.Result); return; } }
                 if (type == typeof(ClientModels.ConfirmPurchaseResult)) { if (_instance.OnConfirmPurchaseResultEvent != null) { _instance.OnConfirmPurchaseResultEvent((ClientModels.ConfirmPurchaseResult)e.Result); return; } }
                 if (type == typeof(ClientModels.ConsumeItemResult)) { if (_instance.OnConsumeItemResultEvent != null) { _instance.OnConsumeItemResultEvent((ClientModels.ConsumeItemResult)e.Result); return; } }
+                if (type == typeof(ClientModels.ConsumeXboxEntitlementsResult)) { if (_instance.OnConsumeXboxEntitlementsResultEvent != null) { _instance.OnConsumeXboxEntitlementsResultEvent((ClientModels.ConsumeXboxEntitlementsResult)e.Result); return; } }
                 if (type == typeof(ClientModels.CreateSharedGroupResult)) { if (_instance.OnCreateSharedGroupResultEvent != null) { _instance.OnCreateSharedGroupResultEvent((ClientModels.CreateSharedGroupResult)e.Result); return; } }
                 if (type == typeof(ClientModels.ExecuteCloudScriptResult)) { if (_instance.OnExecuteCloudScriptResultEvent != null) { _instance.OnExecuteCloudScriptResultEvent((ClientModels.ExecuteCloudScriptResult)e.Result); return; } }
                 if (type == typeof(ClientModels.GetAccountInfoResult)) { if (_instance.OnGetAccountInfoResultEvent != null) { _instance.OnGetAccountInfoResultEvent((ClientModels.GetAccountInfoResult)e.Result); return; } }
@@ -1893,6 +1909,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.LinkSteamAccountResult)) { if (_instance.OnLinkSteamAccountResultEvent != null) { _instance.OnLinkSteamAccountResultEvent((ClientModels.LinkSteamAccountResult)e.Result); return; } }
                 if (type == typeof(ClientModels.LinkTwitchAccountResult)) { if (_instance.OnLinkTwitchResultEvent != null) { _instance.OnLinkTwitchResultEvent((ClientModels.LinkTwitchAccountResult)e.Result); return; } }
                 if (type == typeof(ClientModels.LinkWindowsHelloAccountResponse)) { if (_instance.OnLinkWindowsHelloResultEvent != null) { _instance.OnLinkWindowsHelloResultEvent((ClientModels.LinkWindowsHelloAccountResponse)e.Result); return; } }
+                if (type == typeof(ClientModels.LinkXboxAccountResult)) { if (_instance.OnLinkXboxAccountResultEvent != null) { _instance.OnLinkXboxAccountResultEvent((ClientModels.LinkXboxAccountResult)e.Result); return; } }
                 if (type == typeof(ClientModels.MatchmakeResult)) { if (_instance.OnMatchmakeResultEvent != null) { _instance.OnMatchmakeResultEvent((ClientModels.MatchmakeResult)e.Result); return; } }
                 if (type == typeof(ClientModels.OpenTradeResponse)) { if (_instance.OnOpenTradeResultEvent != null) { _instance.OnOpenTradeResultEvent((ClientModels.OpenTradeResponse)e.Result); return; } }
                 if (type == typeof(ClientModels.PayForPurchaseResult)) { if (_instance.OnPayForPurchaseResultEvent != null) { _instance.OnPayForPurchaseResultEvent((ClientModels.PayForPurchaseResult)e.Result); return; } }
@@ -1904,7 +1921,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.RemoveFriendResult)) { if (_instance.OnRemoveFriendResultEvent != null) { _instance.OnRemoveFriendResultEvent((ClientModels.RemoveFriendResult)e.Result); return; } }
                 if (type == typeof(ClientModels.RemoveGenericIDResult)) { if (_instance.OnRemoveGenericIDResultEvent != null) { _instance.OnRemoveGenericIDResultEvent((ClientModels.RemoveGenericIDResult)e.Result); return; } }
                 if (type == typeof(ClientModels.RemoveSharedGroupMembersResult)) { if (_instance.OnRemoveSharedGroupMembersResultEvent != null) { _instance.OnRemoveSharedGroupMembersResultEvent((ClientModels.RemoveSharedGroupMembersResult)e.Result); return; } }
-                if (type == typeof(ClientModels.EmptyResult)) { if (_instance.OnReportDeviceInfoResultEvent != null) { _instance.OnReportDeviceInfoResultEvent((ClientModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ClientModels.EmptyResponse)) { if (_instance.OnReportDeviceInfoResultEvent != null) { _instance.OnReportDeviceInfoResultEvent((ClientModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ClientModels.ReportPlayerClientResult)) { if (_instance.OnReportPlayerResultEvent != null) { _instance.OnReportPlayerResultEvent((ClientModels.ReportPlayerClientResult)e.Result); return; } }
                 if (type == typeof(ClientModels.RestoreIOSPurchasesResult)) { if (_instance.OnRestoreIOSPurchasesResultEvent != null) { _instance.OnRestoreIOSPurchasesResultEvent((ClientModels.RestoreIOSPurchasesResult)e.Result); return; } }
                 if (type == typeof(ClientModels.SendAccountRecoveryEmailResult)) { if (_instance.OnSendAccountRecoveryEmailResultEvent != null) { _instance.OnSendAccountRecoveryEmailResultEvent((ClientModels.SendAccountRecoveryEmailResult)e.Result); return; } }
@@ -1925,9 +1942,10 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.UnlinkSteamAccountResult)) { if (_instance.OnUnlinkSteamAccountResultEvent != null) { _instance.OnUnlinkSteamAccountResultEvent((ClientModels.UnlinkSteamAccountResult)e.Result); return; } }
                 if (type == typeof(ClientModels.UnlinkTwitchAccountResult)) { if (_instance.OnUnlinkTwitchResultEvent != null) { _instance.OnUnlinkTwitchResultEvent((ClientModels.UnlinkTwitchAccountResult)e.Result); return; } }
                 if (type == typeof(ClientModels.UnlinkWindowsHelloAccountResponse)) { if (_instance.OnUnlinkWindowsHelloResultEvent != null) { _instance.OnUnlinkWindowsHelloResultEvent((ClientModels.UnlinkWindowsHelloAccountResponse)e.Result); return; } }
+                if (type == typeof(ClientModels.UnlinkXboxAccountResult)) { if (_instance.OnUnlinkXboxAccountResultEvent != null) { _instance.OnUnlinkXboxAccountResultEvent((ClientModels.UnlinkXboxAccountResult)e.Result); return; } }
                 if (type == typeof(ClientModels.UnlockContainerItemResult)) { if (_instance.OnUnlockContainerInstanceResultEvent != null) { _instance.OnUnlockContainerInstanceResultEvent((ClientModels.UnlockContainerItemResult)e.Result); return; } }
                 if (type == typeof(ClientModels.UnlockContainerItemResult)) { if (_instance.OnUnlockContainerItemResultEvent != null) { _instance.OnUnlockContainerItemResultEvent((ClientModels.UnlockContainerItemResult)e.Result); return; } }
-                if (type == typeof(ClientModels.EmptyResult)) { if (_instance.OnUpdateAvatarUrlResultEvent != null) { _instance.OnUpdateAvatarUrlResultEvent((ClientModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ClientModels.EmptyResponse)) { if (_instance.OnUpdateAvatarUrlResultEvent != null) { _instance.OnUpdateAvatarUrlResultEvent((ClientModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ClientModels.UpdateCharacterDataResult)) { if (_instance.OnUpdateCharacterDataResultEvent != null) { _instance.OnUpdateCharacterDataResultEvent((ClientModels.UpdateCharacterDataResult)e.Result); return; } }
                 if (type == typeof(ClientModels.UpdateCharacterStatisticsResult)) { if (_instance.OnUpdateCharacterStatisticsResultEvent != null) { _instance.OnUpdateCharacterStatisticsResultEvent((ClientModels.UpdateCharacterStatisticsResult)e.Result); return; } }
                 if (type == typeof(ClientModels.UpdatePlayerStatisticsResult)) { if (_instance.OnUpdatePlayerStatisticsResultEvent != null) { _instance.OnUpdatePlayerStatisticsResultEvent((ClientModels.UpdatePlayerStatisticsResult)e.Result); return; } }
@@ -1954,7 +1972,7 @@ namespace PlayFab.Events
 #if ENABLE_PLAYFABSERVER_API
 
                 if (type == typeof(ServerModels.ModifyCharacterVirtualCurrencyResult)) { if (_instance.OnServerAddCharacterVirtualCurrencyResultEvent != null) { _instance.OnServerAddCharacterVirtualCurrencyResultEvent((ServerModels.ModifyCharacterVirtualCurrencyResult)e.Result); return; } }
-                if (type == typeof(ServerModels.EmptyResult)) { if (_instance.OnServerAddFriendResultEvent != null) { _instance.OnServerAddFriendResultEvent((ServerModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ServerModels.EmptyResponse)) { if (_instance.OnServerAddFriendResultEvent != null) { _instance.OnServerAddFriendResultEvent((ServerModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.AddPlayerTagResult)) { if (_instance.OnServerAddPlayerTagResultEvent != null) { _instance.OnServerAddPlayerTagResultEvent((ServerModels.AddPlayerTagResult)e.Result); return; } }
                 if (type == typeof(ServerModels.AddSharedGroupMembersResult)) { if (_instance.OnServerAddSharedGroupMembersResultEvent != null) { _instance.OnServerAddSharedGroupMembersResultEvent((ServerModels.AddSharedGroupMembersResult)e.Result); return; } }
                 if (type == typeof(ServerModels.ModifyUserVirtualCurrencyResult)) { if (_instance.OnServerAddUserVirtualCurrencyResultEvent != null) { _instance.OnServerAddUserVirtualCurrencyResultEvent((ServerModels.ModifyUserVirtualCurrencyResult)e.Result); return; } }
@@ -1964,7 +1982,7 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.ConsumeItemResult)) { if (_instance.OnServerConsumeItemResultEvent != null) { _instance.OnServerConsumeItemResultEvent((ServerModels.ConsumeItemResult)e.Result); return; } }
                 if (type == typeof(ServerModels.CreateSharedGroupResult)) { if (_instance.OnServerCreateSharedGroupResultEvent != null) { _instance.OnServerCreateSharedGroupResultEvent((ServerModels.CreateSharedGroupResult)e.Result); return; } }
                 if (type == typeof(ServerModels.DeleteCharacterFromUserResult)) { if (_instance.OnServerDeleteCharacterFromUserResultEvent != null) { _instance.OnServerDeleteCharacterFromUserResultEvent((ServerModels.DeleteCharacterFromUserResult)e.Result); return; } }
-                if (type == typeof(ServerModels.EmptyResult)) { if (_instance.OnServerDeleteSharedGroupResultEvent != null) { _instance.OnServerDeleteSharedGroupResultEvent((ServerModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ServerModels.EmptyResponse)) { if (_instance.OnServerDeleteSharedGroupResultEvent != null) { _instance.OnServerDeleteSharedGroupResultEvent((ServerModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.DeleteUsersResult)) { if (_instance.OnServerDeleteUsersResultEvent != null) { _instance.OnServerDeleteUsersResultEvent((ServerModels.DeleteUsersResult)e.Result); return; } }
                 if (type == typeof(ServerModels.DeregisterGameResponse)) { if (_instance.OnServerDeregisterGameResultEvent != null) { _instance.OnServerDeregisterGameResultEvent((ServerModels.DeregisterGameResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.EvaluateRandomResultTableResult)) { if (_instance.OnServerEvaluateRandomResultTableResultEvent != null) { _instance.OnServerEvaluateRandomResultTableResultEvent((ServerModels.EvaluateRandomResultTableResult)e.Result); return; } }
@@ -2025,7 +2043,7 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.RedeemMatchmakerTicketResult)) { if (_instance.OnServerRedeemMatchmakerTicketResultEvent != null) { _instance.OnServerRedeemMatchmakerTicketResultEvent((ServerModels.RedeemMatchmakerTicketResult)e.Result); return; } }
                 if (type == typeof(ServerModels.RefreshGameServerInstanceHeartbeatResult)) { if (_instance.OnServerRefreshGameServerInstanceHeartbeatResultEvent != null) { _instance.OnServerRefreshGameServerInstanceHeartbeatResultEvent((ServerModels.RefreshGameServerInstanceHeartbeatResult)e.Result); return; } }
                 if (type == typeof(ServerModels.RegisterGameResponse)) { if (_instance.OnServerRegisterGameResultEvent != null) { _instance.OnServerRegisterGameResultEvent((ServerModels.RegisterGameResponse)e.Result); return; } }
-                if (type == typeof(ServerModels.EmptyResult)) { if (_instance.OnServerRemoveFriendResultEvent != null) { _instance.OnServerRemoveFriendResultEvent((ServerModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ServerModels.EmptyResponse)) { if (_instance.OnServerRemoveFriendResultEvent != null) { _instance.OnServerRemoveFriendResultEvent((ServerModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.RemovePlayerTagResult)) { if (_instance.OnServerRemovePlayerTagResultEvent != null) { _instance.OnServerRemovePlayerTagResultEvent((ServerModels.RemovePlayerTagResult)e.Result); return; } }
                 if (type == typeof(ServerModels.RemoveSharedGroupMembersResult)) { if (_instance.OnServerRemoveSharedGroupMembersResultEvent != null) { _instance.OnServerRemoveSharedGroupMembersResultEvent((ServerModels.RemoveSharedGroupMembersResult)e.Result); return; } }
                 if (type == typeof(ServerModels.ReportPlayerServerResult)) { if (_instance.OnServerReportPlayerResultEvent != null) { _instance.OnServerReportPlayerResultEvent((ServerModels.ReportPlayerServerResult)e.Result); return; } }
@@ -2036,7 +2054,7 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.SendCustomAccountRecoveryEmailResult)) { if (_instance.OnServerSendCustomAccountRecoveryEmailResultEvent != null) { _instance.OnServerSendCustomAccountRecoveryEmailResultEvent((ServerModels.SendCustomAccountRecoveryEmailResult)e.Result); return; } }
                 if (type == typeof(ServerModels.SendEmailFromTemplateResult)) { if (_instance.OnServerSendEmailFromTemplateResultEvent != null) { _instance.OnServerSendEmailFromTemplateResultEvent((ServerModels.SendEmailFromTemplateResult)e.Result); return; } }
                 if (type == typeof(ServerModels.SendPushNotificationResult)) { if (_instance.OnServerSendPushNotificationResultEvent != null) { _instance.OnServerSendPushNotificationResultEvent((ServerModels.SendPushNotificationResult)e.Result); return; } }
-                if (type == typeof(ServerModels.EmptyResult)) { if (_instance.OnServerSetFriendTagsResultEvent != null) { _instance.OnServerSetFriendTagsResultEvent((ServerModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ServerModels.EmptyResponse)) { if (_instance.OnServerSetFriendTagsResultEvent != null) { _instance.OnServerSetFriendTagsResultEvent((ServerModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.SetGameServerInstanceDataResult)) { if (_instance.OnServerSetGameServerInstanceDataResultEvent != null) { _instance.OnServerSetGameServerInstanceDataResultEvent((ServerModels.SetGameServerInstanceDataResult)e.Result); return; } }
                 if (type == typeof(ServerModels.SetGameServerInstanceStateResult)) { if (_instance.OnServerSetGameServerInstanceStateResultEvent != null) { _instance.OnServerSetGameServerInstanceStateResultEvent((ServerModels.SetGameServerInstanceStateResult)e.Result); return; } }
                 if (type == typeof(ServerModels.SetGameServerInstanceTagsResult)) { if (_instance.OnServerSetGameServerInstanceTagsResultEvent != null) { _instance.OnServerSetGameServerInstanceTagsResultEvent((ServerModels.SetGameServerInstanceTagsResult)e.Result); return; } }
@@ -2048,7 +2066,7 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.ModifyUserVirtualCurrencyResult)) { if (_instance.OnServerSubtractUserVirtualCurrencyResultEvent != null) { _instance.OnServerSubtractUserVirtualCurrencyResultEvent((ServerModels.ModifyUserVirtualCurrencyResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UnlockContainerItemResult)) { if (_instance.OnServerUnlockContainerInstanceResultEvent != null) { _instance.OnServerUnlockContainerInstanceResultEvent((ServerModels.UnlockContainerItemResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UnlockContainerItemResult)) { if (_instance.OnServerUnlockContainerItemResultEvent != null) { _instance.OnServerUnlockContainerItemResultEvent((ServerModels.UnlockContainerItemResult)e.Result); return; } }
-                if (type == typeof(ServerModels.EmptyResult)) { if (_instance.OnServerUpdateAvatarUrlResultEvent != null) { _instance.OnServerUpdateAvatarUrlResultEvent((ServerModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ServerModels.EmptyResponse)) { if (_instance.OnServerUpdateAvatarUrlResultEvent != null) { _instance.OnServerUpdateAvatarUrlResultEvent((ServerModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateBansResult)) { if (_instance.OnServerUpdateBansResultEvent != null) { _instance.OnServerUpdateBansResultEvent((ServerModels.UpdateBansResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateCharacterDataResult)) { if (_instance.OnServerUpdateCharacterDataResultEvent != null) { _instance.OnServerUpdateCharacterDataResultEvent((ServerModels.UpdateCharacterDataResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateCharacterDataResult)) { if (_instance.OnServerUpdateCharacterInternalDataResultEvent != null) { _instance.OnServerUpdateCharacterInternalDataResultEvent((ServerModels.UpdateCharacterDataResult)e.Result); return; } }
@@ -2058,7 +2076,7 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.UpdateSharedGroupDataResult)) { if (_instance.OnServerUpdateSharedGroupDataResultEvent != null) { _instance.OnServerUpdateSharedGroupDataResultEvent((ServerModels.UpdateSharedGroupDataResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateUserDataResult)) { if (_instance.OnServerUpdateUserDataResultEvent != null) { _instance.OnServerUpdateUserDataResultEvent((ServerModels.UpdateUserDataResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateUserDataResult)) { if (_instance.OnServerUpdateUserInternalDataResultEvent != null) { _instance.OnServerUpdateUserInternalDataResultEvent((ServerModels.UpdateUserDataResult)e.Result); return; } }
-                if (type == typeof(ServerModels.EmptyResult)) { if (_instance.OnServerUpdateUserInventoryItemCustomDataResultEvent != null) { _instance.OnServerUpdateUserInventoryItemCustomDataResultEvent((ServerModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(ServerModels.EmptyResponse)) { if (_instance.OnServerUpdateUserInventoryItemCustomDataResultEvent != null) { _instance.OnServerUpdateUserInventoryItemCustomDataResultEvent((ServerModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateUserDataResult)) { if (_instance.OnServerUpdateUserPublisherDataResultEvent != null) { _instance.OnServerUpdateUserPublisherDataResultEvent((ServerModels.UpdateUserDataResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateUserDataResult)) { if (_instance.OnServerUpdateUserPublisherInternalDataResultEvent != null) { _instance.OnServerUpdateUserPublisherInternalDataResultEvent((ServerModels.UpdateUserDataResult)e.Result); return; } }
                 if (type == typeof(ServerModels.UpdateUserDataResult)) { if (_instance.OnServerUpdateUserPublisherReadOnlyDataResultEvent != null) { _instance.OnServerUpdateUserPublisherReadOnlyDataResultEvent((ServerModels.UpdateUserDataResult)e.Result); return; } }
@@ -2067,15 +2085,15 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.WriteEventResponse)) { if (_instance.OnServerWritePlayerEventResultEvent != null) { _instance.OnServerWritePlayerEventResultEvent((ServerModels.WriteEventResponse)e.Result); return; } }
                 if (type == typeof(ServerModels.WriteEventResponse)) { if (_instance.OnServerWriteTitleEventResultEvent != null) { _instance.OnServerWriteTitleEventResultEvent((ServerModels.WriteEventResponse)e.Result); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 
                 if (type == typeof(AuthenticationModels.GetEntityTokenResponse)) { if (_instance.OnAuthenticationGetEntityTokenResultEvent != null) { _instance.OnAuthenticationGetEntityTokenResultEvent((AuthenticationModels.GetEntityTokenResponse)e.Result); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 
                 if (type == typeof(CloudScriptModels.ExecuteCloudScriptResult)) { if (_instance.OnCloudScriptExecuteEntityCloudScriptResultEvent != null) { _instance.OnCloudScriptExecuteEntityCloudScriptResultEvent((CloudScriptModels.ExecuteCloudScriptResult)e.Result); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 
                 if (type == typeof(DataModels.AbortFileUploadsResponse)) { if (_instance.OnDataAbortFileUploadsResultEvent != null) { _instance.OnDataAbortFileUploadsResultEvent((DataModels.AbortFileUploadsResponse)e.Result); return; } }
                 if (type == typeof(DataModels.DeleteFilesResponse)) { if (_instance.OnDataDeleteFilesResultEvent != null) { _instance.OnDataDeleteFilesResultEvent((DataModels.DeleteFilesResponse)e.Result); return; } }
@@ -2085,22 +2103,22 @@ namespace PlayFab.Events
                 if (type == typeof(DataModels.InitiateFileUploadsResponse)) { if (_instance.OnDataInitiateFileUploadsResultEvent != null) { _instance.OnDataInitiateFileUploadsResultEvent((DataModels.InitiateFileUploadsResponse)e.Result); return; } }
                 if (type == typeof(DataModels.SetObjectsResponse)) { if (_instance.OnDataSetObjectsResultEvent != null) { _instance.OnDataSetObjectsResultEvent((DataModels.SetObjectsResponse)e.Result); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 
                 if (type == typeof(EventsModels.WriteEventsResponse)) { if (_instance.OnEventsWriteEventsResultEvent != null) { _instance.OnEventsWriteEventsResultEvent((EventsModels.WriteEventsResponse)e.Result); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsAcceptGroupApplicationResultEvent != null) { _instance.OnGroupsAcceptGroupApplicationResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsAcceptGroupInvitationResultEvent != null) { _instance.OnGroupsAcceptGroupInvitationResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsAddMembersResultEvent != null) { _instance.OnGroupsAddMembersResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsAcceptGroupApplicationResultEvent != null) { _instance.OnGroupsAcceptGroupApplicationResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsAcceptGroupInvitationResultEvent != null) { _instance.OnGroupsAcceptGroupInvitationResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsAddMembersResultEvent != null) { _instance.OnGroupsAddMembersResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.ApplyToGroupResponse)) { if (_instance.OnGroupsApplyToGroupResultEvent != null) { _instance.OnGroupsApplyToGroupResultEvent((GroupsModels.ApplyToGroupResponse)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsBlockEntityResultEvent != null) { _instance.OnGroupsBlockEntityResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsChangeMemberRoleResultEvent != null) { _instance.OnGroupsChangeMemberRoleResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsBlockEntityResultEvent != null) { _instance.OnGroupsBlockEntityResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsChangeMemberRoleResultEvent != null) { _instance.OnGroupsChangeMemberRoleResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.CreateGroupResponse)) { if (_instance.OnGroupsCreateGroupResultEvent != null) { _instance.OnGroupsCreateGroupResultEvent((GroupsModels.CreateGroupResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.CreateGroupRoleResponse)) { if (_instance.OnGroupsCreateRoleResultEvent != null) { _instance.OnGroupsCreateRoleResultEvent((GroupsModels.CreateGroupRoleResponse)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsDeleteGroupResultEvent != null) { _instance.OnGroupsDeleteGroupResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsDeleteRoleResultEvent != null) { _instance.OnGroupsDeleteRoleResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsDeleteGroupResultEvent != null) { _instance.OnGroupsDeleteGroupResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsDeleteRoleResultEvent != null) { _instance.OnGroupsDeleteRoleResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.GetGroupResponse)) { if (_instance.OnGroupsGetGroupResultEvent != null) { _instance.OnGroupsGetGroupResultEvent((GroupsModels.GetGroupResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.InviteToGroupResponse)) { if (_instance.OnGroupsInviteToGroupResultEvent != null) { _instance.OnGroupsInviteToGroupResultEvent((GroupsModels.InviteToGroupResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.IsMemberResponse)) { if (_instance.OnGroupsIsMemberResultEvent != null) { _instance.OnGroupsIsMemberResultEvent((GroupsModels.IsMemberResponse)e.Result); return; } }
@@ -2110,14 +2128,14 @@ namespace PlayFab.Events
                 if (type == typeof(GroupsModels.ListGroupMembersResponse)) { if (_instance.OnGroupsListGroupMembersResultEvent != null) { _instance.OnGroupsListGroupMembersResultEvent((GroupsModels.ListGroupMembersResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.ListMembershipResponse)) { if (_instance.OnGroupsListMembershipResultEvent != null) { _instance.OnGroupsListMembershipResultEvent((GroupsModels.ListMembershipResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.ListMembershipOpportunitiesResponse)) { if (_instance.OnGroupsListMembershipOpportunitiesResultEvent != null) { _instance.OnGroupsListMembershipOpportunitiesResultEvent((GroupsModels.ListMembershipOpportunitiesResponse)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsRemoveGroupApplicationResultEvent != null) { _instance.OnGroupsRemoveGroupApplicationResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsRemoveGroupInvitationResultEvent != null) { _instance.OnGroupsRemoveGroupInvitationResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsRemoveMembersResultEvent != null) { _instance.OnGroupsRemoveMembersResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
-                if (type == typeof(GroupsModels.EmptyResult)) { if (_instance.OnGroupsUnblockEntityResultEvent != null) { _instance.OnGroupsUnblockEntityResultEvent((GroupsModels.EmptyResult)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsRemoveGroupApplicationResultEvent != null) { _instance.OnGroupsRemoveGroupApplicationResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsRemoveGroupInvitationResultEvent != null) { _instance.OnGroupsRemoveGroupInvitationResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsRemoveMembersResultEvent != null) { _instance.OnGroupsRemoveMembersResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
+                if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsUnblockEntityResultEvent != null) { _instance.OnGroupsUnblockEntityResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.UpdateGroupResponse)) { if (_instance.OnGroupsUpdateGroupResultEvent != null) { _instance.OnGroupsUpdateGroupResultEvent((GroupsModels.UpdateGroupResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.UpdateGroupRoleResponse)) { if (_instance.OnGroupsUpdateRoleResultEvent != null) { _instance.OnGroupsUpdateRoleResultEvent((GroupsModels.UpdateGroupRoleResponse)e.Result); return; } }
 #endif
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 
                 if (type == typeof(ProfilesModels.GetGlobalPolicyResponse)) { if (_instance.OnProfilesGetGlobalPolicyResultEvent != null) { _instance.OnProfilesGetGlobalPolicyResultEvent((ProfilesModels.GetGlobalPolicyResponse)e.Result); return; } }
                 if (type == typeof(ProfilesModels.GetEntityProfileResponse)) { if (_instance.OnProfilesGetProfileResultEvent != null) { _instance.OnProfilesGetProfileResultEvent((ProfilesModels.GetEntityProfileResponse)e.Result); return; } }

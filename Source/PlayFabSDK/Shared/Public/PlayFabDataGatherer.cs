@@ -47,7 +47,6 @@ namespace PlayFab
 
         //DEVICE & OS
         public string DeviceModel;
-        public string DeviceName;
         //public enum DeviceType { Unknown, Handheld, Console, Desktop }
         public DeviceType DeviceType;
         public string DeviceUniqueId;
@@ -100,7 +99,6 @@ namespace PlayFab
 
             //DEVICE & OS
             DeviceModel = SystemInfo.deviceModel;
-            DeviceName = SystemInfo.deviceName;
             DeviceType = SystemInfo.deviceType;
 
             DeviceUniqueId = PlayFabSettings.DeviceUniqueIdentifier;

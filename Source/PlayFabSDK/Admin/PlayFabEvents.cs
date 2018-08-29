@@ -6,7 +6,7 @@ namespace PlayFab.Events
     public partial class PlayFabEvents
     {
         public event PlayFabRequestEvent<AbortTaskInstanceRequest> OnAdminAbortTaskInstanceRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnAdminAbortTaskInstanceResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnAdminAbortTaskInstanceResultEvent;
         public event PlayFabRequestEvent<AddNewsRequest> OnAdminAddNewsRequestEvent;
         public event PlayFabResultEvent<AddNewsResult> OnAdminAddNewsResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnAdminAddPlayerTagRequestEvent;
@@ -40,7 +40,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<DeleteStoreRequest> OnAdminDeleteStoreRequestEvent;
         public event PlayFabResultEvent<DeleteStoreResult> OnAdminDeleteStoreResultEvent;
         public event PlayFabRequestEvent<DeleteTaskRequest> OnAdminDeleteTaskRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnAdminDeleteTaskResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnAdminDeleteTaskResultEvent;
         public event PlayFabRequestEvent<DeleteTitleRequest> OnAdminDeleteTitleRequestEvent;
         public event PlayFabResultEvent<DeleteTitleResult> OnAdminDeleteTitleResultEvent;
         public event PlayFabRequestEvent<ExportMasterPlayerDataRequest> OnAdminExportMasterPlayerDataRequestEvent;
@@ -200,7 +200,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<UpdateStoreItemsRequest> OnAdminUpdateStoreItemsRequestEvent;
         public event PlayFabResultEvent<UpdateStoreItemsResult> OnAdminUpdateStoreItemsResultEvent;
         public event PlayFabRequestEvent<UpdateTaskRequest> OnAdminUpdateTaskRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnAdminUpdateTaskResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnAdminUpdateTaskResultEvent;
         public event PlayFabRequestEvent<UpdateUserDataRequest> OnAdminUpdateUserDataRequestEvent;
         public event PlayFabResultEvent<UpdateUserDataResult> OnAdminUpdateUserDataResultEvent;
         public event PlayFabRequestEvent<UpdateUserInternalDataRequest> OnAdminUpdateUserInternalDataRequestEvent;

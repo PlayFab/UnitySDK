@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using PlayFab.ProfilesModels;
 
 namespace PlayFab.Events

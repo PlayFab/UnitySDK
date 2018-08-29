@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using PlayFab.CloudScriptModels;
 
 namespace PlayFab.Events

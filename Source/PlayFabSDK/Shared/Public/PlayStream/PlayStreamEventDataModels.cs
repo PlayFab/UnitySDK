@@ -40,12 +40,6 @@ namespace PlayFab.PlayStreamModels
         public EntityLineage EntityLineage;
         public List<FileSet> Files;
     }
-    public class EntityLanguageUpdatedEventData : PlayStreamEventBase
-    {
-        public string EntityChain;
-        public EntityLineage EntityLineage;
-        public string Language;
-    }
     public class EntityLoggedInEventData : PlayStreamEventBase
     {
         public string EntityChain;
@@ -431,7 +425,6 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
-        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -444,7 +437,6 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
-        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -472,7 +464,6 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
-        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -663,12 +654,10 @@ namespace PlayFab.PlayStreamModels
     public class GameLobbyEndedEventData : PlayStreamEventBase
     {
         public string GameMode;
-        public DateTime? GameStartTime;
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
-        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
@@ -685,7 +674,6 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
-        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
@@ -699,7 +687,6 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
-        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public DateTime StartTime;
         public string TitleId;
@@ -712,7 +699,6 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
-        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public DateTime StartTime;
         public GameServerHostStopReason? StopReason;
@@ -825,6 +811,13 @@ namespace PlayFab.PlayStreamModels
         public string GraphUrl;
         public AlertLevel? Level;
     }
+    public class TitleHopperConfigUpdatedEventData : PlayStreamEventBase
+    {
+        public bool Deleted;
+        public string DeveloperId;
+        public string MatchHopperId;
+        public string UserId;
+    }
     public class TitleInitiatedPlayerPasswordResetEventData : PlayStreamEventBase
     {
         public string DeveloperId;
@@ -879,13 +872,6 @@ namespace PlayFab.PlayStreamModels
     {
         public string DeveloperId;
         public int Revision;
-        public string UserId;
-    }
-    public class TitleQueueConfigUpdatedEventData : PlayStreamEventBase
-    {
-        public bool Deleted;
-        public string DeveloperId;
-        public string MatchQueueName;
         public string UserId;
     }
     public class TitleRequestedLimitChangeEventData : PlayStreamEventBase
@@ -1298,11 +1284,7 @@ namespace PlayFab.PlayStreamModels
         IOSDevice,
         AndroidDevice,
         Twitch,
-        WindowsHello,
-        GameServer,
-        CustomServer,
-        NintendoSwitch,
-        FacebookInstantGames
+        WindowsHello
     }
 
     public enum PasswordResetInitiationSource
@@ -2015,10 +1997,6 @@ namespace PlayFab.PlayStreamModels
         /// Allow game servers to delete player accounts via API.
         /// </summary>
         public bool AllowServerToDeleteUsers;
-        /// <summary>
-        /// The default language for communication with players
-        /// </summary>
-        public string DefaultLanguage;
         /// <summary>
         /// Disable API access by returning errors to all API requests.
         /// </summary>

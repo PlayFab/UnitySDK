@@ -1,4 +1,4 @@
-#if !DISABLE_PLAYFABCLIENT_API && ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABCLIENT_API && !DISABLE_PLAYFABENTITY_API
 using PlayFab.Internal;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +14,9 @@ namespace PlayFab.UUnit
         private const string TEST_OBJ_NAME = "testCounter";
         // Test variables
         private string _entityId;
-        private string _entityTypeString;
+        private string _entityType;
         private const string TEST_FILE_NAME = "testfile";
-        private const string _testPayload = "{123456789}";
+        private readonly byte[] _testPayload = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         private int _testInteger;
         private bool _shouldDeleteFiles;
 
@@ -96,8 +96,8 @@ namespace PlayFab.UUnit
             var testContext = (UUnitTestContext)result.CustomData;
 
             _entityId = result.Entity.Id;
-            _entityTypeString = result.Entity.TypeString;
-            testContext.StringEquals("title_player_account", result.Entity.TypeString, "GetEntityToken EntityTypeString not expected: " + result.Entity.TypeString);
+            _entityType = result.Entity.Type;
+            testContext.StringEquals("title_player_account", result.Entity.Type, "GetEntityToken Entity Type not expected: " + result.Entity.Type);
 
             testContext.True(PlayFabClientAPI.IsClientLoggedIn(), "Get Entity Token failed");
             testContext.EndTest(UUnitFinishState.PASSED, PlayFabSettings.TitleId + ", " + result.EntityToken.Substring(0, 25) + "...");
@@ -112,7 +112,7 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void ObjectApi(UUnitTestContext testContext)
         {
-            var getRequest = new DataModels.GetObjectsRequest { Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString }, EscapeObject = true };
+            var getRequest = new DataModels.GetObjectsRequest { Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType }, EscapeObject = true };
             PlayFabDataAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<DataModels.GetObjectsResponse>(testContext, GetObjectCallback1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void GetObjectCallback1(DataModels.GetObjectsResponse result)
@@ -128,7 +128,7 @@ namespace PlayFab.UUnit
 
             var updateRequest = new DataModels.SetObjectsRequest
             {
-                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType },
                 Objects = new List<DataModels.SetObject> {
                     new DataModels.SetObject{ ObjectName = TEST_OBJ_NAME, DataObject = _testInteger }
                 }
@@ -139,7 +139,7 @@ namespace PlayFab.UUnit
         {
             var testContext = (UUnitTestContext)result.CustomData;
 
-            var getRequest = new DataModels.GetObjectsRequest { Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString }, EscapeObject = true };
+            var getRequest = new DataModels.GetObjectsRequest { Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType }, EscapeObject = true };
             PlayFabDataAPI.GetObjects(getRequest, PlayFabUUnitUtils.ApiActionWrapper<DataModels.GetObjectsResponse>(testContext, GetObjectCallback2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
         private void GetObjectCallback2(DataModels.GetObjectsResponse result)
@@ -153,6 +153,7 @@ namespace PlayFab.UUnit
 
             testContext.EndTest(UUnitFinishState.PASSED, actualInteger.ToString());
         }
+
         #region PUT_Verb_Test
         /// <summary>
         /// ENTITY PUT API
@@ -179,7 +180,7 @@ namespace PlayFab.UUnit
             if (result.EntityToken != null)
             {
                 _entityId = result.EntityToken.Entity.Id;
-                _entityTypeString = result.EntityToken.Entity.TypeString;
+                _entityType = result.EntityToken.Entity.Type;
 
                 LoadFiles(testContext);
             }
@@ -192,7 +193,7 @@ namespace PlayFab.UUnit
         {
             var request = new DataModels.GetFilesRequest
             {
-                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType },
             };
 
             PlayFabDataAPI.GetFiles(request, PlayFabUUnitUtils.ApiActionWrapper<DataModels.GetFilesResponse>(testContext, OnGetFilesInfo), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
@@ -237,7 +238,7 @@ namespace PlayFab.UUnit
         {
             var request = new DataModels.InitiateFileUploadsRequest
             {
-                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType },
                 FileNames = new List<string>
                 {
                     fileName
@@ -253,7 +254,7 @@ namespace PlayFab.UUnit
 
             var request = new DataModels.DeleteFilesRequest
             {
-                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType },
                 FileNames = fileName,
             };
 
@@ -273,7 +274,7 @@ namespace PlayFab.UUnit
             {
                 var request = new DataModels.AbortFileUploadsRequest
                 {
-                    Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                    Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType },
                     FileNames = new List<string> { TEST_FILE_NAME },
                 };
 
@@ -300,13 +301,9 @@ namespace PlayFab.UUnit
         void OnInitFileUpload(DataModels.InitiateFileUploadsResponse response)
         {
             var testContext = (UUnitTestContext)response.CustomData;
-            var payload = Encoding.UTF8.GetBytes(_testPayload);
-
-            testContext.IntEquals(_testPayload.Length, payload.Length);
-            testContext.True(_testPayload.Length > 0);
 
             PlayFabHttp.SimplePutCall(response.UploadDetails[0].UploadUrl,
-                payload,
+                _testPayload,
                 PlayFabUUnitUtils.SimpleApiNoParamsActionWrapper(testContext, FinalizeUpload),
                 error =>
                 {
@@ -318,7 +315,7 @@ namespace PlayFab.UUnit
         {
             var request = new DataModels.FinalizeFileUploadsRequest
             {
-                Entity = new DataModels.EntityKey { Id = _entityId, TypeString = _entityTypeString },
+                Entity = new DataModels.EntityKey { Id = _entityId, Type = _entityType },
                 FileNames = new List<string> { TEST_FILE_NAME },
             };
             PlayFabDataAPI.FinalizeFileUploads(request, PlayFabUUnitUtils.ApiActionWrapper<DataModels.FinalizeFileUploadsResponse>(testContext, OnUploadSuccess), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
@@ -333,15 +330,13 @@ namespace PlayFab.UUnit
         }
         void TestFileContent(UUnitTestContext testContext, byte[] result)
         {
-            var testFileData = Encoding.UTF8.GetString(result);
+            var json = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
 
             testContext.NotNull(result, "Raw file result was null");
-            testContext.NotNull(testFileData, "UTF8 conversion of result was null");
             testContext.True(result.Length > 0, "Raw file result was zero length");
-            testContext.True(testFileData.Length > 0, "UTF8 conversion of result was zero length");
 
-            testContext.True(testFileData.Equals(_testPayload), testFileData);
-            DeleteFiles(testContext, new List<string> { TEST_FILE_NAME }, true, UUnitFinishState.PASSED, "File " + TEST_FILE_NAME + "was succesfully created and uploaded to server with PUT");
+            testContext.StringEquals(json.SerializeObject(_testPayload), json.SerializeObject(result), json.SerializeObject(result));
+            DeleteFiles(testContext, new List<string> { TEST_FILE_NAME }, true, UUnitFinishState.PASSED, "File " + TEST_FILE_NAME + " was succesfully created and uploaded to server with PUT");
         }
         #endregion
     }

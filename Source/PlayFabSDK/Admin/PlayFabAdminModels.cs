@@ -1337,38 +1337,24 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class EmptyResult : PlayFabResultCommon
+    public class EmptyResponse : PlayFabResultCommon
     {
     }
 
     /// <summary>
-    /// Entity identifier class that contains both the ID and type.
+    /// Combined entity type and ID structure which uniquely identifies a single entity.
     /// </summary>
     [Serializable]
     public class EntityKey
     {
         /// <summary>
-        /// Entity profile ID.
+        /// Unique ID of the entity.
         /// </summary>
         public string Id;
         /// <summary>
-        /// Entity type. Optional to be used but one of EntityType or EntityTypeString must be set.
+        /// Entity type. See https://api.playfab.com/docs/tutorials/entities/entitytypes
         /// </summary>
-        public EntityTypes? Type;
-        /// <summary>
-        /// Entity type. Optional to be used but one of EntityType or EntityTypeString must be set.
-        /// </summary>
-        public string TypeString;
-    }
-
-    public enum EntityTypes
-    {
-        title,
-        master_player_account,
-        title_player_account,
-        character,
-        group,
-        service
+        public string Type;
     }
 
     [Serializable]
@@ -1842,16 +1828,16 @@ namespace PlayFab.AdminModels
         NoValidCertificateForAad,
         InvalidCertificateForAad,
         DuplicateDropTableId,
-        GameServerOk,
-        GameServerAccepted,
-        GameServerNoContent,
-        GameServerBadRequest,
-        GameServerUnauthorized,
-        GameServerForbidden,
-        GameServerNotFound,
-        GameServerConflict,
-        GameServerInternalServerError,
-        GameServerServiceUnavailable,
+        MultiplayerServerError,
+        MultiplayerServerTooManyRequests,
+        MultiplayerServerNoContent,
+        MultiplayerServerBadRequest,
+        MultiplayerServerUnauthorized,
+        MultiplayerServerForbidden,
+        MultiplayerServerNotFound,
+        MultiplayerServerConflict,
+        MultiplayerServerInternalServerError,
+        MultiplayerServerUnavailable,
         ExplicitContentDetected,
         PIIContentDetected,
         InvalidScheduledTaskParameter,
@@ -3054,7 +3040,8 @@ namespace PlayFab.AdminModels
         GameServer,
         CustomServer,
         NintendoSwitch,
-        FacebookInstantGames
+        FacebookInstantGames,
+        OpenIdConnect
     }
 
     [Serializable]
@@ -4861,6 +4848,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public UserFacebookInfo FacebookInfo;
         /// <summary>
+        /// Facebook Instant Games account information, if a Facebook Instant Games account has been linked
+        /// </summary>
+        public UserFacebookInstantGamesIdInfo FacebookInstantGamesIdInfo;
+        /// <summary>
         /// User Gamecenter information, if a Gamecenter account has been linked
         /// </summary>
         public UserGameCenterInfo GameCenterInfo;
@@ -4876,6 +4867,14 @@ namespace PlayFab.AdminModels
         /// User Kongregate account information, if a Kongregate account has been linked
         /// </summary>
         public UserKongregateInfo KongregateInfo;
+        /// <summary>
+        /// Nintendo Switch account information, if a Nintendo Switch account has been linked
+        /// </summary>
+        public UserNintendoSwitchDeviceIdInfo NintendoSwitchDeviceIdInfo;
+        /// <summary>
+        /// OpenID Connect information, if any OpenID Connect accounts have been linked
+        /// </summary>
+        public List<UserOpenIdInfo> OpenIdInfo;
         /// <summary>
         /// Unique identifier for the user account
         /// </summary>
@@ -4904,6 +4903,10 @@ namespace PlayFab.AdminModels
         /// User account name in the PlayFab service
         /// </summary>
         public string Username;
+        /// <summary>
+        /// Windows Hello account information, if a Windows Hello account has been linked
+        /// </summary>
+        public UserWindowsHelloInfo WindowsHelloInfo;
         /// <summary>
         /// User XBox account information, if a XBox account has been linked
         /// </summary>
@@ -4970,6 +4973,15 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class UserFacebookInstantGamesIdInfo
+    {
+        /// <summary>
+        /// Facebook Instant Games ID
+        /// </summary>
+        public string FacebookInstantGamesId;
+    }
+
+    [Serializable]
     public class UserGameCenterInfo
     {
         /// <summary>
@@ -5021,6 +5033,32 @@ namespace PlayFab.AdminModels
         public string KongregateName;
     }
 
+    [Serializable]
+    public class UserNintendoSwitchDeviceIdInfo
+    {
+        /// <summary>
+        /// Nintendo Switch Device ID
+        /// </summary>
+        public string NintendoSwitchDeviceId;
+    }
+
+    [Serializable]
+    public class UserOpenIdInfo
+    {
+        /// <summary>
+        /// OpenID Connection ID
+        /// </summary>
+        public string ConnectionId;
+        /// <summary>
+        /// OpenID Issuer
+        /// </summary>
+        public string Issuer;
+        /// <summary>
+        /// OpenID Subject
+        /// </summary>
+        public string Subject;
+    }
+
     public enum UserOrigination
     {
         Organic,
@@ -5043,7 +5081,8 @@ namespace PlayFab.AdminModels
         WindowsHello,
         ServerCustomId,
         NintendoSwitchDeviceId,
-        FacebookInstantGamesId
+        FacebookInstantGamesId,
+        OpenIdConnect
     }
 
     [Serializable]
@@ -5139,6 +5178,19 @@ namespace PlayFab.AdminModels
         /// Twitch Username
         /// </summary>
         public string TwitchUserName;
+    }
+
+    [Serializable]
+    public class UserWindowsHelloInfo
+    {
+        /// <summary>
+        /// Windows Hello Device Name
+        /// </summary>
+        public string WindowsHelloDeviceName;
+        /// <summary>
+        /// Windows Hello Public Key Hash
+        /// </summary>
+        public string WindowsHelloPublicKeyHash;
     }
 
     [Serializable]

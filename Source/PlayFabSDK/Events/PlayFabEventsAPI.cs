@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
 using PlayFab.EventsModels;
@@ -9,7 +9,8 @@ using PlayFab.Public;
 namespace PlayFab
 {
     /// <summary>
-    /// Entity profiles are the top level containers for essentially all information about an entity.
+    /// Write custom PlayStream events for any PlayFab entity. PlayStream events can be used for analytics, reporting,
+    /// debugging, or to trigger custom actions in near real-time.
     /// </summary>
     public static class PlayFabEventsAPI
     {

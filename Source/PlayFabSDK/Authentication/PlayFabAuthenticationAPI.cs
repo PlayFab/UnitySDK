@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
 using PlayFab.AuthenticationModels;
@@ -9,9 +9,8 @@ using PlayFab.Public;
 namespace PlayFab
 {
     /// <summary>
-    /// The Authentication API group is currently in-progress. The current GetEntityToken method is a stop-gap to convert
-    /// another authentication into an Entity Authentication. See https://api.playfab.com/documentation/client#Authentication
-    /// for the other authentication methods.
+    /// The Authentication APIs provide a convenient way to convert classic authentication responses into entity authentication
+    /// models. These APIs will provide you with the entity authentication token needed for subsequent Entity API calls.
     /// </summary>
     public static class PlayFabAuthenticationAPI
     {
@@ -37,7 +36,7 @@ namespace PlayFab
             if (authType == AuthType.None && PlayFabClientAPI.IsClientLoggedIn())
                 authType = AuthType.LoginSession;
 #endif
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABMATCHMAKER_API || UNITY_EDITOR
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
             if (authType == AuthType.None && !string.IsNullOrEmpty(PlayFabSettings.DeveloperSecretKey))
                 authType = AuthType.DevSecretKey;
 #endif
