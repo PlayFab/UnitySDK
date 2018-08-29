@@ -8,7 +8,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<AddCharacterVirtualCurrencyRequest> OnServerAddCharacterVirtualCurrencyRequestEvent;
         public event PlayFabResultEvent<ModifyCharacterVirtualCurrencyResult> OnServerAddCharacterVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<AddFriendRequest> OnServerAddFriendRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnServerAddFriendResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnServerAddFriendResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnServerAddPlayerTagRequestEvent;
         public event PlayFabResultEvent<AddPlayerTagResult> OnServerAddPlayerTagResultEvent;
         public event PlayFabRequestEvent<AddSharedGroupMembersRequest> OnServerAddSharedGroupMembersRequestEvent;
@@ -28,7 +28,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<DeleteCharacterFromUserRequest> OnServerDeleteCharacterFromUserRequestEvent;
         public event PlayFabResultEvent<DeleteCharacterFromUserResult> OnServerDeleteCharacterFromUserResultEvent;
         public event PlayFabRequestEvent<DeleteSharedGroupRequest> OnServerDeleteSharedGroupRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnServerDeleteSharedGroupResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnServerDeleteSharedGroupResultEvent;
         public event PlayFabRequestEvent<DeleteUsersRequest> OnServerDeleteUsersRequestEvent;
         public event PlayFabResultEvent<DeleteUsersResult> OnServerDeleteUsersResultEvent;
         public event PlayFabRequestEvent<DeregisterGameRequest> OnServerDeregisterGameRequestEvent;
@@ -150,7 +150,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<RegisterGameRequest> OnServerRegisterGameRequestEvent;
         public event PlayFabResultEvent<RegisterGameResponse> OnServerRegisterGameResultEvent;
         public event PlayFabRequestEvent<RemoveFriendRequest> OnServerRemoveFriendRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnServerRemoveFriendResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnServerRemoveFriendResultEvent;
         public event PlayFabRequestEvent<RemovePlayerTagRequest> OnServerRemovePlayerTagRequestEvent;
         public event PlayFabResultEvent<RemovePlayerTagResult> OnServerRemovePlayerTagResultEvent;
         public event PlayFabRequestEvent<RemoveSharedGroupMembersRequest> OnServerRemoveSharedGroupMembersRequestEvent;
@@ -172,7 +172,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<SendPushNotificationRequest> OnServerSendPushNotificationRequestEvent;
         public event PlayFabResultEvent<SendPushNotificationResult> OnServerSendPushNotificationResultEvent;
         public event PlayFabRequestEvent<SetFriendTagsRequest> OnServerSetFriendTagsRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnServerSetFriendTagsResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnServerSetFriendTagsResultEvent;
         public event PlayFabRequestEvent<SetGameServerInstanceDataRequest> OnServerSetGameServerInstanceDataRequestEvent;
         public event PlayFabResultEvent<SetGameServerInstanceDataResult> OnServerSetGameServerInstanceDataResultEvent;
         public event PlayFabRequestEvent<SetGameServerInstanceStateRequest> OnServerSetGameServerInstanceStateRequestEvent;
@@ -196,7 +196,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<UnlockContainerItemRequest> OnServerUnlockContainerItemRequestEvent;
         public event PlayFabResultEvent<UnlockContainerItemResult> OnServerUnlockContainerItemResultEvent;
         public event PlayFabRequestEvent<UpdateAvatarUrlRequest> OnServerUpdateAvatarUrlRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnServerUpdateAvatarUrlResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnServerUpdateAvatarUrlResultEvent;
         public event PlayFabRequestEvent<UpdateBansRequest> OnServerUpdateBansRequestEvent;
         public event PlayFabResultEvent<UpdateBansResult> OnServerUpdateBansResultEvent;
         public event PlayFabRequestEvent<UpdateCharacterDataRequest> OnServerUpdateCharacterDataRequestEvent;
@@ -216,7 +216,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<UpdateUserInternalDataRequest> OnServerUpdateUserInternalDataRequestEvent;
         public event PlayFabResultEvent<UpdateUserDataResult> OnServerUpdateUserInternalDataResultEvent;
         public event PlayFabRequestEvent<UpdateUserInventoryItemDataRequest> OnServerUpdateUserInventoryItemCustomDataRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnServerUpdateUserInventoryItemCustomDataResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnServerUpdateUserInventoryItemCustomDataResultEvent;
         public event PlayFabRequestEvent<UpdateUserDataRequest> OnServerUpdateUserPublisherDataRequestEvent;
         public event PlayFabResultEvent<UpdateUserDataResult> OnServerUpdateUserPublisherDataResultEvent;
         public event PlayFabRequestEvent<UpdateUserInternalDataRequest> OnServerUpdateUserPublisherInternalDataRequestEvent;

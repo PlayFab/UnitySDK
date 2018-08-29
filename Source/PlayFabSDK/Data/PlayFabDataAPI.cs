@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
 using PlayFab.DataModels;
@@ -9,8 +9,10 @@ using PlayFab.Public;
 namespace PlayFab
 {
     /// <summary>
-    /// Various kinds of data-storage for an entity. Objects: Small (1kb) json-compatible objects that live directly within the
-    /// profile. Files (usage billed separately) for larger storage needs.
+    /// Store arbitrary data associated with an entity. Objects are small (~1KB) JSON-compatible objects which are stored
+    /// directly on the entity profile. Objects are made available for use in other PlayFab contexts, such as PlayStream events
+    /// and CloudScript functions. Files can efficiently store data of any size or format. Both objects and files support a
+    /// flexible permissions system to control read and write access by other entities.
     /// </summary>
     public static class PlayFabDataAPI
     {

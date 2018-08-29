@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +18,7 @@ namespace PlayFab.Public
         void OnApplicationFocus(bool isFocused);
 
         // Class specific methods
-        void ClientSessionStart(string entityId, string entityTypeString, string playFabUserId);
+        void ClientSessionStart(string entityId, string entityType, string playFabUserId);
         void Send();
     }
 
@@ -44,12 +44,12 @@ namespace PlayFab.Public
         /// Start session, the function responsible for creating SessionID and gathering information about user and device
         /// </summary>
         /// <param name="playFabUserId">Result of the user's login, represent user ID</param>
-        public void ClientSessionStart(string entityId, string entityTypeString, string playFabUserId)
+        public void ClientSessionStart(string entityId, string entityType, string playFabUserId)
         {
             gameSessionID = Guid.NewGuid();
 
             entityKey.Id = entityId;
-            entityKey.TypeString = entityTypeString;
+            entityKey.Type = entityType;
 
             EventsModels.EventContents eventInfo = new EventsModels.EventContents();
 
@@ -69,6 +69,9 @@ namespace PlayFab.Public
 
             eventInfo.Payload = payload;
             eventsRequests.Enqueue(eventInfo);
+
+            // Fake a focus-on event at the time of the first login:
+            OnApplicationFocus(true);
         }
 
         /// <summary>

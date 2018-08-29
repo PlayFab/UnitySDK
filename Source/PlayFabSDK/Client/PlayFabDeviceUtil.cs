@@ -40,11 +40,7 @@ namespace PlayFab.Internal
             {
                 Info = serializer.DeserializeObject<Dictionary<string, object>>(serializer.SerializeObject(new PlayFabDataGatherer()))
             };
-            PlayFabClientAPI.ReportDeviceInfo(request, OnGatherSuccess, OnGatherFail);
-        }
-        private static void OnGatherSuccess(ClientModels.EmptyResult result)
-        {
-            //Debug.Log("OnGatherSuccess");
+            PlayFabClientAPI.ReportDeviceInfo(request, null, OnGatherFail);
         }
         private static void OnGatherFail(PlayFabError error)
         {
@@ -68,7 +64,7 @@ namespace PlayFab.Internal
             ClientModels.UserSettings settingsForUser = null;
             string playFabId = null;
             string entityId = null;
-            string entityTypeString = null;
+            string entityType = null;
 
             if (loginResult != null)
             {
@@ -77,7 +73,7 @@ namespace PlayFab.Internal
                 if (loginResult.EntityToken != null)
                 {
                     entityId = loginResult.EntityToken.Entity.Id;
-                    entityTypeString = loginResult.EntityToken.Entity.TypeString;
+                    entityType = loginResult.EntityToken.Entity.Type;
                 }
             }
             else if (registerResult != null)
@@ -87,11 +83,11 @@ namespace PlayFab.Internal
                 if (registerResult.EntityToken != null)
                 {
                     entityId = registerResult.EntityToken.Entity.Id;
-                    entityTypeString = registerResult.EntityToken.Entity.TypeString;
+                    entityType = registerResult.EntityToken.Entity.Type;
                 }
             }
 
-            _OnPlayFabLogin(settingsForUser, playFabId, entityId, entityTypeString);
+            _OnPlayFabLogin(settingsForUser, playFabId, entityId, entityType);
         }
 
         /// <summary>
@@ -99,7 +95,7 @@ namespace PlayFab.Internal
         ///   only one will be defined, but both usually have all the information we REALLY need here.
         /// But the result signatures are different and clunky, so do the separation above, and processing here
         /// </summary>
-        private static void _OnPlayFabLogin(ClientModels.UserSettings settingsForUser, string playFabId, string entityId, string entityTypeString)
+        private static void _OnPlayFabLogin(ClientModels.UserSettings settingsForUser, string playFabId, string entityId, string entityType)
         {
             _needsAttribution = _gatherDeviceInfo = _gatherScreenTime = false;
             if (settingsForUser != null)
@@ -118,10 +114,10 @@ namespace PlayFab.Internal
             // Device information gathering
             SendDeviceInfoToPlayFab();
 
-#if ENABLE_PLAYFABENTITY_API
-            if (!string.IsNullOrEmpty(entityId) && !string.IsNullOrEmpty(entityTypeString) && _gatherScreenTime)
+#if !DISABLE_PLAYFABENTITY_API
+            if (!string.IsNullOrEmpty(entityId) && !string.IsNullOrEmpty(entityType) && _gatherScreenTime)
             {
-                PlayFabHttp.InitializeScreenTimeTracker(entityId, entityTypeString, playFabId);
+                PlayFabHttp.InitializeScreenTimeTracker(entityId, entityType, playFabId);
             }
             else
             {

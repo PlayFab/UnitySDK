@@ -31,6 +31,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ConfirmPurchaseResult> OnConfirmPurchaseResultEvent;
         public event PlayFabRequestEvent<ConsumeItemRequest> OnConsumeItemRequestEvent;
         public event PlayFabResultEvent<ConsumeItemResult> OnConsumeItemResultEvent;
+        public event PlayFabRequestEvent<ConsumeXboxEntitlementsRequest> OnConsumeXboxEntitlementsRequestEvent;
+        public event PlayFabResultEvent<ConsumeXboxEntitlementsResult> OnConsumeXboxEntitlementsResultEvent;
         public event PlayFabRequestEvent<CreateSharedGroupRequest> OnCreateSharedGroupRequestEvent;
         public event PlayFabResultEvent<CreateSharedGroupResult> OnCreateSharedGroupResultEvent;
         public event PlayFabRequestEvent<ExecuteCloudScriptRequest> OnExecuteCloudScriptRequestEvent;
@@ -163,6 +165,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LinkTwitchAccountResult> OnLinkTwitchResultEvent;
         public event PlayFabRequestEvent<LinkWindowsHelloAccountRequest> OnLinkWindowsHelloRequestEvent;
         public event PlayFabResultEvent<LinkWindowsHelloAccountResponse> OnLinkWindowsHelloResultEvent;
+        public event PlayFabRequestEvent<LinkXboxAccountRequest> OnLinkXboxAccountRequestEvent;
+        public event PlayFabResultEvent<LinkXboxAccountResult> OnLinkXboxAccountResultEvent;
         public event PlayFabRequestEvent<LoginWithAndroidDeviceIDRequest> OnLoginWithAndroidDeviceIDRequestEvent;
         public event PlayFabRequestEvent<LoginWithCustomIDRequest> OnLoginWithCustomIDRequestEvent;
         public event PlayFabRequestEvent<LoginWithEmailAddressRequest> OnLoginWithEmailAddressRequestEvent;
@@ -177,6 +181,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<LoginWithSteamRequest> OnLoginWithSteamRequestEvent;
         public event PlayFabRequestEvent<LoginWithTwitchRequest> OnLoginWithTwitchRequestEvent;
         public event PlayFabRequestEvent<LoginWithWindowsHelloRequest> OnLoginWithWindowsHelloRequestEvent;
+        public event PlayFabRequestEvent<LoginWithXboxRequest> OnLoginWithXboxRequestEvent;
         public event PlayFabRequestEvent<MatchmakeRequest> OnMatchmakeRequestEvent;
         public event PlayFabResultEvent<MatchmakeResult> OnMatchmakeResultEvent;
         public event PlayFabRequestEvent<OpenTradeRequest> OnOpenTradeRequestEvent;
@@ -201,7 +206,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<RemoveSharedGroupMembersRequest> OnRemoveSharedGroupMembersRequestEvent;
         public event PlayFabResultEvent<RemoveSharedGroupMembersResult> OnRemoveSharedGroupMembersResultEvent;
         public event PlayFabRequestEvent<DeviceInfoRequest> OnReportDeviceInfoRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnReportDeviceInfoResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnReportDeviceInfoResultEvent;
         public event PlayFabRequestEvent<ReportPlayerClientRequest> OnReportPlayerRequestEvent;
         public event PlayFabResultEvent<ReportPlayerClientResult> OnReportPlayerResultEvent;
         public event PlayFabRequestEvent<RestoreIOSPurchasesRequest> OnRestoreIOSPurchasesRequestEvent;
@@ -242,12 +247,14 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UnlinkTwitchAccountResult> OnUnlinkTwitchResultEvent;
         public event PlayFabRequestEvent<UnlinkWindowsHelloAccountRequest> OnUnlinkWindowsHelloRequestEvent;
         public event PlayFabResultEvent<UnlinkWindowsHelloAccountResponse> OnUnlinkWindowsHelloResultEvent;
+        public event PlayFabRequestEvent<UnlinkXboxAccountRequest> OnUnlinkXboxAccountRequestEvent;
+        public event PlayFabResultEvent<UnlinkXboxAccountResult> OnUnlinkXboxAccountResultEvent;
         public event PlayFabRequestEvent<UnlockContainerInstanceRequest> OnUnlockContainerInstanceRequestEvent;
         public event PlayFabResultEvent<UnlockContainerItemResult> OnUnlockContainerInstanceResultEvent;
         public event PlayFabRequestEvent<UnlockContainerItemRequest> OnUnlockContainerItemRequestEvent;
         public event PlayFabResultEvent<UnlockContainerItemResult> OnUnlockContainerItemResultEvent;
         public event PlayFabRequestEvent<UpdateAvatarUrlRequest> OnUpdateAvatarUrlRequestEvent;
-        public event PlayFabResultEvent<EmptyResult> OnUpdateAvatarUrlResultEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnUpdateAvatarUrlResultEvent;
         public event PlayFabRequestEvent<UpdateCharacterDataRequest> OnUpdateCharacterDataRequestEvent;
         public event PlayFabResultEvent<UpdateCharacterDataResult> OnUpdateCharacterDataResultEvent;
         public event PlayFabRequestEvent<UpdateCharacterStatisticsRequest> OnUpdateCharacterStatisticsRequestEvent;

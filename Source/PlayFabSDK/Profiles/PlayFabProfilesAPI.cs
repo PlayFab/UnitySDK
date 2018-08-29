@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
 using PlayFab.ProfilesModels;
@@ -9,7 +9,8 @@ using PlayFab.Public;
 namespace PlayFab
 {
     /// <summary>
-    /// Entity profiles are the top level containers for essentially all information about an entity.
+    /// All PlayFab entities have profiles, which hold top-level properties about the entity. These APIs give you the tools
+    /// needed to manage entity profiles.
     /// </summary>
     public static class PlayFabProfilesAPI
     {

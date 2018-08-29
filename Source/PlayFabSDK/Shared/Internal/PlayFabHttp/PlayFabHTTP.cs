@@ -27,7 +27,7 @@ namespace PlayFab.Internal
 #endif
 
         private static IPlayFabLogger _logger;
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
         private static IScreenTimeTracker screenTimeTracker = new ScreenTimeTracker();
         private const float delayBetweenBatches = 5.0f;
 #endif
@@ -103,14 +103,14 @@ namespace PlayFab.Internal
             _logger = setLogger;
         }
 
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
         /// <summary>
         /// This initializes ScreenTimeTracker object and notifying it to start sending info.
         /// </summary>
         /// <param name="playFabUserId">Result of the user's login, represent user ID</param>
-        public static void InitializeScreenTimeTracker(string entityId, string entityTypeString, string playFabUserId)
+        public static void InitializeScreenTimeTracker(string entityId, string entityType, string playFabUserId)
         {
-            screenTimeTracker.ClientSessionStart(entityId, entityTypeString, playFabUserId);
+            screenTimeTracker.ClientSessionStart(entityId, entityType, playFabUserId);
             instance.StartCoroutine(SendScreenTimeEvents(delayBetweenBatches));
         }
 
@@ -211,7 +211,7 @@ namespace PlayFab.Internal
             reqContainer.RequestHeaders["X-PlayFabSDK"] = PlayFabSettings.VersionString; // Tell PlayFab which SDK this is
             switch (authType)
             {
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABMATCHMAKER_API || UNITY_EDITOR
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
                 case AuthType.DevSecretKey: reqContainer.RequestHeaders["X-SecretKey"] = PlayFabSettings.DeveloperSecretKey; break;
 #endif
                 case AuthType.LoginSession: reqContainer.RequestHeaders["X-Authorization"] = transport.AuthKey; break;
@@ -249,7 +249,7 @@ namespace PlayFab.Internal
         /// </summary>
         internal void OnPlayFabApiResult(PlayFabResultCommon result)
         {
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
             var entRes = result as AuthenticationModels.GetEntityTokenResponse;
             if (entRes != null)
             {
@@ -287,7 +287,7 @@ namespace PlayFab.Internal
                 _logger.OnEnable();
             }
 
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && !PlayFabSettings.DisableFocusTimeCollection)
             {
                 screenTimeTracker.OnEnable();
@@ -305,7 +305,7 @@ namespace PlayFab.Internal
                 _logger.OnDisable();
             }
 
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && !PlayFabSettings.DisableFocusTimeCollection)
             {
                 screenTimeTracker.OnDisable();
@@ -334,7 +334,7 @@ namespace PlayFab.Internal
                 _logger.OnDestroy();
             }
 
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && !PlayFabSettings.DisableFocusTimeCollection)
             {
                 screenTimeTracker.OnDestroy();
@@ -347,7 +347,7 @@ namespace PlayFab.Internal
         /// </summary>
         public void OnApplicationFocus(bool isFocused)
         {
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && !PlayFabSettings.DisableFocusTimeCollection)
             {
                 screenTimeTracker.OnApplicationFocus(isFocused);
@@ -360,7 +360,7 @@ namespace PlayFab.Internal
         /// </summary>
         public void OnApplicationQuit()
         {
-#if ENABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
+#if !DISABLE_PLAYFABENTITY_API && !DISABLE_PLAYFABCLIENT_API
             if ((screenTimeTracker != null) && !PlayFabSettings.DisableFocusTimeCollection)
             {
                 screenTimeTracker.OnApplicationQuit();

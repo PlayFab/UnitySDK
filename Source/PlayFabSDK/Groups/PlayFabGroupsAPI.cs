@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
 using PlayFab.GroupsModels;
@@ -9,9 +9,9 @@ using PlayFab.Public;
 namespace PlayFab
 {
     /// <summary>
-    /// The Groups API is designed for any permanent or semi-permanent collections of Entities (Players, or non-players). If you
-    /// want to make Guilds/Clans/Corporations/etc, then you should use Groups. Groups can also be used to make chatrooms,
-    /// parties, or any other excuse you need to lump some Entites together in a persistent way.
+    /// The Groups API is designed for any permanent or semi-permanent collections of Entities (players, or non-players). If you
+    /// want to make Guilds/Clans/Corporations/etc., then you should use groups. Groups can also be used to make chatrooms,
+    /// parties, or any other persistent collection of entities.
     /// </summary>
     public static class PlayFabGroupsAPI
     {
@@ -29,7 +29,7 @@ namespace PlayFab
         /// <summary>
         /// Accepts an outstanding invitation to to join a group
         /// </summary>
-        public static void AcceptGroupApplication(AcceptGroupApplicationRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void AcceptGroupApplication(AcceptGroupApplicationRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/AcceptGroupApplication", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -38,7 +38,7 @@ namespace PlayFab
         /// <summary>
         /// Accepts an invitation to join a group
         /// </summary>
-        public static void AcceptGroupInvitation(AcceptGroupInvitationRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void AcceptGroupInvitation(AcceptGroupInvitationRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/AcceptGroupInvitation", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -47,7 +47,7 @@ namespace PlayFab
         /// <summary>
         /// Adds members to a group or role.
         /// </summary>
-        public static void AddMembers(AddMembersRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void AddMembers(AddMembersRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/AddMembers", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -65,7 +65,7 @@ namespace PlayFab
         /// <summary>
         /// Blocks a list of entities from joining a group.
         /// </summary>
-        public static void BlockEntity(BlockEntityRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void BlockEntity(BlockEntityRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/BlockEntity", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -74,7 +74,7 @@ namespace PlayFab
         /// <summary>
         /// Changes the role membership of a list of entities from one role to another.
         /// </summary>
-        public static void ChangeMemberRole(ChangeMemberRoleRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void ChangeMemberRole(ChangeMemberRoleRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/ChangeMemberRole", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -101,7 +101,7 @@ namespace PlayFab
         /// <summary>
         /// Deletes a group and all roles, invitations, join requests, and blocks associated with it.
         /// </summary>
-        public static void DeleteGroup(DeleteGroupRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void DeleteGroup(DeleteGroupRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/DeleteGroup", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -110,7 +110,7 @@ namespace PlayFab
         /// <summary>
         /// Deletes an existing role in a group.
         /// </summary>
-        public static void DeleteRole(DeleteRoleRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void DeleteRole(DeleteRoleRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/DeleteRole", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -200,7 +200,7 @@ namespace PlayFab
         /// <summary>
         /// Removes an application to join a group
         /// </summary>
-        public static void RemoveGroupApplication(RemoveGroupApplicationRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void RemoveGroupApplication(RemoveGroupApplicationRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/RemoveGroupApplication", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -209,7 +209,7 @@ namespace PlayFab
         /// <summary>
         /// Removes an invitation join a group
         /// </summary>
-        public static void RemoveGroupInvitation(RemoveGroupInvitationRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void RemoveGroupInvitation(RemoveGroupInvitationRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/RemoveGroupInvitation", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -218,7 +218,7 @@ namespace PlayFab
         /// <summary>
         /// Removes members from a group.
         /// </summary>
-        public static void RemoveMembers(RemoveMembersRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void RemoveMembers(RemoveMembersRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/RemoveMembers", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
@@ -227,7 +227,7 @@ namespace PlayFab
         /// <summary>
         /// Unblocks a list of entities from joining a group
         /// </summary>
-        public static void UnblockEntity(UnblockEntityRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void UnblockEntity(UnblockEntityRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
 
             PlayFabHttp.MakeApiCall("/Group/UnblockEntity", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);

@@ -165,6 +165,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Grants the player's current entitlements from Xbox Live, consuming all availble items in Xbox and granting them to the
+        /// player's PlayFab inventory. This call is idempotent and will not grant previously granted items to the player.
+        /// </summary>
+        public static void ConsumeXboxEntitlements(ConsumeXboxEntitlementsRequest request, Action<ConsumeXboxEntitlementsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/ConsumeXboxEntitlements", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Requests the creation of a shared group object, containing key/value pairs which may be updated by all members of the
         /// group. Upon creation, the current user will be the only member of the group. Shared Groups are designed for sharing data
         /// between a very small number of players, please see our guide:
@@ -873,6 +884,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Links the Xbox Live account associated with the provided access code to the user's PlayFab account
+        /// </summary>
+        public static void LinkXboxAccount(LinkXboxAccountRequest request, Action<LinkXboxAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/LinkXboxAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Signs the user in using the Android device identifier, returning a session identifier that can subsequently be used for
         /// API calls which require an authenticated user
         /// </summary>
@@ -1030,6 +1051,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using a Xbox Live Token, returning a session identifier that can subsequently be used for API calls
+        /// which require an authenticated user
+        /// </summary>
+        public static void LoginWithXbox(LoginWithXboxRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+
+            PlayFabHttp.MakeApiCall("/Client/LoginWithXbox", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Attempts to locate a game session matching the given parameters. If the goal is to match the player into a specific
         /// active session, only the LobbyId is required. Otherwise, the BuildVersion, GameMode, and Region are all required
         /// parameters. Note that parameters specified in the search are required (they are not weighting factors). If a slot is
@@ -1165,7 +1197,7 @@ namespace PlayFab
         /// Write a PlayStream event to describe the provided player device information. This API method is not designed to be
         /// called directly by developers. Each PlayFab client SDK will eventually report this information automatically.
         /// </summary>
-        public static void ReportDeviceInfo(DeviceInfoRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void ReportDeviceInfo(DeviceInfoRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
@@ -1378,6 +1410,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Unlinks the related Xbox Live account from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkXboxAccount(UnlinkXboxAccountRequest request, Action<UnlinkXboxAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/UnlinkXboxAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Opens the specified container, with the specified key (when required), and returns the contents of the opened container.
         /// If the container (and key when relevant) are consumable (RemainingUses > 0), their RemainingUses will be decremented,
         /// consistent with the operation of ConsumeItem.
@@ -1404,7 +1446,7 @@ namespace PlayFab
         /// <summary>
         /// Update the avatar URL of the player
         /// </summary>
-        public static void UpdateAvatarUrl(UpdateAvatarUrlRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void UpdateAvatarUrl(UpdateAvatarUrlRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 

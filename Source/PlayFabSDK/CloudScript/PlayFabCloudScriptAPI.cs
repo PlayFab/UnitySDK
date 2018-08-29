@@ -1,4 +1,4 @@
-#if ENABLE_PLAYFABENTITY_API
+#if !DISABLE_PLAYFABENTITY_API
 using System;
 using System.Collections.Generic;
 using PlayFab.CloudScriptModels;
@@ -25,7 +25,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Executes CloudScript using the Entity Profile
+        /// Cloud Script is one of PlayFab's most versatile features. It allows client code to request execution of any kind of
+        /// custom server-side functionality you can implement, and it can be used in conjunction with virtually anything.
         /// </summary>
         public static void ExecuteEntityCloudScript(ExecuteEntityCloudScriptRequest request, Action<ExecuteCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
