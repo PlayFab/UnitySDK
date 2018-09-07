@@ -40,6 +40,12 @@ namespace PlayFab.PlayStreamModels
         public EntityLineage EntityLineage;
         public List<FileSet> Files;
     }
+    public class EntityLanguageUpdatedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public EntityLineage EntityLineage;
+        public string Language;
+    }
     public class EntityLoggedInEventData : PlayStreamEventBase
     {
         public string EntityChain;
@@ -391,6 +397,11 @@ namespace PlayFab.PlayStreamModels
         public DateTime RequestTime;
         public string TitleId;
     }
+    public class PlayerDeviceInfoEventData : PlayStreamEventBase
+    {
+        public Dictionary<string,object> DeviceInfo;
+        public string TitleId;
+    }
     public class PlayerDisplayNameChangedEventData : PlayStreamEventBase
     {
         public string DisplayName;
@@ -425,6 +436,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -437,6 +449,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -454,6 +467,7 @@ namespace PlayFab.PlayStreamModels
         public EventLocation Location;
         public LoginIdentityProvider? Platform;
         public string PlatformUserId;
+        public string PlatformUserName;
         public string TitleId;
     }
     public class PlayerMatchedWithLobbyEventData : PlayStreamEventBase
@@ -464,6 +478,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -643,6 +658,7 @@ namespace PlayFab.PlayStreamModels
         public EmailTemplateType? EmailTemplateType;
         public string ErrorMessage;
         public string ErrorName;
+        public string Language;
         public string Subject;
         public bool Success;
         public string TitleId;
@@ -651,13 +667,31 @@ namespace PlayFab.PlayStreamModels
     #endregion player
 
     #region session
+    public class ClientFocusChangeEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public ClientFocusChangePayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class ClientSessionStartEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime OriginalTimestamp;
+        public ClientSessionStartPayload Payload;
+        public EntityKey WriterEntity;
+    }
     public class GameLobbyEndedEventData : PlayStreamEventBase
     {
         public string GameMode;
+        public DateTime? GameStartTime;
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
@@ -674,6 +708,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
@@ -687,6 +722,7 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public DateTime StartTime;
         public string TitleId;
@@ -699,6 +735,7 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public DateTime StartTime;
         public GameServerHostStopReason? StopReason;
@@ -811,13 +848,6 @@ namespace PlayFab.PlayStreamModels
         public string GraphUrl;
         public AlertLevel? Level;
     }
-    public class TitleHopperConfigUpdatedEventData : PlayStreamEventBase
-    {
-        public bool Deleted;
-        public string DeveloperId;
-        public string MatchHopperId;
-        public string UserId;
-    }
     public class TitleInitiatedPlayerPasswordResetEventData : PlayStreamEventBase
     {
         public string DeveloperId;
@@ -872,6 +902,13 @@ namespace PlayFab.PlayStreamModels
     {
         public string DeveloperId;
         public int Revision;
+        public string UserId;
+    }
+    public class TitleQueueConfigUpdatedEventData : PlayStreamEventBase
+    {
+        public bool Deleted;
+        public string DeveloperId;
+        public string MatchQueueName;
         public string UserId;
     }
     public class TitleRequestedLimitChangeEventData : PlayStreamEventBase
@@ -1159,6 +1196,77 @@ namespace PlayFab.PlayStreamModels
         SAML
     }
 
+    [Serializable]
+    public class ClientFocusChangePayload
+    {
+        /// <summary>
+        /// The Client Sesssion Id of the associated entity.
+        /// </summary>
+        public string ClientSessionID;
+        /// <summary>
+        /// The Event Time of the associated entity.
+        /// </summary>
+        public DateTime? EventTimestamp;
+        /// <summary>
+        /// The Focus Id of the associated entity.
+        /// </summary>
+        public string FocusID;
+        /// <summary>
+        /// The Focus State of the associated entity.
+        /// </summary>
+        public bool FocusState;
+        /// <summary>
+        /// The Focus Duration of the associated entity.
+        /// </summary>
+        public double FocusStateDuration;
+    }
+
+    /// <summary>
+    /// Combined entity type and ID structure which uniquely identifies a single entity.
+    /// </summary>
+    [Serializable]
+    public class EntityKey
+    {
+        /// <summary>
+        /// Unique ID of the entity.
+        /// </summary>
+        public string Id;
+        /// <summary>
+        /// Entity type. See https://api.playfab.com/docs/tutorials/entities/entitytypes
+        /// </summary>
+        public string Type;
+        /// <summary>
+        /// Alternate name for Type.
+        /// </summary>
+        [Obsolete("Use 'Type' instead", true)]
+        public string TypeString;
+    }
+
+    [Serializable]
+    public class ClientSessionStartPayload
+    {
+        /// <summary>
+        /// The Client Session Id of the associated entity.
+        /// </summary>
+        public string ClientSessionID;
+        /// <summary>
+        /// The Device Model of the associated entity.
+        /// </summary>
+        public string DeviceModel;
+        /// <summary>
+        /// The Device Type of the associated entity.
+        /// </summary>
+        public string DeviceType;
+        /// <summary>
+        /// The OS of the associated entity.
+        /// </summary>
+        public string OS;
+        /// <summary>
+        /// The User Id of the associated entity.
+        /// </summary>
+        public string UserID;
+    }
+
     public enum TransactionStatus
     {
         CreateCart,
@@ -1284,7 +1392,12 @@ namespace PlayFab.PlayStreamModels
         IOSDevice,
         AndroidDevice,
         Twitch,
-        WindowsHello
+        WindowsHello,
+        GameServer,
+        CustomServer,
+        NintendoSwitch,
+        FacebookInstantGames,
+        OpenIdConnect
     }
 
     public enum PasswordResetInitiationSource
@@ -1997,6 +2110,10 @@ namespace PlayFab.PlayStreamModels
         /// Allow game servers to delete player accounts via API.
         /// </summary>
         public bool AllowServerToDeleteUsers;
+        /// <summary>
+        /// The default language for communication with players
+        /// </summary>
+        public string DefaultLanguage;
         /// <summary>
         /// Disable API access by returning errors to all API requests.
         /// </summary>

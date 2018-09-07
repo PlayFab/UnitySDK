@@ -1247,6 +1247,11 @@ namespace PlayFab.Events
 
 #endif
 #if !DISABLE_PLAYFABENTITY_API
+            if (OnLocalizationGetLanguageListRequestEvent != null) { foreach (var each in OnLocalizationGetLanguageListRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLocalizationGetLanguageListRequestEvent -= (PlayFabRequestEvent<LocalizationModels.GetLanguageListRequest>)each; } } }
+            if (OnLocalizationGetLanguageListResultEvent != null) { foreach (var each in OnLocalizationGetLanguageListResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLocalizationGetLanguageListResultEvent -= (PlayFabResultEvent<LocalizationModels.GetLanguageListResponse>)each; } } }
+
+#endif
+#if !DISABLE_PLAYFABENTITY_API
             if (OnProfilesGetGlobalPolicyRequestEvent != null) { foreach (var each in OnProfilesGetGlobalPolicyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnProfilesGetGlobalPolicyRequestEvent -= (PlayFabRequestEvent<ProfilesModels.GetGlobalPolicyRequest>)each; } } }
             if (OnProfilesGetGlobalPolicyResultEvent != null) { foreach (var each in OnProfilesGetGlobalPolicyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnProfilesGetGlobalPolicyResultEvent -= (PlayFabResultEvent<ProfilesModels.GetGlobalPolicyResponse>)each; } } }
 
@@ -1707,6 +1712,9 @@ namespace PlayFab.Events
                 if (type == typeof(GroupsModels.UpdateGroupRoleRequest)) { if (_instance.OnGroupsUpdateRoleRequestEvent != null) { _instance.OnGroupsUpdateRoleRequestEvent((GroupsModels.UpdateGroupRoleRequest)e.Request); return; } }
 #endif
 #if !DISABLE_PLAYFABENTITY_API
+                if (type == typeof(LocalizationModels.GetLanguageListRequest)) { if (_instance.OnLocalizationGetLanguageListRequestEvent != null) { _instance.OnLocalizationGetLanguageListRequestEvent((LocalizationModels.GetLanguageListRequest)e.Request); return; } }
+#endif
+#if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(ProfilesModels.GetGlobalPolicyRequest)) { if (_instance.OnProfilesGetGlobalPolicyRequestEvent != null) { _instance.OnProfilesGetGlobalPolicyRequestEvent((ProfilesModels.GetGlobalPolicyRequest)e.Request); return; } }
                 if (type == typeof(ProfilesModels.GetEntityProfileRequest)) { if (_instance.OnProfilesGetProfileRequestEvent != null) { _instance.OnProfilesGetProfileRequestEvent((ProfilesModels.GetEntityProfileRequest)e.Request); return; } }
                 if (type == typeof(ProfilesModels.GetEntityProfilesRequest)) { if (_instance.OnProfilesGetProfilesRequestEvent != null) { _instance.OnProfilesGetProfilesRequestEvent((ProfilesModels.GetEntityProfilesRequest)e.Request); return; } }
@@ -2134,6 +2142,10 @@ namespace PlayFab.Events
                 if (type == typeof(GroupsModels.EmptyResponse)) { if (_instance.OnGroupsUnblockEntityResultEvent != null) { _instance.OnGroupsUnblockEntityResultEvent((GroupsModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.UpdateGroupResponse)) { if (_instance.OnGroupsUpdateGroupResultEvent != null) { _instance.OnGroupsUpdateGroupResultEvent((GroupsModels.UpdateGroupResponse)e.Result); return; } }
                 if (type == typeof(GroupsModels.UpdateGroupRoleResponse)) { if (_instance.OnGroupsUpdateRoleResultEvent != null) { _instance.OnGroupsUpdateRoleResultEvent((GroupsModels.UpdateGroupRoleResponse)e.Result); return; } }
+#endif
+#if !DISABLE_PLAYFABENTITY_API
+
+                if (type == typeof(LocalizationModels.GetLanguageListResponse)) { if (_instance.OnLocalizationGetLanguageListResultEvent != null) { _instance.OnLocalizationGetLanguageListResultEvent((LocalizationModels.GetLanguageListResponse)e.Result); return; } }
 #endif
 #if !DISABLE_PLAYFABENTITY_API
 

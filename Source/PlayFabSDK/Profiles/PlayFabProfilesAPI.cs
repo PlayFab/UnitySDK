@@ -62,7 +62,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the entity's language
+        /// Updates the entity's language. The precedence hierarchy for communication to the player is Title Player Account
+        /// language, Master Player Account language, and then title default language if the first two aren't set or supported.
         /// </summary>
         public static void SetProfileLanguage(SetProfileLanguageRequest request, Action<SetProfileLanguageResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {

@@ -30,19 +30,15 @@ namespace PlayFab
 
         private static PlayFabSharedSettings _playFabShared = null;
         private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
-        [Obsolete("This field will become private after Mar 1, 2017", false)]
-        public static PlayFabSharedSettings PlayFabShared { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
-        public const string SdkVersion = "2.49.180829";
-        public const string BuildIdentifier = "jbuild_unitysdk_sdk-unity-5-slave_0";
-        public const string VersionString = "UnitySDK-2.49.180829";
+        public const string SdkVersion = "2.50.180906";
+        public const string BuildIdentifier = "jbuild_unitysdk__sdk-unity-5-slave_0";
+        public const string VersionString = "UnitySDK-2.50.180906";
 
         public static readonly Dictionary<string, string> RequestGetParams = new Dictionary<string, string> {
             { "sdk", VersionString }
         };
 
         private const string DefaultPlayFabApiUrlPrivate = ".playfabapi.com";
-        [Obsolete("This field will become private after Mar 1, 2017", false)]
-        public static string DefaultPlayFabApiUrl { get { return DefaultPlayFabApiUrlPrivate; } }
 
         private static PlayFabSharedSettings GetSharedSettingsObjectPrivate()
         {
@@ -52,11 +48,6 @@ namespace PlayFab
                 throw new Exception("The number of PlayFabSharedSettings objects should be 1: " + settingsList.Length);
             }
             return settingsList[0];
-        }
-        [Obsolete("This field will become private after Mar 1, 2017", false)]
-        public static PlayFabSharedSettings GetSharedSettingsObject()
-        {
-            return GetSharedSettingsObjectPrivate();
         }
 
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
