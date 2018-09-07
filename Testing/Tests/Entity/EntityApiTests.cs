@@ -168,7 +168,6 @@ namespace PlayFab.UUnit
             {
                 CustomId = PlayFabSettings.BuildIdentifier,
                 CreateAccount = true,
-                LoginTitlePlayerAccountEntity = true,
             };
 
             PlayFabClientAPI.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiActionWrapper<ClientModels.LoginResult>(testContext, LoginCallbackPutTest), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
