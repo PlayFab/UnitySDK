@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: PlayFabSharedSettings
   m_EditorClassIdentifier: 
   TitleId: 
+  VerticalName: 
   DeveloperSecretKey: 
   ProductionEnvironmentUrl: 
   RequestType: 2

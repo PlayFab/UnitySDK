@@ -30,9 +30,9 @@ namespace PlayFab
 
         private static PlayFabSharedSettings _playFabShared = null;
         private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
-        public const string SdkVersion = "2.50.180906";
+        public const string SdkVersion = "2.51.180917";
         public const string BuildIdentifier = "jbuild_unitysdk__sdk-unity-5-slave_0";
-        public const string VersionString = "UnitySDK-2.50.180906";
+        public const string VersionString = "UnitySDK-2.51.180917";
 
         public static readonly Dictionary<string, string> RequestGetParams = new Dictionary<string, string> {
             { "sdk", VersionString }
@@ -88,6 +88,12 @@ namespace PlayFab
         {
             get { return PlayFabSharedPrivate.TitleId; }
             set { PlayFabSharedPrivate.TitleId = value; }
+        }
+        
+        public static string VerticalName
+        {
+            get { return PlayFabSharedPrivate.VerticalName; }
+            set { PlayFabSharedPrivate.VerticalName = value; }
         }
 
         public static PlayFabLogLevel LogLevel
@@ -152,7 +158,16 @@ namespace PlayFab
         
             var baseUrl = ProductionEnvironmentUrlPrivate;
             if (!baseUrl.StartsWith("http"))
-                sb.Append("https://").Append(TitleId);
+            {
+                if (!string.IsNullOrEmpty(VerticalName))
+                {
+                    sb.Append("https://").Append(VerticalName);
+                }
+                else
+                {
+                    sb.Append("https://").Append(TitleId);
+                }
+            }
         
             sb.Append(baseUrl).Append(apiCall);
         

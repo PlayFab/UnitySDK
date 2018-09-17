@@ -1058,6 +1058,20 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class DeletePlayerRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class DeletePlayerResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class DeleteSharedGroupRequest : PlayFabRequestCommon
     {
         /// <summary>
