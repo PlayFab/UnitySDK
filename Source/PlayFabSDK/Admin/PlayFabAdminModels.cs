@@ -1251,6 +1251,10 @@ namespace PlayFab.AdminModels
     public class DeleteMasterPlayerAccountRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// Developer created string to identify a user without PlayFab ID
+        /// </summary>
+        public string MetaData;
+        /// <summary>
         /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
         /// </summary>
         public string PlayFabId;
