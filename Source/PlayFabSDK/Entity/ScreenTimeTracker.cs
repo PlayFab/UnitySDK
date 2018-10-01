@@ -141,6 +141,14 @@ namespace PlayFab.Public
             eventsRequests.Enqueue(eventInfo);
 
             initialFocus = false;
+
+            if(!isFocused)
+            {
+                // Force the eventsRequests queue to empty.
+                // If we are losing focus we should make an attempt to push out a focus lost event ASAP
+                Send();
+            }
+
         }
 
         /// <summary>

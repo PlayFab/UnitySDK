@@ -67,8 +67,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetMatchmakerGameInfoResult> OnAdminGetMatchmakerGameInfoResultEvent;
         public event PlayFabRequestEvent<GetMatchmakerGameModesRequest> OnAdminGetMatchmakerGameModesRequestEvent;
         public event PlayFabResultEvent<GetMatchmakerGameModesResult> OnAdminGetMatchmakerGameModesResultEvent;
-        public event PlayFabRequestEvent<GetMatchmakingQueueRequest> OnAdminGetMatchmakingQueueRequestEvent;
-        public event PlayFabResultEvent<GetMatchmakingQueueResult> OnAdminGetMatchmakingQueueResultEvent;
         public event PlayFabRequestEvent<GetPlayedTitleListRequest> OnAdminGetPlayedTitleListRequestEvent;
         public event PlayFabResultEvent<GetPlayedTitleListResult> OnAdminGetPlayedTitleListResultEvent;
         public event PlayFabRequestEvent<GetPlayerIdFromAuthTokenRequest> OnAdminGetPlayerIdFromAuthTokenRequestEvent;
@@ -131,8 +129,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<IncrementLimitedEditionItemAvailabilityResult> OnAdminIncrementLimitedEditionItemAvailabilityResultEvent;
         public event PlayFabRequestEvent<IncrementPlayerStatisticVersionRequest> OnAdminIncrementPlayerStatisticVersionRequestEvent;
         public event PlayFabResultEvent<IncrementPlayerStatisticVersionResult> OnAdminIncrementPlayerStatisticVersionResultEvent;
-        public event PlayFabRequestEvent<ListMatchmakingQueuesRequest> OnAdminListMatchmakingQueuesRequestEvent;
-        public event PlayFabResultEvent<ListMatchmakingQueuesResult> OnAdminListMatchmakingQueuesResultEvent;
         public event PlayFabRequestEvent<ListBuildsRequest> OnAdminListServerBuildsRequestEvent;
         public event PlayFabResultEvent<ListBuildsResult> OnAdminListServerBuildsResultEvent;
         public event PlayFabRequestEvent<ListVirtualCurrencyTypesRequest> OnAdminListVirtualCurrencyTypesRequestEvent;
@@ -143,8 +139,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ModifyServerBuildResult> OnAdminModifyServerBuildResultEvent;
         public event PlayFabRequestEvent<RefundPurchaseRequest> OnAdminRefundPurchaseRequestEvent;
         public event PlayFabResultEvent<RefundPurchaseResponse> OnAdminRefundPurchaseResultEvent;
-        public event PlayFabRequestEvent<RemoveMatchmakingQueueRequest> OnAdminRemoveMatchmakingQueueRequestEvent;
-        public event PlayFabResultEvent<RemoveMatchmakingQueueResult> OnAdminRemoveMatchmakingQueueResultEvent;
         public event PlayFabRequestEvent<RemovePlayerTagRequest> OnAdminRemovePlayerTagRequestEvent;
         public event PlayFabResultEvent<RemovePlayerTagResult> OnAdminRemovePlayerTagResultEvent;
         public event PlayFabRequestEvent<RemoveServerBuildRequest> OnAdminRemoveServerBuildRequestEvent;
@@ -173,8 +167,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<SendAccountRecoveryEmailResult> OnAdminSendAccountRecoveryEmailResultEvent;
         public event PlayFabRequestEvent<UpdateCatalogItemsRequest> OnAdminSetCatalogItemsRequestEvent;
         public event PlayFabResultEvent<UpdateCatalogItemsResult> OnAdminSetCatalogItemsResultEvent;
-        public event PlayFabRequestEvent<SetMatchmakingQueueRequest> OnAdminSetMatchmakingQueueRequestEvent;
-        public event PlayFabResultEvent<SetMatchmakingQueueResult> OnAdminSetMatchmakingQueueResultEvent;
         public event PlayFabRequestEvent<SetPlayerSecretRequest> OnAdminSetPlayerSecretRequestEvent;
         public event PlayFabResultEvent<SetPlayerSecretResult> OnAdminSetPlayerSecretResultEvent;
         public event PlayFabRequestEvent<SetPublishedRevisionRequest> OnAdminSetPublishedRevisionRequestEvent;

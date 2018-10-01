@@ -1369,7 +1369,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// IPV4 address of the server
         /// </summary>
-        [Obsolete("Use 'ServerIPV4Address' instead", false)]
+        [Obsolete("Use 'ServerIPV4Address' instead", true)]
         public string ServerHostname;
         /// <summary>
         /// IPV4 address of the server
@@ -3841,7 +3841,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// IPV4 address of the server
         /// </summary>
-        [Obsolete("Use 'ServerIPV4Address' instead", false)]
+        [Obsolete("Use 'ServerIPV4Address' instead", true)]
         public string ServerHostname;
         /// <summary>
         /// IPV4 address of the server
@@ -4757,7 +4757,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// server IPV4 address
         /// </summary>
-        [Obsolete("Use 'ServerIPV4Address' instead", false)]
+        [Obsolete("Use 'ServerIPV4Address' instead", true)]
         public string ServerHostname;
         /// <summary>
         /// server IPV4 address

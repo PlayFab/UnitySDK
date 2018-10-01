@@ -3952,7 +3952,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// IPV4 address of the Game Server Instance.
         /// </summary>
-        [Obsolete("Use 'ServerIPV4Address' instead", false)]
+        [Obsolete("Use 'ServerIPV4Address' instead", true)]
         public string ServerHost;
         /// <summary>
         /// IPV4 address of the game server instance.
