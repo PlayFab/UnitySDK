@@ -95,7 +95,7 @@ namespace PlayFab.Internal
 
                 using (var stream = new MemoryStream())
                 {
-                    using (var zipstream = new GZipStream(stream, CompressionMode.Compress, CompressionLevel.BestCompression))
+                    using (var zipstream = new GZipStream(stream, CompressionMode.Compress, Ionic.Zlib.CompressionLevel.BestCompression))
                     {
                         zipstream.Write(reqContainer.Payload, 0, reqContainer.Payload.Length);
                     }
