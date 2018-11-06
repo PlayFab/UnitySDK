@@ -48,6 +48,35 @@ namespace PlayFab.ProfilesModels
     }
 
     [Serializable]
+    public class EntityLineage
+    {
+        /// <summary>
+        /// The Character Id of the associated entity.
+        /// </summary>
+        public string CharacterId;
+        /// <summary>
+        /// The Group Id of the associated entity.
+        /// </summary>
+        public string GroupId;
+        /// <summary>
+        /// The Master Player Account Id of the associated entity.
+        /// </summary>
+        public string MasterPlayerAccountId;
+        /// <summary>
+        /// The Namespace Id of the associated entity.
+        /// </summary>
+        public string NamespaceId;
+        /// <summary>
+        /// The Title Id of the associated entity.
+        /// </summary>
+        public string TitleId;
+        /// <summary>
+        /// The Title Player Account Id of the associated entity.
+        /// </summary>
+        public string TitlePlayerAccountId;
+    }
+
+    [Serializable]
     public class EntityPermissionStatement
     {
         /// <summary>
@@ -84,12 +113,7 @@ namespace PlayFab.ProfilesModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// The chain of responsibility for this entity. This is a representation of 'ownership'. It is constructed using the
-        /// following formats (replace '[ID]' with the unique identifier for the given entity): Namespace: 'namespace![Namespace
-        /// ID]' Title: 'title![Namespace ID]/[Title ID]' Master Player Account: 'master_player_account![Namespace
-        /// ID]/[MasterPlayerAccount ID]' Title Player Account: 'title_player_account![Namespace ID]/[Title ID]/[MasterPlayerAccount
-        /// ID]/[TitlePlayerAccount ID]' Character: 'character![Namespace ID]/[Title ID]/[MasterPlayerAccount
-        /// ID]/[TitlePlayerAccount ID]/[Character ID]'
+        /// The chain of responsibility for this entity. Use Lineage.
         /// </summary>
         public string EntityChain;
         /// <summary>
@@ -97,9 +121,18 @@ namespace PlayFab.ProfilesModels
         /// </summary>
         public Dictionary<string,EntityProfileFileMetadata> Files;
         /// <summary>
+        /// The friendly name of the entity. This field may serve different purposes for different entity types. i.e.: for a title
+        /// player account it could represent the display name of the player, whereas on a character it could be character's name.
+        /// </summary>
+        public string FriendlyName;
+        /// <summary>
         /// The language on this profile.
         /// </summary>
         public string Language;
+        /// <summary>
+        /// The lineage of this profile.
+        /// </summary>
+        public EntityLineage Lineage;
         /// <summary>
         /// The objects on this profile.
         /// </summary>
