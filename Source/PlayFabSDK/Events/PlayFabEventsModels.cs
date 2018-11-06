@@ -25,7 +25,7 @@ namespace PlayFab.EventsModels
     public class EventContents
     {
         /// <summary>
-        /// Entity associated with the event
+        /// Entity associated with the event. If null, the event will apply to the calling entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>

@@ -109,6 +109,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayFabIDsFromSteamIDsResult> OnGetPlayFabIDsFromSteamIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromTwitchIDsRequest> OnGetPlayFabIDsFromTwitchIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromTwitchIDsResult> OnGetPlayFabIDsFromTwitchIDsResultEvent;
+        public event PlayFabRequestEvent<GetPlayFabIDsFromXboxLiveIDsRequest> OnGetPlayFabIDsFromXboxLiveIDsRequestEvent;
+        public event PlayFabResultEvent<GetPlayFabIDsFromXboxLiveIDsResult> OnGetPlayFabIDsFromXboxLiveIDsResultEvent;
         public event PlayFabRequestEvent<GetPublisherDataRequest> OnGetPublisherDataRequestEvent;
         public event PlayFabResultEvent<GetPublisherDataResult> OnGetPublisherDataResultEvent;
         public event PlayFabRequestEvent<GetPurchaseRequest> OnGetPurchaseRequestEvent;
@@ -159,6 +161,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LinkKongregateAccountResult> OnLinkKongregateResultEvent;
         public event PlayFabRequestEvent<LinkNintendoSwitchDeviceIdRequest> OnLinkNintendoSwitchDeviceIdRequestEvent;
         public event PlayFabResultEvent<LinkNintendoSwitchDeviceIdResult> OnLinkNintendoSwitchDeviceIdResultEvent;
+        public event PlayFabRequestEvent<LinkOpenIdConnectRequest> OnLinkOpenIdConnectRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnLinkOpenIdConnectResultEvent;
         public event PlayFabRequestEvent<LinkSteamAccountRequest> OnLinkSteamAccountRequestEvent;
         public event PlayFabResultEvent<LinkSteamAccountResult> OnLinkSteamAccountResultEvent;
         public event PlayFabRequestEvent<LinkTwitchAccountRequest> OnLinkTwitchRequestEvent;
@@ -177,6 +181,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<LoginWithIOSDeviceIDRequest> OnLoginWithIOSDeviceIDRequestEvent;
         public event PlayFabRequestEvent<LoginWithKongregateRequest> OnLoginWithKongregateRequestEvent;
         public event PlayFabRequestEvent<LoginWithNintendoSwitchDeviceIdRequest> OnLoginWithNintendoSwitchDeviceIdRequestEvent;
+        public event PlayFabRequestEvent<LoginWithOpenIdConnectRequest> OnLoginWithOpenIdConnectRequestEvent;
         public event PlayFabRequestEvent<LoginWithPlayFabRequest> OnLoginWithPlayFabRequestEvent;
         public event PlayFabRequestEvent<LoginWithSteamRequest> OnLoginWithSteamRequestEvent;
         public event PlayFabRequestEvent<LoginWithTwitchRequest> OnLoginWithTwitchRequestEvent;
@@ -241,6 +246,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UnlinkKongregateAccountResult> OnUnlinkKongregateResultEvent;
         public event PlayFabRequestEvent<UnlinkNintendoSwitchDeviceIdRequest> OnUnlinkNintendoSwitchDeviceIdRequestEvent;
         public event PlayFabResultEvent<UnlinkNintendoSwitchDeviceIdResult> OnUnlinkNintendoSwitchDeviceIdResultEvent;
+        public event PlayFabRequestEvent<UninkOpenIdConnectRequest> OnUnlinkOpenIdConnectRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnUnlinkOpenIdConnectResultEvent;
         public event PlayFabRequestEvent<UnlinkSteamAccountRequest> OnUnlinkSteamAccountRequestEvent;
         public event PlayFabResultEvent<UnlinkSteamAccountResult> OnUnlinkSteamAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkTwitchAccountRequest> OnUnlinkTwitchRequestEvent;

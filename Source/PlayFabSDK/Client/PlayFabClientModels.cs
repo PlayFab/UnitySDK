@@ -1123,6 +1123,11 @@ namespace PlayFab.ClientModels
     {
     }
 
+    [Serializable]
+    public class EmptyResult : PlayFabResultCommon
+    {
+    }
+
     /// <summary>
     /// Combined entity type and ID structure which uniquely identifies a single entity.
     /// </summary>
@@ -1366,11 +1371,6 @@ namespace PlayFab.ClientModels
         /// duration in seconds this server has been running
         /// </summary>
         public uint RunTime;
-        /// <summary>
-        /// IPV4 address of the server
-        /// </summary>
-        [Obsolete("Use 'ServerIPV4Address' instead", true)]
-        public string ServerHostname;
         /// <summary>
         /// IPV4 address of the server
         /// </summary>
@@ -2400,6 +2400,28 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class GetPlayFabIDsFromXboxLiveIDsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The ID of Xbox Live sandbox.
+        /// </summary>
+        public string Sandbox;
+        /// <summary>
+        /// Array of unique Xbox Live account identifiers for which the title needs to get PlayFab identifiers.
+        /// </summary>
+        public List<string> XboxLiveAccountIDs;
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromXboxLiveIDsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Mapping of PlayStation Network identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<XboxLiveAccountPlayFabIdPair> Data;
+    }
+
+    [Serializable]
     public class GetPublisherDataRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3069,6 +3091,24 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class LinkOpenIdConnectRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// A name that identifies which configured OpenID Connect provider relationship to use. Maximum 100 characters.
+        /// </summary>
+        public string ConnectionId;
+        /// <summary>
+        /// If another user is already linked to a specific OpenId Connect user, unlink the other user and re-link.
+        /// </summary>
+        public bool? ForceLink;
+        /// <summary>
+        /// The JSON Web token (JWT) returned by the identity provider after login. Represented as the id_token field in the
+        /// identity provider's response. Used to validate the request and find the user ID (OpenID Connect subject) to link with.
+        /// </summary>
+        public string IdToken;
+    }
+
+    [Serializable]
     public class LinkSteamAccountRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3613,6 +3653,46 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class LoginWithOpenIdConnectRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// A name that identifies which configured OpenID Connect provider relationship to use. Maximum 100 characters.
+        /// </summary>
+        public string ConnectionId;
+        /// <summary>
+        /// Automatically create a PlayFab account if one is not currently linked to this ID.
+        /// </summary>
+        public bool? CreateAccount;
+        /// <summary>
+        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// </summary>
+        public string EncryptedRequest;
+        /// <summary>
+        /// The JSON Web token (JWT) returned by the identity provider after login. Represented as the id_token field in the
+        /// identity provider's response.
+        /// </summary>
+        public string IdToken;
+        /// <summary>
+        /// Flags for which pieces of info to return for the user.
+        /// </summary>
+        public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
+        /// <summary>
+        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
+        /// </summary>
+        [Obsolete("No longer available", false)]
+        public bool? LoginTitlePlayerAccountEntity;
+        /// <summary>
+        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// </summary>
+        public string PlayerSecret;
+        /// <summary>
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
+        /// title has been selected.
+        /// </summary>
+        public string TitleId;
+    }
+
+    [Serializable]
     public class LoginWithPlayFabRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3838,11 +3918,6 @@ namespace PlayFab.ClientModels
         /// time in milliseconds the application is configured to wait on matchmaking results
         /// </summary>
         public int? PollWaitTimeMS;
-        /// <summary>
-        /// IPV4 address of the server
-        /// </summary>
-        [Obsolete("Use 'ServerIPV4Address' instead", true)]
-        public string ServerHostname;
         /// <summary>
         /// IPV4 address of the server
         /// </summary>
@@ -4757,11 +4832,6 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// server IPV4 address
         /// </summary>
-        [Obsolete("Use 'ServerIPV4Address' instead", true)]
-        public string ServerHostname;
-        /// <summary>
-        /// server IPV4 address
-        /// </summary>
         public string ServerIPV4Address;
         /// <summary>
         /// server IPV6 address
@@ -5146,6 +5216,15 @@ namespace PlayFab.ClientModels
         /// Unique Twitch identifier for a user.
         /// </summary>
         public string TwitchId;
+    }
+
+    [Serializable]
+    public class UninkOpenIdConnectRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// A name that identifies which configured OpenID Connect provider relationship to use. Maximum 100 characters.
+        /// </summary>
+        public string ConnectionId;
     }
 
     [Serializable]
@@ -6120,6 +6199,19 @@ namespace PlayFab.ClientModels
         /// The time (in UTC) associated with this event. The value dafaults to the current time.
         /// </summary>
         public DateTime? Timestamp;
+    }
+
+    [Serializable]
+    public class XboxLiveAccountPlayFabIdPair
+    {
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Xbox Live identifier.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Unique Xbox Live identifier for a user.
+        /// </summary>
+        public string XboxLiveAccountId;
     }
 }
 #endif
