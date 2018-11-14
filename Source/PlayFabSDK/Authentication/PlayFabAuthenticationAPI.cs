@@ -16,6 +16,16 @@ namespace PlayFab
     {
         static PlayFabAuthenticationAPI() {}
 
+
+        /// <summary>
+        /// Check to See if the entity is logged in.
+        /// </summary>
+        public static bool IsEntityLoggedIn()
+        {
+            var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
+            return !string.IsNullOrEmpty(transport.EntityToken);
+        }
+
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.

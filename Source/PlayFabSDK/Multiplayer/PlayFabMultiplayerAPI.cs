@@ -15,6 +15,7 @@ namespace PlayFab
     {
         static PlayFabMultiplayerAPI() {}
 
+
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.
@@ -148,6 +149,15 @@ namespace PlayFab
         {
 
             PlayFabHttp.MakeApiCall("/MultiplayerServer/GetTitleEnabledForMultiplayerServersStatus", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Lists archived multiplayer server sessions for a build.
+        /// </summary>
+        public static void ListArchivedMultiplayerServers(ListMultiplayerServersRequest request, Action<ListMultiplayerServersResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+
+            PlayFabHttp.MakeApiCall("/MultiplayerServer/ListArchivedMultiplayerServers", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
