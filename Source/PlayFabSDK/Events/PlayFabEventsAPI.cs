@@ -16,6 +16,7 @@ namespace PlayFab
     {
         static PlayFabEventsAPI() {}
 
+
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.

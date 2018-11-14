@@ -75,14 +75,14 @@ namespace PlayFab.Json
                 else if (type == typeof(DateTime))
                 {
                     DateTime output;
-                    var result = DateTime.TryParseExact(valueStr, PlayFabUtil._defaultDateTimeFormats, CultureInfo.CurrentCulture, PlayFabUtil.DateTimeStyles, out output);
+                    var result = DateTime.TryParseExact(valueStr, PlayFabUtil._defaultDateTimeFormats, CultureInfo.InvariantCulture, PlayFabUtil.DateTimeStyles, out output);
                     if (result)
                         return output;
                 }
                 else if (type == typeof(DateTimeOffset))
                 {
                     DateTimeOffset output;
-                    var result = DateTimeOffset.TryParseExact(valueStr, PlayFabUtil._defaultDateTimeFormats, CultureInfo.CurrentCulture, PlayFabUtil.DateTimeStyles, out output);
+                    var result = DateTimeOffset.TryParseExact(valueStr, PlayFabUtil._defaultDateTimeFormats, CultureInfo.InvariantCulture, PlayFabUtil.DateTimeStyles, out output);
                     if (result)
                         return output;
                 }
@@ -107,12 +107,12 @@ namespace PlayFab.Json
                 }
                 else if (input is DateTime)
                 {
-                    output = ((DateTime)input).ToString(PlayFabUtil._defaultDateTimeFormats[PlayFabUtil.DEFAULT_UTC_OUTPUT_INDEX], CultureInfo.CurrentCulture);
+                    output = ((DateTime)input).ToString(PlayFabUtil._defaultDateTimeFormats[PlayFabUtil.DEFAULT_UTC_OUTPUT_INDEX], CultureInfo.InvariantCulture);
                     return true;
                 }
                 else if (input is DateTimeOffset)
                 {
-                    output = ((DateTimeOffset)input).ToString(PlayFabUtil._defaultDateTimeFormats[PlayFabUtil.DEFAULT_UTC_OUTPUT_INDEX], CultureInfo.CurrentCulture);
+                    output = ((DateTimeOffset)input).ToString(PlayFabUtil._defaultDateTimeFormats[PlayFabUtil.DEFAULT_UTC_OUTPUT_INDEX], CultureInfo.InvariantCulture);
                     return true;
                 }
                 else if (input is TimeSpan)
