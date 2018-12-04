@@ -86,6 +86,11 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// This API will trigger a player_tag_added event and add a tag with the given TagName and PlayFabID to the corresponding
+    /// player profile. TagName can be used for segmentation and it is limited to 256 characters. Also there is a limit on the
+    /// number of tags a title can have.
+    /// </summary>
     [Serializable]
     public class AddPlayerTagRequest : PlayFabRequestCommon
     {
@@ -153,6 +158,12 @@ namespace PlayFab.ServerModels
         public PushNotificationPlatform Platform;
     }
 
+    /// <summary>
+    /// Note that data returned may be Personally Identifying Information (PII), such as email address, and so care should be
+    /// taken in how this data is stored and managed. Since this call will always return the relevant information for users who
+    /// have accessed
+    /// the title, the recommendation is to not store this data locally.
+    /// </summary>
     [Serializable]
     public class AuthenticateSessionTicketRequest : PlayFabRequestCommon
     {
@@ -274,6 +285,10 @@ namespace PlayFab.ServerModels
         public string Reason;
     }
 
+    /// <summary>
+    /// The existence of each user will not be verified. When banning by IP or MAC address, multiple players may be affected, so
+    /// use this feature with caution. Returns information about the new bans.
+    /// </summary>
     [Serializable]
     public class BanUsersRequest : PlayFabRequestCommon
     {
@@ -850,6 +865,11 @@ namespace PlayFab.ServerModels
         ZW
     }
 
+    /// <summary>
+    /// If SharedGroupId is specified, the service will attempt to create a group with that
+    /// identifier, and will return an error if it is already in use. If no SharedGroupId is specified, a random identifier will
+    /// be assigned.
+    /// </summary>
     [Serializable]
     public class CreateSharedGroupRequest : PlayFabRequestCommon
     {
@@ -1034,6 +1054,11 @@ namespace PlayFab.ServerModels
         ZWD
     }
 
+    /// <summary>
+    /// This function will delete the specified character from the list allowed by the user, and
+    /// will also delete any inventory or VC currently held by that character. It will NOT delete any statistics
+    /// associated for this character, in order to preserve leaderboard integrity.
+    /// </summary>
     [Serializable]
     public class DeleteCharacterFromUserRequest : PlayFabRequestCommon
     {
@@ -1057,6 +1082,20 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Deletes all data associated with the player, including statistics, custom data, inventory, purchases, virtual currency
+    /// balances,
+    /// characters and shared group memberships. Removes the player from all leaderboards and player search
+    /// indexes. Does not delete PlayStream event history associated with the player.
+    /// Does not delete the publisher user account that created the player in the title nor associated data
+    /// such as username, password, email address, account linkages, or friends list.
+    /// Note, this API queues the player for deletion and returns immediately. It may take several minutes
+    /// or more before all player data is fully deleted.
+    /// Until the player data is fully deleted, attempts to recreate the player with the same user account
+    /// in the same title will fail with the 'AccountDeleted' error.
+    /// This API must be enabled for use as an option in the game manager website. It is disabled by
+    /// default.
+    /// </summary>
     [Serializable]
     public class DeletePlayerRequest : PlayFabRequestCommon
     {
@@ -1153,6 +1192,10 @@ namespace PlayFab.ServerModels
         public string TableId;
     }
 
+    /// <summary>
+    /// Note that if the Random Result Table contains no entries, or does not exist for the catalog specified (the Primary
+    /// catalog if one is not specified), an InvalidDropTable error will be returned.
+    /// </summary>
     [Serializable]
     public class EvaluateRandomResultTableResult : PlayFabResultCommon
     {
@@ -1762,6 +1805,9 @@ namespace PlayFab.ServerModels
         CannotEnableMultiplayerServersForTitle
     }
 
+    /// <summary>
+    /// Request has no paramaters.
+    /// </summary>
     [Serializable]
     public class GetAllSegmentsRequest : PlayFabRequestCommon
     {
@@ -1794,6 +1840,11 @@ namespace PlayFab.ServerModels
         public List<CatalogItem> Catalog;
     }
 
+    /// <summary>
+    /// Data is stored as JSON key-value pairs. If the Keys parameter is provided,
+    /// the data object returned will only contain the data specific to the indicated Keys. Otherwise, the full set
+    /// of custom user data will be returned.
+    /// </summary>
     [Serializable]
     public class GetCharacterDataRequest : PlayFabRequestCommon
     {
@@ -1838,6 +1889,12 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// All items currently in the character inventory will be returned, irrespective of how they were acquired
+    /// (via purchasing, grants, coupons, etc.). Items that are expired, fully consumed, or are no longer valid are not
+    /// considered to be
+    /// in the user's current inventory, and so will not be not included. Also returns their virtual currency balances.
+    /// </summary>
     [Serializable]
     public class GetCharacterInventoryRequest : PlayFabRequestCommon
     {
@@ -1901,6 +1958,9 @@ namespace PlayFab.ServerModels
         public string StatisticName;
     }
 
+    /// <summary>
+    /// Note that the Position of the character in the results is for the overall leaderboard.
+    /// </summary>
     [Serializable]
     public class GetCharacterLeaderboardResult : PlayFabResultCommon
     {
@@ -1910,6 +1970,11 @@ namespace PlayFab.ServerModels
         public List<CharacterLeaderboardEntry> Leaderboard;
     }
 
+    /// <summary>
+    /// Character statistics are similar to user statistics in that they are numeric values which
+    /// may only be updated by a server operation, in order to minimize the opportunity for unauthorized changes. In addition to
+    /// being available for use by the title, the statistics are used for all leaderboard operations in PlayFab.
+    /// </summary>
     [Serializable]
     public class GetCharacterStatisticsRequest : PlayFabRequestCommon
     {
@@ -2037,6 +2102,11 @@ namespace PlayFab.ServerModels
         public string XboxToken;
     }
 
+    /// <summary>
+    /// If any additional services are queried for the user's friends, those friends who also have a PlayFab account registered
+    /// for the title will be returned in the results. For Facebook, user has to have logged into the title's Facebook app
+    /// recently, and only friends who also plays this game will be included.
+    /// </summary>
     [Serializable]
     public class GetFriendsListResult : PlayFabResultCommon
     {
@@ -2071,6 +2141,10 @@ namespace PlayFab.ServerModels
         public string StatisticName;
     }
 
+    /// <summary>
+    /// Note: When calling 'GetLeaderboardAround...' APIs, the position of the character defaults to 0 when the character does
+    /// not have the corresponding statistic.
+    /// </summary>
     [Serializable]
     public class GetLeaderboardAroundCharacterResult : PlayFabResultCommon
     {
@@ -2107,6 +2181,10 @@ namespace PlayFab.ServerModels
         public int? Version;
     }
 
+    /// <summary>
+    /// Note: When calling 'GetLeaderboardAround...' APIs, the position of the user defaults to 0 when the user does not have
+    /// the corresponding statistic.
+    /// </summary>
     [Serializable]
     public class GetLeaderboardAroundUserResult : PlayFabResultCommon
     {
@@ -2141,6 +2219,9 @@ namespace PlayFab.ServerModels
         public string StatisticName;
     }
 
+    /// <summary>
+    /// Note that the Position of the user in the results is for the overall leaderboard.
+    /// </summary>
     [Serializable]
     public class GetLeaderboardForUsersCharactersResult : PlayFabResultCommon
     {
@@ -2177,6 +2258,9 @@ namespace PlayFab.ServerModels
         public int? Version;
     }
 
+    /// <summary>
+    /// Note that the Position of the user in the results is for the overall leaderboard.
+    /// </summary>
     [Serializable]
     public class GetLeaderboardResult : PlayFabResultCommon
     {
@@ -2344,6 +2428,14 @@ namespace PlayFab.ServerModels
         public Dictionary<string,VirtualCurrencyRechargeTime> UserVirtualCurrencyRechargeTimes;
     }
 
+    /// <summary>
+    /// This API allows for access to details regarding a user in the PlayFab service, usually for purposes of
+    /// customer support. Note that data returned may be Personally Identifying Information (PII), such as email address, and so
+    /// care should be
+    /// taken in how this data is stored and managed. Since this call will always return the relevant information for users who
+    /// have accessed
+    /// the title, the recommendation is to not store this data locally.
+    /// </summary>
     [Serializable]
     public class GetPlayerProfileRequest : PlayFabRequestCommon
     {
@@ -2378,6 +2470,15 @@ namespace PlayFab.ServerModels
         public List<GetSegmentResult> Segments;
     }
 
+    /// <summary>
+    /// Initial request must contain at least a Segment ID. Subsequent requests must contain the Segment ID as well as the
+    /// Continuation Token. Failure to send the Continuation Token will result in a new player segment list being generated.
+    /// Each time the Continuation Token is passed in the length of the Total Seconds to Live is refreshed. If too much time
+    /// passes between requests to the point that a subsequent request is past the Total Seconds to Live an error will be
+    /// returned and paging will be terminated. This API is resource intensive and should not be used in scenarios which might
+    /// generate high request volumes. Only one request to this API at a time should be made per title. Concurrent requests to
+    /// the API may be rejected with the APIConcurrentRequestLimitExceeded error.
+    /// </summary>
     [Serializable]
     public class GetPlayersInSegmentRequest : PlayFabRequestCommon
     {
@@ -2444,6 +2545,9 @@ namespace PlayFab.ServerModels
         public List<StatisticNameVersion> StatisticNameVersions;
     }
 
+    /// <summary>
+    /// In addition to being available for use by the title, the statistics are used for all leaderboard operations in PlayFab.
+    /// </summary>
     [Serializable]
     public class GetPlayerStatisticsResult : PlayFabResultCommon
     {
@@ -2475,6 +2579,11 @@ namespace PlayFab.ServerModels
         public List<PlayerStatisticVersion> StatisticVersions;
     }
 
+    /// <summary>
+    /// This API will return a list of canonical tags which includes both namespace and tag's name. If namespace is not
+    /// provided, the result is a list of all canonical tags. TagName can be used for segmentation and Namespace is limited to
+    /// 128 characters.
+    /// </summary>
     [Serializable]
     public class GetPlayerTagsRequest : PlayFabRequestCommon
     {
@@ -2510,6 +2619,9 @@ namespace PlayFab.ServerModels
         public List<string> FacebookIDs;
     }
 
+    /// <summary>
+    /// For Facebook identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
     [Serializable]
     public class GetPlayFabIDsFromFacebookIDsResult : PlayFabResultCommon
     {
@@ -2528,6 +2640,9 @@ namespace PlayFab.ServerModels
         public List<string> FacebookInstantGamesIds;
     }
 
+    /// <summary>
+    /// For Facebook Instant Games identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
     [Serializable]
     public class GetPlayFabIDsFromFacebookInstantGamesIdsResult : PlayFabResultCommon
     {
@@ -2546,6 +2661,9 @@ namespace PlayFab.ServerModels
         public List<string> NintendoSwitchDeviceIds;
     }
 
+    /// <summary>
+    /// For Nintendo Switch Device identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
     [Serializable]
     public class GetPlayFabIDsFromNintendoSwitchDeviceIdsResult : PlayFabResultCommon
     {
@@ -2564,6 +2682,9 @@ namespace PlayFab.ServerModels
         public List<string> SteamStringIDs;
     }
 
+    /// <summary>
+    /// For Steam identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
     [Serializable]
     public class GetPlayFabIDsFromSteamIDsResult : PlayFabResultCommon
     {
@@ -2586,6 +2707,9 @@ namespace PlayFab.ServerModels
         public List<string> XboxLiveAccountIDs;
     }
 
+    /// <summary>
+    /// For XboxLive identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
     [Serializable]
     public class GetPlayFabIDsFromXboxLiveIDsResult : PlayFabResultCommon
     {
@@ -2595,6 +2719,15 @@ namespace PlayFab.ServerModels
         public List<XboxLiveAccountPlayFabIdPair> Data;
     }
 
+    /// <summary>
+    /// This API is designed to return publisher-specific values which can be read, but not written to, by the client. This data
+    /// is shared across all
+    /// titles assigned to a particular publisher, and can be used for cross-game coordination. Only titles assigned to a
+    /// publisher can use this API.
+    /// For more information email devrel@playfab.com. Note that there may up to a minute delay in between updating title data
+    /// and this API call returning
+    /// the newest value.
+    /// </summary>
     [Serializable]
     public class GetPublisherDataRequest : PlayFabRequestCommon
     {
@@ -2627,6 +2760,10 @@ namespace PlayFab.ServerModels
         public List<string> TableIDs;
     }
 
+    /// <summary>
+    /// Note that if a specified Random Result Table contains no entries, or does not exist in the catalog, an InvalidDropTable
+    /// error will be returned.
+    /// </summary>
     [Serializable]
     public class GetRandomResultTablesResult : PlayFabResultCommon
     {
@@ -2663,6 +2800,9 @@ namespace PlayFab.ServerModels
         public List<string> PlayFabIDs;
     }
 
+    /// <summary>
+    /// For a PlayFab account that isn't associated with a server custom identity, ServerCustomId will be null.
+    /// </summary>
     [Serializable]
     public class GetServerCustomIDsFromPlayFabIDsResult : PlayFabResultCommon
     {
@@ -2703,11 +2843,19 @@ namespace PlayFab.ServerModels
         public List<string> Members;
     }
 
+    /// <summary>
+    /// This query retrieves the current time from one of the servers in PlayFab. Please note that due to clock drift between
+    /// servers,
+    /// there is a potential variance of up to 5 seconds.
+    /// </summary>
     [Serializable]
     public class GetTimeRequest : PlayFabRequestCommon
     {
     }
 
+    /// <summary>
+    /// Time is always returned as Coordinated Universal Time (UTC).
+    /// </summary>
     [Serializable]
     public class GetTimeResult : PlayFabResultCommon
     {
@@ -2717,6 +2865,15 @@ namespace PlayFab.ServerModels
         public DateTime Time;
     }
 
+    /// <summary>
+    /// This API is designed to return title specific values which can be read, but not written to, by the client. For example,
+    /// a developer
+    /// could choose to store values which modify the user experience, such as enemy spawn rates, weapon strengths, movement
+    /// speeds, etc. This allows a developer to update
+    /// the title without the need to create, test, and ship a new build. Note that there may up to a minute delay in between
+    /// updating title data and this API call returning
+    /// the newest value.
+    /// </summary>
     [Serializable]
     public class GetTitleDataRequest : PlayFabRequestCommon
     {
@@ -2753,6 +2910,14 @@ namespace PlayFab.ServerModels
         public List<TitleNewsItem> News;
     }
 
+    /// <summary>
+    /// This API allows for access to details regarding a user in the PlayFab service, usually for purposes of
+    /// customer support. Note that data returned may be Personally Identifying Information (PII), such as email address, and so
+    /// care should be
+    /// taken in how this data is stored and managed. Since this call will always return the relevant information for users who
+    /// have accessed
+    /// the title, the recommendation is to not store this data locally.
+    /// </summary>
     [Serializable]
     public class GetUserAccountInfoRequest : PlayFabRequestCommon
     {
@@ -2771,6 +2936,9 @@ namespace PlayFab.ServerModels
         public UserAccountInfo UserInfo;
     }
 
+    /// <summary>
+    /// Get all bans for a user, including inactive and expired bans.
+    /// </summary>
     [Serializable]
     public class GetUserBansRequest : PlayFabRequestCommon
     {
@@ -2789,6 +2957,12 @@ namespace PlayFab.ServerModels
         public List<BanInfo> BanData;
     }
 
+    /// <summary>
+    /// Data is stored as JSON key-value pairs. If the Keys parameter is provided,
+    /// the data object returned will only contain the data specific to the indicated Keys. Otherwise, the full set of custom
+    /// user
+    /// data will be returned.
+    /// </summary>
     [Serializable]
     public class GetUserDataRequest : PlayFabRequestCommon
     {
@@ -2825,6 +2999,12 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// All items currently in the user inventory will be returned, irrespective of how they were acquired
+    /// (via purchasing, grants, coupons, etc.). Items that are expired, fully consumed, or are no longer valid are not
+    /// considered to be
+    /// in the user's current inventory, and so will not be not included.
+    /// </summary>
     [Serializable]
     public class GetUserInventoryRequest : PlayFabRequestCommon
     {
@@ -2855,6 +3035,9 @@ namespace PlayFab.ServerModels
         public Dictionary<string,VirtualCurrencyRechargeTime> VirtualCurrencyRechargeTimes;
     }
 
+    /// <summary>
+    /// Grants a character to the user of the type and name specified in the request.
+    /// </summary>
     [Serializable]
     public class GrantCharacterToUserRequest : PlayFabRequestCommon
     {
@@ -2962,6 +3145,12 @@ namespace PlayFab.ServerModels
         public int? UsesIncrementedBy;
     }
 
+    /// <summary>
+    /// This function directly adds inventory items to the character's inventories. As
+    /// a result of this operations, the user will not be charged any transaction fee, regardless of the inventory item
+    /// catalog definition. Please note that the processing time for inventory grants and purchases increases fractionally
+    /// the more items are in the inventory, and the more items are in the grant/purchase operation.
+    /// </summary>
     [Serializable]
     public class GrantItemsToCharacterRequest : PlayFabRequestCommon
     {
@@ -2996,6 +3185,14 @@ namespace PlayFab.ServerModels
         public List<GrantedItemInstance> ItemGrantResults;
     }
 
+    /// <summary>
+    /// This function directly adds inventory items to the user's inventories. As a result of this operations, the user
+    /// will not be charged any transaction fee, regardless of the inventory item catalog definition. Please note that the
+    /// processing time for
+    /// inventory grants and purchases increases fractionally the more items are in the inventory, and the more items are in the
+    /// grant/purchase
+    /// operation.
+    /// </summary>
     [Serializable]
     public class GrantItemsToUserRequest : PlayFabRequestCommon
     {
@@ -3017,6 +3214,9 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// Please note that the order of the items in the response may not match the order of items in the request.
+    /// </summary>
     [Serializable]
     public class GrantItemsToUserResult : PlayFabResultCommon
     {
@@ -3026,6 +3226,14 @@ namespace PlayFab.ServerModels
         public List<GrantedItemInstance> ItemGrantResults;
     }
 
+    /// <summary>
+    /// This function directly adds inventory items to user inventories. As a result of this operations, the user
+    /// will not be charged any transaction fee, regardless of the inventory item catalog definition. Please note that the
+    /// processing time for
+    /// inventory grants and purchases increases fractionally the more items are in the inventory, and the more items are in the
+    /// grant/purchase
+    /// operation.
+    /// </summary>
     [Serializable]
     public class GrantItemsToUsersRequest : PlayFabRequestCommon
     {
@@ -3039,6 +3247,9 @@ namespace PlayFab.ServerModels
         public List<ItemGrant> ItemGrants;
     }
 
+    /// <summary>
+    /// Please note that the order of the items in the response may not match the order of items in the request.
+    /// </summary>
     [Serializable]
     public class GrantItemsToUsersResult : PlayFabResultCommon
     {
@@ -3194,6 +3405,9 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Returns a list of every character that currently belongs to a user.
+    /// </summary>
     [Serializable]
     public class ListUsersCharactersRequest : PlayFabRequestCommon
     {
@@ -3274,7 +3488,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
@@ -3286,6 +3500,14 @@ namespace PlayFab.ServerModels
         public string ServerCustomId;
     }
 
+    /// <summary>
+    /// If this is the first time a user has signed in with the Xbox Live account and CreateAccount
+    /// is set to true, a new PlayFab account will be created and linked to the Xbox Live account. In this case, no email or
+    /// username will be
+    /// associated with the PlayFab account. Otherwise, if no PlayFab account is linked to the Xbox Live account, an error
+    /// indicating this will
+    /// be returned, so that the title can guide the user through creation of a PlayFab account.
+    /// </summary>
     [Serializable]
     public class LoginWithXboxRequest : PlayFabRequestCommon
     {
@@ -3300,7 +3522,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com", "").
@@ -3361,6 +3583,10 @@ namespace PlayFab.ServerModels
         public string VirtualCurrency;
     }
 
+    /// <summary>
+    /// This function can both add and remove uses of an inventory item. If the number of uses drops below zero, the item will
+    /// be removed from active inventory.
+    /// </summary>
     [Serializable]
     public class ModifyItemUsesRequest : PlayFabRequestCommon
     {
@@ -3413,6 +3639,11 @@ namespace PlayFab.ServerModels
         public string VirtualCurrency;
     }
 
+    /// <summary>
+    /// Transfers an item from a character to another character that is owned by the same
+    /// user. This will remove the item from the character's inventory (until and unless it is moved back), and will enable the
+    /// other character to make use of the item instead.
+    /// </summary>
     [Serializable]
     public class MoveItemToCharacterFromCharacterRequest : PlayFabRequestCommon
     {
@@ -3439,6 +3670,11 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Transfers an item from a user to a character she owns. This will remove
+    /// the item from the user's inventory (until and unless it is moved back), and will enable the
+    /// character to make use of the item instead.
+    /// </summary>
     [Serializable]
     public class MoveItemToCharacterFromUserRequest : PlayFabRequestCommon
     {
@@ -3461,6 +3697,11 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Transfers an item from a character to the owning user. This will remove
+    /// the item from the character's inventory (until and unless it is moved back), and will enable the
+    /// user to make use of the item instead.
+    /// </summary>
     [Serializable]
     public class MoveItemToUserFromCharacterRequest : PlayFabRequestCommon
     {
@@ -3961,6 +4202,12 @@ namespace PlayFab.ServerModels
         public string TableId;
     }
 
+    /// <summary>
+    /// Coupon codes can be created for any item, or set of items, in the catalog for the title. This
+    /// operation causes the coupon to be consumed, and the specific items to be awarded to the user. Attempting to re-use an
+    /// already
+    /// consumed code, or a code which has not yet been created in the service, will result in an error.
+    /// </summary>
     [Serializable]
     public class RedeemCouponRequest : PlayFabRequestCommon
     {
@@ -3991,6 +4238,18 @@ namespace PlayFab.ServerModels
         public List<ItemInstance> GrantedItems;
     }
 
+    /// <summary>
+    /// This function is used by a Game Server Instance to validate with the PlayFab service that a user has been
+    /// registered as connected to the server. The Ticket is provided to the client either as a result of a call to StartGame or
+    /// Matchmake, each
+    /// of which return a Ticket specific to the Game Server Instance. This function will fail in any case where the Ticket
+    /// presented is not valid
+    /// for the specific Game Server Instance making the call. Note that data returned may be Personally Identifying Information
+    /// (PII), such as
+    /// email address, and so care should be taken in how this data is stored and managed. Since this call will always return
+    /// the relevant information
+    /// for users who have accessed the title, the recommendation is to not store this data locally.
+    /// </summary>
     [Serializable]
     public class RedeemMatchmakerTicketRequest : PlayFabRequestCommon
     {
@@ -4112,6 +4371,10 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// This API will trigger a player_tag_removed event and remove a tag with the given TagName and PlayFabID from the
+    /// corresponding player profile. TagName can be used for segmentation and it is limited to 256 characters
+    /// </summary>
     [Serializable]
     public class RemovePlayerTagRequest : PlayFabRequestCommon
     {
@@ -4165,6 +4428,10 @@ namespace PlayFab.ServerModels
         public string ReporterId;
     }
 
+    /// <summary>
+    /// Players are currently limited to five reports per day. Attempts by a single user account to submit reports beyond five
+    /// will result in Updated being returned as false.
+    /// </summary>
     [Serializable]
     public class ReportPlayerServerResult : PlayFabResultCommon
     {
@@ -4197,6 +4464,10 @@ namespace PlayFab.ServerModels
         TableId
     }
 
+    /// <summary>
+    /// Setting the active state of all non-expired bans for a user to Inactive. Expired bans with an Active state will be
+    /// ignored, however. Returns information about applied updates only.
+    /// </summary>
     [Serializable]
     public class RevokeAllBansForUserRequest : PlayFabRequestCommon
     {
@@ -4215,6 +4486,10 @@ namespace PlayFab.ServerModels
         public List<BanInfo> BanData;
     }
 
+    /// <summary>
+    /// Setting the active state of all bans requested to Inactive regardless of whether that ban has already expired. BanIds
+    /// that do not exist will be skipped. Returns information about applied updates only.
+    /// </summary>
     [Serializable]
     public class RevokeBansRequest : PlayFabRequestCommon
     {
@@ -4250,6 +4525,10 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// In cases where the inventory item in question is a "crate", and the items it contained have already been dispensed, this
+    /// will not revoke access or otherwise remove the items which were dispensed.
+    /// </summary>
     [Serializable]
     public class RevokeInventoryItemRequest : PlayFabRequestCommon
     {
@@ -4267,6 +4546,10 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// In cases where the inventory item in question is a "crate", and the items it contained have already been dispensed, this
+    /// will not revoke access or otherwise remove the items which were dispensed.
+    /// </summary>
     [Serializable]
     public class RevokeInventoryItemsRequest : PlayFabRequestCommon
     {
@@ -4321,6 +4604,10 @@ namespace PlayFab.ServerModels
         public string StackTrace;
     }
 
+    /// <summary>
+    /// PlayFab accounts which have valid email address or username will be able to receive a password reset email using this
+    /// API.The email sent must be an account recovery email template. The username or email can be passed in to send the email
+    /// </summary>
     [Serializable]
     public class SendCustomAccountRecoveryEmailRequest : PlayFabRequestCommon
     {
@@ -4343,6 +4630,10 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Sends an email for only players that have contact emails associated with them. Takes in an email template ID
+    /// specifyingthe email template to send.
+    /// </summary>
     [Serializable]
     public class SendEmailFromTemplateRequest : PlayFabRequestCommon
     {
@@ -4444,6 +4735,12 @@ namespace PlayFab.ServerModels
         public UserSettings SettingsForUser;
     }
 
+    /// <summary>
+    /// This operation is not additive. It will completely replace the tag list for the specified user.
+    /// Please note that only users in the PlayFab friends list can be assigned tags. Attempting to set a tag on a friend only
+    /// included
+    /// in the friends list from a social site integration (such as Facebook or Steam) will return the AccountNotFound error.
+    /// </summary>
     [Serializable]
     public class SetFriendTagsRequest : PlayFabRequestCommon
     {
@@ -4516,6 +4813,14 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// APIs that require signatures require that the player have a configured Player Secret Key that is used to sign all
+    /// requests. Players that don't have a secret will be blocked from making API calls until it is configured. To create a
+    /// signature header add a SHA256 hashed string containing UTF8 encoded JSON body as it will be sent to the server, the
+    /// current time in UTC formatted to ISO 8601, and the players secret formatted as 'body.date.secret'. Place the resulting
+    /// hash into the header X-PlayFab-Signature, along with a header X-PlayFab-Timestamp of the same UTC timestamp used in the
+    /// signature.
+    /// </summary>
     [Serializable]
     public class SetPlayerSecretRequest : PlayFabRequestCommon
     {
@@ -4534,6 +4839,15 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// This API is designed to store publisher-specific values which can be read, but not written to, by the client. This data
+    /// is shared across all
+    /// titles assigned to a particular publisher, and can be used for cross-game coordination. Only titles assigned to a
+    /// publisher can use this API. This operation is additive.
+    /// If a Key does not exist in the current dataset, it will be added with
+    /// the specified Value. If it already exists, the Value for that key will be overwritten with the new Value. For more
+    /// information email devrel@playfab.com
+    /// </summary>
     [Serializable]
     public class SetPublisherDataRequest : PlayFabRequestCommon
     {
@@ -4553,6 +4867,15 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// This API is designed to store title specific values which can be read, but not written to, by the client. For example, a
+    /// developer
+    /// could choose to store values which modify the user experience, such as enemy spawn rates, weapon strengths, movement
+    /// speeds, etc. This allows a developer to update
+    /// the title without the need to create, test, and ship a new build. This operation is additive. If a Key does not exist in
+    /// the current dataset, it will be added with
+    /// the specified Value. If it already exists, the Value for that key will be overwritten with the new Value.
+    /// </summary>
     [Serializable]
     public class SetTitleDataRequest : PlayFabRequestCommon
     {
@@ -4811,6 +5134,9 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Specify the container and optionally the catalogVersion for the container to open
+    /// </summary>
     [Serializable]
     public class UnlockContainerInstanceRequest : PlayFabRequestCommon
     {
@@ -4838,6 +5164,9 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// Specify the type of container to open and optionally the catalogVersion for the container to open
+    /// </summary>
     [Serializable]
     public class UnlockContainerItemRequest : PlayFabRequestCommon
     {
@@ -4860,6 +5189,9 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// The items and vc found within the container.  These will be added and stacked in your inventory as appropriate.
+    /// </summary>
     [Serializable]
     public class UnlockContainerItemResult : PlayFabResultCommon
     {
@@ -4930,6 +5262,10 @@ namespace PlayFab.ServerModels
         public string Reason;
     }
 
+    /// <summary>
+    /// For each ban, only updates the values that are set. Leave any value to null for no change. If a ban could not be found,
+    /// the rest are still applied. Returns information about applied updates only.
+    /// </summary>
     [Serializable]
     public class UpdateBansRequest : PlayFabRequestCommon
     {
@@ -4948,6 +5284,12 @@ namespace PlayFab.ServerModels
         public List<BanInfo> BanData;
     }
 
+    /// <summary>
+    /// This function performs an additive update of the arbitrary JSON object containing
+    /// the custom data for the user. In updating the custom data object, keys which already exist in the object will have
+    /// their values overwritten, while keys with null values will be removed. No other key-value pairs will be changed apart
+    /// from those specified in the call.
+    /// </summary>
     [Serializable]
     public class UpdateCharacterDataRequest : PlayFabRequestCommon
     {
@@ -4985,6 +5327,11 @@ namespace PlayFab.ServerModels
         public uint DataVersion;
     }
 
+    /// <summary>
+    /// Character statistics are similar to user statistics in that they are numeric values which
+    /// may only be updated by a server operation, in order to minimize the opportunity for unauthorized changes. In addition to
+    /// being available for use by the title, the statistics are used for all leaderboard operations in PlayFab.
+    /// </summary>
     [Serializable]
     public class UpdateCharacterStatisticsRequest : PlayFabRequestCommon
     {
@@ -5007,6 +5354,10 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// This operation is additive. Statistics not currently defined will be added,
+    /// while those already defined will be updated with the given values. All other user statistics will remain unchanged.
+    /// </summary>
     [Serializable]
     public class UpdatePlayerStatisticsRequest : PlayFabRequestCommon
     {
@@ -5030,6 +5381,13 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Note that in the case of multiple calls to write to the same shared group data keys, the
+    /// last write received by the PlayFab service will determine the value available to subsequent read operations. For
+    /// scenarios
+    /// requiring coordination of data updates, it is recommended that titles make use of user data with read permission set to
+    /// public, or a combination of user data and shared group data.
+    /// </summary>
     [Serializable]
     public class UpdateSharedGroupDataRequest : PlayFabRequestCommon
     {
@@ -5058,6 +5416,12 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// This function performs an additive update of the arbitrary JSON object containing the custom data for the user.
+    /// In updating the custom data object, keys which already exist in the object will have their values overwritten, while
+    /// keys with null values will
+    /// be removed. No other key-value pairs will be changed apart from those specified in the call.
+    /// </summary>
     [Serializable]
     public class UpdateUserDataRequest : PlayFabRequestCommon
     {
@@ -5091,6 +5455,12 @@ namespace PlayFab.ServerModels
         public uint DataVersion;
     }
 
+    /// <summary>
+    /// This function performs an additive update of the arbitrary JSON object containing the custom data for the user.
+    /// In updating the custom data object, keys which already exist in the object will have their values overwritten, keys with
+    /// null values will be
+    /// removed. No other key-value pairs will be changed apart from those specified in the call.
+    /// </summary>
     [Serializable]
     public class UpdateUserInternalDataRequest : PlayFabRequestCommon
     {
@@ -5110,6 +5480,12 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    /// <summary>
+    /// This function performs an additive update of the arbitrary JSON object containing the custom data for the item instance
+    /// which belongs to the specified user. In updating the custom data object, keys which already exist in the object will
+    /// have their values overwritten, while
+    /// keys with null values will be removed. No other key-value pairs will be changed apart from those specified in the call.
+    /// </summary>
     [Serializable]
     public class UpdateUserInventoryItemDataRequest : PlayFabRequestCommon
     {
@@ -5576,6 +5952,11 @@ namespace PlayFab.ServerModels
         public string EventId;
     }
 
+    /// <summary>
+    /// This API is designed to write a multitude of different event types into PlayStream. It supports a flexible JSON schema,
+    /// which allowsfor arbitrary key-value pairs to describe any character-based event. The created event will be locked to the
+    /// authenticated title.
+    /// </summary>
     [Serializable]
     public class WriteServerCharacterEventRequest : PlayFabRequestCommon
     {
@@ -5602,6 +5983,11 @@ namespace PlayFab.ServerModels
         public DateTime? Timestamp;
     }
 
+    /// <summary>
+    /// This API is designed to write a multitude of different event types into PlayStream. It supports a flexible JSON schema,
+    /// which allowsfor arbitrary key-value pairs to describe any player-based event. The created event will be locked to the
+    /// authenticated title.
+    /// </summary>
     [Serializable]
     public class WriteServerPlayerEventRequest : PlayFabRequestCommon
     {
@@ -5624,6 +6010,11 @@ namespace PlayFab.ServerModels
         public DateTime? Timestamp;
     }
 
+    /// <summary>
+    /// This API is designed to write a multitude of different event types into PlayStream. It supports a flexible JSON schema,
+    /// which allowsfor arbitrary key-value pairs to describe any title-based event. The created event will be locked to the
+    /// authenticated title.
+    /// </summary>
     [Serializable]
     public class WriteTitleEventRequest : PlayFabRequestCommon
     {

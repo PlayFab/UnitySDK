@@ -34,15 +34,20 @@ namespace PlayFab.Internal
 
         public void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, null, successCallback, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("get", fullUrl, null, successCallback, errorCallback));
         }
 
-        public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        public void SimplePutCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, payload, (result) => { successCallback(); }, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("put", fullUrl, payload, successCallback, errorCallback));
         }
 
-        private static IEnumerator SimpleCallCoroutine(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        public void SimplePostCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("post", fullUrl, payload, successCallback, errorCallback));
+        }
+
+        private static IEnumerator SimpleCallCoroutine(string method, string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
             if (payload == null)
             {
@@ -55,30 +60,40 @@ namespace PlayFab.Internal
             }
             else
             {
-                var putRequest = UnityWebRequest.Put(fullUrl, payload);
+                UnityWebRequest request;
+                if (method == "put")
+                {
+                    request = UnityWebRequest.Put(fullUrl, payload);
+                }
+                else
+                {
+                    var strPayload = System.Text.Encoding.UTF8.GetString(payload, 0, payload.Length);
+                    request = UnityWebRequest.Post(fullUrl, strPayload);
+                }
+
 #if UNITY_2017_2_OR_NEWER
-                putRequest.chunkedTransfer = false; // can be removed after Unity's PUT will be more stable
-                putRequest.SendWebRequest();
+                request.chunkedTransfer = false; // can be removed after Unity's PUT will be more stable
+                request.SendWebRequest();
 #else
-                putRequest.Send();
+                request.Send();
 #endif
 
 #if !UNITY_WEBGL
-                while (putRequest.uploadProgress < 1 && putRequest.downloadProgress < 1)
+                while (request.uploadProgress < 1 && request.downloadProgress < 1)
                 {
                     yield return 1;
                 }
 #else
-                while (!putRequest.isDone)
+                while (!request.isDone)
                 {
                     yield return 1;
                 }
 #endif
 
-                if (!string.IsNullOrEmpty(putRequest.error))
-                    errorCallback(putRequest.error);
+                if (!string.IsNullOrEmpty(request.error))
+                    errorCallback(request.error);
                 else
-                    successCallback(null);
+                    successCallback(request.downloadHandler.data);
             }
         }
 

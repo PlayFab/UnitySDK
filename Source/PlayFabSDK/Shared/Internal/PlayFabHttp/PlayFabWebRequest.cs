@@ -125,12 +125,20 @@ namespace PlayFab.Internal
             newThread.Start();
         }
 
-        public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        public void SimplePutCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
             // This needs to be improved to use a decent thread-pool, but it can be improved invisibly later
-            var newThread = new Thread(() => SimpleHttpsWorker("PUT", fullUrl, payload, (result) => { successCallback(); }, errorCallback));
+            var newThread = new Thread(() => SimpleHttpsWorker("PUT", fullUrl, payload, successCallback, errorCallback));
             newThread.Start();
         }
+
+        public void SimplePostCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            // This needs to be improved to use a decent thread-pool, but it can be improved invisibly later
+            var newThread = new Thread(() => SimpleHttpsWorker("POST", fullUrl, payload, successCallback, errorCallback));
+            newThread.Start();
+        }
+
 
         private void SimpleHttpsWorker(string httpMethod, string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {

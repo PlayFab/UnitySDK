@@ -11,7 +11,7 @@ namespace PlayFab
     /// <summary>
     /// API methods for managing multiplayer servers.
     /// </summary>
-    public static class PlayFabMultiplayerAPI
+    public static partial class PlayFabMultiplayerAPI
     {
         static PlayFabMultiplayerAPI() {}
 

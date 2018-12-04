@@ -27,15 +27,20 @@ namespace PlayFab.Internal
 
         public void SimpleGetCall(string fullUrl, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, null, successCallback, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("get", fullUrl, null, successCallback, errorCallback));
         }
 
-        public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        public void SimplePutCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
-            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine(fullUrl, payload, (result) => { successCallback(); }, errorCallback));
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("put",fullUrl, payload, successCallback, errorCallback));
         }
 
-        private static IEnumerator SimpleCallCoroutine(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        public void SimplePostCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            PlayFabHttp.instance.StartCoroutine(SimpleCallCoroutine("post", fullUrl, payload, successCallback, errorCallback));
+        }
+
+        private static IEnumerator SimpleCallCoroutine(string method, string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
             if (payload == null)
             {
@@ -55,30 +60,36 @@ namespace PlayFab.Internal
             }
             else
             {
-                var putRequest = UnityWebRequest.Put(fullUrl, payload);
-#if UNITY_2017_2_OR_NEWER
-                putRequest.chunkedTransfer = false; // can be removed after Unity's PUT will be more stable
-                putRequest.SendWebRequest();
-#else
-                putRequest.Send();
-#endif
 
-#if !UNITY_WEBGL
-                while (putRequest.uploadProgress < 1 && putRequest.downloadProgress < 1)
+                UnityWebRequest request;
+                if (method == "put")
                 {
-                    yield return 1;
+                    request = UnityWebRequest.Put(fullUrl, payload);
                 }
-#else
-                while (!putRequest.isDone)
-                {
-                    yield return 1;
-                }
-#endif
-
-                if (!string.IsNullOrEmpty(putRequest.error))
-                    errorCallback(putRequest.error);
                 else
-                    successCallback(null);
+                {
+                    request = new UnityWebRequest(fullUrl, "POST");
+                    request.uploadHandler = (UploadHandler)new UploadHandlerRaw(payload);
+                    request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+                    request.SetRequestHeader("Content-Type", "application/json");
+                }
+
+
+#if UNITY_2017_2_OR_NEWER
+                request.chunkedTransfer = false; // can be removed after Unity's PUT will be more stable
+                yield return request.SendWebRequest();
+#else
+                yield return request.Send();
+#endif
+
+                if (request.isNetworkError || request.isHttpError)
+                {
+                    errorCallback(request.error);
+                }
+                else
+                {
+                    successCallback(request.downloadHandler.data);
+                }
             }
         }
 
