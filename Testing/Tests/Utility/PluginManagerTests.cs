@@ -70,7 +70,12 @@ namespace PlayFab.UUnit
                 throw new NotImplementedException();
             }
 
-            public void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+            public void SimplePutCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SimplePostCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
             {
                 throw new NotImplementedException();
             }

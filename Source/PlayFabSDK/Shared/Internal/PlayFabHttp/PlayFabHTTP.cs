@@ -167,11 +167,19 @@ namespace PlayFab.Internal
         }
 
 
-        public static void SimplePutCall(string fullUrl, byte[] payload, Action successCallback, Action<string> errorCallback)
+        public static void SimplePutCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
         {
             InitializeHttp();
             PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).SimplePutCall(fullUrl, payload, successCallback, errorCallback);
         }
+
+        public static void SimplePostCall(string fullUrl, byte[] payload, Action<byte[]> successCallback, Action<string> errorCallback)
+        {
+            InitializeHttp();
+            PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).SimplePostCall(fullUrl, payload, successCallback, errorCallback);
+        }
+
+
 
         /// <summary>
         /// Internal method for Make API Calls

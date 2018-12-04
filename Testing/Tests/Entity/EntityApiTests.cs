@@ -303,14 +303,14 @@ namespace PlayFab.UUnit
 
             PlayFabHttp.SimplePutCall(response.UploadDetails[0].UploadUrl,
                 _testPayload,
-                PlayFabUUnitUtils.SimpleApiNoParamsActionWrapper(testContext, FinalizeUpload),
+                PlayFabUUnitUtils.SimpleApiActionWrapper<byte[]>(testContext, FinalizeUpload),
                 error =>
                 {
                     testContext.Fail(error);
                 }
             );
         }
-        void FinalizeUpload(UUnitTestContext testContext)
+        void FinalizeUpload(UUnitTestContext testContext, byte[] payload)
         {
             var request = new DataModels.FinalizeFileUploadsRequest
             {

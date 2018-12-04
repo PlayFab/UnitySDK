@@ -79,6 +79,9 @@ namespace PlayFab.CloudScriptModels
         public int Revision;
     }
 
+    /// <summary>
+    /// Executes CloudScript with the entity profile that is defined in the request.
+    /// </summary>
     [Serializable]
     public class ExecuteEntityCloudScriptRequest : PlayFabRequestCommon
     {

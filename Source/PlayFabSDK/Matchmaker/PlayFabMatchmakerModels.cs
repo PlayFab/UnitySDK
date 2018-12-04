@@ -5,6 +5,13 @@ using PlayFab.SharedModels;
 
 namespace PlayFab.MatchmakerModels
 {
+    /// <summary>
+    /// This API allows the external match-making service to confirm that the user has a valid Session Ticket for the title, in
+    /// order
+    /// to securely enable match-making. The client passes the user's Session Ticket to the external match-making service, which
+    /// then passes the Session Ticket in as the
+    /// AuthorizationTicket in this call.
+    /// </summary>
     [Serializable]
     public class AuthUserRequest : PlayFabRequestCommon
     {
