@@ -74,6 +74,15 @@ namespace PlayFab.MultiplayerModels
         Standard_A2_v2,
         Standard_A4_v2,
         Standard_A8_v2,
+        Standard_F1,
+        Standard_F2,
+        Standard_F4,
+        Standard_F8,
+        Standard_F16,
+        Standard_F2s_v2,
+        Standard_F4s_v2,
+        Standard_F8s_v2,
+        Standard_F16s_v2,
         Standard_A1,
         Standard_A2,
         Standard_A3,
@@ -96,7 +105,8 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public int StandbyServers;
         /// <summary>
-        /// The status of multiplayer servers in the build region.
+        /// The status of multiplayer servers in the build region. Valid values are - Unknown, Initialized, Deploying, Deployed,
+        /// Unhealthy.
         /// </summary>
         public string Status;
     }
@@ -234,7 +244,8 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public List<GameCertificateReferenceParams> GameCertificateReferences;
         /// <summary>
-        /// Metadata to tag the build.
+        /// Metadata to tag the build. The keys are case insensitive. The build metadata is made available to the server through
+        /// Game Server SDK (GSDK).
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
@@ -335,7 +346,8 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public List<GameCertificateReferenceParams> GameCertificateReferences;
         /// <summary>
-        /// Metadata to tag the build.
+        /// Metadata to tag the build. The keys are case insensitive. The build metadata is made available to the server through
+        /// Game Server SDK (GSDK).
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
@@ -626,7 +638,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string BuildName;
         /// <summary>
-        /// The current build status.
+        /// The current build status. Valid values are - Deploying, Deployed, DeletingRegion, Unhealthy.
         /// </summary>
         public string BuildStatus;
         /// <summary>
@@ -655,7 +667,8 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
         /// <summary>
-        /// The metadata of the build.
+        /// Metadata of the build. The keys are case insensitive. The build metadata is made available to the server through Game
+        /// Server SDK (GSDK).
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
@@ -1164,18 +1177,18 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string BuildId;
         /// <summary>
-        /// Initial list of players (potentially matchmade) allowed to connect to the game. The game server can use this list to
-        /// validate players connecting to it.
+        /// Initial list of players (potentially matchmade) allowed to connect to the game. This list is passed to the game server
+        /// when requested (via GSDK) and can be used to validate players connecting to it.
         /// </summary>
         public List<string> InitialPlayers;
         /// <summary>
-        /// The preferred regions to request a multiplayer server from.
+        /// The preferred regions to request a multiplayer server from. The Multiplayer Service will iterate through the regions in
+        /// the specified order and allocate a server from the first one that has servers available.
         /// </summary>
         public List<AzureRegion> PreferredRegions;
         /// <summary>
-        /// Data encoded as a string that is passed to the game server when requested. This can be used to share a cryptographic
-        /// secret for servers to authenticate clients or to communicate information such as game mode or map through the request
-        /// flow.
+        /// Data encoded as a string that is passed to the game server when requested. This can be used to to communicate
+        /// information such as game mode or map through the request flow.
         /// </summary>
         public string SessionCookie;
         /// <summary>
