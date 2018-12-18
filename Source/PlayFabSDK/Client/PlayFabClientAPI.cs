@@ -166,6 +166,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Checks for any new consumable entitlements. If any are found, they are consumed and added as PlayFab items
+        /// </summary>
+        public static void ConsumePSNEntitlements(ConsumePSNEntitlementsRequest request, Action<ConsumePSNEntitlementsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/ConsumePSNEntitlements", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Grants the player's current entitlements from Xbox Live, consuming all availble items in Xbox and granting them to the
         /// player's PlayFab inventory. This call is idempotent and will not grant previously granted items to the player.
         /// </summary>
@@ -579,6 +589,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of PlayStation Network identifiers.
+        /// </summary>
+        public static void GetPlayFabIDsFromPSNAccountIDs(GetPlayFabIDsFromPSNAccountIDsRequest request, Action<GetPlayFabIDsFromPSNAccountIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromPSNAccountIDs", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers are the profile
         /// IDs for the user accounts, available as SteamId in the Steamworks Community API calls.
         /// </summary>
@@ -876,6 +896,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Links the PlayStation Network account associated with the provided access code to the user's PlayFab account
+        /// </summary>
+        public static void LinkPSNAccount(LinkPSNAccountRequest request, Action<LinkPSNAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/LinkPSNAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Links the Steam account associated with the provided Steam authentication ticket to the user's PlayFab account
         /// </summary>
         public static void LinkSteamAccount(LinkSteamAccountRequest request, Action<LinkSteamAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -1050,6 +1080,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using a PlayStation Network authentication code, returning a session identifier that can subsequently
+        /// be used for API calls which require an authenticated user
+        /// </summary>
+        public static void LoginWithPSN(LoginWithPSNRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            request.TitleId = request.TitleId ?? PlayFabSettings.TitleId;
+
+            PlayFabHttp.MakeApiCall("/Client/LoginWithPSN", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Signs the user in using a Steam authentication ticket, returning a session identifier that can subsequently be used for
         /// API calls which require an authenticated user
         /// </summary>
@@ -1149,6 +1190,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/RedeemCoupon", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Uses the supplied OAuth code to refresh the internally cached player PSN auth token
+        /// </summary>
+        public static void RefreshPSNAuthToken(RefreshPSNAuthTokenRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/RefreshPSNAuthToken", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
@@ -1421,6 +1472,16 @@ namespace PlayFab
             if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
             PlayFabHttp.MakeApiCall("/Client/UnlinkOpenIdConnect", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
+        /// Unlinks the related PSN account from the user's PlayFab account
+        /// </summary>
+        public static void UnlinkPSNAccount(UnlinkPSNAccountRequest request, Action<UnlinkPSNAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (!IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+            PlayFabHttp.MakeApiCall("/Client/UnlinkPSNAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders);
         }
 
         /// <summary>
