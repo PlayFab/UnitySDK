@@ -3657,11 +3657,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Specific Operating System version for the user's device.
         /// </summary>
         public string OS;
@@ -3704,11 +3699,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
         public string PlayerSecret;
@@ -3736,11 +3726,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Password for the PlayFab account (6-100 characters)
         /// </summary>
@@ -3771,11 +3756,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
@@ -3827,11 +3807,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
         public string PlayerSecret;
@@ -3872,11 +3847,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Unique Game Center player id.
         /// </summary>
@@ -3928,11 +3898,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
@@ -3992,11 +3957,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Specific Operating System version for the user's device.
         /// </summary>
         public string OS;
@@ -4045,11 +4005,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string KongregateId;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
         public string PlayerSecret;
@@ -4075,11 +4030,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Nintendo Switch unique identifier for the user's device.
         /// </summary>
@@ -4120,11 +4070,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
         public string PlayerSecret;
@@ -4148,11 +4093,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Password for the PlayFab account (6-100 characters)
         /// </summary>
@@ -4200,11 +4140,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public int? IssuerId;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
         public string PlayerSecret;
@@ -4251,11 +4186,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
         public string PlayerSecret;
@@ -4300,11 +4230,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
         public string PlayerSecret;
@@ -4329,11 +4254,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// SHA256 hash of the PublicKey generated by Windows Hello.
         /// </summary>
@@ -4368,11 +4288,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
@@ -5082,11 +4997,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
-        /// <summary>
         /// Password for the PlayFab account (6-100 characters)
         /// </summary>
         public string Password;
@@ -5160,11 +5070,6 @@ namespace PlayFab.ClientModels
         /// Flags for which pieces of info to return for the user.
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
-        /// <summary>
-        /// Formerly triggered an Entity login with a normal client login. This is now automatic, and always-on.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public bool? LoginTitlePlayerAccountEntity;
         /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
