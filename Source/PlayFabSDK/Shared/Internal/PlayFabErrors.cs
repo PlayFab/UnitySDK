@@ -421,6 +421,7 @@ namespace PlayFab
         PushNotificationTemplateMissingDefaultVersion = 1418,
         PushNotificationTemplateInvalidSyntax = 1419,
         PushNotificationTemplateNoCustomPayloadForV1 = 1420,
+        NoLeaderboardForStatistic = 1421,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingCreateRequestMissing = 2003,
