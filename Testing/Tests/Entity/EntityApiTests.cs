@@ -161,7 +161,7 @@ namespace PlayFab.UUnit
         /// Verifies that the file can be downloaded with the same information it's been saved with.
         /// This sequence assumes that at test start, there are no files on the entity, and it will create and delete a file.
         /// </summary>
-        [UUnitTest]
+        //[UUnitTest]
         public void PutApi(UUnitTestContext testContext)
         {
             var loginRequest = new ClientModels.LoginWithCustomIDRequest
