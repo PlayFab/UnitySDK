@@ -1339,8 +1339,9 @@ namespace PlayFab.ClientModels
     public class FriendInfo
     {
         /// <summary>
-        /// Unique lobby identifier of the Game Server Instance to which this player is currently connected.
+        /// This field is not populated.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string CurrentMatchmakerLobbyId;
         /// <summary>
         /// Available Facebook information (if the user and PlayFab friend are also connected in Facebook).
@@ -5657,7 +5658,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string NewsId;
         /// <summary>
-        /// Date and time when the news items was posted.
+        /// Date and time when the news item was posted.
         /// </summary>
         public DateTime Timestamp;
         /// <summary>

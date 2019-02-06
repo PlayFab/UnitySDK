@@ -422,6 +422,12 @@ namespace PlayFab
         PushNotificationTemplateInvalidSyntax = 1419,
         PushNotificationTemplateNoCustomPayloadForV1 = 1420,
         NoLeaderboardForStatistic = 1421,
+        TitleNewsMissingDefaultLanguage = 1422,
+        TitleNewsNotFound = 1423,
+        TitleNewsDuplicateLanguage = 1424,
+        TitleNewsMissingTitleOrBody = 1425,
+        TitleNewsInvalidLanguage = 1426,
+        EmailRecipientBlacklisted = 1427,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingCreateRequestMissing = 2003,
@@ -459,7 +465,10 @@ namespace PlayFab
         MatchmakingNotEnabled = 2035,
         MatchmakingGetStatisticsIdentityInvalid = 2036,
         MatchmakingStatisticsIdMissing = 2037,
-        CannotEnableMultiplayerServersForTitle = 2038
+        CannotEnableMultiplayerServersForTitle = 2038,
+        TitleConfigNotFound = 3001,
+        TitleConfigUpdateConflict = 3002,
+        TitleConfigSerializationError = 3003
     }
 
     public delegate void ErrorCallback(PlayFabError error);

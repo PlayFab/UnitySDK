@@ -118,10 +118,36 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class AddLocalizedNewsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Localized body text of the news.
+        /// </summary>
+        public string Body;
+        /// <summary>
+        /// Language of the news item.
+        /// </summary>
+        public string Language;
+        /// <summary>
+        /// Unique id of the updated news item.
+        /// </summary>
+        public string NewsId;
+        /// <summary>
+        /// Localized title (headline) of the news item.
+        /// </summary>
+        public string Title;
+    }
+
+    [Serializable]
+    public class AddLocalizedNewsResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class AddNewsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Body text of the news
+        /// Default body text of the news.
         /// </summary>
         public string Body;
         /// <summary>
@@ -129,7 +155,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public DateTime? Timestamp;
         /// <summary>
-        /// Title (headline) of the news item
+        /// Default title (headline) of the news item.
         /// </summary>
         public string Title;
     }
@@ -1989,6 +2015,12 @@ namespace PlayFab.AdminModels
         PushNotificationTemplateInvalidSyntax,
         PushNotificationTemplateNoCustomPayloadForV1,
         NoLeaderboardForStatistic,
+        TitleNewsMissingDefaultLanguage,
+        TitleNewsNotFound,
+        TitleNewsDuplicateLanguage,
+        TitleNewsMissingTitleOrBody,
+        TitleNewsInvalidLanguage,
+        EmailRecipientBlacklisted,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingCreateRequestMissing,
@@ -2026,7 +2058,10 @@ namespace PlayFab.AdminModels
         MatchmakingNotEnabled,
         MatchmakingGetStatisticsIdentityInvalid,
         MatchmakingStatisticsIdMissing,
-        CannotEnableMultiplayerServersForTitle
+        CannotEnableMultiplayerServersForTitle,
+        TitleConfigNotFound,
+        TitleConfigUpdateConflict,
+        TitleConfigSerializationError
     }
 
     [Serializable]

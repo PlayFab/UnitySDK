@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using PlayFab.Internal;
-using PlayFab.Json;
 
 namespace PlayFab
 {
-    public class PluginContractKey
+    public struct PluginContractKey
     {
         public PluginContract _pluginContract;
         public string _pluginName;

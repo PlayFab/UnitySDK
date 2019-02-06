@@ -141,7 +141,7 @@ namespace PlayFab.Internal
             var androidPackage = Path.Combine(GetBuildPath(), "PlayFabAndroid.apk");
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, androidPackage, BuildTarget.Android, BuildOptions.None);
-            if (Directory.GetFiles(androidPackage).Length == 0)
+            if (!File.Exists(androidPackage))
                 throw new Exception("Target file did not build: " + androidPackage);
         }
 
@@ -149,8 +149,11 @@ namespace PlayFab.Internal
         public static void MakeIPhoneBuild()
         {
             Setup();
-            // SetScriptingBackend(ScriptingImplementation.IL2CPP, AppleBuildTarget, AppleBuildTargetGroup); // Ideally we should be testing both at some point, but ...
+#if UNITY_2018_1_OR_NEWER
+            SetScriptingBackend(ScriptingImplementation.IL2CPP, AppleBuildTarget, AppleBuildTargetGroup); // Ideally we should be testing both at some point, but ...
+#else
             SetScriptingBackend(ScriptingImplementation.Mono2x, AppleBuildTarget, AppleBuildTargetGroup); // Mono2x is traditionally the one with issues, and it's a lot faster to build/test
+#endif
             SetIdentifier(AppleBuildTargetGroup, "com.PlayFab.PlayFabTest");
             var iosPath = Path.Combine(GetBuildPath(), "PlayFabIOS");
             MkDir(GetBuildPath());

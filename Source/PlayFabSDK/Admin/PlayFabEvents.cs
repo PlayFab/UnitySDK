@@ -7,6 +7,8 @@ namespace PlayFab.Events
     {
         public event PlayFabRequestEvent<AbortTaskInstanceRequest> OnAdminAbortTaskInstanceRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnAdminAbortTaskInstanceResultEvent;
+        public event PlayFabRequestEvent<AddLocalizedNewsRequest> OnAdminAddLocalizedNewsRequestEvent;
+        public event PlayFabResultEvent<AddLocalizedNewsResult> OnAdminAddLocalizedNewsResultEvent;
         public event PlayFabRequestEvent<AddNewsRequest> OnAdminAddNewsRequestEvent;
         public event PlayFabResultEvent<AddNewsResult> OnAdminAddNewsResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnAdminAddPlayerTagRequestEvent;

@@ -36,6 +36,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Update news item to include localized version
+        /// </summary>
+        public static void AddLocalizedNews(AddLocalizedNewsRequest request, Action<AddLocalizedNewsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            if (PlayFabSettings.DeveloperSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"Must have PlayFabSettings.DeveloperSecretKey set to call this method");
+
+            PlayFabHttp.MakeApiCall("/Admin/AddLocalizedNews", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders);
+        }
+
+        /// <summary>
         /// Adds a new news item to the title's news feed
         /// </summary>
         public static void AddNews(AddNewsRequest request, Action<AddNewsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)

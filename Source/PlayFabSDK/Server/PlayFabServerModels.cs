@@ -1318,8 +1318,9 @@ namespace PlayFab.ServerModels
     public class FriendInfo
     {
         /// <summary>
-        /// Unique lobby identifier of the Game Server Instance to which this player is currently connected.
+        /// This field is not populated.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string CurrentMatchmakerLobbyId;
         /// <summary>
         /// Available Facebook information (if the user and PlayFab friend are also connected in Facebook).
@@ -1783,6 +1784,12 @@ namespace PlayFab.ServerModels
         PushNotificationTemplateInvalidSyntax,
         PushNotificationTemplateNoCustomPayloadForV1,
         NoLeaderboardForStatistic,
+        TitleNewsMissingDefaultLanguage,
+        TitleNewsNotFound,
+        TitleNewsDuplicateLanguage,
+        TitleNewsMissingTitleOrBody,
+        TitleNewsInvalidLanguage,
+        EmailRecipientBlacklisted,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingCreateRequestMissing,
@@ -1820,7 +1827,10 @@ namespace PlayFab.ServerModels
         MatchmakingNotEnabled,
         MatchmakingGetStatisticsIdentityInvalid,
         MatchmakingStatisticsIdMissing,
-        CannotEnableMultiplayerServersForTitle
+        CannotEnableMultiplayerServersForTitle,
+        TitleConfigNotFound,
+        TitleConfigUpdateConflict,
+        TitleConfigSerializationError
     }
 
     /// <summary>
@@ -2692,6 +2702,31 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class GetPlayFabIDsFromPSNAccountIDsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Id of the PSN issuer environment. If null, defaults to 256 (production)
+        /// </summary>
+        public int? IssuerId;
+        /// <summary>
+        /// Array of unique PlayStation Network identifiers for which the title needs to get PlayFab identifiers.
+        /// </summary>
+        public List<string> PSNAccountIDs;
+    }
+
+    /// <summary>
+    /// For PlayStation Network identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
+    [Serializable]
+    public class GetPlayFabIDsFromPSNAccountIDsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Mapping of PlayStation Network identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<PSNAccountPlayFabIdPair> Data;
+    }
+
+    [Serializable]
     public class GetPlayFabIDsFromSteamIDsRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2923,7 +2958,7 @@ namespace PlayFab.ServerModels
     public class GetTitleNewsResult : PlayFabResultCommon
     {
         /// <summary>
-        /// Array of news items.
+        /// Array of localized news items.
         /// </summary>
         public List<TitleNewsItem> News;
     }
@@ -4133,6 +4168,19 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class PSNAccountPlayFabIdPair
+    {
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the PlayStation Network identifier.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Unique PlayStation Network identifier for a user.
+        /// </summary>
+        public string PSNAccountId;
+    }
+
+    [Serializable]
     public class PushNotificationPackage
     {
         /// <summary>
@@ -5107,7 +5155,7 @@ namespace PlayFab.ServerModels
     public class TitleNewsItem
     {
         /// <summary>
-        /// News item text.
+        /// News item body.
         /// </summary>
         public string Body;
         /// <summary>
@@ -5115,7 +5163,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string NewsId;
         /// <summary>
-        /// Date and time when the news items was posted.
+        /// Date and time when the news item was posted.
         /// </summary>
         public DateTime Timestamp;
         /// <summary>
