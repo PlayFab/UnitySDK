@@ -40,6 +40,12 @@ namespace PlayFab.PlayStreamModels
         public EntityLineage EntityLineage;
         public List<FileSet> Files;
     }
+    public class EntityLanguageUpdatedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public EntityLineage EntityLineage;
+        public string Language;
+    }
     public class EntityLoggedInEventData : PlayStreamEventBase
     {
         public string EntityChain;
@@ -50,6 +56,15 @@ namespace PlayFab.PlayStreamModels
         public string EntityChain;
         public EntityLineage EntityLineage;
         public List<ObjectSet> Objects;
+    }
+    public class EntityVirtualCurrencyBalancesChangedEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public EntityLineage EntityLineage;
+        public string SequenceId;
+        public Dictionary<string,int> VirtualCurrencyBalances;
+        public string VirtualCurrencyContainerId;
+        public Dictionary<string,int> VirtualCurrencyPreviousBalances;
     }
     public class GroupCreatedEventData : PlayStreamEventBase
     {
@@ -143,6 +158,142 @@ namespace PlayFab.PlayStreamModels
         public string UpdaterEntityId;
         public string UpdaterEntityType;
     }
+    public class MatchmakingMatchFoundEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public MatchmakingMatchFoundPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MatchmakingTicketCompleteEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public MatchmakingTicketCompletePayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MatchmakingUserTicketCompleteEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public MatchmakingUserTicketCompletePayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MatchmakingUserTicketInviteEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public MatchmakingUserTicketInvitePayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerBuildDeletedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerBuildDeletedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerBuildRegionStatusChangedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerBuildRegionStatusChangedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerBuildRegionUpdatedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerBuildRegionUpdatedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerCertificateDeletedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerCertificateDeletedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerCertificateUploadedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerCertificateUploadedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerCreateBuildInitiatedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerCreateBuildInitiatedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerGameAssetDeletedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerGameAssetDeletedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerRequestedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerRequestedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerStateChangedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerStateChangedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerVmAssignedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerVmAssignedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerVmRemoteUserCreatedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerVmRemoteUserCreatedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerVmRemoteUserDeletedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerVmRemoteUserDeletedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerVmUnassignmentStartedEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerVmUnassignmentStartedEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class MultiplayerServerVmUnhealthyEventDataDoc : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public MultiplayerServerVmUnhealthyEventPayload Payload;
+        public EntityKey WriterEntity;
+    }
     public class StudioCreatedEventData : PlayStreamEventBase
     {
         public string CreatorAuthenticationId;
@@ -180,6 +331,27 @@ namespace PlayFab.PlayStreamModels
         public string PlayFabId;
         public List<string> StudioPermissions;
         public Dictionary<string,string> TitlePermissions;
+    }
+    public class TenacyConnectorOnboardEventData : PlayStreamEventBase
+    {
+        public string EntityChain;
+        public EntityLineage EntityLineage;
+    }
+    public class TierUpdateEventData : PlayStreamEventBase
+    {
+        public string ContactCompanyName;
+        public bool IsPayAsYouGo;
+        public bool IsReservedCapacity;
+        public bool IsReservedCapacityAnnual;
+        public double MonthlyMinimumUSD;
+        public List<PaymentOptionPerMauPriceTier> OveragePricePerMauTiers;
+        public string PaymentSystemAccountId;
+        public List<PaymentOptionPerMauPriceTier> PricePerMauTiers;
+        public int? ReservedMAU;
+        public IEnumerable_String StudioIds;
+        public string TierDisplayName;
+        public string TierId;
+        public string TransactionId;
     }
     #endregion none
 
@@ -222,6 +394,13 @@ namespace PlayFab.PlayStreamModels
         public string StatisticName;
         public int? StatisticPreviousValue;
         public int StatisticValue;
+        public string TitleId;
+        public uint Version;
+    }
+    public class CharacterStatisticDeletedEventData : PlayStreamEventBase
+    {
+        public string PlayerId;
+        public string StatisticName;
         public string TitleId;
         public uint Version;
     }
@@ -273,6 +452,24 @@ namespace PlayFab.PlayStreamModels
         public string EmailTemplateId;
         public string TitleId;
         public string Token;
+    }
+    public class MasterPlayerTitleDeletedEventData : PlayStreamEventBase
+    {
+        public string MetaData;
+        public string PlayerId;
+        public string ReceiptId;
+    }
+    public class PlayerActionExecutedEventData : PlayStreamEventBase
+    {
+        public string ActionName;
+        public ActionExecutionError Error;
+        public double ExecutionDuration;
+        public object ExecutionResult;
+        public DateTime ScheduledTimestamp;
+        public string TitleId;
+        public DateTime TriggeredTimestamp;
+        public EventRuleMatch TriggeringEventRuleMatch;
+        public SegmentMembershipChange TriggeringSegmentMembershipChange;
     }
     public class PlayerAdCampaignAttributionEventData : PlayStreamEventBase
     {
@@ -391,6 +588,11 @@ namespace PlayFab.PlayStreamModels
         public DateTime RequestTime;
         public string TitleId;
     }
+    public class PlayerDeviceInfoEventData : PlayStreamEventBase
+    {
+        public Dictionary<string,object> DeviceInfo;
+        public string TitleId;
+    }
     public class PlayerDisplayNameChangedEventData : PlayStreamEventBase
     {
         public string DisplayName;
@@ -425,6 +627,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -437,6 +640,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -454,6 +658,7 @@ namespace PlayFab.PlayStreamModels
         public EventLocation Location;
         public LoginIdentityProvider? Platform;
         public string PlatformUserId;
+        public string PlatformUserName;
         public string TitleId;
     }
     public class PlayerMatchedWithLobbyEventData : PlayStreamEventBase
@@ -464,6 +669,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public string TitleId;
@@ -634,6 +840,18 @@ namespace PlayFab.PlayStreamModels
         public string VirtualCurrencyName;
         public int VirtualCurrencyPreviousBalance;
     }
+    public class PushNotificationSentToPlayerEventData : PlayStreamEventBase
+    {
+        public string Body;
+        public string ErrorMessage;
+        public string ErrorName;
+        public string Language;
+        public string PushNotificationTemplateId;
+        public string PushNotificationTemplateName;
+        public string Subject;
+        public bool Success;
+        public string TitleId;
+    }
     public class SentEmailEventData : PlayStreamEventBase
     {
         public string Body;
@@ -643,6 +861,7 @@ namespace PlayFab.PlayStreamModels
         public EmailTemplateType? EmailTemplateType;
         public string ErrorMessage;
         public string ErrorName;
+        public string Language;
         public string Subject;
         public bool Success;
         public string TitleId;
@@ -651,13 +870,31 @@ namespace PlayFab.PlayStreamModels
     #endregion player
 
     #region session
+    public class ClientFocusChangeEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime? OriginalTimestamp;
+        public ClientFocusChangePayload Payload;
+        public EntityKey WriterEntity;
+    }
+    public class ClientSessionStartEventData : PlayStreamEventBase
+    {
+        public EntityLineage EntityLineage;
+        public string OriginalEventId;
+        public DateTime OriginalTimestamp;
+        public ClientSessionStartPayload Payload;
+        public EntityKey WriterEntity;
+    }
     public class GameLobbyEndedEventData : PlayStreamEventBase
     {
         public string GameMode;
+        public DateTime? GameStartTime;
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
@@ -674,6 +911,7 @@ namespace PlayFab.PlayStreamModels
         public string ServerBuildVersion;
         public string ServerHost;
         public string ServerHostInstanceId;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public uint ServerPort;
         public Dictionary<string,string> Tags;
@@ -687,6 +925,7 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public DateTime StartTime;
         public string TitleId;
@@ -699,6 +938,7 @@ namespace PlayFab.PlayStreamModels
         public string Region;
         public string ServerBuildVersion;
         public string ServerHost;
+        public string ServerIPV4Address;
         public string ServerIPV6Address;
         public DateTime StartTime;
         public GameServerHostStopReason? StopReason;
@@ -811,13 +1051,6 @@ namespace PlayFab.PlayStreamModels
         public string GraphUrl;
         public AlertLevel? Level;
     }
-    public class TitleHopperConfigUpdatedEventData : PlayStreamEventBase
-    {
-        public bool Deleted;
-        public string DeveloperId;
-        public string MatchHopperId;
-        public string UserId;
-    }
     public class TitleInitiatedPlayerPasswordResetEventData : PlayStreamEventBase
     {
         public string DeveloperId;
@@ -874,6 +1107,13 @@ namespace PlayFab.PlayStreamModels
         public int Revision;
         public string UserId;
     }
+    public class TitleQueueConfigUpdatedEventData : PlayStreamEventBase
+    {
+        public bool Deleted;
+        public string DeveloperId;
+        public string MatchQueueName;
+        public string UserId;
+    }
     public class TitleRequestedLimitChangeEventData : PlayStreamEventBase
     {
         public string DeveloperId;
@@ -888,6 +1128,15 @@ namespace PlayFab.PlayStreamModels
         public MetricUnit? Unit;
         public string UserId;
         public double? Value;
+    }
+    public class TitleSavedSurveyEventData : PlayStreamEventBase
+    {
+        public string Genre;
+        public List<string> Monetization;
+        public List<string> Platforms;
+        public List<string> PlayerModes;
+        public string TitleName;
+        public string TitleWebsite;
     }
     public class TitleScheduledCloudScriptExecutedEventData : PlayStreamEventBase
     {
@@ -938,51 +1187,6 @@ namespace PlayFab.PlayStreamModels
         public string UserId;
     }
     #endregion title
-
-    public enum OperationTypes
-    {
-        Created,
-        Updated,
-        Deleted,
-        None
-    }
-
-    [Serializable]
-    public class FileSet
-    {
-        /// <summary>
-        /// The storage size according to the underlying provider.
-        /// </summary>
-        public int ByteCount;
-        /// <summary>
-        /// The checksum according to the underlying provider.
-        /// </summary>
-        public string Checksum;
-        /// <summary>
-        /// File that was updated.
-        /// </summary>
-        public string FileName;
-        /// <summary>
-        /// The operation that was performed.
-        /// </summary>
-        public OperationTypes? Operation;
-        /// <summary>
-        /// The storage size of the old file, if there was one.
-        /// </summary>
-        public int? PreviousByteCount;
-        /// <summary>
-        /// The storage size of the old file, if there was one.
-        /// </summary>
-        public string PreviousChecksum;
-        /// <summary>
-        /// The old file's unique storage path that was deleted by this operation, if there was one.
-        /// </summary>
-        public string PreviousStoragePath;
-        /// <summary>
-        /// The unique storage path for this set operation.
-        /// </summary>
-        public string StoragePath;
-    }
 
     [Serializable]
     public class EntityLineage
@@ -1096,6 +1300,68 @@ namespace PlayFab.PlayStreamModels
         public int Revision;
     }
 
+    public enum OperationTypes
+    {
+        Created,
+        Updated,
+        Deleted,
+        None
+    }
+
+    [Serializable]
+    public class FileSet
+    {
+        /// <summary>
+        /// The storage size according to the underlying provider.
+        /// </summary>
+        public int ByteCount;
+        /// <summary>
+        /// The checksum according to the underlying provider.
+        /// </summary>
+        public string Checksum;
+        /// <summary>
+        /// File that was updated.
+        /// </summary>
+        public string FileName;
+        /// <summary>
+        /// The operation that was performed.
+        /// </summary>
+        public OperationTypes? Operation;
+        /// <summary>
+        /// The storage size of the old file, if there was one.
+        /// </summary>
+        public int? PreviousByteCount;
+        /// <summary>
+        /// The storage size of the old file, if there was one.
+        /// </summary>
+        public string PreviousChecksum;
+        /// <summary>
+        /// The old file's unique storage path that was deleted by this operation, if there was one.
+        /// </summary>
+        public string PreviousStoragePath;
+        /// <summary>
+        /// The unique storage path for this set operation.
+        /// </summary>
+        public string StoragePath;
+    }
+
+    [Serializable]
+    public class ObjectSet
+    {
+        /// <summary>
+        /// The JSON Object that was last set on the profile.
+        /// </summary>
+        public object DataObject;
+        /// <summary>
+        /// The name of this object.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// The operation that was performed.
+        /// </summary>
+        public OperationTypes? Operation;
+    }
+
     [Serializable]
     public class Member
     {
@@ -1124,20 +1390,905 @@ namespace PlayFab.PlayStreamModels
     }
 
     [Serializable]
-    public class ObjectSet
+    public class MultiplayerServerBuildDeletedEventPayload
     {
         /// <summary>
-        /// The JSON Object that was last set on the profile.
+        /// The guid string ID of the multiplayer server build that was deleted.
         /// </summary>
-        public object DataObject;
+        public string BuildId;
+    }
+
+    /// <summary>
+    /// Combined entity type and ID structure which uniquely identifies a single entity.
+    /// </summary>
+    [Serializable]
+    public class EntityKey
+    {
         /// <summary>
-        /// The name of this object.
+        /// Unique ID of the entity.
         /// </summary>
-        public string Name;
+        public string Id;
         /// <summary>
-        /// The operation that was performed.
+        /// Entity type. See https://api.playfab.com/docs/tutorials/entities/entitytypes
         /// </summary>
-        public OperationTypes? Operation;
+        public string Type;
+        /// <summary>
+        /// Alternate name for Type.
+        /// </summary>
+        [Obsolete("Use 'Type' instead", true)]
+        public string TypeString;
+    }
+
+    public enum AzureRegion
+    {
+        AustraliaEast,
+        AustraliaSoutheast,
+        BrazilSouth,
+        CentralUs,
+        EastAsia,
+        EastUs,
+        EastUs2,
+        JapanEast,
+        JapanWest,
+        NorthCentralUs,
+        NorthEurope,
+        SouthCentralUs,
+        SoutheastAsia,
+        WestEurope,
+        WestUs,
+        ChinaEast2,
+        ChinaNorth2
+    }
+
+    [Serializable]
+    public class MultiplayerServerBuildRegionStatusChangedEventPayload
+    {
+        /// <summary>
+        /// The guid string ID of the build.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The duration (minutes) in the old build status.
+        /// </summary>
+        public double MinutesInOldStatus;
+        /// <summary>
+        /// The new build region status.
+        /// </summary>
+        public string NewStatus;
+        /// <summary>
+        /// The old build region status.
+        /// </summary>
+        public string OldStatus;
+        /// <summary>
+        /// The build region.
+        /// </summary>
+        public AzureRegion? Region;
+    }
+
+    [Serializable]
+    public class BuildRegion
+    {
+        /// <summary>
+        /// The maximum number of multiplayer servers for the region.
+        /// </summary>
+        public int MaxServers;
+        /// <summary>
+        /// The build region.
+        /// </summary>
+        public AzureRegion? Region;
+        /// <summary>
+        /// The number of standby multiplayer servers for the region.
+        /// </summary>
+        public int StandbyServers;
+    }
+
+    [Serializable]
+    public class MultiplayerServerBuildRegionUpdatedEventPayload
+    {
+        /// <summary>
+        /// The guid string ID of the multiplayer server build that regions were updated on.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The updated region configuration that should be applied to the specified build.
+        /// </summary>
+        public List<BuildRegion> BuildRegions;
+    }
+
+    [Serializable]
+    public class MultiplayerServerCertificateDeletedEventPayload
+    {
+        /// <summary>
+        /// The name of the certificate that was deleted.
+        /// </summary>
+        public string CertificateName;
+    }
+
+    [Serializable]
+    public class MultiplayerServerCertificateUploadedEventPayload
+    {
+        /// <summary>
+        /// The name of the certificate that was uploaded.
+        /// </summary>
+        public string CertificateName;
+    }
+
+    [Serializable]
+    public class MultiplayerServerCreateBuildInitiatedEventPayload
+    {
+        /// <summary>
+        /// The guid string ID of the build
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The build name.
+        /// </summary>
+        public string BuildName;
+        /// <summary>
+        /// The time (UTC) that the build was created.
+        /// </summary>
+        public DateTime? CreationTime;
+        /// <summary>
+        /// The developer defined metadata of the build.
+        /// </summary>
+        public Dictionary<string,string> Metadata;
+    }
+
+    [Serializable]
+    public class MultiplayerServerGameAssetDeletedEventPayload
+    {
+        /// <summary>
+        /// The filename of the asset that was deleted.
+        /// </summary>
+        public string AssetFileName;
+    }
+
+    public enum GenericErrorCodes
+    {
+        Success,
+        UnkownError,
+        InvalidParams,
+        AccountNotFound,
+        AccountBanned,
+        InvalidUsernameOrPassword,
+        InvalidTitleId,
+        InvalidEmailAddress,
+        EmailAddressNotAvailable,
+        InvalidUsername,
+        InvalidPassword,
+        UsernameNotAvailable,
+        InvalidSteamTicket,
+        AccountAlreadyLinked,
+        LinkedAccountAlreadyClaimed,
+        InvalidFacebookToken,
+        AccountNotLinked,
+        FailedByPaymentProvider,
+        CouponCodeNotFound,
+        InvalidContainerItem,
+        ContainerNotOwned,
+        KeyNotOwned,
+        InvalidItemIdInTable,
+        InvalidReceipt,
+        ReceiptAlreadyUsed,
+        ReceiptCancelled,
+        GameNotFound,
+        GameModeNotFound,
+        InvalidGoogleToken,
+        UserIsNotPartOfDeveloper,
+        InvalidTitleForDeveloper,
+        TitleNameConflicts,
+        UserisNotValid,
+        ValueAlreadyExists,
+        BuildNotFound,
+        PlayerNotInGame,
+        InvalidTicket,
+        InvalidDeveloper,
+        InvalidOrderInfo,
+        RegistrationIncomplete,
+        InvalidPlatform,
+        UnknownError,
+        SteamApplicationNotOwned,
+        WrongSteamAccount,
+        TitleNotActivated,
+        RegistrationSessionNotFound,
+        NoSuchMod,
+        FileNotFound,
+        DuplicateEmail,
+        ItemNotFound,
+        ItemNotOwned,
+        ItemNotRecycleable,
+        ItemNotAffordable,
+        InvalidVirtualCurrency,
+        WrongVirtualCurrency,
+        WrongPrice,
+        NonPositiveValue,
+        InvalidRegion,
+        RegionAtCapacity,
+        ServerFailedToStart,
+        NameNotAvailable,
+        InsufficientFunds,
+        InvalidDeviceID,
+        InvalidPushNotificationToken,
+        NoRemainingUses,
+        InvalidPaymentProvider,
+        PurchaseInitializationFailure,
+        DuplicateUsername,
+        InvalidBuyerInfo,
+        NoGameModeParamsSet,
+        BodyTooLarge,
+        ReservedWordInBody,
+        InvalidTypeInBody,
+        InvalidRequest,
+        ReservedEventName,
+        InvalidUserStatistics,
+        NotAuthenticated,
+        StreamAlreadyExists,
+        ErrorCreatingStream,
+        StreamNotFound,
+        InvalidAccount,
+        PurchaseDoesNotExist,
+        InvalidPurchaseTransactionStatus,
+        APINotEnabledForGameClientAccess,
+        NoPushNotificationARNForTitle,
+        BuildAlreadyExists,
+        BuildPackageDoesNotExist,
+        CustomAnalyticsEventsNotEnabledForTitle,
+        InvalidSharedGroupId,
+        NotAuthorized,
+        MissingTitleGoogleProperties,
+        InvalidItemProperties,
+        InvalidPSNAuthCode,
+        InvalidItemId,
+        PushNotEnabledForAccount,
+        PushServiceError,
+        ReceiptDoesNotContainInAppItems,
+        ReceiptContainsMultipleInAppItems,
+        InvalidBundleID,
+        JavascriptException,
+        InvalidSessionTicket,
+        UnableToConnectToDatabase,
+        InternalServerError,
+        InvalidReportDate,
+        ReportNotAvailable,
+        DatabaseThroughputExceeded,
+        InvalidGameTicket,
+        ExpiredGameTicket,
+        GameTicketDoesNotMatchLobby,
+        LinkedDeviceAlreadyClaimed,
+        DeviceAlreadyLinked,
+        DeviceNotLinked,
+        PartialFailure,
+        PublisherNotSet,
+        ServiceUnavailable,
+        VersionNotFound,
+        RevisionNotFound,
+        InvalidPublisherId,
+        DownstreamServiceUnavailable,
+        APINotIncludedInTitleUsageTier,
+        DAULimitExceeded,
+        APIRequestLimitExceeded,
+        InvalidAPIEndpoint,
+        BuildNotAvailable,
+        ConcurrentEditError,
+        ContentNotFound,
+        CharacterNotFound,
+        CloudScriptNotFound,
+        ContentQuotaExceeded,
+        InvalidCharacterStatistics,
+        PhotonNotEnabledForTitle,
+        PhotonApplicationNotFound,
+        PhotonApplicationNotAssociatedWithTitle,
+        InvalidEmailOrPassword,
+        FacebookAPIError,
+        InvalidContentType,
+        KeyLengthExceeded,
+        DataLengthExceeded,
+        TooManyKeys,
+        FreeTierCannotHaveVirtualCurrency,
+        MissingAmazonSharedKey,
+        AmazonValidationError,
+        InvalidPSNIssuerId,
+        PSNInaccessible,
+        ExpiredAuthToken,
+        FailedToGetEntitlements,
+        FailedToConsumeEntitlement,
+        TradeAcceptingUserNotAllowed,
+        TradeInventoryItemIsAssignedToCharacter,
+        TradeInventoryItemIsBundle,
+        TradeStatusNotValidForCancelling,
+        TradeStatusNotValidForAccepting,
+        TradeDoesNotExist,
+        TradeCancelled,
+        TradeAlreadyFilled,
+        TradeWaitForStatusTimeout,
+        TradeInventoryItemExpired,
+        TradeMissingOfferedAndAcceptedItems,
+        TradeAcceptedItemIsBundle,
+        TradeAcceptedItemIsStackable,
+        TradeInventoryItemInvalidStatus,
+        TradeAcceptedCatalogItemInvalid,
+        TradeAllowedUsersInvalid,
+        TradeInventoryItemDoesNotExist,
+        TradeInventoryItemIsConsumed,
+        TradeInventoryItemIsStackable,
+        TradeAcceptedItemsMismatch,
+        InvalidKongregateToken,
+        FeatureNotConfiguredForTitle,
+        NoMatchingCatalogItemForReceipt,
+        InvalidCurrencyCode,
+        NoRealMoneyPriceForCatalogItem,
+        TradeInventoryItemIsNotTradable,
+        TradeAcceptedCatalogItemIsNotTradable,
+        UsersAlreadyFriends,
+        LinkedIdentifierAlreadyClaimed,
+        CustomIdNotLinked,
+        TotalDataSizeExceeded,
+        DeleteKeyConflict,
+        InvalidXboxLiveToken,
+        ExpiredXboxLiveToken,
+        ResettableStatisticVersionRequired,
+        NotAuthorizedByTitle,
+        NoPartnerEnabled,
+        InvalidPartnerResponse,
+        APINotEnabledForGameServerAccess,
+        StatisticNotFound,
+        StatisticNameConflict,
+        StatisticVersionClosedForWrites,
+        StatisticVersionInvalid,
+        APIClientRequestRateLimitExceeded,
+        InvalidJSONContent,
+        InvalidDropTable,
+        StatisticVersionAlreadyIncrementedForScheduledInterval,
+        StatisticCountLimitExceeded,
+        StatisticVersionIncrementRateExceeded,
+        ContainerKeyInvalid,
+        CloudScriptExecutionTimeLimitExceeded,
+        NoWritePermissionsForEvent,
+        CloudScriptFunctionArgumentSizeExceeded,
+        CloudScriptAPIRequestCountExceeded,
+        CloudScriptAPIRequestError,
+        CloudScriptHTTPRequestError,
+        InsufficientGuildRole,
+        GuildNotFound,
+        OverLimit,
+        EventNotFound,
+        InvalidEventField,
+        InvalidEventName,
+        CatalogNotConfigured,
+        OperationNotSupportedForPlatform,
+        SegmentNotFound,
+        StoreNotFound,
+        InvalidStatisticName,
+        TitleNotQualifiedForLimit,
+        InvalidServiceLimitLevel,
+        ServiceLimitLevelInTransition,
+        CouponAlreadyRedeemed,
+        GameServerBuildSizeLimitExceeded,
+        GameServerBuildCountLimitExceeded,
+        VirtualCurrencyCountLimitExceeded,
+        VirtualCurrencyCodeExists,
+        TitleNewsItemCountLimitExceeded,
+        InvalidTwitchToken,
+        TwitchResponseError,
+        ProfaneDisplayName,
+        UserAlreadyAdded,
+        InvalidVirtualCurrencyCode,
+        VirtualCurrencyCannotBeDeleted,
+        IdentifierAlreadyClaimed,
+        IdentifierNotLinked,
+        InvalidContinuationToken,
+        ExpiredContinuationToken,
+        InvalidSegment,
+        InvalidSessionId,
+        SessionLogNotFound,
+        InvalidSearchTerm,
+        TwoFactorAuthenticationTokenRequired,
+        GameServerHostCountLimitExceeded,
+        PlayerTagCountLimitExceeded,
+        RequestAlreadyRunning,
+        ActionGroupNotFound,
+        MaximumSegmentBulkActionJobsRunning,
+        NoActionsOnPlayersInSegmentJob,
+        DuplicateStatisticName,
+        ScheduledTaskNameConflict,
+        ScheduledTaskCreateConflict,
+        InvalidScheduledTaskName,
+        InvalidTaskSchedule,
+        SteamNotEnabledForTitle,
+        LimitNotAnUpgradeOption,
+        NoSecretKeyEnabledForCloudScript,
+        TaskNotFound,
+        TaskInstanceNotFound,
+        InvalidIdentityProviderId,
+        MisconfiguredIdentityProvider,
+        InvalidScheduledTaskType,
+        BillingInformationRequired,
+        LimitedEditionItemUnavailable,
+        InvalidAdPlacementAndReward,
+        AllAdPlacementViewsAlreadyConsumed,
+        GoogleOAuthNotConfiguredForTitle,
+        GoogleOAuthError,
+        UserNotFriend,
+        InvalidSignature,
+        InvalidPublicKey,
+        GoogleOAuthNoIdTokenIncludedInResponse,
+        StatisticUpdateInProgress,
+        LeaderboardVersionNotAvailable,
+        StatisticAlreadyHasPrizeTable,
+        PrizeTableHasOverlappingRanks,
+        PrizeTableHasMissingRanks,
+        PrizeTableRankStartsAtZero,
+        InvalidStatistic,
+        ExpressionParseFailure,
+        ExpressionInvokeFailure,
+        ExpressionTooLong,
+        DataUpdateRateExceeded,
+        RestrictedEmailDomain,
+        EncryptionKeyDisabled,
+        EncryptionKeyMissing,
+        EncryptionKeyBroken,
+        NoSharedSecretKeyConfigured,
+        SecretKeyNotFound,
+        PlayerSecretAlreadyConfigured,
+        APIRequestsDisabledForTitle,
+        InvalidSharedSecretKey,
+        PrizeTableHasNoRanks,
+        ProfileDoesNotExist,
+        ContentS3OriginBucketNotConfigured,
+        InvalidEnvironmentForReceipt,
+        EncryptedRequestNotAllowed,
+        SignedRequestNotAllowed,
+        RequestViewConstraintParamsNotAllowed,
+        BadPartnerConfiguration,
+        XboxBPCertificateFailure,
+        XboxXASSExchangeFailure,
+        InvalidEntityId,
+        StatisticValueAggregationOverflow,
+        EmailMessageFromAddressIsMissing,
+        EmailMessageToAddressIsMissing,
+        SmtpServerAuthenticationError,
+        SmtpServerLimitExceeded,
+        SmtpServerInsufficientStorage,
+        SmtpServerCommunicationError,
+        SmtpServerGeneralFailure,
+        EmailClientTimeout,
+        EmailClientCanceledTask,
+        EmailTemplateMissing,
+        InvalidHostForTitleId,
+        EmailConfirmationTokenDoesNotExist,
+        EmailConfirmationTokenExpired,
+        AccountDeleted,
+        PlayerSecretNotConfigured,
+        InvalidSignatureTime,
+        NoContactEmailAddressFound,
+        InvalidAuthToken,
+        AuthTokenDoesNotExist,
+        AuthTokenExpired,
+        AuthTokenAlreadyUsedToResetPassword,
+        MembershipNameTooLong,
+        MembershipNotFound,
+        GoogleServiceAccountInvalid,
+        GoogleServiceAccountParseFailure,
+        EntityTokenMissing,
+        EntityTokenInvalid,
+        EntityTokenExpired,
+        EntityTokenRevoked,
+        InvalidProductForSubscription,
+        XboxInaccessible,
+        SubscriptionAlreadyTaken,
+        SmtpAddonNotEnabled,
+        APIConcurrentRequestLimitExceeded,
+        XboxRejectedXSTSExchangeRequest,
+        VariableNotDefined,
+        TemplateVersionNotDefined,
+        FileTooLarge,
+        TitleDeleted,
+        TitleContainsUserAccounts,
+        TitleDeletionPlayerCleanupFailure,
+        EntityFileOperationPending,
+        NoEntityFileOperationPending,
+        EntityProfileVersionMismatch,
+        TemplateVersionTooOld,
+        MembershipDefinitionInUse,
+        PaymentPageNotConfigured,
+        FailedLoginAttemptRateLimitExceeded,
+        EntityBlockedByGroup,
+        RoleDoesNotExist,
+        EntityIsAlreadyMember,
+        DuplicateRoleId,
+        GroupInvitationNotFound,
+        GroupApplicationNotFound,
+        OutstandingInvitationAcceptedInstead,
+        OutstandingApplicationAcceptedInstead,
+        RoleIsGroupDefaultMember,
+        RoleIsGroupAdmin,
+        RoleNameNotAvailable,
+        GroupNameNotAvailable,
+        EmailReportAlreadySent,
+        EmailReportRecipientBlacklisted,
+        EventNamespaceNotAllowed,
+        EventEntityNotAllowed,
+        InvalidEntityType,
+        NullTokenResultFromAad,
+        InvalidTokenResultFromAad,
+        NoValidCertificateForAad,
+        InvalidCertificateForAad,
+        DuplicateDropTableId,
+        MultiplayerServerError,
+        MultiplayerServerTooManyRequests,
+        MultiplayerServerNoContent,
+        MultiplayerServerBadRequest,
+        MultiplayerServerUnauthorized,
+        MultiplayerServerForbidden,
+        MultiplayerServerNotFound,
+        MultiplayerServerConflict,
+        MultiplayerServerInternalServerError,
+        MultiplayerServerUnavailable,
+        ExplicitContentDetected,
+        PIIContentDetected,
+        InvalidScheduledTaskParameter,
+        PerEntityEventRateLimitExceeded,
+        TitleDefaultLanguageNotSet,
+        EmailTemplateMissingDefaultVersion,
+        FacebookInstantGamesIdNotLinked,
+        InvalidFacebookInstantGamesSignature,
+        FacebookInstantGamesAuthNotConfiguredForTitle,
+        EntityProfileConstraintValidationFailed,
+        TelemetryIngestionKeyPending,
+        TelemetryIngestionKeyNotFound,
+        StatisticTagRequired,
+        StatisticTagInvalid,
+        DataIntegrityError,
+        VirtualCurrencyCannotBeSetToOlderVersion,
+        VirtualCurrencyMustBeWithinIntegerRange,
+        EmailTemplateInvalidSyntax,
+        EmailTemplateMissingCallback,
+        PushNotificationTemplateInvalidPayload,
+        InvalidLocalizedPushNotificationLanguage,
+        MissingLocalizedPushNotificationMessage,
+        PushNotificationTemplateMissingPlatformPayload,
+        PushNotificationTemplatePayloadContainsInvalidJson,
+        PushNotificationTemplateContainsInvalidIosPayload,
+        PushNotificationTemplateContainsInvalidAndroidPayload,
+        PushNotificationTemplateIosPayloadMissingNotificationBody,
+        PushNotificationTemplateAndroidPayloadMissingNotificationBody,
+        PushNotificationTemplateNotFound,
+        PushNotificationTemplateMissingDefaultVersion,
+        PushNotificationTemplateInvalidSyntax,
+        PushNotificationTemplateNoCustomPayloadForV1,
+        NoLeaderboardForStatistic,
+        TitleNewsMissingDefaultLanguage,
+        TitleNewsNotFound,
+        TitleNewsDuplicateLanguage,
+        TitleNewsMissingTitleOrBody,
+        TitleNewsInvalidLanguage,
+        EmailRecipientBlacklisted,
+        MatchmakingEntityInvalid,
+        MatchmakingPlayerAttributesInvalid,
+        MatchmakingCreateRequestMissing,
+        MatchmakingCreateRequestCreatorMissing,
+        MatchmakingCreateRequestCreatorIdMissing,
+        MatchmakingCreateRequestUserListMissing,
+        MatchmakingCreateRequestGiveUpAfterInvalid,
+        MatchmakingTicketIdMissing,
+        MatchmakingMatchIdMissing,
+        MatchmakingMatchIdIdMissing,
+        MatchmakingQueueNameMissing,
+        MatchmakingTitleIdMissing,
+        MatchmakingTicketIdIdMissing,
+        MatchmakingPlayerIdMissing,
+        MatchmakingJoinRequestUserMissing,
+        MatchmakingQueueConfigNotFound,
+        MatchmakingMatchNotFound,
+        MatchmakingTicketNotFound,
+        MatchmakingCreateTicketServerIdentityInvalid,
+        MatchmakingCreateTicketClientIdentityInvalid,
+        MatchmakingGetTicketUserMismatch,
+        MatchmakingJoinTicketServerIdentityInvalid,
+        MatchmakingJoinTicketUserIdentityMismatch,
+        MatchmakingCancelTicketServerIdentityInvalid,
+        MatchmakingCancelTicketUserIdentityMismatch,
+        MatchmakingGetMatchIdentityMismatch,
+        MatchmakingPlayerIdentityMismatch,
+        MatchmakingAlreadyJoinedTicket,
+        MatchmakingTicketAlreadyCompleted,
+        MatchmakingQueueNameInvalid,
+        MatchmakingQueueConfigInvalid,
+        MatchmakingMemberProfileInvalid,
+        WriteAttemptedDuringExport,
+        NintendoSwitchDeviceIdNotLinked,
+        MatchmakingNotEnabled,
+        MatchmakingGetStatisticsIdentityInvalid,
+        MatchmakingStatisticsIdMissing,
+        CannotEnableMultiplayerServersForTitle,
+        TitleConfigNotFound,
+        TitleConfigUpdateConflict,
+        TitleConfigSerializationError
+    }
+
+    [Serializable]
+    public class MultiplayerServerRequestedEventPayload
+    {
+        /// <summary>
+        /// The region where the multiplayer server was allocated.
+        /// </summary>
+        public AzureRegion? AllocatedRegion;
+        /// <summary>
+        /// The integer ranking of what region that the multiplayer server was allocated in from the PreferredRegions list.
+        /// </summary>
+        public int? AllocatedRegionPreferenceRanking;
+        /// <summary>
+        /// The guid string ID of the build.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The error when a multiplayer server request fails to allocate. If there was no failure, returns null.
+        /// </summary>
+        public GenericErrorCodes? ErrorCode;
+        /// <summary>
+        /// The list of preferred region to request a server from.
+        /// </summary>
+        public List<AzureRegion> PreferredRegions;
+        /// <summary>
+        /// The string ID of the server which is generated by PlayFab.
+        /// </summary>
+        public string ServerId;
+        /// <summary>
+        /// The guid string ID of the session.
+        /// </summary>
+        public string SessionId;
+    }
+
+    [Serializable]
+    public class MultiplayerServerStateChangedEventPayload
+    {
+        /// <summary>
+        /// The guid string ID of the build.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The new multiplayer server state.
+        /// </summary>
+        public string NewState;
+        /// <summary>
+        /// The old multiplayer server state.
+        /// </summary>
+        public string OldState;
+        /// <summary>
+        /// The build region.
+        /// </summary>
+        public AzureRegion? Region;
+        /// <summary>
+        /// The multiplayer server ID.
+        /// </summary>
+        public string ServerId;
+        /// <summary>
+        /// The guid string ID of the session.
+        /// </summary>
+        public string SessionId;
+        /// <summary>
+        /// The virtual machine ID the multiplayer server is located on.
+        /// </summary>
+        public string VmId;
+    }
+
+    [Serializable]
+    public class MultiplayerServerVmAssignedEventPayload
+    {
+        /// <summary>
+        /// The time (UTC) the virtual machine was assigned.
+        /// </summary>
+        public DateTime AssignmentEventTimestamp;
+        /// <summary>
+        /// The guid string ID of the billing assignment.
+        /// </summary>
+        public string BillingAssignmentCorrelationId;
+        /// <summary>
+        /// The guid string ID of the build.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The build region.
+        /// </summary>
+        public AzureRegion? Region;
+        /// <summary>
+        /// The guid string ID of the session.
+        /// </summary>
+        public string SessionId;
+        /// <summary>
+        /// The ID of the virtual machine that was assigned.
+        /// </summary>
+        public string VmId;
+    }
+
+    [Serializable]
+    public class MultiplayerServerVmRemoteUserCreatedEventPayload
+    {
+        /// <summary>
+        /// The expiration time for the remote user that was created.
+        /// </summary>
+        public DateTime? ExpirationTime;
+        /// <summary>
+        /// The username for the remote user that was created.
+        /// </summary>
+        public string Username;
+        /// <summary>
+        /// The ID of the virtual machine where the remote user was created.
+        /// </summary>
+        public string VmId;
+    }
+
+    [Serializable]
+    public class MultiplayerServerVmRemoteUserDeletedEventPayload
+    {
+        /// <summary>
+        /// The guid string build ID of the multiplayer server where the remote user was deleted.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The username for the remote user that was deleted.
+        /// </summary>
+        public string Username;
+        /// <summary>
+        /// The virtual machine ID the multiplayer server is located on where the remote user was deleted on.
+        /// </summary>
+        public string VmId;
+    }
+
+    [Serializable]
+    public class MultiplayerServerVmUnassignmentStartedEventPayload
+    {
+        /// <summary>
+        /// The duration (milliseconds) that the VM has been assigned.
+        /// </summary>
+        public double AssignmentDurationMs;
+        /// <summary>
+        /// The guid string ID of the billing assignment.
+        /// </summary>
+        public string BillingAssignmentCorrelationId;
+        /// <summary>
+        /// The guid string ID of the build.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The build region.
+        /// </summary>
+        public AzureRegion? Region;
+        /// <summary>
+        /// The guid string ID of the session.
+        /// </summary>
+        public string SessionId;
+        /// <summary>
+        /// The time (UTC) the virtual machine unassignment started.
+        /// </summary>
+        public DateTime UnassignmentEventTimestamp;
+        /// <summary>
+        /// The virtual machine ID that is being unassigned.
+        /// </summary>
+        public string VmId;
+        /// <summary>
+        /// The virtual machine's operating system.
+        /// </summary>
+        public string VmOs;
+    }
+
+    [Serializable]
+    public class MultiplayerServerVmUnhealthyEventPayload
+    {
+        /// <summary>
+        /// The guid string ID of the build.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The health status of the virtual machine.
+        /// </summary>
+        public string HealthStatus;
+        /// <summary>
+        /// The build region.
+        /// </summary>
+        public AzureRegion? Region;
+        /// <summary>
+        /// The ID of the unhealthy virtual machine.
+        /// </summary>
+        public string VmId;
+    }
+
+    [Serializable]
+    public class MatchmakingMatchFoundPayload
+    {
+        /// <summary>
+        /// The identifier for the match.
+        /// </summary>
+        public string MatchId;
+        /// <summary>
+        /// The name of the queue the match was created in.
+        /// </summary>
+        public string QueueName;
+        /// <summary>
+        /// The list of ticket identifiers that were matched together.
+        /// </summary>
+        public List<string> TicketIds;
+    }
+
+    [Serializable]
+    public class MatchmakingTicketCompletePayload
+    {
+        /// <summary>
+        /// If the ticket result is "Canceled" then this string provides the reason why the ticket was canceled otherwise it is
+        /// null. The possible list of values are "User", "Service", "Internal", "Timeout".
+        /// </summary>
+        public string CancellationReason;
+        /// <summary>
+        /// Time at which this ticket was completed.
+        /// </summary>
+        public DateTime CompletionTime;
+        /// <summary>
+        /// Time at which this ticket was created.
+        /// </summary>
+        public DateTime CreationTime;
+        /// <summary>
+        /// The name of the queue the ticket was created in.
+        /// </summary>
+        public string QueueName;
+        /// <summary>
+        /// The final state of the ticket. It could be "Matched" or "Canceled".
+        /// </summary>
+        public string Result;
+        /// <summary>
+        /// Time at which this ticket was submitted into the matchmaking queue.
+        /// </summary>
+        public DateTime? SubmissionTime;
+        /// <summary>
+        /// The list of entities that are part of this ticket.
+        /// </summary>
+        public List<EntityKey> TicketEntities;
+        /// <summary>
+        /// Id of the ticket that was completed.
+        /// </summary>
+        public string TicketId;
+    }
+
+    [Serializable]
+    public class MatchmakingUserTicketCompletePayload
+    {
+        /// <summary>
+        /// If the ticket result is "Canceled" then this string provides the reason why the ticket was canceled otherwise it is
+        /// null. The possible list of values are "User", "Service", "Internal", "Timeout".
+        /// </summary>
+        public string CancellationReason;
+        /// <summary>
+        /// The id of the match the ticket got matched into. If the ticket did not get matched this is set to null
+        /// </summary>
+        public string MatchId;
+        /// <summary>
+        /// The name of the queue the ticket was created in.
+        /// </summary>
+        public string QueueName;
+        /// <summary>
+        /// The final state of the ticket. Allowed states are "Matched" or "Canceled".
+        /// </summary>
+        public string Result;
+        /// <summary>
+        /// Id of the ticket that was completed.
+        /// </summary>
+        public string TicketId;
+    }
+
+    [Serializable]
+    public class MatchmakingUserTicketInvitePayload
+    {
+        /// <summary>
+        /// Entity that invited the user to join the ticket.
+        /// </summary>
+        public EntityKey CreatorEntity;
+        /// <summary>
+        /// The name of the queue the ticket was created in.
+        /// </summary>
+        public string QueueName;
+        /// <summary>
+        /// Id of the ticket that the user was invited to.
+        /// </summary>
+        public string TicketId;
     }
 
     public enum PlayerProfileProperty
@@ -1159,65 +2310,54 @@ namespace PlayFab.PlayStreamModels
         SAML
     }
 
-    public enum TransactionStatus
+    [Serializable]
+    public class ClientFocusChangePayload
     {
-        CreateCart,
-        Init,
-        Approved,
-        Succeeded,
-        FailedByProvider,
-        DisputePending,
-        RefundPending,
-        Refunded,
-        RefundFailed,
-        ChargedBack,
-        FailedByUber,
-        FailedByPlayFab,
-        Revoked,
-        TradePending,
-        Traded,
-        Upgraded,
-        StackPending,
-        Stacked,
-        Other,
-        Failed
+        /// <summary>
+        /// The Client Sesssion Id of the associated entity.
+        /// </summary>
+        public string ClientSessionID;
+        /// <summary>
+        /// The Event Time of the associated entity.
+        /// </summary>
+        public DateTime? EventTimestamp;
+        /// <summary>
+        /// The Focus Id of the associated entity.
+        /// </summary>
+        public string FocusID;
+        /// <summary>
+        /// The Focus State of the associated entity.
+        /// </summary>
+        public bool FocusState;
+        /// <summary>
+        /// The Focus Duration of the associated entity.
+        /// </summary>
+        public double FocusStateDuration;
     }
 
     [Serializable]
-    public class CartItem
+    public class ClientSessionStartPayload
     {
         /// <summary>
-        /// Description of the catalog item.
+        /// The Client Session Id of the associated entity.
         /// </summary>
-        public string Description;
+        public string ClientSessionID;
         /// <summary>
-        /// Display name for the catalog item.
+        /// The Device Model of the associated entity.
         /// </summary>
-        public string DisplayName;
+        public string DeviceModel;
         /// <summary>
-        /// Class name to which catalog item belongs.
+        /// The Device Type of the associated entity.
         /// </summary>
-        public string ItemClass;
+        public string DeviceType;
         /// <summary>
-        /// Unique identifier for the catalog item.
+        /// The OS of the associated entity.
         /// </summary>
-        public string ItemId;
+        public string OS;
         /// <summary>
-        /// Unique instance identifier for this catalog item.
+        /// The User Id of the associated entity.
         /// </summary>
-        public string ItemInstanceId;
-        /// <summary>
-        /// Cost of the catalog item for each applicable real world currency.
-        /// </summary>
-        public Dictionary<string,uint> RealCurrencyPrices;
-        /// <summary>
-        /// Amount of each applicable virtual currency which will be received as a result of purchasing this catalog item.
-        /// </summary>
-        public Dictionary<string,uint> VCAmount;
-        /// <summary>
-        /// Cost of the catalog item for each applicable virtual currency.
-        /// </summary>
-        public Dictionary<string,uint> VirtualCurrencyPrices;
+        public string UserID;
     }
 
     public enum GameServerHostStopReason
@@ -1229,44 +2369,53 @@ namespace PlayFab.PlayStreamModels
         Unresponsive
     }
 
-    public enum PaymentType
+    public enum SegmentMembershipChangeType
     {
-        Purchase,
-        ReceiptValidation
+        Entered,
+        Exited
     }
 
-    public enum LeaderboardVersionChangeBehavior
-    {
-        ResetValues
-    }
-
-    /// <summary>
-    /// Statistic used as the source of leaderboard values.
-    /// </summary>
     [Serializable]
-    public class StatisticLeaderboardSource
+    public class SegmentMembershipChange
     {
         /// <summary>
-        /// Unique ID of the statistic.
+        /// Type of the segment membership status change.
         /// </summary>
-        public uint StatisticId;
+        public SegmentMembershipChangeType? Change;
         /// <summary>
-        /// Name of the statistic.
+        /// ID of the PlayStream event that caused the segment membership status to change.
         /// </summary>
-        public string StatisticName;
+        public string EventId;
+        /// <summary>
+        /// ID of the segment in which the player's membership status changed.
+        /// </summary>
+        public string SegmentId;
     }
 
-    /// <summary>
-    /// The source of values for the leaderboard. The properties are mutually exclusive - only one of them will be set and the
-    /// rest will be null.
-    /// </summary>
     [Serializable]
-    public class LeaderboardSource
+    public class EventRuleMatch
     {
         /// <summary>
-        /// Statistic associated with the leaderboard.
+        /// ID of the PlayStream event that matched the rule.
         /// </summary>
-        public StatisticLeaderboardSource Statistic;
+        public string EventId;
+        /// <summary>
+        /// ID of the matching event rule.
+        /// </summary>
+        public string RuleId;
+    }
+
+    [Serializable]
+    public class ActionExecutionError
+    {
+        /// <summary>
+        /// Error code.
+        /// </summary>
+        public string Error;
+        /// <summary>
+        /// Details about the error.
+        /// </summary>
+        public string Message;
     }
 
     public enum LoginIdentityProvider
@@ -1284,196 +2433,18 @@ namespace PlayFab.PlayStreamModels
         IOSDevice,
         AndroidDevice,
         Twitch,
-        WindowsHello
+        WindowsHello,
+        GameServer,
+        CustomServer,
+        NintendoSwitch,
+        FacebookInstantGames,
+        OpenIdConnect
     }
 
     public enum PasswordResetInitiationSource
     {
         Self,
         Admin
-    }
-
-    [Serializable]
-    public class CouponGrantedInventoryItem
-    {
-        /// <summary>
-        /// Catalog version of the inventory item.
-        /// </summary>
-        public string CatalogVersion;
-        /// <summary>
-        /// Unique instance ID of the inventory item.
-        /// </summary>
-        public string InstanceId;
-        /// <summary>
-        /// Catalog item ID of the inventory item.
-        /// </summary>
-        public string ItemId;
-    }
-
-    public enum Currency
-    {
-        AED,
-        AFN,
-        ALL,
-        AMD,
-        ANG,
-        AOA,
-        ARS,
-        AUD,
-        AWG,
-        AZN,
-        BAM,
-        BBD,
-        BDT,
-        BGN,
-        BHD,
-        BIF,
-        BMD,
-        BND,
-        BOB,
-        BRL,
-        BSD,
-        BTN,
-        BWP,
-        BYR,
-        BZD,
-        CAD,
-        CDF,
-        CHF,
-        CLP,
-        CNY,
-        COP,
-        CRC,
-        CUC,
-        CUP,
-        CVE,
-        CZK,
-        DJF,
-        DKK,
-        DOP,
-        DZD,
-        EGP,
-        ERN,
-        ETB,
-        EUR,
-        FJD,
-        FKP,
-        GBP,
-        GEL,
-        GGP,
-        GHS,
-        GIP,
-        GMD,
-        GNF,
-        GTQ,
-        GYD,
-        HKD,
-        HNL,
-        HRK,
-        HTG,
-        HUF,
-        IDR,
-        ILS,
-        IMP,
-        INR,
-        IQD,
-        IRR,
-        ISK,
-        JEP,
-        JMD,
-        JOD,
-        JPY,
-        KES,
-        KGS,
-        KHR,
-        KMF,
-        KPW,
-        KRW,
-        KWD,
-        KYD,
-        KZT,
-        LAK,
-        LBP,
-        LKR,
-        LRD,
-        LSL,
-        LYD,
-        MAD,
-        MDL,
-        MGA,
-        MKD,
-        MMK,
-        MNT,
-        MOP,
-        MRO,
-        MUR,
-        MVR,
-        MWK,
-        MXN,
-        MYR,
-        MZN,
-        NAD,
-        NGN,
-        NIO,
-        NOK,
-        NPR,
-        NZD,
-        OMR,
-        PAB,
-        PEN,
-        PGK,
-        PHP,
-        PKR,
-        PLN,
-        PYG,
-        QAR,
-        RON,
-        RSD,
-        RUB,
-        RWF,
-        SAR,
-        SBD,
-        SCR,
-        SDG,
-        SEK,
-        SGD,
-        SHP,
-        SLL,
-        SOS,
-        SPL,
-        SRD,
-        STD,
-        SVC,
-        SYP,
-        SZL,
-        THB,
-        TJS,
-        TMT,
-        TND,
-        TOP,
-        TRY,
-        TTD,
-        TVD,
-        TWD,
-        TZS,
-        UAH,
-        UGX,
-        USD,
-        UYU,
-        UZS,
-        VEF,
-        VND,
-        VUV,
-        WST,
-        XAF,
-        XCD,
-        XDR,
-        XOF,
-        XPF,
-        YER,
-        ZAR,
-        ZMW,
-        ZWD
     }
 
     public enum ContinentCode
@@ -1741,6 +2712,329 @@ namespace PlayFab.PlayStreamModels
     }
 
     [Serializable]
+    public class EventLocation
+    {
+        /// <summary>
+        /// City of the geographic location.
+        /// </summary>
+        public string City;
+        /// <summary>
+        /// Two-character code representing the continent of geographic location.
+        /// </summary>
+        public ContinentCode? ContinentCode;
+        /// <summary>
+        /// Two-character ISO 3166-1 code representing the country of the geographic location.
+        /// </summary>
+        public CountryCode? CountryCode;
+        /// <summary>
+        /// Latitude coordinate of the geographic location.
+        /// </summary>
+        public double? Latitude;
+        /// <summary>
+        /// Longitude coordinate of the geographic location.
+        /// </summary>
+        public double? Longitude;
+    }
+
+    public enum TransactionStatus
+    {
+        CreateCart,
+        Init,
+        Approved,
+        Succeeded,
+        FailedByProvider,
+        DisputePending,
+        RefundPending,
+        Refunded,
+        RefundFailed,
+        ChargedBack,
+        FailedByUber,
+        FailedByPlayFab,
+        Revoked,
+        TradePending,
+        Traded,
+        Upgraded,
+        StackPending,
+        Stacked,
+        Other,
+        Failed
+    }
+
+    public enum LeaderboardVersionChangeBehavior
+    {
+        ResetValues
+    }
+
+    /// <summary>
+    /// Statistic used as the source of leaderboard values.
+    /// </summary>
+    [Serializable]
+    public class StatisticLeaderboardSource
+    {
+        /// <summary>
+        /// Unique ID of the statistic.
+        /// </summary>
+        public uint StatisticId;
+        /// <summary>
+        /// Name of the statistic.
+        /// </summary>
+        public string StatisticName;
+    }
+
+    /// <summary>
+    /// The source of values for the leaderboard. The properties are mutually exclusive - only one of them will be set and the
+    /// rest will be null.
+    /// </summary>
+    [Serializable]
+    public class LeaderboardSource
+    {
+        /// <summary>
+        /// Statistic associated with the leaderboard.
+        /// </summary>
+        public StatisticLeaderboardSource Statistic;
+    }
+
+    public enum PaymentType
+    {
+        Purchase,
+        ReceiptValidation
+    }
+
+    public enum Currency
+    {
+        AED,
+        AFN,
+        ALL,
+        AMD,
+        ANG,
+        AOA,
+        ARS,
+        AUD,
+        AWG,
+        AZN,
+        BAM,
+        BBD,
+        BDT,
+        BGN,
+        BHD,
+        BIF,
+        BMD,
+        BND,
+        BOB,
+        BRL,
+        BSD,
+        BTN,
+        BWP,
+        BYR,
+        BZD,
+        CAD,
+        CDF,
+        CHF,
+        CLP,
+        CNY,
+        COP,
+        CRC,
+        CUC,
+        CUP,
+        CVE,
+        CZK,
+        DJF,
+        DKK,
+        DOP,
+        DZD,
+        EGP,
+        ERN,
+        ETB,
+        EUR,
+        FJD,
+        FKP,
+        GBP,
+        GEL,
+        GGP,
+        GHS,
+        GIP,
+        GMD,
+        GNF,
+        GTQ,
+        GYD,
+        HKD,
+        HNL,
+        HRK,
+        HTG,
+        HUF,
+        IDR,
+        ILS,
+        IMP,
+        INR,
+        IQD,
+        IRR,
+        ISK,
+        JEP,
+        JMD,
+        JOD,
+        JPY,
+        KES,
+        KGS,
+        KHR,
+        KMF,
+        KPW,
+        KRW,
+        KWD,
+        KYD,
+        KZT,
+        LAK,
+        LBP,
+        LKR,
+        LRD,
+        LSL,
+        LYD,
+        MAD,
+        MDL,
+        MGA,
+        MKD,
+        MMK,
+        MNT,
+        MOP,
+        MRO,
+        MUR,
+        MVR,
+        MWK,
+        MXN,
+        MYR,
+        MZN,
+        NAD,
+        NGN,
+        NIO,
+        NOK,
+        NPR,
+        NZD,
+        OMR,
+        PAB,
+        PEN,
+        PGK,
+        PHP,
+        PKR,
+        PLN,
+        PYG,
+        QAR,
+        RON,
+        RSD,
+        RUB,
+        RWF,
+        SAR,
+        SBD,
+        SCR,
+        SDG,
+        SEK,
+        SGD,
+        SHP,
+        SLL,
+        SOS,
+        SPL,
+        SRD,
+        STD,
+        SVC,
+        SYP,
+        SZL,
+        THB,
+        TJS,
+        TMT,
+        TND,
+        TOP,
+        TRY,
+        TTD,
+        TVD,
+        TWD,
+        TZS,
+        UAH,
+        UGX,
+        USD,
+        UYU,
+        UZS,
+        VEF,
+        VND,
+        VUV,
+        WST,
+        XAF,
+        XCD,
+        XDR,
+        XOF,
+        XPF,
+        YER,
+        ZAR,
+        ZMW,
+        ZWD
+    }
+
+    [Serializable]
+    public class CouponGrantedInventoryItem
+    {
+        /// <summary>
+        /// Catalog version of the inventory item.
+        /// </summary>
+        public string CatalogVersion;
+        /// <summary>
+        /// Unique instance ID of the inventory item.
+        /// </summary>
+        public string InstanceId;
+        /// <summary>
+        /// Catalog item ID of the inventory item.
+        /// </summary>
+        public string ItemId;
+    }
+
+    public enum PushNotificationPlatform
+    {
+        ApplePushNotificationService,
+        GoogleCloudMessaging
+    }
+
+    [Serializable]
+    public class CartItem
+    {
+        /// <summary>
+        /// Description of the catalog item.
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Display name for the catalog item.
+        /// </summary>
+        public string DisplayName;
+        /// <summary>
+        /// Class name to which catalog item belongs.
+        /// </summary>
+        public string ItemClass;
+        /// <summary>
+        /// Unique identifier for the catalog item.
+        /// </summary>
+        public string ItemId;
+        /// <summary>
+        /// Unique instance identifier for this catalog item.
+        /// </summary>
+        public string ItemInstanceId;
+        /// <summary>
+        /// Cost of the catalog item for each applicable real world currency.
+        /// </summary>
+        public Dictionary<string,uint> RealCurrencyPrices;
+        /// <summary>
+        /// Amount of each applicable virtual currency which will be received as a result of purchasing this catalog item.
+        /// </summary>
+        public Dictionary<string,uint> VCAmount;
+        /// <summary>
+        /// Cost of the catalog item for each applicable virtual currency.
+        /// </summary>
+        public Dictionary<string,uint> VirtualCurrencyPrices;
+    }
+
+    public enum StatisticAggregationMethod
+    {
+        Last,
+        Min,
+        Max,
+        Sum
+    }
+
+    [Serializable]
     public class PlayerLocation
     {
         /// <summary>
@@ -1780,12 +3074,6 @@ namespace PlayFab.PlayStreamModels
         /// Attribution network name
         /// </summary>
         public string Platform;
-    }
-
-    public enum PushNotificationPlatform
-    {
-        ApplePushNotificationService,
-        GoogleCloudMessaging
     }
 
     [Serializable]
@@ -1952,21 +3240,52 @@ namespace PlayFab.PlayStreamModels
         public Dictionary<string,int> VirtualCurrencyBalances;
     }
 
-    /// <summary>
-    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is
-    /// immutable and unique.
-    /// </summary>
     [Serializable]
-    public class NameIdentifier
+    public class IEnumerable_String
     {
-        /// <summary>
-        /// Id Identifier, if present
-        /// </summary>
-        public string Id;
-        /// <summary>
-        /// Name Identifier, if present
-        /// </summary>
+    }
+
+    public enum MetricUnit
+    {
+        Value,
+        Count,
+        Percent,
+        Milliseconds,
+        Seconds,
+        Hours,
+        Days,
+        Bits,
+        Bytes,
+        Kilobytes,
+        Megabytes,
+        Gigabytes,
+        Terabytes,
+        Bytes_Per_Second,
+        MonthlyActiveUsers,
+        EnableDisable
+    }
+
+    [Serializable]
+    public class PaymentOptionPerMauPriceTier
+    {
+        public int? LowerBoundInclusive;
         public string Name;
+        public MetricUnit? PriceUnit;
+        public double? PriceUnitSize;
+        public double? PriceUSD;
+        public string PriceUSDFormatted;
+        public int? UpperBoundInclusive;
+    }
+
+    public enum Region
+    {
+        USCentral,
+        USEast,
+        EUWest,
+        Singapore,
+        Japan,
+        Brazil,
+        Australia
     }
 
     [Serializable]
@@ -1998,6 +3317,10 @@ namespace PlayFab.PlayStreamModels
         /// </summary>
         public bool AllowServerToDeleteUsers;
         /// <summary>
+        /// The default language for communication with players
+        /// </summary>
+        public string DefaultLanguage;
+        /// <summary>
         /// Disable API access by returning errors to all API requests.
         /// </summary>
         public bool DisableAPIAccess;
@@ -2025,60 +3348,6 @@ namespace PlayFab.PlayStreamModels
         public bool UseSandboxPayments;
     }
 
-    public enum TaskInstanceStatus
-    {
-        Succeeded,
-        Starting,
-        InProgress,
-        Failed,
-        Aborted,
-        Pending
-    }
-
-    public enum StatisticAggregationMethod
-    {
-        Last,
-        Min,
-        Max,
-        Sum
-    }
-
-    [Serializable]
-    public class EventLocation
-    {
-        /// <summary>
-        /// City of the geographic location.
-        /// </summary>
-        public string City;
-        /// <summary>
-        /// Two-character code representing the continent of geographic location.
-        /// </summary>
-        public ContinentCode? ContinentCode;
-        /// <summary>
-        /// Two-character ISO 3166-1 code representing the country of the geographic location.
-        /// </summary>
-        public CountryCode? CountryCode;
-        /// <summary>
-        /// Latitude coordinate of the geographic location.
-        /// </summary>
-        public double? Latitude;
-        /// <summary>
-        /// Longitude coordinate of the geographic location.
-        /// </summary>
-        public double? Longitude;
-    }
-
-    public enum Region
-    {
-        USCentral,
-        USEast,
-        EUWest,
-        Singapore,
-        Japan,
-        Brazil,
-        Australia
-    }
-
     public enum AlertLevel
     {
         Warn,
@@ -2093,6 +3362,33 @@ namespace PlayFab.PlayStreamModels
         ReTriggered
     }
 
+    public enum TaskInstanceStatus
+    {
+        Succeeded,
+        Starting,
+        InProgress,
+        Failed,
+        Aborted,
+        Stalled
+    }
+
+    /// <summary>
+    /// Identifier by either name or ID. Note that a name may change due to renaming, or reused after being deleted. ID is
+    /// immutable and unique.
+    /// </summary>
+    [Serializable]
+    public class NameIdentifier
+    {
+        /// <summary>
+        /// Id Identifier, if present
+        /// </summary>
+        public string Id;
+        /// <summary>
+        /// Name Identifier, if present
+        /// </summary>
+        public string Name;
+    }
+
     public enum NewsStatus
     {
         None,
@@ -2101,24 +3397,11 @@ namespace PlayFab.PlayStreamModels
         Archived
     }
 
-    public enum MetricUnit
+    [Serializable]
+    public class NameId
     {
-        Value,
-        Count,
-        Percent,
-        Milliseconds,
-        Seconds,
-        Hours,
-        Days,
-        Bits,
-        Bytes,
-        Kilobytes,
-        Megabytes,
-        Gigabytes,
-        Terabytes,
-        Bytes_Per_Second,
-        MonthlyActiveUsers,
-        EnableDisable
+        public string Id;
+        public string Name;
     }
 
     public enum StatisticResetIntervalOption
@@ -2128,13 +3411,6 @@ namespace PlayFab.PlayStreamModels
         Day,
         Week,
         Month
-    }
-
-    [Serializable]
-    public class NameId
-    {
-        public string Id;
-        public string Name;
     }
 
     public enum PhotonServicesEnum
