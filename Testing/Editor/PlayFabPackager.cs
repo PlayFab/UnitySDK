@@ -89,6 +89,18 @@ namespace PlayFab.Internal
             }
         }
 
+        private static BuildTarget OsxBuildTarget
+        {
+            get
+            {
+#if UNITY_2017_3_OR_NEWER
+                return BuildTarget.StandaloneOSX;
+#else
+                return BuildTarget.StandaloneOSXUniversal;
+#endif
+            }
+        }
+
         private static BuildTarget WsaBuildTarget
         {
             get
@@ -163,6 +175,58 @@ namespace PlayFab.Internal
                 throw new Exception("Target directory is empty: " + iosPath + ", " + string.Join(",", Directory.GetFiles(iosPath)));
         }
 
+        [MenuItem("PlayFab/Testing/OSXTestBuild")]
+        public static void MakeOsxBuild()
+        {
+            Setup();
+            //SetScriptingBackend(ScriptingImplementation.IL2CPP, OsxBuildTarget, BuildTargetGroup.Standalone);  // IL2CPP can only be built on Mac.
+            SetScriptingBackend(ScriptingImplementation.Mono2x, OsxBuildTarget, BuildTargetGroup.Standalone);
+            SetIdentifier(AppleBuildTargetGroup, "com.PlayFab.PlayFabTest");
+            var osxAppName = "PlayFabOSX";
+            var osxPath = Path.Combine(GetBuildPath(), osxAppName);
+            MkDir(GetBuildPath());
+            MkDir(osxPath);
+            BuildPipeline.BuildPlayer(TestScenes, Path.Combine(osxPath, osxAppName), OsxBuildTarget, BuildOptions.None);
+            if (Directory.GetFileSystemEntries(osxPath).Length == 0)
+                throw new Exception("Target directory is empty: " + osxPath + ", " + string.Join(",", Directory.GetFiles(osxPath)));
+        }
+
+        [MenuItem("PlayFab/Testing/PS4TestBuild")]
+        public static void MakePS4Build()
+        {
+            Setup();
+            SetScriptingBackend(ScriptingImplementation.IL2CPP, BuildTarget.PS4, BuildTargetGroup.PS4);
+            SetIdentifier(BuildTargetGroup.PS4, "com.PlayFab.PlayFabTest");
+#if UNITY_5_6_OR_NEWER
+            PlayerSettings.SplashScreen.show = false;
+#endif
+            PlayerSettings.PS4.parentalLevel = 0;
+            var ps4Path = Path.Combine(GetBuildPath(), "PlayFabPS4");
+            MkDir(GetBuildPath());
+            MkDir(ps4Path);
+            BuildPipeline.BuildPlayer(TestScenes, ps4Path, BuildTarget.PS4, BuildOptions.None);
+            if (Directory.GetFiles(ps4Path).Length == 0)
+                throw new Exception("Target directory is empty: " + ps4Path + ", " + string.Join(",", Directory.GetFiles(ps4Path)));
+        }
+
+#if UNITY_5_6_OR_NEWER // Switch is entirely unsupported before 5.6
+        [MenuItem( "PlayFab/Testing/SwitchTestBuild" )]
+        public static void MakeSwitchBuild()
+        {
+            Setup();
+            SetScriptingBackend(ScriptingImplementation.IL2CPP, BuildTarget.Switch, BuildTargetGroup.Switch);
+            SetIdentifier(BuildTargetGroup.Switch, "PlayFabSwitchTest");
+            PlayerSettings.SplashScreen.show = false;
+            EditorUserBuildSettings.switchCreateRomFile = true;
+
+            var switchPackage = Path.Combine(GetBuildPath(), "PlayFabSwitch.nsp");
+            MkDir(GetBuildPath());
+            BuildPipeline.BuildPlayer(TestScenes, switchPackage, BuildTarget.Switch, BuildOptions.None);
+            if (Directory.GetFiles(switchPackage).Length == 0)
+                throw new Exception("Target file did not build: " + switchPackage);
+        }
+#endif
+
         [MenuItem("PlayFab/Testing/WinPhoneTestBuild")]
         public static void MakeWp8Build()
         {
@@ -203,6 +267,21 @@ namespace PlayFab.Internal
             BuildPipeline.BuildPlayer(TestScenes, win32Path, BuildTarget.StandaloneWindows, BuildOptions.None);
             if (!File.Exists(win32Path))
                 throw new Exception("Target file did not build: " + win32Path);
+        }
+
+        [MenuItem("PlayFab/Testing/XboxOneTestBuild")]
+        public static void MakeXboxOneBuild()
+        {
+            Setup();
+            SetScriptingBackend(ScriptingImplementation.IL2CPP, BuildTarget.XboxOne, BuildTargetGroup.XboxOne);
+            //SetScriptingBackend( ScriptingImplementation.Mono2x, BuildTarget.XboxOne, BuildTargetGroup.XboxOne );
+            SetIdentifier(BuildTargetGroup.XboxOne, "com.PlayFab.PlayFabTest");
+            var xboxOnePath = Path.Combine(GetBuildPath(), "PlayFabXboxOne");
+            MkDir(GetBuildPath());
+            MkDir(xboxOnePath);
+            BuildPipeline.BuildPlayer(TestScenes, xboxOnePath, BuildTarget.XboxOne, BuildOptions.None);
+            if (Directory.GetFileSystemEntries(xboxOnePath).Length == 0)
+                throw new Exception("Target directory is empty: " + xboxOnePath + ", " + string.Join(",", Directory.GetFiles(xboxOnePath)));
         }
     }
 }
