@@ -117,7 +117,7 @@ namespace PlayFab.UUnit
 
         public void SbyteEquals(sbyte? wanted, sbyte? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -127,7 +127,7 @@ namespace PlayFab.UUnit
 
         public void ByteEquals(byte? wanted, byte? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -137,7 +137,7 @@ namespace PlayFab.UUnit
 
         public void ShortEquals(short? wanted, short? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -147,7 +147,7 @@ namespace PlayFab.UUnit
 
         public void UshortEquals(ushort? wanted, ushort? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -157,7 +157,7 @@ namespace PlayFab.UUnit
 
         public void IntEquals(int? wanted, int? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -167,7 +167,7 @@ namespace PlayFab.UUnit
 
         public void UintEquals(uint? wanted, uint? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -177,7 +177,7 @@ namespace PlayFab.UUnit
 
         public void LongEquals(long? wanted, long? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -187,7 +187,7 @@ namespace PlayFab.UUnit
 
         public void ULongEquals(ulong? wanted, ulong? got, string message = null)
         {
-            if (wanted == got)
+            if (NullableEquals(wanted, got))
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -197,9 +197,9 @@ namespace PlayFab.UUnit
 
         public void FloatEquals(float? wanted, float? got, float precision = DefaultFloatPrecision, string message = null)
         {
-            if (wanted == null && got == null)
+            if (!wanted.HasValue && !got.HasValue)
                 return;
-            if (wanted != null && got != null && Math.Abs(wanted.Value - got.Value) < precision)
+            if (wanted.HasValue && got.HasValue && Math.Abs(wanted.Value - got.Value) < precision)
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -209,9 +209,9 @@ namespace PlayFab.UUnit
 
         public void DoubleEquals(double? wanted, double? got, double precision = DefaultDoublePrecision, string message = null)
         {
-            if (wanted == null && got == null)
+            if (!wanted.HasValue && !got.HasValue)
                 return;
-            if (wanted != null && got != null && Math.Abs(wanted.Value - got.Value) < precision)
+            if (wanted.HasValue && got.HasValue && Math.Abs(wanted.Value - got.Value) < precision)
                 return;
 
             if (string.IsNullOrEmpty(message))
@@ -221,9 +221,9 @@ namespace PlayFab.UUnit
 
         public void DateTimeEquals(DateTime? wanted, DateTime? got, TimeSpan precision, string message = null)
         {
-            if (wanted == null && got == null)
+            if (!wanted.HasValue && !got.HasValue)
                 return;
-            if (wanted != null && got != null
+            if (wanted.HasValue && got.HasValue
                 && wanted + precision > got
                 && got + precision > wanted)
                 return;
@@ -263,6 +263,16 @@ namespace PlayFab.UUnit
                 count++;
                 ObjEquals(wEnum.Current, gEnum.Current, "Element at " + count + ": " + message);
             }
+        }
+
+        private static bool NullableEquals<T>(T? left, T? right) where T : struct
+        {
+            // If both have a value, return whether the values match.
+            if (left.HasValue && right.HasValue)
+                return left.Value.Equals(right.Value);
+
+            // If neither has a value, return true. If only one does, return false.
+            return !left.HasValue && !right.HasValue;
         }
     }
 }

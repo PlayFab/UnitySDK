@@ -91,7 +91,9 @@ namespace PlayFab
 
             // Application info
             DataPath = Application.dataPath;
+#if !UNITY_SWITCH
             PersistentDataPath = Application.persistentDataPath;
+#endif
             StreamingAssetsPath = Application.streamingAssetsPath;
             TargetFrameRate = Application.targetFrameRate;
             UnityVersion = Application.unityVersion;
