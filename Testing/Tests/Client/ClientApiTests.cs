@@ -176,7 +176,10 @@ namespace PlayFab.UUnit
             PlayFabId = result.PlayFabId;
             var testContext = (UUnitTestContext)result.CustomData;
             testContext.True(PlayFabClientAPI.IsClientLoggedIn(), "User login failed");
-            testContext.True(result.SettingsForUser.NeedsAttribution, "This title is not configured for advertisements.");
+
+            // This setting should not cause a client test failure, but it also means this test can't be performed
+            if (!result.SettingsForUser.NeedsAttribution)
+                testContext.EndTest(UUnitFinishState.SKIPPED, "This title is not configured for advertisements.");
 
             var target = PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful";
             var failTime = DateTime.UtcNow + TimeSpan.FromSeconds(10);
