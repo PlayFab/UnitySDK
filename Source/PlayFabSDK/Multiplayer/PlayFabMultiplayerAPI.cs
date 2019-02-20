@@ -9,7 +9,7 @@ using PlayFab.Public;
 namespace PlayFab
 {
     /// <summary>
-    /// API methods for managing multiplayer servers.
+    /// API methods for managing multiplayer servers. API methods for managing parties.
     /// </summary>
     public static partial class PlayFabMultiplayerAPI
     {
