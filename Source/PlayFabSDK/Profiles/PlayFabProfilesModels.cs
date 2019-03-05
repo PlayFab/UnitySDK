@@ -109,6 +109,10 @@ namespace PlayFab.ProfilesModels
     public class EntityProfileBody
     {
         /// <summary>
+        /// The creation time of this profile in UTC.
+        /// </summary>
+        public DateTime Created;
+        /// <summary>
         /// The display name of the entity. This field may serve different purposes for different entity types. i.e.: for a title
         /// player account it could represent the display name of the player, whereas on a character it could be character's name.
         /// </summary>
