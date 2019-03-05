@@ -1061,6 +1061,31 @@ namespace PlayFab.AdminModels
         public string Schedule;
     }
 
+    [Serializable]
+    public class CreateOpenIdConnectionRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The client ID given by the ID provider.
+        /// </summary>
+        public string ClientId;
+        /// <summary>
+        /// The client secret given by the ID provider.
+        /// </summary>
+        public string ClientSecret;
+        /// <summary>
+        /// A name for the connection that identifies it within the title.
+        /// </summary>
+        public string ConnectionId;
+        /// <summary>
+        /// The issuer URL or discovery document URL to read issuer information from
+        /// </summary>
+        public string IssuerDiscoveryUrl;
+        /// <summary>
+        /// Manually specified information for an OpenID Connect issuer.
+        /// </summary>
+        public OpenIdIssuerInformation IssuerInformation;
+    }
+
     /// <summary>
     /// Player Shared Secret Keys are used for the call to Client/GetTitlePublicKey, which exchanges the shared secret for an
     /// RSA CSP blob to be used to encrypt the payload of account creation requests when that API requires a signature header.
@@ -1352,6 +1377,15 @@ namespace PlayFab.AdminModels
         /// List of titles from which the player's data will be deleted.
         /// </summary>
         public List<string> TitleIds;
+    }
+
+    [Serializable]
+    public class DeleteOpenIdConnectionRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// unique name of the connection
+        /// </summary>
+        public string ConnectionId;
     }
 
     /// <summary>
@@ -2023,6 +2057,21 @@ namespace PlayFab.AdminModels
         EmailRecipientBlacklisted,
         InvalidGameCenterAuthRequest,
         GameCenterAuthenticationFailed,
+        CannotEnablePartiesForTitle,
+        PartyError,
+        PartyRequests,
+        PartyNoContent,
+        PartyBadRequest,
+        PartyUnauthorized,
+        PartyForbidden,
+        PartyNotFound,
+        PartyConflict,
+        PartyInternalServerError,
+        PartyUnavailable,
+        PartyTooManyRequests,
+        PushNotificationTemplateMissingName,
+        CannotEnableMultiplayerServersForTitle,
+        WriteAttemptedDuringExport,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingCreateTicketRequestMissing,
@@ -2055,12 +2104,10 @@ namespace PlayFab.AdminModels
         MatchmakingClientTimeout,
         MatchmakingQueueConfigInvalid,
         MatchmakingMemberProfileInvalid,
-        WriteAttemptedDuringExport,
         NintendoSwitchDeviceIdNotLinked,
         MatchmakingNotEnabled,
         MatchmakingGetStatisticsIdentityInvalid,
         MatchmakingBucketOwnerNotFound,
-        CannotEnableMultiplayerServersForTitle,
         MatchmakingCancelAllTicketsUnauthorized,
         MatchmakingListTicketsUnauthorized,
         MatchmakingPlayerAttributesTooLarge,
@@ -2074,18 +2121,8 @@ namespace PlayFab.AdminModels
         MatchmakingLatencyMeasurementMissing,
         MatchmakingStatisticsNotFound,
         MatchmakingPlayerHasNotJoinedTicket,
-        CannotEnablePartiesForTitle,
-        PartyError,
-        PartyRequests,
-        PartyNoContent,
-        PartyBadRequest,
-        PartyUnauthorized,
-        PartyForbidden,
-        PartyNotFound,
-        PartyConflict,
-        PartyInternalServerError,
-        PartyUnavailable,
-        PartyTooManyRequests,
+        MatchmakingRateLimitExceeded,
+        MatchmakingTicketMembershipLimitExceeded,
         TitleConfigNotFound,
         TitleConfigUpdateConflict,
         TitleConfigSerializationError,
@@ -3363,6 +3400,20 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class ListOpenIdConnectionRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
+    public class ListOpenIdConnectionResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The list of Open ID Connections
+        /// </summary>
+        public List<OpenIdConnection> Connections;
+    }
+
+    [Serializable]
     public class ListVirtualCurrencyTypesRequest : PlayFabRequestCommon
     {
     }
@@ -3652,6 +3703,52 @@ namespace PlayFab.AdminModels
         /// Name Identifier, if present
         /// </summary>
         public string Name;
+    }
+
+    [Serializable]
+    public class OpenIdConnection
+    {
+        /// <summary>
+        /// The client ID given by the ID provider.
+        /// </summary>
+        public string ClientId;
+        /// <summary>
+        /// The client secret given by the ID provider.
+        /// </summary>
+        public string ClientSecret;
+        /// <summary>
+        /// A name for the connection to identify it within the title.
+        /// </summary>
+        public string ConnectionId;
+        /// <summary>
+        /// Shows if data about the connection will be loaded from the issuer's discovery document
+        /// </summary>
+        public bool DiscoverConfiguration;
+        /// <summary>
+        /// Information for an OpenID Connect provider.
+        /// </summary>
+        public OpenIdIssuerInformation IssuerInformation;
+    }
+
+    [Serializable]
+    public class OpenIdIssuerInformation
+    {
+        /// <summary>
+        /// Authorization endpoint URL to direct users to for signin.
+        /// </summary>
+        public string AuthorizationUrl;
+        /// <summary>
+        /// The URL of the issuer of the tokens. This must match the exact URL of the issuer field in tokens.
+        /// </summary>
+        public string Issuer;
+        /// <summary>
+        /// JSON Web Key Set for validating the signature of tokens.
+        /// </summary>
+        public object JsonWebKeySet;
+        /// <summary>
+        /// Token endpoint URL for code verification.
+        /// </summary>
+        public string TokenUrl;
     }
 
     [Serializable]
@@ -5081,6 +5178,31 @@ namespace PlayFab.AdminModels
         /// Cloud Script version updated
         /// </summary>
         public int Version;
+    }
+
+    [Serializable]
+    public class UpdateOpenIdConnectionRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The client ID given by the ID provider.
+        /// </summary>
+        public string ClientId;
+        /// <summary>
+        /// The client secret given by the ID provider.
+        /// </summary>
+        public string ClientSecret;
+        /// <summary>
+        /// A name for the connection that identifies it within the title.
+        /// </summary>
+        public string ConnectionId;
+        /// <summary>
+        /// The issuer URL or discovery document URL to read issuer information from
+        /// </summary>
+        public string IssuerDiscoveryUrl;
+        /// <summary>
+        /// Manually specified information for an OpenID Connect issuer.
+        /// </summary>
+        public OpenIdIssuerInformation IssuerInformation;
     }
 
     /// <summary>

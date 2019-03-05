@@ -45,10 +45,10 @@ namespace PlayFab
         private IPlayFabPlugin GetPluginInternal(PluginContract contract, string instanceName)
         {
             var key = new PluginContractKey { _pluginContract = contract, _pluginName = instanceName };
-            if (!this.plugins.ContainsKey(key))
+            IPlayFabPlugin plugin;
+            if (!this.plugins.TryGetValue(key, out plugin))
             {
                 // Requested plugin is not in the cache, create the default one
-                IPlayFabPlugin plugin;
                 switch (contract)
                 {
                     case PluginContract.PlayFab_Serializer:
@@ -64,7 +64,7 @@ namespace PlayFab
                 this.plugins[key] = plugin;
             }
 
-            return this.plugins[key];
+            return plugin;
         }
 
         private void SetPluginInternal(IPlayFabPlugin plugin, PluginContract contract, string instanceName)

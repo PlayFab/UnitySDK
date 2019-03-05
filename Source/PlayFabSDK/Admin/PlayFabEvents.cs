@@ -27,6 +27,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateActionsOnPlayersInSegmentTaskResultEvent;
         public event PlayFabRequestEvent<CreateCloudScriptTaskRequest> OnAdminCreateCloudScriptTaskRequestEvent;
         public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateCloudScriptTaskResultEvent;
+        public event PlayFabRequestEvent<CreateOpenIdConnectionRequest> OnAdminCreateOpenIdConnectionRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnAdminCreateOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<CreatePlayerSharedSecretRequest> OnAdminCreatePlayerSharedSecretRequestEvent;
         public event PlayFabResultEvent<CreatePlayerSharedSecretResult> OnAdminCreatePlayerSharedSecretResultEvent;
         public event PlayFabRequestEvent<CreatePlayerStatisticDefinitionRequest> OnAdminCreatePlayerStatisticDefinitionRequestEvent;
@@ -35,6 +37,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<BlankResult> OnAdminDeleteContentResultEvent;
         public event PlayFabRequestEvent<DeleteMasterPlayerAccountRequest> OnAdminDeleteMasterPlayerAccountRequestEvent;
         public event PlayFabResultEvent<DeleteMasterPlayerAccountResult> OnAdminDeleteMasterPlayerAccountResultEvent;
+        public event PlayFabRequestEvent<DeleteOpenIdConnectionRequest> OnAdminDeleteOpenIdConnectionRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnAdminDeleteOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<DeletePlayerRequest> OnAdminDeletePlayerRequestEvent;
         public event PlayFabResultEvent<DeletePlayerResult> OnAdminDeletePlayerResultEvent;
         public event PlayFabRequestEvent<DeletePlayerSharedSecretRequest> OnAdminDeletePlayerSharedSecretRequestEvent;
@@ -131,6 +135,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<IncrementLimitedEditionItemAvailabilityResult> OnAdminIncrementLimitedEditionItemAvailabilityResultEvent;
         public event PlayFabRequestEvent<IncrementPlayerStatisticVersionRequest> OnAdminIncrementPlayerStatisticVersionRequestEvent;
         public event PlayFabResultEvent<IncrementPlayerStatisticVersionResult> OnAdminIncrementPlayerStatisticVersionResultEvent;
+        public event PlayFabRequestEvent<ListOpenIdConnectionRequest> OnAdminListOpenIdConnectionRequestEvent;
+        public event PlayFabResultEvent<ListOpenIdConnectionResponse> OnAdminListOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<ListBuildsRequest> OnAdminListServerBuildsRequestEvent;
         public event PlayFabResultEvent<ListBuildsResult> OnAdminListServerBuildsResultEvent;
         public event PlayFabRequestEvent<ListVirtualCurrencyTypesRequest> OnAdminListVirtualCurrencyTypesRequestEvent;
@@ -191,6 +197,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateCatalogItemsResult> OnAdminUpdateCatalogItemsResultEvent;
         public event PlayFabRequestEvent<UpdateCloudScriptRequest> OnAdminUpdateCloudScriptRequestEvent;
         public event PlayFabResultEvent<UpdateCloudScriptResult> OnAdminUpdateCloudScriptResultEvent;
+        public event PlayFabRequestEvent<UpdateOpenIdConnectionRequest> OnAdminUpdateOpenIdConnectionRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnAdminUpdateOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<UpdatePlayerSharedSecretRequest> OnAdminUpdatePlayerSharedSecretRequestEvent;
         public event PlayFabResultEvent<UpdatePlayerSharedSecretResult> OnAdminUpdatePlayerSharedSecretResultEvent;
         public event PlayFabRequestEvent<UpdatePlayerStatisticDefinitionRequest> OnAdminUpdatePlayerStatisticDefinitionRequestEvent;

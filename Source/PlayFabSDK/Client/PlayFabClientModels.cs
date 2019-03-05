@@ -1341,7 +1341,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// This field is not populated.
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public string CurrentMatchmakerLobbyId;
         /// <summary>
         /// Available Facebook information (if the user and PlayFab friend are also connected in Facebook).
@@ -3600,7 +3600,7 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
-    public class LoginResult : PlayFabResultCommon
+    public class LoginResult : PlayFabLoginResultCommon
     {
         /// <summary>
         /// If LoginTitlePlayerAccountEntity flag is set on the login request the title_player_account will also be logged in and
@@ -5062,7 +5062,7 @@ namespace PlayFab.ClientModels
     /// network lists and achievements systems.
     /// </summary>
     [Serializable]
-    public class RegisterPlayFabUserResult : PlayFabResultCommon
+    public class RegisterPlayFabUserResult : PlayFabLoginResultCommon
     {
         /// <summary>
         /// If LoginTitlePlayerAccountEntity flag is set on the login request the title_player_account will also be logged in and
