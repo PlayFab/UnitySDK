@@ -32,5 +32,25 @@
 #endif
             PlayFabId = playFabId;
         }
+
+#if !DISABLE_PLAYFABCLIENT_API
+        public bool IsClientLoggedIn()
+        {
+            return !string.IsNullOrEmpty(ClientSessionTicket);
+        }
+#endif
+
+#if !DISABLE_PLAYFABENTITY_API
+        public bool IsEntityLoggedIn()
+        {
+            return !string.IsNullOrEmpty(EntityToken);
+        }
+#endif
+
+        public void ForgetAllCredentials()
+        {
+            ClientSessionTicket = null;
+            EntityToken = null;       
+        }
     }
 }

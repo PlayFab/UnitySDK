@@ -1,10 +1,12 @@
-using PlayFab.Json;
-using PlayFab.Public;
-using PlayFab.SharedModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using PlayFab.AuthenticationModels;
+using PlayFab.ClientModels;
+using PlayFab.Json;
+using PlayFab.Public;
+using PlayFab.SharedModels;
 using UnityEngine;
 
 namespace PlayFab.Internal
@@ -179,24 +181,58 @@ namespace PlayFab.Internal
             PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport).SimplePostCall(fullUrl, payload, successCallback, errorCallback);
         }
 
+        protected internal static void MakeApiCall<TResult>(string apiEndpoint,
+            PlayFabRequestCommon request, AuthType authType, Action<TResult> resultCallback,
+            Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null, bool allowQueueing = false, PlayFabAuthenticationContext authenticationContext = null, PlayFabApiSettings apiSettings = null)
+            where TResult : PlayFabResultCommon
+        {
+            var fullUrl = apiSettings == null ?  PlayFabSettings.GetFullUrl(apiEndpoint, PlayFabSettings.RequestGetParams) : apiSettings.GetFullUrl(apiEndpoint, apiSettings.RequestGetParams);
+            _MakeApiCall(apiEndpoint, fullUrl, request, authType, resultCallback, errorCallback, customData, extraHeaders, allowQueueing, authenticationContext, apiSettings);
+        }
 
+        protected internal static void MakeApiCallWithFullUri<TResult>(string fullUri,
+            PlayFabRequestCommon request, AuthType authType, Action<TResult> resultCallback,
+            Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null, bool allowQueueing = false, PlayFabAuthenticationContext authenticationContext = null, PlayFabApiSettings apiSettings = null)
+            where TResult : PlayFabResultCommon
+        {
+            // This will not be called if environment file does not exist or does not contain property the debugging URI
+            _MakeApiCall(null, fullUri, request, authType, resultCallback, errorCallback, customData, extraHeaders, allowQueueing, authenticationContext, apiSettings);
+        }
 
         /// <summary>
         /// Internal method for Make API Calls
         /// </summary>
-        protected internal static void MakeApiCall<TResult>(string apiEndpoint,
+        private static void _MakeApiCall<TResult>(string apiEndpoint, string fullUrl,
             PlayFabRequestCommon request, AuthType authType, Action<TResult> resultCallback,
-            Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null, bool allowQueueing = false)
+            Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null, bool allowQueueing = false, PlayFabAuthenticationContext authenticationContext = null, PlayFabApiSettings apiSettings = null)
             where TResult : PlayFabResultCommon
         {
             InitializeHttp();
             SendEvent(apiEndpoint, request, null, ApiProcessingEventType.Pre);
 
+            string developerSecretKey = null;
+            #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
+                if(request.AuthenticationContext != null && !string.IsNullOrEmpty(request.AuthenticationContext.DeveloperSecretKey))
+                {
+                    developerSecretKey = request.AuthenticationContext.DeveloperSecretKey;
+                }
+                if(developerSecretKey == null && authenticationContext != null && !string.IsNullOrEmpty(authenticationContext.DeveloperSecretKey))
+                {
+                    developerSecretKey = authenticationContext.DeveloperSecretKey;
+                }
+                if(developerSecretKey == null)
+                {
+                    developerSecretKey = PlayFabSettings.DeveloperSecretKey;
+                }
+
+                if (developerSecretKey == null) throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet,"DeveloperSecretKey is not found in Request, Server Instance or PlayFabSettings");
+            #endif
+
             var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
             var reqContainer = new CallRequestContainer
             {
                 ApiEndpoint = apiEndpoint,
-                FullUrl = PlayFabSettings.GetFullUrl(apiEndpoint, PlayFabSettings.RequestGetParams),
+                FullUrl = fullUrl,
                 CustomData = customData,
                 Payload = Encoding.UTF8.GetBytes(serializer.SerializeObject(request)),
                 ApiRequest = request,
@@ -220,25 +256,22 @@ namespace PlayFab.Internal
             switch (authType)
             {
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
-                case AuthType.DevSecretKey: reqContainer.RequestHeaders["X-SecretKey"] = request.AuthenticationContext != null && request.AuthenticationContext.DeveloperSecretKey != null 
-                        ? request.AuthenticationContext.DeveloperSecretKey
-                        : PlayFabSettings.DeveloperSecretKey;
-                    break;
+                case AuthType.DevSecretKey: reqContainer.RequestHeaders["X-SecretKey"] = developerSecretKey;  break;
 #endif
-                case AuthType.LoginSession: 
-#if !DISABLE_PLAYFABCLIENT_API                    
-                    reqContainer.RequestHeaders["X-Authorization"] = request.AuthenticationContext != null && request.AuthenticationContext.ClientSessionTicket != null 
-                        ? request.AuthenticationContext.ClientSessionTicket 
-                        : transport.AuthKey;
+                case AuthType.LoginSession:
+#if !DISABLE_PLAYFABCLIENT_API
+                    var clientSessionTicket = request.AuthenticationContext != null && request.AuthenticationContext.ClientSessionTicket != null
+                        ? request.AuthenticationContext.ClientSessionTicket : (authenticationContext != null && authenticationContext.ClientSessionTicket != null ? authenticationContext.ClientSessionTicket : transport.AuthKey);
+                    reqContainer.RequestHeaders["X-Authorization"] = clientSessionTicket;
 #else
                     reqContainer.RequestHeaders["X-Authorization"] = transport.AuthKey;
 #endif
                     break;
-                case AuthType.EntityToken: 
+                case AuthType.EntityToken:
 #if !DISABLE_PLAYFABENTITY_API
-                    reqContainer.RequestHeaders["X-EntityToken"] = request.AuthenticationContext != null && request.AuthenticationContext.EntityToken != null 
-                        ? request.AuthenticationContext.EntityToken
-                        : transport.EntityToken;
+                    var entityToken = request.AuthenticationContext != null && request.AuthenticationContext.EntityToken != null
+                        ? request.AuthenticationContext.EntityToken : (authenticationContext != null && authenticationContext.EntityToken != null ? authenticationContext.EntityToken : transport.EntityToken);
+                    reqContainer.RequestHeaders["X-EntityToken"] = entityToken;
 #else
                     reqContainer.RequestHeaders["X-EntityToken"] = transport.EntityToken;
 #endif
@@ -420,6 +453,13 @@ namespace PlayFab.Internal
                 _internalSignalR.Update();
             }
 #endif
+#if NET_4_6
+            while (_injectedCoroutines.Count > 0)
+                StartCoroutine(_injectedCoroutines.Dequeue());
+
+            while (_injectedAction.Count > 0)
+                _injectedAction.Dequeue()?.Invoke();
+#endif
         }
 
         #region Helpers
@@ -519,7 +559,14 @@ namespace PlayFab.Internal
         }
 #endif
         #endregion
-    }
+#if NET_4_6
+        private readonly Queue<IEnumerator> _injectedCoroutines = new Queue<IEnumerator>();
+        private readonly Queue<Action> _injectedAction = new Queue<Action>();
+
+        public void InjectInUnityThread(IEnumerator x) => _injectedCoroutines.Enqueue(x);
+        public void InjectInUnityThread(Action action) => _injectedAction.Enqueue(action);
+#endif
+	}
 
     #region Event Classes
     public enum ApiProcessingEventType

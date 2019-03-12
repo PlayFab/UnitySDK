@@ -1,5 +1,6 @@
 using PlayFab.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -14,6 +15,7 @@ namespace PlayFab.Internal
     {
         static PlayFabUtil() { }
 
+        private static string _localSettingsFileName = "playfab.local.settings.json";
         public static readonly string[] _defaultDateTimeFormats = new string[]{ // All parseable ISO 8601 formats for DateTime.[Try]ParseExact - Lets us deserialize any legacy timestamps in one of these formats
             // These are the standard format with ISO 8601 UTC markers (T/Z)
             "yyyy-MM-ddTHH:mm:ss.FFFFFFZ",
@@ -74,16 +76,72 @@ namespace PlayFab.Internal
         /// </summary>
         public static string ReadAllFileText(string filename)
         {
+            if (!File.Exists(filename))
+            {
+                return string.Empty;
+            }
+                
             if (_sb == null)
+            {
                 _sb = new StringBuilder();
+            }
             _sb.Length = 0;
 
-            var fs = new FileStream(filename, FileMode.Open);
-            var br = new BinaryReader(fs);
-            while (br.BaseStream.Position != br.BaseStream.Length)
-                _sb.Append(br.ReadChar());
-
+            using (var fs = new FileStream(filename, FileMode.Open))
+            {
+                using (var br = new BinaryReader(fs))
+                {
+                    while (br.BaseStream.Position != br.BaseStream.Length)
+                    {
+                        _sb.Append(br.ReadChar());
+                    }
+                }
+            }
+            
             return _sb.ToString();
+        }
+
+        internal static string GetLocalSettingsFileProperty(string propertyKey)
+        {
+            string envFileContent = null;
+
+            string currDir = Directory.GetCurrentDirectory();
+            string currDirEnvFile = Path.Combine(currDir, _localSettingsFileName);
+
+            if (File.Exists(currDirEnvFile))
+            {
+                envFileContent = ReadAllFileText(currDirEnvFile);
+            }
+            else
+            {
+                string tempDir = Path.GetTempPath();
+                string tempDirEnvFile = Path.Combine(tempDir, _localSettingsFileName);
+
+                if (File.Exists(tempDirEnvFile))
+                {
+                    envFileContent = ReadAllFileText(tempDirEnvFile);
+                }
+            }
+            
+            if (!string.IsNullOrEmpty(envFileContent))
+            {
+                JsonObject envJson = PlayFabSimpleJson.DeserializeObject<JsonObject>(envFileContent);
+                try
+                {
+                    object result;
+                    if (envJson.TryGetValue(propertyKey, out result))
+                    {
+                        return result == null ? null : result.ToString();
+                    }
+
+                    return null;
+                } 
+                catch (KeyNotFoundException)
+                {
+                    return string.Empty;
+                }
+            }
+            return string.Empty;
         }
     }
 }
