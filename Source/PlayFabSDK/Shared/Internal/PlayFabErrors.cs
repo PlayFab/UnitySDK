@@ -10,6 +10,8 @@ namespace PlayFab
     public enum PlayFabErrorCode
     {
         Unknown = 1,
+        ConnectionError = 2,
+        JsonParseError = 3,
         Success = 0,
         UnkownError = 500,
         InvalidParams = 1000,
@@ -401,8 +403,7 @@ namespace PlayFab
         EntityProfileConstraintValidationFailed = 1398,
         TelemetryIngestionKeyPending = 1399,
         TelemetryIngestionKeyNotFound = 1400,
-        StatisticTagRequired = 1401,
-        StatisticTagInvalid = 1402,
+        StatisticChildNameInvalid = 1402,
         DataIntegrityError = 1403,
         VirtualCurrencyCannotBeSetToOlderVersion = 1404,
         VirtualCurrencyMustBeWithinIntegerRange = 1405,
@@ -445,57 +446,25 @@ namespace PlayFab
         PushNotificationTemplateMissingName = 1442,
         CannotEnableMultiplayerServersForTitle = 1443,
         WriteAttemptedDuringExport = 1444,
+        MultiplayerServerTitleQuotaCoresExceeded = 1445,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
-        MatchmakingCreateTicketRequestMissing = 2003,
-        MatchmakingCreateTicketCreatorMissing = 2004,
-        MatchmakingCreateTicketCreatorIdMissing = 2005,
-        MatchmakingCreateTicketMemberListMissing = 2006,
-        MatchmakingCreateTicketGiveUpAfterInvalid = 2007,
-        MatchmakingTicketIdMissing = 2008,
-        MatchmakingMatchIdMissing = 2009,
-        MatchmakingMatchIdIdMissing = 2010,
-        MatchmakingQueueNameMissing = 2011,
-        MatchmakingTitleIdMissing = 2012,
-        MatchmakingTicketIdIdMissing = 2013,
-        MatchmakingPlayerIdMissing = 2014,
-        MatchmakingJoinTicketPlayerMissing = 2015,
-        MatchmakingQueueConfigNotFound = 2016,
+        MatchmakingQueueNotFound = 2016,
         MatchmakingMatchNotFound = 2017,
         MatchmakingTicketNotFound = 2018,
-        MatchmakingCreateTicketServerIdentityInvalid = 2019,
-        MatchmakingCreateTicketClientIdentityInvalid = 2020,
-        MatchmakingGetTicketPlayerMismatch = 2021,
-        MatchmakingJoinTicketServerIdentityInvalid = 2022,
-        MatchmakingJoinTicketPlayerIdentityMismatch = 2023,
-        MatchmakingCancelTicketServerIdentityInvalid = 2024,
-        MatchmakingCancelTicketPlayerIdentityMismatch = 2025,
-        MatchmakingGetMatchIdentityMismatch = 2026,
-        MatchmakingPlayerIdentityMismatch = 2027,
         MatchmakingAlreadyJoinedTicket = 2028,
         MatchmakingTicketAlreadyCompleted = 2029,
-        MatchmakingClientTimeout = 2030,
         MatchmakingQueueConfigInvalid = 2031,
         MatchmakingMemberProfileInvalid = 2032,
         NintendoSwitchDeviceIdNotLinked = 2034,
         MatchmakingNotEnabled = 2035,
-        MatchmakingGetStatisticsIdentityInvalid = 2036,
-        MatchmakingBucketOwnerNotFound = 2037,
-        MatchmakingCancelAllTicketsUnauthorized = 2041,
-        MatchmakingListTicketsUnauthorized = 2042,
         MatchmakingPlayerAttributesTooLarge = 2043,
         MatchmakingNumberOfPlayersInTicketTooLarge = 2044,
-        MatchmakingMatchTotalAttributeIsNegative = 2045,
-        MatchmakingAttributeTypeInvalid = 2046,
-        MatchmakingMatchTotalAttributeTooLarge = 2047,
-        MatchmakingMatchTotalAttributeSumTooLarge = 2048,
-        MatchmakingTicketUnmatchable = 2049,
-        MatchmakingCommonRegionMissing = 2050,
-        MatchmakingLatencyMeasurementMissing = 2051,
-        MatchmakingStatisticsNotFound = 2052,
+        MatchmakingAttributeInvalid = 2046,
         MatchmakingPlayerHasNotJoinedTicket = 2053,
         MatchmakingRateLimitExceeded = 2054,
         MatchmakingTicketMembershipLimitExceeded = 2055,
+        MatchmakingUnauthorized = 2056,
         TitleConfigNotFound = 3001,
         TitleConfigUpdateConflict = 3002,
         TitleConfigSerializationError = 3003,
@@ -512,10 +481,15 @@ namespace PlayFab
         CatalogConfigTooManyContentTypes = 4101,
         CatalogConfigContentTypeTooLong = 4102,
         CatalogConfigTooManyTags = 4103,
-        CatalogConfigTagTooLong = 4104
+        CatalogConfigTagTooLong = 4104,
+        ExportInvalidStatusUpdate = 5000,
+        ExportInvalidPrefix = 5001,
+        ExportBlobContainerDoesNotExist = 5002,
+        ExportEventNameNotFound = 5003,
+        ExportExportTitleIdNotFound = 5004,
+        ExportCouldNotUpdate = 5005,
+        ExportInvalidStorageType = 5006
     }
-
-    public delegate void ErrorCallback(PlayFabError error);
 
     public class PlayFabError
     {
@@ -555,7 +529,7 @@ namespace PlayFab
             return _tempSb.ToString();
         }
     }
-
+    
     public class PlayFabException : Exception
     {
         public readonly PlayFabExceptionCode Code;

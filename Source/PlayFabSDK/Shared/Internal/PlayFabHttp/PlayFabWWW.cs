@@ -1,3 +1,4 @@
+#if !UNITY_2018_2_OR_NEWER // Unity has deprecated Www
 using System;
 using System.Collections;
 using System.IO;
@@ -264,3 +265,4 @@ namespace PlayFab.Internal
         }
     }
 }
+#endif

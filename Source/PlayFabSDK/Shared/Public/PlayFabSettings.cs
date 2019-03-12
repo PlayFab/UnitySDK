@@ -1,3 +1,4 @@
+using PlayFab.Internal;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,9 @@ namespace PlayFab
 {
     public enum WebRequestType
     {
+#if !UNITY_2018_2_OR_NEWER // Unity has deprecated Www
         UnityWww, // High compatability Unity api calls
+#endif
         HttpWebRequest, // High performance multi-threaded api calls
         UnityWebRequest, // Modern unity HTTP component
         CustomHttp //If this is used, you must set the Http to an IPlayFabHttp object.
@@ -30,15 +33,15 @@ namespace PlayFab
 
         private static PlayFabSharedSettings _playFabShared = null;
         private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
-        public const string SdkVersion = "2.62.190304";
-        public const string BuildIdentifier = "jbuild_unitysdk__sdk-unity-5-slave_0";
-        public const string VersionString = "UnitySDK-2.62.190304";
+        public const string SdkVersion = "2.63.190312";
+        public const string BuildIdentifier = "jbuild_unitysdk__sdk-unity-1-slave_0";
+        public const string VersionString = "UnitySDK-2.63.190312";
 
         public static readonly Dictionary<string, string> RequestGetParams = new Dictionary<string, string> {
             { "sdk", VersionString }
         };
 
-        private const string DefaultPlayFabApiUrlPrivate = ".playfabapi.com";
+        private const string DefaultPlayFabApiUrlPrivate = "playfabapi.com";
 
         private static PlayFabSharedSettings GetSharedSettingsObjectPrivate()
         {
@@ -75,7 +78,6 @@ namespace PlayFab
                 return deviceId;
             }
         }
-
 
         private static string ProductionEnvironmentUrlPrivate
         {
@@ -152,25 +154,70 @@ namespace PlayFab
             set { PlayFabSharedPrivate.LogCapLimit = value; }
         }
 
-        public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams)
+        private static string _localApiServer;
+
+        public static string LocalApiServer
+        {
+            get
+            {
+                return _localApiServer ?? PlayFabUtil.GetLocalSettingsFileProperty("LocalApiServer");
+            }
+
+            set 
+            {
+                _localApiServer = value;
+            }
+        }
+
+        public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams, PlayFabApiSettings apiSettings = null)
         {
             StringBuilder sb = new StringBuilder(1000);
-        
-            var baseUrl = ProductionEnvironmentUrlPrivate;
-            if (!baseUrl.StartsWith("http"))
+
+            string productionEnvironmentUrl = null, verticalName = null, titleId = null;
+            if (apiSettings != null)
             {
-                if (!string.IsNullOrEmpty(VerticalName))
+                if (apiSettings.ProductionEnvironmentUrl != null)
                 {
-                    sb.Append("https://").Append(VerticalName);
+                    productionEnvironmentUrl = apiSettings.ProductionEnvironmentUrl;
                 }
-                else
+                if (apiSettings.VerticalName != null)
                 {
-                    sb.Append("https://").Append(TitleId);
+                    verticalName = apiSettings.VerticalName;
+                }
+                if (apiSettings.TitleId != null)
+                {
+                    titleId = apiSettings.TitleId;
                 }
             }
-        
+            if (productionEnvironmentUrl == null)
+            {
+                productionEnvironmentUrl = ProductionEnvironmentUrlPrivate;
+            }
+            if (verticalName == null && !string.IsNullOrEmpty(VerticalName))
+            {
+                verticalName = VerticalName;
+            }
+            if (titleId == null)
+            {
+                titleId = TitleId;
+            }
+
+            var baseUrl = productionEnvironmentUrl;
+            if (!baseUrl.StartsWith("http"))
+            {
+                sb.Append("https://");
+                if (!string.IsNullOrEmpty(TitleId))
+                {
+                    sb.Append(TitleId).Append(".");
+                }
+                if (!string.IsNullOrEmpty(VerticalName))
+                {
+                    sb.Append(VerticalName).Append(".");
+                }
+            }
+
             sb.Append(baseUrl).Append(apiCall);
-        
+
             if (getParams != null)
             {
                 bool firstParam = true;
@@ -188,7 +235,7 @@ namespace PlayFab
                     sb.Append(paramPair.Key).Append("=").Append(paramPair.Value);
                 }
             }
-        
+
             return sb.ToString();
         }
     }
