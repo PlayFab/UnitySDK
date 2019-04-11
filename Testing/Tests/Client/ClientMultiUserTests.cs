@@ -25,7 +25,7 @@ namespace PlayFab.UUnit
 
         /// <summary>
         /// CLIENT API
-        /// Test for more then one user can login at the same time asynchronously 
+        /// Test for more then one user can login at the same time asynchronously
         /// </summary>
         [UUnitTest]
         public void AsyncMultiUserLogin(UUnitTestContext testContext)

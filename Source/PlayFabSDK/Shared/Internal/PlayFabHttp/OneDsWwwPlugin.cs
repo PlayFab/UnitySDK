@@ -58,12 +58,12 @@ namespace PlayFab.Internal
             www.chunkedTransfer = false;
             yield return www.SendWebRequest();
 #else
-            yield return webRequest.Send();
+            yield return www.Send();
 #endif
 
             using (www)
             {
-                OneDsUtility.ParseResponse(www.responseCode, () => www.downloadHandler.text, www.error, callback);                
+                OneDsUtility.ParseResponse(www.responseCode, () => www.downloadHandler.text, www.error, callback);
             }
         }
     }

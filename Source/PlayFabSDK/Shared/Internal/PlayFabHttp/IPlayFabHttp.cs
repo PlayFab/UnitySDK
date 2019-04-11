@@ -4,11 +4,6 @@ using PlayFab.SharedModels;
 
 namespace PlayFab.Internal
 {
-    [Obsolete("This interface is deprecated, please use PlayFab.ITransportPlugin instead.", false)]
-    public interface IPlayFabHttp: ITransportPlugin
-    {
-    }
-
     public enum AuthType
     {
         None,
@@ -50,6 +45,9 @@ namespace PlayFab.Internal
         public Action InvokeSuccessCallback;
         public Action<PlayFabError> ErrorCallback;
         public object CustomData = null;
+        public PlayFabApiSettings settings;
+        public PlayFabAuthenticationContext context;
+        public IPlayFabInstanceApi instanceApi;
 
         public CallRequestContainer()
         {

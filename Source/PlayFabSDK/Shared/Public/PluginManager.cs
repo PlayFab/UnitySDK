@@ -57,7 +57,7 @@ namespace PlayFab
                         plugin = this.CreatePlugin<SimpleJsonInstance>();
                         break;
                     case PluginContract.PlayFab_Transport:
-#if NET_4_6   
+#if NET_4_6
                         if (instanceName == PluginManager.PLUGIN_TRANSPORT_ONEDS)
                             plugin = this.CreateOneDSTransportPlugin();
                         else
@@ -106,7 +106,7 @@ namespace PlayFab
 #elif UNITY_2017_2_OR_NEWER
             if (PlayFabSettings.RequestType == WebRequestType.UnityWww)
                 transport = new PlayFabWww();
-            
+
             if (transport == null)
                 transport = new PlayFabUnityHttp();
 #else
@@ -132,7 +132,7 @@ namespace PlayFab
 #elif UNITY_2017_2_OR_NEWER
             if (PlayFabSettings.RequestType == WebRequestType.UnityWww)
                 transport = new OneDsWwwPlugin();
-            
+
             if (transport == null)
                 transport = new OneDsUnityHttpPlugin();
 #else

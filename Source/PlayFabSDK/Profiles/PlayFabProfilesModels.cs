@@ -15,7 +15,7 @@ namespace PlayFab.ProfilesModels
     /// An entity object and its associated meta data.
     /// </summary>
     [Serializable]
-    public class EntityDataObject
+    public class EntityDataObject : PlayFabBaseModel
     {
         /// <summary>
         /// Un-escaped JSON object, if DataAsObject is true.
@@ -35,7 +35,7 @@ namespace PlayFab.ProfilesModels
     /// Combined entity type and ID structure which uniquely identifies a single entity.
     /// </summary>
     [Serializable]
-    public class EntityKey
+    public class EntityKey : PlayFabBaseModel
     {
         /// <summary>
         /// Unique ID of the entity.
@@ -48,7 +48,7 @@ namespace PlayFab.ProfilesModels
     }
 
     [Serializable]
-    public class EntityLineage
+    public class EntityLineage : PlayFabBaseModel
     {
         /// <summary>
         /// The Character Id of the associated entity.
@@ -77,7 +77,7 @@ namespace PlayFab.ProfilesModels
     }
 
     [Serializable]
-    public class EntityPermissionStatement
+    public class EntityPermissionStatement : PlayFabBaseModel
     {
         /// <summary>
         /// The action this statement effects. May be 'Read', 'Write' or '*' for both read and write.
@@ -106,7 +106,7 @@ namespace PlayFab.ProfilesModels
     }
 
     [Serializable]
-    public class EntityProfileBody
+    public class EntityProfileBody : PlayFabBaseModel
     {
         /// <summary>
         /// The creation time of this profile in UTC.
@@ -147,6 +147,10 @@ namespace PlayFab.ProfilesModels
         /// </summary>
         public List<EntityPermissionStatement> Permissions;
         /// <summary>
+        /// The statistics on this profile.
+        /// </summary>
+        public Dictionary<string,EntityStatisticValue> Statistics;
+        /// <summary>
         /// The version number of the profile in persistent storage at the time of the read. Used for optional optimistic
         /// concurrency during update.
         /// </summary>
@@ -157,7 +161,7 @@ namespace PlayFab.ProfilesModels
     /// An entity file's meta data. To get a download URL call File/GetFiles API.
     /// </summary>
     [Serializable]
-    public class EntityProfileFileMetadata
+    public class EntityProfileFileMetadata : PlayFabBaseModel
     {
         /// <summary>
         /// Checksum value for the file
@@ -175,6 +179,48 @@ namespace PlayFab.ProfilesModels
         /// Storage service's reported byte count
         /// </summary>
         public int Size;
+    }
+
+    [Serializable]
+    public class EntityStatisticChildValue : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Child name value, if child statistic
+        /// </summary>
+        public string ChildName;
+        /// <summary>
+        /// Child statistic metadata
+        /// </summary>
+        public string Metadata;
+        /// <summary>
+        /// Child statistic value
+        /// </summary>
+        public int Value;
+    }
+
+    [Serializable]
+    public class EntityStatisticValue : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Child statistic values
+        /// </summary>
+        public Dictionary<string,EntityStatisticChildValue> ChildStatistics;
+        /// <summary>
+        /// Statistic metadata
+        /// </summary>
+        public string Metadata;
+        /// <summary>
+        /// Statistic name
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Statistic value
+        /// </summary>
+        public int? Value;
+        /// <summary>
+        /// Statistic version
+        /// </summary>
+        public int Version;
     }
 
     /// <summary>

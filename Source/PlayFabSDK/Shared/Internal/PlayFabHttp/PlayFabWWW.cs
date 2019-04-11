@@ -16,12 +16,10 @@ using Ionic.Zlib;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabWww : IPlayFabTransportPlugin
+    public class PlayFabWww : ITransportPlugin
     {
         private bool _isInitialized = false;
         private int _pendingWwwMessages = 0;
-        public string AuthKey { get; set; }
-        public string EntityToken { get; set; }
 
         public bool IsInitialized { get { return _isInitialized; } }
 
@@ -80,7 +78,7 @@ namespace PlayFab.Internal
 #endif
 
 #if !UNITY_WEBGL
-                while (request.uploadProgress < 1 && request.downloadProgress < 1)
+                while (request.uploadProgress < 1 || request.downloadProgress < 1)
                 {
                     yield return 1;
                 }
@@ -146,9 +144,9 @@ namespace PlayFab.Internal
                         reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                         reqContainer.ApiResult.CustomData = reqContainer.CustomData;
 
-                        PlayFabHttp.instance.OnPlayFabApiResult(reqContainer.ApiResult);
+                        PlayFabHttp.instance.OnPlayFabApiResult(reqContainer);
 #if !DISABLE_PLAYFABCLIENT_API
-                        PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult);
+                        PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult, reqContainer.settings, reqContainer.instanceApi);
 #endif
 
                         try

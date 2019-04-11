@@ -9,7 +9,7 @@ namespace PlayFab.AuthenticationModels
     /// Combined entity type and ID structure which uniquely identifies a single entity.
     /// </summary>
     [Serializable]
-    public class EntityKey
+    public class EntityKey : PlayFabBaseModel
     {
         /// <summary>
         /// Unique ID of the entity.

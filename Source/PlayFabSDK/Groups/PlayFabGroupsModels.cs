@@ -284,7 +284,7 @@ namespace PlayFab.GroupsModels
     /// Combined entity type and ID structure which uniquely identifies a single entity.
     /// </summary>
     [Serializable]
-    public class EntityKey
+    public class EntityKey : PlayFabBaseModel
     {
         /// <summary>
         /// Unique ID of the entity.
@@ -297,7 +297,7 @@ namespace PlayFab.GroupsModels
     }
 
     [Serializable]
-    public class EntityMemberRole
+    public class EntityMemberRole : PlayFabBaseModel
     {
         /// <summary>
         /// The list of members in the role
@@ -317,7 +317,7 @@ namespace PlayFab.GroupsModels
     /// Entity wrapper class that contains the entity key and the entities that make up the lineage of the entity.
     /// </summary>
     [Serializable]
-    public class EntityWithLineage
+    public class EntityWithLineage : PlayFabBaseModel
     {
         /// <summary>
         /// The entity key for the specified entity
@@ -382,7 +382,7 @@ namespace PlayFab.GroupsModels
     /// Describes an application to join a group
     /// </summary>
     [Serializable]
-    public class GroupApplication
+    public class GroupApplication : PlayFabBaseModel
     {
         /// <summary>
         /// Type of entity that requested membership
@@ -402,7 +402,7 @@ namespace PlayFab.GroupsModels
     /// Describes an entity that is blocked from joining a group.
     /// </summary>
     [Serializable]
-    public class GroupBlock
+    public class GroupBlock : PlayFabBaseModel
     {
         /// <summary>
         /// The entity that is blocked
@@ -418,7 +418,7 @@ namespace PlayFab.GroupsModels
     /// Describes an invitation to a group.
     /// </summary>
     [Serializable]
-    public class GroupInvitation
+    public class GroupInvitation : PlayFabBaseModel
     {
         /// <summary>
         /// When the invitation will expire and be deleted
@@ -446,7 +446,7 @@ namespace PlayFab.GroupsModels
     /// Describes a group role
     /// </summary>
     [Serializable]
-    public class GroupRole
+    public class GroupRole : PlayFabBaseModel
     {
         /// <summary>
         /// ID for the role
@@ -462,7 +462,7 @@ namespace PlayFab.GroupsModels
     /// Describes a group and the roles that it contains
     /// </summary>
     [Serializable]
-    public class GroupWithRoles
+    public class GroupWithRoles : PlayFabBaseModel
     {
         /// <summary>
         /// ID for the group

@@ -118,7 +118,7 @@ namespace PlayFab.Public
             {
                 focusStateDuration = (currentUtcDateTime - focusOnDateTime).TotalSeconds;
 
-                // this check safeguards from manual time changes while app is running                
+                // this check safeguards from manual time changes while app is running
                 if (focusStateDuration < 0)
                 {
                     focusStateDuration = 0;
@@ -142,7 +142,7 @@ namespace PlayFab.Public
 
             initialFocus = false;
 
-            if(!isFocused)
+            if (!isFocused)
             {
                 // Force the eventsRequests queue to empty.
                 // If we are losing focus we should make an attempt to push out a focus lost event ASAP
@@ -196,7 +196,7 @@ namespace PlayFab.Public
             Debug.LogWarning("Failed to send session data. Error: " + response.GenerateErrorReport());
         }
 
-#region Unused MonoBehaviour compatibility  methods
+        #region Unused MonoBehaviour compatibility  methods
         /// <summary>
         /// Unused
         /// Name mimics MonoBehaviour method, for ease of integration.
@@ -223,7 +223,7 @@ namespace PlayFab.Public
         {
             // add code sending events on destroy
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// Trying to send event during game exit. Note: works only on certain platforms.

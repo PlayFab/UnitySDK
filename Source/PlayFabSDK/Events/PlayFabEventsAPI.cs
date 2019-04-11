@@ -1,10 +1,9 @@
 #if !DISABLE_PLAYFABENTITY_API
+
 using System;
 using System.Collections.Generic;
 using PlayFab.EventsModels;
 using PlayFab.Internal;
-using PlayFab.Json;
-using PlayFab.Public;
 
 namespace PlayFab
 {
@@ -23,7 +22,7 @@ namespace PlayFab
         /// </summary>
         public static void ForgetAllCredentials()
         {
-            PlayFabHttp.ForgetAllCredentials();
+            PlayFabSettings.staticPlayer.ForgetAllCredentials();
         }
 
         /// <summary>
@@ -31,12 +30,14 @@ namespace PlayFab
         /// </summary>
         public static void WriteEvents(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
 
 
-            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders);
+            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
         }
 
 
     }
 }
+
 #endif

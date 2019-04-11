@@ -6,7 +6,7 @@ using PlayFab.SharedModels;
 namespace PlayFab.MultiplayerModels
 {
     [Serializable]
-    public class AssetReference
+    public class AssetReference : PlayFabBaseModel
     {
         /// <summary>
         /// The asset's file name. This is a filename with the .zip, .tar, or .tar.gz extension.
@@ -19,7 +19,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class AssetReferenceParams
+    public class AssetReferenceParams : PlayFabBaseModel
     {
         /// <summary>
         /// The asset's file name.
@@ -32,7 +32,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class AssetSummary
+    public class AssetSummary : PlayFabBaseModel
     {
         /// <summary>
         /// The asset's file name. This is a filename with the .zip, .tar, or .tar.gz extension.
@@ -92,7 +92,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class BuildRegion
+    public class BuildRegion : PlayFabBaseModel
     {
         /// <summary>
         /// The current multiplayer server stats for the region.
@@ -118,7 +118,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class BuildRegionParams
+    public class BuildRegionParams : PlayFabBaseModel
     {
         /// <summary>
         /// The maximum number of multiplayer servers for the region.
@@ -135,7 +135,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class BuildSummary
+    public class BuildSummary : PlayFabBaseModel
     {
         /// <summary>
         /// The guid string build ID of the build.
@@ -223,7 +223,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class Certificate
+    public class Certificate : PlayFabBaseModel
     {
         /// <summary>
         /// Base64 encoded string contents of the certificate.
@@ -241,7 +241,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class CertificateSummary
+    public class CertificateSummary : PlayFabBaseModel
     {
         /// <summary>
         /// The name of the certificate.
@@ -254,7 +254,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class ConnectedPlayer
+    public class ConnectedPlayer : PlayFabBaseModel
     {
         /// <summary>
         /// The player ID of the player connected to the multiplayer server.
@@ -270,7 +270,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class ContainerImageReference
+    public class ContainerImageReference : PlayFabBaseModel
     {
         /// <summary>
         /// The container image name.
@@ -598,7 +598,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class CurrentServerStats
+    public class CurrentServerStats : PlayFabBaseModel
     {
         /// <summary>
         /// The number of active multiplayer servers.
@@ -707,7 +707,7 @@ namespace PlayFab.MultiplayerModels
     /// Combined entity type and ID structure which uniquely identifies a single entity.
     /// </summary>
     [Serializable]
-    public class EntityKey
+    public class EntityKey : PlayFabBaseModel
     {
         /// <summary>
         /// Unique ID of the entity.
@@ -720,7 +720,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class GameCertificateReference
+    public class GameCertificateReference : PlayFabBaseModel
     {
         /// <summary>
         /// An alias for the game certificate. The game server will reference this alias via GSDK config to retrieve the game
@@ -736,7 +736,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class GameCertificateReferenceParams
+    public class GameCertificateReferenceParams : PlayFabBaseModel
     {
         /// <summary>
         /// An alias for the game certificate. The game server will reference this alias via GSDK config to retrieve the game
@@ -1506,7 +1506,7 @@ namespace PlayFab.MultiplayerModels
     /// A user in a matchmaking ticket.
     /// </summary>
     [Serializable]
-    public class MatchmakingPlayer
+    public class MatchmakingPlayer : PlayFabBaseModel
     {
         /// <summary>
         /// The user's attributes custom to the title.
@@ -1522,7 +1522,7 @@ namespace PlayFab.MultiplayerModels
     /// The matchmaking attributes for a user.
     /// </summary>
     [Serializable]
-    public class MatchmakingPlayerAttributes
+    public class MatchmakingPlayerAttributes : PlayFabBaseModel
     {
         /// <summary>
         /// A data object representing a user's attributes.
@@ -1538,7 +1538,7 @@ namespace PlayFab.MultiplayerModels
     /// A player in a created matchmaking match with a team assignment.
     /// </summary>
     [Serializable]
-    public class MatchmakingPlayerWithTeamAssignment
+    public class MatchmakingPlayerWithTeamAssignment : PlayFabBaseModel
     {
         /// <summary>
         /// The user's attributes custom to the title. These attributes will be null unless the request has ReturnMemberAttributes
@@ -1556,7 +1556,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class MatchmakingQueueConfig
+    public class MatchmakingQueueConfig : PlayFabBaseModel
     {
         /// <summary>
         /// This is the buildId that will be used to allocate the multiplayer server for the match.
@@ -1593,7 +1593,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class MatchmakingQueueRule
+    public class MatchmakingQueueRule : PlayFabBaseModel
     {
         /// <summary>
         /// Friendly name chosen by developer.
@@ -1611,7 +1611,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class MatchmakingQueueTeam
+    public class MatchmakingQueueTeam : PlayFabBaseModel
     {
         /// <summary>
         /// The maximum number of players required for the team.
@@ -1628,7 +1628,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class MultiplayerServerSummary
+    public class MultiplayerServerSummary : PlayFabBaseModel
     {
         /// <summary>
         /// The connected players in the multiplayer server.
@@ -1661,7 +1661,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class Port
+    public class Port : PlayFabBaseModel
     {
         /// <summary>
         /// The name for the port.
@@ -1684,7 +1684,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class QosServer
+    public class QosServer : PlayFabBaseModel
     {
         /// <summary>
         /// The region the QoS server is located in.
@@ -1831,7 +1831,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class ServerDetails
+    public class ServerDetails : PlayFabBaseModel
     {
         /// <summary>
         /// The IPv4 address of the virtual machine that is hosting this multiplayer server.
@@ -1886,7 +1886,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class Statistics
+    public class Statistics : PlayFabBaseModel
     {
         /// <summary>
         /// The average.
@@ -1907,7 +1907,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class StatisticsVisibilityToPlayers
+    public class StatisticsVisibilityToPlayers : PlayFabBaseModel
     {
         /// <summary>
         /// Whether to allow players to view the current number of players in the matchmaking queue.
@@ -1955,7 +1955,7 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
-    public class VirtualMachineSummary
+    public class VirtualMachineSummary : PlayFabBaseModel
     {
         /// <summary>
         /// The virtual machine health status.

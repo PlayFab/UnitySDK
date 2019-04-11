@@ -7,10 +7,8 @@ namespace PlayFab.MatchmakerModels
 {
     /// <summary>
     /// This API allows the external match-making service to confirm that the user has a valid Session Ticket for the title, in
-    /// order
-    /// to securely enable match-making. The client passes the user's Session Ticket to the external match-making service, which
-    /// then passes the Session Ticket in as the
-    /// AuthorizationTicket in this call.
+    /// order to securely enable match-making. The client passes the user's Session Ticket to the external match-making service,
+    /// which then passes the Session Ticket in as the AuthorizationTicket in this call.
     /// </summary>
     [Serializable]
     public class AuthUserRequest : PlayFabRequestCommon
@@ -41,7 +39,7 @@ namespace PlayFab.MatchmakerModels
     /// that Custom Data is only set here from a call to UpdateUserInventoryItemCustomData.
     /// </summary>
     [Serializable]
-    public class ItemInstance
+    public class ItemInstance : PlayFabBaseModel
     {
         /// <summary>
         /// Game specific comment associated with this instance when it was added to the user inventory.
@@ -259,7 +257,7 @@ namespace PlayFab.MatchmakerModels
     }
 
     [Serializable]
-    public class VirtualCurrencyRechargeTime
+    public class VirtualCurrencyRechargeTime : PlayFabBaseModel
     {
         /// <summary>
         /// Maximum value to which the regenerating currency will automatically increment. Note that it can exceed this value

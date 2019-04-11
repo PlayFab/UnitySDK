@@ -1,7 +1,6 @@
 #if ENABLE_PLAYFABSERVER_API
+
 using PlayFab.ServerModels;
-using PlayFab.Json;
-using System;
 
 namespace PlayFab.UUnit
 {
@@ -9,9 +8,10 @@ namespace PlayFab.UUnit
     {
         private const string FakePlayFabId = "1337"; // A real playfabId here would be nice, but without a client login, it's hard to get one
 
-        private static int SuccessfulLoginCount = 0, SuccessfulGetAllSegmentsCount = 0, UnsuccessfulGetAllSegmentsCount = 0, ParallelRequestSuccessfuCount = 0, ParallelRequestUnsuccessfuCount = 0;
-
         private static TestTitleDataLoader.TestTitleData testTitleData;
+
+        private int SuccessfulGetAllSegmentsCount = 0, UnsuccessfulGetAllSegmentsCount = 0, ParallelRequestSuccessfuCount = 0, ParallelRequestUnsuccessfuCount = 0;
+        private string InstancePlayFabId1, InstancePlayFabId2;
 
         public override void SetUp(UUnitTestContext testContext)
         {
@@ -40,23 +40,15 @@ namespace PlayFab.UUnit
         {
             PlayFabApiSettings settings = new PlayFabApiSettings();
             settings.TitleId = testTitleData.titleId;
+            settings.DeveloperSecretKey = testTitleData.developerSecretKey;
 
-            PlayFabAuthenticationContext context = new PlayFabAuthenticationContext();
-            context.DeveloperSecretKey = testTitleData.developerSecretKey;
+            var instance1 = new PlayFabServerInstanceAPI();
+            var instance2 = new PlayFabServerInstanceAPI(settings);
 
-            try
-            {
-                PlayFabServerInstanceAPI serverInstanceWithoutAnyParameter = new PlayFabServerInstanceAPI();
-                PlayFabServerInstanceAPI serverInstanceWithSettings = new PlayFabServerInstanceAPI(settings);
-                PlayFabServerInstanceAPI serverInstanceWithContext = new PlayFabServerInstanceAPI(context);
-                PlayFabServerInstanceAPI serverInstanceWithSameParameter = new PlayFabServerInstanceAPI(context);
-                PlayFabServerInstanceAPI serverInstanceWithSettingsAndContext = new PlayFabServerInstanceAPI(settings, context);
-                testContext.EndTest(UUnitFinishState.PASSED, null);
-            }
-            catch (Exception)
-            {
-                testContext.Fail("Multi Intance Server api can not be created");
-            }
+            instance1.ForgetAllCredentials();
+            instance2.ForgetAllCredentials();
+
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
         /// <summary>
@@ -66,43 +58,32 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void MultipleInstanceWithDifferentSettings(UUnitTestContext testContext)
         {
-            PlayFabApiSettings settings = new PlayFabApiSettings();
-            settings.ProductionEnvironmentUrl = "https://test1.playfabapi.com";
-            settings.TitleId = "test1";
+            PlayFabApiSettings settings1 = new PlayFabApiSettings();
+            settings1.ProductionEnvironmentUrl = "https://test1.playfabapi.com";
+            settings1.TitleId = "test1";
+            settings1.DeveloperSecretKey = "key1";
 
             PlayFabApiSettings settings2 = new PlayFabApiSettings();
             settings2.ProductionEnvironmentUrl = "https://test2.playfabapi.com";
             settings2.TitleId = "test2";
+            settings2.DeveloperSecretKey = "key2";
 
-            PlayFabAuthenticationContext context = new PlayFabAuthenticationContext();
-            context.DeveloperSecretKey = "key1";
+            PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI(settings1);
+            testContext.StringEquals("test1", serverInstance1.apiSettings.TitleId, "MultipleInstanceWithDifferentSettings can not be completed");
+            testContext.StringEquals("https://test1.playfabapi.com", serverInstance1.apiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
+            testContext.StringEquals("key1", serverInstance1.apiSettings.DeveloperSecretKey, "MultipleInstanceWithDifferentSettings can not be completed");
 
-            PlayFabAuthenticationContext context2 = new PlayFabAuthenticationContext();
-            context2.DeveloperSecretKey = "key2";
+            PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(settings2);
+            testContext.StringEquals("test2", serverInstance2.apiSettings.TitleId, "MultipleInstanceWithDifferentSettings can not be completed");
+            testContext.StringEquals("https://test2.playfabapi.com", serverInstance2.apiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
+            testContext.StringEquals("key2", serverInstance2.apiSettings.DeveloperSecretKey, "MultipleInstanceWithDifferentSettings can not be completed");
 
-            try
-            {
-                PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI(settings, context);
-                PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(settings2, context2);
-
-                testContext.StringEquals("test1", serverInstance1.ApiSettings.TitleId, "MultipleInstanceWithDifferentSettings can not be completed");
-                testContext.StringEquals("https://test1.playfabapi.com", serverInstance1.ApiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
-                testContext.StringEquals("key1", serverInstance1.GetAuthenticationContext().DeveloperSecretKey, "MultipleInstanceWithDifferentSettings can not be completed");
-
-                testContext.StringEquals("test2", serverInstance2.ApiSettings.TitleId, "MultipleInstanceWithDifferentSettings can not be completed");
-                testContext.StringEquals("https://test2.playfabapi.com", serverInstance2.ApiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
-                testContext.StringEquals("key2", serverInstance2.GetAuthenticationContext().DeveloperSecretKey, "MultipleInstanceWithDifferentSettings can not be completed");
-                testContext.EndTest(UUnitFinishState.PASSED, null);
-            }
-            catch (Exception)
-            {
-                testContext.Fail("Multi Intance Server api can not be created");
-            }
+            testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
         /// <summary>
         /// SERVER API
-        /// Each API instance can be used to login a player separately from any other API instances, 
+        /// Each API instance can be used to login a player separately from any other API instances,
         /// and that player's authentication context is stored in the API instance
         /// </summary>
         [UUnitTest]
@@ -110,46 +91,44 @@ namespace PlayFab.UUnit
         {
             PlayFabApiSettings settings = new PlayFabApiSettings();
             settings.TitleId = testTitleData.titleId;
-
-            PlayFabAuthenticationContext context = new PlayFabAuthenticationContext();
-            context.DeveloperSecretKey = testTitleData.developerSecretKey;
+            settings.DeveloperSecretKey = testTitleData.developerSecretKey;
 
             var loginRequest1 = new LoginWithServerCustomIdRequest()
             {
                 CreateAccount = true,
-                ServerCustomId = "test_Instance1",
-                AuthenticationContext = context
+                ServerCustomId = "test_Instance1"
             };
 
             var loginRequest2 = new LoginWithServerCustomIdRequest()
             {
                 CreateAccount = true,
-                ServerCustomId = "test_Instance2",
-                AuthenticationContext = context
+                ServerCustomId = "test_Instance2"
             };
 
-            try
-            {
-                PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI(settings, context);
-                PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(settings, context);
+            PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI(settings);
+            PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(settings);
 
-                SuccessfulLoginCount = 0;
-                serverInstance1.LoginWithServerCustomId(loginRequest1, PlayFabUUnitUtils.ApiActionWrapper<ServerLoginResult>(testContext, ApiInstanceLoginSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
-                serverInstance2.LoginWithServerCustomId(loginRequest2, PlayFabUUnitUtils.ApiActionWrapper<ServerLoginResult>(testContext, ApiInstanceLoginSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
-            }
-            catch (Exception)
-            {
-                testContext.Fail("Multi Intance Server api can not be created");
-            }
+            serverInstance1.LoginWithServerCustomId(loginRequest1, PlayFabUUnitUtils.ApiActionWrapper<ServerLoginResult>(testContext, OnInstanceLogin1), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
+            serverInstance2.LoginWithServerCustomId(loginRequest2, PlayFabUUnitUtils.ApiActionWrapper<ServerLoginResult>(testContext, OnInstanceLogin2), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
         }
-        private void ApiInstanceLoginSuccessCallBack(ServerLoginResult result)
+        private void OnInstanceLogin1(ServerLoginResult result)
         {
-            SuccessfulLoginCount++;
-            if (SuccessfulLoginCount == 2)
-            {
-                var testContext = (UUnitTestContext)result.CustomData;
+            InstancePlayFabId1 = result.PlayFabId;
+            var testContext = (UUnitTestContext)result.CustomData;
+            ProcessBothLogins(testContext);
+        }
+        private void OnInstanceLogin2(ServerLoginResult result)
+        {
+            InstancePlayFabId2 = result.PlayFabId;
+            var testContext = (UUnitTestContext)result.CustomData;
+            ProcessBothLogins(testContext);
+        }
+
+        private void ProcessBothLogins(UUnitTestContext testContext)
+        {
+            testContext.False(InstancePlayFabId1 == InstancePlayFabId2);
+            if (!string.IsNullOrEmpty(InstancePlayFabId1) && !string.IsNullOrEmpty(InstancePlayFabId2))
                 testContext.EndTest(UUnitFinishState.PASSED, null);
-            }
         }
 
         /// <summary>
@@ -176,15 +155,15 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void CheckWithAuthContextAndWithoutAuthContext(UUnitTestContext testContext)
         {
-            //IT will  use static developer key - Should has no error 
+            //IT will  use static developer key - Should has no error
             PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI();
             serverInstance1.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, CheckWithAuthContextAndWithoutAuthContextSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
 
-            PlayFabAuthenticationContext context = new PlayFabAuthenticationContext();
-            context.DeveloperSecretKey = "WRONGKEYTOFAIL";
+            var apiSettings = new PlayFabApiSettings();
+            apiSettings.DeveloperSecretKey = "WRONGKEYTOFAIL";
 
             //IT will  use context developer key - Should has error because of wrong key
-            PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(context);
+            PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(apiSettings);
             serverInstance2.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, CheckWithAuthContextAndWithoutAuthContextSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, CheckWithAuthContextAndWithoutAuthContextExpectedErrorCallBack), testContext);
         }
         private void CheckWithAuthContextAndWithoutAuthContextSuccessCallBack(GetAllSegmentsResult result)
@@ -205,55 +184,36 @@ namespace PlayFab.UUnit
             {
                 testContext.EndTest(UUnitFinishState.PASSED, null);
             }
-           
-        }   
-		
-		/// <summary>
+
+        }
+
+        /// <summary>
         /// SERVER API
         /// Try to parallel request at same time
         /// </summary>
         [UUnitTest]
         public void ParallelRequest(UUnitTestContext testContext)
         {
-            
-            PlayFabApiSettings settings = new PlayFabApiSettings();
-            settings.TitleId = testTitleData.titleId;
+            var settings1 = new PlayFabApiSettings();
+            settings1.TitleId = testTitleData.titleId;
+            settings1.DeveloperSecretKey = testTitleData.developerSecretKey;
 
-            PlayFabAuthenticationContext context = new PlayFabAuthenticationContext();
-            context.DeveloperSecretKey = testTitleData.developerSecretKey;
+            var settings2 = new PlayFabApiSettings();
+            settings2.TitleId = testTitleData.titleId;
+            settings2.DeveloperSecretKey = "TESTKEYERROR";
 
-            PlayFabAuthenticationContext context2 = new PlayFabAuthenticationContext();
-            context2.DeveloperSecretKey = "GETERROR";
+            PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI(settings1);
+            PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(settings2);
 
-            PlayFabAuthenticationContext context3 = new PlayFabAuthenticationContext();
-            context3.DeveloperSecretKey = testTitleData.developerSecretKey;
-
-            PlayFabAuthenticationContext context4 = new PlayFabAuthenticationContext();
-            context4.DeveloperSecretKey = "TESTKEYERROR";
-
-            PlayFabAuthenticationContext context5 = new PlayFabAuthenticationContext();
-            context5.DeveloperSecretKey = "123421";
-
-            PlayFabServerInstanceAPI serverInstance = new PlayFabServerInstanceAPI(settings, context);
-            PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI(settings, context);
-            PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(settings, context2);
-            PlayFabServerInstanceAPI serverInstance3 = new PlayFabServerInstanceAPI(settings, context3);
-            PlayFabServerInstanceAPI serverInstance4 = new PlayFabServerInstanceAPI(settings, context4);
-            PlayFabServerInstanceAPI serverInstance5 = new PlayFabServerInstanceAPI(settings, context5);
-
-            serverInstance.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, ParallelRequestSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ParallelRequestExpectedErrorCallBack), testContext);
             serverInstance1.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, ParallelRequestSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ParallelRequestExpectedErrorCallBack), testContext);
             serverInstance2.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, ParallelRequestSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ParallelRequestExpectedErrorCallBack), testContext);
-            serverInstance3.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, ParallelRequestSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ParallelRequestExpectedErrorCallBack), testContext);
-            serverInstance4.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, ParallelRequestSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ParallelRequestExpectedErrorCallBack), testContext);
-            serverInstance5.GetAllSegments(new GetAllSegmentsRequest(), PlayFabUUnitUtils.ApiActionWrapper<GetAllSegmentsResult>(testContext, ParallelRequestSuccessCallBack), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, ParallelRequestExpectedErrorCallBack), testContext);
         }
 
         private void ParallelRequestSuccessCallBack(GetAllSegmentsResult result)
         {
             ParallelRequestSuccessfuCount++;
             var testContext = (UUnitTestContext)result.CustomData;
-            if (ParallelRequestSuccessfuCount == 3 && ParallelRequestUnsuccessfuCount == 3)
+            if (ParallelRequestSuccessfuCount == 1 && ParallelRequestUnsuccessfuCount == 1)
             {
                 testContext.EndTest(UUnitFinishState.PASSED, null);
             }
@@ -263,12 +223,12 @@ namespace PlayFab.UUnit
         {
             ParallelRequestUnsuccessfuCount++;
             var testContext = (UUnitTestContext)error.CustomData;
-            if (ParallelRequestSuccessfuCount == 3 && ParallelRequestUnsuccessfuCount == 3)
+            if (ParallelRequestSuccessfuCount == 1 && ParallelRequestUnsuccessfuCount == 1)
             {
                 testContext.EndTest(UUnitFinishState.PASSED, null);
             }
-
         }
     }
 }
+
 #endif

@@ -1,10 +1,9 @@
 #if !DISABLE_PLAYFABENTITY_API
+
 using System;
 using System.Collections.Generic;
 using PlayFab.AuthenticationModels;
 using PlayFab.Internal;
-using PlayFab.Json;
-using PlayFab.Public;
 
 namespace PlayFab
 {
@@ -22,8 +21,7 @@ namespace PlayFab
         /// </summary>
         public static bool IsEntityLoggedIn()
         {
-            var transport = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport);
-            return !string.IsNullOrEmpty(transport.EntityToken);
+            return PlayFabSettings.staticPlayer.IsEntityLoggedIn();
         }
 
         /// <summary>
@@ -32,7 +30,7 @@ namespace PlayFab
         /// </summary>
         public static void ForgetAllCredentials()
         {
-            PlayFabHttp.ForgetAllCredentials();
+            PlayFabSettings.staticPlayer.ForgetAllCredentials();
         }
 
         /// <summary>
@@ -41,31 +39,24 @@ namespace PlayFab
         /// </summary>
         public static void GetEntityToken(GetEntityTokenRequest request, Action<GetEntityTokenResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
             AuthType authType = AuthType.None;
 #if !DISABLE_PLAYFABCLIENT_API
-            string clientSessionTicket = null;
-            if (request.AuthenticationContext != null && !string.IsNullOrEmpty(request.AuthenticationContext.ClientSessionTicket))
-                clientSessionTicket = request.AuthenticationContext.ClientSessionTicket;
-            if (clientSessionTicket == null)
-                clientSessionTicket = PluginManager.GetPlugin<IPlayFabTransportPlugin>(PluginContract.PlayFab_Transport).AuthKey;
-            if (authType == AuthType.None && !string.IsNullOrEmpty(clientSessionTicket))
-                authType = AuthType.LoginSession;
+            if (context.ClientSessionTicket != null) { authType = AuthType.LoginSession; }
 #endif
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
-            string developerSecretKey = null;
-            if (request.AuthenticationContext != null && !string.IsNullOrEmpty(request.AuthenticationContext.DeveloperSecretKey))
-                developerSecretKey = request.AuthenticationContext.DeveloperSecretKey;
-            if (developerSecretKey == null)
-                developerSecretKey = PlayFabSettings.DeveloperSecretKey;
-            if (authType == AuthType.None && !string.IsNullOrEmpty(developerSecretKey))
-                authType = AuthType.DevSecretKey;
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
+            if (PlayFabSettings.staticSettings.DeveloperSecretKey != null) { authType = AuthType.DevSecretKey; } // TODO: Need to get the correct settings first
+#endif
+#if !DISABLE_PLAYFABENTITY_API
+            if (context.EntityToken != null) { authType = AuthType.EntityToken; }
 #endif
 
 
-            PlayFabHttp.MakeApiCall("/Authentication/GetEntityToken", request, authType, resultCallback, errorCallback, customData, extraHeaders);
+            PlayFabHttp.MakeApiCall("/Authentication/GetEntityToken", request, authType, resultCallback, errorCallback, customData, extraHeaders, context);
         }
 
 
     }
 }
+
 #endif

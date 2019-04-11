@@ -1,9 +1,9 @@
-﻿#if NET_4_6
+#if NET_4_6
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PlayFab;
-using PlayFab.AuthenticationModels;
 using PlayFab.ClientModels;
 using PlayFab.EventsModels;
 using PlayFab.Logger;
@@ -12,6 +12,11 @@ using PlayFab.UUnit;
 
 public class LightweightEventsTests : UUnitTestCase
 {
+    public override void ClassSetUp()
+    {
+        var testTitleData = TestTitleDataLoader.LoadTestTitleData();
+        PlayFabSettings.TitleId = testTitleData.titleId;
+    }
     public override void Tick(UUnitTestContext testContext)
     {
         // no async work needed
@@ -23,20 +28,11 @@ public class LightweightEventsTests : UUnitTestCase
         // get Entity Token which is needed for work events
         PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest
         {
-            CustomId = PlayFabSettings.BuildIdentifier, 
+            CustomId = PlayFabSettings.BuildIdentifier,
             TitleId = PlayFabSettings.TitleId
         }, loginCallback =>
         {
-            PlayFabAuthenticationAPI.GetEntityToken(new GetEntityTokenRequest
-            {
-                AuthenticationContext = loginCallback.AuthenticationContext
-            }, entityCallback =>
-            {
-                WriteOneDSEventsAsync(testContext);
-            }, entityError =>
-            {
-                testContext.Skip("EntityToken required!");
-            });
+            WriteOneDSEventsAsync(testContext);
         }, loginError =>
         {
             testContext.Skip("Login required!");
@@ -49,12 +45,12 @@ public class LightweightEventsTests : UUnitTestCase
     /// </summary>
     public async void WriteOneDSEventsAsync(UUnitTestContext testContext)
     {
-        var event1 = new PlayFabEvent() {Name = "Event_1", EventType = PlayFabEventType.Lightweight};
+        var event1 = new PlayFabEvent() { Name = "Event_1", EventType = PlayFabEventType.Lightweight };
         event1.SetProperty("Prop-A", true);
         event1.SetProperty("Prop-B", "hello");
         event1.SetProperty("Prop-C", 123);
 
-        var event2 = new PlayFabEvent() {Name = "Event_2", EventType = PlayFabEventType.Lightweight};
+        var event2 = new PlayFabEvent() { Name = "Event_2", EventType = PlayFabEventType.Lightweight };
         event2.SetProperty("Prop-A", false);
         event2.SetProperty("Prop-B", "good-bye");
         event2.SetProperty("Prop-C", 456);
@@ -73,14 +69,15 @@ public class LightweightEventsTests : UUnitTestCase
         // get OneDS authentication from PlayFab
         var configRequest = new TelemetryIngestionConfigRequest();
         var authTask = await OneDSEventsAPI.GetTelemetryIngestionConfigAsync(configRequest);
-        var response = authTask.Result;
+        if (authTask.Error != null)
+            testContext.Fail(authTask.Error.GenerateErrorReport());
 
-        testContext.NotNull(response, "Failed to get OneDS authentication info from PlayFab");
-        oneDSEventsApi.SetCredentials("o:" + response.TenantId, response.IngestionKey, response.TelemetryJwtToken,response.TelemetryJwtHeaderKey, response.TelemetryJwtHeaderPrefix);
+        testContext.NotNull(authTask.Result, "Failed to get OneDS authentication info from PlayFab");
+        oneDSEventsApi.SetCredentials("o:" + authTask.Result.TenantId, authTask.Result.IngestionKey, authTask.Result.TelemetryJwtToken, authTask.Result.TelemetryJwtHeaderKey, authTask.Result.TelemetryJwtHeaderPrefix);
 
         // call OneDS events API
         var writeTask = await oneDSEventsApi.WriteTelemetryEventsAsync(request, null, new Dictionary<string, string>());
-        
+
         testContext.NotNull(writeTask);
         testContext.IsNull(writeTask.Error, "Failed to send a batch of custom OneDS events");
         testContext.NotNull(writeTask.Result, "Failed to send a batch of custom OneDS events. Result is null!");
@@ -123,7 +120,7 @@ public class LightweightEventsTests : UUnitTestCase
         foreach (var result in results)
         {
             testContext.True(result.IsCompleted, "Custom event emission task failed to complete");
-            PlayFabEmitEventResponse response = (PlayFabEmitEventResponse) ((Task<IPlayFabEmitEventResponse>) result).Result;
+            PlayFabEmitEventResponse response = (PlayFabEmitEventResponse)((Task<IPlayFabEmitEventResponse>)result).Result;
             testContext.True(response.EmitEventResult == EmitEventResult.Success, "Custom event emission task failed to succeed");
             testContext.True(response.PlayFabError == null && response.WriteEventsResponse != null, "Custom event failed to be sent");
 
@@ -141,7 +138,7 @@ public class LightweightEventsTests : UUnitTestCase
             if (batch.Value == 8) event8++;
             else if (batch.Value == 2) event2++;
         }
-        
+
         // 6 full batches of 8 events and 1 incomplete batch of 2 events are expected
         testContext.True(event8 == 6, "Wrong number of full batches");
         testContext.True(event2 == 1, "Wrong number of incomplete batches");
@@ -150,7 +147,7 @@ public class LightweightEventsTests : UUnitTestCase
 
     private PlayFabEvent CreateSamplePlayFabEvent(string name, PlayFabEventType eventType)
     {
-        var customEvent = new PlayFabEvent {Name = name, EventType = eventType};
+        var customEvent = new PlayFabEvent { Name = name, EventType = eventType };
         customEvent.SetProperty("Prop-A", true);
         customEvent.SetProperty("Prop-B", "custom");
         customEvent.SetProperty("Prop-C", 567);
@@ -158,4 +155,5 @@ public class LightweightEventsTests : UUnitTestCase
         return customEvent;
     }
 }
+
 #endif
