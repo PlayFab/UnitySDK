@@ -1,10 +1,10 @@
 #if !DISABLE_PLAYFABENTITY_API
+
 using System;
 using System.Collections.Generic;
 using PlayFab.EventsModels;
 using PlayFab.Internal;
-using PlayFab.Json;
-using PlayFab.Public;
+using PlayFab.SharedModels;
 
 namespace PlayFab
 {
@@ -12,26 +12,26 @@ namespace PlayFab
     /// Write custom PlayStream events for any PlayFab entity. PlayStream events can be used for analytics, reporting,
     /// debugging, or to trigger custom actions in near real-time.
     /// </summary>
-    public class PlayFabEventsInstanceAPI
+    public class PlayFabEventsInstanceAPI : IPlayFabInstanceApi
     {
-        public PlayFabApiSettings ApiSettings = null;
+        public PlayFabApiSettings apiSettings = null;
         private PlayFabAuthenticationContext authenticationContext = null;
 
-        public PlayFabEventsInstanceAPI() {}
+        public PlayFabEventsInstanceAPI() { }
 
-        public PlayFabEventsInstanceAPI(PlayFabApiSettings settings) 
+        public PlayFabEventsInstanceAPI(PlayFabApiSettings settings)
         {
-            ApiSettings = settings;
+            apiSettings = settings;
         }
 
-        public PlayFabEventsInstanceAPI(PlayFabAuthenticationContext context) 
+        public PlayFabEventsInstanceAPI(PlayFabAuthenticationContext context)
         {
             authenticationContext = context;
         }
 
-        public PlayFabEventsInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context) 
+        public PlayFabEventsInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context)
         {
-            ApiSettings = settings;
+            apiSettings = settings;
             authenticationContext = context;
         }
 
@@ -45,16 +45,13 @@ namespace PlayFab
             return authenticationContext;
         }
 
-
-
-
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.
         /// </summary>
         public void ForgetAllCredentials()
         {
-            if(authenticationContext != null)
+            if (authenticationContext != null)
             {
                 authenticationContext.ForgetAllCredentials();
             }
@@ -63,12 +60,13 @@ namespace PlayFab
         /// <summary>
         /// Write batches of entity based events to PlayStream.
         /// </summary>
-
         public void WriteEvents(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
-            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, false, authenticationContext, ApiSettings);
-        } 
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, apiSettings, this);
+        }
 
     }
 }
+
 #endif

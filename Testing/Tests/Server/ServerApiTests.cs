@@ -8,11 +8,13 @@ namespace PlayFab.UUnit
     {
         private const string FakePlayFabId = "1337"; // A real playfabId here would be nice, but without a client login, it's hard to get one
 
+        private TestTitleDataLoader.TestTitleData testTitleData;
+
         public override void SetUp(UUnitTestContext testContext)
         {
-            var titleData = TestTitleDataLoader.LoadTestTitleData();
-            PlayFabSettings.TitleId = titleData.titleId;
-            PlayFabSettings.DeveloperSecretKey = titleData.developerSecretKey;
+            testTitleData = TestTitleDataLoader.LoadTestTitleData();
+            PlayFabSettings.TitleId = testTitleData.titleId;
+            PlayFabSettings.DeveloperSecretKey = testTitleData.developerSecretKey;
 
             // Verify all the inputs won't cause crashes in the tests
             var titleInfoSet = !string.IsNullOrEmpty(PlayFabSettings.TitleId) && !string.IsNullOrEmpty(PlayFabSettings.DeveloperSecretKey);
@@ -30,7 +32,7 @@ namespace PlayFab.UUnit
             // This error was not expected.  Report it and fail.
             ((UUnitTestContext)error.CustomData).Fail(error.GenerateErrorReport());
         }
-        
+
         /// <summary>
         /// SERVER API
         /// Test that CloudScript can be properly set up and invoked

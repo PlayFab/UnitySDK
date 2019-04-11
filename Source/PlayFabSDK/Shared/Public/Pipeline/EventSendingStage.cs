@@ -1,4 +1,4 @@
-﻿#if NET_4_6
+#if NET_4_6
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +54,7 @@ namespace PlayFab.Pipeline
                 catch (Exception e)
                 {
                     // Cancel result promises that will never be fulfilled
-                    // and move on to the next batch. 
+                    // and move on to the next batch.
                     foreach (var request in batch.Events)
                     {
                         PlayFabEmitEventRequest eventRequest = (PlayFabEmitEventRequest)request;
@@ -74,7 +74,7 @@ namespace PlayFab.Pipeline
             catch (Exception e)
             {
                 // Cancel result promises that will never be fulfilled
-                // and move on to the next batch. 
+                // and move on to the next batch.
                 foreach (var request in batch.Events)
                 {
                     PlayFabEmitEventRequest eventRequest = (PlayFabEmitEventRequest)request;

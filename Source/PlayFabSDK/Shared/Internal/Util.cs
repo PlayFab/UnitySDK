@@ -42,15 +42,6 @@ namespace PlayFab.Internal
         public const int DEFAULT_LOCAL_OUTPUT_INDEX = 9; // The default format if you want to use local time (This doesn't have universal support in all PlayFab code)
         public static DateTimeStyles DateTimeStyles = DateTimeStyles.RoundtripKind;
 
-        /// <summary>
-        /// This field has moved!
-        /// However, most users shouldn't access this at all
-        /// JsonWrapper.Serialize, and JsonWrapper.Deserialize will always use it automatically (Unless you deliberately mess with them)
-        /// Any Serialization of an object in the PlayFab namespace should just use JsonWrapper
-        /// </summary>
-        [Obsolete(@"This field has moved to SimpleJsonInstance.ApiSerializerStrategy", false)]
-        public static SimpleJsonInstance.PlayFabSimpleJsonCuztomization ApiSerializerStrategy { get { return SimpleJsonInstance.ApiSerializerStrategy; } }
-
         public static string timeStamp
         {
             get { return DateTime.Now.ToString(_defaultDateTimeFormats[DEFAULT_LOCAL_OUTPUT_INDEX]); }
@@ -70,7 +61,7 @@ namespace PlayFab.Internal
         private static StringBuilder _sb;
         /// <summary>
         /// A threadsafe way to block and load a text file
-        /// 
+        ///
         /// Load a text file, and return the file as text.
         /// Used for small (usually json) files.
         /// </summary>
@@ -80,7 +71,7 @@ namespace PlayFab.Internal
             {
                 return string.Empty;
             }
-                
+
             if (_sb == null)
             {
                 _sb = new StringBuilder();
@@ -97,10 +88,28 @@ namespace PlayFab.Internal
                     }
                 }
             }
-            
+
             return _sb.ToString();
         }
 
+        public static T TryEnumParse<T>(string value, T defaultValue)
+        {
+            try
+            {
+                return (T)Enum.Parse(typeof(T), value);
+            }
+            catch (InvalidCastException)
+            {
+                return defaultValue;
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError("Enum cast failed with unknown error: " + e.Message);
+                return defaultValue;
+            }
+        }
+
+#if UNITY_2017_1_OR_NEWER
         internal static string GetLocalSettingsFileProperty(string propertyKey)
         {
             string envFileContent = null;
@@ -143,5 +152,6 @@ namespace PlayFab.Internal
             }
             return string.Empty;
         }
+#endif
     }
 }

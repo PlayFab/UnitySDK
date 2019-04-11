@@ -1,4 +1,4 @@
-#if NET_4_6   
+#if NET_4_6
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PlayFab.Logger;
@@ -34,7 +34,7 @@ namespace PlayFab
         /// Gets the event pipelines
         /// </summary>
         public IDictionary<EventPipelineKey, IEventPipeline> Pipelines { get; private set; }
-        
+
         private ILogger logger;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace PlayFab
         /// </summary>
         public PlayFabEventRouter(ILogger logger = null)
         {
-            if(logger == null) logger = new DebugLogger();
+            if (logger == null) logger = new DebugLogger();
             this.logger = logger;
             this.Pipelines = new Dictionary<EventPipelineKey, IEventPipeline>();
         }
@@ -66,7 +66,7 @@ namespace PlayFab
             // only events based on PlayFabEmitEventRequest are supported by default pipelines
             var eventRequest = request as PlayFabEmitEventRequest;
 
-            if ( eventRequest == null || eventRequest.Event == null ) return tasks;
+            if (eventRequest == null || eventRequest.Event == null) return tasks;
 
             foreach (var pipeline in this.Pipelines)
             {

@@ -7,7 +7,7 @@ namespace PlayFab.Internal
     {
         // public const string ONEDS_SERVICE_URL = "https://mobile.events.data.microsoft.com/OneCollector/1.0/";
         public const string ONEDS_SERVICE_URL = "https://self.events.data.microsoft.com/OneCollector/1.0/";
-        
+
         public static void ParseResponse(long httpCode, Func<string> getText, string errorString, Action<object> callback)
         {
             if (!string.IsNullOrEmpty(errorString))

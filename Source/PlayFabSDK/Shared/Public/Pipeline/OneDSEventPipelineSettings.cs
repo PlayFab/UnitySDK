@@ -1,4 +1,4 @@
-#if NET_4_6   
+#if NET_4_6
 using System;
 
 namespace PlayFab.Pipeline
@@ -18,7 +18,7 @@ namespace PlayFab.Pipeline
         public const int DefaultBatchSize = 25;
 
         public const int DefaultMaxHttpAttempts = 3;
-        
+
         public static readonly TimeSpan MinBatchFillTimeout = TimeSpan.FromMilliseconds(100);
         public static readonly TimeSpan MaxBatchFillTimeout = TimeSpan.FromHours(1);
 

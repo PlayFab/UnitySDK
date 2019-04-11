@@ -1,4 +1,4 @@
-﻿﻿#if NET_4_6   
+﻿#if NET_4_6
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -28,7 +28,7 @@ namespace PlayFab.Pipeline
 
         // Pipeline creates and uses its own internal cancellation token source (based on the external token)
         // to be able to communicate a cancellation between its stages when the cancellation needs to happen
-        // inside the pipeline itself (for example, when an exception occurs). Cancellation in this case 
+        // inside the pipeline itself (for example, when an exception occurs). Cancellation in this case
         // is needed to unblock all stage threads from waiting on data in the buffers.
         //
         // More about C# pipelines, their cancellation and error handling see here:
@@ -45,7 +45,7 @@ namespace PlayFab.Pipeline
         private IPipelineStage<TitleEventBatch, PlayFabResult<WriteEventsResponse>> sendingStage;
 
         // references to individual stages of the pipeline task
-        private Task batchingTask; 
+        private Task batchingTask;
         private Task sendingTask;
 
         // The composition of all pipeline tasks including stages
@@ -82,7 +82,7 @@ namespace PlayFab.Pipeline
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
             this.logger = logger;
-            
+
             this.batchingStage = new EventBatchingStage(this.settings.BatchSize, this.settings.BatchFillTimeout, logger);
             this.sendingStage = new EventSendingStage(logger);
         }

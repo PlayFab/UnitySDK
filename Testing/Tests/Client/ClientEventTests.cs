@@ -1,4 +1,5 @@
 #if !DISABLE_PLAYFABCLIENT_API
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,8 @@ namespace PlayFab.UUnit
 
         public override void SetUp(UUnitTestContext testContext)
         {
-            TestTitleDataLoader.LoadTestTitleData();
+            var testTitleData = TestTitleDataLoader.LoadTestTitleData();
+            PlayFabSettings.TitleId = testTitleData.titleId;
 
             _listener = new EventInstanceListener();
             Callbacks.Clear();
@@ -178,4 +180,5 @@ namespace PlayFab.UUnit
         }
     }
 }
+
 #endif

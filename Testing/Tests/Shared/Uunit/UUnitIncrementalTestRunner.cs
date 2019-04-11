@@ -81,9 +81,11 @@ namespace PlayFab.UUnit
                 OnCloudScriptSubmit(null);
         }
 
+        PlayFabClientInstanceAPI clientInstance = new PlayFabClientInstanceAPI(new PlayFabApiSettings(), new PlayFabAuthenticationContext());
         private void PostTestResultsToCloudScript()
         {
-            PlayFabClientAPI.LoginWithCustomID(new LoginWithCustomIDRequest { CustomId = PlayFabSettings.BuildIdentifier }, OnLoginSuccess, OnPostTestResultsError, null, testTitleData.extraHeaders);
+            clientInstance.apiSettings.TitleId = testTitleData.titleId;
+            clientInstance.LoginWithCustomID(new LoginWithCustomIDRequest { CustomId = PlayFabSettings.BuildIdentifier }, OnLoginSuccess, OnPostTestResultsError, null, testTitleData.extraHeaders);
         }
 
         private void OnLoginSuccess(LoginResult result)
@@ -94,14 +96,15 @@ namespace PlayFab.UUnit
                 FunctionParameter = new Dictionary<string, object> { { "customId", PlayFabSettings.BuildIdentifier }, { "testReport", new[] { suite.GetInternalReport() } } },
                 GeneratePlayStreamEvent = true
             };
-            PlayFabClientAPI.ExecuteCloudScript(request, OnCloudScriptSubmit, OnPostTestResultsError, null, testTitleData.extraHeaders);
+
+            clientInstance.ExecuteCloudScript(request, OnCloudScriptSubmit, OnPostTestResultsError, null, testTitleData.extraHeaders);
         }
 
         private void OnCloudScriptSubmit(ExecuteCloudScriptResult result)
         {
             if (postResultsToCloudscript && result != null)
             {
-                Debug.Log("Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + ClientApiTests.PlayFabId);
+                Debug.Log("Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + clientInstance.GetAuthenticationContext().PlayFabId);
                 if (result.Logs != null)
                     foreach (var eachLog in result.Logs)
                         Debug.Log("Cloud Log: " + eachLog.Message);

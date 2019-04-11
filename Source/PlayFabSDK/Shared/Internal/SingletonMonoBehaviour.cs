@@ -43,7 +43,7 @@ namespace PlayFab.Internal
             {
                 DontDestroyOnLoad(this);
             }
-            
+
             //check if instance already exists when reloading original scene
             if (_instance != null)
             {

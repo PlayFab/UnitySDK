@@ -144,7 +144,7 @@ namespace PlayFab.UUnit
             PluginManager.SetPlugin(expectedTransport1, PluginContract.PlayFab_Transport, customTransportName1);
             PluginManager.SetPlugin(expectedTransport2, PluginContract.PlayFab_Transport, customTransportName2);
 
-            // Verify 
+            // Verify
             var actualTransport = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport);
             testContext.True(object.ReferenceEquals(actualTransport, playFabTransport)); // the default one is still the same
             var actualTransport1 = PluginManager.GetPlugin<ITransportPlugin>(PluginContract.PlayFab_Transport, customTransportName1);

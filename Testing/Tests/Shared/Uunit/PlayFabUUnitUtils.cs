@@ -6,10 +6,10 @@ namespace PlayFab.UUnit
     /// Provide some default async-callback wrappers that demonstrate how to catch exceptions in callbacks and report them as failures
     /// A super-general solution is elusive and difficult.  Can't really come up with anything that doesn't massively break the interface.
     /// These are ONLY meant to be used by the PlayFab UUnit test framework
-    /// 
+    ///
     /// Every async call that is part of a test should be wrapped like this to ensure that exceptions are relayed to the testContext as failures, including UUnit-asserts.
     /// If a UUnit exception is visible in the Unity exception log, an async callback wasn't properly wrapped.
-    /// 
+    ///
     /// Unfortunately, due to limitations in C#, every callback signature must have a unique wrapper function in this style.
     /// </summary>
     public static class PlayFabUUnitUtils

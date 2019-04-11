@@ -1,4 +1,4 @@
-﻿#if NET_4_6   
+#if NET_4_6
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace PlayFab.Pipeline
         /// </summary>
         /// <param name="input">The input collection.</param>
         /// <param name="output">The output collection.</param>
-        /// <param name="cts">The cancellation token source which can be used by the operation to exit 
+        /// <param name="cts">The cancellation token source which can be used by the operation to exit
         /// if cancellation was requested from outside or to signal a cancellation to outside.</param>
         public virtual void RunStage(BlockingCollection<TInputItem> input, BlockingCollection<TOutputItem> output, CancellationTokenSource cts)
         {
@@ -73,7 +73,7 @@ namespace PlayFab.Pipeline
         }
 
         /// <summary>
-        /// This method can be overriden in a descendant to provide a custom 
+        /// This method can be overriden in a descendant to provide a custom
         /// iteration logic for the input collection.
         /// </summary>
         /// <returns>The custom enumerator.</returns>

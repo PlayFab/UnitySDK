@@ -1,36 +1,36 @@
 #if !DISABLE_PLAYFABENTITY_API
+
 using System;
 using System.Collections.Generic;
 using PlayFab.CloudScriptModels;
 using PlayFab.Internal;
-using PlayFab.Json;
-using PlayFab.Public;
+using PlayFab.SharedModels;
 
 namespace PlayFab
 {
     /// <summary>
     /// API methods for executing CloudScript using an Entity Profile
     /// </summary>
-    public class PlayFabCloudScriptInstanceAPI
+    public class PlayFabCloudScriptInstanceAPI : IPlayFabInstanceApi
     {
-        public PlayFabApiSettings ApiSettings = null;
+        public PlayFabApiSettings apiSettings = null;
         private PlayFabAuthenticationContext authenticationContext = null;
 
-        public PlayFabCloudScriptInstanceAPI() {}
+        public PlayFabCloudScriptInstanceAPI() { }
 
-        public PlayFabCloudScriptInstanceAPI(PlayFabApiSettings settings) 
+        public PlayFabCloudScriptInstanceAPI(PlayFabApiSettings settings)
         {
-            ApiSettings = settings;
+            apiSettings = settings;
         }
 
-        public PlayFabCloudScriptInstanceAPI(PlayFabAuthenticationContext context) 
+        public PlayFabCloudScriptInstanceAPI(PlayFabAuthenticationContext context)
         {
             authenticationContext = context;
         }
 
-        public PlayFabCloudScriptInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context) 
+        public PlayFabCloudScriptInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context)
         {
-            ApiSettings = settings;
+            apiSettings = settings;
             authenticationContext = context;
         }
 
@@ -44,16 +44,13 @@ namespace PlayFab
             return authenticationContext;
         }
 
-
-
-
         /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.
         /// </summary>
         public void ForgetAllCredentials()
         {
-            if(authenticationContext != null)
+            if (authenticationContext != null)
             {
                 authenticationContext.ForgetAllCredentials();
             }
@@ -63,12 +60,13 @@ namespace PlayFab
         /// Cloud Script is one of PlayFab's most versatile features. It allows client code to request execution of any kind of
         /// custom server-side functionality you can implement, and it can be used in conjunction with virtually anything.
         /// </summary>
-
         public void ExecuteEntityCloudScript(ExecuteEntityCloudScriptRequest request, Action<ExecuteCloudScriptResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
-            PlayFabHttp.MakeApiCall("/CloudScript/ExecuteEntityCloudScript", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, false, authenticationContext, ApiSettings);
-        } 
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            PlayFabHttp.MakeApiCall("/CloudScript/ExecuteEntityCloudScript", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, apiSettings, this);
+        }
 
     }
 }
+
 #endif

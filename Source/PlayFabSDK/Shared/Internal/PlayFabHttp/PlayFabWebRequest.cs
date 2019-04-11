@@ -1,4 +1,5 @@
 #if !UNITY_WSA && !UNITY_WP8
+
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using PlayFab.Json;
 
 namespace PlayFab.Internal
 {
-    public class PlayFabWebRequest : IPlayFabTransportPlugin
+    public class PlayFabWebRequest : ITransportPlugin
     {
         /// <summary>
         /// Disable encryption certificate validation within PlayFabWebRequest using this request.
@@ -29,7 +30,7 @@ namespace PlayFab.Internal
         /// </summary>
         public static void SkipCertificateValidation()
         {
-            var rcvc = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications); //(sender, cert, chain, ssl) => true	
+            var rcvc = new System.Net.Security.RemoteCertificateValidationCallback(AcceptAllCertifications); //(sender, cert, chain, ssl) => true
             ServicePointManager.ServerCertificateValidationCallback = rcvc;
             certValidationSet = true;
         }
@@ -66,9 +67,6 @@ namespace PlayFab.Internal
         private static string _unityVersion;
 
         private bool _isInitialized = false;
-
-        public string AuthKey { get; set; }
-        public string EntityToken { get; set; }
 
         public bool IsInitialized { get { return _isInitialized; } }
 
@@ -423,12 +421,12 @@ namespace PlayFab.Internal
                 reqContainer.ApiResult.Request = reqContainer.ApiRequest;
                 reqContainer.ApiResult.CustomData = reqContainer.CustomData;
 
-                PlayFabHttp.instance.OnPlayFabApiResult(reqContainer.ApiResult);
+                PlayFabHttp.instance.OnPlayFabApiResult(reqContainer);
 
 #if !DISABLE_PLAYFABCLIENT_API
                 lock (ResultQueueTransferThread)
                 {
-                    ResultQueueTransferThread.Enqueue(() => { PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult); });
+                    ResultQueueTransferThread.Enqueue(() => { PlayFabDeviceUtil.OnPlayFabLogin(reqContainer.ApiResult, reqContainer.settings, reqContainer.instanceApi); });
                 }
 #endif
                 lock (ResultQueueTransferThread)

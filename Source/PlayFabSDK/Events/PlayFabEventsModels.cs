@@ -9,7 +9,7 @@ namespace PlayFab.EventsModels
     /// Combined entity type and ID structure which uniquely identifies a single entity.
     /// </summary>
     [Serializable]
-    public class EntityKey
+    public class EntityKey : PlayFabBaseModel
     {
         /// <summary>
         /// Unique ID of the entity.
@@ -22,7 +22,7 @@ namespace PlayFab.EventsModels
     }
 
     [Serializable]
-    public class EventContents
+    public class EventContents : PlayFabBaseModel
     {
         /// <summary>
         /// Entity associated with the event. If null, the event will apply to the calling entity.
