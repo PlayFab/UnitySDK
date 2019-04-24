@@ -1,4 +1,3 @@
-﻿#if NET_4_6
 using System.Collections.Generic;
 
 namespace PlayFab.Pipeline
@@ -15,4 +14,3 @@ namespace PlayFab.Pipeline
         }
     }
 }
-#endif

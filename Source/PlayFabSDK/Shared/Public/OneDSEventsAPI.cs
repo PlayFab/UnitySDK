@@ -1,4 +1,7 @@
-#if NET_4_6
+#if !NET_4_6 && (NET_2_0_SUBSET || NET_2_0)
+#define TPL_35
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,13 +61,17 @@ namespace PlayFab
         /// Write batches of custom events to OneDS (One Data Collector).
         /// The payload of custom events must be of OneDSEventData type.
         /// </summary>
+#if TPL_35
+        public Task<PlayFabResult<WriteEventsResponse>> WriteTelemetryEventsAsync(WriteEventsRequest request, object customData = null, Dictionary<string, string> extraHeaders = null)
+#else
         public async Task<PlayFabResult<WriteEventsResponse>> WriteTelemetryEventsAsync(WriteEventsRequest request, object customData = null, Dictionary<string, string> extraHeaders = null)
+#endif
         {
             if (request.Events.Count == 0)
             {
                 var apiMethodResult = new PlayFabResult<WriteEventsResponse>
                 {
-                    Error = new PlayFabError
+                    Error = new OneDsError
                     {
                         Error = PlayFabErrorCode.ContentNotFound,
                         ErrorMessage = "No events found in request. Please make sure to provide at least one event in the batch.",
@@ -73,14 +80,18 @@ namespace PlayFab
                     CustomData = customData
                 };
 
+#if TPL_35
+                return Task.Run(() => apiMethodResult);
+#else
                 return apiMethodResult;
+#endif
             }
 
             if (!this.IsOneDSAuthenticated)
             {
                 var apiMethodResult = new PlayFabResult<WriteEventsResponse>
                 {
-                    Error = new PlayFabError
+                    Error = new OneDsError
                     {
                         Error = PlayFabErrorCode.AuthTokenDoesNotExist,
                         ErrorMessage = "OneDS API client is not authenticated. Please make sure OneDS credentials are set.",
@@ -88,8 +99,11 @@ namespace PlayFab
                     },
                     CustomData = customData
                 };
-
+#if TPL_35
+                return Task.Run(() => apiMethodResult);
+#else
                 return apiMethodResult;
+#endif
             }
 
             // get transport plugin for OneDS
@@ -151,24 +165,34 @@ namespace PlayFab
             PlayFabResult<WriteEventsResponse> result = null;
             transport.DoPost(serializedBatch, headers, httpResult =>
             {
-                if (httpResult is PlayFabError)
+                if (httpResult is OneDsError)
                 {
-                    var error = (PlayFabError)httpResult;
+                    var error = (OneDsError)httpResult;
                     result = new PlayFabResult<WriteEventsResponse> { Error = error, CustomData = customData };
                     return;
                 }
                 result = new PlayFabResult<WriteEventsResponse> { Result = new WriteEventsResponse(), CustomData = customData };
             });
-
-            await WaitWhile(() => result == null, 100);
-
+#if TPL_35
+            return Task.Run(() =>
+            {
+                OneDsUtility.WaitWhile(() => result == null).Await();
+                return result;
+            });
+#else
+            await OneDsUtility.WaitWhile(() => result == null);
             return result;
+#endif
         }
 
         /// <summary>
         /// This is an internal API for PlayFab SDK to get Ingestion Config that enables telemetry ingestion.
         /// </summary>
+#if TPL_35
+        internal static Task<PlayFabResult<TelemetryIngestionConfigResponse>> GetTelemetryIngestionConfigAsync(TelemetryIngestionConfigRequest request, object customData = null, Dictionary<string, string> extraHeaders = null)
+#else
         internal static async Task<PlayFabResult<TelemetryIngestionConfigResponse>> GetTelemetryIngestionConfigAsync(TelemetryIngestionConfigRequest request, object customData = null, Dictionary<string, string> extraHeaders = null)
+#endif
         {
             if (PlayFabSettings.staticPlayer.EntityToken == null) throw new PlayFabException(PlayFabExceptionCode.EntityTokenNotSet, "Must call GetEntityToken before calling this method");
 
@@ -182,24 +206,25 @@ namespace PlayFab
                 },
                 error =>
                 {
-                    result = new PlayFabResult<TelemetryIngestionConfigResponse> { Error = error, CustomData = customData };
+                    result = new PlayFabResult<TelemetryIngestionConfigResponse>{Error = new OneDsError
+                    {
+                        HttpCode = error.HttpCode,
+                        HttpStatus = error.HttpStatus,
+                        Error = error.Error,
+                        ErrorMessage = error.ErrorMessage
+                    }, CustomData = customData};
                 }, null, null, PlayFabSettings.staticPlayer);
             });
-
-            await WaitWhile(() => result == null, 100);
-            return result;
-        }
-
-        public static async Task WaitWhile(Func<bool> condition, int frequency = 25, int timeout = -1)
-        {
-            var waitTask = Task.Run(async () =>
+#if TPL_35
+            return Task.Run(() =>
             {
-                while (condition()) await Task.Delay(frequency);
+                OneDsUtility.WaitWhile(() => result == null).Await();
+                return result;
             });
-
-            if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
-                throw new TimeoutException();
+#else
+            await OneDsUtility.WaitWhile(() => result == null);
+            return result;
+#endif
         }
     }
 }
-#endif

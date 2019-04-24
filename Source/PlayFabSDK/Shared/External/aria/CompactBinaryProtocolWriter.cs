@@ -1,5 +1,4 @@
-﻿#if NET_4_6 
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -43,7 +42,10 @@ namespace Microsoft.Applications.Events
     internal class CompactBinaryProtocolWriter
     {
         private List<byte> _output = null;
-        public List<byte> Data => _output;
+        public List<byte> Data
+        {
+            get { return _output; }
+        }
 
         public CompactBinaryProtocolWriter()
         {
@@ -262,4 +264,3 @@ namespace Microsoft.Applications.Events
     }
 
 }
-#endif

@@ -57,14 +57,10 @@ namespace PlayFab
                         plugin = this.CreatePlugin<SimpleJsonInstance>();
                         break;
                     case PluginContract.PlayFab_Transport:
-#if NET_4_6
                         if (instanceName == PluginManager.PLUGIN_TRANSPORT_ONEDS)
                             plugin = this.CreateOneDSTransportPlugin();
                         else
                             plugin = this.CreatePlayFabTransportPlugin();
-#else
-                        plugin = this.CreatePlayFabTransportPlugin();
-#endif
                         break;
                     default:
                         throw new ArgumentException("This contract is not supported", "contract");
@@ -117,7 +113,6 @@ namespace PlayFab
             return transport;
         }
 
-#if NET_4_6
         private IOneDSTransportPlugin CreateOneDSTransportPlugin()
         {
             IOneDSTransportPlugin transport = null;
@@ -142,6 +137,5 @@ namespace PlayFab
 
             return transport;
         }
-#endif
     }
 }

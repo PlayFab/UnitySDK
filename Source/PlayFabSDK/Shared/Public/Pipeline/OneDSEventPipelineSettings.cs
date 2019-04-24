@@ -1,4 +1,7 @@
-#if NET_4_6
+#if !NET_4_6 && (NET_2_0_SUBSET || NET_2_0)
+#define TPL_35
+#endif
+
 using System;
 
 namespace PlayFab.Pipeline
@@ -32,12 +35,12 @@ namespace PlayFab.Pipeline
         /// <summary>
         /// The size of the event buffer.
         /// </summary>
-        public int EventBufferSize { get; set; } = DefaultEventBufferSize;
+        public int EventBufferSize = DefaultEventBufferSize;
 
         /// <summary>
         /// The size of the batch buffer.
         /// </summary>
-        public int BatchBufferSize { get; set; } = DefaultBatchBufferSize;
+        public int BatchBufferSize = DefaultBatchBufferSize;
 
         /// <summary>
         /// The size of a batch.
@@ -54,12 +57,12 @@ namespace PlayFab.Pipeline
             {
                 if (value < MinBatchSize)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(this.BatchSize), $"The batch size setting cannot be less than {MinBatchSize}");
+                    ThrowOutOfRange("BatchSize", string.Format("The batch size setting cannot be less than {0}", MinBatchSize));
                 }
 
                 if (value > MaxBatchSize)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(this.BatchSize), $"The batch size setting cannot be greater than {MaxBatchSize}");
+                    ThrowOutOfRange("BatchSize", string.Format("The batch size setting cannot be greater than {0}", MaxBatchSize));
                 }
 
                 this.batchSize = value;
@@ -82,19 +85,23 @@ namespace PlayFab.Pipeline
             {
                 if (value < MinBatchFillTimeout)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(this.BatchFillTimeout), $"The batch fill timeout setting cannot be less than {MinBatchFillTimeout}");
+                    ThrowOutOfRange("BatchFillTimeout", string.Format("The batch fill timeout setting cannot be less than {0}", MinBatchFillTimeout));
                 }
 
                 if (value > MaxBatchFillTimeout)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(this.BatchFillTimeout), $"The batch fill timeout setting cannot be greater than {MaxBatchFillTimeout}");
+                    ThrowOutOfRange("BatchFillTimeout", string.Format("The batch fill timeout setting cannot be greater than {0}", MaxBatchFillTimeout));
                 }
 
                 this.batchFillTimeout = value;
             }
         }
 
-        public int MaxHttpAttempts { get; set; } = DefaultMaxHttpAttempts;
+        private void ThrowOutOfRange(string paramName, string message)
+        {
+            throw new ArgumentOutOfRangeException(paramName, message);
+        }
+
+        public int MaxHttpAttempts = DefaultMaxHttpAttempts;
     }
 }
-#endif

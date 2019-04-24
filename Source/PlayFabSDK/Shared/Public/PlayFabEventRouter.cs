@@ -1,4 +1,8 @@
-#if NET_4_6
+#if !NET_4_6 && (NET_2_0_SUBSET || NET_2_0)
+#define TPL_35
+#endif
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PlayFab.Logger;
@@ -21,7 +25,11 @@ namespace PlayFab
     public interface IPlayFabEventRouter
     {
         IDictionary<EventPipelineKey, IEventPipeline> Pipelines { get; }
+#if TPL_35
+        void AddAndStartPipeline(EventPipelineKey eventPipelineKey, IEventPipeline eventPipeline);
+#else
         Task AddAndStartPipeline(EventPipelineKey eventPipelineKey, IEventPipeline eventPipeline);
+#endif
         IEnumerable<Task<IPlayFabEmitEventResponse>> RouteEvent(IPlayFabEmitEventRequest request); // Route an event to pipelines. This method must be thread-safe.
     }
 
@@ -53,10 +61,18 @@ namespace PlayFab
         /// <param name="eventPipelineKey">The event pipeline key.</param>
         /// <param name="eventPipeline">The event pipeline.</param>
         /// <returns>A task that runs while the pipeline is active.</returns>
+#if TPL_35
+        public void AddAndStartPipeline(EventPipelineKey eventPipelineKey, IEventPipeline eventPipeline)
+#else
         public Task AddAndStartPipeline(EventPipelineKey eventPipelineKey, IEventPipeline eventPipeline)
+#endif
         {
             this.Pipelines.Add(eventPipelineKey, eventPipeline);
+#if TPL_35
+            eventPipeline.StartAsync();
+#else
             return eventPipeline.StartAsync();
+#endif
         }
 
         public IEnumerable<Task<IPlayFabEmitEventResponse>> RouteEvent(IPlayFabEmitEventRequest request)
@@ -81,7 +97,7 @@ namespace PlayFab
                         }
                         break;
                     default:
-                        logger.Error($"Not supported event type {eventRequest.Event.EventType}.");
+                        logger.Error(string.Format("Not supported event type {0}.", eventRequest.Event.EventType));
                         break;
                 }
             }
@@ -90,4 +106,3 @@ namespace PlayFab
         }
     }
 }
-#endif

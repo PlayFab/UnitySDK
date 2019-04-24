@@ -1,9 +1,12 @@
-#if NET_4_6
+#if !NET_4_6 && (NET_2_0_SUBSET || NET_2_0)
+#define TPL_35
+#endif
 
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PlayFab;
+using PlayFab.AuthenticationModels;
 using PlayFab.ClientModels;
 using PlayFab.EventsModels;
 using PlayFab.Logger;
@@ -32,7 +35,20 @@ public class LightweightEventsTests : UUnitTestCase
             TitleId = PlayFabSettings.TitleId
         }, loginCallback =>
         {
-            WriteOneDSEventsAsync(testContext);
+            PlayFabAuthenticationAPI.GetEntityToken(new GetEntityTokenRequest
+            {
+                AuthenticationContext = loginCallback.AuthenticationContext
+            }, entityCallback =>
+            {
+#if TPL_35
+                Task.Run(() => WriteOneDSEventsAsync(testContext));
+#else
+                WriteOneDSEventsAsync(testContext);
+#endif
+            }, entityError =>
+            {
+                testContext.Skip("EntityToken required!");
+            });
         }, loginError =>
         {
             testContext.Skip("Login required!");
@@ -43,7 +59,11 @@ public class LightweightEventsTests : UUnitTestCase
     /// ONEDS API
     /// Test that a batch of custom events can be sent to OneDS server
     /// </summary>
+#if TPL_35
+    public void WriteOneDSEventsAsync(UUnitTestContext testContext)
+#else
     public async void WriteOneDSEventsAsync(UUnitTestContext testContext)
+#endif
     {
         var event1 = new PlayFabEvent() { Name = "Event_1", EventType = PlayFabEventType.Lightweight };
         event1.SetProperty("Prop-A", true);
@@ -68,15 +88,23 @@ public class LightweightEventsTests : UUnitTestCase
 
         // get OneDS authentication from PlayFab
         var configRequest = new TelemetryIngestionConfigRequest();
+#if TPL_35
+        var authTask = OneDSEventsAPI.GetTelemetryIngestionConfigAsync(configRequest).Await();
+#else
         var authTask = await OneDSEventsAPI.GetTelemetryIngestionConfigAsync(configRequest);
-        if (authTask.Error != null)
-            testContext.Fail(authTask.Error.GenerateErrorReport());
+#endif
+
+        var response = authTask.Result;
 
         testContext.NotNull(authTask.Result, "Failed to get OneDS authentication info from PlayFab");
         oneDSEventsApi.SetCredentials("o:" + authTask.Result.TenantId, authTask.Result.IngestionKey, authTask.Result.TelemetryJwtToken, authTask.Result.TelemetryJwtHeaderKey, authTask.Result.TelemetryJwtHeaderPrefix);
 
         // call OneDS events API
+#if TPL_35
+        var writeTask = oneDSEventsApi.WriteTelemetryEventsAsync(request, null, new Dictionary<string, string>()).Await();
+#else
         var writeTask = await oneDSEventsApi.WriteTelemetryEventsAsync(request, null, new Dictionary<string, string>());
+#endif
 
         testContext.NotNull(writeTask);
         testContext.IsNull(writeTask.Error, "Failed to send a batch of custom OneDS events");
@@ -86,9 +114,20 @@ public class LightweightEventsTests : UUnitTestCase
 
 
     [UUnitTest]
-    public void EmitLightweightEvents(UUnitTestContext testContext) => EmitLightweightEventsAsync(testContext);
+    public void EmitLightweightEvents(UUnitTestContext testContext)
+    {
+#if TPL_35
+        Task.Run(() => EmitLightweightEventsAsync(testContext));
+#else
+        EmitLightweightEventsAsync(testContext);
+#endif
+    }
 
+#if TPL_35
+    public  void EmitLightweightEventsAsync(UUnitTestContext testContext)
+#else
     public async void EmitLightweightEventsAsync(UUnitTestContext testContext)
+#endif
     {
         // create and set settings for OneDS event pipeline
         var settings = new OneDSEventPipelineSettings();
@@ -101,10 +140,16 @@ public class LightweightEventsTests : UUnitTestCase
 
         // create custom event API, add the pipeline
         var playFabEventApi = new PlayFabEventAPI(logger);
+#pragma warning disable 4014
         playFabEventApi.EventRouter.AddAndStartPipeline(EventPipelineKey.OneDS, oneDSPipeline);
+#pragma warning restore 4014
 
         // create and emit many lightweight events
+#if TPL_35
+        var results = new List<Task<IPlayFabEmitEventResponse>>();
+#else
         var results = new List<Task>();
+#endif
 
         for (int i = 0; i < 50; i++)
         {
@@ -112,7 +157,11 @@ public class LightweightEventsTests : UUnitTestCase
         }
 
         // wait when the pipeline finishes sending all events
+#if TPL_35
+        Task.WhenAll(results).Await();
+#else
         await Task.WhenAll(results);
+#endif
 
         // check results
         var sentBatches = new Dictionary<IList<IPlayFabEmitEventRequest>, int>();
@@ -155,5 +204,3 @@ public class LightweightEventsTests : UUnitTestCase
         return customEvent;
     }
 }
-
-#endif

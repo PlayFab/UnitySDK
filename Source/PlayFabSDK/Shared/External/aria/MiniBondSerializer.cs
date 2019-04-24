@@ -1,5 +1,4 @@
-﻿#if NET_4_6 
-using System;
+﻿using System;
 using Microsoft.Applications.Events.DataModels;
 
 // This is part of Aria SDK
@@ -1508,4 +1507,3 @@ namespace Microsoft.Applications.Events
     } // namespace bond_lite
 
 }
-#endif

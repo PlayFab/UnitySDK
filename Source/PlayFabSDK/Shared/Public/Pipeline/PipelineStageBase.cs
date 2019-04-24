@@ -1,4 +1,3 @@
-#if NET_4_6
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -99,4 +98,3 @@ namespace PlayFab.Pipeline
         protected abstract void OnNextInputItem(TInputItem inputItem);
     }
 }
-#endif

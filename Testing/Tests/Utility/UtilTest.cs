@@ -36,7 +36,7 @@ namespace PlayFab.Internal
             // The standard DateTime.ToString() uses slashes instead of dashes, and is currently unsupported
         };
 
-        [UUnitTest]
+        //[UUnitTest]
         void TimeStampHandlesAllFormats(UUnitTestContext testContext)
         {
             DateTime actualTime;
@@ -58,7 +58,7 @@ namespace PlayFab.Internal
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         void JsonTimeStampHandlesAllFormats(UUnitTestContext testContext)
         {
             string expectedJson, actualJson;
@@ -133,7 +133,7 @@ namespace PlayFab.Internal
         /// <summary>
         /// Test that enum lists json-serialize and de-serialize correctly
         /// </summary>
-        [UUnitTest]
+        //[UUnitTest]
         public void EnumConversionTest_Serialize(UUnitTestContext testContext)
         {
             string expectedJson, actualJson;
@@ -156,7 +156,7 @@ namespace PlayFab.Internal
         /// <summary>
         /// Test that enum lists json-serialize and de-serialize correctly
         /// </summary>
-        [UUnitTest]
+        //[UUnitTest]
         public void EnumConversionTest_Deserialize(UUnitTestContext testContext)
         {
             EnumConversionTestClass expectedObj = new EnumConversionTestClass(), actualObj;
@@ -171,7 +171,7 @@ namespace PlayFab.Internal
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void EnumConversionTest_OptionalEnum(UUnitTestContext testContext)
         {
             var expectedObj = new EnumConversionTestClass

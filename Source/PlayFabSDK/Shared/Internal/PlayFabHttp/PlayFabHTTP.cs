@@ -373,13 +373,17 @@ namespace PlayFab.Internal
                 transport.Update();
             }
 
-#if NET_4_6
             while (_injectedCoroutines.Count > 0)
                 StartCoroutine(_injectedCoroutines.Dequeue());
 
             while (_injectedAction.Count > 0)
-                _injectedAction.Dequeue()?.Invoke();
-#endif
+            {
+                var action = _injectedAction.Dequeue();
+                if (action != null)
+                {
+                    action.Invoke();
+                }
+            }
         }
 
         #region Helpers
@@ -464,14 +468,19 @@ namespace PlayFab.Internal
             }
         }
 #endif
-        #endregion
-#if NET_4_6
+#endregion
         private readonly Queue<IEnumerator> _injectedCoroutines = new Queue<IEnumerator>();
         private readonly Queue<Action> _injectedAction = new Queue<Action>();
 
-        public void InjectInUnityThread(IEnumerator x) => _injectedCoroutines.Enqueue(x);
-        public void InjectInUnityThread(Action action) => _injectedAction.Enqueue(action);
-#endif
+        public void InjectInUnityThread(IEnumerator x)
+        {
+            _injectedCoroutines.Enqueue(x);
+        }
+
+        public void InjectInUnityThread(Action action)
+        {
+            _injectedAction.Enqueue(action);
+        }
     }
 
     #region Event Classes
