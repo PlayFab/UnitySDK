@@ -153,17 +153,17 @@ namespace PlayFab.MultiplayerModels
         /// The metadata of the build.
         /// </summary>
         public Dictionary<string,string> Metadata;
+        /// <summary>
+        /// The configuration and status for each region in the build.
+        /// </summary>
+        public List<BuildRegion> RegionConfigurations;
     }
 
     /// <summary>
-    /// Cancels all tickets of which the player is a member in a given queue that are not
-    /// cancelled or matched. This API is useful if you lose track of what tickets
-    /// the player is a member of (if the title crashes for instance) and want to
-    /// "reset".
-    /// The Entity field is optional if the caller is a player and defaults to that
-    /// player. Players may not cancel tickets for other people.
-    /// The Entity field is required if the caller is a server (authenticated as
-    /// the title).
+    /// Cancels all tickets of which the player is a member in a given queue that are not cancelled or matched. This API is
+    /// useful if you lose track of what tickets the player is a member of (if the title crashes for instance) and want to
+    /// "reset". The Entity field is optional if the caller is a player and defaults to that player. Players may not cancel
+    /// tickets for other people. The Entity field is required if the caller is a server (authenticated as the title).
     /// </summary>
     [Serializable]
     public class CancelAllMatchmakingTicketsForPlayerRequest : PlayFabRequestCommon
@@ -191,18 +191,14 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// Only servers and ticket members can cancel a ticket.
-    /// The ticket can be in four different states when it is cancelled.
-    /// 1: the ticket is waiting for members to join it, and it has not started matching.
-    /// If the ticket is cancelled at this stage, it will never match.
-    /// 2: the ticket is matching. If the ticket is cancelled, it will stop matching.
-    /// 3: the ticket is matched. A matched ticket cannot be cancelled.
-    /// 4: the ticket is already cancelled and nothing happens.
-    /// There may be race conditions between the ticket getting matched and
-    /// the client making a cancellation request. The client must handle the possibility
-    /// that the cancel request fails if a match is found before the cancellation request is processed.
-    /// We do not allow resubmitting a cancelled ticket because players
-    /// must consent to enter matchmaking again. Create a new ticket instead.
+    /// Only servers and ticket members can cancel a ticket. The ticket can be in four different states when it is cancelled. 1:
+    /// the ticket is waiting for members to join it, and it has not started matching. If the ticket is cancelled at this stage,
+    /// it will never match. 2: the ticket is matching. If the ticket is cancelled, it will stop matching. 3: the ticket is
+    /// matched. A matched ticket cannot be cancelled. 4: the ticket is already cancelled and nothing happens. There may be race
+    /// conditions between the ticket getting matched and the client making a cancellation request. The client must handle the
+    /// possibility that the cancel request fails if a match is found before the cancellation request is processed. We do not
+    /// allow resubmitting a cancelled ticket because players must consent to enter matchmaking again. Create a new ticket
+    /// instead.
     /// </summary>
     [Serializable]
     public class CancelMatchmakingTicketRequest : PlayFabRequestCommon
@@ -904,9 +900,8 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// The ticket includes the invited players, their attributes if they have joined,
-    /// the ticket status, the match Id when applicable, etc.
-    /// Only servers, the ticket creator and the invited players can get the ticket.
+    /// The ticket includes the invited players, their attributes if they have joined, the ticket status, the match Id when
+    /// applicable, etc. Only servers, the ticket creator and the invited players can get the ticket.
     /// </summary>
     [Serializable]
     public class GetMatchmakingTicketRequest : PlayFabRequestCommon
@@ -973,10 +968,9 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// When matchmaking has successfully matched together a collection of
-    /// tickets, it produces a 'match' with an Id. The match contains all of
-    /// the players that were matched together, and their team assigments.
-    /// Only servers and ticket members can get the match.
+    /// When matchmaking has successfully matched together a collection of tickets, it produces a 'match' with an Id. The match
+    /// contains all of the players that were matched together, and their team assigments. Only servers and ticket members can
+    /// get the match.
     /// </summary>
     [Serializable]
     public class GetMatchRequest : PlayFabRequestCommon
@@ -1089,12 +1083,11 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// Returns the matchmaking statistics for a queue. These include the number of players matching
-    /// and the statistics related to the time to match statistics in seconds (average and percentiles).
-    /// Statistics are refreshed once every 5 minutes.
-    /// Servers can access all statistics no matter what the ClientStatisticsVisibility is configured to.
-    /// Clients can access statistics according to the ClientStatisticsVisibility.
-    /// Client requests are forbidden if all visibility fields are false.
+    /// Returns the matchmaking statistics for a queue. These include the number of players matching and the statistics related
+    /// to the time to match statistics in seconds (average and percentiles). Statistics are refreshed once every 5 minutes.
+    /// Servers can access all statistics no matter what the ClientStatisticsVisibility is configured to. Clients can access
+    /// statistics according to the ClientStatisticsVisibility. Client requests are forbidden if all visibility fields are
+    /// false.
     /// </summary>
     [Serializable]
     public class GetQueueStatisticsRequest : PlayFabRequestCommon
@@ -1170,12 +1163,10 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// Add the player to a matchmaking ticket and specify all of its matchmaking
-    /// attributes. Players can join a ticket if and only if their EntityKeys are
-    /// already listed in the ticket's Members list.
-    /// The matchmaking service automatically starts matching the ticket against
-    /// other matchmaking tickets once all players have joined the ticket.
-    /// It is not possible to join a ticket once it has started matching.
+    /// Add the player to a matchmaking ticket and specify all of its matchmaking attributes. Players can join a ticket if and
+    /// only if their EntityKeys are already listed in the ticket's Members list. The matchmaking service automatically starts
+    /// matching the ticket against other matchmaking tickets once all players have joined the ticket. It is not possible to
+    /// join a ticket once it has started matching.
     /// </summary>
     [Serializable]
     public class JoinMatchmakingTicketRequest : PlayFabRequestCommon
@@ -1370,8 +1361,8 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// If the caller is a title, the EntityKey in the request is required.
-    /// If the caller is a player, then it is optional. If it is provided it must match the caller's entity.
+    /// If the caller is a title, the EntityKey in the request is required. If the caller is a player, then it is optional. If
+    /// it is provided it must match the caller's entity.
     /// </summary>
     [Serializable]
     public class ListMatchmakingTicketsForPlayerRequest : PlayFabRequestCommon
@@ -1697,9 +1688,8 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// Deletes the configuration for a queue. This will permanently delete the
-    /// configuration and players will no longer be able to match in the queue.
-    /// All outstanding matchmaking tickets will be cancelled.
+    /// Deletes the configuration for a queue. This will permanently delete the configuration and players will no longer be able
+    /// to match in the queue. All outstanding matchmaking tickets will be cancelled.
     /// </summary>
     [Serializable]
     public class RemoveMatchmakingQueueRequest : PlayFabRequestCommon
@@ -1844,9 +1834,8 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
-    /// Use this API to create or update matchmaking queue configurations. The queue
-    /// configuration defines the matchmaking rules. The matchmaking service will match
-    /// tickets together according to the configured rules. Queue resources are not
+    /// Use this API to create or update matchmaking queue configurations. The queue configuration defines the matchmaking
+    /// rules. The matchmaking service will match tickets together according to the configured rules. Queue resources are not
     /// spun up by calling this API. Queues are created when the first ticket is submitted.
     /// </summary>
     [Serializable]

@@ -1,4 +1,3 @@
-#if NET_4_6
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +47,7 @@ namespace PlayFab.Pipeline
                     }
                     else
                     {
-                        throw new Exception($"Failed to get OneDS authentication token from PlayFab service");
+                        throw new Exception("Failed to get OneDS authentication token from PlayFab service");
                     }
                 }
                 catch (Exception e)
@@ -58,10 +57,13 @@ namespace PlayFab.Pipeline
                     foreach (var request in batch.Events)
                     {
                         PlayFabEmitEventRequest eventRequest = (PlayFabEmitEventRequest)request;
-                        eventRequest.ResultPromise?.SetCanceled();
+                        if (eventRequest.ResultPromise != null)
+                        {
+                            eventRequest.ResultPromise.SetCanceled();
+                        }
                     }
 
-                    logger.Error($"Exception in OnNextInputItem {e.Source} with message: {e}.");
+                    logger.Error(string.Format("Exception in OnNextInputItem {0} with message: {1}.", e.Source, e));
                 }
             }
 
@@ -78,10 +80,13 @@ namespace PlayFab.Pipeline
                 foreach (var request in batch.Events)
                 {
                     PlayFabEmitEventRequest eventRequest = (PlayFabEmitEventRequest)request;
-                    eventRequest.ResultPromise?.SetCanceled();
+                    if (eventRequest.ResultPromise != null)
+                    {
+                        eventRequest.ResultPromise.SetCanceled();
+                    }
                 }
 
-                logger.Error($"Exception in OnNextInputItem {e.Source} with message: {e}. This was an unhandled exception, please contact the dev team.");
+                logger.Error(string.Format("Exception in OnNextInputItem {0} with message: {1}. This was an unhandled exception, please contact the dev team.", e.Source, e));
             }
         }
 
@@ -109,4 +114,3 @@ namespace PlayFab.Pipeline
         }
     }
 }
-#endif

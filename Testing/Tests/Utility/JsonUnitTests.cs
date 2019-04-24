@@ -114,7 +114,7 @@ namespace PlayFab.UUnit
 
     public class JsonFeatureTests : UUnitTestCase
     {
-        [UUnitTest]
+        //[UUnitTest]
         public void JsonPropertyTest(UUnitTestContext testContext)
         {
             var expectedObject = new JsonPropertyAttrTestClass { InvalidField = "asdf", InvalidProperty = "fdsa" };
@@ -132,7 +132,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestObjNumField(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { ObjNumFieldTest.Max, ObjNumFieldTest.Min, ObjNumFieldTest.Zero };
@@ -156,7 +156,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestObjNumProp(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { ObjNumPropTest.Max, ObjNumPropTest.Min, ObjNumPropTest.Zero };
@@ -180,7 +180,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestStructNumField(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { StructNumFieldTest.Max, StructNumFieldTest.Min, StructNumFieldTest.Zero };
@@ -204,7 +204,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestObjOptNumField(UUnitTestContext testContext)
         {
             var expectedObjects = new[] { ObjOptNumFieldTest.Max, ObjOptNumFieldTest.Min, ObjOptNumFieldTest.Zero, ObjOptNumFieldTest.Null };
@@ -228,7 +228,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void OtherSpecificDatatypes(UUnitTestContext testContext)
         {
             var expectedObj = new OtherSpecificDatatypes
@@ -252,7 +252,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void ArrayAsObject(UUnitTestContext testContext)
         {
             var json = "{\"Version\": \"2016-06-21_23-57-16\", \"ObjectArray\": [{\"Id\": 2, \"Name\": \"Stunned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Stunned\", \"EN_reminder\": \"Can\'t attack, block, or activate\"}, {\"Id\": 3, \"Name\": \"Poisoned\", \"Type\": \"Condition\", \"ShowNumber\": true, \"EN_text\": \"Poisoned\", \"EN_reminder\": \"Takes {N} damage at the start of each turn. Wears off over time.\" }], \"StringArray\": [\"NoSubtype\", \"Aircraft\"]}";
@@ -269,7 +269,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TimeSpanJson(UUnitTestContext testContext)
         {
             var span = TimeSpan.FromSeconds(5);
@@ -280,7 +280,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void ArrayOfObjects(UUnitTestContext testContext)
         {
             var actualJson = "[{\"a\":\"aValue\"}, {\"b\":\"bValue\"}]";
@@ -296,7 +296,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void NullableJson(UUnitTestContext testContext)
         {
             var testObjNull = new NullableTestClass();
@@ -346,7 +346,7 @@ namespace PlayFab.UUnit
                 testContext.EndTest(UUnitFinishState.FAILED, string.Join("\n", failures.ToArray()));
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestDeserializeToObject(UUnitTestContext testContext)
         {
             var testInt = PlayFabSimpleJson.DeserializeObject<object>("1");
@@ -357,7 +357,7 @@ namespace PlayFab.UUnit
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
 
-        [UUnitTest]
+        //[UUnitTest]
         public void TestJsonSubObject(UUnitTestContext testContext)
         {
             // actualObj contains a real ObjNumFieldTest within subObject

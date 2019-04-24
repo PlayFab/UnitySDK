@@ -1,5 +1,5 @@
-#if NET_4_6
 using System;
+using System.Threading.Tasks;
 
 namespace PlayFab.Internal
 {
@@ -10,9 +10,14 @@ namespace PlayFab.Internal
 
         public static void ParseResponse(long httpCode, Func<string> getText, string errorString, Action<object> callback)
         {
+            if (callback == null)
+            {
+                return;
+            }
+
             if (!string.IsNullOrEmpty(errorString))
             {
-                callback.Invoke(new PlayFabError
+                callback(new OneDsError
                 {
                     Error = PlayFabErrorCode.Unknown,
                     ErrorMessage = errorString
@@ -21,49 +26,68 @@ namespace PlayFab.Internal
             else
             {
                 string httpResponseString;
+
                 try
                 {
-                    httpResponseString = getText.Invoke();
+                    httpResponseString = getText();
                 }
                 catch (Exception exception)
                 {
-                    var error = new PlayFabError();
-                    error.Error = PlayFabErrorCode.ConnectionError;
-                    error.ErrorMessage = exception.Message;
-                    callback?.Invoke(error);
+                    callback(new OneDsError
+                    {
+                        Error = PlayFabErrorCode.ConnectionError,
+                        ErrorMessage = exception.Message
+                    });
                     return;
                 }
 
                 if (httpCode >= 200 && httpCode < 300)
                 {
                     var responseObj = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject(httpResponseString) as Json.JsonObject;
+                    ulong oneDsResult = 0;
 
                     try
                     {
-                        ulong oneDsResult = ulong.Parse(responseObj["acc"].ToString());
+                        oneDsResult = ulong.Parse(responseObj["acc"].ToString());
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        callback(new OneDsError
+                        {
+                            HttpCode = (int)httpCode,
+                            HttpStatus = httpResponseString,
+                            Error = PlayFabErrorCode.JsonParseError,
+                            ErrorMessage = "Failed to parse response from OneDS server: " + e.Message
+                        });
 
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        UnityEngine.Debug.LogException(e);
+                        return;
+                    }
+
+                    try
+                    {
                         if (oneDsResult > 0)
                         {
-                            callback?.Invoke(httpResponseString);
+                            callback(httpResponseString);
                         }
                         else
                         {
-                            var error = new PlayFabError();
-                            error.HttpCode = (int) httpCode;
-                            error.HttpStatus = httpResponseString;
-                            error.Error = PlayFabErrorCode.PartialFailure;
-                            error.ErrorMessage = "OneDS server did not accept events";
-                            callback?.Invoke(error);
+                            callback(new OneDsError
+                            {
+                                HttpCode = (int)httpCode,
+                                HttpStatus = httpResponseString,
+                                Error = PlayFabErrorCode.PartialFailure,
+                                ErrorMessage = "OneDS server did not accept events"
+                            });
                         }
                     }
                     catch (Exception e)
                     {
-                        var error = new PlayFabError();
-                        error.HttpCode = (int) httpCode;
-                        error.HttpStatus = httpResponseString;
-                        error.Error = PlayFabErrorCode.JsonParseError;
-                        error.ErrorMessage = "Failed to parse response from OneDS server: " + e.Message;
-                        callback?.Invoke(error);
+                        UnityEngine.Debug.LogException(e);
                     }
                 }
                 else if ((httpCode >= 500 && httpCode != 501 && httpCode != 505) || httpCode == 408 || httpCode == 429)
@@ -74,25 +98,70 @@ namespace PlayFab.Internal
                     // TODO implement a retry policy
                     // As a placeholder, return an immediate error
 
-                    var error = new PlayFabError();
-                    error.HttpCode = (int) httpCode;
-                    error.HttpStatus = httpResponseString;
-                    error.Error = PlayFabErrorCode.UnknownError;
-                    error.ErrorMessage = "Failed to send a batch of events to OneDS";
-                    callback?.Invoke(error);
+                    callback(new OneDsError
+                    {
+                        HttpCode = (int)httpCode,
+                        HttpStatus = httpResponseString,
+                        Error = PlayFabErrorCode.UnknownError,
+                        ErrorMessage = "Failed to send a batch of events to OneDS"
+                    });
                 }
                 else
                 {
                     // following One-DS recommendations, all other HTTP response codes are errors that should not be retried
-                    var error = new PlayFabError();
-                    error.HttpCode = (int) httpCode;
-                    error.HttpStatus = httpResponseString;
-                    error.Error = PlayFabErrorCode.UnknownError;
-                    error.ErrorMessage = "Failed to send a batch of events to OneDS";
-                    callback?.Invoke(error);
+                    callback(new OneDsError
+                    {
+                        HttpCode = (int)httpCode,
+                        HttpStatus = httpResponseString,
+                        Error = PlayFabErrorCode.UnknownError,
+                        ErrorMessage = "Failed to send a batch of events to OneDS"
+                    });
                 }
             }
         }
+        
+        private const int WaitWhileFrequencyDefault = 25;
+        private const int WaitWhileTimeoutDefault = -1;
+        
+#if !NET_4_6 && (NET_2_0_SUBSET || NET_2_0)
+        public static Task WaitWhile(Func<bool> condition, int frequency = WaitWhileFrequencyDefault, int timeout = WaitWhileTimeoutDefault)
+        {
+            return Task.Run(() =>
+            {
+                var waitTask = Task.Run(() =>
+                {
+                    while (condition())
+                    {
+                        Task.Delay(frequency).Await();
+                    }
+                });
+
+                if(waitTask != Task.WhenAny(waitTask, Task.Delay(timeout)).Await())
+                    throw new TimeoutException();
+            });
+        }
+#else
+        public static async Task WaitWhile(Func<bool> condition, int frequency = WaitWhileFrequencyDefault, int timeout = WaitWhileTimeoutDefault)
+        {
+            var waitTask = Task.Run(async () =>
+            {
+                while (condition())
+                {
+                    await Task.Delay(frequency);
+                }
+            });
+
+            if(waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
+                throw new TimeoutException();
+        }
+#endif
+    }
+
+    public class OneDsError
+    {
+        public int HttpCode;
+        public string HttpStatus;
+        public PlayFabErrorCode Error;
+        public string ErrorMessage;
     }
 }
-#endif

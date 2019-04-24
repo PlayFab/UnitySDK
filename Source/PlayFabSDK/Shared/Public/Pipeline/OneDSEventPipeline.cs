@@ -1,4 +1,7 @@
-﻿#if NET_4_6
+﻿#if !NET_4_6 && (NET_2_0_SUBSET || NET_2_0)
+#define TPL_35
+#endif
+
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -76,11 +79,23 @@ namespace PlayFab.Pipeline
         public OneDSEventPipeline(OneDSEventPipelineSettings settings, ILogger logger)
         {
             if (settings == null)
+            {
+#if TPL_35
+                throw new ArgumentNullException("settings");
+#else
                 throw new ArgumentNullException(nameof(settings));
+#endif
+            }
             this.settings = settings;
 
             if (logger == null)
+            {
+#if TPL_35
+                throw new ArgumentNullException("logger");
+#else
                 throw new ArgumentNullException(nameof(logger));
+#endif
+            }
             this.logger = logger;
 
             this.batchingStage = new EventBatchingStage(this.settings.BatchSize, this.settings.BatchFillTimeout, logger);
@@ -90,16 +105,24 @@ namespace PlayFab.Pipeline
         /// <summary>
         /// Starts the pipeline (when external code doesn't care about canceling it with a token).
         /// </summary>
+#if TPL_35
+        public void StartAsync()
+#else
         public async Task StartAsync()
+#endif
         {
             try
             {
                 this.ThrowIfDisposed();
+#if TPL_35
+                this.StartAsync(new CancellationToken());
+#else
                 await this.StartAsync(new CancellationToken());
+#endif
             }
             catch (Exception e)
             {
-                logger.Error($"Exception in StartAsync (without cancellation token) from {e.Source} with message: {e.Message}");
+                logger.Error(string.Format("Exception in StartAsync (without cancellation token) from {0} with message: {1}", e.Source, e.Message));
             }
         }
 
@@ -107,7 +130,11 @@ namespace PlayFab.Pipeline
         /// Starts the pipeline.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token to stop the pipeline from external code.</param>
+#if TPL_35
+        public void StartAsync(CancellationToken cancellationToken)
+#else
         public async Task StartAsync(CancellationToken cancellationToken)
+#endif
         {
             try
             {
@@ -131,11 +158,25 @@ namespace PlayFab.Pipeline
                     this.isActive = true;
                 }
 
+#if TPL_35
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        this.pipelineTask.Await();
+                    }
+                    catch (ThreadAbortException e)
+                    {
+                        logger.Error(string.Format("Exception in StartAsync (with cancellation token) from {0} with message: {1}", e.Source, e.Message));
+                    }
+                });
+#else
                 await this.pipelineTask;
+#endif
             }
             catch (Exception e)
             {
-                logger.Error($"Exception in StartAsync (with cancellation token) from {e.Source} with message: {e.Message}");
+                logger.Error(string.Format("Exception in StartAsync (with cancellation token) from {0} with message: {1}", e.Source, e.Message));
             }
         }
 
@@ -162,7 +203,7 @@ namespace PlayFab.Pipeline
             }
             catch (Exception e)
             {
-                logger.Error($"Exception in Stop from {e.Source} with message: {e.Message}");
+                logger.Error(string.Format("Exception in Stop from {0} with message: {1}", e.Source, e.Message));
             }
         }
 
@@ -190,7 +231,7 @@ namespace PlayFab.Pipeline
             }
             catch (Exception e)
             {
-                logger.Error($"Exception in Complete from {e.Source} with message: {e.Message}");
+                logger.Error(string.Format("Exception in Complete from {0} with message: {1}", e.Source, e.Message));
             }
         }
 
@@ -228,19 +269,22 @@ namespace PlayFab.Pipeline
             }
             catch (Exception e)
             {
-                logger.Error($"Exception in synchronous WriteEvent from {e.Source} with message: {e.Message}");
+                logger.Error(string.Format("Exception in synchronous WriteEvent from {0} with message: {1}", e.Source, e.Message));
             }
 
             return false;
         }
-
         /// <summary>
         /// Writes an event into the pipeline and returns a task that allows user to wait for a result
         /// when this particular event is processed by pipeline and sent out to backend.
         /// </summary>
         /// <param name="request">The emit event request</param>
         /// <returns>A task that allows user to wait for a result.</returns>
+#if TPL_35
+        public Task<IPlayFabEmitEventResponse> IntakeEventAsync(IPlayFabEmitEventRequest request)
+#else
         public async Task<IPlayFabEmitEventResponse> IntakeEventAsync(IPlayFabEmitEventRequest request)
+#endif
         {
             try
             {
@@ -271,30 +315,41 @@ namespace PlayFab.Pipeline
                     }
                 }
 
+#if TPL_35
+                return resultPromise.Task;
+#else
                 return await resultPromise.Task;
+#endif
+
             }
             catch (Exception e)
             {
-                logger.Error($"Exception in IntakeEventAsync from {e.Source} with message: {e.Message}");
+                logger.Error(string.Format("Exception in IntakeEventAsync from {0} with message: {1}", e.Source, e.Message));
                 var taskCompletionSource = new TaskCompletionSource<IPlayFabEmitEventResponse>();
                 taskCompletionSource.SetResult(new PlayFabEmitEventResponse());
+#if TPL_35
+                return taskCompletionSource.Task;
+#else
                 return await taskCompletionSource.Task;
+#endif
             }
         }
 
         private void Cancel()
         {
-            this.eventBuffer?.CompleteAdding();
+            if(this.eventBuffer != null)
+                this.eventBuffer.CompleteAdding();
 
             // This should also direct all stages to mark their output buffers as complete for adding:
-            this.pipelineCancellationTokenSource?.Cancel();
+            if(this.pipelineCancellationTokenSource != null)
+                this.pipelineCancellationTokenSource.Cancel();
         }
 
         private void ThrowIfDisposed()
         {
             if (this.disposed)
             {
-                throw new ObjectDisposedException(nameof(OneDSEventPipeline));
+                throw new ObjectDisposedException(this.GetType().Name);
             }
         }
 
@@ -331,7 +386,7 @@ namespace PlayFab.Pipeline
             }
             catch (Exception e)
             {
-                logger.Error($"Exception in Dispose from {e.Source} with message: {e.Message}");
+                logger.Error(string.Format("Exception in Dispose from {0} with message: {1}", e.Source, e.Message));
             }
         }
         #endregion
@@ -354,4 +409,3 @@ namespace PlayFab.Pipeline
         }
     }
 }
-#endif

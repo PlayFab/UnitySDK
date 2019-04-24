@@ -1,8 +1,8 @@
-#if NET_4_6
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PlayFab.EventsModels;
+using PlayFab.Internal;
 
 // Data types compliant with OneDS Common Schema 3.0:
 using OneDSEventData = Microsoft.Applications.Events.DataModels.Data;
@@ -178,7 +178,7 @@ namespace PlayFab
         /// <summary>
         /// The title id is used to batch and send the events to a particular destination (e.g. can be used in the DNS name of the PlayFab endpoints)
         /// </summary>
-        public string TitleId { get; set; } = "default";
+        public string TitleId = "default";
 
         /// <summary>
         /// A promise to return IPlayFabEmitEventResponse when event is processed by pipeline.
@@ -202,7 +202,7 @@ namespace PlayFab
         /// <summary>
         /// Gets or sets the error information and/or operation result
         /// </summary>
-        public PlayFabError PlayFabError { get; set; }
+        public OneDsError PlayFabError { get; set; }
 
         /// <summary>
         /// Gets or sets the additional data with the outcome of the operation
@@ -220,4 +220,3 @@ namespace PlayFab
         ulong BatchNumber { get; set; }
     }
 }
-#endif

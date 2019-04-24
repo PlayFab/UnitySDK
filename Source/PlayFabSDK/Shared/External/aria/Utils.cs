@@ -8,7 +8,7 @@ namespace Microsoft.Applications.Events
     class Utils
     {
         private static readonly long TICKS_AT_1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
-        
+
         /// <summary>
         /// Calculates milliseconds since 1970
         /// </summary>

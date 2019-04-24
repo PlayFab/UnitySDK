@@ -448,6 +448,9 @@ namespace PlayFab
         WriteAttemptedDuringExport = 1444,
         MultiplayerServerTitleQuotaCoresExceeded = 1445,
         AutomationRuleNotFound = 1446,
+        EntityAPIKeyLimitExceeded = 1447,
+        EntityAPIKeyNotFound = 1448,
+        EntityAPIKeyOrSecretInvalid = 1449,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
@@ -479,18 +482,7 @@ namespace PlayFab
         CatalogItemIdInvalid = 4007,
         CatalogSearchParameterInvalid = 4008,
         CatalogFeatureDisabled = 4009,
-        CatalogConfigMissing = 4100,
-        CatalogConfigTooManyContentTypes = 4101,
-        CatalogConfigContentTypeTooLong = 4102,
-        CatalogConfigTooManyTags = 4103,
-        CatalogConfigTagTooLong = 4104,
-        CatalogConfigInvalidDeepLinkObject = 4105,
-        CatalogConfigInvalidDeepLinkPlatform = 4106,
-        CatalogConfigInvalidDeepLinkFormat = 4107,
-        CatalogConfigInvalidDisplayPropertyObject = 4108,
-        CatalogConfigInvalidDisplayPropertyName = 4109,
-        CatalogConfigInvalidDisplayPropertyType = 4110,
-        CatalogConfigDisplayPropertyMappingLimit = 4111,
+        CatalogConfigInvalid = 4010,
         ExportInvalidStatusUpdate = 5000,
         ExportInvalidPrefix = 5001,
         ExportBlobContainerDoesNotExist = 5002,
@@ -504,7 +496,10 @@ namespace PlayFab
         ExportKustoExceptionNew_SomeResources = 5010,
         ExportKustoExceptionEdit = 5011,
         ExportKustoConnectionFailed = 5012,
-        ExportUnknownError = 5013
+        ExportUnknownError = 5013,
+        ExportCantEditPendingExport = 5014,
+        ExportLimitExports = 5015,
+        ExportLimitEvents = 5016
     }
 
     public class PlayFabError

@@ -1,4 +1,3 @@
-#if NET_4_6
 using System;
 
 namespace PlayFab.Logger
@@ -55,7 +54,7 @@ namespace PlayFab.Logger
                 return;
             }
 
-            string msg = $"{DateTime.Now} LOG {Enum.GetName( logLevelType, logLevel )}: {string.Format( format, args )}";
+            string msg = string.Format("{0} LOG {1}: {2}", DateTime.Now, Enum.GetName(logLevelType, logLevel), string.Format(format, args));
 
             switch (logLevel)
             {
@@ -73,4 +72,3 @@ namespace PlayFab.Logger
         }
     }
 }
-#endif

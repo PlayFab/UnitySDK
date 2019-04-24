@@ -1,5 +1,4 @@
-﻿#if NET_4_6
-using System;
+﻿using System;
 using System.IO;
 using UnityEngine;
 
@@ -32,4 +31,3 @@ namespace Microsoft.Applications.Events
         }
     }
 }
-#endif

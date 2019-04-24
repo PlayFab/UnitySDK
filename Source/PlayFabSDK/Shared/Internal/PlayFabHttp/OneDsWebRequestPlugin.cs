@@ -1,4 +1,3 @@
-#if NET_4_6
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,22 +55,31 @@ namespace PlayFab.Internal
                 }
                 catch (WebException webException)
                 {
+                    if (callback == null)
+                    {
+                        return;
+                    }
+
                     try
                     {
                         using (var responseStream = webException.Response.GetResponseStream())
                         {
                             if (responseStream != null)
+                            {
                                 using (var stream = new StreamReader(responseStream))
-                                    callback?.Invoke(new PlayFabError
+                                {
+                                    callback.Invoke(new OneDsError
                                     {
                                         Error = PlayFabErrorCode.Unknown,
                                         ErrorMessage = stream.ReadToEnd()
                                     });
+                                }
+                            }
                         }
                     }
                     catch (Exception exception)
                     {
-                        callback?.Invoke(new PlayFabError
+                        callback.Invoke(new OneDsError
                         {
                             Error = PlayFabErrorCode.Unknown,
                             ErrorMessage = exception.Message
@@ -80,7 +88,7 @@ namespace PlayFab.Internal
                 }
                 catch (Exception e)
                 {
-                    callback?.Invoke(new PlayFabError
+                    callback.Invoke(new OneDsError
                     {
                         Error = PlayFabErrorCode.Unknown,
                         ErrorMessage = e.Message
@@ -92,4 +100,3 @@ namespace PlayFab.Internal
         }
     }
 }
-#endif

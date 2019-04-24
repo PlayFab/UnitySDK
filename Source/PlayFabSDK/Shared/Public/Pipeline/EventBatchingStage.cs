@@ -1,4 +1,7 @@
-﻿#if NET_4_6
+﻿#if !NET_4_6 && (NET_2_0_SUBSET || NET_2_0)
+#define TPL_35
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -52,9 +55,9 @@ namespace PlayFab.Pipeline
                 //Determine titleId of event
                 string titleId = eventRequest.TitleId;
 
-                if (string.IsNullOrWhiteSpace(titleId))
+                if (string.IsNullOrEmpty(titleId.Trim()))
                 {
-                    logger.Error($"Event {eventRequest.Event.Name} has null or empty title id");
+                    logger.Error(string.Format("Event {0} has null or empty title id", eventRequest.Event.Name));
                 }
                 else
                 {
@@ -65,7 +68,8 @@ namespace PlayFab.Pipeline
                     // its first element
                     if (this.batches[titleId].Count == 1)
                     {
-                        this.stopwatch.Restart();
+                        this.stopwatch.Stop();
+                        this.stopwatch.Start();
                     }
 
                     if (this.batches[titleId].Count >= this.BatchSize)
@@ -80,7 +84,7 @@ namespace PlayFab.Pipeline
             }
             else
             {
-                logger.Error($"Event {eventRequest.Event.Name} failed validation check and was ignored");
+                logger.Error(string.Format("Event {0} failed validation check and was ignored", eventRequest.Event.Name));
             }
         }
 
@@ -169,4 +173,3 @@ namespace PlayFab.Pipeline
         }
     }
 }
-#endif
