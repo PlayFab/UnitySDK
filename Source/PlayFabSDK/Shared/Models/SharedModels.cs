@@ -40,6 +40,5 @@ namespace PlayFab.SharedModels
     {
         public TResult Result;
         public object CustomData;
-        public OneDsError Error;
     }
 }
