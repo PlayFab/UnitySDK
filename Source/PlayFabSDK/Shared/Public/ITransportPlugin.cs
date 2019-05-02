@@ -24,11 +24,4 @@ namespace PlayFab
 
         int GetPendingMessages();
     }
-    /// <summary>
-    /// Interface of any OneDS transport SDK plugin.
-    /// </summary>
-    public interface IOneDSTransportPlugin : IPlayFabPlugin
-    {
-        void DoPost(object request, Dictionary<string, string> extraHeaders, Action<object> callback);
-    }
 }
