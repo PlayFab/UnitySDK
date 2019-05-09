@@ -217,7 +217,7 @@ namespace PlayFab
         /// Requests the creation of a shared group object, containing key/value pairs which may be updated by all members of the
         /// group. Upon creation, the current user will be the only member of the group. Shared Groups are designed for sharing data
         /// between a very small number of players, please see our guide:
-        /// https://api.playfab.com/docs/tutorials/landing-players/shared-groups
+        /// https://docs.microsoft.com/en-us/gaming/playfab/features/social/groups/using-shared-group-data
         /// </summary>
         public static void CreateSharedGroup(CreateSharedGroupRequest request, Action<CreateSharedGroupResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -503,7 +503,7 @@ namespace PlayFab
 
         /// <summary>
         /// Gets a Photon custom authentication token that can be used to securely join the player into a Photon room. See
-        /// https://api.playfab.com/docs/using-photon-with-playfab/ for more details.
+        /// https://docs.microsoft.com/en-us/gaming/playfab/features/multiplayer/photon/quickstart for more details.
         /// </summary>
         public static void GetPhotonAuthenticationToken(GetPhotonAuthenticationTokenRequest request, Action<GetPhotonAuthenticationTokenResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {

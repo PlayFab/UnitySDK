@@ -202,17 +202,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get a matchmaking queue configuration.
-        /// </summary>
-        public static void GetMatchmakingQueue(GetMatchmakingQueueRequest request, Action<GetMatchmakingQueueResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
-
-
-            PlayFabHttp.MakeApiCall("/Match/GetMatchmakingQueue", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
-        }
-
-        /// <summary>
         /// Get a matchmaking ticket by ticket Id.
         /// </summary>
         public static void GetMatchmakingTicket(GetMatchmakingTicketRequest request, Action<GetMatchmakingTicketResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -265,6 +254,17 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/MultiplayerServer/GetTitleEnabledForMultiplayerServersStatus", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
+        }
+
+        /// <summary>
+        /// Gets the quotas for a title in relation to multiplayer servers.
+        /// </summary>
+        public static void GetTitleMultiplayerServersQuotas(GetTitleMultiplayerServersQuotasRequest request, Action<GetTitleMultiplayerServersQuotasResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+
+
+            PlayFabHttp.MakeApiCall("/MultiplayerServer/GetTitleMultiplayerServersQuotas", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
         }
 
         /// <summary>
@@ -345,17 +345,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// List all matchmaking queue configs.
-        /// </summary>
-        public static void ListMatchmakingQueues(ListMatchmakingQueuesRequest request, Action<ListMatchmakingQueuesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
-
-
-            PlayFabHttp.MakeApiCall("/Match/ListMatchmakingQueues", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
-        }
-
-        /// <summary>
         /// List all matchmaking ticket Ids the user is a member of.
         /// </summary>
         public static void ListMatchmakingTicketsForPlayer(ListMatchmakingTicketsForPlayerRequest request, Action<ListMatchmakingTicketsForPlayerResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -400,17 +389,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Remove a matchmaking queue config.
-        /// </summary>
-        public static void RemoveMatchmakingQueue(RemoveMatchmakingQueueRequest request, Action<RemoveMatchmakingQueueResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
-
-
-            PlayFabHttp.MakeApiCall("/Match/RemoveMatchmakingQueue", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
-        }
-
-        /// <summary>
         /// Request a multiplayer server session. Accepts tokens for title and if game client accesss is enabled, allows game client
         /// to request a server with player entity token.
         /// </summary>
@@ -431,17 +409,6 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/MultiplayerServer/RolloverContainerRegistryCredentials", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
-        }
-
-        /// <summary>
-        /// Create or update a matchmaking queue configuration.
-        /// </summary>
-        public static void SetMatchmakingQueue(SetMatchmakingQueueRequest request, Action<SetMatchmakingQueueResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
-
-
-            PlayFabHttp.MakeApiCall("/Match/SetMatchmakingQueue", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
         }
 
         /// <summary>
