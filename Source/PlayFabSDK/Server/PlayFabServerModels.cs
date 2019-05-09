@@ -86,6 +86,19 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    [Serializable]
+    public class AddGenericIDRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Generic service identifier to add to the player account.
+        /// </summary>
+        public GenericServiceId GenericId;
+        /// <summary>
+        /// PlayFabId of the user to link.
+        /// </summary>
+        public string PlayFabId;
+    }
+
     /// <summary>
     /// This API will trigger a player_tag_added event and add a tag with the given TagName and PlayFabID to the corresponding
     /// player profile. TagName can be used for segmentation and it is limited to 256 characters. Also there is a limit on the
@@ -1105,6 +1118,20 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class DeletePushNotificationTemplateRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Id of the push notification template to be deleted.
+        /// </summary>
+        public string PushNotificationTemplateId;
+    }
+
+    [Serializable]
+    public class DeletePushNotificationTemplateResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class DeleteSharedGroupRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1136,6 +1163,11 @@ namespace PlayFab.ServerModels
 
     [Serializable]
     public class EmptyResponse : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class EmptyResult : PlayFabResultCommon
     {
     }
 
@@ -1797,6 +1829,30 @@ namespace PlayFab.ServerModels
         WriteAttemptedDuringExport,
         MultiplayerServerTitleQuotaCoresExceeded,
         AutomationRuleNotFound,
+        EntityAPIKeyLimitExceeded,
+        EntityAPIKeyNotFound,
+        EntityAPIKeyOrSecretInvalid,
+        EconomyServiceUnavailable,
+        EconomyServiceInternalError,
+        KustoProxyQueryRateLimitExceeded,
+        EntityAPIKeyCreationDisabledForEntity,
+        StudioCreationRateLimited,
+        StudioCreationInProgress,
+        DuplicateStudioName,
+        StudioNotFound,
+        StudioDeletionInProgress,
+        StudioDeactivated,
+        TitleCreationRateLimited,
+        TitleCreationInProgress,
+        DuplicateTitleName,
+        TitleNotFound,
+        TitleDeletionInProgress,
+        TitleDeactivated,
+        TitleAlreadyActivated,
+        CloudScriptAzureFunctionsExecutionTimeLimitExceeded,
+        CloudScriptAzureFunctionsArgumentSizeExceeded,
+        CloudScriptAzureFunctionsReturnSizeExceeded,
+        CloudScriptAzureFunctionsHTTPRequestError,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -1816,6 +1872,8 @@ namespace PlayFab.ServerModels
         MatchmakingTicketMembershipLimitExceeded,
         MatchmakingUnauthorized,
         MatchmakingQueueLimitExceeded,
+        MatchmakingRequestTypeMismatch,
+        MatchmakingBadRequest,
         TitleConfigNotFound,
         TitleConfigUpdateConflict,
         TitleConfigSerializationError,
@@ -1828,18 +1886,8 @@ namespace PlayFab.ServerModels
         CatalogItemIdInvalid,
         CatalogSearchParameterInvalid,
         CatalogFeatureDisabled,
-        CatalogConfigMissing,
-        CatalogConfigTooManyContentTypes,
-        CatalogConfigContentTypeTooLong,
-        CatalogConfigTooManyTags,
-        CatalogConfigTagTooLong,
-        CatalogConfigInvalidDeepLinkObject,
-        CatalogConfigInvalidDeepLinkPlatform,
-        CatalogConfigInvalidDeepLinkFormat,
-        CatalogConfigInvalidDisplayPropertyObject,
-        CatalogConfigInvalidDisplayPropertyName,
-        CatalogConfigInvalidDisplayPropertyType,
-        CatalogConfigDisplayPropertyMappingLimit,
+        CatalogConfigInvalid,
+        CatalogUnauthorized,
         ExportInvalidStatusUpdate,
         ExportInvalidPrefix,
         ExportBlobContainerDoesNotExist,
@@ -1850,10 +1898,39 @@ namespace PlayFab.ServerModels
         ExportAmazonBucketDoesNotExist,
         ExportInvalidBlobStorage,
         ExportKustoException,
-        ExportKustoExceptionNew_SomeResources,
+        ExportKustoExceptionPartialErrorOnNewExport,
         ExportKustoExceptionEdit,
         ExportKustoConnectionFailed,
-        ExportUnknownError
+        ExportUnknownError,
+        ExportCantEditPendingExport,
+        ExportLimitExports,
+        ExportLimitEvents
+    }
+
+    [Serializable]
+    public class GenericPlayFabIdPair : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Unique generic service identifier for a user.
+        /// </summary>
+        public GenericServiceId GenericId;
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the given generic identifier.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class GenericServiceId : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Name of the service for which the player has a unique identifier.
+        /// </summary>
+        public string ServiceName;
+        /// <summary>
+        /// Unique identifier of the player in that service.
+        /// </summary>
+        public string UserId;
     }
 
     /// <summary>
@@ -2700,6 +2777,28 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class GetPlayFabIDsFromGenericIDsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Array of unique generic service identifiers for which the title needs to get PlayFab identifiers. Currently limited to a
+        /// maximum of 10 in a single request.
+        /// </summary>
+        public List<GenericServiceId> GenericIDs;
+    }
+
+    /// <summary>
+    /// For generic service identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
+    [Serializable]
+    public class GetPlayFabIDsFromGenericIDsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Mapping of generic service identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<GenericPlayFabIdPair> Data;
+    }
+
+    [Serializable]
     public class GetPlayFabIDsFromNintendoSwitchDeviceIdsRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3441,6 +3540,28 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class LinkServerCustomIdRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// If another user is already linked to the custom ID, unlink the other user and re-link.
+        /// </summary>
+        public bool? ForceLink;
+        /// <summary>
+        /// Unique PlayFab identifier.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Unique server custom identifier for this player.
+        /// </summary>
+        public string ServerCustomId;
+    }
+
+    [Serializable]
+    public class LinkServerCustomIdResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class LinkXboxAccountRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3481,6 +3602,19 @@ namespace PlayFab.ServerModels
         /// The requested list of characters.
         /// </summary>
         public List<CharacterResult> Characters;
+    }
+
+    [Serializable]
+    public class LocalizedPushNotificationProperties : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Message of the localized push notification template.
+        /// </summary>
+        public string Message;
+        /// <summary>
+        /// Subject of the localized push notification template.
+        /// </summary>
+        public string Subject;
     }
 
     [Serializable]
@@ -4423,6 +4557,19 @@ namespace PlayFab.ServerModels
         public string PlayFabId;
     }
 
+    [Serializable]
+    public class RemoveGenericIDRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Generic service identifier to be removed from the player.
+        /// </summary>
+        public GenericServiceId GenericId;
+        /// <summary>
+        /// PlayFabId of the user to remove.
+        /// </summary>
+        public string PlayFabId;
+    }
+
     /// <summary>
     /// This API will trigger a player_tag_removed event and remove a tag with the given TagName and PlayFabID from the
     /// corresponding player profile. TagName can be used for segmentation and it is limited to 256 characters
@@ -4639,6 +4786,40 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class SavePushNotificationTemplateRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Android JSON for the notification template.
+        /// </summary>
+        public string AndroidPayload;
+        /// <summary>
+        /// Id of the push notification template.
+        /// </summary>
+        public string Id;
+        /// <summary>
+        /// IOS JSON for the notification template.
+        /// </summary>
+        public string IOSPayload;
+        /// <summary>
+        /// Dictionary of localized push notification templates.
+        /// </summary>
+        public Dictionary<string,LocalizedPushNotificationProperties> LocalizedPushNotificationTemplates;
+        /// <summary>
+        /// Name of the push notification template.
+        /// </summary>
+        public string Name;
+    }
+
+    [Serializable]
+    public class SavePushNotificationTemplateResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Id of the push notification template that was saved.
+        /// </summary>
+        public string PushNotificationTemplateId;
+    }
+
+    [Serializable]
     public class ScriptExecutionError : PlayFabBaseModel
     {
         /// <summary>
@@ -4702,6 +4883,19 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class SendEmailFromTemplateResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class SendPushNotificationFromTemplateRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Id of the push notification template.
+        /// </summary>
+        public string PushNotificationTemplateId;
+        /// <summary>
+        /// PlayFabId of the push notification recipient.
+        /// </summary>
+        public string Recipient;
     }
 
     [Serializable]
@@ -5161,6 +5355,24 @@ namespace PlayFab.ServerModels
         /// Title of the news item.
         /// </summary>
         public string Title;
+    }
+
+    [Serializable]
+    public class UnlinkServerCustomIdRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique PlayFab identifier.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Unique server custom identifier for this player.
+        /// </summary>
+        public string ServerCustomId;
+    }
+
+    [Serializable]
+    public class UnlinkServerCustomIdResult : PlayFabResultCommon
+    {
     }
 
     [Serializable]

@@ -234,7 +234,9 @@ namespace PlayFab.Internal
 #if UNITY_2017_1_OR_NEWER
             EditorUserBuildSettings.wsaBuildAndRunDeployTarget = WSABuildAndRunDeployTarget.WindowsPhone;
             EditorUserBuildSettings.wsaSubtarget = WSASubtarget.AnyDevice;
+#if !UNITY_2019_1_OR_NEWER
             EditorUserBuildSettings.wsaGenerateReferenceProjects = true;
+#endif
             PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true);
 #elif UNITY_5_2 || UNITY_5_3_OR_NEWER
             EditorUserBuildSettings.wsaSDK = WSASDK.UniversalSDK81;
@@ -260,7 +262,11 @@ namespace PlayFab.Internal
             PlayerSettings.defaultScreenHeight = 768;
             PlayerSettings.defaultScreenWidth = 1024;
             PlayerSettings.runInBackground = true;
+#if !UNITY_2019_2_OR_NEWER
+#pragma warning disable 0618
             PlayerSettings.displayResolutionDialog = ResolutionDialogSetting.Disabled;
+#pragma warning restore 0618
+#endif
             PlayerSettings.resizableWindow = true;
             string win32Path = Path.Combine(GetBuildPath(), "Win32test.exe");
             MkDir(GetBuildPath());

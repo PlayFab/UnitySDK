@@ -9,6 +9,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ModifyCharacterVirtualCurrencyResult> OnServerAddCharacterVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<AddFriendRequest> OnServerAddFriendRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerAddFriendResultEvent;
+        public event PlayFabRequestEvent<AddGenericIDRequest> OnServerAddGenericIDRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerAddGenericIDResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnServerAddPlayerTagRequestEvent;
         public event PlayFabResultEvent<AddPlayerTagResult> OnServerAddPlayerTagResultEvent;
         public event PlayFabRequestEvent<AddSharedGroupMembersRequest> OnServerAddSharedGroupMembersRequestEvent;
@@ -29,6 +31,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<DeleteCharacterFromUserResult> OnServerDeleteCharacterFromUserResultEvent;
         public event PlayFabRequestEvent<DeletePlayerRequest> OnServerDeletePlayerRequestEvent;
         public event PlayFabResultEvent<DeletePlayerResult> OnServerDeletePlayerResultEvent;
+        public event PlayFabRequestEvent<DeletePushNotificationTemplateRequest> OnServerDeletePushNotificationTemplateRequestEvent;
+        public event PlayFabResultEvent<DeletePushNotificationTemplateResult> OnServerDeletePushNotificationTemplateResultEvent;
         public event PlayFabRequestEvent<DeleteSharedGroupRequest> OnServerDeleteSharedGroupRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerDeleteSharedGroupResultEvent;
         public event PlayFabRequestEvent<DeregisterGameRequest> OnServerDeregisterGameRequestEvent;
@@ -87,6 +91,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayFabIDsFromFacebookIDsResult> OnServerGetPlayFabIDsFromFacebookIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromFacebookInstantGamesIdsRequest> OnServerGetPlayFabIDsFromFacebookInstantGamesIdsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromFacebookInstantGamesIdsResult> OnServerGetPlayFabIDsFromFacebookInstantGamesIdsResultEvent;
+        public event PlayFabRequestEvent<GetPlayFabIDsFromGenericIDsRequest> OnServerGetPlayFabIDsFromGenericIDsRequestEvent;
+        public event PlayFabResultEvent<GetPlayFabIDsFromGenericIDsResult> OnServerGetPlayFabIDsFromGenericIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromNintendoSwitchDeviceIdsRequest> OnServerGetPlayFabIDsFromNintendoSwitchDeviceIdsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromNintendoSwitchDeviceIdsResult> OnServerGetPlayFabIDsFromNintendoSwitchDeviceIdsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromPSNAccountIDsRequest> OnServerGetPlayFabIDsFromPSNAccountIDsRequestEvent;
@@ -137,6 +143,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GrantItemsToUserResult> OnServerGrantItemsToUserResultEvent;
         public event PlayFabRequestEvent<GrantItemsToUsersRequest> OnServerGrantItemsToUsersRequestEvent;
         public event PlayFabResultEvent<GrantItemsToUsersResult> OnServerGrantItemsToUsersResultEvent;
+        public event PlayFabRequestEvent<LinkServerCustomIdRequest> OnServerLinkServerCustomIdRequestEvent;
+        public event PlayFabResultEvent<LinkServerCustomIdResult> OnServerLinkServerCustomIdResultEvent;
         public event PlayFabRequestEvent<LinkXboxAccountRequest> OnServerLinkXboxAccountRequestEvent;
         public event PlayFabResultEvent<LinkXboxAccountResult> OnServerLinkXboxAccountResultEvent;
         public event PlayFabRequestEvent<LoginWithServerCustomIdRequest> OnServerLoginWithServerCustomIdRequestEvent;
@@ -163,6 +171,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RegisterGameResponse> OnServerRegisterGameResultEvent;
         public event PlayFabRequestEvent<RemoveFriendRequest> OnServerRemoveFriendRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerRemoveFriendResultEvent;
+        public event PlayFabRequestEvent<RemoveGenericIDRequest> OnServerRemoveGenericIDRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerRemoveGenericIDResultEvent;
         public event PlayFabRequestEvent<RemovePlayerTagRequest> OnServerRemovePlayerTagRequestEvent;
         public event PlayFabResultEvent<RemovePlayerTagResult> OnServerRemovePlayerTagResultEvent;
         public event PlayFabRequestEvent<RemoveSharedGroupMembersRequest> OnServerRemoveSharedGroupMembersRequestEvent;
@@ -177,12 +187,16 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RevokeInventoryResult> OnServerRevokeInventoryItemResultEvent;
         public event PlayFabRequestEvent<RevokeInventoryItemsRequest> OnServerRevokeInventoryItemsRequestEvent;
         public event PlayFabResultEvent<RevokeInventoryItemsResult> OnServerRevokeInventoryItemsResultEvent;
+        public event PlayFabRequestEvent<SavePushNotificationTemplateRequest> OnServerSavePushNotificationTemplateRequestEvent;
+        public event PlayFabResultEvent<SavePushNotificationTemplateResult> OnServerSavePushNotificationTemplateResultEvent;
         public event PlayFabRequestEvent<SendCustomAccountRecoveryEmailRequest> OnServerSendCustomAccountRecoveryEmailRequestEvent;
         public event PlayFabResultEvent<SendCustomAccountRecoveryEmailResult> OnServerSendCustomAccountRecoveryEmailResultEvent;
         public event PlayFabRequestEvent<SendEmailFromTemplateRequest> OnServerSendEmailFromTemplateRequestEvent;
         public event PlayFabResultEvent<SendEmailFromTemplateResult> OnServerSendEmailFromTemplateResultEvent;
         public event PlayFabRequestEvent<SendPushNotificationRequest> OnServerSendPushNotificationRequestEvent;
         public event PlayFabResultEvent<SendPushNotificationResult> OnServerSendPushNotificationResultEvent;
+        public event PlayFabRequestEvent<SendPushNotificationFromTemplateRequest> OnServerSendPushNotificationFromTemplateRequestEvent;
+        public event PlayFabResultEvent<SendPushNotificationResult> OnServerSendPushNotificationFromTemplateResultEvent;
         public event PlayFabRequestEvent<SetFriendTagsRequest> OnServerSetFriendTagsRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerSetFriendTagsResultEvent;
         public event PlayFabRequestEvent<SetGameServerInstanceDataRequest> OnServerSetGameServerInstanceDataRequestEvent;
@@ -203,6 +217,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ModifyCharacterVirtualCurrencyResult> OnServerSubtractCharacterVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<SubtractUserVirtualCurrencyRequest> OnServerSubtractUserVirtualCurrencyRequestEvent;
         public event PlayFabResultEvent<ModifyUserVirtualCurrencyResult> OnServerSubtractUserVirtualCurrencyResultEvent;
+        public event PlayFabRequestEvent<UnlinkServerCustomIdRequest> OnServerUnlinkServerCustomIdRequestEvent;
+        public event PlayFabResultEvent<UnlinkServerCustomIdResult> OnServerUnlinkServerCustomIdResultEvent;
         public event PlayFabRequestEvent<UnlinkXboxAccountRequest> OnServerUnlinkXboxAccountRequestEvent;
         public event PlayFabResultEvent<UnlinkXboxAccountResult> OnServerUnlinkXboxAccountResultEvent;
         public event PlayFabRequestEvent<UnlockContainerInstanceRequest> OnServerUnlockContainerInstanceRequestEvent;

@@ -109,6 +109,10 @@ namespace PlayFab.ProfilesModels
     public class EntityProfileBody : PlayFabBaseModel
     {
         /// <summary>
+        /// Avatar URL for the entity.
+        /// </summary>
+        public string AvatarUrl;
+        /// <summary>
         /// The creation time of this profile in UTC.
         /// </summary>
         public DateTime Created;
@@ -352,7 +356,7 @@ namespace PlayFab.ProfilesModels
     }
 
     /// <summary>
-    /// Given an entity profile, will update its language to the one passed in if the profile's version is at least the one
+    /// Given an entity profile, will update its language to the one passed in if the profile's version is equal to the one
     /// passed in.
     /// </summary>
     [Serializable]
