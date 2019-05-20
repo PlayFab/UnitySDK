@@ -222,7 +222,7 @@ namespace PlayFab.Internal
             var switchPackage = Path.Combine(GetBuildPath(), "PlayFabSwitch.nsp");
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, switchPackage, BuildTarget.Switch, BuildOptions.None);
-            if (Directory.GetFiles(switchPackage).Length == 0)
+            if (!File.Exists(switchPackage))
                 throw new Exception("Target file did not build: " + switchPackage);
         }
 #endif

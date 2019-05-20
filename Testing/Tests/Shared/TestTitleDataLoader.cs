@@ -27,6 +27,18 @@ namespace PlayFab.UUnit
             public Dictionary<string, string> extraHeaders;
         }
 
+        static TestTitleData LoadTitleDataWithPlugin(string titleDataJSON)
+        {
+            try
+            {
+                return PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<TestTitleData>(titleDataJSON);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public static TestTitleData LoadTestTitleData(string testTitleDataContents = null, bool setPlayFabSettings = true)
         {
             SetTitleId(setPlayFabSettings);
@@ -34,7 +46,21 @@ namespace PlayFab.UUnit
             if (_loadedData != null)
                 return _loadedData;
 
-            if (testTitleDataContents == null)
+            if (!string.IsNullOrEmpty(testTitleDataContents))
+            {
+                _loadedData = LoadTitleDataWithPlugin(testTitleDataContents);
+            }
+
+            if(_loadedData == null)
+            {
+                var textAsset = Resources.Load<TextAsset>(Path.GetFileNameWithoutExtension(TestTitleDataDefaultFilename)); 
+                if(textAsset != null)
+                {
+                    _loadedData = LoadTitleDataWithPlugin(textAsset.text);
+                }
+            }
+
+            if (_loadedData == null)
             {
                 var filename = TestTitleDataDefaultFilename;
 
@@ -48,13 +74,11 @@ namespace PlayFab.UUnit
                 {
                     testTitleDataContents = PlayFabUtil.ReadAllFileText(filename);
                 }
+
+                _loadedData = LoadTitleDataWithPlugin(testTitleDataContents);
             }
 
-            if (!string.IsNullOrEmpty(testTitleDataContents))
-            {
-                _loadedData = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<TestTitleData>(testTitleDataContents);
-            }
-            else
+            if(_loadedData == null)
             {
                 // NOTE FOR DEVELOPERS: POPULATE THIS SECTION WITH REAL INFORMATION (or set up a testTitleData file, and set your PF_TEST_TITLE_DATA_JSON to the path for that file)
                 _loadedData = new TestTitleData
