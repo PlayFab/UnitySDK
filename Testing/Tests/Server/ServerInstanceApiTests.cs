@@ -13,6 +13,9 @@ namespace PlayFab.UUnit
         private int SuccessfulGetAllSegmentsCount = 0, UnsuccessfulGetAllSegmentsCount = 0, ParallelRequestSuccessfuCount = 0, ParallelRequestUnsuccessfuCount = 0;
         private string InstancePlayFabId1, InstancePlayFabId2;
 
+        private const string test1Url = "https://test1." + PlayFabSettings.DefaultPlayFabApiUrl;
+        private const string test2Url = "https://test2." + PlayFabSettings.DefaultPlayFabApiUrl;
+
         public override void SetUp(UUnitTestContext testContext)
         {
             testTitleData = TestTitleDataLoader.LoadTestTitleData();
@@ -59,23 +62,23 @@ namespace PlayFab.UUnit
         public void MultipleInstanceWithDifferentSettings(UUnitTestContext testContext)
         {
             PlayFabApiSettings settings1 = new PlayFabApiSettings();
-            settings1.ProductionEnvironmentUrl = "https://test1.playfabapi.com";
+            settings1.ProductionEnvironmentUrl = test1Url;
             settings1.TitleId = "test1";
             settings1.DeveloperSecretKey = "key1";
 
             PlayFabApiSettings settings2 = new PlayFabApiSettings();
-            settings2.ProductionEnvironmentUrl = "https://test2.playfabapi.com";
+            settings2.ProductionEnvironmentUrl = test2Url;
             settings2.TitleId = "test2";
             settings2.DeveloperSecretKey = "key2";
 
             PlayFabServerInstanceAPI serverInstance1 = new PlayFabServerInstanceAPI(settings1);
             testContext.StringEquals("test1", serverInstance1.apiSettings.TitleId, "MultipleInstanceWithDifferentSettings can not be completed");
-            testContext.StringEquals("https://test1.playfabapi.com", serverInstance1.apiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
+            testContext.StringEquals(test1Url, serverInstance1.apiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
             testContext.StringEquals("key1", serverInstance1.apiSettings.DeveloperSecretKey, "MultipleInstanceWithDifferentSettings can not be completed");
 
             PlayFabServerInstanceAPI serverInstance2 = new PlayFabServerInstanceAPI(settings2);
             testContext.StringEquals("test2", serverInstance2.apiSettings.TitleId, "MultipleInstanceWithDifferentSettings can not be completed");
-            testContext.StringEquals("https://test2.playfabapi.com", serverInstance2.apiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
+            testContext.StringEquals(test2Url, serverInstance2.apiSettings.ProductionEnvironmentUrl, "MultipleInstanceWithDifferentSettings can not be completed");
             testContext.StringEquals("key2", serverInstance2.apiSettings.DeveloperSecretKey, "MultipleInstanceWithDifferentSettings can not be completed");
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
