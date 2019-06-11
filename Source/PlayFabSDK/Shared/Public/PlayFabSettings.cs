@@ -38,9 +38,9 @@ namespace PlayFab
         // This field will likely be removed someday
         internal readonly static PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
-        public const string SdkVersion = "2.67.190520";
+        public const string SdkVersion = "2.68.190610";
         public const string BuildIdentifier = "jbuild_unitysdk__sdk-unity-3-slave_0";
-        public const string VersionString = "UnitySDK-2.67.190520";
+        public const string VersionString = "UnitySDK-2.68.190610";
         public const string AD_TYPE_IDFA = "Idfa";
         public const string AD_TYPE_ANDROID_ID = "Adid";
 
@@ -97,6 +97,7 @@ namespace PlayFab
         /// These are variables which are always singleton global
         /// </summary>
         #region PlayFabSharedSettings Redirects
+        [ObsoleteAttribute("LogLevel has been deprecated, please use UnityEngine.Debug.Log for your logging needs.")]
         public static PlayFabLogLevel LogLevel { get { return PlayFabSharedPrivate.LogLevel; } set { PlayFabSharedPrivate.LogLevel = value; } }
         public static WebRequestType RequestType { get { return PlayFabSharedPrivate.RequestType; } set { PlayFabSharedPrivate.RequestType = value; } }
         public static int RequestTimeout { get { return PlayFabSharedPrivate.RequestTimeout; } set { PlayFabSharedPrivate.RequestTimeout = value; } }

@@ -21,6 +21,35 @@ namespace PlayFab.AuthenticationModels
         public string Type;
     }
 
+    [Serializable]
+    public class EntityLineage : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The Character Id of the associated entity.
+        /// </summary>
+        public string CharacterId;
+        /// <summary>
+        /// The Group Id of the associated entity.
+        /// </summary>
+        public string GroupId;
+        /// <summary>
+        /// The Master Player Account Id of the associated entity.
+        /// </summary>
+        public string MasterPlayerAccountId;
+        /// <summary>
+        /// The Namespace Id of the associated entity.
+        /// </summary>
+        public string NamespaceId;
+        /// <summary>
+        /// The Title Id of the associated entity.
+        /// </summary>
+        public string TitleId;
+        /// <summary>
+        /// The Title Player Account Id of the associated entity.
+        /// </summary>
+        public string TitlePlayerAccountId;
+    }
+
     /// <summary>
     /// This API must be called with X-SecretKey, X-Authentication or X-EntityToken headers. An optional EntityKey may be
     /// included to attempt to set the resulting EntityToken to a specific entity, however the entity must be a relation of the
@@ -52,6 +81,31 @@ namespace PlayFab.AuthenticationModels
         /// The time the token will expire, if it is an expiring token, in UTC.
         /// </summary>
         public DateTime? TokenExpiration;
+    }
+
+    /// <summary>
+    /// Given an entity token, validates that it hasn't exipired or been revoked and will return details of the owner.
+    /// </summary>
+    [Serializable]
+    public class ValidateEntityTokenRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Client EntityToken
+        /// </summary>
+        public string EntityToken;
+    }
+
+    [Serializable]
+    public class ValidateEntityTokenResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The entity id and type.
+        /// </summary>
+        public EntityKey Entity;
+        /// <summary>
+        /// The lineage of this profile.
+        /// </summary>
+        public EntityLineage Lineage;
     }
 }
 #endif

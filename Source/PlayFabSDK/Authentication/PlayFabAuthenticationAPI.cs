@@ -56,6 +56,17 @@ namespace PlayFab
             PlayFabHttp.MakeApiCall("/Authentication/GetEntityToken", request, authType, resultCallback, errorCallback, customData, extraHeaders, context);
         }
 
+        /// <summary>
+        /// Method for a server to validate a client provided EntityToken. Only callable by the title entity.
+        /// </summary>
+        public static void ValidateEntityToken(ValidateEntityTokenRequest request, Action<ValidateEntityTokenResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+
+
+            PlayFabHttp.MakeApiCall("/Authentication/ValidateEntityToken", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
+        }
+
 
     }
 }
