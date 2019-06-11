@@ -62,7 +62,8 @@ namespace PlayFab.MultiplayerModels
         WestEurope,
         WestUs,
         ChinaEast2,
-        ChinaNorth2
+        ChinaNorth2,
+        SouthAfricaNorth
     }
 
     public enum AzureVmFamily
@@ -196,7 +197,8 @@ namespace PlayFab.MultiplayerModels
     {
         Requested,
         Internal,
-        Timeout
+        Timeout,
+        ServerAllocationFailed
     }
 
     /// <summary>
@@ -330,7 +332,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The name of the container repository.
         /// </summary>
-        [Obsolete("Use 'ContainerImageReference' instead", false)]
+        [Obsolete("Use 'ContainerImageReference' instead", true)]
         public string ContainerRepositoryName;
         /// <summary>
         /// The container command to run when the multiplayer server has been allocated, including any arguments.
@@ -339,7 +341,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The tag for the container.
         /// </summary>
-        [Obsolete("Use 'ContainerImageReference' instead", false)]
+        [Obsolete("Use 'ContainerImageReference' instead", true)]
         public string ContainerTag;
         /// <summary>
         /// The list of game assets related to the build.

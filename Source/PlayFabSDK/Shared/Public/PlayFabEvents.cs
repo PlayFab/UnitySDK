@@ -1223,6 +1223,9 @@ namespace PlayFab.Events
             if (OnAuthenticationGetEntityTokenRequestEvent != null) { foreach (var each in OnAuthenticationGetEntityTokenRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationGetEntityTokenRequestEvent -= (PlayFabRequestEvent<AuthenticationModels.GetEntityTokenRequest>)each; } } }
             if (OnAuthenticationGetEntityTokenResultEvent != null) { foreach (var each in OnAuthenticationGetEntityTokenResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationGetEntityTokenResultEvent -= (PlayFabResultEvent<AuthenticationModels.GetEntityTokenResponse>)each; } } }
 
+            if (OnAuthenticationValidateEntityTokenRequestEvent != null) { foreach (var each in OnAuthenticationValidateEntityTokenRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationValidateEntityTokenRequestEvent -= (PlayFabRequestEvent<AuthenticationModels.ValidateEntityTokenRequest>)each; } } }
+            if (OnAuthenticationValidateEntityTokenResultEvent != null) { foreach (var each in OnAuthenticationValidateEntityTokenResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationValidateEntityTokenResultEvent -= (PlayFabResultEvent<AuthenticationModels.ValidateEntityTokenResponse>)each; } } }
+
 #endif
 #if !DISABLE_PLAYFABENTITY_API
             if (OnCloudScriptExecuteEntityCloudScriptRequestEvent != null) { foreach (var each in OnCloudScriptExecuteEntityCloudScriptRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnCloudScriptExecuteEntityCloudScriptRequestEvent -= (PlayFabRequestEvent<CloudScriptModels.ExecuteEntityCloudScriptRequest>)each; } } }
@@ -1902,6 +1905,7 @@ namespace PlayFab.Events
 #endif
 #if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(AuthenticationModels.GetEntityTokenRequest)) { if (_instance.OnAuthenticationGetEntityTokenRequestEvent != null) { _instance.OnAuthenticationGetEntityTokenRequestEvent((AuthenticationModels.GetEntityTokenRequest)e.Request); return; } }
+                if (type == typeof(AuthenticationModels.ValidateEntityTokenRequest)) { if (_instance.OnAuthenticationValidateEntityTokenRequestEvent != null) { _instance.OnAuthenticationValidateEntityTokenRequestEvent((AuthenticationModels.ValidateEntityTokenRequest)e.Request); return; } }
 #endif
 #if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(CloudScriptModels.ExecuteEntityCloudScriptRequest)) { if (_instance.OnCloudScriptExecuteEntityCloudScriptRequestEvent != null) { _instance.OnCloudScriptExecuteEntityCloudScriptRequestEvent((CloudScriptModels.ExecuteEntityCloudScriptRequest)e.Request); return; } }
@@ -2398,6 +2402,7 @@ namespace PlayFab.Events
 #if !DISABLE_PLAYFABENTITY_API
 
                 if (type == typeof(AuthenticationModels.GetEntityTokenResponse)) { if (_instance.OnAuthenticationGetEntityTokenResultEvent != null) { _instance.OnAuthenticationGetEntityTokenResultEvent((AuthenticationModels.GetEntityTokenResponse)e.Result); return; } }
+                if (type == typeof(AuthenticationModels.ValidateEntityTokenResponse)) { if (_instance.OnAuthenticationValidateEntityTokenResultEvent != null) { _instance.OnAuthenticationValidateEntityTokenResultEvent((AuthenticationModels.ValidateEntityTokenResponse)e.Result); return; } }
 #endif
 #if !DISABLE_PLAYFABENTITY_API
 
