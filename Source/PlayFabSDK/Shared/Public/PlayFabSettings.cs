@@ -11,8 +11,8 @@ namespace PlayFab
 #if !UNITY_2018_2_OR_NEWER // Unity has deprecated Www
         UnityWww, // High compatability Unity api calls
 #endif
-        HttpWebRequest, // High performance multi-threaded api calls
         UnityWebRequest, // Modern unity HTTP component
+        HttpWebRequest, // High performance multi-threaded api calls
         CustomHttp //If this is used, you must set the Http to an IPlayFabHttp object.
     }
 
@@ -39,7 +39,7 @@ namespace PlayFab
         internal readonly static PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
         public const string SdkVersion = "2.68.190610";
-        public const string BuildIdentifier = "jbuild_unitysdk__sdk-unity-3-slave_0";
+        public const string BuildIdentifier = "unitysdk_manual";
         public const string VersionString = "UnitySDK-2.68.190610";
         public const string AD_TYPE_IDFA = "Idfa";
         public const string AD_TYPE_ANDROID_ID = "Adid";
