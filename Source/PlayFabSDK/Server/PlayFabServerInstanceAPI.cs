@@ -257,7 +257,7 @@ namespace PlayFab
                 catch (Exception)
                 {
                     wrappedResult.FunctionResult = wrappedJson;
-                    wrappedResult.Logs.Add(new LogStatement{ Level = "Warning", Data = wrappedJson, Message = "Sdk Message: Could not deserialize result as: " + typeof (TOut).Name });
+                    wrappedResult.Logs.Add(new LogStatement { Level = "Warning", Data = wrappedJson, Message = "Sdk Message: Could not deserialize result as: " + typeof(TOut).Name });
                 }
                 resultCallback(wrappedResult);
             };

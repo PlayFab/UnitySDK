@@ -16,11 +16,6 @@ namespace PlayFab
         public readonly PlayFabApiSettings apiSettings = null;
         private readonly PlayFabAuthenticationContext authenticationContext = null;
 
-        public PlayFabCloudScriptInstanceAPI(PlayFabApiSettings settings)
-        {
-            apiSettings = settings;
-        }
-
         public PlayFabCloudScriptInstanceAPI(PlayFabAuthenticationContext context)
         {
             if (context == null)

@@ -26,6 +26,7 @@ namespace PlayFab
         public PlayFabAuthenticationInstanceAPI(PlayFabApiSettings settings)
         {
             apiSettings = settings;
+            authenticationContext = new PlayFabAuthenticationContext();
         }
 
         public PlayFabAuthenticationInstanceAPI(PlayFabAuthenticationContext context)

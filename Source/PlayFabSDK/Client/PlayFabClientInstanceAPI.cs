@@ -25,6 +25,7 @@ namespace PlayFab
         public PlayFabClientInstanceAPI(PlayFabApiSettings settings)
         {
             apiSettings = settings;
+            authenticationContext = new PlayFabAuthenticationContext();
         }
 
         public PlayFabClientInstanceAPI(PlayFabAuthenticationContext context)
@@ -262,8 +263,7 @@ namespace PlayFab
             {
                 var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
                 var wrappedJson = serializer.SerializeObject(wrappedResult.FunctionResult);
-                try
-                {
+                try {
                     wrappedResult.FunctionResult = serializer.DeserializeObject<TOut>(wrappedJson);
                 }
                 catch (Exception)

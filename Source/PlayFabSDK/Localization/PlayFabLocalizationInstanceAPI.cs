@@ -16,11 +16,6 @@ namespace PlayFab
         public readonly PlayFabApiSettings apiSettings = null;
         private readonly PlayFabAuthenticationContext authenticationContext = null;
 
-        public PlayFabLocalizationInstanceAPI(PlayFabApiSettings settings)
-        {
-            apiSettings = settings;
-        }
-
         public PlayFabLocalizationInstanceAPI(PlayFabAuthenticationContext context)
         {
             if (context == null)
