@@ -591,6 +591,7 @@ namespace PlayFab
 
     public enum PlayFabExceptionCode
     {
+        AuthContextRequired,
         DeveloperKeyNotSet,
         EntityTokenNotSet,
         NotLoggedIn,

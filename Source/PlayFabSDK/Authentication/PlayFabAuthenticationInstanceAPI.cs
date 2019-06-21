@@ -15,10 +15,13 @@ namespace PlayFab
     /// </summary>
     public class PlayFabAuthenticationInstanceAPI : IPlayFabInstanceApi
     {
-        public PlayFabApiSettings apiSettings = null;
-        private PlayFabAuthenticationContext authenticationContext = null;
+        public readonly PlayFabApiSettings apiSettings = null;
+        private readonly PlayFabAuthenticationContext authenticationContext = null;
 
-        public PlayFabAuthenticationInstanceAPI() { }
+        public PlayFabAuthenticationInstanceAPI()
+        {
+            authenticationContext = new PlayFabAuthenticationContext();
+        }
 
         public PlayFabAuthenticationInstanceAPI(PlayFabApiSettings settings)
         {
@@ -27,18 +30,13 @@ namespace PlayFab
 
         public PlayFabAuthenticationInstanceAPI(PlayFabAuthenticationContext context)
         {
-            authenticationContext = context;
+            authenticationContext = context ?? new PlayFabAuthenticationContext();
         }
 
         public PlayFabAuthenticationInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context)
         {
             apiSettings = settings;
-            authenticationContext = context;
-        }
-
-        public void SetAuthenticationContext(PlayFabAuthenticationContext context)
-        {
-            authenticationContext = context;
+            authenticationContext = context ?? new PlayFabAuthenticationContext();
         }
 
         public PlayFabAuthenticationContext GetAuthenticationContext()
