@@ -46,7 +46,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Check to See if the entity is logged in.
+        /// Verify entity login.
         /// </summary>
         public bool IsEntityLoggedIn()
         {

@@ -45,7 +45,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Check to See if the client is logged in.
+        /// Verify client login.
         /// </summary>
         public bool IsClientLoggedIn()
         {

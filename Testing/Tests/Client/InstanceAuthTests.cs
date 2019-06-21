@@ -82,6 +82,11 @@ namespace PlayFab.UUnit
             testContext.False(PlayFabClientAPI.IsClientLoggedIn(), "p1 client context leaked to static context");
             testContext.False(PlayFabAuthenticationAPI.IsEntityLoggedIn(), "p1 entity context leaked to static context");
 
+            // Verify useful player information
+            testContext.NotNull(player1.PlayFabId);
+            testContext.NotNull(player1.EntityId);
+            testContext.NotNull(player1.EntityType);
+
             testContext.EndTest(UUnitFinishState.PASSED, PlayFabSettings.staticSettings.TitleId + ", " + result.PlayFabId);
         }
 
@@ -105,6 +110,11 @@ namespace PlayFab.UUnit
 
             testContext.False(PlayFabClientAPI.IsClientLoggedIn(), "p2 client context leaked to static context");
             testContext.False(PlayFabAuthenticationAPI.IsEntityLoggedIn(), "p2 entity context leaked to static context");
+
+            // Verify useful player information
+            testContext.NotNull(player2.PlayFabId);
+            testContext.NotNull(player2.EntityId);
+            testContext.NotNull(player2.EntityType);
 
             testContext.EndTest(UUnitFinishState.PASSED, PlayFabSettings.staticSettings.TitleId + ", " + result.PlayFabId);
         }

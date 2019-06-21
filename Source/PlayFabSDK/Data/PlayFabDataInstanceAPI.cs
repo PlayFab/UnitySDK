@@ -40,6 +40,14 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Verify entity login.
+        /// </summary>
+        public bool IsEntityLoggedIn()
+        {
+            return authenticationContext == null ? false : authenticationContext.IsEntityLoggedIn();
+        }
+
+        /// <summary>
         /// Clear the Client SessionToken which allows this Client to call API calls requiring login.
         /// A new/fresh login will be required after calling this.
         /// </summary>
