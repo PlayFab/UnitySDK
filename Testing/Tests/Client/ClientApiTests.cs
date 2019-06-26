@@ -159,6 +159,7 @@ namespace PlayFab.UUnit
             PlayFabId = result.PlayFabId;
             var testContext = (UUnitTestContext)result.CustomData;
             testContext.True(clientInstance.IsClientLoggedIn(), "User login failed");
+            testContext.True(clientInstance.GetAuthenticationContext().IsEntityLoggedIn(), "Entity login failed");
             testContext.EndTest(UUnitFinishState.PASSED, clientSettings.TitleId + ", " + result.PlayFabId);
         }
 
@@ -187,6 +188,7 @@ namespace PlayFab.UUnit
             PlayFabId = result.PlayFabId;
             var testContext = (UUnitTestContext)result.CustomData;
             testContext.True(clientInstance.IsClientLoggedIn(), "User login failed");
+            testContext.True(clientInstance.GetAuthenticationContext().IsEntityLoggedIn(), "Entity login failed");
 
             // This setting should not cause a client test failure, but it also means this test can't be performed
             if (!result.SettingsForUser.NeedsAttribution)

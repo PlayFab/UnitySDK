@@ -15,30 +15,29 @@ namespace PlayFab
     /// </summary>
     public class PlayFabAuthenticationInstanceAPI : IPlayFabInstanceApi
     {
-        public PlayFabApiSettings apiSettings = null;
-        private PlayFabAuthenticationContext authenticationContext = null;
+        public readonly PlayFabApiSettings apiSettings = null;
+        private readonly PlayFabAuthenticationContext authenticationContext = null;
 
-        public PlayFabAuthenticationInstanceAPI() { }
+        public PlayFabAuthenticationInstanceAPI()
+        {
+            authenticationContext = new PlayFabAuthenticationContext();
+        }
 
         public PlayFabAuthenticationInstanceAPI(PlayFabApiSettings settings)
         {
             apiSettings = settings;
+            authenticationContext = new PlayFabAuthenticationContext();
         }
 
         public PlayFabAuthenticationInstanceAPI(PlayFabAuthenticationContext context)
         {
-            authenticationContext = context;
+            authenticationContext = context ?? new PlayFabAuthenticationContext();
         }
 
         public PlayFabAuthenticationInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context)
         {
             apiSettings = settings;
-            authenticationContext = context;
-        }
-
-        public void SetAuthenticationContext(PlayFabAuthenticationContext context)
-        {
-            authenticationContext = context;
+            authenticationContext = context ?? new PlayFabAuthenticationContext();
         }
 
         public PlayFabAuthenticationContext GetAuthenticationContext()
@@ -47,7 +46,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Check to See if the entity is logged in.
+        /// Verify entity login.
         /// </summary>
         public bool IsEntityLoggedIn()
         {
@@ -73,6 +72,7 @@ namespace PlayFab
         public void GetEntityToken(GetEntityTokenRequest request, Action<GetEntityTokenResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             AuthType authType = AuthType.None;
 #if !DISABLE_PLAYFABCLIENT_API
             if (context.ClientSessionTicket != null) { authType = AuthType.LoginSession; }
@@ -83,7 +83,7 @@ namespace PlayFab
 #if !DISABLE_PLAYFABENTITY_API
             if (context.EntityToken != null) { authType = AuthType.EntityToken; }
 #endif
-            PlayFabHttp.MakeApiCall("/Authentication/GetEntityToken", request, authType, resultCallback, errorCallback, customData, extraHeaders, context, apiSettings, this);
+            PlayFabHttp.MakeApiCall("/Authentication/GetEntityToken", request, authType, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>
@@ -92,7 +92,8 @@ namespace PlayFab
         public void ValidateEntityToken(ValidateEntityTokenRequest request, Action<ValidateEntityTokenResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
-            PlayFabHttp.MakeApiCall("/Authentication/ValidateEntityToken", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, apiSettings, this);
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            PlayFabHttp.MakeApiCall("/Authentication/ValidateEntityToken", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
     }

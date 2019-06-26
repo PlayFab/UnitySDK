@@ -44,10 +44,21 @@ namespace PlayFab.UUnit
 
         public void EndTest(UUnitFinishState finishState, string resultMsg)
         {
-            EndTime = DateTime.UtcNow;
-            TestResultMsg = resultMsg;
-            FinishState = finishState;
-            ActiveState = UUnitActiveState.READY;
+            // When a test is declared finished for the first time, apply it and return
+            if (FinishState == UUnitFinishState.PENDING)
+            {
+                EndTime = DateTime.UtcNow;
+                TestResultMsg = resultMsg;
+                FinishState = finishState;
+                ActiveState = UUnitActiveState.READY;
+                return;
+            }
+
+            // Otherwise describe the additional end-state and fail the test
+            TestResultMsg += "\n" + FinishState + "->" + finishState + " - Cannot declare test finished twice.";
+            if (finishState == UUnitFinishState.FAILED && FinishState == UUnitFinishState.FAILED)
+                TestResultMsg += "\nSecond message: " + resultMsg;
+            FinishState = UUnitFinishState.FAILED;
         }
 
         public void Skip(string message = "")

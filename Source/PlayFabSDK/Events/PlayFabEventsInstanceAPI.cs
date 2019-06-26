@@ -14,35 +14,35 @@ namespace PlayFab
     /// </summary>
     public class PlayFabEventsInstanceAPI : IPlayFabInstanceApi
     {
-        public PlayFabApiSettings apiSettings = null;
-        private PlayFabAuthenticationContext authenticationContext = null;
-
-        public PlayFabEventsInstanceAPI() { }
-
-        public PlayFabEventsInstanceAPI(PlayFabApiSettings settings)
-        {
-            apiSettings = settings;
-        }
+        public readonly PlayFabApiSettings apiSettings = null;
+        private readonly PlayFabAuthenticationContext authenticationContext = null;
 
         public PlayFabEventsInstanceAPI(PlayFabAuthenticationContext context)
         {
+            if (context == null)
+                throw new PlayFabException(PlayFabExceptionCode.AuthContextRequired, "Context cannot be null, create a PlayFabAuthenticationContext for each player in advance, or call <PlayFabClientInstanceAPI>.GetAuthenticationContext()");
             authenticationContext = context;
         }
 
         public PlayFabEventsInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context)
         {
+            if (context == null)
+                throw new PlayFabException(PlayFabExceptionCode.AuthContextRequired, "Context cannot be null, create a PlayFabAuthenticationContext for each player in advance, or call <PlayFabClientInstanceAPI>.GetAuthenticationContext()");
             apiSettings = settings;
-            authenticationContext = context;
-        }
-
-        public void SetAuthenticationContext(PlayFabAuthenticationContext context)
-        {
             authenticationContext = context;
         }
 
         public PlayFabAuthenticationContext GetAuthenticationContext()
         {
             return authenticationContext;
+        }
+
+        /// <summary>
+        /// Verify entity login.
+        /// </summary>
+        public bool IsEntityLoggedIn()
+        {
+            return authenticationContext == null ? false : authenticationContext.IsEntityLoggedIn();
         }
 
         /// <summary>
@@ -63,7 +63,8 @@ namespace PlayFab
         public void WriteEvents(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
-            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, apiSettings, this);
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
     }
