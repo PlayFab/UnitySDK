@@ -2133,7 +2133,9 @@ namespace PlayFab.AdminModels
         ExportUnknownError,
         ExportCantEditPendingExport,
         ExportLimitExports,
-        ExportLimitEvents
+        ExportLimitEvents,
+        TitleNotEnabledForParty,
+        PartyVersionNotFound
     }
 
     [Serializable]

@@ -16,7 +16,7 @@ namespace PlayFab
         static PlayFabClientAPI() {}
 
         /// <summary>
-        /// Check to See if the client is logged in.
+        /// Verify client login.
         /// </summary>
         public static bool IsClientLoggedIn()
         {
@@ -250,11 +250,9 @@ namespace PlayFab
                 var wrappedJson = serializer.SerializeObject(wrappedResult.FunctionResult);
                 try {
                     wrappedResult.FunctionResult = serializer.DeserializeObject<TOut>(wrappedJson);
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     wrappedResult.FunctionResult = wrappedJson;
-                    wrappedResult.Logs.Add(new LogStatement{ Level = "Warning", Data = wrappedJson, Message = "Sdk Message: Could not deserialize result as: " + typeof (TOut).Name });
+                    wrappedResult.Logs.Add(new LogStatement { Level = "Warning", Data = wrappedJson, Message = "Sdk Message: Could not deserialize result as: " + typeof(TOut).Name });
                 }
                 resultCallback(wrappedResult);
             };

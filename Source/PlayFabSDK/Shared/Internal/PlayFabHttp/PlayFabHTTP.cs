@@ -251,21 +251,15 @@ namespace PlayFab.Internal
             var regRes = result as ClientModels.RegisterPlayFabUserResult;
             if (logRes != null)
             {
-                logRes.AuthenticationContext = new PlayFabAuthenticationContext(logRes.SessionTicket, logRes.EntityToken.EntityToken, logRes.PlayFabId);
+                logRes.AuthenticationContext = new PlayFabAuthenticationContext(logRes.SessionTicket, logRes.EntityToken.EntityToken, logRes.PlayFabId, logRes.EntityToken.Entity.Id, logRes.EntityToken.Entity.Type);
                 if (reqContainer.context != null)
-                {
-                    reqContainer.context.ClientSessionTicket = logRes.SessionTicket;
-                    reqContainer.context.EntityToken = logRes.EntityToken.EntityToken;
-                }
+                    reqContainer.context.CopyFrom(logRes.AuthenticationContext);
             }
             else if (regRes != null)
             {
-                regRes.AuthenticationContext = new PlayFabAuthenticationContext(regRes.SessionTicket, regRes.EntityToken.EntityToken, regRes.PlayFabId);
+                regRes.AuthenticationContext = new PlayFabAuthenticationContext(regRes.SessionTicket, regRes.EntityToken.EntityToken, regRes.PlayFabId, regRes.EntityToken.Entity.Id, regRes.EntityToken.Entity.Type);
                 if (reqContainer.context != null)
-                {
-                    reqContainer.context.ClientSessionTicket = regRes.SessionTicket;
-                    reqContainer.context.EntityToken = regRes.EntityToken.EntityToken;
-                }
+                    reqContainer.context.CopyFrom(regRes.AuthenticationContext);
             }
 #endif
         }
@@ -468,7 +462,7 @@ namespace PlayFab.Internal
             }
         }
 #endif
-#endregion
+        #endregion
         private readonly Queue<IEnumerator> _injectedCoroutines = new Queue<IEnumerator>();
         private readonly Queue<Action> _injectedAction = new Queue<Action>();
 
