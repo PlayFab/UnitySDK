@@ -14,7 +14,7 @@ namespace PlayFab
     public class PlayFabAdminInstanceAPI : IPlayFabInstanceApi
     {
         public readonly PlayFabApiSettings apiSettings = null;
-        private readonly PlayFabAuthenticationContext authenticationContext = null;
+        public readonly PlayFabAuthenticationContext authenticationContext = null;
 
         public PlayFabAdminInstanceAPI() { }
 
@@ -32,11 +32,6 @@ namespace PlayFab
         {
             apiSettings = settings;
             authenticationContext = context;
-        }
-
-        public PlayFabAuthenticationContext GetAuthenticationContext()
-        {
-            return authenticationContext;
         }
 
         /// <summary>

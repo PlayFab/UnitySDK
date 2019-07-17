@@ -8,8 +8,8 @@ using PlayFab.Internal;
 namespace PlayFab
 {
     /// <summary>
-    /// Write custom PlayStream events for any PlayFab entity. PlayStream events can be used for analytics, reporting,
-    /// debugging, or to trigger custom actions in near real-time.
+    /// Write custom PlayStream and Telemetry events for any PlayFab entity. Telemetry events can be used for analytic,
+    /// reporting, or debugging. PlayStream events can do all of that and also trigger custom actions in near real-time.
     /// </summary>
     public static class PlayFabEventsAPI
     {
@@ -42,6 +42,17 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
+        }
+
+        /// <summary>
+        /// Write batches of entity based events to as Telemetry events (bypass PlayStream).
+        /// </summary>
+        public static void WriteTelemetryEvents(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+
+
+            PlayFabHttp.MakeApiCall("/Event/WriteTelemetryEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
         }
 
 

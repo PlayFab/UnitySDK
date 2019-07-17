@@ -1117,6 +1117,9 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Represents the request to delete a push notification template.
+    /// </summary>
     [Serializable]
     public class DeletePushNotificationTemplateRequest : PlayFabRequestCommon
     {
@@ -1836,6 +1839,7 @@ namespace PlayFab.ServerModels
         EconomyServiceInternalError,
         QueryRateLimitExceeded,
         EntityAPIKeyCreationDisabledForEntity,
+        ForbiddenByEntityPolicy,
         StudioCreationRateLimited,
         StudioCreationInProgress,
         DuplicateStudioName,
@@ -1854,6 +1858,14 @@ namespace PlayFab.ServerModels
         CloudScriptAzureFunctionsArgumentSizeExceeded,
         CloudScriptAzureFunctionsReturnSizeExceeded,
         CloudScriptAzureFunctionsHTTPRequestError,
+        VirtualCurrencyBetaGetError,
+        VirtualCurrencyBetaCreateError,
+        VirtualCurrencyBetaInitialDepositSaveError,
+        VirtualCurrencyBetaSaveError,
+        VirtualCurrencyBetaDeleteError,
+        VirtualCurrencyBetaRestoreError,
+        VirtualCurrencyBetaSaveConflict,
+        VirtualCurrencyBetaUpdateError,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -1893,22 +1905,30 @@ namespace PlayFab.ServerModels
         ExportInvalidStatusUpdate,
         ExportInvalidPrefix,
         ExportBlobContainerDoesNotExist,
-        ExportEventNameNotFound,
-        ExportExportTitleIdNotFound,
+        ExportNotFound,
         ExportCouldNotUpdate,
         ExportInvalidStorageType,
         ExportAmazonBucketDoesNotExist,
         ExportInvalidBlobStorage,
         ExportKustoException,
-        ExportKustoExceptionPartialErrorOnNewExport,
-        ExportKustoExceptionEdit,
         ExportKustoConnectionFailed,
         ExportUnknownError,
         ExportCantEditPendingExport,
         ExportLimitExports,
         ExportLimitEvents,
         TitleNotEnabledForParty,
-        PartyVersionNotFound
+        PartyVersionNotFound,
+        MultiplayerServerBuildReferencedByMatchmakingQueue,
+        ExperimentationExperimentStopped,
+        ExperimentationExperimentRunning,
+        ExperimentationExperimentNotFound,
+        ExperimentationExperimentNeverStarted,
+        ExperimentationExperimentDeleted,
+        ExperimentationClientTimeout,
+        ExperimentationExceededVariantNameLength,
+        ExperimentationExceededMaxVariantLength,
+        ExperimentInvalidId,
+        SnapshotNotFound
     }
 
     [Serializable]
@@ -3608,6 +3628,9 @@ namespace PlayFab.ServerModels
         public List<CharacterResult> Characters;
     }
 
+    /// <summary>
+    /// Contains the localized push notification content.
+    /// </summary>
     [Serializable]
     public class LocalizedPushNotificationProperties : PlayFabBaseModel
     {
@@ -4789,6 +4812,9 @@ namespace PlayFab.ServerModels
         public RevokeInventoryItem Item;
     }
 
+    /// <summary>
+    /// Represents the save push notification template request.
+    /// </summary>
     [Serializable]
     public class SavePushNotificationTemplateRequest : PlayFabRequestCommon
     {
@@ -4805,7 +4831,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string IOSPayload;
         /// <summary>
-        /// Dictionary of localized push notification templates.
+        /// Dictionary of localized push notification templates with the language as the key.
         /// </summary>
         public Dictionary<string,LocalizedPushNotificationProperties> LocalizedPushNotificationTemplates;
         /// <summary>
@@ -4814,6 +4840,9 @@ namespace PlayFab.ServerModels
         public string Name;
     }
 
+    /// <summary>
+    /// Represents the save push notification template result.
+    /// </summary>
     [Serializable]
     public class SavePushNotificationTemplateResult : PlayFabResultCommon
     {
@@ -4889,6 +4918,9 @@ namespace PlayFab.ServerModels
     {
     }
 
+    /// <summary>
+    /// Represents the request for sending a push notification template to a recipient.
+    /// </summary>
     [Serializable]
     public class SendPushNotificationFromTemplateRequest : PlayFabRequestCommon
     {

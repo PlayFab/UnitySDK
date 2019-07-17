@@ -15,7 +15,7 @@ namespace PlayFab
     public class PlayFabClientInstanceAPI : IPlayFabInstanceApi
     {
         public readonly PlayFabApiSettings apiSettings = null;
-        private readonly PlayFabAuthenticationContext authenticationContext = null;
+        public readonly PlayFabAuthenticationContext authenticationContext = null;
 
         public PlayFabClientInstanceAPI()
         {
@@ -37,11 +37,6 @@ namespace PlayFab
         {
             apiSettings = settings;
             authenticationContext = context ?? new PlayFabAuthenticationContext();
-        }
-
-        public PlayFabAuthenticationContext GetAuthenticationContext()
-        {
-            return authenticationContext;
         }
 
         /// <summary>

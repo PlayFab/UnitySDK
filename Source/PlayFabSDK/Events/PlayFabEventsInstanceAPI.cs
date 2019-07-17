@@ -9,13 +9,13 @@ using PlayFab.SharedModels;
 namespace PlayFab
 {
     /// <summary>
-    /// Write custom PlayStream events for any PlayFab entity. PlayStream events can be used for analytics, reporting,
-    /// debugging, or to trigger custom actions in near real-time.
+    /// Write custom PlayStream and Telemetry events for any PlayFab entity. Telemetry events can be used for analytic,
+    /// reporting, or debugging. PlayStream events can do all of that and also trigger custom actions in near real-time.
     /// </summary>
     public class PlayFabEventsInstanceAPI : IPlayFabInstanceApi
     {
         public readonly PlayFabApiSettings apiSettings = null;
-        private readonly PlayFabAuthenticationContext authenticationContext = null;
+        public readonly PlayFabAuthenticationContext authenticationContext = null;
 
         public PlayFabEventsInstanceAPI(PlayFabAuthenticationContext context)
         {
@@ -30,11 +30,6 @@ namespace PlayFab
                 throw new PlayFabException(PlayFabExceptionCode.AuthContextRequired, "Context cannot be null, create a PlayFabAuthenticationContext for each player in advance, or call <PlayFabClientInstanceAPI>.GetAuthenticationContext()");
             apiSettings = settings;
             authenticationContext = context;
-        }
-
-        public PlayFabAuthenticationContext GetAuthenticationContext()
-        {
-            return authenticationContext;
         }
 
         /// <summary>
@@ -65,6 +60,16 @@ namespace PlayFab
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             PlayFabHttp.MakeApiCall("/Event/WriteEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Write batches of entity based events to as Telemetry events (bypass PlayStream).
+        /// </summary>
+        public void WriteTelemetryEvents(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            PlayFabHttp.MakeApiCall("/Event/WriteTelemetryEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
     }

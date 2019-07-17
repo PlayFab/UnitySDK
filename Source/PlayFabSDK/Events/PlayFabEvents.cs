@@ -7,6 +7,8 @@ namespace PlayFab.Events
     {
         public event PlayFabRequestEvent<WriteEventsRequest> OnEventsWriteEventsRequestEvent;
         public event PlayFabResultEvent<WriteEventsResponse> OnEventsWriteEventsResultEvent;
+        public event PlayFabRequestEvent<WriteEventsRequest> OnEventsWriteTelemetryEventsRequestEvent;
+        public event PlayFabResultEvent<WriteEventsResponse> OnEventsWriteTelemetryEventsResultEvent;
     }
 }
 #endif
