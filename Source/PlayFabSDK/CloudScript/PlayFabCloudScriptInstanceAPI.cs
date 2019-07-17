@@ -14,7 +14,7 @@ namespace PlayFab
     public class PlayFabCloudScriptInstanceAPI : IPlayFabInstanceApi
     {
         public readonly PlayFabApiSettings apiSettings = null;
-        private readonly PlayFabAuthenticationContext authenticationContext = null;
+        public readonly PlayFabAuthenticationContext authenticationContext = null;
 
         public PlayFabCloudScriptInstanceAPI(PlayFabAuthenticationContext context)
         {
@@ -29,11 +29,6 @@ namespace PlayFab
                 throw new PlayFabException(PlayFabExceptionCode.AuthContextRequired, "Context cannot be null, create a PlayFabAuthenticationContext for each player in advance, or call <PlayFabClientInstanceAPI>.GetAuthenticationContext()");
             apiSettings = settings;
             authenticationContext = context;
-        }
-
-        public PlayFabAuthenticationContext GetAuthenticationContext()
-        {
-            return authenticationContext;
         }
 
         /// <summary>
