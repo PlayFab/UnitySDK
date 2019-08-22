@@ -375,6 +375,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Lists quality of service servers for party.
+        /// </summary>
+        public static void ListPartyQosServers(ListPartyQosServersRequest request, Action<ListPartyQosServersResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+
+
+            PlayFabHttp.MakeApiCall("/MultiplayerServer/ListPartyQosServers", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context);
+        }
+
+        /// <summary>
         /// Lists quality of service servers.
         /// </summary>
         public static void ListQosServers(ListQosServersRequest request, Action<ListQosServersResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)

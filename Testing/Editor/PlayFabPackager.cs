@@ -52,9 +52,9 @@ namespace PlayFab.Internal
 #endif
         }
 
-        private static bool IsBuiltForAppCenter 
+        private static bool IsBuiltForAppCenter
         {
-            get 
+            get
             {
                 var args = new System.Collections.Generic.List<string>(Environment.GetCommandLineArgs());
                 return args.Contains("-appcenter");
@@ -65,8 +65,7 @@ namespace PlayFab.Internal
     public static class PlayFabPackager
     {
         private static readonly string[] SdkAssets = {
-            "Assets/PlayFabSDK",
-            "Assets/Plugins"
+            "Assets/PlayFabSDK"
         };
         private static readonly string[] TestScenes = {
             "assets/Testing/scenes/testscene.unity"
@@ -198,7 +197,13 @@ namespace PlayFab.Internal
             var packageFolder = PathCombine(workspacePath, "sdks", repoName, "Packages");
             MkDir(packageFolder);
             var packageFullPath = Path.Combine(packageFolder, "UnitySDK.unitypackage");
+            if (File.Exists(packageFullPath))
+                File.Delete(packageFullPath);
+            if (File.Exists(packageFullPath))
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "The older package version could not be deleted.");
             AssetDatabase.ExportPackage(SdkAssets, packageFullPath, ExportPackageOptions.Recurse);
+            if (!File.Exists(packageFullPath))
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "The package was not replaced as expected.");
             Debug.Log("Package built: " + packageFullPath);
         }
 
@@ -212,7 +217,7 @@ namespace PlayFab.Internal
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, androidPackage, BuildTarget.Android, BuildOptions.None);
             if (!File.Exists(androidPackage))
-                throw new Exception("Target file did not build: " + androidPackage);
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target file did not build: " + androidPackage);
         }
 
         [MenuItem("PlayFab/Testing/iPhoneTestBuild")]
@@ -230,7 +235,7 @@ namespace PlayFab.Internal
             MkDir(iosPath);
             BuildPipeline.BuildPlayer(TestScenes, iosPath, AppleBuildTarget, BuildOptions.None);
             if (Directory.GetFiles(iosPath).Length == 0)
-                throw new Exception("Target directory is empty: " + iosPath + ", " + string.Join(",", Directory.GetFiles(iosPath)));
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target directory is empty: " + iosPath + ", " + string.Join(",", Directory.GetFiles(iosPath)));
         }
 
         [MenuItem("PlayFab/Testing/OSXTestBuild")]
@@ -246,7 +251,7 @@ namespace PlayFab.Internal
             MkDir(osxPath);
             BuildPipeline.BuildPlayer(TestScenes, Path.Combine(osxPath, osxAppName), OsxBuildTarget, BuildOptions.None);
             if (Directory.GetFileSystemEntries(osxPath).Length == 0)
-                throw new Exception("Target directory is empty: " + osxPath + ", " + string.Join(",", Directory.GetFiles(osxPath)));
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target directory is empty: " + osxPath + ", " + string.Join(",", Directory.GetFiles(osxPath)));
         }
 
         [MenuItem("PlayFab/Testing/PS4TestBuild")]
@@ -264,7 +269,7 @@ namespace PlayFab.Internal
             MkDir(ps4Path);
             BuildPipeline.BuildPlayer(TestScenes, ps4Path, BuildTarget.PS4, BuildOptions.None);
             if (Directory.GetFiles(ps4Path).Length == 0)
-                throw new Exception("Target directory is empty: " + ps4Path + ", " + string.Join(",", Directory.GetFiles(ps4Path)));
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target directory is empty: " + ps4Path + ", " + string.Join(",", Directory.GetFiles(ps4Path)));
         }
 
 #if UNITY_5_6_OR_NEWER // Switch is entirely unsupported before 5.6
@@ -281,7 +286,7 @@ namespace PlayFab.Internal
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, switchPackage, BuildTarget.Switch, BuildOptions.None);
             if (!File.Exists(switchPackage))
-                throw new Exception("Target file did not build: " + switchPackage);
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target file did not build: " + switchPackage);
         }
 #endif
 
@@ -304,7 +309,7 @@ namespace PlayFab.Internal
             MkDir(wp8Path);
             BuildPipeline.BuildPlayer(TestScenes, wp8Path, WsaBuildTarget, BuildOptions.None);
             if (Directory.GetFiles(wp8Path).Length == 0)
-                throw new Exception("Target directory is empty: " + wp8Path + ", " + string.Join(",", Directory.GetFiles(wp8Path)));
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target directory is empty: " + wp8Path + ", " + string.Join(",", Directory.GetFiles(wp8Path)));
         }
 
         [MenuItem("PlayFab/Testing/Win32TestBuild")]
@@ -330,7 +335,7 @@ namespace PlayFab.Internal
             MkDir(GetBuildPath());
             BuildPipeline.BuildPlayer(TestScenes, win32Path, BuildTarget.StandaloneWindows, BuildOptions.None);
             if (!File.Exists(win32Path))
-                throw new Exception("Target file did not build: " + win32Path);
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target file did not build: " + win32Path);
         }
 
         [MenuItem("PlayFab/Testing/XboxOneTestBuild")]
@@ -345,7 +350,7 @@ namespace PlayFab.Internal
             MkDir(xboxOnePath);
             BuildPipeline.BuildPlayer(TestScenes, xboxOnePath, BuildTarget.XboxOne, BuildOptions.None);
             if (Directory.GetFileSystemEntries(xboxOnePath).Length == 0)
-                throw new Exception("Target directory is empty: " + xboxOnePath + ", " + string.Join(",", Directory.GetFiles(xboxOnePath)));
+                throw new PlayFabException(PlayFabExceptionCode.BuildError, "Target directory is empty: " + xboxOnePath + ", " + string.Join(",", Directory.GetFiles(xboxOnePath)));
         }
     }
 }
