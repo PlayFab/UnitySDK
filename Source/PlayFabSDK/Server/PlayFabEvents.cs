@@ -109,6 +109,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetServerCustomIDsFromPlayFabIDsResult> OnServerGetServerCustomIDsFromPlayFabIDsResultEvent;
         public event PlayFabRequestEvent<GetSharedGroupDataRequest> OnServerGetSharedGroupDataRequestEvent;
         public event PlayFabResultEvent<GetSharedGroupDataResult> OnServerGetSharedGroupDataResultEvent;
+        public event PlayFabRequestEvent<GetStoreItemsServerRequest> OnServerGetStoreItemsRequestEvent;
+        public event PlayFabResultEvent<GetStoreItemsResult> OnServerGetStoreItemsResultEvent;
         public event PlayFabRequestEvent<GetTimeRequest> OnServerGetTimeRequestEvent;
         public event PlayFabResultEvent<GetTimeResult> OnServerGetTimeResultEvent;
         public event PlayFabRequestEvent<GetTitleDataRequest> OnServerGetTitleDataRequestEvent;
@@ -151,6 +153,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithServerCustomIdResultEvent;
         public event PlayFabRequestEvent<LoginWithXboxRequest> OnServerLoginWithXboxRequestEvent;
         public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithXboxResultEvent;
+        public event PlayFabRequestEvent<LoginWithXboxIdRequest> OnServerLoginWithXboxIdRequestEvent;
+        public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithXboxIdResultEvent;
         public event PlayFabRequestEvent<ModifyItemUsesRequest> OnServerModifyItemUsesRequestEvent;
         public event PlayFabResultEvent<ModifyItemUsesResult> OnServerModifyItemUsesResultEvent;
         public event PlayFabRequestEvent<MoveItemToCharacterFromCharacterRequest> OnServerMoveItemToCharacterFromCharacterRequestEvent;
