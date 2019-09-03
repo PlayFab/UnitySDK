@@ -71,6 +71,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListPartyQosServersResponse> OnMultiplayerListPartyQosServersResultEvent;
         public event PlayFabRequestEvent<ListQosServersRequest> OnMultiplayerListQosServersRequestEvent;
         public event PlayFabResultEvent<ListQosServersResponse> OnMultiplayerListQosServersResultEvent;
+        public event PlayFabRequestEvent<ListQosServersForTitleRequest> OnMultiplayerListQosServersForTitleRequestEvent;
+        public event PlayFabResultEvent<ListQosServersForTitleResponse> OnMultiplayerListQosServersForTitleResultEvent;
         public event PlayFabRequestEvent<ListVirtualMachineSummariesRequest> OnMultiplayerListVirtualMachineSummariesRequestEvent;
         public event PlayFabResultEvent<ListVirtualMachineSummariesResponse> OnMultiplayerListVirtualMachineSummariesResultEvent;
         public event PlayFabRequestEvent<RequestMultiplayerServerRequest> OnMultiplayerRequestMultiplayerServerRequestEvent;

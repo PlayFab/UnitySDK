@@ -619,6 +619,16 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the set of items defined for the specified store, including all prices defined, for the specified player
+        /// </summary>
+        public void GetStoreItems(GetStoreItemsServerRequest request, Action<GetStoreItemsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            PlayFabHttp.MakeApiCall("/Server/GetStoreItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Retrieves the current server time
         /// </summary>
         public void GetTime(GetTimeRequest request, Action<GetTimeResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -829,6 +839,17 @@ namespace PlayFab
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             PlayFabHttp.MakeApiCall("/Server/LoginWithXbox", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Signs the user in using an Xbox ID and Sandbox ID, returning a session identifier that can subsequently be used for API
+        /// calls which require an authenticated user
+        /// </summary>
+        public void LoginWithXboxId(LoginWithXboxIdRequest request, Action<ServerLoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            PlayFabHttp.MakeApiCall("/Server/LoginWithXboxId", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>

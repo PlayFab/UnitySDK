@@ -2726,7 +2726,7 @@ namespace PlayFab.ClientModels
     public class GetStoreItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// catalog version to store items from. Use default catalog version if null
+        /// Catalog version to store items from. Use default catalog version if null
         /// </summary>
         public string CatalogVersion;
         /// <summary>

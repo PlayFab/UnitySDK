@@ -1840,6 +1840,7 @@ namespace PlayFab.ServerModels
         QueryRateLimitExceeded,
         EntityAPIKeyCreationDisabledForEntity,
         ForbiddenByEntityPolicy,
+        UpdateInventoryRateLimitExceeded,
         StudioCreationRateLimited,
         StudioCreationInProgress,
         DuplicateStudioName,
@@ -3035,6 +3036,60 @@ namespace PlayFab.ServerModels
         public List<string> Members;
     }
 
+    [Serializable]
+    public class GetStoreItemsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The base catalog that this store is a part of.
+        /// </summary>
+        public string CatalogVersion;
+        /// <summary>
+        /// Additional data about the store.
+        /// </summary>
+        public StoreMarketingModel MarketingData;
+        /// <summary>
+        /// How the store was last updated (Admin or a third party).
+        /// </summary>
+        public SourceType? Source;
+        /// <summary>
+        /// Array of items which can be purchased from this store.
+        /// </summary>
+        public List<StoreItem> Store;
+        /// <summary>
+        /// The ID of this store.
+        /// </summary>
+        public string StoreId;
+    }
+
+    /// <summary>
+    /// A store contains an array of references to items defined in one or more catalog versions of the game, along with the
+    /// prices for the item, in both real world and virtual currencies. These prices act as an override to any prices defined in
+    /// the catalog. In this way, the base definitions of the items may be defined in the catalog, with all associated
+    /// properties, while the pricing can be set for each store, as needed. This allows for subsets of goods to be defined for
+    /// different purposes (in order to simplify showing some, but not all catalog items to users, based upon different
+    /// characteristics), along with unique prices. Note that all prices defined in the catalog and store definitions for the
+    /// item are considered valid, and that a compromised client can be made to send a request for an item based upon any of
+    /// these definitions. If no price is specified in the store for an item, the price set in the catalog should be displayed
+    /// to the user.
+    /// </summary>
+    [Serializable]
+    public class GetStoreItemsServerRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Catalog version to store items from. Use default catalog version if null
+        /// </summary>
+        public string CatalogVersion;
+        /// <summary>
+        /// Optional identifier for the player to use in requesting the store information - if used, segment overrides will be
+        /// applied
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Unqiue identifier for the store which is being requested
+        /// </summary>
+        public string StoreId;
+    }
+
     /// <summary>
     /// This query retrieves the current time from one of the servers in PlayFab. Please note that due to clock drift between
     /// servers, there is a potential variance of up to 5 seconds.
@@ -3716,6 +3771,33 @@ namespace PlayFab.ServerModels
         /// The backend server identifier for this player.
         /// </summary>
         public string ServerCustomId;
+    }
+
+    /// <summary>
+    /// If this is the first time a user has signed in with the Xbox ID and CreateAccount is set to true, a new PlayFab account
+    /// will be created and linked to the Xbox Live account. In this case, no email or username will be associated with the
+    /// PlayFab account. Otherwise, if no PlayFab account is linked to the Xbox Live account, an error indicating this will be
+    /// returned, so that the title can guide the user through creation of a PlayFab account.
+    /// </summary>
+    [Serializable]
+    public class LoginWithXboxIdRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Automatically create a PlayFab account if one is not currently linked to this ID.
+        /// </summary>
+        public bool? CreateAccount;
+        /// <summary>
+        /// Flags for which pieces of info to return for the user.
+        /// </summary>
+        public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
+        /// <summary>
+        /// The id of Xbox Live sandbox.
+        /// </summary>
+        public string Sandbox;
+        /// <summary>
+        /// Unique Xbox identifier for a user
+        /// </summary>
+        public string XboxId;
     }
 
     /// <summary>
@@ -5198,6 +5280,17 @@ namespace PlayFab.ServerModels
         public string Value;
     }
 
+    public enum SourceType
+    {
+        Admin,
+        BackEnd,
+        GameClient,
+        GameServer,
+        Partner,
+        Custom,
+        API
+    }
+
     [Serializable]
     public class StatisticModel : PlayFabBaseModel
     {
@@ -5274,6 +5367,55 @@ namespace PlayFab.ServerModels
         /// Unique Steam identifier for a user.
         /// </summary>
         public string SteamStringId;
+    }
+
+    /// <summary>
+    /// A store entry that list a catalog item at a particular price
+    /// </summary>
+    [Serializable]
+    public class StoreItem : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Store specific custom data. The data only exists as part of this store; it is not transferred to item instances
+        /// </summary>
+        public object CustomData;
+        /// <summary>
+        /// Intended display position for this item. Note that 0 is the first position
+        /// </summary>
+        public uint? DisplayPosition;
+        /// <summary>
+        /// Unique identifier of the item as it exists in the catalog - note that this must exactly match the ItemId from the
+        /// catalog
+        /// </summary>
+        public string ItemId;
+        /// <summary>
+        /// Override prices for this item for specific currencies
+        /// </summary>
+        public Dictionary<string,uint> RealCurrencyPrices;
+        /// <summary>
+        /// Override prices for this item in virtual currencies and "RM" (the base Real Money purchase price, in USD pennies)
+        /// </summary>
+        public Dictionary<string,uint> VirtualCurrencyPrices;
+    }
+
+    /// <summary>
+    /// Marketing data about a specific store
+    /// </summary>
+    [Serializable]
+    public class StoreMarketingModel : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Tagline for a store.
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Display name of a store as it will appear to users.
+        /// </summary>
+        public string DisplayName;
+        /// <summary>
+        /// Custom data about a store.
+        /// </summary>
+        public object Metadata;
     }
 
     [Serializable]

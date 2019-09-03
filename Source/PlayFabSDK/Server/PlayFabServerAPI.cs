@@ -647,6 +647,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the set of items defined for the specified store, including all prices defined, for the specified player
+        /// </summary>
+        public static void GetStoreItems(GetStoreItemsServerRequest request, Action<GetStoreItemsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+
+
+            PlayFabHttp.MakeApiCall("/Server/GetStoreItems", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context);
+        }
+
+        /// <summary>
         /// Retrieves the current server time
         /// </summary>
         public static void GetTime(GetTimeRequest request, Action<GetTimeResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -878,6 +889,18 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Server/LoginWithXbox", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context);
+        }
+
+        /// <summary>
+        /// Signs the user in using an Xbox ID and Sandbox ID, returning a session identifier that can subsequently be used for API
+        /// calls which require an authenticated user
+        /// </summary>
+        public static void LoginWithXboxId(LoginWithXboxIdRequest request, Action<ServerLoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+
+
+            PlayFabHttp.MakeApiCall("/Server/LoginWithXboxId", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context);
         }
 
         /// <summary>
