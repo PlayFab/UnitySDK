@@ -1505,7 +1505,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// Entity type. See https://api.playfab.com/docs/tutorials/entities/entitytypes
+        /// Entity type. See https://docs.microsoft.com/gaming/playfab/features/data/entities/available-built-in-entity-types
         /// </summary>
         public string Type;
     }
@@ -2091,6 +2091,13 @@ namespace PlayFab.AdminModels
         VirtualCurrencyBetaRestoreError,
         VirtualCurrencyBetaSaveConflict,
         VirtualCurrencyBetaUpdateError,
+        InsightsManagementDatabaseNotFound,
+        InsightsManagementOperationNotFound,
+        InsightsManagementErrorPendingOperationExists,
+        InsightsManagementSetPerformanceLevelInvalidParameter,
+        InsightsManagementSetStorageRetentionInvalidParameter,
+        InsightsManagementGetStorageUsageInvalidParameter,
+        InsightsManagementGetOperationStatusInvalidParameter,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2153,6 +2160,7 @@ namespace PlayFab.AdminModels
         ExperimentationExceededVariantNameLength,
         ExperimentationExceededMaxVariantLength,
         ExperimentInvalidId,
+        MaxActionDepthExceeded,
         SnapshotNotFound
     }
 
