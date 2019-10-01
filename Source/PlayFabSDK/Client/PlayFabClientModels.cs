@@ -1970,7 +1970,9 @@ namespace PlayFab.ClientModels
     }
 
     /// <summary>
-    /// Note that the Position of the character in the results is for the overall leaderboard.
+    /// NOTE: The position of the character in the results is relative to the other characters for that specific user. This mean
+    /// the values will always be between 0 and one less than the number of characters returned regardless of the size of the
+    /// actual leaderboard.
     /// </summary>
     [Serializable]
     public class GetLeaderboardForUsersCharactersResult : PlayFabResultCommon
@@ -3051,7 +3053,8 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string CatalogVersion;
         /// <summary>
-        /// A set of custom key-value pairs on the inventory item.
+        /// A set of custom key-value pairs on the instance of the inventory item, which is not to be confused with the catalog
+        /// item's custom data.
         /// </summary>
         public Dictionary<string,string> CustomData;
         /// <summary>

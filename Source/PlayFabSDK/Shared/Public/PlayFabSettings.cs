@@ -38,9 +38,9 @@ namespace PlayFab
         // This field will likely be removed someday
         internal readonly static PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
-        public const string SdkVersion = "2.74.190916";
+        public const string SdkVersion = "2.75.191001";
         public const string BuildIdentifier = "jbuild_unitysdk__sdk-unity-3-slave_0";
-        public const string VersionString = "UnitySDK-2.74.190916";
+        public const string VersionString = "UnitySDK-2.75.191001";
         public const string AD_TYPE_IDFA = "Idfa";
         public const string AD_TYPE_ANDROID_ID = "Adid";
 
@@ -51,7 +51,8 @@ namespace PlayFab
             var settingsList = Resources.LoadAll<PlayFabSharedSettings>("PlayFabSharedSettings");
             if (settingsList.Length != 1)
             {
-                throw new Exception("The number of PlayFabSharedSettings objects should be 1: " + settingsList.Length);
+                Debug.LogWarning("The number of PlayFabSharedSettings objects should be 1: " + settingsList.Length);
+                Debug.LogWarning("If you are upgrading your SDK, you can ignore this warning as PlayFabSharedSettings will be imported soon. If you are not upgrading your SDK and you see this message, you should re-download the latest PlayFab source code.");
             }
             return settingsList[0];
         }
