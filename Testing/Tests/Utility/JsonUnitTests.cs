@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using PlayFab.Json;
 
 namespace PlayFab.UUnit
 {
@@ -17,11 +16,11 @@ namespace PlayFab.UUnit
 
     internal class JsonPropertyAttrTestClass
     {
-        [JsonProperty(PropertyName = "GoodField")]
+        [PlayFab.Json.JsonProperty(PropertyName = "GoodField")]
         public string InvalidField;
-        [JsonProperty(PropertyName = "GoodProperty")]
+        [PlayFab.Json.JsonProperty(PropertyName = "GoodProperty")]
         public string InvalidProperty { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [PlayFab.Json.JsonProperty(NullValueHandling = PlayFab.Json.NullValueHandling.Ignore)]
         public object HideNull = null;
         public object ShowNull = null;
     }
@@ -284,14 +283,15 @@ namespace PlayFab.UUnit
         public void ArrayOfObjects(UUnitTestContext testContext)
         {
             var actualJson = "[{\"a\":\"aValue\"}, {\"b\":\"bValue\"}]";
-            var actualObjectList = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<List<object>>(actualJson);
-            var actualObjectArray = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer).DeserializeObject<object[]>(actualJson);
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+            var actualObjectList = serializer.DeserializeObject<List<Dictionary<string, object>>>(actualJson);
+            var actualObjectArray = serializer.DeserializeObject<Dictionary<string, object>[]>(actualJson);
 
             testContext.IntEquals(actualObjectList.Count, 2);
             testContext.IntEquals(actualObjectArray.Length, 2);
 
-            testContext.StringEquals(((JsonObject)actualObjectList[0])["a"] as string, "aValue");
-            testContext.StringEquals(((JsonObject)actualObjectList[1])["b"] as string, "bValue");
+            testContext.StringEquals(actualObjectList[0]["a"] as string, "aValue");
+            testContext.StringEquals(actualObjectList[1]["b"] as string, "bValue");
 
             testContext.EndTest(UUnitFinishState.PASSED, null);
         }
@@ -349,8 +349,9 @@ namespace PlayFab.UUnit
         //[UUnitTest]
         public void TestDeserializeToObject(UUnitTestContext testContext)
         {
-            var testInt = PlayFabSimpleJson.DeserializeObject<object>("1");
-            var testString = PlayFabSimpleJson.DeserializeObject<object>("\"a string\"");
+            var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+            var testInt = serializer.DeserializeObject<object>("1");
+            var testString = serializer.DeserializeObject<object>("\"a string\"");
             testContext.IntEquals((int)(ulong)testInt, 1);
             testContext.StringEquals((string)testString, "a string");
 

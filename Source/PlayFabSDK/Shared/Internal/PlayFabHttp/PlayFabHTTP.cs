@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using PlayFab.Json;
 using PlayFab.Public;
 using PlayFab.SharedModels;
 using UnityEngine;
@@ -383,13 +382,13 @@ namespace PlayFab.Internal
         #region Helpers
         protected internal static PlayFabError GeneratePlayFabError(string apiEndpoint, string json, object customData)
         {
-            JsonObject errorDict = null;
+            Dictionary<string, object> errorDict = null;
             Dictionary<string, List<string>> errorDetails = null;
             var serializer = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
             try
             {
                 // Deserialize the error
-                errorDict = serializer.DeserializeObject<JsonObject>(json);
+                errorDict = serializer.DeserializeObject<Dictionary<string, object>>(json);
             }
             catch (Exception) { /* Unusual, but shouldn't actually matter */ }
             try

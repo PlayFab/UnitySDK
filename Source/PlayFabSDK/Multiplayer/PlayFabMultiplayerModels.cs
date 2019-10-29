@@ -1029,7 +1029,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The reason why the current ticket was canceled. This field is only set if the ticket is in canceled state.
         /// </summary>
-        [Obsolete("Use 'CancellationReasonString' instead", false)]
+        [Obsolete("Use 'CancellationReasonString' instead", true)]
         public CancellationReason? CancellationReason;
         /// <summary>
         /// The reason why the current ticket was canceled. This field is only set if the ticket is in canceled state.
