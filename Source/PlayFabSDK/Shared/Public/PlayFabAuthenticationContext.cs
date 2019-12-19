@@ -63,8 +63,8 @@ namespace PlayFab
 
         public void ForgetAllCredentials()
         {
-            PlayFabId = null;
 #if !DISABLE_PLAYFABCLIENT_API
+            PlayFabId = null;
             ClientSessionTicket = null;
 #endif
 #if !DISABLE_PLAYFABENTITY_API

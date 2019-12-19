@@ -23,8 +23,10 @@ namespace PlayFab.Internal
             var clientInstanceApi = instanceApi as PlayFabClientInstanceAPI;
             if (clientInstanceApi != null)
                 clientInstanceApi.AttributeInstall(attribRequest, OnAttributeInstall, null, settings);
+#if !DISABLE_PLAYFAB_STATIC_API
             else
                 PlayFabClientAPI.AttributeInstall(attribRequest, OnAttributeInstall, null, settings);
+#endif
         }
         private static void OnAttributeInstall(ClientModels.AttributeInstallResult result)
         {
@@ -47,8 +49,10 @@ namespace PlayFab.Internal
             var clientInstanceApi = instanceApi as PlayFabClientInstanceAPI;
             if (clientInstanceApi != null)
                 clientInstanceApi.ReportDeviceInfo(request, null, OnGatherFail, settings);
+#if !DISABLE_PLAYFAB_STATIC_API
             else
                 PlayFabClientAPI.ReportDeviceInfo(request, null, OnGatherFail, settings);
+#endif
         }
         private static void OnGatherFail(PlayFabError error)
         {
