@@ -1,0 +1,16 @@
+{
+    "name": "PlayFabTesting",
+    "references": [
+        "PlayFab"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        "PlayFab"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
