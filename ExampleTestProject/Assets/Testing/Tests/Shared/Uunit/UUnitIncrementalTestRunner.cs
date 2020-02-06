@@ -104,27 +104,41 @@ namespace PlayFab.UUnit
         {
             if (postResultsToCloudscript && result != null)
             {
-                Debug.Log("Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + clientInstance.authenticationContext.PlayFabId);
+                var msg = "Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + clientInstance.authenticationContext.PlayFabId;
+                textDisplay.text += "\n" + msg;
+                Debug.Log(msg);
                 if (result.Logs != null)
                     foreach (var eachLog in result.Logs)
                         Debug.Log("Cloud Log: " + eachLog.Message);
             }
-
-            if (autoQuit && !Application.isEditor)
-                Application.Quit();
-            else if (!suite.AllTestsPassed())
-                throw new Exception("Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier);
+            QuitTesting();
         }
 
         private void OnPostTestResultsError(PlayFabError error)
         {
             Debug.LogWarning("Error posting results to Cloud Script:" + error.GenerateErrorReport());
-
-            if (autoQuit && !Application.isEditor)
-                Application.Quit();
-            else if (!suite.AllTestsPassed())
-                throw new Exception("Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier);
+            QuitTesting();
         }
 #endif
+        public void QuitTesting()
+        {
+            string msg = null;
+            if (autoQuit && !Application.isEditor)
+            {
+                msg = "Quitting...";
+                Application.Quit();
+            }
+            else if (!suite.AllTestsPassed())
+            {
+                msg = "Results were not posted to Cloud Script: " + PlayFabSettings.BuildIdentifier;
+            }
+            else
+            {
+                msg = "Failed to quit test program: " + autoQuit + !Application.isEditor + suite.AllTestsPassed();
+            }
+
+            textDisplay.text += "\n" + msg;
+            Debug.Log(msg);
+        }
     }
 }
