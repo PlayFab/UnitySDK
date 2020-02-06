@@ -29,5 +29,8 @@ testBuilds/
 sysinfo.txt
 testOutput.txt
 
+# Unity (and other) Logs
+**/*.log
+
 #Other files
 .DS_Store
