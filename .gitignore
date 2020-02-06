@@ -20,6 +20,7 @@ testBuilds/
 *.userprefs
 *.pidb
 *.booproj
+**/.vs/
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -27,6 +28,9 @@ testBuilds/
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 testOutput.txt
+
+# Unity (and other) Logs
+**/*.log
 
 #Other files
 .DS_Store

@@ -37,7 +37,14 @@ namespace PlayFab.Internal
         [MenuItem("PlayFab/Testing/Build PlayFab EdEx UnityPackage")]
         public static void BuildUnityPackage()
         {
-            var versionSrcFile = "C:/depot/API_Specs/SdkManualNotes.json"; // TODO: Don't hard code this
+            var workspacePath = Environment.GetEnvironmentVariable("WORKSPACE"); // This is a Jenkins-Build environment variable
+            if (string.IsNullOrEmpty(workspacePath))
+                workspacePath = "C:/depot"; // Expected typical location
+            var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable
+            if (string.IsNullOrEmpty(repoName))
+                repoName = "UnitySDK"; // Default if we aren't building something else
+
+            var versionSrcFile = PathCombine(workspacePath, "API_Specs", "SdkManualNotes.json");
             var notes = File.ReadAllText(versionSrcFile);
             var searchRegex = "\"unity-v2\": \"([0-9]+\\.[0-9]+\\.[0-9]+)\"";
             var match = Regex.Match(notes, searchRegex);
@@ -50,13 +57,6 @@ namespace PlayFab.Internal
 
             // We just changed a file we're about to publish - May not work, we might have to change this to be two console calls
             AssetDatabase.Refresh();
-
-            var workspacePath = Environment.GetEnvironmentVariable("WORKSPACE"); // This is a Jenkins-Build environment variable
-            if (string.IsNullOrEmpty(workspacePath))
-                workspacePath = "C:/depot"; // Expected typical location
-            var repoName = Environment.GetEnvironmentVariable("SdkName"); // This is a Jenkins-Build environment variable
-            if (string.IsNullOrEmpty(repoName))
-                repoName = "UnitySDK"; // Default if we aren't building something else
 
             var packageFolder = PathCombine(workspacePath, "sdks", repoName, "Packages");
             MkDir(packageFolder);
