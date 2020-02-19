@@ -1315,6 +1315,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The region of the multiplayer server to get logs for.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string Region;
         /// <summary>
         /// The server ID of multiplayer server to get logs for.
@@ -1329,6 +1330,19 @@ namespace PlayFab.MultiplayerModels
         /// URL for logs download.
         /// </summary>
         public string LogDownloadUrl;
+    }
+
+    /// <summary>
+    /// Gets multiplayer server logs for a specific server id in a region. The logs are available only after a server has
+    /// terminated.
+    /// </summary>
+    [Serializable]
+    public class GetMultiplayerSessionLogsBySessionIdRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The server ID of multiplayer server to get logs for.
+        /// </summary>
+        public string SessionId;
     }
 
     /// <summary>

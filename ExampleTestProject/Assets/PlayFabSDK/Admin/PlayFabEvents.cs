@@ -27,6 +27,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateActionsOnPlayersInSegmentTaskResultEvent;
         public event PlayFabRequestEvent<CreateCloudScriptTaskRequest> OnAdminCreateCloudScriptTaskRequestEvent;
         public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateCloudScriptTaskResultEvent;
+        public event PlayFabRequestEvent<CreateInsightsScheduledScalingTaskRequest> OnAdminCreateInsightsScheduledScalingTaskRequestEvent;
+        public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateInsightsScheduledScalingTaskResultEvent;
         public event PlayFabRequestEvent<CreateOpenIdConnectionRequest> OnAdminCreateOpenIdConnectionRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnAdminCreateOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<CreatePlayerSharedSecretRequest> OnAdminCreatePlayerSharedSecretRequestEvent;
