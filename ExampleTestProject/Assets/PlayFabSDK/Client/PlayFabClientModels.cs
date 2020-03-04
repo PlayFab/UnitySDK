@@ -3161,6 +3161,20 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class LinkAppleRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// If another user is already linked to a specific Apple account, unlink the other user and re-link.
+        /// </summary>
+        public bool? ForceLink;
+        /// <summary>
+        /// The JSON Web token (JWT) returned by Apple after login. Represented as the identityToken field in the authorization
+        /// credential payload. Used to validate the request and find the user ID (Apple subject) to link with.
+        /// </summary>
+        public string IdentityToken;
+    }
+
+    [Serializable]
     public class LinkCustomIDRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -3569,7 +3583,8 @@ namespace PlayFab.ClientModels
         CustomServer,
         NintendoSwitch,
         FacebookInstantGames,
-        OpenIdConnect
+        OpenIdConnect,
+        Apple
     }
 
     [Serializable]
@@ -3649,6 +3664,37 @@ namespace PlayFab.ClientModels
         /// Specific Operating System version for the user's device.
         /// </summary>
         public string OS;
+        /// <summary>
+        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// </summary>
+        public string PlayerSecret;
+        /// <summary>
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
+        /// title has been selected.
+        /// </summary>
+        public string TitleId;
+    }
+
+    [Serializable]
+    public class LoginWithAppleRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Automatically create a PlayFab account if one is not currently linked to this ID.
+        /// </summary>
+        public bool? CreateAccount;
+        /// <summary>
+        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// </summary>
+        public string EncryptedRequest;
+        /// <summary>
+        /// The JSON Web token (JWT) returned by Apple after login. Represented as the identityToken field in the authorization
+        /// credential payload.
+        /// </summary>
+        public string IdentityToken;
+        /// <summary>
+        /// Flags for which pieces of info to return for the user.
+        /// </summary>
+        public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
         /// Player secret that is used to verify API request signatures (Enterprise Only).
         /// </summary>
@@ -5812,6 +5858,11 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class UnlinkAppleRequest : PlayFabRequestCommon
+    {
+    }
+
+    [Serializable]
     public class UnlinkCustomIDRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -5962,6 +6013,7 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com/", "").
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string XboxToken;
     }
 

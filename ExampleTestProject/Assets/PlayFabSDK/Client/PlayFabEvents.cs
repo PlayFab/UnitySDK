@@ -149,6 +149,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GrantCharacterToUserResult> OnGrantCharacterToUserResultEvent;
         public event PlayFabRequestEvent<LinkAndroidDeviceIDRequest> OnLinkAndroidDeviceIDRequestEvent;
         public event PlayFabResultEvent<LinkAndroidDeviceIDResult> OnLinkAndroidDeviceIDResultEvent;
+        public event PlayFabRequestEvent<LinkAppleRequest> OnLinkAppleRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnLinkAppleResultEvent;
         public event PlayFabRequestEvent<LinkCustomIDRequest> OnLinkCustomIDRequestEvent;
         public event PlayFabResultEvent<LinkCustomIDResult> OnLinkCustomIDResultEvent;
         public event PlayFabRequestEvent<LinkFacebookAccountRequest> OnLinkFacebookAccountRequestEvent;
@@ -178,6 +180,7 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<LinkXboxAccountRequest> OnLinkXboxAccountRequestEvent;
         public event PlayFabResultEvent<LinkXboxAccountResult> OnLinkXboxAccountResultEvent;
         public event PlayFabRequestEvent<LoginWithAndroidDeviceIDRequest> OnLoginWithAndroidDeviceIDRequestEvent;
+        public event PlayFabRequestEvent<LoginWithAppleRequest> OnLoginWithAppleRequestEvent;
         public event PlayFabRequestEvent<LoginWithCustomIDRequest> OnLoginWithCustomIDRequestEvent;
         public event PlayFabRequestEvent<LoginWithEmailAddressRequest> OnLoginWithEmailAddressRequestEvent;
         public event PlayFabRequestEvent<LoginWithFacebookRequest> OnLoginWithFacebookRequestEvent;
@@ -239,6 +242,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ModifyUserVirtualCurrencyResult> OnSubtractUserVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<UnlinkAndroidDeviceIDRequest> OnUnlinkAndroidDeviceIDRequestEvent;
         public event PlayFabResultEvent<UnlinkAndroidDeviceIDResult> OnUnlinkAndroidDeviceIDResultEvent;
+        public event PlayFabRequestEvent<UnlinkAppleRequest> OnUnlinkAppleRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnUnlinkAppleResultEvent;
         public event PlayFabRequestEvent<UnlinkCustomIDRequest> OnUnlinkCustomIDRequestEvent;
         public event PlayFabResultEvent<UnlinkCustomIDResult> OnUnlinkCustomIDResultEvent;
         public event PlayFabRequestEvent<UnlinkFacebookAccountRequest> OnUnlinkFacebookAccountRequestEvent;
