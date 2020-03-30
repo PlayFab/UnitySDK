@@ -2140,7 +2140,11 @@ namespace PlayFab.AdminModels
         InsightsManagementSetStorageRetentionBelowMinimum,
         InsightsManagementSetStorageRetentionAboveMaximum,
         AppleNotEnabledForTitle,
-        InsightsManagementNewActiveEventArchiveLimitInvalid,
+        InsightsManagementNewActiveEventExportLimitInvalid,
+        InsightsManagementSetPerformanceRateLimited,
+        PartyRequestsThrottledFromRateLimiter,
+        XboxServiceTooManyRequests,
+        NintendoSwitchNotEnabledForTitle,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2197,6 +2201,11 @@ namespace PlayFab.AdminModels
         ExportCouldNotCreate,
         ExportNoBackingDatabaseFound,
         ExportCouldNotDelete,
+        ExportCannotDetermineEventQuery,
+        ExportInvalidQuerySchemaModification,
+        ExportQuerySchemaMissingRequiredColumns,
+        ExportCannotParseQuery,
+        ExportControlCommandsNotAllowed,
         TitleNotEnabledForParty,
         PartyVersionNotFound,
         MultiplayerServerBuildReferencedByMatchmakingQueue,
@@ -2215,6 +2224,7 @@ namespace PlayFab.AdminModels
         ExperimentationInvalidDuration,
         ExperimentationMaxExperimentsReached,
         MaxActionDepthExceeded,
+        TitleNotOnUpdatedPricingPlan,
         SnapshotNotFound
     }
 
@@ -3540,7 +3550,8 @@ namespace PlayFab.AdminModels
         NintendoSwitch,
         FacebookInstantGames,
         OpenIdConnect,
-        Apple
+        Apple,
+        NintendoSwitchAccount
     }
 
     [Serializable]
@@ -5081,6 +5092,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public DateTime? CompletedAt;
         /// <summary>
+        /// Error message for last processing attempt, if an error occured.
+        /// </summary>
+        public string ErrorMessage;
+        /// <summary>
         /// Estimated time remaining in seconds.
         /// </summary>
         public double? EstimatedSecondsRemaining;
@@ -5574,6 +5589,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public UserAndroidDeviceInfo AndroidDeviceInfo;
         /// <summary>
+        /// Sign in with Apple account information, if an Apple account has been linked
+        /// </summary>
+        public UserAppleIdInfo AppleAccountInfo;
+        /// <summary>
         /// Timestamp indicating when the user account was created
         /// </summary>
         public DateTime Created;
@@ -5607,6 +5626,10 @@ namespace PlayFab.AdminModels
         public UserKongregateInfo KongregateInfo;
         /// <summary>
         /// Nintendo Switch account information, if a Nintendo Switch account has been linked
+        /// </summary>
+        public UserNintendoSwitchAccountIdInfo NintendoSwitchAccountInfo;
+        /// <summary>
+        /// Nintendo Switch device information, if a Nintendo Switch device has been linked
         /// </summary>
         public UserNintendoSwitchDeviceIdInfo NintendoSwitchDeviceIdInfo;
         /// <summary>
@@ -5658,6 +5681,15 @@ namespace PlayFab.AdminModels
         /// Android device ID
         /// </summary>
         public string AndroidDeviceId;
+    }
+
+    [Serializable]
+    public class UserAppleIdInfo : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Apple subject ID
+        /// </summary>
+        public string AppleSubjectId;
     }
 
     [Serializable]
@@ -5776,6 +5808,15 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class UserNintendoSwitchAccountIdInfo : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Nintendo Switch account subject ID
+        /// </summary>
+        public string NintendoSwitchAccountSubjectId;
+    }
+
+    [Serializable]
     public class UserNintendoSwitchDeviceIdInfo : PlayFabBaseModel
     {
         /// <summary>
@@ -5824,7 +5865,9 @@ namespace PlayFab.AdminModels
         ServerCustomId,
         NintendoSwitchDeviceId,
         FacebookInstantGamesId,
-        OpenIdConnect
+        OpenIdConnect,
+        Apple,
+        NintendoSwitchAccount
     }
 
     [Serializable]

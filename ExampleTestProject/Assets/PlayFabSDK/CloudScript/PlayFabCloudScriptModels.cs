@@ -625,7 +625,8 @@ namespace PlayFab.CloudScriptModels
         NintendoSwitch,
         FacebookInstantGames,
         OpenIdConnect,
-        Apple
+        Apple,
+        NintendoSwitchAccount
     }
 
     [Serializable]

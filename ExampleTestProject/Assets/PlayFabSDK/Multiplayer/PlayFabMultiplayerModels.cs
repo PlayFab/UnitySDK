@@ -160,7 +160,7 @@ namespace PlayFab.MultiplayerModels
         public int StandbyServers;
         /// <summary>
         /// The status of multiplayer servers in the build region. Valid values are - Unknown, Initialized, Deploying, Deployed,
-        /// Unhealthy.
+        /// Unhealthy, Deleting, Deleted.
         /// </summary>
         public string Status;
     }
@@ -373,7 +373,8 @@ namespace PlayFab.MultiplayerModels
     {
         ManagedWindowsServerCore,
         CustomLinux,
-        ManagedWindowsServerCorePreview
+        ManagedWindowsServerCorePreview,
+        Invalid
     }
 
     [Serializable]
@@ -523,6 +524,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public int MultiplayerServerCountPerVm;
         /// <summary>
+        /// The OS platform used for running the game process.
+        /// </summary>
+        public string OsPlatform;
+        /// <summary>
         /// The ports the build is mapped on.
         /// </summary>
         public List<Port> Ports;
@@ -530,6 +535,10 @@ namespace PlayFab.MultiplayerModels
         /// The region configuration for the build.
         /// </summary>
         public List<BuildRegion> RegionConfigurations;
+        /// <summary>
+        /// The type of game server being hosted.
+        /// </summary>
+        public string ServerType;
         /// <summary>
         /// The VM size the build was created on.
         /// </summary>
@@ -558,6 +567,11 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReferenceParams> GameCertificateReferences;
+        /// <summary>
+        /// The directory containing the game executable. This would be the start path of the game assets that contain the main game
+        /// server executable. If not provided, a best effort will be made to extract it from the start game command.
+        /// </summary>
+        public string GameWorkingDirectory;
         /// <summary>
         /// The instrumentation configuration for the build.
         /// </summary>
@@ -617,6 +631,11 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
         /// <summary>
+        /// The directory containing the game executable. This would be the start path of the game assets that contain the main game
+        /// server executable. If not provided, a best effort will be made to extract it from the start game command.
+        /// </summary>
+        public string GameWorkingDirectory;
+        /// <summary>
         /// The instrumentation configuration for this build.
         /// </summary>
         public InstrumentationConfiguration InstrumentationConfiguration;
@@ -629,6 +648,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public int MultiplayerServerCountPerVm;
         /// <summary>
+        /// The OS platform used for running the game process.
+        /// </summary>
+        public string OsPlatform;
+        /// <summary>
         /// The ports the build is mapped on.
         /// </summary>
         public List<Port> Ports;
@@ -636,6 +659,10 @@ namespace PlayFab.MultiplayerModels
         /// The region configuration for the build.
         /// </summary>
         public List<BuildRegion> RegionConfigurations;
+        /// <summary>
+        /// The type of game server being hosted.
+        /// </summary>
+        public string ServerType;
         /// <summary>
         /// The command to run when the multiplayer server has been allocated, including any arguments.
         /// </summary>
@@ -821,6 +848,22 @@ namespace PlayFab.MultiplayerModels
         /// The guid string alias ID of the alias to perform the action on.
         /// </summary>
         public string AliasId;
+    }
+
+    /// <summary>
+    /// Removes a multiplayer server build's region.
+    /// </summary>
+    [Serializable]
+    public class DeleteBuildRegionRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The guid string ID of the build we want to update regions for.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The build region to delete.
+        /// </summary>
+        public string Region;
     }
 
     /// <summary>
@@ -1078,6 +1121,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public int MultiplayerServerCountPerVm;
         /// <summary>
+        /// The OS platform used for running the game process.
+        /// </summary>
+        public string OsPlatform;
+        /// <summary>
         /// The ports the build is mapped on.
         /// </summary>
         public List<Port> Ports;
@@ -1085,6 +1132,10 @@ namespace PlayFab.MultiplayerModels
         /// The region configuration for the build.
         /// </summary>
         public List<BuildRegion> RegionConfigurations;
+        /// <summary>
+        /// The type of game server being hosted.
+        /// </summary>
+        public string ServerType;
         /// <summary>
         /// The command to run when the multiplayer server has been allocated, including any arguments. This only applies to managed
         /// builds. If the build is a custom build, this field will be null.
@@ -1312,11 +1363,6 @@ namespace PlayFab.MultiplayerModels
     [Serializable]
     public class GetMultiplayerServerLogsRequest : PlayFabRequestCommon
     {
-        /// <summary>
-        /// The region of the multiplayer server to get logs for.
-        /// </summary>
-        [Obsolete("No longer available", false)]
-        public string Region;
         /// <summary>
         /// The server ID of multiplayer server to get logs for.
         /// </summary>
@@ -2012,6 +2058,12 @@ namespace PlayFab.MultiplayerModels
         public string VmId;
     }
 
+    public enum OsPlatform
+    {
+        Windows,
+        Linux
+    }
+
     [Serializable]
     public class Port : PlayFabBaseModel
     {
@@ -2171,6 +2223,12 @@ namespace PlayFab.MultiplayerModels
         public string Region;
     }
 
+    public enum ServerType
+    {
+        Container,
+        Process
+    }
+
     /// <summary>
     /// Executes the shutdown callback from the GSDK and terminates the multiplayer server session. The callback in the GSDK
     /// will allow for graceful shutdown with a 15 minute timeoutIf graceful shutdown has not been completed before 15 minutes
@@ -2265,6 +2323,22 @@ namespace PlayFab.MultiplayerModels
         /// Array of build selection criteria.
         /// </summary>
         public List<BuildSelectionCriterion> BuildSelectionCriteria;
+    }
+
+    /// <summary>
+    /// Updates a multiplayer server build's region.
+    /// </summary>
+    [Serializable]
+    public class UpdateBuildRegionRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The guid string ID of the build we want to update regions for.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The updated region configuration that should be applied to the specified build.
+        /// </summary>
+        public BuildRegionParams BuildRegion;
     }
 
     /// <summary>
