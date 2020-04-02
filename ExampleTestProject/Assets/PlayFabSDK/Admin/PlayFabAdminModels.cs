@@ -2206,6 +2206,7 @@ namespace PlayFab.AdminModels
         ExportQuerySchemaMissingRequiredColumns,
         ExportCannotParseQuery,
         ExportControlCommandsNotAllowed,
+        ExportQueryMissingTableReference,
         TitleNotEnabledForParty,
         PartyVersionNotFound,
         MultiplayerServerBuildReferencedByMatchmakingQueue,
@@ -2223,6 +2224,7 @@ namespace PlayFab.AdminModels
         ExperimentationTreatmentAssignmentDisabled,
         ExperimentationInvalidDuration,
         ExperimentationMaxExperimentsReached,
+        ExperimentationExperimentSchedulingInProgress,
         MaxActionDepthExceeded,
         TitleNotOnUpdatedPricingPlan,
         SnapshotNotFound
