@@ -37,6 +37,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteBuildRegionResultEvent;
         public event PlayFabRequestEvent<DeleteCertificateRequest> OnMultiplayerDeleteCertificateRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteCertificateResultEvent;
+        public event PlayFabRequestEvent<DeleteContainerImageRequest> OnMultiplayerDeleteContainerImageRepositoryRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteContainerImageRepositoryResultEvent;
         public event PlayFabRequestEvent<DeleteRemoteUserRequest> OnMultiplayerDeleteRemoteUserRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteRemoteUserResultEvent;
         public event PlayFabRequestEvent<EnableMultiplayerServersForTitleRequest> OnMultiplayerEnableMultiplayerServersForTitleRequestEvent;
