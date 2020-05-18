@@ -1,0 +1,1 @@
+This file ensures that the Resources directory exists, so it can hold the testTitleData file in automated testing.
