@@ -637,7 +637,7 @@ namespace PlayFab
         /// <summary>
         /// Lists quality of service servers.
         /// </summary>
-        [Obsolete("Use 'ListQosServersForTitle' instead", false)]
+        [Obsolete("Use 'ListQosServersForTitle' instead", true)]
         public static void ListQosServers(ListQosServersRequest request, Action<ListQosServersResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
