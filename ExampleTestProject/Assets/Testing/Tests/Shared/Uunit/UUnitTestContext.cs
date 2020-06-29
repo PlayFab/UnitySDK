@@ -33,6 +33,7 @@ namespace PlayFab.UUnit
         public DateTime EndTime;
         public string TestResultMsg;
         public readonly string Name;
+        public int retryCount;
 
         public UUnitTestContext(UUnitTestCase testInstance, Action<UUnitTestContext> testDelegate, string name)
         {
@@ -40,6 +41,14 @@ namespace PlayFab.UUnit
             TestDelegate = testDelegate;
             ActiveState = UUnitActiveState.PENDING;
             Name = name;
+        }
+
+        public void AttemptRetry()
+        {
+            ActiveState = UUnitActiveState.PENDING;
+            FinishState = UUnitFinishState.PENDING;
+            TestResultMsg = null;
+            retryCount++;
         }
 
         public void EndTest(UUnitFinishState finishState, string resultMsg)

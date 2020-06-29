@@ -211,11 +211,23 @@ namespace PlayFab.UUnit
             if (_suiteState == UUnitActiveState.PENDING)
                 _suiteState = UUnitActiveState.ACTIVE;
 
+            // Check if we should cycle to the next test
             var nextTest = _activeIndex < _testContexts.Count ? _testContexts[_activeIndex] : null;
             if (nextTest != null && nextTest.ActiveState == UUnitActiveState.COMPLETE)
             {
-                _activeIndex++;
-                nextTest = (_activeIndex >= _testContexts.Count) ? null : _testContexts[_activeIndex];
+                if (nextTest.FinishState == UUnitFinishState.FAILED && nextTest.retryCount < nextTest.TestInstance.maxRetry)
+                {
+                    // Reset the test and try again
+                    nextTest.AttemptRetry();
+                }
+                else
+                {
+                    // Record this test result
+                    TrackTestResult(nextTest);
+                    // Retrys are expired, move to the next test
+                    _activeIndex++;
+                    nextTest = (_activeIndex >= _testContexts.Count) ? null : _testContexts[_activeIndex];
+                }
             }
 
             if (nextTest != null && nextTest.ActiveState == UUnitActiveState.PENDING)
@@ -230,6 +242,11 @@ namespace PlayFab.UUnit
                 ManageInstance(null, activeTestInstance); // Ensure that the final test is cleaned up
             }
             return _suiteState == UUnitActiveState.READY;
+        }
+
+        private void TrackTestResult(UUnitTestContext testContext)
+        {
+            _testReport.TestComplete(testContext.TestDelegate.Target.GetType().Name + "." + testContext.Name, testContext.FinishState, (int)(testContext.EndTime - testContext.StartTime).TotalMilliseconds, testContext.TestResultMsg, null);
         }
 
         /// <summary>
@@ -308,7 +325,6 @@ namespace PlayFab.UUnit
             testContext.EndTime = now;
             Wrap(testContext, testContext.TestInstance.TearDown);
             testContext.ActiveState = UUnitActiveState.COMPLETE;
-            _testReport.TestComplete(testContext.TestDelegate.Target.GetType().Name + "." + testContext.Name, testContext.FinishState, (int)(testContext.EndTime - testContext.StartTime).TotalMilliseconds, testContext.TestResultMsg, null);
         }
     }
 }

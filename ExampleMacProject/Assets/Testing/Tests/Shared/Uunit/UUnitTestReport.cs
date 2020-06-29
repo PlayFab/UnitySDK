@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PlayFab.UUnit
 {
@@ -35,7 +36,7 @@ namespace PlayFab.UUnit
 
         public void TestStarted()
         {
-            InternalReport.tests += 1;
+            InternalReport.RecalculateCounts();
         }
 
         public void TestComplete(string testName, UUnitFinishState finishState, long stopwatchMs, string message, string stacktrace)
@@ -52,16 +53,7 @@ namespace PlayFab.UUnit
             if (InternalReport.testResults == null)
                 InternalReport.testResults = new List<TestCaseReport>();
             InternalReport.testResults.Add(report);
-
-            switch (finishState)
-            {
-                case (UUnitFinishState.PASSED):
-                    InternalReport.passed += 1; break;
-                case (UUnitFinishState.FAILED):
-                    InternalReport.failures += 1; break;
-                case (UUnitFinishState.SKIPPED):
-                    InternalReport.skipped += 1; break;
-            }
+            InternalReport.RecalculateCounts();
 
             // TODO: Add hooks for SuiteSetUp and SuiteTearDown, so this can be estimated more accurately
             InternalReport.time = DateTime.UtcNow - InternalReport.timestamp; // For now, update the duration on every test complete - the last one will be essentially correct
@@ -72,6 +64,7 @@ namespace PlayFab.UUnit
         /// </summary>
         public bool AllTestsPassed()
         {
+            InternalReport.RecalculateCounts();
             return InternalReport.tests > 0 && InternalReport.tests == (InternalReport.passed + InternalReport.skipped) && InternalReport.failures == 0;
         }
     }
@@ -84,15 +77,22 @@ namespace PlayFab.UUnit
         // Part of the XML spec
         public List<TestCaseReport> testResults;
         public string name;
-        public int tests;
-        public int failures;
+        public int tests { get; private set;}
+        public int failures{ get; private set;}
         public int errors;
-        public int skipped;
+        public int skipped{ get; private set;}
         public TimeSpan time;
         public DateTime timestamp;
         public Dictionary<string, string> properties;
         // Useful for debugging but not part of the serialized format
-        public int passed; // Could be calculated from the others, but sometimes knowing if they don't add up means something
+        public int passed{ get; private set;} // Could be calculated from the others, but sometimes knowing if they don't add up means something
+        public void RecalculateCounts()
+        {
+            tests = testResults?.Count() ?? 0;
+            failures = testResults?.Where(eachReport => { return eachReport.finishState == UUnitFinishState.FAILED; }).Count() ?? 0;
+            skipped = testResults?.Where(eachReport => { return eachReport.finishState == UUnitFinishState.SKIPPED; }).Count() ?? 0;
+            passed = testResults?.Where(eachReport => { return eachReport.finishState == UUnitFinishState.PASSED; }).Count() ?? 0;
+        }
     }
 
     /// <summary>

@@ -46,6 +46,7 @@ namespace PlayFab.UUnit
 
         public override void SetUp(UUnitTestContext testContext)
         {
+            maxRetry = 1;
             var testTitleData = TestTitleDataLoader.LoadTestTitleData();
             PlayFabSettings.TitleId = testTitleData.titleId;
 

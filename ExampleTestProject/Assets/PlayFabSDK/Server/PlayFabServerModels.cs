@@ -5698,11 +5698,6 @@ namespace PlayFab.ServerModels
         /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Xbox Live identifier.
         /// </summary>
         public string PlayFabId;
-        /// <summary>
-        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com/", "").
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public string XboxToken;
     }
 
     [Serializable]

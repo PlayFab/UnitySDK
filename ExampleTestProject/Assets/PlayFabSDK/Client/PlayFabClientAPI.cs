@@ -1135,16 +1135,16 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Links the Nintendo account associated with the token to the user's PlayFab account. (Open ID)
+        /// Links the Nintendo account associated with the token to the user's PlayFab account.
         /// </summary>
-        public static void LinkNintendoAccount(LinkNintendoAccountRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void LinkNintendoServiceAccount(LinkNintendoServiceAccountRequest request, Action<EmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
             var callSettings = PlayFabSettings.staticSettings;
             if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
 
-            PlayFabHttp.MakeApiCall("/Client/LinkNintendoAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+            PlayFabHttp.MakeApiCall("/Client/LinkNintendoServiceAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>
@@ -1379,16 +1379,16 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Signs in the user with a Nintendo account identity token. (Open ID)
+        /// Signs in the user with a Nintendo service account token.
         /// </summary>
-        public static void LoginWithNintendoAccount(LoginWithNintendoAccountRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void LoginWithNintendoServiceAccount(LoginWithNintendoServiceAccountRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
             var callSettings = PlayFabSettings.staticSettings;
             request.TitleId = request.TitleId ?? callSettings.TitleId;
 
 
-            PlayFabHttp.MakeApiCall("/Client/LoginWithNintendoAccount", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+            PlayFabHttp.MakeApiCall("/Client/LoginWithNintendoServiceAccount", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>
@@ -1954,16 +1954,16 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Unlinks the related Nintendo account from the user's PlayFab account. (Open ID)
+        /// Unlinks the related Nintendo account from the user's PlayFab account.
         /// </summary>
-        public static void UnlinkNintendoAccount(UnlinkNintendoAccountRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        public static void UnlinkNintendoServiceAccount(UnlinkNintendoServiceAccountRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
             var callSettings = PlayFabSettings.staticSettings;
             if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
 
 
-            PlayFabHttp.MakeApiCall("/Client/UnlinkNintendoAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+            PlayFabHttp.MakeApiCall("/Client/UnlinkNintendoServiceAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>

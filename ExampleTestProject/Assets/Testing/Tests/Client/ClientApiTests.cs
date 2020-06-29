@@ -46,6 +46,7 @@ namespace PlayFab.UUnit
 
         public override void SetUp(UUnitTestContext testContext)
         {
+            maxRetry = 1;
             // Verify all the inputs won't cause crashes in the tests
             var titleInfoSet = !string.IsNullOrEmpty(clientSettings.TitleId) && !string.IsNullOrEmpty(_userEmail);
             if (!titleInfoSet)

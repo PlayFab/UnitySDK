@@ -10,6 +10,8 @@ namespace PlayFab.UUnit
 {
     public class UUnitTestCase
     {
+        public int maxRetry = 0;
+
         /// <summary>
         /// During testing, this is the first function that will be called for each UUnitTestCase.
         /// This is run exactly once for this type.
