@@ -29,6 +29,7 @@ namespace PlayFab.UUnit
 
         public override void SetUp(UUnitTestContext testContext)
         {
+            maxRetry = 1;
             VerifyCleanCreds(testContext);
         }
 
