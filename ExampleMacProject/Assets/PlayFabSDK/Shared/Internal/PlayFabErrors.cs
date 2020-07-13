@@ -511,6 +511,7 @@ namespace PlayFab
         RequestMultiplayerServersThrottledFromRateLimiter = 1507,
         TitleDataOverrideNotFound = 1508,
         DuplicateKeys = 1509,
+        WasNotCreatedWithCloudRoot = 1510,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,

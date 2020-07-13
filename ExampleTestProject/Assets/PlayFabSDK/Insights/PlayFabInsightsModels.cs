@@ -8,6 +8,10 @@ namespace PlayFab.InsightsModels
     [Serializable]
     public class InsightsEmptyRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
     }
 
     [Serializable]
@@ -71,6 +75,10 @@ namespace PlayFab.InsightsModels
     public class InsightsGetOperationStatusRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
         /// Id of the Insights operation.
         /// </summary>
         public string OperationId;
@@ -119,6 +127,10 @@ namespace PlayFab.InsightsModels
     [Serializable]
     public class InsightsGetPendingOperationsRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// The type of pending operations requested, or blank for all operation types.
         /// </summary>
@@ -195,6 +207,10 @@ namespace PlayFab.InsightsModels
     public class InsightsSetPerformanceRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
         /// The Insights performance level to apply to the title.
         /// </summary>
         public int PerformanceLevel;
@@ -206,6 +222,10 @@ namespace PlayFab.InsightsModels
     [Serializable]
     public class InsightsSetStorageRetentionRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// The Insights data storage retention value (in days) to apply to the title.
         /// </summary>
