@@ -12,6 +12,10 @@ namespace PlayFab.DataModels
     public class AbortFileUploadsRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
         /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
@@ -45,6 +49,10 @@ namespace PlayFab.DataModels
     [Serializable]
     public class DeleteFilesRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
@@ -96,6 +104,10 @@ namespace PlayFab.DataModels
     [Serializable]
     public class FinalizeFileUploadsRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
@@ -157,6 +169,10 @@ namespace PlayFab.DataModels
     public class GetFilesRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
         /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
@@ -185,6 +201,10 @@ namespace PlayFab.DataModels
     [Serializable]
     public class GetObjectsRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
@@ -233,6 +253,10 @@ namespace PlayFab.DataModels
     [Serializable]
     public class InitiateFileUploadsRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
@@ -340,6 +364,10 @@ namespace PlayFab.DataModels
     [Serializable]
     public class SetObjectsRequest : PlayFabRequestCommon
     {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
