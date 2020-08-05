@@ -2008,7 +2008,6 @@ namespace PlayFab.ServerModels
         ExperimentationInvalidDuration,
         ExperimentationMaxExperimentsReached,
         ExperimentationExperimentSchedulingInProgress,
-        ExperimentationExistingCodelessScheduled,
         MaxActionDepthExceeded,
         TitleNotOnUpdatedPricingPlan,
         SnapshotNotFound
