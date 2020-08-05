@@ -329,6 +329,19 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Deletes a specified set of title data overrides.
+        /// </summary>
+        public static void DeleteTitleDataOverride(DeleteTitleDataOverrideRequest request, Action<DeleteTitleDataOverrideResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+
+
+            PlayFabHttp.MakeApiCall("/Admin/DeleteTitleDataOverride", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
         /// Exports all associated data of a master player account
         /// </summary>
         public static void ExportMasterPlayerData(ExportMasterPlayerDataRequest request, Action<ExportMasterPlayerDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -1223,6 +1236,19 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Admin/SetTitleData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
+        /// Set and delete key-value pairs in a title data override instance.
+        /// </summary>
+        public static void SetTitleDataAndOverrides(SetTitleDataAndOverridesRequest request, Action<SetTitleDataAndOverridesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+
+
+            PlayFabHttp.MakeApiCall("/Admin/SetTitleDataAndOverrides", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>

@@ -87,6 +87,13 @@ namespace PlayFab.AuthenticationModels
         public DateTime? TokenExpiration;
     }
 
+    public enum IdentifiedDeviceType
+    {
+        Unknown,
+        XboxOne,
+        Scarlett
+    }
+
     public enum LoginIdentityProvider
     {
         Unknown,
@@ -113,7 +120,7 @@ namespace PlayFab.AuthenticationModels
     }
 
     /// <summary>
-    /// Given an entity token, validates that it hasn't exipired or been revoked and will return details of the owner.
+    /// Given an entity token, validates that it hasn't expired or been revoked and will return details of the owner.
     /// </summary>
     [Serializable]
     public class ValidateEntityTokenRequest : PlayFabRequestCommon
@@ -135,6 +142,10 @@ namespace PlayFab.AuthenticationModels
         /// The entity id and type.
         /// </summary>
         public EntityKey Entity;
+        /// <summary>
+        /// The authenticated device for this entity, for the given login
+        /// </summary>
+        public IdentifiedDeviceType? IdentifiedDeviceType;
         /// <summary>
         /// The identity provider for this entity, for the given login
         /// </summary>
