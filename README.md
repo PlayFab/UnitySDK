@@ -1,7 +1,8 @@
 # UnitySDK README
 
-The easist way to get started is to use our [EditorExtensions plugin](https://github.com/PlayFab/UnityEditorExtensions). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
+The PlayFab Unity SDK consists of two packages. The "PlayFab UnitySDK" and the optional "PlayFab Unity Editor Extensions". Setup is very easy with the Extensions, but it requires additional project files. Expert users can install the SDK directly, by extracting the SDK package manually, and configuring the scriptable-objects using the Unity inspector window.
 
+The easist way to get started is to use our [EditorExtensions package](https://aka.ms/PlayFabUnityEdEx). This provides a clean UI for configuring the SDK as well as automatically downloading, installing, and upgrading the PlayFab SDK.
 
 ## 1. Overview:
 
@@ -22,28 +23,26 @@ To connect to the PlayFab service, your machine must be running TLS v1.2 or bett
 
 ## 3. Installing or Upgrading the PlayFab UnitySdk
 
-The easist way to get started is to use our [EditorExtensions plugin](https://github.com/PlayFab/UnityEditorExtensions). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
+You can install the SDK directly by downloading the latest [SK Asset Package](https://aka.ms/PlayFabUnitySdk) directly.
 
-Alternatively you can install the latest [Asset Package](https://api.playfab.com/sdks/download/unity-v2ap) directly. 
-
-Detailed Instructions:
-* Download [UnitySDK.unitypackage](https://api.playfab.com/sdks/download/unity-v2ap) to a safe location.
-* [Only When updating]: Delete your {ProjectLocation}/assets/PlayFab/ directory.
- * You may also need to delete PlayFab specific files in your {ProjectLocation}/assets/Plugins/ directory.
+Detailed Manual Instructions:
+* Download [UnitySDK.unitypackage](https://aka.ms/PlayFabUnitySdk) to a safe location.
+* [Only When updating]: Delete your {ProjectLocation}/assets/PlayFab*/ directories.
+ * (Very old SDKs) You may also need to delete PlayFab specific files in your {ProjectLocation}/assets/Plugins/ directory.
  * Failing to do this step may cause compiler errors and/or unexpected runtime errors
 * Unpack the .unitypackage file into your project.
 
-Advanced users can copy the contents of https://github.com/PlayFab/UnitySDK/raw/master/Source into their existing project.
+Advanced users can copy the contents of https://github.com/PlayFab/UnitySDK/tree/master/ExampleTestProject/Assets into their existing project.
 
 #### PlayFab Configuration:
-You must configure the SDK with your unique TitleId.  This is done via the PlayFabSharedSettings ScriptableObject.
+You must configure the SDK with your unique TitleId.  This is done via the PlayFabSharedSettings ScriptableObject, or the PlayFab Editor Extensions panel.
 
 In your Unity Project tab, navigate to: assets/PlayFabSDK/Shared/Public/Resources and select the PlayFabSharedSettings ScriptableObject.
 
 Advanced users can still add this line of code anywhere in their game setup:
 
 ```C#
-PlayFabSettings.TitleId = "AD08";
+PlayFabSettings.TitleId = "144";
 ```
 
 #### HTTP Request Configuration:
