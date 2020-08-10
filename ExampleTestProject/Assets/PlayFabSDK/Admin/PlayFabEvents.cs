@@ -51,6 +51,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnAdminDeleteTaskResultEvent;
         public event PlayFabRequestEvent<DeleteTitleRequest> OnAdminDeleteTitleRequestEvent;
         public event PlayFabResultEvent<DeleteTitleResult> OnAdminDeleteTitleResultEvent;
+        public event PlayFabRequestEvent<DeleteTitleDataOverrideRequest> OnAdminDeleteTitleDataOverrideRequestEvent;
+        public event PlayFabResultEvent<DeleteTitleDataOverrideResult> OnAdminDeleteTitleDataOverrideResultEvent;
         public event PlayFabRequestEvent<ExportMasterPlayerDataRequest> OnAdminExportMasterPlayerDataRequestEvent;
         public event PlayFabResultEvent<ExportMasterPlayerDataResult> OnAdminExportMasterPlayerDataResultEvent;
         public event PlayFabRequestEvent<GetTaskInstanceRequest> OnAdminGetActionsOnPlayersInSegmentTaskInstanceRequestEvent;
@@ -187,6 +189,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateStoreItemsResult> OnAdminSetStoreItemsResultEvent;
         public event PlayFabRequestEvent<SetTitleDataRequest> OnAdminSetTitleDataRequestEvent;
         public event PlayFabResultEvent<SetTitleDataResult> OnAdminSetTitleDataResultEvent;
+        public event PlayFabRequestEvent<SetTitleDataAndOverridesRequest> OnAdminSetTitleDataAndOverridesRequestEvent;
+        public event PlayFabResultEvent<SetTitleDataAndOverridesResult> OnAdminSetTitleDataAndOverridesResultEvent;
         public event PlayFabRequestEvent<SetTitleDataRequest> OnAdminSetTitleInternalDataRequestEvent;
         public event PlayFabResultEvent<SetTitleDataResult> OnAdminSetTitleInternalDataResultEvent;
         public event PlayFabRequestEvent<SetupPushNotificationRequest> OnAdminSetupPushNotificationRequestEvent;

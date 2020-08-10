@@ -1,1 +1,1 @@
-namespace PlayFab.PfEditor { public static partial class PlayFabEditorHelper { public static string EDEX_VERSION = "2.91.200730"; } }
+namespace PlayFab.PfEditor { public static partial class PlayFabEditorHelper { public static string EDEX_VERSION = "2.92.200805"; } }
