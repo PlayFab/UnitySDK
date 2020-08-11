@@ -23,7 +23,7 @@ To connect to the PlayFab service, your machine must be running TLS v1.2 or bett
 
 ## 3. Installing or Upgrading the PlayFab UnitySdk
 
-You can install the SDK directly by downloading the latest [SK Asset Package](https://aka.ms/PlayFabUnitySdk) directly.
+You can install the SDK directly by downloading the latest [SDK Asset Package](https://aka.ms/PlayFabUnitySdk) directly.
 
 Detailed Manual Instructions:
 * Download [UnitySDK.unitypackage](https://aka.ms/PlayFabUnitySdk) to a safe location.
