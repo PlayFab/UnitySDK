@@ -23,13 +23,13 @@ namespace PlayFab.PfEditor
 
         private static string GetEmitCode(string filename, string lifecyclepoint)
         {
-            return "    PlayFab.PlayFabClientAPI.LoginWithCustomID( new PlayFab.ClientModels.LoginWithCustomIDRequest() { CreateAccount = true, CustomId = SystemInfo.deviceUniqueIdentifier, TitleId=PlayFab.PlayFabSettings.TitleId }, result => { PlayFab.PlayFabClientAPI.WriteTitleEvent( new PlayFab.ClientModels.WriteTitleEventRequest() { EventName = \"" + filename + ":" + lifecyclepoint + "\", AuthenticationContext = result.AuthenticationContext }, null, null);}, null);\n";
+            return "    (new PlayFab.PlayFabClientAPI()).LoginWithCustomID( new PlayFab.ClientModels.LoginWithCustomIDRequest() { CreateAccount = true, CustomId = SystemInfo.deviceUniqueIdentifier, TitleId=PlayFab.PlayFabSettings.TitleId }, result => { (new PlayFab.PlayFabClientAPI()).WriteTitleEvent( new PlayFab.ClientModels.WriteTitleEventRequest() { EventName = \"" + filename + ":" + lifecyclepoint + "\", AuthenticationContext = result.AuthenticationContext }, null, null);}, null);\n";
         }
 
         private static string GetEmitFunction(string filename, string lifecyclepoint)
         {
             //TODO: return a full function instead.
-            return "    PlayFab.PlayFabClientAPI.LoginWithCustomID( new PlayFab.ClientModels.LoginWithCustomIDRequest() { CreateAccount = true, CustomId = SystemInfo.deviceUniqueIdentifier, TitleId=PlayFab.PlayFabSettings.TitleId }, result => { PlayFab.PlayFabClientAPI.WriteTitleEvent( new PlayFab.ClientModels.WriteTitleEventRequest() { EventName = \"" + filename + ":" + lifecyclepoint + "\", AuthenticationContext = result.AuthenticationContext }, null, null);}, null);\n";
+            return "    (new PlayFab.PlayFabClientAPI()).LoginWithCustomID( new PlayFab.ClientModels.LoginWithCustomIDRequest() { CreateAccount = true, CustomId = SystemInfo.deviceUniqueIdentifier, TitleId=PlayFab.PlayFabSettings.TitleId }, result => { (new PlayFab.PlayFabClientAPI()).WriteTitleEvent( new PlayFab.ClientModels.WriteTitleEventRequest() { EventName = \"" + filename + ":" + lifecyclepoint + "\", AuthenticationContext = result.AuthenticationContext }, null, null);}, null);\n";
         }
 
         private static bool quickStartActivated = false;
