@@ -1,6 +1,6 @@
 # UnitySDK README
 
-The PlayFab Unity SDK consists of two packages—PlayFab (UnitySDK)[https://aka.ms/PlayFabUnitySdk] and the optional [PlayFab Unity Editor Extensions](https://aka.ms/PlayFabUnityEdEx).
+The PlayFab Unity SDK consists of two packages—PlayFab [UnitySDK](https://aka.ms/PlayFabUnitySdk) and the optional [PlayFab Unity Editor Extensions](https://aka.ms/PlayFabUnityEdEx).
 
 The Editor Extensions package provides a simple user interface to help you download, install, configure, upgrade the PlayFab SDK. It is the simpler way to get set up right away. However, it requires you to include additional files into your project.
 
