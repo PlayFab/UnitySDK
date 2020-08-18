@@ -26,10 +26,10 @@ To connect to the PlayFab service, your machine must be running TLS v1.2 or bett
 
 ### Editor Extensions UI Installation
 
-1. Download the Editor Extensions package
+1. Download the [Editor Extensions package](https://aka.ms/PlayFabUnityEdEx)
 2. Open and run your Unity project
-3. From the Unity editor, go to Assets >Import Package > Custom Package and then select the downloaded PlayFabEditorExtensions package. For latest instructions on how to add a custom package, go to Unity documentation site.
-4. A new window pops up displaying all the files that would be imported into your project. Select Import to add all of the files.
+3. From the Unity editor, go to **Assets** > **Import Package** > **Custom Package** and then select the downloaded PlayFabEditorExtensions package. For latest instructions on how to add a custom package, go to Unity documentation site.
+4. A new window pops up displaying all the files that would be imported into your project. Select **Import** to add all of the files.
 After a successful installation, you will see the PlayFab panel with the Create account or login UI in the Unity editor.
 
 ### Editor Extensions SDK Installation/Update
