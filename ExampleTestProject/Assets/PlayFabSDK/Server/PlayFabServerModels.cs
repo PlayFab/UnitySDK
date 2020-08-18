@@ -201,6 +201,10 @@ namespace PlayFab.ServerModels
     public class AuthenticateSessionTicketResult : PlayFabResultCommon
     {
         /// <summary>
+        /// Indicates if token was expired at request time.
+        /// </summary>
+        public bool? IsSessionTicketExpired;
+        /// <summary>
         /// Account info for the user whose session ticket was supplied.
         /// </summary>
         public UserAccountInfo UserInfo;
@@ -1928,6 +1932,7 @@ namespace PlayFab.ServerModels
         TitleDataOverrideNotFound,
         DuplicateKeys,
         WasNotCreatedWithCloudRoot,
+        LegacyMultiplayerServersDeprecated,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,

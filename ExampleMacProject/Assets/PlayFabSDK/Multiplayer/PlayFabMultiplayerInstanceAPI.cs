@@ -573,18 +573,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Lists quality of service servers.
-        /// </summary>
-        [Obsolete("Use 'ListQosServersForTitle' instead", true)]
-        public void ListQosServers(ListQosServersRequest request, Action<ListQosServersResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
-            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
-            PlayFabHttp.MakeApiCall("/MultiplayerServer/ListQosServers", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
-        }
-
-        /// <summary>
-        /// Lists quality of service servers.
+        /// Lists quality of service servers for the title. By default, servers are only returned for regions where a Multiplayer
+        /// Servers build has been deployed.
         /// </summary>
         public void ListQosServersForTitle(ListQosServersForTitleRequest request, Action<ListQosServersForTitleResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
