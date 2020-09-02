@@ -186,6 +186,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string Region;
         /// <summary>
+        /// Optional settings to set the standby target to specified values during the supplied schedules
+        /// </summary>
+        public ScheduledStandbySettings ScheduledStandbySettings;
+        /// <summary>
         /// The target number of standby multiplayer servers for the region.
         /// </summary>
         public int StandbyServers;
@@ -211,6 +215,10 @@ namespace PlayFab.MultiplayerModels
         /// The build region.
         /// </summary>
         public string Region;
+        /// <summary>
+        /// Optional settings to set the standby target to specified values during the supplied schedules
+        /// </summary>
+        public ScheduledStandbySettings ScheduledStandbySettings;
         /// <summary>
         /// The number of standby multiplayer servers for the region.
         /// </summary>
@@ -2533,7 +2541,7 @@ namespace PlayFab.MultiplayerModels
         /// Indicates that the response should contain Qos servers for all regions, including those where there are no builds
         /// deployed for the title.
         /// </summary>
-        public bool IncludeAllRegions;
+        public bool? IncludeAllRegions;
     }
 
     [Serializable]
@@ -3104,6 +3112,49 @@ namespace PlayFab.MultiplayerModels
         /// The username for accessing the container registry.
         /// </summary>
         public string Username;
+    }
+
+    [Serializable]
+    public class Schedule : PlayFabBaseModel
+    {
+        /// <summary>
+        /// A short description about this schedule. For example, "Game launch on July 15th".
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// The date and time in UTC at which the schedule ends. If IsRecurringWeekly is true, this schedule will keep renewing for
+        /// future weeks until disabled or removed.
+        /// </summary>
+        public DateTime EndTime;
+        /// <summary>
+        /// Disables the schedule.
+        /// </summary>
+        public bool IsDisabled;
+        /// <summary>
+        /// If true, the StartTime and EndTime will get renewed every week.
+        /// </summary>
+        public bool IsRecurringWeekly;
+        /// <summary>
+        /// The date and time in UTC at which the schedule starts.
+        /// </summary>
+        public DateTime StartTime;
+        /// <summary>
+        /// The standby target to maintain for the duration of the schedule.
+        /// </summary>
+        public int TargetStandby;
+    }
+
+    [Serializable]
+    public class ScheduledStandbySettings : PlayFabBaseModel
+    {
+        /// <summary>
+        /// When true, scheduled standby will be enabled
+        /// </summary>
+        public bool IsEnabled;
+        /// <summary>
+        /// A list of non-overlapping schedules
+        /// </summary>
+        public List<Schedule> ScheduleList;
     }
 
     [Serializable]
