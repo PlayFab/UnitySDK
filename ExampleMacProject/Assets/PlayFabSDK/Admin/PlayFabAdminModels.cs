@@ -2297,6 +2297,10 @@ namespace PlayFab.AdminModels
         ExperimentationExperimentSchedulingInProgress,
         MaxActionDepthExceeded,
         TitleNotOnUpdatedPricingPlan,
+        SegmentManagementTitleNotInFlight,
+        SegmentManagementNoExpressionTree,
+        SegmentManagementTriggerActionCountOverLimit,
+        SegmentManagementSegmentCountOverLimit,
         SnapshotNotFound
     }
 
