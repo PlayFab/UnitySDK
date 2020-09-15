@@ -2019,6 +2019,7 @@ namespace PlayFab.ServerModels
         SegmentManagementNoExpressionTree,
         SegmentManagementTriggerActionCountOverLimit,
         SegmentManagementSegmentCountOverLimit,
+        SegmentManagementInvalidSegmentId,
         SnapshotNotFound
     }
 

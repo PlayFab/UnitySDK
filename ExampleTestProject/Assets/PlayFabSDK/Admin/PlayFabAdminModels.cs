@@ -2301,6 +2301,7 @@ namespace PlayFab.AdminModels
         SegmentManagementNoExpressionTree,
         SegmentManagementTriggerActionCountOverLimit,
         SegmentManagementSegmentCountOverLimit,
+        SegmentManagementInvalidSegmentId,
         SnapshotNotFound
     }
 
