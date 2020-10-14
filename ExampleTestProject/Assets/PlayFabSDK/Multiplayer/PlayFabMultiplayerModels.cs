@@ -826,6 +826,11 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public InstrumentationConfiguration InstrumentationConfiguration;
         /// <summary>
+        /// Indicates whether this build will be created using the OS Preview versionPreview OS is recommended for dev builds to
+        /// detect any breaking changes before they are released to retail. Retail builds should set this value to false.
+        /// </summary>
+        public bool? IsOSPreview;
+        /// <summary>
         /// Metadata to tag the build. The keys are case insensitive. The build metadata is made available to the server through
         /// Game Server SDK (GSDK).Constraints: Maximum number of keys: 30, Maximum key length: 50, Maximum value length: 100
         /// </summary>
@@ -903,6 +908,11 @@ namespace PlayFab.MultiplayerModels
         /// The instrumentation configuration for this build.
         /// </summary>
         public InstrumentationConfiguration InstrumentationConfiguration;
+        /// <summary>
+        /// Indicates whether this build will be created using the OS Preview versionPreview OS is recommended for dev builds to
+        /// detect any breaking changes before they are released to retail. Retail builds should set this value to false.
+        /// </summary>
+        public bool? IsOSPreview;
         /// <summary>
         /// The metadata of the build.
         /// </summary>

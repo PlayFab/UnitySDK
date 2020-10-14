@@ -116,6 +116,10 @@ namespace PlayFab.DataModels
         /// Names of the files to be finalized. Restricted to a-Z, 0-9, '(', ')', '_', '-' and '.'
         /// </summary>
         public List<string> FileNames;
+        /// <summary>
+        /// The current version of the profile, can be used for concurrency control during updates.
+        /// </summary>
+        public int ProfileVersion;
     }
 
     [Serializable]

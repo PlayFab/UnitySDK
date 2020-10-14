@@ -593,6 +593,13 @@ namespace PlayFab
         ExperimentationInvalidDuration = 7012,
         ExperimentationMaxExperimentsReached = 7013,
         ExperimentationExperimentSchedulingInProgress = 7014,
+        ExperimentationInvalidEndDate = 7015,
+        ExperimentationInvalidStartDate = 7016,
+        ExperimentationMaxDurationExceeded = 7017,
+        ExperimentationExclusionGroupNotFound = 7018,
+        ExperimentationExclusionGroupInsufficientCapacity = 7019,
+        ExperimentationExclusionGroupCannotDelete = 7020,
+        ExperimentationExclusionGroupInvalidTrafficAllocation = 7021,
         MaxActionDepthExceeded = 8000,
         TitleNotOnUpdatedPricingPlan = 9000,
         SegmentManagementTitleNotInFlight = 10000,
@@ -600,6 +607,8 @@ namespace PlayFab
         SegmentManagementTriggerActionCountOverLimit = 10002,
         SegmentManagementSegmentCountOverLimit = 10003,
         SegmentManagementInvalidSegmentId = 10004,
+        SegmentManagementInvalidInput = 10005,
+        SegmentManagementInvalidSegmentName = 10006,
         SnapshotNotFound = 11000
     }
 
