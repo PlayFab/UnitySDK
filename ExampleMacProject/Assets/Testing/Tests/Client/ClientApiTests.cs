@@ -171,7 +171,7 @@ namespace PlayFab.UUnit
         /// CLIENT API
         /// Test that the login call sequence sends the AdvertisingId when set
         /// </summary>
-        [UUnitTest]
+        //[UUnitTest] // TODO Bug 45606 - iOS issue
         public void LoginWithAdvertisingId(UUnitTestContext testContext)
         {
 #if (!UNITY_IOS && !UNITY_ANDROID) || (!UNITY_5_3 && !UNITY_5_4 && !UNITY_5_5)

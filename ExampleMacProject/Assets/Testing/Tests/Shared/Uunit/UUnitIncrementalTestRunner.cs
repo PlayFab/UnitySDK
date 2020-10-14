@@ -126,7 +126,9 @@ namespace PlayFab.UUnit
             if (autoQuit && !Application.isEditor)
             {
                 msg = "Quitting...";
-                Application.Quit();
+                
+                var report = suite.GetInternalReport();
+                Application.Quit(report.failures);
             }
             else if (!suite.AllTestsPassed())
             {
@@ -139,6 +141,16 @@ namespace PlayFab.UUnit
 
             textDisplay.text += "\n" + msg;
             Debug.Log(msg);
+            FaultRunIfFailed();
+        }
+
+        private void FaultRunIfFailed()
+        {
+            var report = suite.GetInternalReport();
+            if(report.failures > 0)
+            {
+                throw new Exception("Tests have failed! Ending our tests early, see this Test Summary\n" + suite.GenerateTestSummary());
+            }
         }
     }
 }

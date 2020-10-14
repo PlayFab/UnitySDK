@@ -174,6 +174,11 @@ namespace PlayFab.ServerModels
     public class AdvancedPushPlatformMsg : PlayFabBaseModel
     {
         /// <summary>
+        /// Stops GoogleCloudMessaging notifications from including both notification and data properties and instead only sends the
+        /// data property.
+        /// </summary>
+        public bool? GCMDataOnly;
+        /// <summary>
         /// The Json the platform should receive.
         /// </summary>
         public string Json;
@@ -2013,6 +2018,13 @@ namespace PlayFab.ServerModels
         ExperimentationInvalidDuration,
         ExperimentationMaxExperimentsReached,
         ExperimentationExperimentSchedulingInProgress,
+        ExperimentationInvalidEndDate,
+        ExperimentationInvalidStartDate,
+        ExperimentationMaxDurationExceeded,
+        ExperimentationExclusionGroupNotFound,
+        ExperimentationExclusionGroupInsufficientCapacity,
+        ExperimentationExclusionGroupCannotDelete,
+        ExperimentationExclusionGroupInvalidTrafficAllocation,
         MaxActionDepthExceeded,
         TitleNotOnUpdatedPricingPlan,
         SegmentManagementTitleNotInFlight,
@@ -2020,6 +2032,8 @@ namespace PlayFab.ServerModels
         SegmentManagementTriggerActionCountOverLimit,
         SegmentManagementSegmentCountOverLimit,
         SegmentManagementInvalidSegmentId,
+        SegmentManagementInvalidInput,
+        SegmentManagementInvalidSegmentName,
         SnapshotNotFound
     }
 
@@ -3273,8 +3287,8 @@ namespace PlayFab.ServerModels
         /// </summary>
         public List<string> Keys;
         /// <summary>
-        /// Name of the override. This value is ignored when used by the game client; otherwise, the overrides are applied
-        /// automatically to the title data.
+        /// Optional field that specifies the name of an override. This value is ignored when used by the game client; otherwise,
+        /// the overrides are applied automatically to the title data.
         /// </summary>
         public string OverrideLabel;
     }
