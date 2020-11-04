@@ -710,6 +710,32 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class ConsumeMicrosoftStoreEntitlementsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Catalog version to use
+        /// </summary>
+        public string CatalogVersion;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Marketplace specific payload containing details to fetch in app purchase transactions
+        /// </summary>
+        public MicrosoftStorePayload MarketplaceSpecificData;
+    }
+
+    [Serializable]
+    public class ConsumeMicrosoftStoreEntitlementsResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Details for the items purchased.
+        /// </summary>
+        public List<ItemInstance> Items;
+    }
+
+    [Serializable]
     public class ConsumePSNEntitlementsRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -2190,9 +2216,7 @@ namespace PlayFab.ClientModels
     }
 
     /// <summary>
-    /// Note that the Position of the user in the results is for the overall leaderboard. If Facebook friends are included, make
-    /// sure the access token from previous LoginWithFacebook call is still valid and not expired. If Xbox Live friends are
-    /// included, make sure the access token from the previous LoginWithXbox call is still valid and not expired.
+    /// Note: the user's Position is relative to the overall leaderboard.
     /// </summary>
     [Serializable]
     public class GetLeaderboardResult : PlayFabResultCommon
@@ -4850,6 +4874,24 @@ namespace PlayFab.ClientModels
         /// The list of subscriptions that this player has for this membership
         /// </summary>
         public List<SubscriptionModel> Subscriptions;
+    }
+
+    [Serializable]
+    public class MicrosoftStorePayload : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Microsoft store ID key. This is optional. Alternatively you can use XboxToken
+        /// </summary>
+        public string CollectionsMsIdKey;
+        /// <summary>
+        /// If collectionsMsIdKey is provided, this will verify the user id in the collectionsMsIdKey is the same.
+        /// </summary>
+        public string UserId;
+        /// <summary>
+        /// Token provided by the Xbox Live SDK/XDK method GetTokenAndSignatureAsync("POST", "https://playfabapi.com/", ""). This is
+        /// optional. Alternatively can use CollectionsMsIdKey
+        /// </summary>
+        public string XboxToken;
     }
 
     [Serializable]
