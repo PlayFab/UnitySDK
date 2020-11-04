@@ -31,6 +31,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ConfirmPurchaseResult> OnConfirmPurchaseResultEvent;
         public event PlayFabRequestEvent<ConsumeItemRequest> OnConsumeItemRequestEvent;
         public event PlayFabResultEvent<ConsumeItemResult> OnConsumeItemResultEvent;
+        public event PlayFabRequestEvent<ConsumeMicrosoftStoreEntitlementsRequest> OnConsumeMicrosoftStoreEntitlementsRequestEvent;
+        public event PlayFabResultEvent<ConsumeMicrosoftStoreEntitlementsResponse> OnConsumeMicrosoftStoreEntitlementsResultEvent;
         public event PlayFabRequestEvent<ConsumePSNEntitlementsRequest> OnConsumePSNEntitlementsRequestEvent;
         public event PlayFabResultEvent<ConsumePSNEntitlementsResult> OnConsumePSNEntitlementsResultEvent;
         public event PlayFabRequestEvent<ConsumeXboxEntitlementsRequest> OnConsumeXboxEntitlementsRequestEvent;
