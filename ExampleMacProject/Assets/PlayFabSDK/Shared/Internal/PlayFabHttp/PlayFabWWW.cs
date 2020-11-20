@@ -105,7 +105,7 @@ namespace PlayFab.Internal
             if (PlayFabSettings.CompressApiData)
             {
                 reqContainer.RequestHeaders["Content-Encoding"] = "GZIP";
-                reqContainer.RequestHeaders["Accept-Encoding"] = "GZIP";
+                reqContainer.RequestHeaders["X-Accept-Encoding"] = "GZIP";
 
                 using (var stream = new MemoryStream())
                 {
