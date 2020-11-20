@@ -1,6 +1,6 @@
 # UnitySDK README
 
-The easist way to get started is to use our [EditorExtensions plugin](https://github.com/PlayFab/UnitySDK/tree/master/ExampleTestProject/Assets/PlayFabEditorExtensions). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
+The easiest way to get started is to use our [EditorExtensions plugin](https://aka.ms/PlayFabUnityEdEx). This plugin provides a clean UI for configuring the SDK as well as automatically downloading, installing and upgrading the PlayFab SDK.
 
 
 ## 1. Overview:
