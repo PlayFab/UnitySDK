@@ -122,6 +122,23 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class AdCampaignSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Campaign id.
+        /// </summary>
+        public string CampaignId;
+        /// <summary>
+        /// Campaign source.
+        /// </summary>
+        public string CampaignSource;
+        /// <summary>
+        /// Campaign comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+    }
+
+    [Serializable]
     public class AddLocalizedNewsRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -330,6 +347,11 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class AllPlayersSegmentFilter : PlayFabBaseModel
+    {
+    }
+
+    [Serializable]
     public class ApiCondition : PlayFabBaseModel
     {
         /// <summary>
@@ -381,6 +403,19 @@ namespace PlayFab.AdminModels
         /// The reason why this ban was applied.
         /// </summary>
         public string Reason;
+    }
+
+    [Serializable]
+    public class BanPlayerSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Ban hours duration.
+        /// </summary>
+        public uint? BanHours;
+        /// <summary>
+        /// Reason for ban.
+        /// </summary>
+        public string ReasonForBan;
     }
 
     /// <summary>
@@ -1145,6 +1180,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string ConnectionId;
         /// <summary>
+        /// Ignore 'nonce' claim in identity tokens.
+        /// </summary>
+        public bool? IgnoreNonce;
+        /// <summary>
         /// The discovery document URL to read issuer information from. This must be the absolute URL to the JSON OpenId
         /// Configuration document and must be accessible from the internet. If you don't know it, try your issuer URL followed by
         /// "/.well-known/openid-configuration". For example, if the issuer is https://example.com, try
@@ -1221,6 +1260,31 @@ namespace PlayFab.AdminModels
         /// created statistic definition
         /// </summary>
         public PlayerStatisticDefinition Statistic;
+    }
+
+    /// <summary>
+    /// Send all the segment details part of CreateSegmentRequest
+    /// </summary>
+    [Serializable]
+    public class CreateSegmentRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Segment model with all of the segment properties data.
+        /// </summary>
+        public SegmentModel SegmentModel;
+    }
+
+    [Serializable]
+    public class CreateSegmentResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Error message.
+        /// </summary>
+        public string ErrorMessage;
+        /// <summary>
+        /// Segment id.
+        /// </summary>
+        public string SegmentId;
     }
 
     [Serializable]
@@ -1477,6 +1541,11 @@ namespace PlayFab.AdminModels
     {
     }
 
+    [Serializable]
+    public class DeletePlayerSegmentAction : PlayFabBaseModel
+    {
+    }
+
     /// <summary>
     /// Player Shared Secret Keys are used for the call to Client/GetTitlePublicKey, which exchanges the shared secret for an
     /// RSA CSP blob to be used to encrypt the payload of account creation requests when that API requires a signature header.
@@ -1493,6 +1562,36 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class DeletePlayerSharedSecretResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class DeletePlayerStatisticSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Statistic name.
+        /// </summary>
+        public string StatisticName;
+    }
+
+    /// <summary>
+    /// Send segment id planning to delete part of DeleteSegmentRequest object
+    /// </summary>
+    [Serializable]
+    public class DeleteSegmentRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Segment id.
+        /// </summary>
+        public string SegmentId;
+    }
+
+    [Serializable]
+    public class DeleteSegmentsResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Error message.
+        /// </summary>
+        public string ErrorMessage;
     }
 
     /// <summary>
@@ -1576,6 +1675,19 @@ namespace PlayFab.AdminModels
         Deny
     }
 
+    [Serializable]
+    public class EmailNotificationSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Email template id.
+        /// </summary>
+        public string EmailTemplateId;
+        /// <summary>
+        /// Email template name.
+        /// </summary>
+        public string EmailTemplateName;
+    }
+
     public enum EmailVerificationStatus
     {
         Unverified,
@@ -1602,6 +1714,23 @@ namespace PlayFab.AdminModels
         /// Entity type. See https://docs.microsoft.com/gaming/playfab/features/data/entities/available-built-in-entity-types
         /// </summary>
         public string Type;
+    }
+
+    [Serializable]
+    public class ExecuteAzureFunctionSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Azure function.
+        /// </summary>
+        public string AzureFunction;
+        /// <summary>
+        /// Azure function parameter.
+        /// </summary>
+        public object FunctionParameter;
+        /// <summary>
+        /// Generate play stream event.
+        /// </summary>
+        public bool GenerateFunctionExecutedEvents;
     }
 
     [Serializable]
@@ -1655,6 +1784,27 @@ namespace PlayFab.AdminModels
         public int Revision;
     }
 
+    [Serializable]
+    public class ExecuteCloudScriptSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Cloud script function.
+        /// </summary>
+        public string CloudScriptFunction;
+        /// <summary>
+        /// Generate play stream event.
+        /// </summary>
+        public bool CloudScriptPublishResultsToPlayStream;
+        /// <summary>
+        /// Cloud script function parameter.
+        /// </summary>
+        public object FunctionParameter;
+        /// <summary>
+        /// Cloud script function parameter json text.
+        /// </summary>
+        public string FunctionParameterJson;
+    }
+
     /// <summary>
     /// Exports all data associated with the master player account, including data from all titles the player has played, such
     /// as statistics, custom data, inventory, purchases, virtual currency balances, characters, group memberships, publisher
@@ -1680,6 +1830,32 @@ namespace PlayFab.AdminModels
         /// address when the export is complete.
         /// </summary>
         public string JobReceiptId;
+    }
+
+    [Serializable]
+    public class FirstLoginDateSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// First player login date comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// First player login date.
+        /// </summary>
+        public DateTime LogInDate;
+    }
+
+    [Serializable]
+    public class FirstLoginTimespanSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// First player login duration comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// First player login duration.
+        /// </summary>
+        public double DurationInMinutes;
     }
 
     public enum GameBuildStatus
@@ -2215,6 +2391,7 @@ namespace PlayFab.AdminModels
         DuplicateKeys,
         WasNotCreatedWithCloudRoot,
         LegacyMultiplayerServersDeprecated,
+        VirtualCurrencyCurrentlyUnavailable,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2276,6 +2453,20 @@ namespace PlayFab.AdminModels
         ExportCannotParseQuery,
         ExportControlCommandsNotAllowed,
         ExportQueryMissingTableReference,
+        ExplorerBasicInvalidQueryName,
+        ExplorerBasicInvalidQueryDescription,
+        ExplorerBasicInvalidQueryConditions,
+        ExplorerBasicInvalidQueryStartDate,
+        ExplorerBasicInvalidQueryEndDate,
+        ExplorerBasicInvalidQueryGroupBy,
+        ExplorerBasicInvalidQueryAggregateType,
+        ExplorerBasicInvalidQueryAggregateProperty,
+        ExplorerBasicLoadQueriesError,
+        ExplorerBasicLoadQueryError,
+        ExplorerBasicCreateQueryError,
+        ExplorerBasicDeleteQueryError,
+        ExplorerBasicUpdateQueryError,
+        ExplorerBasicSavedQueriesLimit,
         TitleNotEnabledForParty,
         PartyVersionNotFound,
         MultiplayerServerBuildReferencedByMatchmakingQueue,
@@ -2952,6 +3143,31 @@ namespace PlayFab.AdminModels
         public string Name;
     }
 
+    /// <summary>
+    /// Given input segment ids, return list of segments.
+    /// </summary>
+    [Serializable]
+    public class GetSegmentsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Segment ids to filter title segments.
+        /// </summary>
+        public List<string> SegmentIds;
+    }
+
+    [Serializable]
+    public class GetSegmentsResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Error message.
+        /// </summary>
+        public string ErrorMessage;
+        /// <summary>
+        /// List of title segments.
+        /// </summary>
+        public List<SegmentModel> Segments;
+    }
+
     [Serializable]
     public class GetServerBuildInfoRequest : PlayFabRequestCommon
     {
@@ -3360,6 +3576,23 @@ namespace PlayFab.AdminModels
         public int? UsesIncrementedBy;
     }
 
+    [Serializable]
+    public class GrantItemSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Item catalog id.
+        /// </summary>
+        public string CatelogId;
+        /// <summary>
+        /// Item id.
+        /// </summary>
+        public string ItemId;
+        /// <summary>
+        /// Item quantity.
+        /// </summary>
+        public uint Quantity;
+    }
+
     /// <summary>
     /// This function directly adds inventory items to user inventories. As a result of this operations, the user will not be
     /// charged any transaction fee, regardless of the inventory item catalog definition. Please note that the processing time
@@ -3395,6 +3628,19 @@ namespace PlayFab.AdminModels
         public List<GrantedItemInstance> ItemGrantResults;
     }
 
+    [Serializable]
+    public class GrantVirtualCurrencySegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Virtual currency amount.
+        /// </summary>
+        public int Amount;
+        /// <summary>
+        /// Virtual currency code.
+        /// </summary>
+        public string CurrencyCode;
+    }
+
     /// <summary>
     /// This operation will increment the global counter for the number of these items available. This number cannot be
     /// decremented, except by actual grants.
@@ -3423,6 +3669,19 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class IncrementLimitedEditionItemAvailabilityResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class IncrementPlayerStatisticSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Increment value.
+        /// </summary>
+        public int IncrementValue;
+        /// <summary>
+        /// Statistic name.
+        /// </summary>
+        public string StatisticName;
     }
 
     /// <summary>
@@ -3574,6 +3833,32 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class LastLoginDateSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Last player login date comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Last player login date.
+        /// </summary>
+        public DateTime LogInDate;
+    }
+
+    [Serializable]
+    public class LastLoginTimespanSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Last player login duration comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Last player login duration.
+        /// </summary>
+        public double DurationInMinutes;
+    }
+
+    [Serializable]
     public class LinkedPlatformAccountModel : PlayFabBaseModel
     {
         /// <summary>
@@ -3592,6 +3877,32 @@ namespace PlayFab.AdminModels
         /// Linked account username of the user on the platform, if available
         /// </summary>
         public string Username;
+    }
+
+    [Serializable]
+    public class LinkedUserAccountHasEmailSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Login provider comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Login provider.
+        /// </summary>
+        public SegmentLoginIdentityProvider? LoginProvider;
+    }
+
+    [Serializable]
+    public class LinkedUserAccountSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Login provider comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Login provider.
+        /// </summary>
+        public SegmentLoginIdentityProvider? LoginProvider;
     }
 
     [Serializable]
@@ -3659,6 +3970,15 @@ namespace PlayFab.AdminModels
         /// Longitude coordinate of the geographic location.
         /// </summary>
         public double? Longitude;
+    }
+
+    [Serializable]
+    public class LocationSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Segment country code.
+        /// </summary>
+        public SegmentCountryCode? CountryCode;
     }
 
     public enum LoginIdentityProvider
@@ -4396,6 +4716,24 @@ namespace PlayFab.AdminModels
         public PushNotificationPlatform? Platform;
     }
 
+    [Serializable]
+    public class PushNotificationSegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Push notification template id.
+        /// </summary>
+        public string PushNotificationTemplateId;
+    }
+
+    [Serializable]
+    public class PushNotificationSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Push notification device platform.
+        /// </summary>
+        public SegmentPushNotificationDevicePlatform? PushNotificationDevicePlatform;
+    }
+
     public enum PushSetupPlatform
     {
         GCM,
@@ -4879,6 +5217,625 @@ namespace PlayFab.AdminModels
         public string StackTrace;
     }
 
+    [Serializable]
+    public class SegmentAndDefinition : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Filter property for ad campaign filter.
+        /// </summary>
+        public AdCampaignSegmentFilter AdCampaignFilter;
+        /// <summary>
+        /// property for all player filter.
+        /// </summary>
+        public AllPlayersSegmentFilter AllPlayersFilter;
+        /// <summary>
+        /// Filter property for first login date.
+        /// </summary>
+        public FirstLoginDateSegmentFilter FirstLoginDateFilter;
+        /// <summary>
+        /// Filter property for first login timespan.
+        /// </summary>
+        public FirstLoginTimespanSegmentFilter FirstLoginFilter;
+        /// <summary>
+        /// Filter property for last login date.
+        /// </summary>
+        public LastLoginDateSegmentFilter LastLoginDateFilter;
+        /// <summary>
+        /// Filter property for last login timespan.
+        /// </summary>
+        public LastLoginTimespanSegmentFilter LastLoginFilter;
+        /// <summary>
+        /// Filter property for linked in user account.
+        /// </summary>
+        public LinkedUserAccountSegmentFilter LinkedUserAccountFilter;
+        /// <summary>
+        /// Filter property for linked in user account has email.
+        /// </summary>
+        public LinkedUserAccountHasEmailSegmentFilter LinkedUserAccountHasEmailFilter;
+        /// <summary>
+        /// Filter property for location.
+        /// </summary>
+        public LocationSegmentFilter LocationFilter;
+        /// <summary>
+        /// Filter property for push notification.
+        /// </summary>
+        public PushNotificationSegmentFilter PushNotificationFilter;
+        /// <summary>
+        /// Filter property for statistics.
+        /// </summary>
+        public StatisticSegmentFilter StatisticFilter;
+        /// <summary>
+        /// Filter property for tags.
+        /// </summary>
+        public TagSegmentFilter TagFilter;
+        /// <summary>
+        /// Filter property for total value to date in USD.
+        /// </summary>
+        public TotalValueToDateInUSDSegmentFilter TotalValueToDateInUSDFilter;
+        /// <summary>
+        /// Filter property for user origination.
+        /// </summary>
+        public UserOriginationSegmentFilter UserOriginationFilter;
+        /// <summary>
+        /// Filter property for value to date.
+        /// </summary>
+        public ValueToDateSegmentFilter ValueToDateFilter;
+        /// <summary>
+        /// Filter property for virtual currency.
+        /// </summary>
+        public VirtualCurrencyBalanceSegmentFilter VirtualCurrencyBalanceFilter;
+    }
+
+    public enum SegmentCountryCode
+    {
+        AF,
+        AX,
+        AL,
+        DZ,
+        AS,
+        AD,
+        AO,
+        AI,
+        AQ,
+        AG,
+        AR,
+        AM,
+        AW,
+        AU,
+        AT,
+        AZ,
+        BS,
+        BH,
+        BD,
+        BB,
+        BY,
+        BE,
+        BZ,
+        BJ,
+        BM,
+        BT,
+        BO,
+        BQ,
+        BA,
+        BW,
+        BV,
+        BR,
+        IO,
+        BN,
+        BG,
+        BF,
+        BI,
+        KH,
+        CM,
+        CA,
+        CV,
+        KY,
+        CF,
+        TD,
+        CL,
+        CN,
+        CX,
+        CC,
+        CO,
+        KM,
+        CG,
+        CD,
+        CK,
+        CR,
+        CI,
+        HR,
+        CU,
+        CW,
+        CY,
+        CZ,
+        DK,
+        DJ,
+        DM,
+        DO,
+        EC,
+        EG,
+        SV,
+        GQ,
+        ER,
+        EE,
+        ET,
+        FK,
+        FO,
+        FJ,
+        FI,
+        FR,
+        GF,
+        PF,
+        TF,
+        GA,
+        GM,
+        GE,
+        DE,
+        GH,
+        GI,
+        GR,
+        GL,
+        GD,
+        GP,
+        GU,
+        GT,
+        GG,
+        GN,
+        GW,
+        GY,
+        HT,
+        HM,
+        VA,
+        HN,
+        HK,
+        HU,
+        IS,
+        IN,
+        ID,
+        IR,
+        IQ,
+        IE,
+        IM,
+        IL,
+        IT,
+        JM,
+        JP,
+        JE,
+        JO,
+        KZ,
+        KE,
+        KI,
+        KP,
+        KR,
+        KW,
+        KG,
+        LA,
+        LV,
+        LB,
+        LS,
+        LR,
+        LY,
+        LI,
+        LT,
+        LU,
+        MO,
+        MK,
+        MG,
+        MW,
+        MY,
+        MV,
+        ML,
+        MT,
+        MH,
+        MQ,
+        MR,
+        MU,
+        YT,
+        MX,
+        FM,
+        MD,
+        MC,
+        MN,
+        ME,
+        MS,
+        MA,
+        MZ,
+        MM,
+        NA,
+        NR,
+        NP,
+        NL,
+        NC,
+        NZ,
+        NI,
+        NE,
+        NG,
+        NU,
+        NF,
+        MP,
+        NO,
+        OM,
+        PK,
+        PW,
+        PS,
+        PA,
+        PG,
+        PY,
+        PE,
+        PH,
+        PN,
+        PL,
+        PT,
+        PR,
+        QA,
+        RE,
+        RO,
+        RU,
+        RW,
+        BL,
+        SH,
+        KN,
+        LC,
+        MF,
+        PM,
+        VC,
+        WS,
+        SM,
+        ST,
+        SA,
+        SN,
+        RS,
+        SC,
+        SL,
+        SG,
+        SX,
+        SK,
+        SI,
+        SB,
+        SO,
+        ZA,
+        GS,
+        SS,
+        ES,
+        LK,
+        SD,
+        SR,
+        SJ,
+        SZ,
+        SE,
+        CH,
+        SY,
+        TW,
+        TJ,
+        TZ,
+        TH,
+        TL,
+        TG,
+        TK,
+        TO,
+        TT,
+        TN,
+        TR,
+        TM,
+        TC,
+        TV,
+        UG,
+        UA,
+        AE,
+        GB,
+        US,
+        UM,
+        UY,
+        UZ,
+        VU,
+        VE,
+        VN,
+        VG,
+        VI,
+        WF,
+        EH,
+        YE,
+        ZM,
+        ZW
+    }
+
+    public enum SegmentCurrency
+    {
+        AED,
+        AFN,
+        ALL,
+        AMD,
+        ANG,
+        AOA,
+        ARS,
+        AUD,
+        AWG,
+        AZN,
+        BAM,
+        BBD,
+        BDT,
+        BGN,
+        BHD,
+        BIF,
+        BMD,
+        BND,
+        BOB,
+        BRL,
+        BSD,
+        BTN,
+        BWP,
+        BYR,
+        BZD,
+        CAD,
+        CDF,
+        CHF,
+        CLP,
+        CNY,
+        COP,
+        CRC,
+        CUC,
+        CUP,
+        CVE,
+        CZK,
+        DJF,
+        DKK,
+        DOP,
+        DZD,
+        EGP,
+        ERN,
+        ETB,
+        EUR,
+        FJD,
+        FKP,
+        GBP,
+        GEL,
+        GGP,
+        GHS,
+        GIP,
+        GMD,
+        GNF,
+        GTQ,
+        GYD,
+        HKD,
+        HNL,
+        HRK,
+        HTG,
+        HUF,
+        IDR,
+        ILS,
+        IMP,
+        INR,
+        IQD,
+        IRR,
+        ISK,
+        JEP,
+        JMD,
+        JOD,
+        JPY,
+        KES,
+        KGS,
+        KHR,
+        KMF,
+        KPW,
+        KRW,
+        KWD,
+        KYD,
+        KZT,
+        LAK,
+        LBP,
+        LKR,
+        LRD,
+        LSL,
+        LYD,
+        MAD,
+        MDL,
+        MGA,
+        MKD,
+        MMK,
+        MNT,
+        MOP,
+        MRO,
+        MUR,
+        MVR,
+        MWK,
+        MXN,
+        MYR,
+        MZN,
+        NAD,
+        NGN,
+        NIO,
+        NOK,
+        NPR,
+        NZD,
+        OMR,
+        PAB,
+        PEN,
+        PGK,
+        PHP,
+        PKR,
+        PLN,
+        PYG,
+        QAR,
+        RON,
+        RSD,
+        RUB,
+        RWF,
+        SAR,
+        SBD,
+        SCR,
+        SDG,
+        SEK,
+        SGD,
+        SHP,
+        SLL,
+        SOS,
+        SPL,
+        SRD,
+        STD,
+        SVC,
+        SYP,
+        SZL,
+        THB,
+        TJS,
+        TMT,
+        TND,
+        TOP,
+        TRY,
+        TTD,
+        TVD,
+        TWD,
+        TZS,
+        UAH,
+        UGX,
+        USD,
+        UYU,
+        UZS,
+        VEF,
+        VND,
+        VUV,
+        WST,
+        XAF,
+        XCD,
+        XDR,
+        XOF,
+        XPF,
+        YER,
+        ZAR,
+        ZMW,
+        ZWD
+    }
+
+    public enum SegmentFilterComparison
+    {
+        GreaterThan,
+        LessThan,
+        EqualTo,
+        NotEqualTo,
+        GreaterThanOrEqual,
+        LessThanOrEqual,
+        Exists,
+        Contains,
+        NotContains
+    }
+
+    public enum SegmentLoginIdentityProvider
+    {
+        Unknown,
+        PlayFab,
+        Custom,
+        GameCenter,
+        GooglePlay,
+        Steam,
+        XBoxLive,
+        PSN,
+        Kongregate,
+        Facebook,
+        IOSDevice,
+        AndroidDevice,
+        Twitch,
+        WindowsHello,
+        GameServer,
+        CustomServer,
+        NintendoSwitch,
+        FacebookInstantGames,
+        OpenIdConnect,
+        Apple,
+        NintendoSwitchAccount
+    }
+
+    [Serializable]
+    public class SegmentModel : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Segment description.
+        /// </summary>
+        public string Description;
+        /// <summary>
+        /// Segment actions for current entered segment players.
+        /// </summary>
+        public List<SegmentTrigger> EnteredSegmentActions;
+        /// <summary>
+        /// Segment last updated date time.
+        /// </summary>
+        public DateTime LastUpdateTime;
+        /// <summary>
+        /// Segment actions for current left segment players.
+        /// </summary>
+        public List<SegmentTrigger> LeftSegmentActions;
+        /// <summary>
+        /// Segment name.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Segment id in hex.
+        /// </summary>
+        public string SegmentId;
+        /// <summary>
+        /// Segment or definitions. This includes segment and definitions and filters.
+        /// </summary>
+        public List<SegmentOrDefinition> SegmentOrDefinitions;
+    }
+
+    [Serializable]
+    public class SegmentOrDefinition : PlayFabBaseModel
+    {
+        /// <summary>
+        /// List of segment and definitions.
+        /// </summary>
+        public List<SegmentAndDefinition> SegmentAndDefinitions;
+    }
+
+    public enum SegmentPushNotificationDevicePlatform
+    {
+        ApplePushNotificationService,
+        GoogleCloudMessaging
+    }
+
+    [Serializable]
+    public class SegmentTrigger : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Ban player segment trigger action.
+        /// </summary>
+        public BanPlayerSegmentAction BanPlayerAction;
+        /// <summary>
+        /// Delete player segment trigger action.
+        /// </summary>
+        public DeletePlayerSegmentAction DeletePlayerAction;
+        /// <summary>
+        /// Delete player statistic segment trigger action.
+        /// </summary>
+        public DeletePlayerStatisticSegmentAction DeletePlayerStatisticAction;
+        /// <summary>
+        /// Email notification segment trigger action.
+        /// </summary>
+        public EmailNotificationSegmentAction EmailNotificationAction;
+        /// <summary>
+        /// Execute azure function segment trigger action.
+        /// </summary>
+        public ExecuteAzureFunctionSegmentAction ExecuteAzureFunctionAction;
+        /// <summary>
+        /// Execute cloud script segment trigger action.
+        /// </summary>
+        public ExecuteCloudScriptSegmentAction ExecuteCloudScriptAction;
+        /// <summary>
+        /// Grant item segment trigger action.
+        /// </summary>
+        public GrantItemSegmentAction GrantItemAction;
+        /// <summary>
+        /// Grant virtual currency segment trigger action.
+        /// </summary>
+        public GrantVirtualCurrencySegmentAction GrantVirtualCurrencyAction;
+        /// <summary>
+        /// Increment player statistic segment trigger action.
+        /// </summary>
+        public IncrementPlayerStatisticSegmentAction IncrementPlayerStatisticAction;
+        /// <summary>
+        /// Push notification segment trigger action.
+        /// </summary>
+        public PushNotificationSegmentAction PushNotificationAction;
+    }
+
     /// <summary>
     /// If the account in question is a "temporary" account (for example, one that was created via a call to
     /// LoginFromIOSDeviceID), thisfunction will have no effect. Only PlayFab accounts which have valid email addresses will be
@@ -5133,6 +6090,31 @@ namespace PlayFab.AdminModels
         Month
     }
 
+    [Serializable]
+    public class StatisticSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Statistic filter comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Statistic filter value.
+        /// </summary>
+        public string FilterValue;
+        /// <summary>
+        /// Statistic name.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Use current version of statistic?
+        /// </summary>
+        public bool? UseCurrentVersion;
+        /// <summary>
+        /// Statistic version.
+        /// </summary>
+        public int? Version;
+    }
+
     public enum StatisticVersionArchivalStatus
     {
         NotScheduled,
@@ -5276,6 +6258,19 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class TagSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Tag comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Tag value.
+        /// </summary>
+        public string TagValue;
+    }
+
+    [Serializable]
     public class TaskInstanceBasicSummary : PlayFabBaseModel
     {
         /// <summary>
@@ -5351,6 +6346,19 @@ namespace PlayFab.AdminModels
         /// New value to set. Set to null to remove a value
         /// </summary>
         public string Value;
+    }
+
+    [Serializable]
+    public class TotalValueToDateInUSDSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Total value to date USD amount.
+        /// </summary>
+        public string Amount;
+        /// <summary>
+        /// Total value to date USD comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
     }
 
     /// <summary>
@@ -5630,6 +6638,31 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class UpdateRandomResultTablesResult : PlayFabResultCommon
     {
+    }
+
+    /// <summary>
+    /// Update segment properties data which are planning to update
+    /// </summary>
+    [Serializable]
+    public class UpdateSegmentRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Segment model with all of the segment properties data.
+        /// </summary>
+        public SegmentModel SegmentModel;
+    }
+
+    [Serializable]
+    public class UpdateSegmentResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Error message.
+        /// </summary>
+        public string ErrorMessage;
+        /// <summary>
+        /// Segment id.
+        /// </summary>
+        public string SegmentId;
     }
 
     /// <summary>
@@ -6108,6 +7141,15 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class UserOriginationSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// User login provider.
+        /// </summary>
+        public SegmentLoginIdentityProvider? LoginProvider;
+    }
+
+    [Serializable]
     public class UserPrivateAccountInfo : PlayFabBaseModel
     {
         /// <summary>
@@ -6245,6 +7287,40 @@ namespace PlayFab.AdminModels
         /// dollars and ninety-nine cents when Currency is 'USD'.
         /// </summary>
         public string TotalValueAsDecimal;
+    }
+
+    [Serializable]
+    public class ValueToDateSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Value to date amount.
+        /// </summary>
+        public string Amount;
+        /// <summary>
+        /// Value to date comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Currency using for filter.
+        /// </summary>
+        public SegmentCurrency? Currency;
+    }
+
+    [Serializable]
+    public class VirtualCurrencyBalanceSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Total amount.
+        /// </summary>
+        public int Amount;
+        /// <summary>
+        /// Amount comparison.
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// Currency code.
+        /// </summary>
+        public string CurrencyCode;
     }
 
     [Serializable]

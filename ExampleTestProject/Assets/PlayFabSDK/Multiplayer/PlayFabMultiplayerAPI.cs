@@ -547,6 +547,7 @@ namespace PlayFab
         /// Lists summarized details of all multiplayer server builds for a title. Accepts tokens for title and if game client
         /// access is enabled, allows game client to request list of builds with player entity token.
         /// </summary>
+        [Obsolete("Use 'ListBuildSummariesV2' instead", false)]
         public static void ListBuildSummaries(ListBuildSummariesRequest request, Action<ListBuildSummariesResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -555,6 +556,20 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/MultiplayerServer/ListBuildSummaries", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
+        /// Lists summarized details of all multiplayer server builds for a title. Accepts tokens for title and if game client
+        /// access is enabled, allows game client to request list of builds with player entity token.
+        /// </summary>
+        public static void ListBuildSummariesV2(ListBuildSummariesRequest request, Action<ListBuildSummariesResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/MultiplayerServer/ListBuildSummariesV2", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>
