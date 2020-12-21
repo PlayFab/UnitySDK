@@ -2467,6 +2467,7 @@ namespace PlayFab.AdminModels
         ExplorerBasicDeleteQueryError,
         ExplorerBasicUpdateQueryError,
         ExplorerBasicSavedQueriesLimit,
+        ExplorerBasicSavedQueryNotFound,
         TitleNotEnabledForParty,
         PartyVersionNotFound,
         MultiplayerServerBuildReferencedByMatchmakingQueue,

@@ -2014,6 +2014,7 @@ namespace PlayFab.ServerModels
         ExplorerBasicDeleteQueryError,
         ExplorerBasicUpdateQueryError,
         ExplorerBasicSavedQueriesLimit,
+        ExplorerBasicSavedQueryNotFound,
         TitleNotEnabledForParty,
         PartyVersionNotFound,
         MultiplayerServerBuildReferencedByMatchmakingQueue,
