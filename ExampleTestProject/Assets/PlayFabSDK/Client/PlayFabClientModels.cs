@@ -736,6 +736,32 @@ namespace PlayFab.ClientModels
     }
 
     [Serializable]
+    public class ConsumePS5EntitlementsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Catalog version to use
+        /// </summary>
+        public string CatalogVersion;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Marketplace specific payload containing details to fetch in app purchase transactions
+        /// </summary>
+        public PlayStation5Payload MarketplaceSpecificData;
+    }
+
+    [Serializable]
+    public class ConsumePS5EntitlementsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Details for the items purchased.
+        /// </summary>
+        public List<ItemInstance> Items;
+    }
+
+    [Serializable]
     public class ConsumePSNEntitlementsRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -5285,6 +5311,19 @@ namespace PlayFab.ClientModels
         /// version of the statistic
         /// </summary>
         public uint Version;
+    }
+
+    [Serializable]
+    public class PlayStation5Payload : PlayFabBaseModel
+    {
+        /// <summary>
+        /// An optional list of entitlement ids to query against PSN
+        /// </summary>
+        public List<string> Ids;
+        /// <summary>
+        /// Id of the PSN service label to consume entitlements from
+        /// </summary>
+        public string ServiceLabel;
     }
 
     [Serializable]

@@ -615,6 +615,7 @@ namespace PlayFab
         ExperimentationExclusionGroupInsufficientCapacity = 7019,
         ExperimentationExclusionGroupCannotDelete = 7020,
         ExperimentationExclusionGroupInvalidTrafficAllocation = 7021,
+        ExperimentationExclusionGroupInvalidName = 7022,
         MaxActionDepthExceeded = 8000,
         TitleNotOnUpdatedPricingPlan = 9000,
         SegmentManagementTitleNotInFlight = 10000,

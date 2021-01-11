@@ -33,6 +33,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ConsumeItemResult> OnConsumeItemResultEvent;
         public event PlayFabRequestEvent<ConsumeMicrosoftStoreEntitlementsRequest> OnConsumeMicrosoftStoreEntitlementsRequestEvent;
         public event PlayFabResultEvent<ConsumeMicrosoftStoreEntitlementsResponse> OnConsumeMicrosoftStoreEntitlementsResultEvent;
+        public event PlayFabRequestEvent<ConsumePS5EntitlementsRequest> OnConsumePS5EntitlementsRequestEvent;
+        public event PlayFabResultEvent<ConsumePS5EntitlementsResult> OnConsumePS5EntitlementsResultEvent;
         public event PlayFabRequestEvent<ConsumePSNEntitlementsRequest> OnConsumePSNEntitlementsRequestEvent;
         public event PlayFabResultEvent<ConsumePSNEntitlementsResult> OnConsumePSNEntitlementsResultEvent;
         public event PlayFabRequestEvent<ConsumeXboxEntitlementsRequest> OnConsumeXboxEntitlementsRequestEvent;
