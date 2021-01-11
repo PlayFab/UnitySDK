@@ -3516,6 +3516,26 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Updates a multiplayer server build's name.
+    /// </summary>
+    [Serializable]
+    public class UpdateBuildNameRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The guid string ID of the build we want to update the name of.
+        /// </summary>
+        public string BuildId;
+        /// <summary>
+        /// The build name.
+        /// </summary>
+        public string BuildName;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+    }
+
+    /// <summary>
     /// Updates a multiplayer server build's region.
     /// </summary>
     [Serializable]

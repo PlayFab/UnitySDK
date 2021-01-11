@@ -2493,6 +2493,7 @@ namespace PlayFab.AdminModels
         ExperimentationExclusionGroupInsufficientCapacity,
         ExperimentationExclusionGroupCannotDelete,
         ExperimentationExclusionGroupInvalidTrafficAllocation,
+        ExperimentationExclusionGroupInvalidName,
         MaxActionDepthExceeded,
         TitleNotOnUpdatedPricingPlan,
         SegmentManagementTitleNotInFlight,
@@ -3896,10 +3897,6 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class LinkedUserAccountSegmentFilter : PlayFabBaseModel
     {
-        /// <summary>
-        /// Login provider comparison.
-        /// </summary>
-        public SegmentFilterComparison? Comparison;
         /// <summary>
         /// Login provider.
         /// </summary>

@@ -121,6 +121,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUntagContainerImageResultEvent;
         public event PlayFabRequestEvent<UpdateBuildAliasRequest> OnMultiplayerUpdateBuildAliasRequestEvent;
         public event PlayFabResultEvent<BuildAliasDetailsResponse> OnMultiplayerUpdateBuildAliasResultEvent;
+        public event PlayFabRequestEvent<UpdateBuildNameRequest> OnMultiplayerUpdateBuildNameRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUpdateBuildNameResultEvent;
         public event PlayFabRequestEvent<UpdateBuildRegionRequest> OnMultiplayerUpdateBuildRegionRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUpdateBuildRegionResultEvent;
         public event PlayFabRequestEvent<UpdateBuildRegionsRequest> OnMultiplayerUpdateBuildRegionsRequestEvent;
