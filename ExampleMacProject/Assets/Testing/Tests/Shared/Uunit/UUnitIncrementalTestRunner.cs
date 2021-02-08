@@ -104,7 +104,12 @@ namespace PlayFab.UUnit
         {
             if (postResultsToCloudscript && result != null)
             {
-                var msg = "Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + clientInstance.authenticationContext.PlayFabId;
+                string msg;
+                if (result.Error == null)
+                    msg = "Results posted to Cloud Script successfully: " + PlayFabSettings.BuildIdentifier + ", " + clientInstance.authenticationContext.PlayFabId;
+                else
+                    msg = "Cloud Script returned, but got error:" + result.Error.Message;
+
                 textDisplay.text += "\n" + msg;
                 Debug.Log(msg);
                 if (result.Logs != null)
@@ -126,9 +131,13 @@ namespace PlayFab.UUnit
             if (autoQuit && !Application.isEditor)
             {
                 msg = "Quitting...";
-                
+
+#if UNITY_2018_1_OR_NEWER
                 var report = suite.GetInternalReport();
                 Application.Quit(report.failures);
+#else
+                Application.Quit();
+#endif
             }
             else if (!suite.AllTestsPassed())
             {
@@ -147,7 +156,7 @@ namespace PlayFab.UUnit
         private void FaultRunIfFailed()
         {
             var report = suite.GetInternalReport();
-            if(report.failures > 0)
+            if (report.failures > 0)
             {
                 throw new Exception("Tests have failed! Ending our tests early, see this Test Summary\n" + suite.GenerateTestSummary());
             }

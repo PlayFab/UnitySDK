@@ -2392,6 +2392,8 @@ namespace PlayFab.AdminModels
         WasNotCreatedWithCloudRoot,
         LegacyMultiplayerServersDeprecated,
         VirtualCurrencyCurrentlyUnavailable,
+        SteamUserNotFound,
+        ElasticSearchOperationFailed,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2416,6 +2418,7 @@ namespace PlayFab.AdminModels
         TitleConfigNotFound,
         TitleConfigUpdateConflict,
         TitleConfigSerializationError,
+        CatalogApiNotImplemented,
         CatalogEntityInvalid,
         CatalogTitleIdMissing,
         CatalogPlayerIdMissing,
@@ -2507,7 +2510,8 @@ namespace PlayFab.AdminModels
         CreateSegmentRateLimitExceeded,
         UpdateSegmentRateLimitExceeded,
         GetSegmentsRateLimitExceeded,
-        SnapshotNotFound
+        SnapshotNotFound,
+        InventoryApiNotImplemented
     }
 
     [Serializable]

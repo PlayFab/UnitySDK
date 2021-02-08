@@ -916,6 +916,18 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using an Steam ID, returning a session identifier that can subsequently be used for API calls which
+        /// require an authenticated user
+        /// </summary>
+        public void LoginWithSteamId(LoginWithSteamIdRequest request, Action<ServerLoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/LoginWithSteamId", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Signs the user in using a Xbox Live Token from an external server backend, returning a session identifier that can
         /// subsequently be used for API calls which require an authenticated user
         /// </summary>
