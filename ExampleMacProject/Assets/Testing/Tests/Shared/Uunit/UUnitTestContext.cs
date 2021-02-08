@@ -63,11 +63,14 @@ namespace PlayFab.UUnit
                 return;
             }
 
-            // Otherwise describe the additional end-state and fail the test
-            TestResultMsg += "\n" + FinishState + "->" + finishState + " - Cannot declare test finished twice.";
-            if (finishState == UUnitFinishState.FAILED && FinishState == UUnitFinishState.FAILED)
-                TestResultMsg += "\nSecond message: " + resultMsg;
-            FinishState = UUnitFinishState.FAILED;
+            if (finishState != FinishState && resultMsg != TestResultMsg)
+            {
+                // Otherwise describe the additional end-state and fail the test
+                TestResultMsg += "\n" + FinishState + "->" + finishState + " - Cannot declare test finished twice.";
+                if (finishState == UUnitFinishState.FAILED && FinishState == UUnitFinishState.FAILED)
+                    TestResultMsg += "\nSecond message: " + resultMsg;
+                FinishState = UUnitFinishState.FAILED;
+            }
         }
 
         public void Skip(string message = "")

@@ -8,8 +8,6 @@ namespace PlayFab.UUnit
 {
     public class EntityApiTests : UUnitTestCase
     {
-        private TestTitleDataLoader.TestTitleData testTitleData;
-
         // Test-data constants
         private const string TEST_OBJ_NAME = "testCounter";
         // Test variables
@@ -24,7 +22,6 @@ namespace PlayFab.UUnit
 
         public override void ClassSetUp()
         {
-            testTitleData = TestTitleDataLoader.LoadTestTitleData();
             clientApi = new PlayFabClientInstanceAPI();
             authApi = new PlayFabAuthenticationInstanceAPI(clientApi.authenticationContext);
             dataApi = new PlayFabDataInstanceAPI(clientApi.authenticationContext);

@@ -4,12 +4,15 @@ using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
+#if UNITY_2018_1_OR_NEWER
 using UnityEditor.Build.Reporting;
+#endif
 
 using BuildPipeline = UnityEditor.BuildPipeline;
 
 namespace PlayFab.Internal
 {
+#if UNITY_2018_1_OR_NEWER
     class TestAppPostBuildProcessor : IPostprocessBuildWithReport
     {
         public int callbackOrder { get { return 0; } }
@@ -61,6 +64,7 @@ namespace PlayFab.Internal
             }
         }
     }
+#endif
 
     public static class PlayFabPackager
     {
@@ -266,7 +270,9 @@ namespace PlayFab.Internal
         public static void MakePS4Build()
         {
             Setup();
+#if UNITY_2018_1_OR_NEWER
             PlayerSettings.PS4.enableApplicationExit = true; // Only suitable for dev/test applications
+#endif
             SetScriptingBackend(ScriptingImplementation.IL2CPP, BuildTarget.PS4, BuildTargetGroup.PS4);
             SetIdentifier(BuildTargetGroup.PS4, TestPackageName);
 #if UNITY_5_6_OR_NEWER

@@ -48,8 +48,7 @@ namespace PlayFab.UUnit
         {
             maxRetry = 1;
             // Verify all the inputs won't cause crashes in the tests
-            var titleInfoSet = !string.IsNullOrEmpty(clientSettings.TitleId) && !string.IsNullOrEmpty(_userEmail);
-            if (!titleInfoSet)
+            if (string.IsNullOrEmpty(clientSettings.TitleId))
                 testContext.Skip(); // We cannot do client tests if the titleId is not given
         }
 
@@ -85,6 +84,9 @@ namespace PlayFab.UUnit
         [UUnitTest]
         public void InvalidLogin(UUnitTestContext testContext)
         {
+            if (string.IsNullOrEmpty(_userEmail))
+                testContext.Skip(); // We need additional information to attempt this test
+
             // If the setup failed to log in a user, we need to create one.
             var request = new LoginWithEmailAddressRequest
             {
