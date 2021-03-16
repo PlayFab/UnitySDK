@@ -44,7 +44,7 @@ namespace PlayFab
         public static readonly PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
         public const string SdkVersion = "2.104.210208";
-        public const string BuildIdentifier = "jbuild_unitysdk_sdk-unity-3-slave_0";
+        public const string BuildIdentifier = "jbuild_unitysdk_sdk-unity-4-slave_0";
         public const string VersionString = "UnitySDK-2.104.210208";
         public const string AD_TYPE_IDFA = "Idfa";
         public const string AD_TYPE_ANDROID_ID = "Adid";
