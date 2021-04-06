@@ -143,7 +143,7 @@ namespace PlayFab.DataModels
     public class GetFileMetadata : PlayFabBaseModel
     {
         /// <summary>
-        /// Checksum value for the file
+        /// Checksum value for the file, can be used to check if the file on the server has changed.
         /// </summary>
         public string Checksum;
         /// <summary>

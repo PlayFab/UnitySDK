@@ -85,8 +85,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListMultiplayerServersResponse> OnMultiplayerListArchivedMultiplayerServersResultEvent;
         public event PlayFabRequestEvent<ListAssetSummariesRequest> OnMultiplayerListAssetSummariesRequestEvent;
         public event PlayFabResultEvent<ListAssetSummariesResponse> OnMultiplayerListAssetSummariesResultEvent;
-        public event PlayFabRequestEvent<MultiplayerEmptyRequest> OnMultiplayerListBuildAliasesRequestEvent;
-        public event PlayFabResultEvent<ListBuildAliasesForTitleResponse> OnMultiplayerListBuildAliasesResultEvent;
+        public event PlayFabRequestEvent<ListBuildAliasesRequest> OnMultiplayerListBuildAliasesRequestEvent;
+        public event PlayFabResultEvent<ListBuildAliasesResponse> OnMultiplayerListBuildAliasesResultEvent;
         public event PlayFabRequestEvent<ListBuildSummariesRequest> OnMultiplayerListBuildSummariesV2RequestEvent;
         public event PlayFabResultEvent<ListBuildSummariesResponse> OnMultiplayerListBuildSummariesV2ResultEvent;
         public event PlayFabRequestEvent<ListCertificateSummariesRequest> OnMultiplayerListCertificateSummariesRequestEvent;

@@ -1021,6 +1021,7 @@ namespace PlayFab
         /// <summary>
         /// Requests a challenge from the server to be signed by Windows Hello Passport service to authenticate.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public static void GetWindowsHelloChallenge(GetWindowsHelloChallengeRequest request, Action<GetWindowsHelloChallengeResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -1110,7 +1111,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Links the Game Center account associated with the provided Game Center ID to the user's PlayFab account
+        /// Links the Game Center account associated with the provided Game Center ID to the user's PlayFab account. Logging in with
+        /// a Game Center ID is insecure if you do not include the optional PublicKeyUrl, Salt, Signature, and Timestamp parameters
+        /// in this request. It is recommended you require these parameters on all Game Center calls by going to the Apple Add-ons
+        /// page in the PlayFab Game Manager and enabling the 'Require secure authentication only for this app' option.
         /// </summary>
         public static void LinkGameCenterAccount(LinkGameCenterAccountRequest request, Action<LinkGameCenterAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1243,6 +1247,7 @@ namespace PlayFab
         /// <summary>
         /// Link Windows Hello authentication to the current PlayFab Account
         /// </summary>
+        [Obsolete("No longer available", false)]
         public static void LinkWindowsHello(LinkWindowsHelloAccountRequest request, Action<LinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -1353,7 +1358,10 @@ namespace PlayFab
 
         /// <summary>
         /// Signs the user in using an iOS Game Center player identifier, returning a session identifier that can subsequently be
-        /// used for API calls which require an authenticated user
+        /// used for API calls which require an authenticated user. Logging in with a Game Center ID is insecure if you do not
+        /// include the optional PublicKeyUrl, Salt, Signature, and Timestamp parameters in this request. It is recommended you
+        /// require these parameters on all Game Center calls by going to the Apple Add-ons page in the PlayFab Game Manager and
+        /// enabling the 'Require secure authentication only for this app' option.
         /// </summary>
         public static void LoginWithGameCenter(LoginWithGameCenterRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1509,6 +1517,7 @@ namespace PlayFab
         /// string. Step two is to request the user sign the string via Windows Hello and then send the signed value back to the
         /// server.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public static void LoginWithWindowsHello(LoginWithWindowsHelloRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -1649,6 +1658,7 @@ namespace PlayFab
         /// Registers a new PlayFab user account using Windows Hello authentication, returning a session ticket that can
         /// subsequently be used for API calls which require an authenticated user
         /// </summary>
+        [Obsolete("No longer available", false)]
         public static void RegisterWithWindowsHello(RegisterWithWindowsHelloRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -2062,6 +2072,7 @@ namespace PlayFab
         /// <summary>
         /// Unlink Windows Hello authentication from the current PlayFab Account
         /// </summary>
+        [Obsolete("No longer available", false)]
         public static void UnlinkWindowsHello(UnlinkWindowsHelloAccountRequest request, Action<UnlinkWindowsHelloAccountResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;

@@ -1919,7 +1919,7 @@ namespace PlayFab.ServerModels
         EvaluationModePlayerCountExceeded,
         GetPlayersInSegmentRateLimitExceeded,
         CloudScriptFunctionNameSizeExceeded,
-        InsightsManagementTitleInEvaluationMode,
+        PaidInsightsFeaturesNotEnabled,
         CloudScriptAzureFunctionsQueueRequestError,
         EvaluationModeTitleCountExceeded,
         InsightsManagementTitleNotInFlight,
@@ -1941,6 +1941,7 @@ namespace PlayFab.ServerModels
         VirtualCurrencyCurrentlyUnavailable,
         SteamUserNotFound,
         ElasticSearchOperationFailed,
+        NotImplemented,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2057,6 +2058,7 @@ namespace PlayFab.ServerModels
         CreateSegmentRateLimitExceeded,
         UpdateSegmentRateLimitExceeded,
         GetSegmentsRateLimitExceeded,
+        AsyncExportNotInFlight,
         SnapshotNotFound,
         InventoryApiNotImplemented
     }
