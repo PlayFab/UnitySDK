@@ -798,7 +798,7 @@ namespace PlayFab.AdminModels
         /// <summary>
         /// Size of the content in bytes
         /// </summary>
-        public uint Size;
+        public double Size;
     }
 
     public enum ContinentCode
