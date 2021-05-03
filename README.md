@@ -83,7 +83,7 @@ You can also choose other platforms in place of "PC & Mac & Linux Standalone", b
 
 You can now set "Developer Secret Key" in assets/PlayFabSDK/Shared/Public/Resources/PlayFabSharedSettings.asset
 
-Refer to [Secret key Management](https://docs.microsoft.com/en-us/gaming/playfab/gamemanager/secret-key-management) to find your secret key, also called a developer key to your PlayFab Title.
+Refer to [Secret key Management](https://docs.microsoft.com/gaming/playfab/gamemanager/secret-key-management) to find your secret key, also called a developer key to your PlayFab Title.
 
 
 Advanced users can still set their secret key anywhere in their game setup:
