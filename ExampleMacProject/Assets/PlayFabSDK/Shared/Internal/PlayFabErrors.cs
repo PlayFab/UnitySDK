@@ -597,6 +597,7 @@ namespace PlayFab
         TitleNotEnabledForParty = 6000,
         PartyVersionNotFound = 6001,
         MultiplayerServerBuildReferencedByMatchmakingQueue = 6002,
+        MultiplayerServerBuildReferencedByBuildAlias = 6003,
         ExperimentationExperimentStopped = 7000,
         ExperimentationExperimentRunning = 7001,
         ExperimentationExperimentNotFound = 7002,
