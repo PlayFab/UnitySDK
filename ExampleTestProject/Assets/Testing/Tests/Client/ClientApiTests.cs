@@ -60,8 +60,6 @@ namespace PlayFab.UUnit
 
         public override void TearDown(UUnitTestContext testContext)
         {
-            clientSettings.AdvertisingIdType = null;
-            clientSettings.AdvertisingIdValue = null;
             _tickAction = null;
         }
 
@@ -166,48 +164,6 @@ namespace PlayFab.UUnit
             testContext.True(clientInstance.IsClientLoggedIn(), "User login failed");
             testContext.True(clientInstance.authenticationContext.IsEntityLoggedIn(), "Entity login failed");
             testContext.EndTest(UUnitFinishState.PASSED, clientSettings.TitleId + ", " + result.PlayFabId);
-        }
-
-
-        /// <summary>
-        /// CLIENT API
-        /// Test that the login call sequence sends the AdvertisingId when set
-        /// </summary>
-        //[UUnitTest] // TODO Bug 45606 - iOS issue
-        public void LoginWithAdvertisingId(UUnitTestContext testContext)
-        {
-#if (!UNITY_IOS && !UNITY_ANDROID) || (!UNITY_5_3 && !UNITY_5_4 && !UNITY_5_5)
-            clientSettings.AdvertisingIdType = PlayFabSettings.AD_TYPE_ANDROID_ID;
-            clientSettings.AdvertisingIdValue = "PlayFabTestId";
-#endif
-
-            var loginRequest = new LoginWithCustomIDRequest
-            {
-                CustomId = PlayFabSettings.BuildIdentifier,
-                CreateAccount = true,
-            };
-            clientInstance.LoginWithCustomID(loginRequest, PlayFabUUnitUtils.ApiActionWrapper<LoginResult>(testContext, AdvertLoginCallback), PlayFabUUnitUtils.ApiActionWrapper<PlayFabError>(testContext, SharedErrorCallback), testContext);
-        }
-        private void AdvertLoginCallback(LoginResult result)
-        {
-            PlayFabId = result.PlayFabId;
-            var testContext = (UUnitTestContext)result.CustomData;
-            testContext.True(clientInstance.IsClientLoggedIn(), "User login failed");
-            testContext.True(clientInstance.authenticationContext.IsEntityLoggedIn(), "Entity login failed");
-
-            // This setting should not cause a client test failure, but it also means this test can't be performed
-            if (!result.SettingsForUser.NeedsAttribution)
-                testContext.EndTest(UUnitFinishState.SKIPPED, "This title is not configured for advertisements.");
-
-            var target = PlayFabSettings.AD_TYPE_ANDROID_ID + "_Successful";
-            var failTime = DateTime.UtcNow + TimeSpan.FromSeconds(10);
-            _tickAction = () =>
-            {
-                if (target == clientSettings.AdvertisingIdType)
-                    testContext.EndTest(UUnitFinishState.PASSED, clientSettings.AdvertisingIdValue);
-                if (DateTime.UtcNow > failTime)
-                    testContext.EndTest(UUnitFinishState.FAILED, "Timed out waiting for advertising attribution confirmation");
-            };
         }
 
         /// <summary>

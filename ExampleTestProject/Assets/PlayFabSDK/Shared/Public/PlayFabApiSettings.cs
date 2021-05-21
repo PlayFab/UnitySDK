@@ -22,13 +22,6 @@ namespace PlayFab
         /// <summary> You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website) </summary>
         public virtual string DeveloperSecretKey { get; set; }
 #endif
-        /// <summary> Set this to the appropriate PlayFabSettings.AD_TYPE_X constant </summary>
-        public virtual string AdvertisingIdType { get; set; }
-        /// <summary> Set this to corresponding device value </summary>
-        public virtual string AdvertisingIdValue { get; set; }
-
-        /// <summary> Set this to true to prevent IDFA from leaving the device </summary>
-        public virtual bool DisableAdvertising { get; set; }
         /// <summary> Set this to true to prevent hardware information from leaving the device </summary>
         public virtual bool DisableDeviceInfo { get; set; }
         /// <summary> Set this to true to prevent focus change information from leaving the device </summary>
@@ -72,24 +65,6 @@ namespace PlayFab
         {
             get { var so = GetSO(); return so == null ? base.TitleId : so.TitleId; }
             set { var so = GetSO(); if (so != null) so.TitleId = value; base.TitleId = value; }
-        }
-
-        public override string AdvertisingIdType
-        {
-            get { var so = GetSO(); return so == null ? base.AdvertisingIdType : so.AdvertisingIdType; }
-            set { var so = GetSO(); if (so != null) so.AdvertisingIdType = value; base.AdvertisingIdType = value; }
-        }
-
-        public override string AdvertisingIdValue
-        {
-            get { var so = GetSO(); return so == null ? base.AdvertisingIdValue : so.AdvertisingIdValue; }
-            set { var so = GetSO(); if (so != null) so.AdvertisingIdValue = value; base.AdvertisingIdValue = value; }
-        }
-
-        public override bool DisableAdvertising
-        {
-            get { var so = GetSO(); return so == null ? base.DisableAdvertising : so.DisableAdvertising; }
-            set { var so = GetSO(); if (so != null) so.DisableAdvertising = value; base.DisableAdvertising = value; }
         }
 
         public override bool DisableDeviceInfo
