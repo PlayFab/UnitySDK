@@ -16,9 +16,6 @@ MonoBehaviour:
   DeveloperSecretKey: 
   ProductionEnvironmentUrl: 
   RequestType: 2
-  AdvertisingIdType: 
-  AdvertisingIdValue: 
-  DisableAdvertising: 0
   DisableDeviceInfo: 0
   DisableFocusTimeCollection: 0
   RequestTimeout: 2000

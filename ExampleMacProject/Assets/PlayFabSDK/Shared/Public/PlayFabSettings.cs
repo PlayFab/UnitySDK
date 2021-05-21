@@ -43,11 +43,9 @@ namespace PlayFab
         /// </summary>
         public static readonly PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
-        public const string SdkVersion = "2.108.210511";
+        public const string SdkVersion = "2.109.210521";
         public const string BuildIdentifier = "jbuild_unitysdk_sdk-unity-4-slave_0";
-        public const string VersionString = "UnitySDK-2.108.210511";
-        public const string AD_TYPE_IDFA = "Idfa";
-        public const string AD_TYPE_ANDROID_ID = "Adid";
+        public const string VersionString = "UnitySDK-2.109.210521";
 
         public const string DefaultPlayFabApiUrl = "playfabapi.com";
 
@@ -91,8 +89,6 @@ namespace PlayFab
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
         public static string DeveloperSecretKey { get { return staticSettings.DeveloperSecretKey; } set { staticSettings.DeveloperSecretKey = value; } }
 #endif
-        /// <summary> Set this to true to prevent IDFA from leaving the device </summary>
-        public static bool DisableAdvertising { get { return staticSettings.DisableAdvertising; } set { staticSettings.DisableAdvertising = value; } }
         /// <summary> Set this to true to prevent hardware information from leaving the device </summary>
         public static bool DisableDeviceInfo { get { return staticSettings.DisableDeviceInfo; } set { staticSettings.DisableDeviceInfo = value; } }
         /// <summary> Set this to true to prevent focus change information from leaving the device </summary>

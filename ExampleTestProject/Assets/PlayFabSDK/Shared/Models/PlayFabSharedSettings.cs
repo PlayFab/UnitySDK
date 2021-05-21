@@ -19,10 +19,6 @@ public class PlayFabSharedSettings : ScriptableObject
     public WebRequestType RequestType = WebRequestType.UnityWww;
 #endif
 
-    public string AdvertisingIdType;
-    public string AdvertisingIdValue;
-
-    public bool DisableAdvertising;
     public bool DisableDeviceInfo;
     public bool DisableFocusTimeCollection;
 

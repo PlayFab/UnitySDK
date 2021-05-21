@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using PlayFab.Internal;
 
 namespace PlayFab
 {
     public class PluginManager
     {
-        private Dictionary<PluginContractKey, IPlayFabPlugin> plugins = new Dictionary<PluginContractKey, IPlayFabPlugin>(new PluginContractKeyComparator());
+        private ConcurrentDictionary<PluginContractKey, IPlayFabPlugin> plugins = new ConcurrentDictionary<PluginContractKey, IPlayFabPlugin>(new PluginContractKeyComparator());
 
         /// <summary>
         /// The singleton instance of plugin manager.
