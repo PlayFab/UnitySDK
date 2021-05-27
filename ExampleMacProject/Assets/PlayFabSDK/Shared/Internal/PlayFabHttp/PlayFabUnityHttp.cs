@@ -97,7 +97,7 @@ namespace PlayFab.Internal
             CallRequestContainer reqContainer = (CallRequestContainer)reqContainerObj;
             reqContainer.RequestHeaders["Content-Type"] = "application/json";
 
-#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
+#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL &&!UNITY_EDITOR_WIN &&!UNITY_STANDALONE_WIN &&!UNITY_WSA_10_0 // Unity has removed compression in Windows (will be added again at a later point)
             if (PlayFabSettings.CompressApiData)
             {
                 reqContainer.RequestHeaders["Content-Encoding"] = "GZIP";
