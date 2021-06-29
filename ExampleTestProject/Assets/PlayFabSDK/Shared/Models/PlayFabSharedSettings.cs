@@ -24,7 +24,6 @@ public class PlayFabSharedSettings : ScriptableObject
 
     public int RequestTimeout = 2000;
     public bool RequestKeepAlive = true;
-    public bool CompressApiData = true;
 
     public PlayFabLogLevel LogLevel = PlayFabLogLevel.Warning | PlayFabLogLevel.Error;
     public string LoggerHost = "";

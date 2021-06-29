@@ -1561,6 +1561,35 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Gets a URL that can be used to download the specified asset.
+    /// </summary>
+    [Serializable]
+    public class GetAssetDownloadUrlRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The asset's file name to get the download URL for.
+        /// </summary>
+        public string FileName;
+    }
+
+    [Serializable]
+    public class GetAssetDownloadUrlResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The asset's download URL.
+        /// </summary>
+        public string AssetDownloadUrl;
+        /// <summary>
+        /// The asset's file name to get the download URL for.
+        /// </summary>
+        public string FileName;
+    }
+
+    /// <summary>
     /// Gets the URL to upload assets to.
     /// </summary>
     [Serializable]

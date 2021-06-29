@@ -14,12 +14,11 @@ namespace PlayFab.PfEditor
         public class PlayFab_SharedSettingsProxy
         {
             private readonly Dictionary<string, PropertyInfo> _settingProps = new Dictionary<string, PropertyInfo>();
-            private readonly string[] expectedProps = new[] { "titleid", "developersecretkey", "requesttype", "compressapidata", "requestkeepalive", "requesttimeout" };
+            private readonly string[] expectedProps = new[] { "titleid", "developersecretkey", "requesttype", "requestkeepalive", "requesttimeout" };
 
             public string TitleId { get { return Get<string>("titleid"); } set { Set("titleid", value); } }
             public string DeveloperSecretKey { get { return Get<string>("developersecretkey"); } set { Set("developersecretkey", value); } }
             public PlayFabEditorSettings.WebRequestType WebRequestType { get { return Get<PlayFabEditorSettings.WebRequestType>("requesttype"); } set { Set("requesttype", (int)value); } }
-            public bool CompressApiData { get { return Get<bool>("compressapidata"); } set { Set("compressapidata", value); } }
             public bool KeepAlive { get { return Get<bool>("requestkeepalive"); } set { Set("requestkeepalive", value); } }
             public int TimeOut { get { return Get<int>("requesttimeout"); } set { Set("requesttimeout", value); } }
 

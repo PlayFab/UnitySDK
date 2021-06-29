@@ -47,6 +47,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteRemoteUserResultEvent;
         public event PlayFabRequestEvent<EnableMultiplayerServersForTitleRequest> OnMultiplayerEnableMultiplayerServersForTitleRequestEvent;
         public event PlayFabResultEvent<EnableMultiplayerServersForTitleResponse> OnMultiplayerEnableMultiplayerServersForTitleResultEvent;
+        public event PlayFabRequestEvent<GetAssetDownloadUrlRequest> OnMultiplayerGetAssetDownloadUrlRequestEvent;
+        public event PlayFabResultEvent<GetAssetDownloadUrlResponse> OnMultiplayerGetAssetDownloadUrlResultEvent;
         public event PlayFabRequestEvent<GetAssetUploadUrlRequest> OnMultiplayerGetAssetUploadUrlRequestEvent;
         public event PlayFabResultEvent<GetAssetUploadUrlResponse> OnMultiplayerGetAssetUploadUrlResultEvent;
         public event PlayFabRequestEvent<GetBuildRequest> OnMultiplayerGetBuildRequestEvent;
