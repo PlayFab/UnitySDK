@@ -2019,6 +2019,7 @@ namespace PlayFab.ServerModels
         ExplorerBasicUpdateQueryError,
         ExplorerBasicSavedQueriesLimit,
         ExplorerBasicSavedQueryNotFound,
+        TenantShardMapperShardNotFound,
         TitleNotEnabledForParty,
         PartyVersionNotFound,
         MultiplayerServerBuildReferencedByMatchmakingQueue,

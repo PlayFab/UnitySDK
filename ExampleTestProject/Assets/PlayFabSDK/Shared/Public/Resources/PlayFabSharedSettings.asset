@@ -20,7 +20,6 @@ MonoBehaviour:
   DisableFocusTimeCollection: 0
   RequestTimeout: 2000
   RequestKeepAlive: 1
-  CompressApiData: 1
   LogLevel: 12
   LoggerHost: 
   LoggerPort: 0

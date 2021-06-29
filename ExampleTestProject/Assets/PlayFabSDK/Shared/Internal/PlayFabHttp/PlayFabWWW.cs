@@ -10,9 +10,6 @@ using UnityEngine.Networking;
 #else
 using UnityEngine.Experimental.Networking;
 #endif
-#if !UNITY_WSA && !UNITY_WP8
-using Ionic.Zlib;
-#endif
 
 namespace PlayFab.Internal
 {
@@ -100,23 +97,6 @@ namespace PlayFab.Internal
         {
             CallRequestContainer reqContainer = (CallRequestContainer)reqContainerObj;
             reqContainer.RequestHeaders["Content-Type"] = "application/json";
-
-#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
-            if (PlayFabSettings.CompressApiData)
-            {
-                reqContainer.RequestHeaders["Content-Encoding"] = "GZIP";
-                reqContainer.RequestHeaders["X-Accept-Encoding"] = "GZIP";
-
-                using (var stream = new MemoryStream())
-                {
-                    using (var zipstream = new GZipStream(stream, CompressionMode.Compress, Ionic.Zlib.CompressionLevel.BestCompression))
-                    {
-                        zipstream.Write(reqContainer.Payload, 0, reqContainer.Payload.Length);
-                    }
-                    reqContainer.Payload = stream.ToArray();
-                }
-            }
-#endif
 
             //Debug.LogFormat("Posting {0} to Url: {1}", req.Trim(), url);
             var www = new WWW(reqContainer.FullUrl, reqContainer.Payload, reqContainer.RequestHeaders);
@@ -219,35 +199,8 @@ namespace PlayFab.Internal
                 try
                 {
                     byte[] responseBytes = www.bytes;
-                    bool isGzipCompressed = responseBytes != null && responseBytes[0] == 31 && responseBytes[1] == 139;
-                    string responseText = "Unexpected error: cannot decompress GZIP stream.";
-                    if (!isGzipCompressed && responseBytes != null)
-                        responseText = System.Text.Encoding.UTF8.GetString(responseBytes, 0, responseBytes.Length);
-#if !UNITY_WSA && !UNITY_WP8 && !UNITY_WEBGL
-                    if (isGzipCompressed)
-                    {
-                        var stream = new MemoryStream(responseBytes);
-                        using (var gZipStream = new GZipStream(stream, CompressionMode.Decompress, false))
-                        {
-                            var buffer = new byte[4096];
-                            using (var output = new MemoryStream())
-                            {
-                                int read;
-                                while ((read = gZipStream.Read(buffer, 0, buffer.Length)) > 0)
-                                    output.Write(buffer, 0, read);
-                                output.Seek(0, SeekOrigin.Begin);
-                                var streamReader = new StreamReader(output);
-                                var jsonResponse = streamReader.ReadToEnd();
-                                //Debug.Log(jsonResponse);
-                                wwwSuccessCallback(jsonResponse);
-                            }
-                        }
-                    }
-                    else
-#endif
-                    {
-                        wwwSuccessCallback(responseText);
-                    }
+                    string responseText = System.Text.Encoding.UTF8.GetString(responseBytes, 0, responseBytes.Length);
+                    wwwSuccessCallback(responseText);
                 }
                 catch (Exception e)
                 {

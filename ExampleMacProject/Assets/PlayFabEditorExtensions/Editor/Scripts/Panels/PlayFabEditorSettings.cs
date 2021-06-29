@@ -298,12 +298,6 @@ namespace PlayFab.PfEditor
                     PlayFabEditorDataService.SharedSettings.KeepAlive = EditorGUILayout.Toggle(PlayFabEditorDataService.SharedSettings.KeepAlive, PlayFabEditorHelper.uiStyle.GetStyle("Toggle"), GUILayout.MinHeight(25));
                 }
             }
-
-            using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
-            {
-                EditorGUILayout.LabelField("COMPRESS API DATA: ", PlayFabEditorHelper.uiStyle.GetStyle("labelStyle"), GUILayout.MaxWidth(labelWidth));
-                PlayFabEditorDataService.SharedSettings.CompressApiData = EditorGUILayout.Toggle(PlayFabEditorDataService.SharedSettings.CompressApiData, PlayFabEditorHelper.uiStyle.GetStyle("Toggle"), GUILayout.MinHeight(25));
-            }
         }
         #endregion
 

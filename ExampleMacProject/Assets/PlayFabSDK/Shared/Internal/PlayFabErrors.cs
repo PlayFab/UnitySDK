@@ -594,6 +594,7 @@ namespace PlayFab
         ExplorerBasicUpdateQueryError = 5112,
         ExplorerBasicSavedQueriesLimit = 5113,
         ExplorerBasicSavedQueryNotFound = 5114,
+        TenantShardMapperShardNotFound = 5500,
         TitleNotEnabledForParty = 6000,
         PartyVersionNotFound = 6001,
         MultiplayerServerBuildReferencedByMatchmakingQueue = 6002,
@@ -650,6 +651,7 @@ namespace PlayFab
         public string ErrorMessage;
         public Dictionary<string, List<string>> ErrorDetails;
         public object CustomData;
+        public uint? RetryAfterSeconds = null;
 
         public override string ToString()
         {

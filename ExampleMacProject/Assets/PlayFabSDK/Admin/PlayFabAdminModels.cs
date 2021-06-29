@@ -2472,6 +2472,7 @@ namespace PlayFab.AdminModels
         ExplorerBasicUpdateQueryError,
         ExplorerBasicSavedQueriesLimit,
         ExplorerBasicSavedQueryNotFound,
+        TenantShardMapperShardNotFound,
         TitleNotEnabledForParty,
         PartyVersionNotFound,
         MultiplayerServerBuildReferencedByMatchmakingQueue,
@@ -6014,8 +6015,7 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string Key;
         /// <summary>
-        /// name of the application sending the message (application names must be made up of only uppercase and lowercase ASCII
-        /// letters, numbers, underscores, hyphens, and periods, and must be between 1 and 256 characters long)
+        /// This field is deprecated and any usage of this will cause the API to fail.
         /// </summary>
         public string Name;
         /// <summary>

@@ -405,7 +405,8 @@ namespace PlayFab.Internal
                 Error = errorDict != null && errorDict.ContainsKey("errorCode") ? (PlayFabErrorCode)Convert.ToInt32(errorDict["errorCode"]) : PlayFabErrorCode.ServiceUnavailable,
                 ErrorMessage = errorDict != null && errorDict.ContainsKey("errorMessage") ? (string)errorDict["errorMessage"] : json,
                 ErrorDetails = errorDetails,
-                CustomData = customData
+                CustomData = customData,
+                RetryAfterSeconds = errorDict != null && errorDict.ContainsKey("retryAfterSeconds") ? Convert.ToUInt32(errorDict["retryAfterSeconds"]) : (uint?)null,
             };
         }
 
