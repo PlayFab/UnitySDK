@@ -639,7 +639,22 @@ namespace PlayFab
         AsyncExportNotFound = 10012,
         AsyncExportRateLimitExceeded = 10013,
         SnapshotNotFound = 11000,
-        InventoryApiNotImplemented = 12000
+        InventoryApiNotImplemented = 12000,
+        LobbyDoesNotExist = 13000,
+        LobbyRateLimitExceeded = 13001,
+        LobbyPlayerAlreadyJoined = 13002,
+        LobbyNotJoinable = 13003,
+        LobbyMemberCannotRejoin = 13004,
+        LobbyCurrentPlayersMoreThanMaxPlayers = 13005,
+        LobbyPlayerNotPresent = 13006,
+        LobbyBadRequest = 13007,
+        LobbyPlayerMaxLobbyLimitExceeded = 13008,
+        LobbyNewOwnerMustBeConnected = 13009,
+        LobbyCurrentOwnerStillConnected = 13010,
+        LobbyMemberIsNotOwner = 13011,
+        EventSamplingInvalidRatio = 14000,
+        EventSamplingInvalidEventName = 14001,
+        EventSamplingRatioNotFound = 14002
     }
 
     public class PlayFabError
