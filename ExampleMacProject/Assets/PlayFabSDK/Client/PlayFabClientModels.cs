@@ -2189,7 +2189,8 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Maximum number of entries to retrieve.
         /// </summary>
-        public int MaxResultsCount;
+        [Obsolete("Use '' instead", true)]
+        public int? MaxResultsCount;
         /// <summary>
         /// Unique identifier for the title-specific statistic for the leaderboard.
         /// </summary>
@@ -5067,7 +5068,9 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string DisplayName;
         /// <summary>
-        /// List of experiment variants for the player.
+        /// List of experiment variants for the player. Note that these variants are not guaranteed to be up-to-date when returned
+        /// during login because the player profile is updated only after login. Instead, use the LoginResult.TreatmentAssignment
+        /// property during login to get the correct variants and variables.
         /// </summary>
         public List<string> ExperimentVariants;
         /// <summary>
@@ -6963,10 +6966,6 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string Username;
         /// <summary>
-        /// Windows Hello account information, if a Windows Hello account has been linked
-        /// </summary>
-        public UserWindowsHelloInfo WindowsHelloInfo;
-        /// <summary>
         /// User XBox account information, if a XBox account has been linked
         /// </summary>
         public UserXboxInfo XboxInfo;
@@ -7159,7 +7158,6 @@ namespace PlayFab.ClientModels
         XboxLive,
         Parse,
         Twitch,
-        WindowsHello,
         ServerCustomId,
         NintendoSwitchDeviceId,
         FacebookInstantGamesId,
@@ -7282,19 +7280,6 @@ namespace PlayFab.ClientModels
         /// Twitch Username
         /// </summary>
         public string TwitchUserName;
-    }
-
-    [Serializable]
-    public class UserWindowsHelloInfo : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Windows Hello Device Name
-        /// </summary>
-        public string WindowsHelloDeviceName;
-        /// <summary>
-        /// Windows Hello Public Key Hash
-        /// </summary>
-        public string WindowsHelloPublicKeyHash;
     }
 
     [Serializable]

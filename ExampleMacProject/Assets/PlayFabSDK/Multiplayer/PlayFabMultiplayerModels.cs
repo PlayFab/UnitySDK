@@ -106,7 +106,9 @@ namespace PlayFab.MultiplayerModels
         Esv4,
         Dsv3,
         Dsv2,
-        NCasT4_v3
+        NCasT4_v3,
+        Ddv4,
+        Ddsv4
     }
 
     public enum AzureVmSize
@@ -162,7 +164,15 @@ namespace PlayFab.MultiplayerModels
         Standard_DS3_v2,
         Standard_DS4_v2,
         Standard_DS5_v2,
-        Standard_NC4as_T4_v3
+        Standard_NC4as_T4_v3,
+        Standard_D2d_v4,
+        Standard_D4d_v4,
+        Standard_D8d_v4,
+        Standard_D16d_v4,
+        Standard_D2ds_v4,
+        Standard_D4ds_v4,
+        Standard_D8ds_v4,
+        Standard_D16ds_v4
     }
 
     [Serializable]
@@ -2246,9 +2256,13 @@ namespace PlayFab.MultiplayerModels
     public class InstrumentationConfiguration : PlayFabBaseModel
     {
         /// <summary>
-        /// The list of processes to be monitored on a VM for this build. Providing processes will turn on performance metrics
-        /// collection for this build. Process names should not include extensions. If the game server process is: GameServer.exe;
-        /// then, ProcessesToMonitor = [ GameServer ]
+        /// Designates whether windows instrumentation configuration will be enabled for this Build
+        /// </summary>
+        public bool? IsEnabled;
+        /// <summary>
+        /// This property is deprecated, use IsEnabled. The list of processes to be monitored on a VM for this build. Providing
+        /// processes will turn on performance metrics collection for this build. Process names should not include extensions. If
+        /// the game server process is: GameServer.exe; then, ProcessesToMonitor = [ GameServer ]
         /// </summary>
         public List<string> ProcessesToMonitor;
     }
@@ -3492,6 +3506,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The guid string build ID of the multiplayer server to delete.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string BuildId;
         /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
@@ -3500,6 +3515,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The region of the multiplayer server to shut down.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string Region;
         /// <summary>
         /// A guid string session ID of the multiplayer server to shut down.
