@@ -17,8 +17,8 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Optional. Type of the entity to accept as. If specified, must be the same entity as the claimant or an entity that is a
-        /// child of the claimant entity. Defaults to the claimant entity.
+        /// Type of the entity to accept as. Must be the same entity as the claimant or an entity that is a child of the claimant
+        /// entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
