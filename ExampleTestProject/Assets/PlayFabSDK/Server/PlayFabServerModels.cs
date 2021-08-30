@@ -1944,6 +1944,8 @@ namespace PlayFab.ServerModels
         NotImplemented,
         PublisherNotFound,
         PublisherDeleted,
+        ApiDisabledForMigration,
+        ResourceNameUpdateNotAllowed,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2082,6 +2084,7 @@ namespace PlayFab.ServerModels
         LobbyCurrentOwnerStillConnected,
         LobbyMemberIsNotOwner,
         EventSamplingInvalidRatio,
+        EventSamplingInvalidEventNamespace,
         EventSamplingInvalidEventName,
         EventSamplingRatioNotFound
     }
@@ -2527,11 +2530,6 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class GetLeaderboardForUsersCharactersRequest : PlayFabRequestCommon
     {
-        /// <summary>
-        /// Maximum number of entries to retrieve.
-        /// </summary>
-        [Obsolete("Use '' instead", true)]
-        public int? MaxResultsCount;
         /// <summary>
         /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
         /// </summary>
