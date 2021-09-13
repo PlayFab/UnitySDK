@@ -223,6 +223,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public int MaxServers;
         /// <summary>
+        /// Regional override for the number of multiplayer servers to host on a single VM of the build.
+        /// </summary>
+        public int? MultiplayerServerCountPerVm;
+        /// <summary>
         /// The build region.
         /// </summary>
         public string Region;
@@ -239,6 +243,10 @@ namespace PlayFab.MultiplayerModels
         /// Unhealthy, Deleting, Deleted.
         /// </summary>
         public string Status;
+        /// <summary>
+        /// Regional override for the VM size the build was created on.
+        /// </summary>
+        public AzureVmSize? VmSize;
     }
 
     [Serializable]
@@ -253,6 +261,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public int MaxServers;
         /// <summary>
+        /// Regional override for the number of multiplayer servers to host on a single VM of the build.
+        /// </summary>
+        public int? MultiplayerServerCountPerVm;
+        /// <summary>
         /// The build region.
         /// </summary>
         public string Region;
@@ -264,6 +276,10 @@ namespace PlayFab.MultiplayerModels
         /// The number of standby multiplayer servers for the region.
         /// </summary>
         public int StandbyServers;
+        /// <summary>
+        /// Regional override for the VM size the build was created on.
+        /// </summary>
+        public AzureVmSize? VmSize;
     }
 
     [Serializable]
