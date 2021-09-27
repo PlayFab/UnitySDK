@@ -3526,19 +3526,9 @@ namespace PlayFab.MultiplayerModels
     public class ShutdownMultiplayerServerRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// The guid string build ID of the multiplayer server to delete.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public string BuildId;
-        /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The region of the multiplayer server to shut down.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public string Region;
         /// <summary>
         /// A guid string session ID of the multiplayer server to shut down.
         /// </summary>

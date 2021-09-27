@@ -525,6 +525,7 @@ namespace PlayFab
         DuplicateTitleNameForPublisher = 1521,
         AzureTitleCreationInProgress = 1522,
         DuplicateAzureResourceId = 1523,
+        TitleContraintsPublisherDeletion = 1524,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
