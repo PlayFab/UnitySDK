@@ -41,6 +41,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<BlankResult> OnAdminDeleteContentResultEvent;
         public event PlayFabRequestEvent<DeleteMasterPlayerAccountRequest> OnAdminDeleteMasterPlayerAccountRequestEvent;
         public event PlayFabResultEvent<DeleteMasterPlayerAccountResult> OnAdminDeleteMasterPlayerAccountResultEvent;
+        public event PlayFabRequestEvent<DeleteMembershipSubscriptionRequest> OnAdminDeleteMembershipSubscriptionRequestEvent;
+        public event PlayFabResultEvent<DeleteMembershipSubscriptionResult> OnAdminDeleteMembershipSubscriptionResultEvent;
         public event PlayFabRequestEvent<DeleteOpenIdConnectionRequest> OnAdminDeleteOpenIdConnectionRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnAdminDeleteOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<DeletePlayerRequest> OnAdminDeletePlayerRequestEvent;
@@ -185,6 +187,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<SendAccountRecoveryEmailResult> OnAdminSendAccountRecoveryEmailResultEvent;
         public event PlayFabRequestEvent<UpdateCatalogItemsRequest> OnAdminSetCatalogItemsRequestEvent;
         public event PlayFabResultEvent<UpdateCatalogItemsResult> OnAdminSetCatalogItemsResultEvent;
+        public event PlayFabRequestEvent<SetMembershipOverrideRequest> OnAdminSetMembershipOverrideRequestEvent;
+        public event PlayFabResultEvent<SetMembershipOverrideResult> OnAdminSetMembershipOverrideResultEvent;
         public event PlayFabRequestEvent<SetPlayerSecretRequest> OnAdminSetPlayerSecretRequestEvent;
         public event PlayFabResultEvent<SetPlayerSecretResult> OnAdminSetPlayerSecretResultEvent;
         public event PlayFabRequestEvent<SetPublishedRevisionRequest> OnAdminSetPublishedRevisionRequestEvent;

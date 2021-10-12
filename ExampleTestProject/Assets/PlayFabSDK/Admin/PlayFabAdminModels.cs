@@ -1509,6 +1509,35 @@ namespace PlayFab.AdminModels
         public List<string> TitleIds;
     }
 
+    /// <summary>
+    /// This API lets developers delete a membership subscription.
+    /// </summary>
+    [Serializable]
+    public class DeleteMembershipSubscriptionRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Id of the membership to apply the override expiration date to.
+        /// </summary>
+        public string MembershipId;
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Id of the subscription that should be deleted from the membership.
+        /// </summary>
+        public string SubscriptionId;
+    }
+
+    [Serializable]
+    public class DeleteMembershipSubscriptionResult : PlayFabResultCommon
+    {
+    }
+
     [Serializable]
     public class DeleteOpenIdConnectionRequest : PlayFabRequestCommon
     {
@@ -2404,6 +2433,7 @@ namespace PlayFab.AdminModels
         AzureTitleCreationInProgress,
         DuplicateAzureResourceId,
         TitleContraintsPublisherDeletion,
+        InvalidPlayerAccountPoolId,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2427,6 +2457,9 @@ namespace PlayFab.AdminModels
         MatchmakingBadRequest,
         PubSubFeatureNotEnabledForTitle,
         PubSubTooManyRequests,
+        PubSubConnectionHandleAccessDenied,
+        PubSubConnectionHandleInvalid,
+        PubSubSubscriptionLimitExceeded,
         TitleConfigNotFound,
         TitleConfigUpdateConflict,
         TitleConfigSerializationError,
@@ -2544,7 +2577,11 @@ namespace PlayFab.AdminModels
         EventSamplingInvalidRatio,
         EventSamplingInvalidEventNamespace,
         EventSamplingInvalidEventName,
-        EventSamplingRatioNotFound
+        EventSamplingRatioNotFound,
+        EventSinkConnectionInvalid,
+        EventSinkConnectionUnauthorized,
+        EventSinkRegionInvalid,
+        OperationCanceled
     }
 
     [Serializable]
@@ -5788,6 +5825,10 @@ namespace PlayFab.AdminModels
     public class SegmentModel : PlayFabBaseModel
     {
         /// <summary>
+        /// ResourceId of Segment resource
+        /// </summary>
+        public string AzureResourceId;
+        /// <summary>
         /// Segment description.
         /// </summary>
         public string Description;
@@ -5905,6 +5946,35 @@ namespace PlayFab.AdminModels
     }
 
     /// <summary>
+    /// This API lets developers set overrides for membership expirations, independent of any subscriptions setting it.
+    /// </summary>
+    [Serializable]
+    public class SetMembershipOverrideRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Expiration time for the membership in DateTime format, will override any subscription expirations.
+        /// </summary>
+        public DateTime ExpirationTime;
+        /// <summary>
+        /// Id of the membership to apply the override expiration date to.
+        /// </summary>
+        public string MembershipId;
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class SetMembershipOverrideResult : PlayFabResultCommon
+    {
+    }
+
+    /// <summary>
     /// APIs that require signatures require that the player have a configured Player Secret Key that is used to sign all
     /// requests. Players that don't have a secret will be blocked from making API calls until it is configured. To create a
     /// signature header add a SHA256 hashed string containing UTF8 encoded JSON body as it will be sent to the server, the
@@ -6012,10 +6082,23 @@ namespace PlayFab.AdminModels
     public class SetTitleDataRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// Id of azure resource
+        /// </summary>
+        public string AzureResourceId;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
         /// key we want to set a value on (note, this is additive - will only replace an existing key's value if they are the same
         /// name.) Keys are trimmed of whitespace. Keys may not begin with the '!' character.
         /// </summary>
         public string Key;
+        /// <summary>
+        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
+        /// title has been selected.
+        /// </summary>
+        public string TitleId;
         /// <summary>
         /// new value to set. Set to null to remove a value
         /// </summary>
@@ -6025,6 +6108,10 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class SetTitleDataResult : PlayFabResultCommon
     {
+        /// <summary>
+        /// Id of azure resource
+        /// </summary>
+        public string AzureResourceId;
     }
 
     /// <summary>
