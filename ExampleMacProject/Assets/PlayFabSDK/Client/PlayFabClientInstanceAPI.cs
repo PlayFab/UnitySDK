@@ -1550,6 +1550,7 @@ namespace PlayFab
         /// <summary>
         /// Start a new game server with a given configuration, add the current player and return the connection information.
         /// </summary>
+        [Obsolete("No longer available", true)]
         public void StartGame(StartGameRequest request, Action<StartGameResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;

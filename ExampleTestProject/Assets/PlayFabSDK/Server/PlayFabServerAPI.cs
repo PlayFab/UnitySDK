@@ -1191,6 +1191,7 @@ namespace PlayFab
         /// <summary>
         /// Inform the matchmaker that a new Game Server Instance is added.
         /// </summary>
+        [Obsolete("No longer available", true)]
         public static void RegisterGame(RegisterGameRequest request, Action<RegisterGameResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;

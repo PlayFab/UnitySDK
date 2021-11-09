@@ -80,6 +80,7 @@ namespace PlayFab
         /// Adds the game server executable specified (previously uploaded - see GetServerBuildUploadUrl) to the set of those a
         /// client is permitted to request in a call to StartGame
         /// </summary>
+        [Obsolete("No longer available", true)]
         public static void AddServerBuild(AddServerBuildRequest request, Action<AddServerBuildResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -732,6 +733,7 @@ namespace PlayFab
         /// Retrieves the pre-authorized URL for uploading a game server package containing a build (does not enable the build for
         /// use - see AddServerBuild)
         /// </summary>
+        [Obsolete("No longer available", true)]
         public static void GetServerBuildUploadUrl(GetServerBuildUploadURLRequest request, Action<GetServerBuildUploadURLResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -1005,6 +1007,7 @@ namespace PlayFab
         /// <summary>
         /// Updates the game server mode details for the specified game server executable
         /// </summary>
+        [Obsolete("No longer available", true)]
         public static void ModifyMatchmakerGameModes(ModifyMatchmakerGameModesRequest request, Action<ModifyMatchmakerGameModesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;

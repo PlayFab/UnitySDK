@@ -79,6 +79,7 @@ namespace PlayFab
         /// <summary>
         /// Instructs the PlayFab game server hosting service to instantiate a new Game Server Instance
         /// </summary>
+        [Obsolete("No longer available", true)]
         public void StartGame(StartGameRequest request, Action<StartGameResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
