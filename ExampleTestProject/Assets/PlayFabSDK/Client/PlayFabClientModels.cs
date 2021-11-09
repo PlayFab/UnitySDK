@@ -3522,7 +3522,8 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// If another user is already linked to the account, unlink the other user and re-link.
+        /// If another user is already linked to the account, unlink the other user and re-link. If the current user is already
+        /// linked, link both accounts
         /// </summary>
         public bool? ForceLink;
         /// <summary>
@@ -3565,7 +3566,8 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// If another user is already linked to the account, unlink the other user and re-link.
+        /// If another user is already linked to the account, unlink the other user and re-link. If the current user is already
+        /// linked, link both accounts
         /// </summary>
         public bool? ForceLink;
         /// <summary>
