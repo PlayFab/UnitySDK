@@ -373,7 +373,7 @@ namespace PlayFab.PfEditor
                     FileUtil.DeleteFileOrDirectory(file);
             }
 
-            if (FileUtil.DeleteFileOrDirectory(PlayFabEditorPrefsSO.Instance.SdkPath))
+            if (!string.IsNullOrEmpty(PlayFabEditorPrefsSO.Instance.SdkPath) && FileUtil.DeleteFileOrDirectory(PlayFabEditorPrefsSO.Instance.SdkPath))
             {
                 PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnSuccess, "PlayFab SDK Removed!");
 

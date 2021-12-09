@@ -24,6 +24,7 @@ namespace PlayFab.UUnit
             public string developerSecretKey;
 #endif
             public Dictionary<string, string> extraHeaders;
+            public string connectionString;
         }
 
         static TestTitleData LoadTitleDataWithPlugin(string titleDataJSON)
@@ -83,7 +84,8 @@ namespace PlayFab.UUnit
                 _loadedData = new TestTitleData
                 {
                     titleId = "your title id here",
-                    userEmail = "yourTest@email.com"
+                    userEmail = "yourTest@email.com",
+                    connectionString = "replaceWithYourOwnConnectionStringOrElseTheseTestsWillFail"
                 };
             }
 
@@ -100,6 +102,7 @@ namespace PlayFab.UUnit
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
             PlayFabSettings.DeveloperSecretKey = _loadedData.developerSecretKey;
 #endif
+            PlayFabSettings.ConnectionString = _loadedData.connectionString;
         }
     }
 }
