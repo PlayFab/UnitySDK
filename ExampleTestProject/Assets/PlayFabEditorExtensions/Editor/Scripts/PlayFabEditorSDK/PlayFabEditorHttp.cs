@@ -191,10 +191,18 @@ namespace PlayFab.PfEditor
             {
                 yield return www.SendWebRequest();
 
+#if UNITY_2021_OR_NEWER
+                if (!string.IsNullOrEmpty(www.error) || www.result == UnityWebRequest.Result.ProtocolError)
+#else
                 if (!string.IsNullOrEmpty(www.error) || www.isHttpError)
+#endif
+                {
                     errorCallback(www.error);
+                }
                 else
+                {
                     callBack(www.downloadHandler.data);
+                }
             }
             else
             {

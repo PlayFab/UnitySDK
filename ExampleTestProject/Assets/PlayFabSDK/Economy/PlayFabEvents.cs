@@ -33,6 +33,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetItemReviewsResponse> OnEconomyGetItemReviewsResultEvent;
         public event PlayFabRequestEvent<GetItemReviewSummaryRequest> OnEconomyGetItemReviewSummaryRequestEvent;
         public event PlayFabResultEvent<GetItemReviewSummaryResponse> OnEconomyGetItemReviewSummaryResultEvent;
+        public event PlayFabRequestEvent<GetItemsRequest> OnEconomyGetItemsRequestEvent;
+        public event PlayFabResultEvent<GetItemsResponse> OnEconomyGetItemsResultEvent;
         public event PlayFabRequestEvent<PublishDraftItemRequest> OnEconomyPublishDraftItemRequestEvent;
         public event PlayFabResultEvent<PublishDraftItemResponse> OnEconomyPublishDraftItemResultEvent;
         public event PlayFabRequestEvent<ReportItemRequest> OnEconomyReportItemRequestEvent;
