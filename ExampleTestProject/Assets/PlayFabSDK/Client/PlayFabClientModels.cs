@@ -4265,6 +4265,12 @@ namespace PlayFab.ClientModels
         /// title has been selected.
         /// </summary>
         public string TitleId;
+        /// <summary>
+        /// The API allows for passing of the google access token for login
+        /// https://docs.microsoft.com/en-us/gaming/playfab/features/authentication/platform-specific-authentication/google-html5#testing-using-an-access-token
+        /// Simply adding this string allows for it to be passed to the method "LoginWithGoogleAccount"
+        /// <summary>
+        public string AccessToken;
     }
 
     /// <summary>
