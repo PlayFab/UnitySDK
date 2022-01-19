@@ -421,10 +421,6 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string IPAddress;
         /// <summary>
-        /// The MAC address on which the ban was applied. May affect multiple players.
-        /// </summary>
-        public string MACAddress;
-        /// <summary>
         /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
         /// </summary>
         public string PlayFabId;
@@ -2460,7 +2456,6 @@ namespace PlayFab.AdminModels
         ApiNotEnabledForTitle,
         DuplicateTitleNameForPublisher,
         AzureTitleCreationInProgress,
-        DuplicateAzureResourceId,
         TitleConstraintsPublisherDeletion,
         InvalidPlayerAccountPoolId,
         PlayerAccountPoolNotFound,
@@ -2496,7 +2491,7 @@ namespace PlayFab.AdminModels
         MatchmakingBadRequest,
         PubSubFeatureNotEnabledForTitle,
         PubSubTooManyRequests,
-        PubSubConnectionHandleAccessDenied,
+        PubSubConnectionNotFoundForEntity,
         PubSubConnectionHandleInvalid,
         PubSubSubscriptionLimitExceeded,
         TitleConfigNotFound,
@@ -2620,7 +2615,9 @@ namespace PlayFab.AdminModels
         EventSinkConnectionInvalid,
         EventSinkConnectionUnauthorized,
         EventSinkRegionInvalid,
-        OperationCanceled
+        OperationCanceled,
+        InvalidDisplayNameRandomSuffixLength,
+        AllowNonUniquePlayerDisplayNamesDisableNotAllowed
     }
 
     [Serializable]
@@ -3573,7 +3570,8 @@ namespace PlayFab.AdminModels
     /// <summary>
     /// All items currently in the user inventory will be returned, irrespective of how they were acquired (via purchasing,
     /// grants, coupons, etc.). Items that are expired, fully consumed, or are no longer valid are not considered to be in the
-    /// user's current inventory, and so will not be not included.
+    /// user's current inventory, and so will not be not included. There can be a delay of up to a half a second for inventory
+    /// changes to be reflected in the GetUserInventory API response.
     /// </summary>
     [Serializable]
     public class GetUserInventoryRequest : PlayFabRequestCommon

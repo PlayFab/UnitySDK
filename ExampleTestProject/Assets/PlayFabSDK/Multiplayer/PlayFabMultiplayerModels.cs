@@ -792,6 +792,10 @@ namespace PlayFab.MultiplayerModels
         /// The VM size to create the build on.
         /// </summary>
         public AzureVmSize? VmSize;
+        /// <summary>
+        /// The crash dump configuration for the build.
+        /// </summary>
+        public WindowsCrashDumpConfiguration WindowsCrashDumpConfiguration;
     }
 
     [Serializable]
@@ -3914,6 +3918,23 @@ namespace PlayFab.MultiplayerModels
         /// The virtual machine ID.
         /// </summary>
         public string VmId;
+    }
+
+    [Serializable]
+    public class WindowsCrashDumpConfiguration : PlayFabBaseModel
+    {
+        /// <summary>
+        /// See https://docs.microsoft.com/en-us/windows/win32/wer/collecting-user-mode-dumps for valid values.
+        /// </summary>
+        public int? CustomDumpFlags;
+        /// <summary>
+        /// See https://docs.microsoft.com/en-us/windows/win32/wer/collecting-user-mode-dumps for valid values.
+        /// </summary>
+        public int? DumpType;
+        /// <summary>
+        /// Designates whether automatic crash dump capturing will be enabled for this Build.
+        /// </summary>
+        public bool IsEnabled;
     }
 }
 #endif
