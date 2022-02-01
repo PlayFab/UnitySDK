@@ -2468,6 +2468,8 @@ namespace PlayFab.AdminModels
         GoogleServiceAccountFailedAuth,
         GoogleAPIServiceUnavailable,
         GoogleAPIServiceUnknownError,
+        NoValidIdentityForAad,
+        PlayerIdentityLinkNotFound,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,

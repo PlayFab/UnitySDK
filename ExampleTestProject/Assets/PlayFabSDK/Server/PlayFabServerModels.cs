@@ -1986,6 +1986,8 @@ namespace PlayFab.ServerModels
         GoogleServiceAccountFailedAuth,
         GoogleAPIServiceUnavailable,
         GoogleAPIServiceUnknownError,
+        NoValidIdentityForAad,
+        PlayerIdentityLinkNotFound,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
