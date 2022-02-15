@@ -15,7 +15,5 @@
     <namespace fullname="Mono.Security.Protocol.Tls" preserve="all"/>
     <namespace fullname="Mono.Security.X509" preserve="all"/>
   </assembly>
-  <assembly fullname="Assembly-CSharp">
-    <namespace fullname="PlayFab.*" preserve="all"/>
-  </assembly>
+  <assembly fullname="PlayFab" preserve="all"/>
 </linker>

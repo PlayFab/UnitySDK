@@ -5678,10 +5678,6 @@ namespace PlayFab.ServerModels
     public class SetTitleDataRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Id of azure resource
-        /// </summary>
-        public string AzureResourceId;
-        /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
@@ -5690,10 +5686,6 @@ namespace PlayFab.ServerModels
         /// name.) Keys are trimmed of whitespace. Keys may not begin with the '!' character.
         /// </summary>
         public string Key;
-        /// <summary>
-        /// System Data of the Azure Resource
-        /// </summary>
-        public AzureResourceSystemData SystemData;
         /// <summary>
         /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
         /// title has been selected.
@@ -5708,10 +5700,6 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class SetTitleDataResult : PlayFabResultCommon
     {
-        /// <summary>
-        /// Id of azure resource
-        /// </summary>
-        public string AzureResourceId;
     }
 
     [Serializable]
