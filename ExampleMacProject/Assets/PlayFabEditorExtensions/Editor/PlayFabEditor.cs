@@ -362,7 +362,7 @@ namespace PlayFab.PfEditor
 
             if (DateTime.Today > threshold)
             {
-                PlayFabEditorHttp.MakeGitHubApiCall("https://api.github.com/repos/PlayFab/UnityEditorExtensions/git/refs/tags", (version) =>
+                PlayFabEditorHttp.MakeGitHubApiCall("https://api.github.com/repos/PlayFab/UnitySDK/git/refs/tags", (version) =>
                 {
                     latestEdExVersion = version ?? "Unknown";
                     PlayFabEditorPrefsSO.Instance.EdSet_latestEdExVersion = latestEdExVersion;

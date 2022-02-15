@@ -579,10 +579,6 @@ namespace PlayFab.CloudScriptModels
         /// </summary>
         public string QueueName;
         /// <summary>
-        /// System Data of the Azure Resource
-        /// </summary>
-        public AzureResourceSystemData SystemData;
-        /// <summary>
         /// The trigger type for the function.
         /// </summary>
         public string TriggerType;
@@ -599,10 +595,6 @@ namespace PlayFab.CloudScriptModels
         /// The URL of the function.
         /// </summary>
         public string FunctionUrl;
-        /// <summary>
-        /// The System data of the Azure Resource
-        /// </summary>
-        public AzureResourceSystemData SystemData;
     }
 
     [Serializable]
@@ -1008,19 +1000,11 @@ namespace PlayFab.CloudScriptModels
         /// The name of the queue that triggers the Azure Function.
         /// </summary>
         public string QueueName;
-        /// <summary>
-        /// The System data of the Azure Resource
-        /// </summary>
-        public AzureResourceSystemData SystemData;
     }
 
     [Serializable]
     public class RegisterHttpFunctionRequest : PlayFabRequestCommon
     {
-        /// <summary>
-        /// The Id of the Azure Resource
-        /// </summary>
-        public string AzureResourceId;
         /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
@@ -1034,10 +1018,6 @@ namespace PlayFab.CloudScriptModels
         /// </summary>
         public string FunctionUrl;
         /// <summary>
-        /// System Data of the Azure Resource
-        /// </summary>
-        public AzureResourceSystemData SystemData;
-        /// <summary>
         /// The Id of the parent Title
         /// </summary>
         public string TitleId;
@@ -1050,10 +1030,6 @@ namespace PlayFab.CloudScriptModels
     [Serializable]
     public class RegisterQueuedFunctionRequest : PlayFabRequestCommon
     {
-        /// <summary>
-        /// The Id of the Azure Resource
-        /// </summary>
-        public string AzureResourceId;
         /// <summary>
         /// A connection string for the storage account that hosts the queue for the Azure Function.
         /// </summary>
@@ -1070,10 +1046,6 @@ namespace PlayFab.CloudScriptModels
         /// The name of the queue for the Azure Function.
         /// </summary>
         public string QueueName;
-        /// <summary>
-        /// System Data of the Azure Resource
-        /// </summary>
-        public AzureResourceSystemData SystemData;
         /// <summary>
         /// The Id of the parent Title
         /// </summary>

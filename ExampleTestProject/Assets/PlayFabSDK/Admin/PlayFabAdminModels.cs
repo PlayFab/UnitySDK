@@ -683,6 +683,14 @@ namespace PlayFab.AdminModels
         public int Amount;
     }
 
+    public enum ChurnRiskLevel
+    {
+        NoData,
+        LowRisk,
+        MediumRisk,
+        HighRisk
+    }
+
     [Serializable]
     public class CloudScriptFile : PlayFabBaseModel
     {
@@ -4427,6 +4435,45 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class PlayerChurnPredictionSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Comparison
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// RiskLevel
+        /// </summary>
+        public ChurnRiskLevel? RiskLevel;
+    }
+
+    [Serializable]
+    public class PlayerChurnPredictionTimeSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Comparison
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// DurationInDays
+        /// </summary>
+        public double DurationInDays;
+    }
+
+    [Serializable]
+    public class PlayerChurnPreviousPredictionSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Comparison
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// RiskLevel
+        /// </summary>
+        public ChurnRiskLevel? RiskLevel;
+    }
+
+    [Serializable]
     public class PlayerLinkedAccount : PlayFabBaseModel
     {
         /// <summary>
@@ -5374,6 +5421,18 @@ namespace PlayFab.AdminModels
         /// </summary>
         public LocationSegmentFilter LocationFilter;
         /// <summary>
+        /// Filter property for current player churn value.
+        /// </summary>
+        public PlayerChurnPredictionSegmentFilter PlayerChurnPredictionFilter;
+        /// <summary>
+        /// Filter property for player churn timespan.
+        /// </summary>
+        public PlayerChurnPredictionTimeSegmentFilter PlayerChurnPredictionTimeFilter;
+        /// <summary>
+        /// Filter property for previous player churn value.
+        /// </summary>
+        public PlayerChurnPreviousPredictionSegmentFilter PlayerChurnPreviousPredictionFilter;
+        /// <summary>
         /// Filter property for push notification.
         /// </summary>
         public PushNotificationSegmentFilter PushNotificationFilter;
@@ -5864,10 +5923,6 @@ namespace PlayFab.AdminModels
     public class SegmentModel : PlayFabBaseModel
     {
         /// <summary>
-        /// ResourceId of Segment resource
-        /// </summary>
-        public string AzureResourceId;
-        /// <summary>
         /// Segment description.
         /// </summary>
         public string Description;
@@ -6121,10 +6176,6 @@ namespace PlayFab.AdminModels
     public class SetTitleDataRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Id of azure resource
-        /// </summary>
-        public string AzureResourceId;
-        /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
@@ -6133,10 +6184,6 @@ namespace PlayFab.AdminModels
         /// name.) Keys are trimmed of whitespace. Keys may not begin with the '!' character.
         /// </summary>
         public string Key;
-        /// <summary>
-        /// System Data of the Azure Resource
-        /// </summary>
-        public AzureResourceSystemData SystemData;
         /// <summary>
         /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
         /// title has been selected.
@@ -6151,10 +6198,6 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class SetTitleDataResult : PlayFabResultCommon
     {
-        /// <summary>
-        /// Id of azure resource
-        /// </summary>
-        public string AzureResourceId;
     }
 
     /// <summary>

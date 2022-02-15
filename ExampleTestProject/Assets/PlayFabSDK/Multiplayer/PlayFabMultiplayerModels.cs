@@ -219,6 +219,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public DynamicStandbySettings DynamicStandbySettings;
         /// <summary>
+        /// Whether the game assets provided for the build have been replicated to this region.
+        /// </summary>
+        public bool IsAssetReplicationComplete;
+        /// <summary>
         /// The maximum number of multiplayer servers for the region.
         /// </summary>
         public int MaxServers;
@@ -1793,6 +1797,7 @@ namespace PlayFab.MultiplayerModels
         /// When true, assets will be downloaded and uncompressed in memory, without the compressedversion being written first to
         /// disc.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size the build was created on.
