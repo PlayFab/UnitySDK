@@ -13,8 +13,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<AddNewsResult> OnAdminAddNewsResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnAdminAddPlayerTagRequestEvent;
         public event PlayFabResultEvent<AddPlayerTagResult> OnAdminAddPlayerTagResultEvent;
-        public event PlayFabRequestEvent<AddServerBuildRequest> OnAdminAddServerBuildRequestEvent;
-        public event PlayFabResultEvent<AddServerBuildResult> OnAdminAddServerBuildResultEvent;
         public event PlayFabRequestEvent<AddUserVirtualCurrencyRequest> OnAdminAddUserVirtualCurrencyRequestEvent;
         public event PlayFabResultEvent<ModifyUserVirtualCurrencyResult> OnAdminAddUserVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<AddVirtualCurrencyTypesRequest> OnAdminAddVirtualCurrencyTypesRequestEvent;
@@ -111,8 +109,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetSegmentsResponse> OnAdminGetSegmentsResultEvent;
         public event PlayFabRequestEvent<GetServerBuildInfoRequest> OnAdminGetServerBuildInfoRequestEvent;
         public event PlayFabResultEvent<GetServerBuildInfoResult> OnAdminGetServerBuildInfoResultEvent;
-        public event PlayFabRequestEvent<GetServerBuildUploadURLRequest> OnAdminGetServerBuildUploadUrlRequestEvent;
-        public event PlayFabResultEvent<GetServerBuildUploadURLResult> OnAdminGetServerBuildUploadUrlResultEvent;
         public event PlayFabRequestEvent<GetStoreItemsRequest> OnAdminGetStoreItemsRequestEvent;
         public event PlayFabResultEvent<GetStoreItemsResult> OnAdminGetStoreItemsResultEvent;
         public event PlayFabRequestEvent<GetTaskInstancesRequest> OnAdminGetTaskInstancesRequestEvent;
@@ -153,8 +149,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListBuildsResult> OnAdminListServerBuildsResultEvent;
         public event PlayFabRequestEvent<ListVirtualCurrencyTypesRequest> OnAdminListVirtualCurrencyTypesRequestEvent;
         public event PlayFabResultEvent<ListVirtualCurrencyTypesResult> OnAdminListVirtualCurrencyTypesResultEvent;
-        public event PlayFabRequestEvent<ModifyMatchmakerGameModesRequest> OnAdminModifyMatchmakerGameModesRequestEvent;
-        public event PlayFabResultEvent<ModifyMatchmakerGameModesResult> OnAdminModifyMatchmakerGameModesResultEvent;
         public event PlayFabRequestEvent<ModifyServerBuildRequest> OnAdminModifyServerBuildRequestEvent;
         public event PlayFabResultEvent<ModifyServerBuildResult> OnAdminModifyServerBuildResultEvent;
         public event PlayFabRequestEvent<RefundPurchaseRequest> OnAdminRefundPurchaseRequestEvent;
