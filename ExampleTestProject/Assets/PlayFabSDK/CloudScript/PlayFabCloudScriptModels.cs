@@ -22,35 +22,6 @@ namespace PlayFab.CloudScriptModels
         public string Platform;
     }
 
-    [Serializable]
-    public class AzureResourceSystemData : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The timestamp of resource creation (UTC)
-        /// </summary>
-        public DateTime? CreatedAt;
-        /// <summary>
-        /// The identity that created the resource
-        /// </summary>
-        public string CreatedBy;
-        /// <summary>
-        /// The type of identity that created the resource
-        /// </summary>
-        public string CreatedByType;
-        /// <summary>
-        /// The type of identity that last modified the resource
-        /// </summary>
-        public DateTime? LastModifiedAt;
-        /// <summary>
-        /// The identity that last modified the resource
-        /// </summary>
-        public string LastModifiedBy;
-        /// <summary>
-        /// The type of identity that last modified the resource
-        /// </summary>
-        public string LastModifiedByType;
-    }
-
     public enum CloudScriptRevisionOption
     {
         Live,

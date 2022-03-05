@@ -30,6 +30,14 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public List<DisplayPropertyIndexInfo> DisplayPropertyIndexInfos;
         /// <summary>
+        /// The set of configuration that only applies to Files.
+        /// </summary>
+        public FileConfig File;
+        /// <summary>
+        /// The set of configuration that only applies to Images.
+        /// </summary>
+        public ImageConfig Image;
+        /// <summary>
         /// Flag defining whether catalog is enabled.
         /// </summary>
         public bool IsCatalogEnabled;
@@ -163,6 +171,14 @@ namespace PlayFab.EconomyModels
         /// The minimum client version that this content is compatible with.
         /// </summary>
         public string MinClientVersion;
+        /// <summary>
+        /// The list of tags that are associated with this content.
+        /// </summary>
+        public List<string> Tags;
+        /// <summary>
+        /// The client-defined type of the content.
+        /// </summary>
+        public string Type;
         /// <summary>
         /// The Azure CDN URL for retrieval of the catalog item binary content.
         /// </summary>
@@ -305,6 +321,19 @@ namespace PlayFab.EconomyModels
         /// Entity type. See https://docs.microsoft.com/gaming/playfab/features/data/entities/available-built-in-entity-types
         /// </summary>
         public string Type;
+    }
+
+    [Serializable]
+    public class FileConfig : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The set of content types that will be used for validation.
+        /// </summary>
+        public List<string> ContentTypes;
+        /// <summary>
+        /// The set of tags that will be used for validation.
+        /// </summary>
+        public List<string> Tags;
     }
 
     [Serializable]
@@ -680,6 +709,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string Id;
         /// <summary>
+        /// The client-defined tag associated with this image.
+        /// </summary>
+        public string Tag;
+        /// <summary>
         /// The client-defined type of this image.
         /// </summary>
         public string Type;
@@ -687,6 +720,15 @@ namespace PlayFab.EconomyModels
         /// The URL for retrieval of the image.
         /// </summary>
         public string Url;
+    }
+
+    [Serializable]
+    public class ImageConfig : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The set of tags that will be used for validation.
+        /// </summary>
+        public List<string> Tags;
     }
 
     [Serializable]
@@ -1200,11 +1242,11 @@ namespace PlayFab.EconomyModels
     public class UserGeneratedContentSpecificConfig : PlayFabBaseModel
     {
         /// <summary>
-        /// The set of content types that will be used for validation and if no values are provided then anything is allowed.
+        /// The set of content types that will be used for validation.
         /// </summary>
         public List<string> ContentTypes;
         /// <summary>
-        /// The set of tags that will be used for validation and if no values are provided then anything is allowed.
+        /// The set of tags that will be used for validation.
         /// </summary>
         public List<string> Tags;
     }

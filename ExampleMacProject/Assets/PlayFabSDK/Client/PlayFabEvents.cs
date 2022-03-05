@@ -241,8 +241,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<SetFriendTagsResult> OnSetFriendTagsResultEvent;
         public event PlayFabRequestEvent<SetPlayerSecretRequest> OnSetPlayerSecretRequestEvent;
         public event PlayFabResultEvent<SetPlayerSecretResult> OnSetPlayerSecretResultEvent;
-        public event PlayFabRequestEvent<StartGameRequest> OnStartGameRequestEvent;
-        public event PlayFabResultEvent<StartGameResult> OnStartGameResultEvent;
         public event PlayFabRequestEvent<StartPurchaseRequest> OnStartPurchaseRequestEvent;
         public event PlayFabResultEvent<StartPurchaseResult> OnStartPurchaseResultEvent;
         public event PlayFabRequestEvent<SubtractUserVirtualCurrencyRequest> OnSubtractUserVirtualCurrencyRequestEvent;

@@ -1797,7 +1797,7 @@ namespace PlayFab.MultiplayerModels
         /// When true, assets will be downloaded and uncompressed in memory, without the compressedversion being written first to
         /// disc.
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size the build was created on.

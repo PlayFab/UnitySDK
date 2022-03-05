@@ -250,35 +250,6 @@ namespace PlayFab.ServerModels
         public List<AwardSteamAchievementItem> AchievementResults;
     }
 
-    [Serializable]
-    public class AzureResourceSystemData : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The timestamp of resource creation (UTC)
-        /// </summary>
-        public DateTime? CreatedAt;
-        /// <summary>
-        /// The identity that created the resource
-        /// </summary>
-        public string CreatedBy;
-        /// <summary>
-        /// The type of identity that created the resource
-        /// </summary>
-        public string CreatedByType;
-        /// <summary>
-        /// The type of identity that last modified the resource
-        /// </summary>
-        public DateTime? LastModifiedAt;
-        /// <summary>
-        /// The identity that last modified the resource
-        /// </summary>
-        public string LastModifiedBy;
-        /// <summary>
-        /// The type of identity that last modified the resource
-        /// </summary>
-        public string LastModifiedByType;
-    }
-
     /// <summary>
     /// Contains information for a ban.
     /// </summary>
@@ -1988,6 +1959,7 @@ namespace PlayFab.ServerModels
         GoogleAPIServiceUnknownError,
         NoValidIdentityForAad,
         PlayerIdentityLinkNotFound,
+        PhotonApplicationIdAlreadyInUse,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -4994,74 +4966,6 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class RefreshGameServerInstanceHeartbeatResult : PlayFabResultCommon
     {
-    }
-
-    public enum Region
-    {
-        USCentral,
-        USEast,
-        EUWest,
-        Singapore,
-        Japan,
-        Brazil,
-        Australia
-    }
-
-    [Serializable]
-    public class RegisterGameRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// Unique identifier of the build running on the Game Server Instance.
-        /// </summary>
-        public string Build;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// Game Mode the Game Server instance is running. Note that this must be defined in the Game Modes tab in the PlayFab Game
-        /// Manager, along with the Build ID (the same Game Mode can be defined for multiple Build IDs).
-        /// </summary>
-        public string GameMode;
-        /// <summary>
-        /// Previous lobby id if re-registering an existing game.
-        /// </summary>
-        public string LobbyId;
-        /// <summary>
-        /// Region in which the Game Server Instance is running. For matchmaking using non-AWS region names, set this to any AWS
-        /// region and use Tags (below) to specify your custom region.
-        /// </summary>
-        public Region Region;
-        /// <summary>
-        /// IPV4 address of the game server instance.
-        /// </summary>
-        public string ServerIPV4Address;
-        /// <summary>
-        /// IPV6 address (if any) of the game server instance.
-        /// </summary>
-        public string ServerIPV6Address;
-        /// <summary>
-        /// Port number for communication with the Game Server Instance.
-        /// </summary>
-        public string ServerPort;
-        /// <summary>
-        /// Public DNS name (if any) of the server
-        /// </summary>
-        public string ServerPublicDNSName;
-        /// <summary>
-        /// Tags for the Game Server Instance
-        /// </summary>
-        public Dictionary<string,string> Tags;
-    }
-
-    [Serializable]
-    public class RegisterGameResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// Unique identifier generated for the Game Server Instance that is registered. If LobbyId is specified in request and the
-        /// game still exists in PlayFab, the LobbyId in request is returned. Otherwise a new lobby id will be returned.
-        /// </summary>
-        public string LobbyId;
     }
 
     [Serializable]
