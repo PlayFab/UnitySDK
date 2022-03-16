@@ -42,6 +42,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public bool IsCatalogEnabled;
         /// <summary>
+        /// A list of Platforms that can be applied to catalog items.
+        /// </summary>
+        public List<string> Platforms;
+        /// <summary>
         /// A set of player entity keys that are allowed to review content.
         /// </summary>
         public List<EntityKey> ReviewerEntities;
@@ -142,6 +146,75 @@ namespace PlayFab.EconomyModels
         public string Type;
     }
 
+    [Serializable]
+    public class CatalogItemReference : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The amount of the catalog item.
+        /// </summary>
+        public int? Amount;
+        /// <summary>
+        /// The unique ID of the catalog item.
+        /// </summary>
+        public string Id;
+        /// <summary>
+        /// The price of the catalog item.
+        /// </summary>
+        public CatalogPrice Price;
+    }
+
+    [Serializable]
+    public class CatalogPrice : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Prices of the catalog item.
+        /// </summary>
+        public List<CatalogPriceInstance> Prices;
+        /// <summary>
+        /// Real prices of the catalog item.
+        /// </summary>
+        public List<CatalogPriceInstance> RealPrices;
+        /// <summary>
+        /// A standardized sorting key to allow proper sorting between items with prices in different currencies.
+        /// </summary>
+        public int? Sort;
+    }
+
+    [Serializable]
+    public class CatalogPriceAmount : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The amount of the catalog price.
+        /// </summary>
+        public int Amount;
+        /// <summary>
+        /// The Item ID of the price.
+        /// </summary>
+        public string Id;
+    }
+
+    [Serializable]
+    public class CatalogPriceInstance : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The amounts of the catalog item price.
+        /// </summary>
+        public List<CatalogPriceAmount> Amounts;
+    }
+
+    [Serializable]
+    public class CatalogSpecificConfig : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The set of content types that will be used for validation.
+        /// </summary>
+        public List<string> ContentTypes;
+        /// <summary>
+        /// The set of tags that will be used for validation.
+        /// </summary>
+        public List<string> Tags;
+    }
+
     public enum ConcernCategory
     {
         None,
@@ -239,6 +312,19 @@ namespace PlayFab.EconomyModels
         /// List of URLs metadata for the files to be uploaded by the client.
         /// </summary>
         public List<UploadUrlMetadata> UploadUrls;
+    }
+
+    [Serializable]
+    public class DeepLinkFormat : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The format of the deep link to return. The format should contain '{id}' to represent where the item ID should be placed.
+        /// </summary>
+        public string Format;
+        /// <summary>
+        /// The target platform for the deep link.
+        /// </summary>
+        public string Platform;
     }
 
     [Serializable]
@@ -369,10 +455,6 @@ namespace PlayFab.EconomyModels
         /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
-        /// <summary>
-        /// Whether to fetch metadata of the scan status.
-        /// </summary>
-        public bool? ExpandScanningStatus;
         /// <summary>
         /// The unique ID of the item.
         /// </summary>
@@ -537,10 +619,6 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class GetItemPublishStatusResponse : PlayFabResultCommon
     {
-        /// <summary>
-        /// Scan results for any items that failed content scans.
-        /// </summary>
-        public List<ScanResult> FailedScanResults;
         /// <summary>
         /// High level status of the published item.
         /// </summary>
@@ -765,6 +843,23 @@ namespace PlayFab.EconomyModels
         Rejected
     }
 
+    [Serializable]
+    public class PayoutDetails : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The Dev Center account ID of the payee.
+        /// </summary>
+        public string AccountSellerId;
+        /// <summary>
+        /// The tax code for payout calculations.
+        /// </summary>
+        public string TaxCode;
+        /// <summary>
+        /// The Universal account ID of the payee.
+        /// </summary>
+        public string Uaid;
+    }
+
     /// <summary>
     /// The call kicks off a workflow to publish the item to the public catalog. The Publish Status API should be used to
     /// monitor the publish job.
@@ -925,10 +1020,6 @@ namespace PlayFab.EconomyModels
         /// The number of negative helpfulness votes for this review.
         /// </summary>
         public int HelpfulNegative;
-        /// <summary>
-        /// Total number of helpfulness votes for this review.
-        /// </summary>
-        public int HelpfulnessVotes;
         /// <summary>
         /// The number of positive helpfulness votes for this review.
         /// </summary>
@@ -1113,6 +1204,19 @@ namespace PlayFab.EconomyModels
     }
 
     [Serializable]
+    public class StoreInfo : PlayFabBaseModel
+    {
+        /// <summary>
+        /// An alternate ID of the store.
+        /// </summary>
+        public CatalogAlternateId AlternateId;
+        /// <summary>
+        /// The unique ID of the store.
+        /// </summary>
+        public string Id;
+    }
+
+    [Serializable]
     public class SubmitItemReviewVoteRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -1144,6 +1248,15 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class SubmitItemReviewVoteResponse : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class SubscriptionDetails : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The length of time that the subscription will last in seconds.
+        /// </summary>
+        public double DurationInSeconds;
     }
 
     /// <summary>
