@@ -2107,6 +2107,10 @@ namespace PlayFab.ServerModels
         EventSinkConnectionInvalid,
         EventSinkConnectionUnauthorized,
         EventSinkRegionInvalid,
+        EventSinkLimitExceeded,
+        EventSinkSasTokenInvalid,
+        EventSinkNotFound,
+        EventSinkNameInvalid,
         OperationCanceled,
         InvalidDisplayNameRandomSuffixLength,
         AllowNonUniquePlayerDisplayNamesDisableNotAllowed
@@ -4966,6 +4970,74 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class RefreshGameServerInstanceHeartbeatResult : PlayFabResultCommon
     {
+    }
+
+    public enum Region
+    {
+        USCentral,
+        USEast,
+        EUWest,
+        Singapore,
+        Japan,
+        Brazil,
+        Australia
+    }
+
+    [Serializable]
+    public class RegisterGameRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier of the build running on the Game Server Instance.
+        /// </summary>
+        public string Build;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Game Mode the Game Server instance is running. Note that this must be defined in the Game Modes tab in the PlayFab Game
+        /// Manager, along with the Build ID (the same Game Mode can be defined for multiple Build IDs).
+        /// </summary>
+        public string GameMode;
+        /// <summary>
+        /// Previous lobby id if re-registering an existing game.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// Region in which the Game Server Instance is running. For matchmaking using non-AWS region names, set this to any AWS
+        /// region and use Tags (below) to specify your custom region.
+        /// </summary>
+        public Region Region;
+        /// <summary>
+        /// IPV4 address of the game server instance.
+        /// </summary>
+        public string ServerIPV4Address;
+        /// <summary>
+        /// IPV6 address (if any) of the game server instance.
+        /// </summary>
+        public string ServerIPV6Address;
+        /// <summary>
+        /// Port number for communication with the Game Server Instance.
+        /// </summary>
+        public string ServerPort;
+        /// <summary>
+        /// Public DNS name (if any) of the server
+        /// </summary>
+        public string ServerPublicDNSName;
+        /// <summary>
+        /// Tags for the Game Server Instance
+        /// </summary>
+        public Dictionary<string,string> Tags;
+    }
+
+    [Serializable]
+    public class RegisterGameResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Unique identifier generated for the Game Server Instance that is registered. If LobbyId is specified in request and the
+        /// game still exists in PlayFab, the LobbyId in request is returned. Otherwise a new lobby id will be returned.
+        /// </summary>
+        public string LobbyId;
     }
 
     [Serializable]

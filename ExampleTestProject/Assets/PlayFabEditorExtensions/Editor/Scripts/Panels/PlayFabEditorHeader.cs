@@ -16,11 +16,11 @@ namespace PlayFab.PfEditor
                 //Set the image in the container
                 if (EditorGUIUtility.currentViewWidth < 375)
                 {
-                    EditorGUILayout.LabelField("", PlayFabEditorHelper.uiStyle.GetStyle("pfLogo"), GUILayout.MaxHeight(40), GUILayout.Width(186));
+                    EditorGUILayout.LabelField("", PlayFabEditorHelper.uiStyle.GetStyle("pfLogo"), GUILayout.MaxHeight(50), GUILayout.Width(186));
                 }
                 else
                 {
-                    EditorGUILayout.LabelField("", PlayFabEditorHelper.uiStyle.GetStyle("pfLogo"), GUILayout.MaxHeight(50), GUILayout.Width(233));
+                    EditorGUILayout.LabelField("", PlayFabEditorHelper.uiStyle.GetStyle("pfLogo"), GUILayout.MaxHeight(50), GUILayout.Width(466));
                 }
 
                 float gmAnchor = EditorGUIUtility.currentViewWidth - 30;

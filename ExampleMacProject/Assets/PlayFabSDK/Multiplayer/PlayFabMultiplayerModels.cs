@@ -5,6 +5,13 @@ using PlayFab.SharedModels;
 
 namespace PlayFab.MultiplayerModels
 {
+    public enum AccessPolicy
+    {
+        Public,
+        Friends,
+        Private
+    }
+
     [Serializable]
     public class AssetReference : PlayFabBaseModel
     {
@@ -1060,6 +1067,83 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Request to create a lobby. A Server or client can create a lobby.
+    /// </summary>
+    [Serializable]
+    public class CreateLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The policy indicating who is allowed to join the lobby, and the visibility to queries. May be 'Public', 'Friends' or
+        /// 'Private'. Public means the lobby is both visible in queries and any player may join, including invited players. Friends
+        /// means that users who are bidirectional friends of members in the lobby may search to find friend lobbies, to retrieve
+        /// its connection string. Private means the lobby is not visible in queries, and a player must receive an invitation to
+        /// join. Defaults to 'Public' on creation. Can only be changed by the lobby owner.
+        /// </summary>
+        public AccessPolicy? AccessPolicy;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The private key-value pairs which are only visible to members of the lobby. At most 30 key-value pairs may be stored
+        /// here, keys are limited to 30 characters and values to 1000. The total size of all lobbyData values may not exceed 4096
+        /// bytes. Keys are case sensitive.
+        /// </summary>
+        public Dictionary<string,string> LobbyData;
+        /// <summary>
+        /// The maximum number of players allowed in the lobby. The value must be between 2 and 128.
+        /// </summary>
+        public uint MaxPlayers;
+        /// <summary>
+        /// The member initially added to the lobby. Client must specify exactly one member, which is the creator's entity and
+        /// member data. Member PubSubConnectionHandle must be null or empty. Game servers must not specify any members.
+        /// </summary>
+        public List<Member> Members;
+        /// <summary>
+        /// The lobby owner. Must be the calling entity.
+        /// </summary>
+        public EntityKey Owner;
+        /// <summary>
+        /// The policy for how a new owner is chosen. May be 'Automatic', 'Manual' or 'None'. Can only be specified by clients. If
+        /// client-owned and 'Automatic' - The Lobby service will automatically assign another connected owner when the current
+        /// owner leaves or disconnects. The useConnections property must be true. If client - owned and 'Manual' - Ownership is
+        /// protected as long as the current owner is connected. If the current owner leaves or disconnects any member may set
+        /// themselves as the current owner. The useConnections property must be true. If client-owned and 'None' - Any member can
+        /// set ownership. The useConnections property can be either true or false.
+        /// </summary>
+        public OwnerMigrationPolicy? OwnerMigrationPolicy;
+        /// <summary>
+        /// The public key-value pairs which allow queries to differentiate between lobbies. Queries will refer to these key-value
+        /// pairs in their filter and order by clauses to retrieve lobbies fitting the specified criteria. At most 30 key-value
+        /// pairs may be stored here. Keys are of the format string_key1, string_key2 ... string_key30 for string values, or
+        /// number_key1, number_key2, ... number_key30 for numeric values.Numeric values are floats. Values can be at most 256
+        /// characters long. The total size of all searchData values may not exceed 1024 bytes.
+        /// </summary>
+        public Dictionary<string,string> SearchData;
+        /// <summary>
+        /// A setting to control whether connections are used. Defaults to true. When true, notifications are sent to subscribed
+        /// players, disconnect detection removes connectionHandles, only owner migration policies using connections are allowed,
+        /// and lobbies must have at least one connected member to be searchable or be a server hosted lobby with a connected
+        /// server. If false, then notifications are not sent, connections are not allowed, and lobbies do not need connections to
+        /// be searchable.
+        /// </summary>
+        public bool UseConnections;
+    }
+
+    [Serializable]
+    public class CreateLobbyResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// A field which indicates which lobby the user will be joining.
+        /// </summary>
+        public string ConnectionString;
+        /// <summary>
+        /// Id to uniquely identify a lobby.
+        /// </summary>
+        public string LobbyId;
+    }
+
+    /// <summary>
     /// The client specifies the creator's attributes and optionally a list of other users to match with.
     /// </summary>
     [Serializable]
@@ -1440,6 +1524,22 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Request to delete a lobby. Only servers can delete lobbies.
+    /// </summary>
+    [Serializable]
+    public class DeleteLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+    }
+
+    /// <summary>
     /// Deletes a remote user to log on to a VM for a multiplayer server build in a specific region. Returns user credential
     /// information necessary to log on.
     /// </summary>
@@ -1590,6 +1690,130 @@ namespace PlayFab.MultiplayerModels
         /// Entity type. See https://docs.microsoft.com/gaming/playfab/features/data/entities/available-built-in-entity-types
         /// </summary>
         public string Type;
+    }
+
+    /// <summary>
+    /// Request to find friends lobbies. Only a client can find friend lobbies.
+    /// </summary>
+    [Serializable]
+    public class FindFriendLobbiesRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Controls whether this query should link to friends made on the Facebook network. Defaults to false
+        /// </summary>
+        public bool ExcludeFacebookFriends;
+        /// <summary>
+        /// Controls whether this query should link to friends made on the Steam network. Defaults to false
+        /// </summary>
+        public bool ExcludeSteamFriends;
+        /// <summary>
+        /// OData style string that contains one or more filters. The OR and grouping operators are not allowed.
+        /// </summary>
+        public string Filter;
+        /// <summary>
+        /// OData style string that contains sorting for this query. To sort by closest, a moniker `distance{number_key1 = 5}` can
+        /// be used to sort by distance from the given number. This field only supports either one sort clause or one distance
+        /// clause.
+        /// </summary>
+        public string OrderBy;
+        /// <summary>
+        /// Request pagination information.
+        /// </summary>
+        public PaginationRequest Pagination;
+        /// <summary>
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// </summary>
+        public string XboxToken;
+    }
+
+    [Serializable]
+    public class FindFriendLobbiesResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Array of lobbies found that matched FindFriendLobbies request.
+        /// </summary>
+        public List<FriendLobbySummary> Lobbies;
+        /// <summary>
+        /// Pagination response for FindFriendLobbies request.
+        /// </summary>
+        public PaginationResponse Pagination;
+    }
+
+    /// <summary>
+    /// Request to find lobbies.
+    /// </summary>
+    [Serializable]
+    public class FindLobbiesRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// OData style string that contains one or more filters. The OR and grouping operators are not allowed.
+        /// </summary>
+        public string Filter;
+        /// <summary>
+        /// OData style string that contains sorting for this query. To sort by closest, a moniker `distance{number_key1 = 5}` can
+        /// be used to sort by distance from the given number. This field only supports either one sort clause or one distance
+        /// clause.
+        /// </summary>
+        public string OrderBy;
+        /// <summary>
+        /// Request pagination information.
+        /// </summary>
+        public PaginationRequest Pagination;
+    }
+
+    [Serializable]
+    public class FindLobbiesResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Array of lobbies found that matched FindLobbies request.
+        /// </summary>
+        public List<LobbySummary> Lobbies;
+        /// <summary>
+        /// Pagination response for FindLobbies request.
+        /// </summary>
+        public PaginationResponse Pagination;
+    }
+
+    [Serializable]
+    public class FriendLobbySummary : PlayFabBaseModel
+    {
+        /// <summary>
+        /// A string used to join the lobby.This field is populated by the Lobby service.Invites are performed by communicating this
+        /// connectionString to other players.
+        /// </summary>
+        public string ConnectionString;
+        /// <summary>
+        /// The current number of players in the lobby.
+        /// </summary>
+        public uint CurrentPlayers;
+        /// <summary>
+        /// Friends in Lobby.
+        /// </summary>
+        public List<EntityKey> Friends;
+        /// <summary>
+        /// Id to uniquely identify a lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The maximum number of players allowed in the lobby.
+        /// </summary>
+        public uint MaxPlayers;
+        /// <summary>
+        /// The client or server entity which owns this lobby.
+        /// </summary>
+        public EntityKey Owner;
+        /// <summary>
+        /// Search data.
+        /// </summary>
+        public Dictionary<string,string> SearchData;
     }
 
     [Serializable]
@@ -1833,6 +2057,31 @@ namespace PlayFab.MultiplayerModels
         /// The username for accessing the container registry.
         /// </summary>
         public string Username;
+    }
+
+    /// <summary>
+    /// Request to get a lobby.
+    /// </summary>
+    [Serializable]
+    public class GetLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+    }
+
+    [Serializable]
+    public class GetLobbyResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The information pertaining to the requested lobby.
+        /// </summary>
+        public Lobby Lobby;
     }
 
     /// <summary>
@@ -2323,6 +2572,123 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Request to invite a player to a lobby the caller is already a member of. Only a client can invite another player to a
+    /// lobby.
+    /// </summary>
+    [Serializable]
+    public class InviteToLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The entity invited to the lobby.
+        /// </summary>
+        public EntityKey InviteeEntity;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The member entity sending the invite. Must be a member of the lobby.
+        /// </summary>
+        public EntityKey MemberEntity;
+    }
+
+    /// <summary>
+    /// Request to join an arranged lobby. Only a client can join an arranged lobby.
+    /// </summary>
+    [Serializable]
+    public class JoinArrangedLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The policy indicating who is allowed to join the lobby, and the visibility to queries. May be 'Public', 'Friends' or
+        /// 'Private'. Public means the lobby is both visible in queries and any player may join, including invited players. Friends
+        /// means that users who are bidirectional friends of members in the lobby may search to find friend lobbies, to retrieve
+        /// its connection string. Private means the lobby is not visible in queries, and a player must receive an invitation to
+        /// join. Defaults to 'Public' on creation. Can only be changed by the lobby owner.
+        /// </summary>
+        public AccessPolicy? AccessPolicy;
+        /// <summary>
+        /// A field which indicates which lobby the user will be joining. This field is opaque to everyone except the Lobby service
+        /// and the creator of the arrangementString (Matchmaking). This string defines a unique identifier for the arranged lobby
+        /// as well as the title and member the string is valid for. Arrangement strings have an expiration.
+        /// </summary>
+        public string ArrangementString;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The maximum number of players allowed in the lobby. The value must be between 2 and 128.
+        /// </summary>
+        public uint MaxPlayers;
+        /// <summary>
+        /// The private key-value pairs used by the member to communicate information to other members and the owner. Visible to all
+        /// members of the lobby. At most 30 key-value pairs may be stored here, keys are limited to 30 characters and values to
+        /// 1000. The total size of all memberData values may not exceed 4096 bytes. Keys are case sensitive.
+        /// </summary>
+        public Dictionary<string,string> MemberData;
+        /// <summary>
+        /// The member entity who is joining the lobby. The first member to join will be the lobby owner.
+        /// </summary>
+        public EntityKey MemberEntity;
+        /// <summary>
+        /// The policy for how a new owner is chosen. May be 'Automatic', 'Manual' or 'None'. Can only be specified by clients. If
+        /// client-owned and 'Automatic' - The Lobby service will automatically assign another connected owner when the current
+        /// owner leaves or disconnects. The useConnections property must be true. If client - owned and 'Manual' - Ownership is
+        /// protected as long as the current owner is connected. If the current owner leaves or disconnects any member may set
+        /// themselves as the current owner. The useConnections property must be true. If client-owned and 'None' - Any member can
+        /// set ownership. The useConnections property can be either true or false.
+        /// </summary>
+        public OwnerMigrationPolicy? OwnerMigrationPolicy;
+        /// <summary>
+        /// A setting to control whether connections are used. Defaults to true. When true, notifications are sent to subscribed
+        /// players, disconnect detection removes connectionHandles, only owner migration policies using connections are allowed,
+        /// and lobbies must have at least one connected member to be searchable or be a server hosted lobby with a connected
+        /// server. If false, then notifications are not sent, connections are not allowed, and lobbies do not need connections to
+        /// be searchable.
+        /// </summary>
+        public bool UseConnections;
+    }
+
+    /// <summary>
+    /// Request to join a lobby. Only a client can join a lobby.
+    /// </summary>
+    [Serializable]
+    public class JoinLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// A field which indicates which lobby the user will be joining. This field is opaque to everyone except the Lobby service.
+        /// </summary>
+        public string ConnectionString;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The private key-value pairs used by the member to communicate information to other members and the owner. Visible to all
+        /// members of the lobby. At most 30 key-value pairs may be stored here, keys are limited to 30 characters and values to
+        /// 1000. The total size of all memberData values may not exceed 4096 bytes.Keys are case sensitive.
+        /// </summary>
+        public Dictionary<string,string> MemberData;
+        /// <summary>
+        /// The member entity who is joining the lobby.
+        /// </summary>
+        public EntityKey MemberEntity;
+    }
+
+    [Serializable]
+    public class JoinLobbyResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Successfully joined lobby's id.
+        /// </summary>
+        public string LobbyId;
+    }
+
+    /// <summary>
     /// Add the player to a matchmaking ticket and specify all of its matchmaking attributes. Players can join a ticket if and
     /// only if their EntityKeys are already listed in the ticket's Members list. The matchmaking service automatically starts
     /// matching the ticket against other matchmaking tickets once all players have joined the ticket. It is not possible to
@@ -2352,6 +2718,26 @@ namespace PlayFab.MultiplayerModels
     [Serializable]
     public class JoinMatchmakingTicketResult : PlayFabResultCommon
     {
+    }
+
+    /// <summary>
+    /// Request to leave a lobby. Only a client can leave a lobby.
+    /// </summary>
+    [Serializable]
+    public class LeaveLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The member entity leaving the lobby.
+        /// </summary>
+        public EntityKey MemberEntity;
     }
 
     [Serializable]
@@ -2908,6 +3294,100 @@ namespace PlayFab.MultiplayerModels
         public List<VirtualMachineSummary> VirtualMachines;
     }
 
+    [Serializable]
+    public class Lobby : PlayFabBaseModel
+    {
+        /// <summary>
+        /// A setting indicating who is allowed to join this lobby, as well as see it in queries.
+        /// </summary>
+        public AccessPolicy AccessPolicy;
+        /// <summary>
+        /// A number that increments once for each request that modifies the lobby.
+        /// </summary>
+        public uint ChangeNumber;
+        /// <summary>
+        /// A string used to join the lobby. This field is populated by the Lobby service. Invites are performed by communicating
+        /// this connectionString to other players.
+        /// </summary>
+        public string ConnectionString;
+        /// <summary>
+        /// Lobby data.
+        /// </summary>
+        public Dictionary<string,string> LobbyData;
+        /// <summary>
+        /// Id to uniquely identify a lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The maximum number of players allowed in the lobby.
+        /// </summary>
+        public uint MaxPlayers;
+        /// <summary>
+        /// Array of all lobby members.
+        /// </summary>
+        public List<Member> Members;
+        /// <summary>
+        /// A setting indicating whether members are allowed to join this lobby. When Locked new members are prevented from joining.
+        /// </summary>
+        public MembershipLock MembershipLock;
+        /// <summary>
+        /// The client or server entity which owns this lobby.
+        /// </summary>
+        public EntityKey Owner;
+        /// <summary>
+        /// A setting indicating the owner migration policy. If server owned, this field is not present.
+        /// </summary>
+        public OwnerMigrationPolicy? OwnerMigrationPolicy;
+        /// <summary>
+        /// An opaque string stored on a SubscribeToLobbyResource call, which indicates the connection an owner or member has with
+        /// PubSub.
+        /// </summary>
+        public string PubSubConnectionHandle;
+        /// <summary>
+        /// Search data.
+        /// </summary>
+        public Dictionary<string,string> SearchData;
+        /// <summary>
+        /// A flag which determines if connections are used. Defaults to true. Only set on create.
+        /// </summary>
+        public bool UseConnections;
+    }
+
+    [Serializable]
+    public class LobbyEmptyResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class LobbySummary : PlayFabBaseModel
+    {
+        /// <summary>
+        /// A string used to join the lobby.This field is populated by the Lobby service.Invites are performed by communicating this
+        /// connectionString to other players.
+        /// </summary>
+        public string ConnectionString;
+        /// <summary>
+        /// The current number of players in the lobby.
+        /// </summary>
+        public uint CurrentPlayers;
+        /// <summary>
+        /// Id to uniquely identify a lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The maximum number of players allowed in the lobby.
+        /// </summary>
+        public uint MaxPlayers;
+        /// <summary>
+        /// The client or server entity which owns this lobby.
+        /// </summary>
+        public EntityKey Owner;
+        /// <summary>
+        /// Search data.
+        /// </summary>
+        public Dictionary<string,string> SearchData;
+    }
+
     /// <summary>
     /// A user in a matchmaking ticket.
     /// </summary>
@@ -3099,6 +3579,29 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
+    public class Member : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Key-value pairs specific to member.
+        /// </summary>
+        public Dictionary<string,string> MemberData;
+        /// <summary>
+        /// The member entity key.
+        /// </summary>
+        public EntityKey MemberEntity;
+        /// <summary>
+        /// Opaque string, stored on a Subscribe call, which indicates the connection an owner or member has with PubSub.
+        /// </summary>
+        public string PubSubConnectionHandle;
+    }
+
+    public enum MembershipLock
+    {
+        Unlocked,
+        Locked
+    }
+
+    [Serializable]
     public class MonitoringApplicationConfiguration : PlayFabBaseModel
     {
         /// <summary>
@@ -3195,6 +3698,40 @@ namespace PlayFab.MultiplayerModels
         /// The custom expansion value.
         /// </summary>
         public uint Value;
+    }
+
+    public enum OwnerMigrationPolicy
+    {
+        None,
+        Automatic,
+        Manual,
+        Server
+    }
+
+    [Serializable]
+    public class PaginationRequest : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Continuation token returned as a result in a previous FindLobbies call. Cannot be specified by clients.
+        /// </summary>
+        public string ContinuationToken;
+        /// <summary>
+        /// The number of lobbies that should be retrieved. Cannot be specified by servers, clients may specify any value up to 50
+        /// </summary>
+        public uint? PageSizeRequested;
+    }
+
+    [Serializable]
+    public class PaginationResponse : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Continuation token returned by server call. Not returned for clients
+        /// </summary>
+        public string ContinuationToken;
+        /// <summary>
+        /// The number of lobbies that matched the search request.
+        /// </summary>
+        public uint? TotalMatchedLobbyCount;
     }
 
     [Serializable]
@@ -3334,6 +3871,31 @@ namespace PlayFab.MultiplayerModels
     [Serializable]
     public class RemoveMatchmakingQueueResult : PlayFabResultCommon
     {
+    }
+
+    /// <summary>
+    /// Request to remove a member from a lobby. Owners may remove other members from a lobby. Members cannot remove themselves
+    /// (use LeaveLobby instead).
+    /// </summary>
+    [Serializable]
+    public class RemoveMemberFromLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The member entity to be removed from the lobby.
+        /// </summary>
+        public EntityKey MemberEntity;
+        /// <summary>
+        /// If true, removed member can never rejoin this lobby.
+        /// </summary>
+        public bool PreventRejoin;
     }
 
     /// <summary>
@@ -3694,6 +4256,53 @@ namespace PlayFab.MultiplayerModels
         public uint SecondsBetweenExpansions;
     }
 
+    /// <summary>
+    /// Request to subscribe to lobby resource notifications.
+    /// </summary>
+    [Serializable]
+    public class SubscribeToLobbyResourceRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The entity performing the subscription.
+        /// </summary>
+        public EntityKey EntityKey;
+        /// <summary>
+        /// Opaque string, given to a client upon creating a connection with PubSub.
+        /// </summary>
+        public string PubSubConnectionHandle;
+        /// <summary>
+        /// The name of the resource to subscribe to.
+        /// </summary>
+        public string ResourceId;
+        /// <summary>
+        /// Version number for the subscription of this resource.
+        /// </summary>
+        public uint SubscriptionVersion;
+        /// <summary>
+        /// Subscription type.
+        /// </summary>
+        public SubscriptionType Type;
+    }
+
+    [Serializable]
+    public class SubscribeToLobbyResourceResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Topic will be returned in all notifications that are the result of this subscription.
+        /// </summary>
+        public string Topic;
+    }
+
+    public enum SubscriptionType
+    {
+        LobbyChange,
+        LobbyInvite
+    }
+
     [Serializable]
     public class TeamDifferenceRule : PlayFabBaseModel
     {
@@ -3785,6 +4394,38 @@ namespace PlayFab.MultiplayerModels
         /// The core capacity for the various regions and VM Family
         /// </summary>
         public List<CoreCapacity> CoreCapacities;
+    }
+
+    /// <summary>
+    /// Request to unsubscribe from lobby notifications. Only a client can unsubscribe from notifications.
+    /// </summary>
+    [Serializable]
+    public class UnsubscribeFromLobbyResourceRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The entity which performed the subscription.
+        /// </summary>
+        public EntityKey EntityKey;
+        /// <summary>
+        /// Opaque string, given to a client upon creating a connection with PubSub.
+        /// </summary>
+        public string PubSubConnectionHandle;
+        /// <summary>
+        /// The name of the resource to unsubscribe from.
+        /// </summary>
+        public string ResourceId;
+        /// <summary>
+        /// Version number passed for the subscription of this resource.
+        /// </summary>
+        public uint SubscriptionVersion;
+        /// <summary>
+        /// Subscription type.
+        /// </summary>
+        public SubscriptionType Type;
     }
 
     /// <summary>
@@ -3890,6 +4531,97 @@ namespace PlayFab.MultiplayerModels
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
+    }
+
+    /// <summary>
+    /// Request to update a lobby.
+    /// </summary>
+    [Serializable]
+    public class UpdateLobbyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The policy indicating who is allowed to join the lobby, and the visibility to queries. May be 'Public', 'Friends' or
+        /// 'Private'. Public means the lobby is both visible in queries and any player may join, including invited players. Friends
+        /// means that users who are bidirectional friends of members in the lobby may search to find friend lobbies, to retrieve
+        /// its connection string. Private means the lobby is not visible in queries, and a player must receive an invitation to
+        /// join. Defaults to 'Public' on creation. Can only be changed by the lobby owner.
+        /// </summary>
+        public AccessPolicy? AccessPolicy;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The private key-value pairs which are only visible to members of the lobby. Optional. Sets or updates key-value pairs on
+        /// the lobby. Only the current lobby owner can set lobby data. Keys may be an arbitrary string of at most 30 characters.
+        /// The total size of all lobbyData values may not exceed 4096 bytes. Values are not individually limited. There can be up
+        /// to 30 key-value pairs stored here. Keys are case sensitive.
+        /// </summary>
+        public Dictionary<string,string> LobbyData;
+        /// <summary>
+        /// The keys to delete from the lobby LobbyData. Optional. Behaves similar to searchDataToDelete, but applies to lobbyData.
+        /// </summary>
+        public List<string> LobbyDataToDelete;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The maximum number of players allowed in the lobby. Updates the maximum allowed number of players in the lobby. Only the
+        /// current lobby owner can set this. If set, the value must be greater than or equal to the number of members currently in
+        /// the lobby.
+        /// </summary>
+        public uint? MaxPlayers;
+        /// <summary>
+        /// The private key-value pairs used by the member to communicate information to other members and the owner. Optional. Sets
+        /// or updates new key-value pairs on the caller's member data. New keys will be added with their values and existing keys
+        /// will be updated with the new values. Visible to all members of the lobby. At most 30 key-value pairs may be stored here,
+        /// keys are limited to 30 characters and values to 1000. The total size of all memberData values may not exceed 4096 bytes.
+        /// Keys are case sensitive. Servers cannot specifiy this.
+        /// </summary>
+        public Dictionary<string,string> MemberData;
+        /// <summary>
+        /// The keys to delete from the lobby MemberData. Optional. Deletes key-value pairs on the caller's member data. All the
+        /// specified keys will be removed from the caller's member data. Keys that do not exist are a no-op. If the key to delete
+        /// exists in the memberData (same request) it will result in a bad request. Servers cannot specifiy this.
+        /// </summary>
+        public List<string> MemberDataToDelete;
+        /// <summary>
+        /// The member entity whose data is being modified. Servers cannot specify this.
+        /// </summary>
+        public EntityKey MemberEntity;
+        /// <summary>
+        /// A setting indicating whether the lobby is locked. May be 'Unlocked' or 'Locked'. When Locked new members are not allowed
+        /// to join. Defaults to 'Unlocked' on creation. Can only be changed by the lobby owner.
+        /// </summary>
+        public MembershipLock? MembershipLock;
+        /// <summary>
+        /// The lobby owner. Optional. Set to transfer ownership of the lobby. If client - owned and 'Automatic' - The Lobby service
+        /// will automatically assign another connected owner when the current owner leaves or disconnects. useConnections must be
+        /// true. If client - owned and 'Manual' - Ownership is protected as long as the current owner is connected. If the current
+        /// owner leaves or disconnects any member may set themselves as the current owner. The useConnections property must be
+        /// true. If client-owned and 'None' - Any member can set ownership. The useConnections property can be either true or
+        /// false. For all client-owned lobbies when the owner leaves and a new owner can not be automatically selected - The owner
+        /// field is set to null. For all client-owned lobbies when the owner disconnects and a new owner can not be automatically
+        /// selected - The owner field remains unchanged and the current owner retains all owner abilities for the lobby. If
+        /// server-owned (must be 'Server') - Any server can set ownership. The useConnections property must be true.
+        /// </summary>
+        public EntityKey Owner;
+        /// <summary>
+        /// The public key-value pairs which allow queries to differentiate between lobbies. Optional. Sets or updates key-value
+        /// pairs on the lobby for use with queries. Only the current lobby owner can set search data. New keys will be added with
+        /// their values and existing keys will be updated with the new values. There can be up to 30 key-value pairs stored here.
+        /// Keys are of the format string_key1, string_key2... string_key30 for string values, or number_key1, number_key2, ...
+        /// number_key30 for numeric values. Numeric values are floats. Values can be at most 256 characters long. The total size of
+        /// all searchData values may not exceed 1024 bytes.Keys are case sensitive.
+        /// </summary>
+        public Dictionary<string,string> SearchData;
+        /// <summary>
+        /// The keys to delete from the lobby SearchData. Optional. Deletes key-value pairs on the lobby. Only the current lobby
+        /// owner can delete search data. All the specified keys will be removed from the search data. Keys that do not exist in the
+        /// lobby are a no-op.If the key to delete exists in the searchData (same request) it will result in a bad request.
+        /// </summary>
+        public List<string> SearchDataToDelete;
     }
 
     /// <summary>
