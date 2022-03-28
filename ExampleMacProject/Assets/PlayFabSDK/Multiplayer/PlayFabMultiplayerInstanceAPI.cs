@@ -831,6 +831,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Subscribe to match resource notifications.
+        /// </summary>
+        public void SubscribeToMatchmakingResource(SubscribeToMatchResourceRequest request, Action<SubscribeToMatchResourceResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+            PlayFabHttp.MakeApiCall("/Match/SubscribeToMatchmakingResource", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Unsubscribe from lobby notifications.
         /// </summary>
         public void UnsubscribeFromLobbyResource(UnsubscribeFromLobbyResourceRequest request, Action<LobbyEmptyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -839,6 +850,17 @@ namespace PlayFab
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
             PlayFabHttp.MakeApiCall("/Lobby/UnsubscribeFromLobbyResource", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Unsubscribe from match resource notifications.
+        /// </summary>
+        public void UnsubscribeFromMatchmakingResource(UnsubscribeFromMatchResourceRequest request, Action<UnsubscribeFromMatchResourceResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+            PlayFabHttp.MakeApiCall("/Match/UnsubscribeFromMatchmakingResource", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>

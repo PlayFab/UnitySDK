@@ -145,8 +145,12 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerShutdownMultiplayerServerResultEvent;
         public event PlayFabRequestEvent<SubscribeToLobbyResourceRequest> OnMultiplayerSubscribeToLobbyResourceRequestEvent;
         public event PlayFabResultEvent<SubscribeToLobbyResourceResult> OnMultiplayerSubscribeToLobbyResourceResultEvent;
+        public event PlayFabRequestEvent<SubscribeToMatchResourceRequest> OnMultiplayerSubscribeToMatchmakingResourceRequestEvent;
+        public event PlayFabResultEvent<SubscribeToMatchResourceResult> OnMultiplayerSubscribeToMatchmakingResourceResultEvent;
         public event PlayFabRequestEvent<UnsubscribeFromLobbyResourceRequest> OnMultiplayerUnsubscribeFromLobbyResourceRequestEvent;
         public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerUnsubscribeFromLobbyResourceResultEvent;
+        public event PlayFabRequestEvent<UnsubscribeFromMatchResourceRequest> OnMultiplayerUnsubscribeFromMatchmakingResourceRequestEvent;
+        public event PlayFabResultEvent<UnsubscribeFromMatchResourceResult> OnMultiplayerUnsubscribeFromMatchmakingResourceResultEvent;
         public event PlayFabRequestEvent<UntagContainerImageRequest> OnMultiplayerUntagContainerImageRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUntagContainerImageResultEvent;
         public event PlayFabRequestEvent<UpdateBuildAliasRequest> OnMultiplayerUpdateBuildAliasRequestEvent;
