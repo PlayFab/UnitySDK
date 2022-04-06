@@ -40,7 +40,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -95,7 +95,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -190,7 +190,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -740,7 +740,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
     }
@@ -771,7 +771,7 @@ namespace PlayFab.GroupsModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity to perform this action on.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
     }
