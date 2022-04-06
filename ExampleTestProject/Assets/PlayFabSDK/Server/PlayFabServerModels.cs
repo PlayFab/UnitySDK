@@ -1961,6 +1961,7 @@ namespace PlayFab.ServerModels
         PlayerIdentityLinkNotFound,
         PhotonApplicationIdAlreadyInUse,
         CloudScriptUnableToDeleteProductionRevision,
+        CustomIdNotFound,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,

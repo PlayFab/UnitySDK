@@ -540,6 +540,7 @@ namespace PlayFab
         PlayerIdentityLinkNotFound = 1537,
         PhotonApplicationIdAlreadyInUse = 1538,
         CloudScriptUnableToDeleteProductionRevision = 1539,
+        CustomIdNotFound = 1540,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
