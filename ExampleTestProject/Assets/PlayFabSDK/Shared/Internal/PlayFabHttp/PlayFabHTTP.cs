@@ -237,11 +237,13 @@ namespace PlayFab.Internal
             var result = reqContainer.ApiResult;
 
 #if !DISABLE_PLAYFABENTITY_API
+
             var entRes = result as AuthenticationModels.GetEntityTokenResponse;
             if (entRes != null)
             {
                 PlayFabSettings.staticPlayer.EntityToken = entRes.EntityToken;
             }
+
 #endif
 #if !DISABLE_PLAYFABCLIENT_API
             var logRes = result as ClientModels.LoginResult;

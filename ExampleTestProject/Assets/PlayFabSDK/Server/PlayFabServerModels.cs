@@ -2113,6 +2113,8 @@ namespace PlayFab.ServerModels
         EventSinkSasTokenInvalid,
         EventSinkNotFound,
         EventSinkNameInvalid,
+        EventSinkSasTokenPermissionInvalid,
+        EventSinkSecretInvalid,
         OperationCanceled,
         InvalidDisplayNameRandomSuffixLength,
         AllowNonUniquePlayerDisplayNamesDisableNotAllowed
@@ -3054,6 +3056,27 @@ namespace PlayFab.ServerModels
         /// Mapping of generic service identifiers to PlayFab identifiers.
         /// </summary>
         public List<GenericPlayFabIdPair> Data;
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromNintendoServiceAccountIdsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Array of unique Nintendo Switch Account identifiers for which the title needs to get PlayFab identifiers.
+        /// </summary>
+        public List<string> NintendoAccountIds;
+    }
+
+    /// <summary>
+    /// For Nintendo Service Account identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
+    [Serializable]
+    public class GetPlayFabIDsFromNintendoServiceAccountIdsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Mapping of Nintendo Switch Service Account identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<NintendoServiceAccountPlayFabIdPair> Data;
     }
 
     [Serializable]
@@ -4367,6 +4390,20 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class MoveItemToUserFromCharacterResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class NintendoServiceAccountPlayFabIdPair : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Unique Nintendo Switch Service Account identifier for a user.
+        /// </summary>
+        public string NintendoServiceAccountId;
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Nintendo Switch Service Account
+        /// identifier.
+        /// </summary>
+        public string PlayFabId;
     }
 
     [Serializable]
@@ -6858,6 +6895,10 @@ namespace PlayFab.ServerModels
         /// XBox user ID
         /// </summary>
         public string XboxUserId;
+        /// <summary>
+        /// XBox user sandbox
+        /// </summary>
+        public string XboxUserSandbox;
     }
 
     [Serializable]
