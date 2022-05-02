@@ -59,6 +59,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<DeleteTitleDataOverrideResult> OnAdminDeleteTitleDataOverrideResultEvent;
         public event PlayFabRequestEvent<ExportMasterPlayerDataRequest> OnAdminExportMasterPlayerDataRequestEvent;
         public event PlayFabResultEvent<ExportMasterPlayerDataResult> OnAdminExportMasterPlayerDataResultEvent;
+        public event PlayFabRequestEvent<ExportPlayersInSegmentRequest> OnAdminExportPlayersInSegmentRequestEvent;
+        public event PlayFabResultEvent<ExportPlayersInSegmentResult> OnAdminExportPlayersInSegmentResultEvent;
         public event PlayFabRequestEvent<GetTaskInstanceRequest> OnAdminGetActionsOnPlayersInSegmentTaskInstanceRequestEvent;
         public event PlayFabResultEvent<GetActionsOnPlayersInSegmentTaskInstanceResult> OnAdminGetActionsOnPlayersInSegmentTaskInstanceResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnAdminGetAllSegmentsRequestEvent;
@@ -105,6 +107,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPublisherDataResult> OnAdminGetPublisherDataResultEvent;
         public event PlayFabRequestEvent<GetRandomResultTablesRequest> OnAdminGetRandomResultTablesRequestEvent;
         public event PlayFabResultEvent<GetRandomResultTablesResult> OnAdminGetRandomResultTablesResultEvent;
+        public event PlayFabRequestEvent<GetPlayersInSegmentExportRequest> OnAdminGetSegmentExportRequestEvent;
+        public event PlayFabResultEvent<GetPlayersInSegmentExportResponse> OnAdminGetSegmentExportResultEvent;
         public event PlayFabRequestEvent<GetSegmentsRequest> OnAdminGetSegmentsRequestEvent;
         public event PlayFabResultEvent<GetSegmentsResponse> OnAdminGetSegmentsResultEvent;
         public event PlayFabRequestEvent<GetStoreItemsRequest> OnAdminGetStoreItemsRequestEvent;
