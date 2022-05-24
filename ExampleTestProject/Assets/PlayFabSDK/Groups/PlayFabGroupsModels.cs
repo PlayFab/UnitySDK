@@ -250,7 +250,7 @@ namespace PlayFab.GroupsModels
         public EntityKey Group;
         /// <summary>
         /// The ID of the role. This must be unique within the group and cannot be changed. Role IDs must be between 1 and 64
-        /// characters long.
+        /// characters long and are restricted to a-Z, A-Z, 0-9, '(', ')', '_', '-' and '.'.
         /// </summary>
         public string RoleId;
         /// <summary>

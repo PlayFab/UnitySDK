@@ -2545,6 +2545,9 @@ namespace PlayFab.AdminModels
         EventSinkNameInvalid,
         EventSinkSasTokenPermissionInvalid,
         EventSinkSecretInvalid,
+        EventSinkTenantNotFound,
+        EventSinkAadNotFound,
+        EventSinkDatabaseNotFound,
         OperationCanceled,
         InvalidDisplayNameRandomSuffixLength,
         AllowNonUniquePlayerDisplayNamesDisableNotAllowed
@@ -5969,6 +5972,10 @@ namespace PlayFab.AdminModels
     public class SetTitleDataAndOverridesRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
         /// List of titleData key-value pairs to set/delete. Use an empty value to delete an existing key; use a non-empty value to
         /// create/update a key.
         /// </summary>
@@ -5977,6 +5984,10 @@ namespace PlayFab.AdminModels
         /// Name of the override.
         /// </summary>
         public string OverrideLabel;
+        /// <summary>
+        /// Title Id
+        /// </summary>
+        public string TitleId;
     }
 
     [Serializable]
