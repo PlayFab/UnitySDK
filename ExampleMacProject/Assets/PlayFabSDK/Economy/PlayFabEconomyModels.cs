@@ -258,6 +258,11 @@ namespace PlayFab.EconomyModels
         public string Url;
     }
 
+    [Serializable]
+    public class ContentFeed : PlayFabBaseModel
+    {
+    }
+
     /// <summary>
     /// The item will not be published to the public catalog until the PublishItem API is called for the item.
     /// </summary>

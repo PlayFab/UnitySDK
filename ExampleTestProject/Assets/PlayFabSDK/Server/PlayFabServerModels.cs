@@ -2029,6 +2029,7 @@ namespace PlayFab.ServerModels
         ExportCannotParseQuery,
         ExportControlCommandsNotAllowed,
         ExportQueryMissingTableReference,
+        ExportInsightsV1Deprecated,
         ExplorerBasicInvalidQueryName,
         ExplorerBasicInvalidQueryDescription,
         ExplorerBasicInvalidQueryConditions,
