@@ -2459,6 +2459,7 @@ namespace PlayFab.AdminModels
         ExportCannotParseQuery,
         ExportControlCommandsNotAllowed,
         ExportQueryMissingTableReference,
+        ExportInsightsV1Deprecated,
         ExplorerBasicInvalidQueryName,
         ExplorerBasicInvalidQueryDescription,
         ExplorerBasicInvalidQueryConditions,
