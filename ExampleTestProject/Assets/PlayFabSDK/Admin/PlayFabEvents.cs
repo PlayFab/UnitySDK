@@ -195,8 +195,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<SetTitleDataAndOverridesResult> OnAdminSetTitleDataAndOverridesResultEvent;
         public event PlayFabRequestEvent<SetTitleDataRequest> OnAdminSetTitleInternalDataRequestEvent;
         public event PlayFabResultEvent<SetTitleDataResult> OnAdminSetTitleInternalDataResultEvent;
-        public event PlayFabRequestEvent<SetTitleDataAndOverridesRequest> OnAdminSetTitleInternalDataAndOverridesRequestEvent;
-        public event PlayFabResultEvent<SetTitleDataAndOverridesResult> OnAdminSetTitleInternalDataAndOverridesResultEvent;
         public event PlayFabRequestEvent<SetupPushNotificationRequest> OnAdminSetupPushNotificationRequestEvent;
         public event PlayFabResultEvent<SetupPushNotificationResult> OnAdminSetupPushNotificationResultEvent;
         public event PlayFabRequestEvent<SubtractUserVirtualCurrencyRequest> OnAdminSubtractUserVirtualCurrencyRequestEvent;

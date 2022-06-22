@@ -1113,16 +1113,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Set and delete key-value pairs in a title internal data override instance.
-        /// </summary>
-        public void SetTitleInternalDataAndOverrides(SetTitleDataAndOverridesRequest request, Action<SetTitleDataAndOverridesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
-            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
-            PlayFabHttp.MakeApiCall("/Admin/SetTitleInternalDataAndOverrides", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
-        }
-
-        /// <summary>
         /// Sets the Amazon Resource Name (ARN) for iOS and Android push notifications. Documentation on the exact restrictions can
         /// be found at: http://docs.aws.amazon.com/sns/latest/api/API_CreatePlatformApplication.html. Currently, Amazon device
         /// Messaging is not supported.
