@@ -114,7 +114,7 @@ namespace PlayFab.Internal
             var startTime = DateTime.UtcNow;
 #endif
 
-            var www = new UnityWebRequest(reqContainer.FullUrl)
+            using var www = new UnityWebRequest(reqContainer.FullUrl)
             {
                 uploadHandler = new UploadHandlerRaw(reqContainer.Payload),
                 downloadHandler = new DownloadHandlerBuffer(),
