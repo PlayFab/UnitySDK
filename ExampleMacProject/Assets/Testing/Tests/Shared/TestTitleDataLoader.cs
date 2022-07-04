@@ -20,7 +20,7 @@ namespace PlayFab.UUnit
             // More details available here: https://github.com/PlayFab/SDKGenerator/blob/master/JenkinsConsoleUtility/testTitleData.md
             public string titleId;
             public string userEmail;
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
             public string developerSecretKey;
 #endif
             public Dictionary<string, string> extraHeaders;
@@ -99,7 +99,7 @@ namespace PlayFab.UUnit
                 return;
 
             PlayFabSettings.TitleId = _loadedData.titleId;
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
             PlayFabSettings.DeveloperSecretKey = _loadedData.developerSecretKey;
 #endif
             PlayFabSettings.ConnectionString = _loadedData.connectionString;

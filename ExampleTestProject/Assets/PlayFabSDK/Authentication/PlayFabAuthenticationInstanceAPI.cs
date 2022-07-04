@@ -72,7 +72,7 @@ namespace PlayFab
 #if !DISABLE_PLAYFABCLIENT_API
             if (context.IsClientLoggedIn()) { authType = AuthType.LoginSession; }
 #endif
-#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API
+#if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFAB_SECRETKEY
             if (callSettings.DeveloperSecretKey != null) { authType = AuthType.DevSecretKey; }
 #endif
 #if !DISABLE_PLAYFABENTITY_API

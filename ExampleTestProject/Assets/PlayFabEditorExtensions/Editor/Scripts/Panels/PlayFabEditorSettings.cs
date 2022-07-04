@@ -264,7 +264,7 @@ namespace PlayFab.PfEditor
 
         private static void DrawPfSharedSettingsOptions(float labelWidth)
         {
-#if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API || UNITY_EDITOR
+#if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
             // Set the title secret key, if we're using the dropdown
             var studio = GetStudioForTitleId(PlayFabEditorDataService.SharedSettings.TitleId);
             var correctKey = studio.GetTitleSecretKey(PlayFabEditorDataService.SharedSettings.TitleId);
@@ -345,7 +345,7 @@ namespace PlayFab.PfEditor
             var studio = GetStudioForTitleId(newTitleId);
             PlayFabEditorPrefsSO.Instance.SelectedStudio = studio.Name;
             PlayFabEditorDataService.SharedSettings.TitleId = newTitleId;
-#if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API || UNITY_EDITOR
+#if ENABLE_PLAYFABADMIN_API || ENABLE_PLAYFABSERVER_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
             PlayFabEditorDataService.SharedSettings.DeveloperSecretKey = studio.GetTitleSecretKey(newTitleId);
 #endif
             PlayFabEditorPrefsSO.Instance.TitleDataCache.Clear();
