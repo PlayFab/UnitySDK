@@ -2259,6 +2259,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The guid string build ID of the multiplayer server to get details for.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string BuildId;
         /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
@@ -2267,6 +2268,7 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The region the multiplayer server is located in to get details for.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string Region;
         /// <summary>
         /// The title generated guid string session ID of the multiplayer server to get details for. This is to keep track of

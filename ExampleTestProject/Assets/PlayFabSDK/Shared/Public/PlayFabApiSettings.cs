@@ -28,8 +28,6 @@ namespace PlayFab
         /// <summary> Set this to true to prevent focus change information from leaving the device </summary>
         public virtual bool DisableFocusTimeCollection { get; set; }
 
-        /// <summary> Fill this to directly connect to a specific title.</summary>
-        public virtual string ConnectionString { get; set; }
 
         public virtual string GetFullUrl(string apiCall, Dictionary<string, string> getParams)
         {

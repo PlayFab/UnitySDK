@@ -43,9 +43,9 @@ namespace PlayFab
         /// </summary>
         public static readonly PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
-        public const string SdkVersion = "2.139.220704";
+        public const string SdkVersion = "2.140.220718";
         public const string BuildIdentifier = "adobuild_unitybeta_167";
-        public const string VersionString = "UnitySDK-2.139.220704";
+        public const string VersionString = "UnitySDK-2.140.220718";
 
         public const string DefaultPlayFabApiUrl = "playfabapi.com";
 
@@ -85,8 +85,6 @@ namespace PlayFab
         // You must set this value for PlayFabSdk to work properly (Found in the Game Manager for your title, at the PlayFab Website)
         public static string TitleId { get { return staticSettings.TitleId; } set { staticSettings.TitleId = value; } }
 
-        // Set this value to override specific title connection point
-        public static string ConnectionString { get {return staticSettings.ConnectionString; } set { staticSettings.ConnectionString = value; } }
         /// <summary> The name of a customer vertical. This is only for customers running a private cluster.  Generally you shouldn't touch this </summary>
         internal static string VerticalName { get { return staticSettings.VerticalName; } set { staticSettings.VerticalName = value; } }
 #if ENABLE_PLAYFABSERVER_API || ENABLE_PLAYFABADMIN_API || UNITY_EDITOR || ENABLE_PLAYFAB_SECRETKEY
@@ -136,14 +134,10 @@ namespace PlayFab
             StringBuilder sb = new StringBuilder(1000);
 
             string productionEnvironmentUrl = null, verticalName = null, titleId = null;
+
             if (apiSettings != null)
             {
-                if(apiSettings.ConnectionString != "")
-                {
-                    productionEnvironmentUrl = apiSettings.ConnectionString;
-                }
-                else
-                {
+
                     if (!string.IsNullOrEmpty(apiSettings.ProductionEnvironmentUrl))
                     {
                         productionEnvironmentUrl = apiSettings.ProductionEnvironmentUrl;
@@ -156,12 +150,9 @@ namespace PlayFab
                     {
                         titleId = apiSettings.TitleId;
                     }
-                }
+
             }
-            else if(ConnectionString != "")
-            {
-                productionEnvironmentUrl = ConnectionString;
-            }
+
 
 
             if (productionEnvironmentUrl == null)

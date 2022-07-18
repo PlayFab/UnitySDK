@@ -47,13 +47,21 @@ namespace PlayFab.Public
             eventApi = new PlayFabEventsInstanceAPI(PlayFabSettings.staticPlayer);
         }
 
+        private void EnsureSingleGameSessionId()
+        {
+            if (gameSessionID == Guid.Empty)
+            {
+                gameSessionID = Guid.NewGuid();
+            }
+        }
+
         /// <summary>
         /// Start session, the function responsible for creating SessionID and gathering information about user and device
         /// </summary>
         /// <param name="playFabUserId">Result of the user's login, represent user ID</param>
         public void ClientSessionStart(string entityId, string entityType, string playFabUserId)
         {
-            gameSessionID = Guid.NewGuid();
+            EnsureSingleGameSessionId();
 
             entityKey.Id = entityId;
             entityKey.Type = entityType;
@@ -88,6 +96,7 @@ namespace PlayFab.Public
         /// <param name="isFocused">State of focus</param>
         public void OnApplicationFocus(bool isFocused)
         {
+            EnsureSingleGameSessionId();
             EventsModels.EventContents eventInfo = new EventsModels.EventContents();
             DateTime currentUtcDateTime = DateTime.UtcNow;
 
