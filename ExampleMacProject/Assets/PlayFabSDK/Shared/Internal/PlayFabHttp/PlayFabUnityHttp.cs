@@ -81,7 +81,7 @@ namespace PlayFab.Internal
                 yield return request.Send();
 #endif
 
-#if UNITY_2021_1_OR_NEWER
+#if UNITY_2020_1_OR_NEWER
                 if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
 #else
                 if (request.isNetworkError || request.isHttpError)
@@ -114,7 +114,7 @@ namespace PlayFab.Internal
             var startTime = DateTime.UtcNow;
 #endif
 
-            var www = new UnityWebRequest(reqContainer.FullUrl)
+            using var www = new UnityWebRequest(reqContainer.FullUrl)
             {
                 uploadHandler = new UploadHandlerRaw(reqContainer.Payload),
                 downloadHandler = new DownloadHandlerBuffer(),
