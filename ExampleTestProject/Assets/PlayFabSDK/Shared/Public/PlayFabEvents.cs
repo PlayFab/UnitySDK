@@ -663,6 +663,8 @@ namespace PlayFab.Events
 
             if (OnLoginWithGoogleAccountRequestEvent != null) { foreach (var each in OnLoginWithGoogleAccountRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithGoogleAccountRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithGoogleAccountRequest>)each; } } }
 
+            if (OnLoginWithGooglePlayGamesServicesRequestEvent != null) { foreach (var each in OnLoginWithGooglePlayGamesServicesRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithGooglePlayGamesServicesRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithGooglePlayGamesServicesRequest>)each; } } }
+
             if (OnLoginWithIOSDeviceIDRequestEvent != null) { foreach (var each in OnLoginWithIOSDeviceIDRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithIOSDeviceIDRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithIOSDeviceIDRequest>)each; } } }
 
             if (OnLoginWithKongregateRequestEvent != null) { foreach (var each in OnLoginWithKongregateRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnLoginWithKongregateRequestEvent -= (PlayFabRequestEvent<ClientModels.LoginWithKongregateRequest>)each; } } }
@@ -2068,6 +2070,7 @@ namespace PlayFab.Events
                 if (type == typeof(ClientModels.LoginWithFacebookInstantGamesIdRequest)) { if (_instance.OnLoginWithFacebookInstantGamesIdRequestEvent != null) { _instance.OnLoginWithFacebookInstantGamesIdRequestEvent((ClientModels.LoginWithFacebookInstantGamesIdRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithGameCenterRequest)) { if (_instance.OnLoginWithGameCenterRequestEvent != null) { _instance.OnLoginWithGameCenterRequestEvent((ClientModels.LoginWithGameCenterRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithGoogleAccountRequest)) { if (_instance.OnLoginWithGoogleAccountRequestEvent != null) { _instance.OnLoginWithGoogleAccountRequestEvent((ClientModels.LoginWithGoogleAccountRequest)e.Request); return; } }
+                if (type == typeof(ClientModels.LoginWithGooglePlayGamesServicesRequest)) { if (_instance.OnLoginWithGooglePlayGamesServicesRequestEvent != null) { _instance.OnLoginWithGooglePlayGamesServicesRequestEvent((ClientModels.LoginWithGooglePlayGamesServicesRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithIOSDeviceIDRequest)) { if (_instance.OnLoginWithIOSDeviceIDRequestEvent != null) { _instance.OnLoginWithIOSDeviceIDRequestEvent((ClientModels.LoginWithIOSDeviceIDRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithKongregateRequest)) { if (_instance.OnLoginWithKongregateRequestEvent != null) { _instance.OnLoginWithKongregateRequestEvent((ClientModels.LoginWithKongregateRequest)e.Request); return; } }
                 if (type == typeof(ClientModels.LoginWithNintendoServiceAccountRequest)) { if (_instance.OnLoginWithNintendoServiceAccountRequestEvent != null) { _instance.OnLoginWithNintendoServiceAccountRequestEvent((ClientModels.LoginWithNintendoServiceAccountRequest)e.Request); return; } }
