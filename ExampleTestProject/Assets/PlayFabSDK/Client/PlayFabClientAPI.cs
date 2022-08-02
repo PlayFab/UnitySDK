@@ -1374,6 +1374,19 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using their Google Play Games account credentials
+        /// </summary>
+        public static void LoginWithGooglePlayGamesServices(LoginWithGooglePlayGamesServicesRequest request, Action<LoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            request.TitleId = request.TitleId ?? callSettings.TitleId;
+
+
+            PlayFabHttp.MakeApiCall("/Client/LoginWithGooglePlayGamesServices", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
         /// Signs the user in using the vendor-specific iOS device identifier, returning a session identifier that can subsequently
         /// be used for API calls which require an authenticated user
         /// </summary>

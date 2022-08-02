@@ -116,7 +116,8 @@ namespace PlayFab.AuthenticationModels
         FacebookInstantGames,
         OpenIdConnect,
         Apple,
-        NintendoSwitchAccount
+        NintendoSwitchAccount,
+        GooglePlayGames
     }
 
     /// <summary>

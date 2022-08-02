@@ -3467,6 +3467,10 @@ namespace PlayFab.MultiplayerModels
     public class MatchmakingQueueConfig : PlayFabBaseModel
     {
         /// <summary>
+        /// This is the buildAlias that will be used to allocate the multiplayer server for the match.
+        /// </summary>
+        public BuildAliasParams BuildAliasParams;
+        /// <summary>
         /// This is the buildId that will be used to allocate the multiplayer server for the match.
         /// </summary>
         public string BuildId;
