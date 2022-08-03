@@ -11,7 +11,8 @@ namespace PlayFab
     /// <summary>
     /// The Authentication APIs provide a convenient way to convert classic authentication responses into entity authentication
     /// models. These APIs will provide you with the entity authentication token needed for subsequent Entity API calls. Manage
-    /// API keys for authenticating any entity.
+    /// API keys for authenticating any entity. The game_server API is designed to create uniquely identifiable game_server
+    /// entities. The game_server Entity token can be used to call Matchmaking Lobby and Pubsub for server scenarios.
     /// </summary>
     public class PlayFabAuthenticationInstanceAPI : IPlayFabInstanceApi
     {
@@ -58,6 +59,17 @@ namespace PlayFab
             {
                 authenticationContext.ForgetAllCredentials();
             }
+        }
+
+        /// <summary>
+        /// Delete a game_server entity.
+        /// </summary>
+        public void Delete(DeleteRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+            PlayFabHttp.MakeApiCall("/GameServerIdentity/Delete", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>
