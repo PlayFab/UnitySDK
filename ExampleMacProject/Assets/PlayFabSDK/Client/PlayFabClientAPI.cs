@@ -752,6 +752,21 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the unique PlayFab identifiers for the given set of Google Play Games identifiers. The Google Play Games
+        /// identifiers are the IDs for the user accounts, available as "playerId" in the Google Play Games Services - Players API
+        /// calls.
+        /// </summary>
+        public static void GetPlayFabIDsFromGooglePlayGamesPlayerIDs(GetPlayFabIDsFromGooglePlayGamesPlayerIDsRequest request, Action<GetPlayFabIDsFromGooglePlayGamesPlayerIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/Client/GetPlayFabIDsFromGooglePlayGamesPlayerIDs", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
         /// Retrieves the unique PlayFab identifiers for the given set of Kongregate identifiers. The Kongregate identifiers are the
         /// IDs for the user accounts, available as "user_id" from the Kongregate API methods(ex:
         /// http://developers.kongregate.com/docs/client/getUserId).
@@ -1138,6 +1153,20 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Client/LinkGoogleAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
+        /// Links the currently signed-in user account to their Google Play Games account, using their Google Play Games account
+        /// credentials
+        /// </summary>
+        public static void LinkGooglePlayGamesServicesAccount(LinkGooglePlayGamesServicesAccountRequest request, Action<LinkGooglePlayGamesServicesAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/Client/LinkGooglePlayGamesServicesAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>
@@ -1917,6 +1946,19 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Client/UnlinkGoogleAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
+        /// Unlinks the related Google Play Games account from the user's PlayFab account.
+        /// </summary>
+        public static void UnlinkGooglePlayGamesServicesAccount(UnlinkGooglePlayGamesServicesAccountRequest request, Action<UnlinkGooglePlayGamesServicesAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/Client/UnlinkGooglePlayGamesServicesAccount", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>
