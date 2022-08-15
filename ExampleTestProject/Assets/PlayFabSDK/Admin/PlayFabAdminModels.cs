@@ -2397,6 +2397,7 @@ namespace PlayFab.AdminModels
         AutomationRuleAlreadyExists,
         AutomationRuleLimitExceeded,
         InvalidGooglePlayGamesServerAuthCode,
+        StorageAccountNotFound,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
