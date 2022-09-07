@@ -34,7 +34,7 @@
 // NOTE: uncomment the following line to enable IReadOnlyCollection<T> and IReadOnlyList<T> support.
 //#define SIMPLE_JSON_READONLY_COLLECTIONS
 
-// NOTE: uncomment the following line if you are compiling under Window Metro style application/library.
+// NOTE: uncomment the following line if you are compiling under Windows Store app/library.
 // usually already defined in properties
 #if UNITY_WSA && UNITY_WP8
 #define NETFX_CORE
