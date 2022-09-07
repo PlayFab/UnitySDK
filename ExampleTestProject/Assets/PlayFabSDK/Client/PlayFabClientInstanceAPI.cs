@@ -1423,7 +1423,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Uses the supplied OAuth code to refresh the internally cached player PSN :tm: auth token
+        /// Uses the supplied OAuth code to refresh the internally cached player PlayStation :tm: Network auth token
         /// </summary>
         public void RefreshPSNAuthToken(RefreshPSNAuthTokenRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1764,7 +1764,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Unlinks the related PSN :tm: account from the user's PlayFab account
+        /// Unlinks the related PlayStation :tm: Network account from the user's PlayFab account
         /// </summary>
         public void UnlinkPSNAccount(UnlinkPSNAccountRequest request, Action<UnlinkPSNAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
