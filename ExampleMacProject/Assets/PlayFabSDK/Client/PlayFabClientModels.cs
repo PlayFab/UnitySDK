@@ -1872,7 +1872,6 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Optional character type on which to filter the leaderboard entries.
         /// </summary>
-        [Obsolete("No longer available", false)]
         public string CharacterType;
         /// <summary>
         /// Maximum number of entries to retrieve. Default 10, maximum 100.
@@ -2109,7 +2108,6 @@ namespace PlayFab.ClientModels
         /// <summary>
         /// Optional character type on which to filter the leaderboard entries.
         /// </summary>
-        [Obsolete("No longer available", false)]
         public string CharacterType;
         /// <summary>
         /// Maximum number of entries to retrieve. Default 10, maximum 100.
