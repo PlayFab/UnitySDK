@@ -6,106 +6,6 @@ using PlayFab.SharedModels;
 namespace PlayFab.EconomyModels
 {
     [Serializable]
-    public class AddInventoryItemsOperation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The amount to add to the current item amount.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// The inventory item the operation applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-    }
-
-    /// <summary>
-    /// Given an entity type, entity identifier and container details, will add the specified inventory items.
-    /// </summary>
-    [Serializable]
-    public class AddInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The amount to add for the current item.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The currency code of the real money transaction.
-        /// </summary>
-        public string CurrencyCode;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The inventory item the request applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-        /// <summary>
-        /// A list of Items to modify.
-        /// </summary>
-        public List<InventoryItem> Items;
-        /// <summary>
-        /// Purchase price of the offer.
-        /// </summary>
-        public int? PurchasePrice;
-        /// <summary>
-        /// Indicates if the full inventory should be returned.
-        /// </summary>
-        public bool ReturnInventory;
-    }
-
-    [Serializable]
-    public class AddInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The idempotency id used in the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// Details of the current inventory items. Null if ReturnInventory was set to false in request or InventoryTooLarge is set
-        /// to true in response.
-        /// </summary>
-        public List<InventoryItem> InventoryItems;
-        /// <summary>
-        /// Whether the number of inventory items is too large to be returned.
-        /// </summary>
-        public bool InventoryTooLarge;
-        /// <summary>
-        /// The ids of transactions that occurred as a result of the request.
-        /// </summary>
-        public List<string> TransactionIds;
-        /// <summary>
-        /// The updated items for this request.
-        /// </summary>
-        public List<InventoryItem> UpdatedItems;
-    }
-
-    [Serializable]
-    public class AlternateId : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Type of the alternate ID.
-        /// </summary>
-        public string Type;
-        /// <summary>
-        /// Value of the alternate ID.
-        /// </summary>
-        public string Value;
-    }
-
-    [Serializable]
     public class CatalogAlternateId : PlayFabBaseModel
     {
         /// <summary>
@@ -125,14 +25,6 @@ namespace PlayFab.EconomyModels
         /// A list of player entity keys that will have admin permissions.
         /// </summary>
         public List<EntityKey> AdminEntities;
-        /// <summary>
-        /// The set of configuration that only applies to catalog items.
-        /// </summary>
-        public CatalogSpecificConfig Catalog;
-        /// <summary>
-        /// A list of deep link formats.
-        /// </summary>
-        public List<DeepLinkFormat> DeepLinkFormats;
         /// <summary>
         /// A list of display properties to index.
         /// </summary>
@@ -187,10 +79,6 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey CreatorEntity;
         /// <summary>
-        /// The set of platform specific deep links for this item.
-        /// </summary>
-        public List<DeepLink> DeepLinks;
-        /// <summary>
         /// A dictionary of localized descriptions. Key is language code and localized string is the value. The neutral locale is
         /// required.
         /// </summary>
@@ -224,10 +112,6 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public bool? IsHidden;
         /// <summary>
-        /// The item references associated with this item.
-        /// </summary>
-        public List<CatalogItemReference> ItemReferences;
-        /// <summary>
         /// A dictionary of localized keywords. Key is language code and localized list of keywords is the value.
         /// </summary>
         public Dictionary<string,KeywordSet> Keywords;
@@ -240,14 +124,6 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public ModerationState Moderation;
         /// <summary>
-        /// The platforms supported by this item.
-        /// </summary>
-        public List<string> Platforms;
-        /// <summary>
-        /// The base price of this item.
-        /// </summary>
-        public CatalogPriceOptions PriceOptions;
-        /// <summary>
         /// Rating summary for this item.
         /// </summary>
         public Rating Rating;
@@ -255,10 +131,6 @@ namespace PlayFab.EconomyModels
         /// The date of when the item will be available. If not provided then the product will appear immediately.
         /// </summary>
         public DateTime? StartDate;
-        /// <summary>
-        /// Optional details for stores items.
-        /// </summary>
-        public StoreDetails StoreDetails;
         /// <summary>
         /// The list of tags that are associated with this item.
         /// </summary>
@@ -269,7 +141,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public Dictionary<string,string> Title;
         /// <summary>
-        /// The high-level type of the item. The following item types are supported: bundle, catalogItem, currency, store, ugc.
+        /// The high-level type of the item.
         /// </summary>
         public string Type;
     }
@@ -286,76 +158,48 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// The prices the catalog item can be purchased for.
+        /// The price of the catalog item.
         /// </summary>
-        public CatalogPriceOptions PriceOptions;
+        public CatalogPrice Price;
     }
 
     [Serializable]
     public class CatalogPrice : PlayFabBaseModel
     {
         /// <summary>
-        /// The amounts of the catalog item price.
+        /// Prices of the catalog item.
         /// </summary>
-        public List<CatalogPriceAmount> Amounts;
+        public List<CatalogPriceInstance> Prices;
+        /// <summary>
+        /// Real prices of the catalog item.
+        /// </summary>
+        public List<CatalogPriceInstance> RealPrices;
+        /// <summary>
+        /// A standardized sorting key to allow proper sorting between items with prices in different currencies.
+        /// </summary>
+        public int? Sort;
     }
 
     [Serializable]
     public class CatalogPriceAmount : PlayFabBaseModel
     {
         /// <summary>
-        /// The amount of the price.
+        /// The amount of the catalog price.
         /// </summary>
         public int Amount;
         /// <summary>
-        /// The Item Id of the price.
+        /// The Item ID of the price.
         /// </summary>
-        public string ItemId;
+        public string Id;
     }
 
     [Serializable]
-    public class CatalogPriceAmountOverride : PlayFabBaseModel
+    public class CatalogPriceInstance : PlayFabBaseModel
     {
         /// <summary>
-        /// The exact value that should be utilized in the override.
+        /// The amounts of the catalog item price.
         /// </summary>
-        public int? FixedValue;
-        /// <summary>
-        /// The id of the item this override should utilize.
-        /// </summary>
-        public string ItemId;
-        /// <summary>
-        /// The multiplier that will be applied to the base Catalog value to determine what value should be utilized in the
-        /// override.
-        /// </summary>
-        public double? Multiplier;
-    }
-
-    [Serializable]
-    public class CatalogPriceOptions : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Prices of the catalog item.
-        /// </summary>
-        public List<CatalogPrice> Prices;
-    }
-
-    [Serializable]
-    public class CatalogPriceOptionsOverride : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The prices utilized in the override.
-        /// </summary>
-        public List<CatalogPriceOverride> Prices;
-    }
-
-    [Serializable]
-    public class CatalogPriceOverride : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The currency amounts utilized in the override for a singular price.
-        /// </summary>
-        public List<CatalogPriceAmountOverride> Amounts;
+        public List<CatalogPriceAmount> Amounts;
     }
 
     [Serializable]
@@ -419,259 +263,6 @@ namespace PlayFab.EconomyModels
     {
     }
 
-    public enum CountryCode
-    {
-        AF,
-        AX,
-        AL,
-        DZ,
-        AS,
-        AD,
-        AO,
-        AI,
-        AQ,
-        AG,
-        AR,
-        AM,
-        AW,
-        AU,
-        AT,
-        AZ,
-        BS,
-        BH,
-        BD,
-        BB,
-        BY,
-        BE,
-        BZ,
-        BJ,
-        BM,
-        BT,
-        BO,
-        BQ,
-        BA,
-        BW,
-        BV,
-        BR,
-        IO,
-        BN,
-        BG,
-        BF,
-        BI,
-        KH,
-        CM,
-        CA,
-        CV,
-        KY,
-        CF,
-        TD,
-        CL,
-        CN,
-        CX,
-        CC,
-        CO,
-        KM,
-        CG,
-        CD,
-        CK,
-        CR,
-        CI,
-        HR,
-        CU,
-        CW,
-        CY,
-        CZ,
-        DK,
-        DJ,
-        DM,
-        DO,
-        EC,
-        EG,
-        SV,
-        GQ,
-        ER,
-        EE,
-        ET,
-        FK,
-        FO,
-        FJ,
-        FI,
-        FR,
-        GF,
-        PF,
-        TF,
-        GA,
-        GM,
-        GE,
-        DE,
-        GH,
-        GI,
-        GR,
-        GL,
-        GD,
-        GP,
-        GU,
-        GT,
-        GG,
-        GN,
-        GW,
-        GY,
-        HT,
-        HM,
-        VA,
-        HN,
-        HK,
-        HU,
-        IS,
-        IN,
-        ID,
-        IR,
-        IQ,
-        IE,
-        IM,
-        IL,
-        IT,
-        JM,
-        JP,
-        JE,
-        JO,
-        KZ,
-        KE,
-        KI,
-        KP,
-        KR,
-        KW,
-        KG,
-        LA,
-        LV,
-        LB,
-        LS,
-        LR,
-        LY,
-        LI,
-        LT,
-        LU,
-        MO,
-        MK,
-        MG,
-        MW,
-        MY,
-        MV,
-        ML,
-        MT,
-        MH,
-        MQ,
-        MR,
-        MU,
-        YT,
-        MX,
-        FM,
-        MD,
-        MC,
-        MN,
-        ME,
-        MS,
-        MA,
-        MZ,
-        MM,
-        NA,
-        NR,
-        NP,
-        NL,
-        NC,
-        NZ,
-        NI,
-        NE,
-        NG,
-        NU,
-        NF,
-        MP,
-        NO,
-        OM,
-        PK,
-        PW,
-        PS,
-        PA,
-        PG,
-        PY,
-        PE,
-        PH,
-        PN,
-        PL,
-        PT,
-        PR,
-        QA,
-        RE,
-        RO,
-        RU,
-        RW,
-        BL,
-        SH,
-        KN,
-        LC,
-        MF,
-        PM,
-        VC,
-        WS,
-        SM,
-        ST,
-        SA,
-        SN,
-        RS,
-        SC,
-        SL,
-        SG,
-        SX,
-        SK,
-        SI,
-        SB,
-        SO,
-        ZA,
-        GS,
-        SS,
-        ES,
-        LK,
-        SD,
-        SR,
-        SJ,
-        SZ,
-        SE,
-        CH,
-        SY,
-        TW,
-        TJ,
-        TZ,
-        TH,
-        TL,
-        TG,
-        TK,
-        TO,
-        TT,
-        TN,
-        TR,
-        TM,
-        TC,
-        TV,
-        UG,
-        UA,
-        AE,
-        GB,
-        US,
-        UM,
-        UY,
-        UZ,
-        VU,
-        VE,
-        VN,
-        VG,
-        VI,
-        WF,
-        EH,
-        YE,
-        ZM,
-        ZW
-    }
-
     /// <summary>
     /// The item will not be published to the public catalog until the PublishItem API is called for the item.
     /// </summary>
@@ -729,19 +320,6 @@ namespace PlayFab.EconomyModels
     }
 
     [Serializable]
-    public class DeepLink : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Target platform for this deep link.
-        /// </summary>
-        public string Platform;
-        /// <summary>
-        /// The deep link for this platform.
-        /// </summary>
-        public string Url;
-    }
-
-    [Serializable]
     public class DeepLinkFormat : PlayFabBaseModel
     {
         /// <summary>
@@ -770,81 +348,6 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class DeleteEntityItemReviewsResponse : PlayFabResultCommon
     {
-    }
-
-    /// <summary>
-    /// Delete an Inventory Collection by the specified Id for an Entity
-    /// </summary>
-    [Serializable]
-    public class DeleteInventoryCollectionRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The inventory collection id the request applies to.
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity the request is about. Set to the caller by default.
-        /// </summary>
-        public EntityKey Entity;
-    }
-
-    [Serializable]
-    public class DeleteInventoryCollectionResponse : PlayFabResultCommon
-    {
-    }
-
-    [Serializable]
-    public class DeleteInventoryItemsOperation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The inventory item the operation applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-    }
-
-    /// <summary>
-    /// Given an entity type, entity identifier and container details, will delete the entity's inventory items
-    /// </summary>
-    [Serializable]
-    public class DeleteInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The inventory item the request applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-    }
-
-    [Serializable]
-    public class DeleteInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The idempotency id used in the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The ids of transactions that occurred as a result of the request.
-        /// </summary>
-        public List<string> TransactionIds;
     }
 
     [Serializable]
@@ -911,48 +414,6 @@ namespace PlayFab.EconomyModels
         public string Type;
     }
 
-    /// <summary>
-    /// Execute a list of Inventory Operations for an Entity
-    /// </summary>
-    [Serializable]
-    public class ExecuteInventoryOperationsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The operations to run transactionally. The operations will be executed in-order sequentially and will succeed or fail as
-        /// a batch.
-        /// </summary>
-        public List<InventoryOperation> Operations;
-    }
-
-    [Serializable]
-    public class ExecuteInventoryOperationsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The idempotency id used in the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The ids of the transactions that occurred as a result of the request.
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
     [Serializable]
     public class FileConfig : PlayFabBaseModel
     {
@@ -969,14 +430,6 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class FilterOptions : PlayFabBaseModel
     {
-        /// <summary>
-        /// The OData filter utilized. Mutually exclusive with 'IncludeAllItems'.
-        /// </summary>
-        public string Filter;
-        /// <summary>
-        /// The flag that overrides the filter and allows for returning all catalog items. Mutually exclusive with 'Filter'.
-        /// </summary>
-        public bool? IncludeAllItems;
     }
 
     [Serializable]
@@ -1081,10 +534,6 @@ namespace PlayFab.EconomyModels
         /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
-        /// <summary>
-        /// OData Filter to specify ItemType.
-        /// </summary>
-        public string Filter;
     }
 
     [Serializable]
@@ -1128,135 +577,6 @@ namespace PlayFab.EconomyModels
         /// The review the entity submitted for the requested item.
         /// </summary>
         public Review Review;
-    }
-
-    /// <summary>
-    /// Get a list of Inventory Collection Ids for the specified Entity
-    /// </summary>
-    [Serializable]
-    public class GetInventoryCollectionIdsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// An opaque token used to retrieve the next page of collection ids, if any are available.
-        /// </summary>
-        public string ContinuationToken;
-        /// <summary>
-        /// Number of items to retrieve. (Default = 10)
-        /// </summary>
-        public int Count;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity the request is about. Set to the caller by default.
-        /// </summary>
-        public EntityKey Entity;
-    }
-
-    [Serializable]
-    public class GetInventoryCollectionIdsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The requested inventory collection ids.
-        /// </summary>
-        public List<string> CollectionIds;
-        /// <summary>
-        /// An opaque token used to retrieve the next page of collection ids, if any are available.
-        /// </summary>
-        public string ContinuationToken;
-    }
-
-    /// <summary>
-    /// Given an entity type, entity identifier and container details, will get the entity's inventory items.
-    /// </summary>
-    [Serializable]
-    public class GetInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// An opaque token used to retrieve the next page of items in the inventory, if any are available. Should be null on
-        /// initial request.
-        /// </summary>
-        public string ContinuationToken;
-        /// <summary>
-        /// Number of items to retrieve. Maximum page size is 50. (Default=10)
-        /// </summary>
-        public int Count;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The filters to limit what is returned to the client.
-        /// </summary>
-        public string Filter;
-    }
-
-    [Serializable]
-    public class GetInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// An opaque token used to retrieve the next page of items, if any are available.
-        /// </summary>
-        public string ContinuationToken;
-        /// <summary>
-        /// The requested inventory items.
-        /// </summary>
-        public List<InventoryItem> Items;
-    }
-
-    /// <summary>
-    /// Given an item, return a set of bundles and stores containing the item.
-    /// </summary>
-    [Serializable]
-    public class GetItemContainersRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// An alternate ID associated with this item.
-        /// </summary>
-        public CatalogAlternateId AlternateId;
-        /// <summary>
-        /// An opaque token used to retrieve the next page of items in the inventory, if any are available. Should be null on
-        /// initial request.
-        /// </summary>
-        public string ContinuationToken;
-        /// <summary>
-        /// Number of items to retrieve. Maximum page size is 25.
-        /// </summary>
-        public int Count;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The unique ID of the item.
-        /// </summary>
-        public string Id;
-    }
-
-    [Serializable]
-    public class GetItemContainersResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// List of Bundles and Stores containing the requested items.
-        /// </summary>
-        public List<CatalogItem> Containers;
-        /// <summary>
-        /// An opaque token used to retrieve the next page of items, if any are available.
-        /// </summary>
-        public string ContinuationToken;
     }
 
     [Serializable]
@@ -1462,45 +782,6 @@ namespace PlayFab.EconomyModels
         public List<CatalogItem> Items;
     }
 
-    /// <summary>
-    /// Gets the access tokens for Microsoft Store authentication.
-    /// </summary>
-    [Serializable]
-    public class GetMicrosoftStoreAccessTokensRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-    }
-
-    [Serializable]
-    public class GetMicrosoftStoreAccessTokensResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The collections access token for calling https://onestore.microsoft.com/b2b/keys/create/collections to obtain a
-        /// CollectionsIdKey for the user
-        /// </summary>
-        public string CollectionsAccessToken;
-        /// <summary>
-        /// The date the collections access token expires
-        /// </summary>
-        public DateTime CollectionsAccessTokenExpirationDate;
-    }
-
-    [Serializable]
-    public class GooglePlayProductPurchase : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The Product ID (SKU) of the InApp product purchased from the Google Play store.
-        /// </summary>
-        public string ProductId;
-        /// <summary>
-        /// The token provided to the player's device when the product was purchased
-        /// </summary>
-        public string Token;
-    }
-
     public enum HelpfulnessVote
     {
         None,
@@ -1536,73 +817,6 @@ namespace PlayFab.EconomyModels
         /// The set of tags that will be used for validation.
         /// </summary>
         public List<string> Tags;
-    }
-
-    [Serializable]
-    public class InventoryItem : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The amount of the item.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// The id of the item. This should correspond to the item id in the catalog.
-        /// </summary>
-        public string Id;
-        /// <summary>
-        /// The stack id of the item.
-        /// </summary>
-        public string StackId;
-        /// <summary>
-        /// The type of the item. This should correspond to the item type in the catalog.
-        /// </summary>
-        public string Type;
-    }
-
-    [Serializable]
-    public class InventoryItemReference : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The inventory item alternate id the request applies to.
-        /// </summary>
-        public AlternateId AlternateId;
-        /// <summary>
-        /// The inventory item id the request applies to.
-        /// </summary>
-        public string Id;
-        /// <summary>
-        /// The inventory stack id the request should redeem to. (Default="default")
-        /// </summary>
-        public string StackId;
-    }
-
-    [Serializable]
-    public class InventoryOperation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The add operation.
-        /// </summary>
-        public AddInventoryItemsOperation Add;
-        /// <summary>
-        /// The delete operation.
-        /// </summary>
-        public DeleteInventoryItemsOperation Delete;
-        /// <summary>
-        /// The purchase operation.
-        /// </summary>
-        public PurchaseInventoryItemsOperation Purchase;
-        /// <summary>
-        /// The subtract operation.
-        /// </summary>
-        public SubtractInventoryItemsOperation Subtract;
-        /// <summary>
-        /// The transfer operation.
-        /// </summary>
-        public TransferInventoryItemsOperation Transfer;
-        /// <summary>
-        /// The update operation.
-        /// </summary>
-        public UpdateInventoryItemsOperation Update;
     }
 
     [Serializable]
@@ -1656,6 +870,16 @@ namespace PlayFab.EconomyModels
         public string Uaid;
     }
 
+    [Serializable]
+    public class PriceOverride : PlayFabBaseModel
+    {
+    }
+
+    [Serializable]
+    public class PricesOverride : PlayFabBaseModel
+    {
+    }
+
     /// <summary>
     /// The call kicks off a workflow to publish the item to the public catalog. The Publish Status API should be used to
     /// monitor the publish job.
@@ -1702,111 +926,8 @@ namespace PlayFab.EconomyModels
     }
 
     [Serializable]
-    public class PurchaseInventoryItemsOperation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The amount to purchase.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// Indicates whether stacks reduced to an amount of 0 during the operation should be deleted from the inventory. (Default =
-        /// false)
-        /// </summary>
-        public bool DeleteEmptyStacks;
-        /// <summary>
-        /// The inventory item the operation applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-        /// <summary>
-        /// The per-item price the item is expected to be purchased at. This must match a value configured in the Catalog or
-        /// specified Store.
-        /// </summary>
-        public List<PurchasePriceAmount> PriceAmounts;
-        /// <summary>
-        /// The id of the Store to purchase the item from.
-        /// </summary>
-        public string StoreId;
-    }
-
-    /// <summary>
-    /// Purchase a single item or bundle, paying the associated price.
-    /// </summary>
-    [Serializable]
-    public class PurchaseInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The amount to purchase.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// Indicates whether stacks reduced to an amount of 0 during the request should be deleted from the inventory.
-        /// (Default=false)
-        /// </summary>
-        public bool DeleteEmptyStacks;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The inventory item the request applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-        /// <summary>
-        /// The per-item price the item is expected to be purchased at. This must match a value configured in the Catalog or
-        /// specified Store.
-        /// </summary>
-        public List<PurchasePriceAmount> PriceAmounts;
-        /// <summary>
-        /// The id of the Store to purchase the item from.
-        /// </summary>
-        public string StoreId;
-    }
-
-    [Serializable]
-    public class PurchaseInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The idempotency id used in the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The ids of transactions that occurred as a result of the request.
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
-    [Serializable]
     public class PurchaseOverride : PlayFabBaseModel
     {
-    }
-
-    [Serializable]
-    public class PurchasePriceAmount : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The amount of the inventory item to use in the purchase .
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// The inventory item id to use in the purchase .
-        /// </summary>
-        public string ItemId;
-        /// <summary>
-        /// The inventory stack id the to use in the purchase. Set to "default" by default
-        /// </summary>
-        public string StackId;
     }
 
     [Serializable]
@@ -1840,318 +961,6 @@ namespace PlayFab.EconomyModels
         /// The total count of ratings for this item.
         /// </summary>
         public int? TotalCount;
-    }
-
-    /// <summary>
-    /// Redeem items from the Apple App Store.
-    /// </summary>
-    [Serializable]
-    public class RedeemAppleAppStoreInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The receipt provided by the Apple marketplace upon successful purchase.
-        /// </summary>
-        public string Receipt;
-    }
-
-    [Serializable]
-    public class RedeemAppleAppStoreInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The list of failed redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionFailure> Failed;
-        /// <summary>
-        /// The list of successful redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionSuccess> Succeeded;
-        /// <summary>
-        /// The Transaction IDs associated with the inventory modifications
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
-    /// <summary>
-    /// Redeem items from the Google Play Store.
-    /// </summary>
-    [Serializable]
-    public class RedeemGooglePlayInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The list of purchases to redeem
-        /// </summary>
-        public List<GooglePlayProductPurchase> Purchases;
-    }
-
-    [Serializable]
-    public class RedeemGooglePlayInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The list of failed redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionFailure> Failed;
-        /// <summary>
-        /// The list of successful redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionSuccess> Succeeded;
-        /// <summary>
-        /// The Transaction IDs associated with the inventory modifications
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
-    /// <summary>
-    /// Redeem items from the Microsoft Store.
-    /// </summary>
-    [Serializable]
-    public class RedeemMicrosoftStoreInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The OneStore Collections Id Key used for AAD authentication.
-        /// </summary>
-        public string CollectionsIdKey;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// Xbox Token used for delegated business partner authentication.
-        /// </summary>
-        public string XboxToken;
-    }
-
-    [Serializable]
-    public class RedeemMicrosoftStoreInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The list of failed redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionFailure> Failed;
-        /// <summary>
-        /// The list of successful redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionSuccess> Succeeded;
-        /// <summary>
-        /// The Transaction IDs associated with the inventory modifications
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
-    /// <summary>
-    /// Redeem items from the Nintendo EShop.
-    /// </summary>
-    [Serializable]
-    public class RedeemNintendoEShopInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The Nintendo provided token authorizing redemption
-        /// </summary>
-        public string NintendoServiceAccountIdToken;
-    }
-
-    [Serializable]
-    public class RedeemNintendoEShopInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The list of failed redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionFailure> Failed;
-        /// <summary>
-        /// The list of successful redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionSuccess> Succeeded;
-        /// <summary>
-        /// The Transaction IDs associated with the inventory modifications
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
-    /// <summary>
-    /// Redeem items from the PlayStation Store.
-    /// </summary>
-    [Serializable]
-    public class RedeemPlayStationStoreInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// Authorization code provided by the PlayStation OAuth provider.
-        /// </summary>
-        public string AuthorizationCode;
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// Optional Service Label to pass into the request.
-        /// </summary>
-        public string ServiceLabel;
-    }
-
-    [Serializable]
-    public class RedeemPlayStationStoreInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The list of failed redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionFailure> Failed;
-        /// <summary>
-        /// The list of successful redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionSuccess> Succeeded;
-        /// <summary>
-        /// The Transaction IDs associated with the inventory modifications
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
-    /// <summary>
-    /// Redeem inventory items from Steam.
-    /// </summary>
-    [Serializable]
-    public class RedeemSteamInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-    }
-
-    [Serializable]
-    public class RedeemSteamInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The list of failed redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionFailure> Failed;
-        /// <summary>
-        /// The list of successful redemptions from the external marketplace.
-        /// </summary>
-        public List<RedemptionSuccess> Succeeded;
-        /// <summary>
-        /// The Transaction IDs associated with the inventory modifications
-        /// </summary>
-        public List<string> TransactionIds;
-    }
-
-    [Serializable]
-    public class RedemptionFailure : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The marketplace failure code.
-        /// </summary>
-        public string FailureCode;
-        /// <summary>
-        /// The marketplace error details explaining why the offer failed to redeem.
-        /// </summary>
-        public string FailureDetails;
-        /// <summary>
-        /// The transaction id in the external marketplace.
-        /// </summary>
-        public string MarketplaceTransactionId;
-        /// <summary>
-        /// The ID of the offer being redeemed.
-        /// </summary>
-        public string OfferId;
-    }
-
-    [Serializable]
-    public class RedemptionSuccess : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The transaction id in the external marketplace.
-        /// </summary>
-        public string MarketplaceTransactionId;
-        /// <summary>
-        /// The ID of the offer being redeemed.
-        /// </summary>
-        public string OfferId;
-        /// <summary>
-        /// The timestamp for when the redeem was completed.
-        /// </summary>
-        public DateTime SuccessTimestamp;
     }
 
     [Serializable]
@@ -2378,10 +1187,6 @@ namespace PlayFab.EconomyModels
         /// be returned.
         /// </summary>
         public string Select;
-        /// <summary>
-        /// The store to restrict the search request to.
-        /// </summary>
-        public StoreReference Store;
     }
 
     [Serializable]
@@ -2430,18 +1235,10 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class StoreDetails : PlayFabBaseModel
     {
-        /// <summary>
-        /// The options for the filter in filter-based stores. These options are mutually exclusive with item references.
-        /// </summary>
-        public FilterOptions FilterOptions;
-        /// <summary>
-        /// The global prices utilized in the store. These options are mutually exclusive with price options in item references.
-        /// </summary>
-        public CatalogPriceOptionsOverride PriceOptionsOverride;
     }
 
     [Serializable]
-    public class StoreReference : PlayFabBaseModel
+    public class StoreInfo : PlayFabBaseModel
     {
         /// <summary>
         /// An alternate ID of the store.
@@ -2496,95 +1293,6 @@ namespace PlayFab.EconomyModels
         public double DurationInSeconds;
     }
 
-    [Serializable]
-    public class SubtractInventoryItemsOperation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The amount to subtract from the current item amount.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// Indicates whether stacks reduced to an amount of 0 during the request should be deleted from the inventory. (Default =
-        /// false).
-        /// </summary>
-        public bool DeleteEmptyStacks;
-        /// <summary>
-        /// The inventory item the operation applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-    }
-
-    /// <summary>
-    /// Given an entity type, entity identifier and container details, will subtract the specified inventory items.
-    /// </summary>
-    [Serializable]
-    public class SubtractInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The amount to add for the current item.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// Indicates whether stacks reduced to an amount of 0 during the request should be deleted from the inventory.
-        /// (Default=false)
-        /// </summary>
-        public bool DeleteEmptyStacks;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The inventory item the request applies to.
-        /// </summary>
-        public InventoryItemReference Item;
-        /// <summary>
-        /// A list of Items to modify.
-        /// </summary>
-        public List<InventoryItem> Items;
-        /// <summary>
-        /// Indicates if the full inventory should be returned.
-        /// </summary>
-        public bool ReturnInventory;
-    }
-
-    [Serializable]
-    public class SubtractInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The idempotency id used in the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// Details of the current inventory items. Null if ReturnInventory was set to false in request or InventoryTooLarge is set
-        /// to true in response.
-        /// </summary>
-        public List<InventoryItem> InventoryItems;
-        /// <summary>
-        /// Whether the number of inventory items is too large to be returned.
-        /// </summary>
-        public bool InventoryTooLarge;
-        /// <summary>
-        /// The ids of transactions that occurred as a result of the request.
-        /// </summary>
-        public List<string> TransactionIds;
-        /// <summary>
-        /// The updated items for this request.
-        /// </summary>
-        public List<InventoryItem> UpdatedItems;
-    }
-
     /// <summary>
     /// Submit a request to takedown one or more reviews, removing them from public view. Authors will still be able to see
     /// their reviews after being taken down.
@@ -2605,94 +1313,6 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class TakedownItemReviewsResponse : PlayFabResultCommon
     {
-    }
-
-    [Serializable]
-    public class TransferInventoryItemsOperation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The amount to transfer.
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// Indicates whether stacks reduced to an amount of 0 during the operation should be deleted from the inventory. (Default =
-        /// false)
-        /// </summary>
-        public bool DeleteEmptyStacks;
-        /// <summary>
-        /// The inventory item the operation is transferring from.
-        /// </summary>
-        public InventoryItemReference GivingItem;
-        /// <summary>
-        /// The inventory item the operation is transferring to.
-        /// </summary>
-        public InventoryItemReference ReceivingItem;
-    }
-
-    /// <summary>
-    /// Transfer the specified inventory items of an entity's container Id to another entity's container Id.
-    /// </summary>
-    [Serializable]
-    public class TransferInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The amount to transfer .
-        /// </summary>
-        public int Amount;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// Indicates whether stacks reduced to an amount of 0 during the request should be deleted from the inventory. (Default =
-        /// false)
-        /// </summary>
-        public bool DeleteEmptyStacks;
-        /// <summary>
-        /// The inventory collection id the request is transferring from. (Default="default")
-        /// </summary>
-        public string GivingCollectionId;
-        /// <summary>
-        /// The entity the request is transferring from. Set to the caller by default.
-        /// </summary>
-        public EntityKey GivingEntity;
-        /// <summary>
-        /// The inventory item the request is transferring from.
-        /// </summary>
-        public InventoryItemReference GivingItem;
-        /// <summary>
-        /// The idempotency id for the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The inventory collection id the request is transferring to. (Default="default")
-        /// </summary>
-        public string ReceivingCollectionId;
-        /// <summary>
-        /// The entity the request is transferring to. Set to the caller by default.
-        /// </summary>
-        public EntityKey ReceivingEntity;
-        /// <summary>
-        /// The inventory item the request is transferring to.
-        /// </summary>
-        public InventoryItemReference ReceivingItem;
-    }
-
-    [Serializable]
-    public class TransferInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The ids of transactions that occurred as a result of the request's giving action.
-        /// </summary>
-        public List<string> GivingTransactionIds;
-        /// <summary>
-        /// The idempotency id for the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The ids of transactions that occurred as a result of the request's receiving action.
-        /// </summary>
-        public List<string> ReceivingTransactionIds;
     }
 
     [Serializable]
@@ -2737,77 +1357,6 @@ namespace PlayFab.EconomyModels
         /// Updated metadata describing the catalog item just updated.
         /// </summary>
         public CatalogItem Item;
-    }
-
-    [Serializable]
-    public class UpdateInventoryItemsOperation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The inventory item to update with the specified values.
-        /// </summary>
-        public InventoryItem Item;
-    }
-
-    /// <summary>
-    /// Given an entity type, entity identifier and container details, will update the entity's inventory items
-    /// </summary>
-    [Serializable]
-    public class UpdateInventoryItemsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
-        /// </summary>
-        public string CollectionId;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// The entity to perform this action on.
-        /// </summary>
-        public EntityKey Entity;
-        /// <summary>
-        /// The Idempotency ID for this request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// The inventory item to update with the specified values.
-        /// </summary>
-        public InventoryItem Item;
-        /// <summary>
-        /// A list of Items to modify.
-        /// </summary>
-        public List<InventoryItem> Items;
-        /// <summary>
-        /// Indicates if the full inventory should be returned.
-        /// </summary>
-        public bool ReturnInventory;
-    }
-
-    [Serializable]
-    public class UpdateInventoryItemsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The idempotency id used in the request.
-        /// </summary>
-        public string IdempotencyId;
-        /// <summary>
-        /// Details of the current inventory items. Null if ReturnInventory was set to false in request or InventoryTooLarge is set
-        /// to true in response.
-        /// </summary>
-        public List<InventoryItem> InventoryItems;
-        /// <summary>
-        /// Whether the number of inventory items is too large to be returned.
-        /// </summary>
-        public bool InventoryTooLarge;
-        /// <summary>
-        /// The ids of transactions that occurred as a result of the request.
-        /// </summary>
-        public List<string> TransactionIds;
-        /// <summary>
-        /// The updated items for this request.
-        /// </summary>
-        public List<InventoryItem> UpdatedItems;
     }
 
     [Serializable]
