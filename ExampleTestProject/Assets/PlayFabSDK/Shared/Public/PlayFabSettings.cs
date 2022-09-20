@@ -44,7 +44,7 @@ namespace PlayFab
         public static readonly PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
         public const string SdkVersion = "2.148.220908";
-        public const string BuildIdentifier = "adobuild_unitybeta_167";
+        public const string BuildIdentifier = "adobuild_unitysdk_167";
         public const string VersionString = "UnitySDK-2.148.220908";
 
         public const string DefaultPlayFabApiUrl = "playfabapi.com";
