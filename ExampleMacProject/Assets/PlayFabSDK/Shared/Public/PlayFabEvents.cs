@@ -1294,6 +1294,9 @@ namespace PlayFab.Events
 
 #endif
 #if !DISABLE_PLAYFABENTITY_API
+            if (OnAuthenticationAuthenticateGameServerWithCustomIdRequestEvent != null) { foreach (var each in OnAuthenticationAuthenticateGameServerWithCustomIdRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationAuthenticateGameServerWithCustomIdRequestEvent -= (PlayFabRequestEvent<AuthenticationModels.AuthenticateCustomIdRequest>)each; } } }
+            if (OnAuthenticationAuthenticateGameServerWithCustomIdResultEvent != null) { foreach (var each in OnAuthenticationAuthenticateGameServerWithCustomIdResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationAuthenticateGameServerWithCustomIdResultEvent -= (PlayFabResultEvent<AuthenticationModels.AuthenticateCustomIdResult>)each; } } }
+
             if (OnAuthenticationDeleteRequestEvent != null) { foreach (var each in OnAuthenticationDeleteRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationDeleteRequestEvent -= (PlayFabRequestEvent<AuthenticationModels.DeleteRequest>)each; } } }
             if (OnAuthenticationDeleteResultEvent != null) { foreach (var each in OnAuthenticationDeleteResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAuthenticationDeleteResultEvent -= (PlayFabResultEvent<AuthenticationModels.EmptyResponse>)each; } } }
 
@@ -2366,6 +2369,7 @@ namespace PlayFab.Events
                 if (type == typeof(ServerModels.WriteTitleEventRequest)) { if (_instance.OnServerWriteTitleEventRequestEvent != null) { _instance.OnServerWriteTitleEventRequestEvent((ServerModels.WriteTitleEventRequest)e.Request); return; } }
 #endif
 #if !DISABLE_PLAYFABENTITY_API
+                if (type == typeof(AuthenticationModels.AuthenticateCustomIdRequest)) { if (_instance.OnAuthenticationAuthenticateGameServerWithCustomIdRequestEvent != null) { _instance.OnAuthenticationAuthenticateGameServerWithCustomIdRequestEvent((AuthenticationModels.AuthenticateCustomIdRequest)e.Request); return; } }
                 if (type == typeof(AuthenticationModels.DeleteRequest)) { if (_instance.OnAuthenticationDeleteRequestEvent != null) { _instance.OnAuthenticationDeleteRequestEvent((AuthenticationModels.DeleteRequest)e.Request); return; } }
                 if (type == typeof(AuthenticationModels.GetEntityTokenRequest)) { if (_instance.OnAuthenticationGetEntityTokenRequestEvent != null) { _instance.OnAuthenticationGetEntityTokenRequestEvent((AuthenticationModels.GetEntityTokenRequest)e.Request); return; } }
                 if (type == typeof(AuthenticationModels.ValidateEntityTokenRequest)) { if (_instance.OnAuthenticationValidateEntityTokenRequestEvent != null) { _instance.OnAuthenticationValidateEntityTokenRequestEvent((AuthenticationModels.ValidateEntityTokenRequest)e.Request); return; } }
@@ -3012,6 +3016,7 @@ namespace PlayFab.Events
 #endif
 #if !DISABLE_PLAYFABENTITY_API
 
+                if (type == typeof(AuthenticationModels.AuthenticateCustomIdResult)) { if (_instance.OnAuthenticationAuthenticateGameServerWithCustomIdResultEvent != null) { _instance.OnAuthenticationAuthenticateGameServerWithCustomIdResultEvent((AuthenticationModels.AuthenticateCustomIdResult)e.Result); return; } }
                 if (type == typeof(AuthenticationModels.EmptyResponse)) { if (_instance.OnAuthenticationDeleteResultEvent != null) { _instance.OnAuthenticationDeleteResultEvent((AuthenticationModels.EmptyResponse)e.Result); return; } }
                 if (type == typeof(AuthenticationModels.GetEntityTokenResponse)) { if (_instance.OnAuthenticationGetEntityTokenResultEvent != null) { _instance.OnAuthenticationGetEntityTokenResultEvent((AuthenticationModels.GetEntityTokenResponse)e.Result); return; } }
                 if (type == typeof(AuthenticationModels.ValidateEntityTokenResponse)) { if (_instance.OnAuthenticationValidateEntityTokenResultEvent != null) { _instance.OnAuthenticationValidateEntityTokenResultEvent((AuthenticationModels.ValidateEntityTokenResponse)e.Result); return; } }

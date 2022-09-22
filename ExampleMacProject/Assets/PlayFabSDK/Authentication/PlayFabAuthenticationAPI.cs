@@ -36,6 +36,19 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Create a game_server entity token and return a new or existing game_server entity.
+        /// </summary>
+        public static void AuthenticateGameServerWithCustomId(AuthenticateCustomIdRequest request, Action<AuthenticateCustomIdResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/GameServerIdentity/AuthenticateGameServerWithCustomId", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
         /// Delete a game_server entity.
         /// </summary>
         public static void Delete(DeleteRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
