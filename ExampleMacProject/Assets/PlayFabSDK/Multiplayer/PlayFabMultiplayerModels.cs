@@ -4371,7 +4371,8 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string PubSubConnectionHandle;
         /// <summary>
-        /// The name of the resource to subscribe to.
+        /// The name of the resource to subscribe to. It follows the format {queueName}|{ticketId} for MatchTicketStatusChange. For
+        /// MatchInvite, ResourceId is @me.
         /// </summary>
         public string ResourceId;
         /// <summary>
@@ -4546,7 +4547,8 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string PubSubConnectionHandle;
         /// <summary>
-        /// The resource to unsubscribe from.
+        /// The name of the resource to unsubscribe from. It follows the format {queueName}|{ticketId} for MatchTicketStatusChange.
+        /// For MatchInvite, ResourceId is @me.
         /// </summary>
         public string ResourceId;
         /// <summary>

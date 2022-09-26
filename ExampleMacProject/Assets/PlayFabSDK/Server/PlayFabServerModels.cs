@@ -2294,6 +2294,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Optional character type on which to filter the leaderboard entries.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string CharacterType;
         /// <summary>
         /// Maximum number of entries to retrieve.
@@ -2486,6 +2487,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Optional character type on which to filter the leaderboard entries.
         /// </summary>
+        [Obsolete("No longer available", false)]
         public string CharacterType;
         /// <summary>
         /// Maximum number of entries to retrieve.
