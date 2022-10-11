@@ -129,9 +129,23 @@ namespace PlayFab
             }
         }
 
+        [ThreadStatic]
+        private static StringBuilder _cachedStringBuilder;
+
+        private static StringBuilder AcquireStringBuilder()
+        {
+            if (_cachedStringBuilder == null)
+            {
+                _cachedStringBuilder = new StringBuilder(1000);
+            }
+
+            _cachedStringBuilder.Clear();
+            return _cachedStringBuilder;
+        }
+        
         public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams, PlayFabApiSettings apiSettings = null)
         {
-            StringBuilder sb = new StringBuilder(1000);
+            StringBuilder sb = AcquireStringBuilder();
 
             string productionEnvironmentUrl = null, verticalName = null, titleId = null;
 
