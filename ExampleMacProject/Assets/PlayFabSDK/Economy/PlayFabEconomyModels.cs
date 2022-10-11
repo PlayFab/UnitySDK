@@ -2285,7 +2285,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. Maximum page size is 225. Default value is 10.
+        /// Number of items to retrieve. Maximum page size is 50. Default value is 10.
         /// </summary>
         public int Count;
         /// <summary>

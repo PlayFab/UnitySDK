@@ -1965,6 +1965,8 @@ namespace PlayFab.ServerModels
         AutomationRuleLimitExceeded,
         InvalidGooglePlayGamesServerAuthCode,
         StorageAccountNotFound,
+        PlayStreamConnectionFailed,
+        InvalidEventContents,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -5773,10 +5775,6 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class SetTitleDataRequest : PlayFabRequestCommon
     {
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
         /// <summary>
         /// key we want to set a value on (note, this is additive - will only replace an existing key's value if they are the same
         /// name.) Keys are trimmed of whitespace. Keys may not begin with the '!' character.

@@ -78,6 +78,18 @@ namespace PlayFab.PfEditor
             PlayFabEditorPrefsSO.Instance.PanelIsShown = true;
         }
 
+        [MenuItem("Window/PlayFab/Forum")]
+        static void PlayFabForums()
+        {
+            Application.OpenURL("https://community.playfab.com/index.html");
+        }
+
+        [MenuItem("Window/PlayFab/Provide Feedback")]
+        static void PlayFabFeedback()
+        {
+            Application.OpenURL("https://community.playfab.com/index.html");
+        }
+
         [InitializeOnLoad]
         public static class Startup
         {

@@ -22,5 +22,17 @@ namespace PlayFab.PfEditor
         {
             Application.OpenURL("https://developer.playfab.com/");
         }
+
+        [MenuItem("PlayFab/Forum")]
+        private static void Forum()
+        {
+            Application.OpenURL("https://community.playfab.com/index.html");
+        }
+
+        [MenuItem("PlayFab/Provide Feedback")]
+        private static void Feedback()
+        {
+            Application.OpenURL("https://playfab.com/contact/");
+        }
     }
 }

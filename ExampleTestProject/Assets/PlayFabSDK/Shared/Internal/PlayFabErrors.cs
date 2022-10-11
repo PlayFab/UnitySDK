@@ -547,6 +547,8 @@ namespace PlayFab
         AutomationRuleLimitExceeded = 1544,
         InvalidGooglePlayGamesServerAuthCode = 1545,
         StorageAccountNotFound = 1546,
+        PlayStreamConnectionFailed = 1547,
+        InvalidEventContents = 1548,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
