@@ -2296,7 +2296,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Optional character type on which to filter the leaderboard entries.
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public string CharacterType;
         /// <summary>
         /// Maximum number of entries to retrieve.
@@ -2489,7 +2489,7 @@ namespace PlayFab.ServerModels
         /// <summary>
         /// Optional character type on which to filter the leaderboard entries.
         /// </summary>
-        [Obsolete("No longer available", false)]
+        [Obsolete("No longer available", true)]
         public string CharacterType;
         /// <summary>
         /// Maximum number of entries to retrieve.
@@ -2867,7 +2867,14 @@ namespace PlayFab.ServerModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Maximum number of profiles to load. Default is 1,000. Maximum is 10,000.
+        /// If set to true, the profiles are loaded asynchronously and the response will include a continuation token and
+        /// approximate profile count until the first batch of profiles is loaded. Use this parameter to help avoid network
+        /// timeouts.
+        /// </summary>
+        public bool? GetProfilesAsync;
+        /// <summary>
+        /// Maximum is 10,000. The value 0 will prevent loading any profiles and return only the count of profiles matching this
+        /// segment.
         /// </summary>
         public uint? MaxBatchSize;
         /// <summary>
