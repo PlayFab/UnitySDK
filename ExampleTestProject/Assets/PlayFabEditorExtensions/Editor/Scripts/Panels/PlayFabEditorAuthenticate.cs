@@ -1,4 +1,7 @@
+using Microsoft.Identity.Client;
 using PlayFab.PfEditor.EditorModels;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using UnityEditor;
 using UnityEngine;
 
@@ -102,7 +105,6 @@ namespace PlayFab.PfEditor
             {
                 // login mode, this state either logged out, or did not have auto-login checked.
                 DrawLogin();
-
             }
             else if (activeState == PanelDisplayStates.Register)
             {
@@ -153,12 +155,17 @@ namespace PlayFab.PfEditor
                         activeState = PanelDisplayStates.Register;
                     }
 
-                    var buttonWidth = 100;
+                    var buttonWidth = 200;
                     GUILayout.Space(EditorGUIUtility.currentViewWidth - buttonWidth * 2);
 
                     if (GUILayout.Button("LOG IN", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MinHeight(32), GUILayout.MaxWidth(buttonWidth)))
                     {
                         OnLoginButtonClicked();
+                    }
+
+                    if (GUILayout.Button("LOG IN WITH MICROSOFT", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MinHeight(32), GUILayout.MaxWidth(buttonWidth)))
+                    {
+                        OnAADLoginButtonClicked();
                     }
                 }
             }
@@ -299,6 +306,76 @@ namespace PlayFab.PfEditor
                     PlayFabEditorHelper.SharedErrorCallback(error);
                 }
             });
+        }
+
+        private static async void OnAADLoginButtonClicked()
+        {
+            string[] scopes = new string[] { PlayFabEditorHelper.ED_EX_AAD_SCOPES };
+
+            AuthenticationResult authResult = null;
+
+            var app = PublicClientApplicationBuilder.Create(PlayFabEditorHelper.ED_EX_AAD_SIGNIN_CLIENTID)
+                           .WithAuthority($"{PlayFabEditorHelper.AAD_SIGNIN_URL}{PlayFabEditorHelper.ED_EX_AAD_SIGNNIN_TENANT}")
+                           .WithRedirectUri("http://localhost")
+                           .Build();
+
+            var accounts = await app.GetAccountsAsync();
+
+            var firstAccount = accounts.GetEnumerator().Current;
+
+            try
+            {
+                // Always first try to acquire a token silently.
+                authResult = await app.AcquireTokenSilent(scopes, firstAccount).ExecuteAsync();
+            }
+            catch (MsalUiRequiredException)
+            {
+                try
+                {
+                    SystemWebViewOptions options = new SystemWebViewOptions();
+                    authResult = await app.AcquireTokenInteractive(scopes).WithSystemWebViewOptions(options).ExecuteAsync();
+                }
+                catch (MsalException msalex)
+                {
+                    Debug.Log($"Error acquiring Token:{System.Environment.NewLine}{msalex}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log($"Error acquiring token silently:{System.Environment.NewLine}{ex}");
+                return;
+            }
+
+            if (authResult != null)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(authResult.AccessToken);
+
+                foreach(var audience in jwtToken.Audiences)
+                {
+                    if (audience.Contains(PlayFabEditorHelper.ED_EX_AAD_SCOPE))
+                    {
+                        PlayFabEditorPrefsSO.Instance.AadAuthorization = authResult.AccessToken;
+                        
+                        PlayFabEditorApi.LoginWithAAD(new LoginWithAADRequest() {
+                            DeveloperToolProductName = PlayFabEditorHelper.EDEX_NAME,
+                            DeveloperToolProductVersion = PlayFabEditorHelper.EDEX_VERSION
+                        }, (result) =>
+                        {
+                            PlayFabEditorPrefsSO.Instance.DevAccountToken = result.DeveloperClientToken;
+                            PlayFabEditorDataService.RefreshStudiosList();
+                            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnLogin);
+                            PlayFabEditorPrefsSO.Save();
+                            PlayFabEditorMenu._menuState = PlayFabEditorMenu.MenuStates.Sdks;
+
+                        }, PlayFabEditorHelper.SharedErrorCallback);
+                    }
+                    else
+                    {
+                        Debug.Log($"Token acquired but for wrong audience: {audience}");
+                    } 
+                }
+            }
         }
 
         private static void OnContinueButtonClicked()

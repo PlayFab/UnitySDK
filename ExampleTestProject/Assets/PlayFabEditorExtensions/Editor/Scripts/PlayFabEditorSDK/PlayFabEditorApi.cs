@@ -17,6 +17,11 @@ namespace PlayFab.PfEditor
             PlayFabEditorHttp.MakeApiCall("/DeveloperTools/User/Login", PlayFabEditorHelper.DEV_API_ENDPOINT, request, resultCallback, errorCb);
         }
 
+        public static void LoginWithAAD(LoginWithAADRequest request, Action<LoginResult> resultCallback, Action<EditorModels.PlayFabError> errorCb)
+        {
+            PlayFabEditorHttp.MakeApiCall("/DeveloperTools/User/LoginWithAAD", PlayFabEditorHelper.DEV_API_ENDPOINT, request, resultCallback, errorCb);
+        }
+
         public static void Logout(LogoutRequest request, Action<LogoutResult> resultCallback,
             Action<EditorModels.PlayFabError> errorCb)
         {

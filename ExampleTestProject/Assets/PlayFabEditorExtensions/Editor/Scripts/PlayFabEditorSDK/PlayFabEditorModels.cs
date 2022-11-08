@@ -27,6 +27,12 @@ namespace PlayFab.PfEditor.EditorModels
         public string DeveloperToolProductVersion;
     }
 
+    public class LoginWithAADRequest
+    {
+        public string DeveloperToolProductName;
+        public string DeveloperToolProductVersion;
+    }
+
     public class LoginResult
     {
         public string DeveloperClientToken;
