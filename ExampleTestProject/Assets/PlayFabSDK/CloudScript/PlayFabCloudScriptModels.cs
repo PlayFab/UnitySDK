@@ -894,6 +894,7 @@ namespace PlayFab.CloudScriptModels
         /// <summary>
         /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
+        [Obsolete("No longer available", true)]
         public EntityKey Entity;
         /// <summary>
         /// The result of the function execution.
@@ -919,6 +920,7 @@ namespace PlayFab.CloudScriptModels
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
+        [Obsolete("No longer available", true)]
         public EntityKey Entity;
         /// <summary>
         /// The result of the function execution
