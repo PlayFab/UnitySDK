@@ -43,9 +43,9 @@ namespace PlayFab
         /// </summary>
         public static readonly PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
-        public const string SdkVersion = "2.154.221107";
+        public const string SdkVersion = "2.155.221207";
         public const string BuildIdentifier = "adobuild_unitysdk_167";
-        public const string VersionString = "UnitySDK-2.154.221107";
+        public const string VersionString = "UnitySDK-2.155.221207";
 
         public const string DefaultPlayFabApiUrl = "playfabapi.com";
 
@@ -129,9 +129,23 @@ namespace PlayFab
             }
         }
 
+        [ThreadStatic]
+        private static StringBuilder _cachedStringBuilder;
+
+        private static StringBuilder AcquireStringBuilder()
+        {
+            if (_cachedStringBuilder == null)
+            {
+                _cachedStringBuilder = new StringBuilder(1000);
+            }
+
+            _cachedStringBuilder.Clear();
+            return _cachedStringBuilder;
+        }
+        
         public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams, PlayFabApiSettings apiSettings = null)
         {
-            StringBuilder sb = new StringBuilder(1000);
+            StringBuilder sb = AcquireStringBuilder();
 
             string productionEnvironmentUrl = null, verticalName = null, titleId = null;
 

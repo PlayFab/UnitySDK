@@ -1486,19 +1486,8 @@ namespace PlayFab.ClientModels
         None,
         Steam,
         Facebook,
-        SteamOrFacebook,
         Xbox,
-        SteamOrXbox,
-        FacebookOrXbox,
-        SteamOrFacebookOrXbox,
         Psn,
-        SteamOrPsn,
-        FacebookOrPsn,
-        SteamOrFacebookOrPsn,
-        XboxOrPsn,
-        SteamOrXboxOrPsn,
-        FacebookOrXboxOrPsn,
-        SteamOrFacebookOrXboxOrPsn,
         All
     }
 
@@ -1972,7 +1961,8 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Indicates which other platforms' friends should be included in the response.
+        /// Indicates which other platforms' friends should be included in the response. In HTTP, it is represented as a
+        /// comma-separated list of platforms.
         /// </summary>
         public ExternalFriendSources? ExternalPlatformFriends;
         /// <summary>
@@ -2044,7 +2034,8 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Indicates which other platforms' friends should be included in the response.
+        /// Indicates which other platforms' friends should be included in the response. In HTTP, it is represented as a
+        /// comma-separated list of platforms.
         /// </summary>
         public ExternalFriendSources? ExternalPlatformFriends;
         /// <summary>
@@ -2093,7 +2084,8 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Indicates which other platforms' friends should be included in the response.
+        /// Indicates which other platforms' friends should be included in the response. In HTTP, it is represented as a
+        /// comma-separated list of platforms.
         /// </summary>
         public ExternalFriendSources? ExternalPlatformFriends;
         /// <summary>
