@@ -86,7 +86,7 @@ namespace PlayFab
         {
             ITransportPlugin transport = null;
 #if !UNITY_WSA && !UNITY_WP8
-            if (PlayFabSettings.RequestType == WebRequestType.HttpWebRequest)
+            if (PlayFabSettings.RequestType == WebRequestType.UnityWebRequest)
                 transport = new PlayFabWebRequest();
 #endif
 
