@@ -1242,7 +1242,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Creates and updates the key-value store of custom title settings which can be read by the client
+        /// Creates and updates the key-value store of custom title settings which can be read by the client. For example, a
+        /// developer could choose to store values which modify the user experience, such as enemy spawn rates, weapon strengths,
+        /// movement speeds, etc. This allows a developer to update the title without the need to create, test, and ship a new
+        /// build.
         /// </summary>
         public static void SetTitleData(SetTitleDataRequest request, Action<SetTitleDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -1268,7 +1271,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the key-value store of custom title settings which cannot be read by the client
+        /// Updates the key-value store of custom title settings which cannot be read by the client. These values can be used to
+        /// tweak settings used by game servers and Cloud Scripts without the need to update and re-deploy.
         /// </summary>
         public static void SetTitleInternalData(SetTitleDataRequest request, Action<SetTitleDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
