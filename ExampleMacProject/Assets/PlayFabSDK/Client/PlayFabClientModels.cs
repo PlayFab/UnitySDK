@@ -4282,7 +4282,8 @@ namespace PlayFab.ClientModels
     /// this is the first time a user has signed in with Game Center and CreateAccount is set to true, a new PlayFab account
     /// will be created and linked to the Game Center identifier. In this case, no email or username will be associated with the
     /// PlayFab account. Otherwise, if no PlayFab account is linked to the Game Center account, an error indicating this will be
-    /// returned, so that the title can guide the user through creation of a PlayFab account.
+    /// returned, so that the title can guide the user through creation of a PlayFab account. If an invalid iOS Game Center
+    /// player identifier is used, an error indicating this will be returned.
     /// </summary>
     [Serializable]
     public class LoginWithGameCenterRequest : PlayFabRequestCommon
