@@ -554,6 +554,7 @@ namespace PlayFab
         AnalysisSubscriptionFoundAlready = 1552,
         AnalysisSubscriptionManagementInvalidInput = 1553,
         InvalidGameCenterId = 1554,
+        InvalidNintendoSwitchAccountId = 1555,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,

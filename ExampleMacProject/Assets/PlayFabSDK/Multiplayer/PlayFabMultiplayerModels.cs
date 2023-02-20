@@ -648,6 +648,10 @@ namespace PlayFab.MultiplayerModels
         /// The VM size to create the build on.
         /// </summary>
         public AzureVmSize? VmSize;
+        /// <summary>
+        /// The configuration for the VmStartupScript for the build
+        /// </summary>
+        public VmStartupScriptParams VmStartupScriptConfiguration;
     }
 
     [Serializable]
@@ -735,6 +739,10 @@ namespace PlayFab.MultiplayerModels
         /// The VM size the build was created on.
         /// </summary>
         public AzureVmSize? VmSize;
+        /// <summary>
+        /// The configuration for the VmStartupScript feature for the build
+        /// </summary>
+        public VmStartupScriptConfiguration VmStartupScriptConfiguration;
     }
 
     /// <summary>
@@ -815,6 +823,10 @@ namespace PlayFab.MultiplayerModels
         /// The VM size to create the build on.
         /// </summary>
         public AzureVmSize? VmSize;
+        /// <summary>
+        /// The configuration for the VmStartupScript for the build
+        /// </summary>
+        public VmStartupScriptParams VmStartupScriptConfiguration;
         /// <summary>
         /// The crash dump configuration for the build.
         /// </summary>
@@ -907,6 +919,10 @@ namespace PlayFab.MultiplayerModels
         /// The VM size the build was created on.
         /// </summary>
         public AzureVmSize? VmSize;
+        /// <summary>
+        /// The configuration for the VmStartupScript feature for the build
+        /// </summary>
+        public VmStartupScriptConfiguration VmStartupScriptConfiguration;
     }
 
     /// <summary>
@@ -990,6 +1006,10 @@ namespace PlayFab.MultiplayerModels
         /// The VM size to create the build on.
         /// </summary>
         public AzureVmSize? VmSize;
+        /// <summary>
+        /// The configuration for the VmStartupScript for the build
+        /// </summary>
+        public VmStartupScriptParams VmStartupScriptConfiguration;
     }
 
     [Serializable]
@@ -1080,6 +1100,10 @@ namespace PlayFab.MultiplayerModels
         /// The VM size the build was created on.
         /// </summary>
         public AzureVmSize? VmSize;
+        /// <summary>
+        /// The configuration for the VmStartupScript feature for the build
+        /// </summary>
+        public VmStartupScriptConfiguration VmStartupScriptConfiguration;
     }
 
     /// <summary>
@@ -4809,6 +4833,24 @@ namespace PlayFab.MultiplayerModels
         /// The virtual machine ID.
         /// </summary>
         public string VmId;
+    }
+
+    [Serializable]
+    public class VmStartupScriptConfiguration : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Asset which contains the VmStartupScript script and any other required files.
+        /// </summary>
+        public AssetReference VmStartupScriptAssetReference;
+    }
+
+    [Serializable]
+    public class VmStartupScriptParams : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Asset which contains the VmStartupScript script and any other required files.
+        /// </summary>
+        public AssetReferenceParams VmStartupScriptAssetReference;
     }
 
     [Serializable]
