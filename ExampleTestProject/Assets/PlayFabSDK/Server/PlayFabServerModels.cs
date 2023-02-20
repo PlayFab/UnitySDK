@@ -1990,6 +1990,7 @@ namespace PlayFab.ServerModels
         AnalysisSubscriptionFoundAlready,
         AnalysisSubscriptionManagementInvalidInput,
         InvalidGameCenterId,
+        InvalidNintendoSwitchAccountId,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
