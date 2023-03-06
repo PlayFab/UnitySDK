@@ -4381,6 +4381,10 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string ServerAuthCode;
         /// <summary>
+        /// Optional boolean to opt out of setting the MPA email when creating a Google account, defaults to true.
+        /// </summary>
+        public bool? SetEmail;
+        /// <summary>
         /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
         /// title has been selected.
         /// </summary>

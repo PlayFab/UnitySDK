@@ -41,6 +41,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
+        /// The duration to add to the current item expiration date.
+        /// </summary>
+        public double? DurationInSeconds;
+        /// <summary>
         /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
@@ -178,6 +182,12 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public List<DeepLink> DeepLinks;
         /// <summary>
+        /// The Stack Id that will be used as default for this item in Inventory when an explicit one is not provided. This
+        /// DefaultStackId can be a static stack id or '{guid}', which will generate a unique stack id for the item. If null,
+        /// Inventory's default stack id will be used.
+        /// </summary>
+        public string DefaultStackId;
+        /// <summary>
         /// A dictionary of localized descriptions. Key is language code and localized string is the value. The neutral locale is
         /// required.
         /// </summary>
@@ -285,6 +295,10 @@ namespace PlayFab.EconomyModels
         /// The amounts of the catalog item price.
         /// </summary>
         public List<CatalogPriceAmount> Amounts;
+        /// <summary>
+        /// The per-unit duration this price can be used to purchase.
+        /// </summary>
+        public double? UnitDurationInSeconds;
     }
 
     [Serializable]
@@ -1615,6 +1629,11 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public object DisplayProperties;
         /// <summary>
+        /// Only used for subscriptions. The date of when the item will expire in UTC. If not provided then the product will be
+        /// available indefinitely.
+        /// </summary>
+        public DateTime? ExpirationDate;
+        /// <summary>
         /// The id of the item. This should correspond to the item id in the catalog.
         /// </summary>
         public string Id;
@@ -1771,6 +1790,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public bool DeleteEmptyStacks;
         /// <summary>
+        /// The duration to purchase.
+        /// </summary>
+        public double? DurationInSeconds;
+        /// <summary>
         /// The inventory item the operation applies to.
         /// </summary>
         public InventoryItemReference Item;
@@ -1812,6 +1835,10 @@ namespace PlayFab.EconomyModels
         /// (Default=false)
         /// </summary>
         public bool DeleteEmptyStacks;
+        /// <summary>
+        /// The duration to purchase.
+        /// </summary>
+        public double? DurationInSeconds;
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
@@ -2558,6 +2585,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public bool DeleteEmptyStacks;
         /// <summary>
+        /// The duration to subtract from the current item expiration date.
+        /// </summary>
+        public double? DurationInSeconds;
+        /// <summary>
         /// The inventory item the operation applies to.
         /// </summary>
         public InventoryItemReference Item;
@@ -2586,6 +2617,10 @@ namespace PlayFab.EconomyModels
         /// (Default=false)
         /// </summary>
         public bool DeleteEmptyStacks;
+        /// <summary>
+        /// The duration to subtract from the current item expiration date.
+        /// </summary>
+        public double? DurationInSeconds;
         /// <summary>
         /// The entity to perform this action on.
         /// </summary>
@@ -2691,6 +2726,10 @@ namespace PlayFab.EconomyModels
         /// The amount of items in this transaction.
         /// </summary>
         public int? Amount;
+        /// <summary>
+        /// The duration modified in this transaction.
+        /// </summary>
+        public double? DurationInSeconds;
         /// <summary>
         /// The item id of the items in this transaction.
         /// </summary>
