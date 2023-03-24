@@ -2148,6 +2148,7 @@ namespace PlayFab.ServerModels
         TelemetryKeyAlreadyExists,
         TelemetryKeyInvalid,
         TelemetryKeyCountOverLimit,
+        TelemetryKeyDeactivated,
         EventSinkConnectionInvalid,
         EventSinkConnectionUnauthorized,
         EventSinkRegionInvalid,
