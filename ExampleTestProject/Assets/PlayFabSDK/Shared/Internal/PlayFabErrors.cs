@@ -712,6 +712,7 @@ namespace PlayFab
         TelemetryKeyAlreadyExists = 14202,
         TelemetryKeyInvalid = 14203,
         TelemetryKeyCountOverLimit = 14204,
+        TelemetryKeyDeactivated = 14205,
         EventSinkConnectionInvalid = 15000,
         EventSinkConnectionUnauthorized = 15001,
         EventSinkRegionInvalid = 15002,

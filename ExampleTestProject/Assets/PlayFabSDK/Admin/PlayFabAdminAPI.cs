@@ -519,6 +519,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves the details for a specific completed session, including links to standard out and standard error logs
         /// </summary>
+        [Obsolete("Use 'MultiplayerServer/GetMultiplayerSessionLogsBySessionId' instead", false)]
         public static void GetMatchmakerGameInfo(GetMatchmakerGameInfoRequest request, Action<GetMatchmakerGameInfoResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -532,6 +533,7 @@ namespace PlayFab
         /// <summary>
         /// Retrieves the details of defined game modes for the specified game server executable
         /// </summary>
+        [Obsolete("No longer available", false)]
         public static void GetMatchmakerGameModes(GetMatchmakerGameModesRequest request, Action<GetMatchmakerGameModesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
@@ -982,6 +984,7 @@ namespace PlayFab
         /// <summary>
         /// Updates the build details for the specified game server executable
         /// </summary>
+        [Obsolete("No longer available", false)]
         public static void ModifyServerBuild(ModifyServerBuildRequest request, Action<ModifyServerBuildResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;

@@ -33,7 +33,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public int? Amount;
         /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
+        /// The id of the entity's collection to perform this action on. (Default="default"). The number of inventory collections is
+        /// unlimited.
         /// </summary>
         public string CollectionId;
         /// <summary>
@@ -49,11 +50,13 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
-        /// The Idempotency ID for this request.
+        /// The Idempotency ID for this request. Idempotency IDs can be used to prevent operation replay in the medium term but will
+        /// be garbage collected eventually.
         /// </summary>
         public string IdempotencyId;
         /// <summary>
@@ -70,7 +73,8 @@ namespace PlayFab.EconomyModels
     public class AddInventoryItemsResponse : PlayFabResultCommon
     {
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
@@ -113,7 +117,7 @@ namespace PlayFab.EconomyModels
     public class CatalogConfig : PlayFabBaseModel
     {
         /// <summary>
-        /// A list of player entity keys that will have admin permissions.
+        /// A list of player entity keys that will have admin permissions. There is a maximum of 64 entities that can be added.
         /// </summary>
         public List<EntityKey> AdminEntities;
         /// <summary>
@@ -121,11 +125,13 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public CatalogSpecificConfig Catalog;
         /// <summary>
-        /// A list of deep link formats.
+        /// A list of deep link formats. Up to 10 can be added.
         /// </summary>
         public List<DeepLinkFormat> DeepLinkFormats;
         /// <summary>
-        /// A list of display properties to index.
+        /// A list of display properties to index. Up to 5 mappings can be added per Display Property Type. More info on display
+        /// properties can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/content-types-tags-and-properties#displayproperties
         /// </summary>
         public List<DisplayPropertyIndexInfo> DisplayPropertyIndexInfos;
         /// <summary>
@@ -141,11 +147,12 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public bool IsCatalogEnabled;
         /// <summary>
-        /// A list of Platforms that can be applied to catalog items.
+        /// A list of Platforms that can be applied to catalog items. Each platform can have a maximum character length of 40 and up
+        /// to 128 platforms can be listed.
         /// </summary>
         public List<string> Platforms;
         /// <summary>
-        /// A set of player entity keys that are allowed to review content.
+        /// A set of player entity keys that are allowed to review content. There is a maximum of 64 entities that can be added.
         /// </summary>
         public List<EntityKey> ReviewerEntities;
         /// <summary>
@@ -158,11 +165,12 @@ namespace PlayFab.EconomyModels
     public class CatalogItem : PlayFabBaseModel
     {
         /// <summary>
-        /// The alternate IDs associated with this item.
+        /// The alternate IDs associated with this item. An alternate ID can be set to 'FriendlyId' or any of the supported
+        /// marketplace names.
         /// </summary>
         public List<CatalogAlternateId> AlternateIds;
         /// <summary>
-        /// The set of contents associated with this item.
+        /// The set of content/files associated with this item. Up to 100 files can be added to an item.
         /// </summary>
         public List<Content> Contents;
         /// <summary>
@@ -188,16 +196,17 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string DefaultStackId;
         /// <summary>
-        /// A dictionary of localized descriptions. Key is language code and localized string is the value. The neutral locale is
-        /// required.
+        /// A dictionary of localized descriptions. Key is language code and localized string is the value. The NEUTRAL locale is
+        /// required. Descriptions have a 10000 character limit per country code.
         /// </summary>
         public Dictionary<string,string> Description;
         /// <summary>
-        /// Game specific properties for display purposes. This is an arbitrary JSON blob.
+        /// Game specific properties for display purposes. This is an arbitrary JSON blob. The Display Properties field has a 10000
+        /// byte limit per item.
         /// </summary>
         public object DisplayProperties;
         /// <summary>
-        /// The user provided version of the item for display purposes.
+        /// The user provided version of the item for display purposes. Maximum character length of 50.
         /// </summary>
         public string DisplayVersion;
         /// <summary>
@@ -213,7 +222,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// The images associated with this item. Images can be thumbnails or screenshots.
+        /// The images associated with this item. Images can be thumbnails or screenshots. Up to 100 images can be added to an item.
+        /// Only .png, .jpg, .gif, and .bmp file types can be uploaded
         /// </summary>
         public List<Image> Images;
         /// <summary>
@@ -221,11 +231,13 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public bool? IsHidden;
         /// <summary>
-        /// The item references associated with this item.
+        /// The item references associated with this item. For example, the items in a Bundle/Store/Subscription. Every item can
+        /// have up to 50 item references.
         /// </summary>
         public List<CatalogItemReference> ItemReferences;
         /// <summary>
-        /// A dictionary of localized keywords. Key is language code and localized list of keywords is the value.
+        /// A dictionary of localized keywords. Key is language code and localized list of keywords is the value. Keywords have a 50
+        /// character limit per keyword and up to 32 keywords can be added per country code.
         /// </summary>
         public Dictionary<string,KeywordSet> Keywords;
         /// <summary>
@@ -241,7 +253,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public List<string> Platforms;
         /// <summary>
-        /// The base price of this item.
+        /// The prices the item can be purchased for.
         /// </summary>
         public CatalogPriceOptions PriceOptions;
         /// <summary>
@@ -257,12 +269,12 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public StoreDetails StoreDetails;
         /// <summary>
-        /// The list of tags that are associated with this item.
+        /// The list of tags that are associated with this item. Up to 32 tags can be added to an item.
         /// </summary>
         public List<string> Tags;
         /// <summary>
-        /// A dictionary of localized titles. Key is language code and localized string is the value. The neutral locale is
-        /// required.
+        /// A dictionary of localized titles. Key is language code and localized string is the value. The NEUTRAL locale is
+        /// required. Titles have a 512 character limit per country code.
         /// </summary>
         public Dictionary<string,string> Title;
         /// <summary>
@@ -292,11 +304,11 @@ namespace PlayFab.EconomyModels
     public class CatalogPrice : PlayFabBaseModel
     {
         /// <summary>
-        /// The amounts of the catalog item price.
+        /// The amounts of the catalog item price. Each price can have up to 15 item amounts.
         /// </summary>
         public List<CatalogPriceAmount> Amounts;
         /// <summary>
-        /// The per-unit duration this price can be used to purchase.
+        /// The per-unit duration this price can be used to purchase. The maximum duration is 100 years.
         /// </summary>
         public double? UnitDurationInSeconds;
     }
@@ -336,7 +348,7 @@ namespace PlayFab.EconomyModels
     public class CatalogPriceOptions : PlayFabBaseModel
     {
         /// <summary>
-        /// Prices of the catalog item.
+        /// Prices of the catalog item. An item can have up to 15 prices
         /// </summary>
         public List<CatalogPrice> Prices;
     }
@@ -363,11 +375,13 @@ namespace PlayFab.EconomyModels
     public class CatalogSpecificConfig : PlayFabBaseModel
     {
         /// <summary>
-        /// The set of content types that will be used for validation.
+        /// The set of content types that will be used for validation. Each content type can have a maximum character length of 40
+        /// and up to 128 types can be listed.
         /// </summary>
         public List<string> ContentTypes;
         /// <summary>
-        /// The set of tags that will be used for validation.
+        /// The set of tags that will be used for validation. Each tag can have a maximum character length of 32 and up to 1024 tags
+        /// can be listed.
         /// </summary>
         public List<string> Tags;
     }
@@ -394,19 +408,22 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// The maximum client version that this content is compatible with.
+        /// The maximum client version that this content is compatible with. Client Versions can be up to 3 segments separated by
+        /// periods(.) and each segment can have a maximum value of 65535.
         /// </summary>
         public string MaxClientVersion;
         /// <summary>
-        /// The minimum client version that this content is compatible with.
+        /// The minimum client version that this content is compatible with. Client Versions can be up to 3 segments separated by
+        /// periods(.) and each segment can have a maximum value of 65535.
         /// </summary>
         public string MinClientVersion;
         /// <summary>
-        /// The list of tags that are associated with this content.
+        /// The list of tags that are associated with this content. Tags must be defined in the Catalog Config before being used in
+        /// content.
         /// </summary>
         public List<string> Tags;
         /// <summary>
-        /// The client-defined type of the content.
+        /// The client-defined type of the content. Content Types must be defined in the Catalog Config before being used.
         /// </summary>
         public string Type;
         /// <summary>
@@ -688,7 +705,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public CatalogItem Item;
         /// <summary>
-        /// Whether the item should be published immediately.
+        /// Whether the item should be published immediately. This value is optional, defaults to false.
         /// </summary>
         public bool Publish;
     }
@@ -792,7 +809,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
     }
@@ -818,7 +836,8 @@ namespace PlayFab.EconomyModels
     public class DeleteInventoryItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
+        /// The id of the entity's collection to perform this action on. (Default="default"). The number of inventory collections is
+        /// unlimited.
         /// </summary>
         public string CollectionId;
         /// <summary>
@@ -830,11 +849,13 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
-        /// The Idempotency ID for this request.
+        /// The Idempotency ID for this request. Idempotency IDs can be used to prevent operation replay in the medium term but will
+        /// be garbage collected eventually.
         /// </summary>
         public string IdempotencyId;
         /// <summary>
@@ -931,7 +952,8 @@ namespace PlayFab.EconomyModels
     public class ExecuteInventoryOperationsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
+        /// The id of the entity's collection to perform this action on. (Default="default"). The number of inventory collections is
+        /// unlimited.
         /// </summary>
         public string CollectionId;
         /// <summary>
@@ -943,16 +965,18 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
-        /// The Idempotency ID for this request.
+        /// The Idempotency ID for this request. Idempotency IDs can be used to prevent operation replay in the medium term but will
+        /// be garbage collected eventually.
         /// </summary>
         public string IdempotencyId;
         /// <summary>
         /// The operations to run transactionally. The operations will be executed in-order sequentially and will succeed or fail as
-        /// a batch.
+        /// a batch. Up to 10 operations can be added.
         /// </summary>
         public List<InventoryOperation> Operations;
     }
@@ -961,7 +985,8 @@ namespace PlayFab.EconomyModels
     public class ExecuteInventoryOperationsResponse : PlayFabResultCommon
     {
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
@@ -978,11 +1003,13 @@ namespace PlayFab.EconomyModels
     public class FileConfig : PlayFabBaseModel
     {
         /// <summary>
-        /// The set of content types that will be used for validation.
+        /// The set of content types that will be used for validation. Each content type can have a maximum character length of 40
+        /// and up to 128 types can be listed.
         /// </summary>
         public List<string> ContentTypes;
         /// <summary>
-        /// The set of tags that will be used for validation.
+        /// The set of tags that will be used for validation. Each tag can have a maximum character length of 32 and up to 1024 tags
+        /// can be listed.
         /// </summary>
         public List<string> Tags;
     }
@@ -991,7 +1018,8 @@ namespace PlayFab.EconomyModels
     public class FilterOptions : PlayFabBaseModel
     {
         /// <summary>
-        /// The OData filter utilized. Mutually exclusive with 'IncludeAllItems'.
+        /// The OData filter utilized. Mutually exclusive with 'IncludeAllItems'. More info about Filter Complexity limits can be
+        /// found here: https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/search#limits
         /// </summary>
         public string Filter;
         /// <summary>
@@ -1091,7 +1119,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. Maximum page size is 10.
+        /// Number of items to retrieve. This value is optional. Default value is 10.
         /// </summary>
         public int Count;
         /// <summary>
@@ -1103,7 +1131,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// OData Filter to specify ItemType.
+        /// OData Filter to refine the items returned. CatalogItem properties 'type' can be used in the filter. For example: "type
+        /// eq 'ugc'"
         /// </summary>
         public string Filter;
     }
@@ -1162,7 +1191,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. (Default = 10)
+        /// Number of items to retrieve. This value is optional. The default value is 10
         /// </summary>
         public int Count;
         /// <summary>
@@ -1204,7 +1233,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. Maximum page size is 50. (Default=10)
+        /// Number of items to retrieve. This value is optional. Maximum page size is 50. The default value is 10
         /// </summary>
         public int Count;
         /// <summary>
@@ -1216,7 +1245,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// The filters to limit what is returned to the client.
+        /// OData Filter to refine the items returned. InventoryItem properties 'type', 'id', and 'stackId' can be used in the
+        /// filter. For example: "type eq 'currency'"
         /// </summary>
         public string Filter;
     }
@@ -1229,7 +1259,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
@@ -1254,7 +1285,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. Maximum page size is 25.
+        /// Number of items to retrieve. This value is optional. Default value is 10.
         /// </summary>
         public int Count;
         /// <summary>
@@ -1389,7 +1420,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. Maximum page size is 200. If not specified, defaults to 10.
+        /// Number of items to retrieve. This value is optional. Default value is 10.
         /// </summary>
         public int Count;
         /// <summary>
@@ -1401,7 +1432,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// An OData orderBy used to order the results of the query.
+        /// An OData orderBy used to order the results of the query. Possible values are Helpfulness, Rating, and Submitted (For
+        /// example: "Submitted desc")
         /// </summary>
         public string OrderBy;
     }
@@ -1528,7 +1560,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. (Default = 10)
+        /// Number of items to retrieve. This value is optional. The default value is 10
         /// </summary>
         public int Count;
         /// <summary>
@@ -1540,7 +1572,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// An OData filter used to refine the query.
+        /// An OData filter used to refine the TransactionHistory. Transaction property 'timestamp' can be used in the filter. For
+        /// example: "timestamp ge 'timestamp ge'" By default, a 6 month timespan from the current date is used.
         /// </summary>
         public string Filter;
     }
@@ -1586,11 +1619,12 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string Id;
         /// <summary>
-        /// The client-defined tag associated with this image.
+        /// The client-defined tag associated with this image. Tags must be defined in the Catalog Config before being used in
+        /// images
         /// </summary>
         public string Tag;
         /// <summary>
-        /// The client-defined type of this image.
+        /// Images can be defined as either a "thumbnail" or "screenshot". There can only be one "thumbnail" image per item.
         /// </summary>
         public string Type;
         /// <summary>
@@ -1603,7 +1637,8 @@ namespace PlayFab.EconomyModels
     public class ImageConfig : PlayFabBaseModel
     {
         /// <summary>
-        /// The set of tags that will be used for validation.
+        /// The set of tags that will be used for validation. Each tag can have a maximum character length of 32 and up to 1024 tags
+        /// can be listed.
         /// </summary>
         public List<string> Tags;
     }
@@ -1612,7 +1647,7 @@ namespace PlayFab.EconomyModels
     public class InitialValues : PlayFabBaseModel
     {
         /// <summary>
-        /// Game specific properties for display purposes.
+        /// Game specific properties for display purposes. The Display Properties field has a 1000 byte limit.
         /// </summary>
         public object DisplayProperties;
     }
@@ -1625,12 +1660,12 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public int? Amount;
         /// <summary>
-        /// Game specific properties for display purposes. This is an arbitrary JSON blob.
+        /// Game specific properties for display purposes. This is an arbitrary JSON blob. The Display Properties field has a 1000
+        /// byte limit.
         /// </summary>
         public object DisplayProperties;
         /// <summary>
-        /// Only used for subscriptions. The date of when the item will expire in UTC. If not provided then the product will be
-        /// available indefinitely.
+        /// Only used for subscriptions. The date of when the item will expire in UTC.
         /// </summary>
         public DateTime? ExpirationDate;
         /// <summary>
@@ -1823,7 +1858,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public int? Amount;
         /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
+        /// The id of the entity's collection to perform this action on. (Default="default"). The number of inventory collections is
+        /// unlimited.
         /// </summary>
         public string CollectionId;
         /// <summary>
@@ -1844,11 +1880,13 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
-        /// The Idempotency ID for this request.
+        /// The Idempotency ID for this request. Idempotency IDs can be used to prevent operation replay in the medium term but will
+        /// be garbage collected eventually.
         /// </summary>
         public string IdempotencyId;
         /// <summary>
@@ -1874,7 +1912,8 @@ namespace PlayFab.EconomyModels
     public class PurchaseInventoryItemsResponse : PlayFabResultCommon
     {
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
@@ -2426,7 +2465,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. Maximum page size is 50. Default value is 10.
+        /// Number of items to retrieve. This value is optional. Maximum page size is 50. Default value is 10.
         /// </summary>
         public int Count;
         /// <summary>
@@ -2438,11 +2477,12 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// An OData filter used to refine the search query.
+        /// An OData filter used to refine the search query (For example: "type eq 'ugc'"). More info about Filter Complexity limits
+        /// can be found here: https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/search#limits
         /// </summary>
         public string Filter;
         /// <summary>
-        /// An OData orderBy used to order the results of the search query.
+        /// An OData orderBy used to order the results of the search query. For example: "rating/average asc"
         /// </summary>
         public string OrderBy;
         /// <summary>
@@ -2605,7 +2645,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public int? Amount;
         /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
+        /// The id of the entity's collection to perform this action on. (Default="default"). The number of inventory collections is
+        /// unlimited.
         /// </summary>
         public string CollectionId;
         /// <summary>
@@ -2626,11 +2667,13 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
-        /// The Idempotency ID for this request.
+        /// The Idempotency ID for this request. Idempotency IDs can be used to prevent operation replay in the medium term but will
+        /// be garbage collected eventually.
         /// </summary>
         public string IdempotencyId;
         /// <summary>
@@ -2643,7 +2686,8 @@ namespace PlayFab.EconomyModels
     public class SubtractInventoryItemsResponse : PlayFabResultCommon
     {
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
@@ -2853,7 +2897,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey GivingEntity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources (before transferring from).
+        /// ETags are used for concurrency checking when updating resources (before transferring from). More information about using
+        /// ETags can be found here: https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string GivingETag;
         /// <summary>
@@ -2886,7 +2931,8 @@ namespace PlayFab.EconomyModels
     public class TransferInventoryItemsResponse : PlayFabResultCommon
     {
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources (after transferring from).
+        /// ETags are used for concurrency checking when updating resources (after transferring from). More information about using
+        /// ETags can be found here: https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string GivingETag;
         /// <summary>
@@ -2933,7 +2979,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public CatalogItem Item;
         /// <summary>
-        /// Whether the item should be published immediately.
+        /// Whether the item should be published immediately. This value is optional, defaults to false.
         /// </summary>
         public bool Publish;
     }
@@ -2963,7 +3009,8 @@ namespace PlayFab.EconomyModels
     public class UpdateInventoryItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// The id of the entity's collection to perform this action on. (Default="default")
+        /// The id of the entity's collection to perform this action on. (Default="default"). The number of inventory collections is
+        /// unlimited.
         /// </summary>
         public string CollectionId;
         /// <summary>
@@ -2975,11 +3022,13 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>
-        /// The Idempotency ID for this request.
+        /// The Idempotency ID for this request. Idempotency IDs can be used to prevent operation replay in the medium term but will
+        /// be garbage collected eventually.
         /// </summary>
         public string IdempotencyId;
         /// <summary>
@@ -2992,7 +3041,8 @@ namespace PlayFab.EconomyModels
     public class UpdateInventoryItemsResponse : PlayFabResultCommon
     {
         /// <summary>
-        /// ETags are used for concurrency checking when updating resources.
+        /// ETags are used for concurrency checking when updating resources. More information about using ETags can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/etags
         /// </summary>
         public string ETag;
         /// <summary>

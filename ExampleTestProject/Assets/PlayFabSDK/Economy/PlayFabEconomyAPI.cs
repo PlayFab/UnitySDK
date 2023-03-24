@@ -33,7 +33,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Add inventory items.
+        /// Add inventory items. Up to 3500 stacks of items can be added to a single inventory collection. Stack size is uncapped.
         /// </summary>
         public static void AddInventoryItems(AddInventoryItemsRequest request, Action<AddInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -59,7 +59,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Creates one or more upload URLs which can be used by the client to upload raw file data.
+        /// Creates one or more upload URLs which can be used by the client to upload raw file data. Content URls and uploaded
+        /// content will be garbage collected after 24 hours if not attached to a draft or published item. Detailed pricing info
+        /// around uploading content can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/pricing/meters/catalog-meters
         /// </summary>
         public static void CreateUploadUrls(CreateUploadUrlsRequest request, Action<CreateUploadUrlsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -85,7 +88,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Delete an Inventory Collection
+        /// Delete an Inventory Collection. More information about Inventory Collections can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/inventory/collections
         /// </summary>
         public static void DeleteInventoryCollection(DeleteInventoryCollectionRequest request, Action<DeleteInventoryCollectionResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -124,7 +128,11 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Execute a list of Inventory Operations
+        /// Execute a list of Inventory Operations. A maximum list of 10 operations can be performed by a single request. There is
+        /// also a limit to 250 items that can be modified/added in a single request. For example, adding a bundle with 50 items
+        /// counts as 50 items modified. All operations must be done within a single inventory collection. This API has a reduced
+        /// RPS compared to an individual inventory operation with Player Entities limited to 15 requests in 90 seconds and Title
+        /// Entities limited to 500 requests in 10 seconds.
         /// </summary>
         public static void ExecuteInventoryOperations(ExecuteInventoryOperationsRequest request, Action<ExecuteInventoryOperationsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -137,7 +145,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Gets the configuration for the catalog.
+        /// Gets the configuration for the catalog. Only Title Entities can call this API. There is a limit of 100 requests in 10
+        /// seconds for this API. More information about the Catalog Config can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/settings
         /// </summary>
         public static void GetCatalogConfig(GetCatalogConfigRequest request, Action<GetCatalogConfigResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -150,7 +160,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves an item from the working catalog. This item represents the current working state of the item.
+        /// Retrieves an item from the working catalog. This item represents the current working state of the item. GetDraftItem
+        /// does not work off a cache of the Catalog and should be used when trying to get recent item updates. However, please note
+        /// that item references data is cached and may take a few moments for changes to propagate.
         /// </summary>
         public static void GetDraftItem(GetDraftItemRequest request, Action<GetDraftItemResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -163,7 +175,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a paginated list of the items from the draft catalog.
+        /// Retrieves a paginated list of the items from the draft catalog. Up to 50 IDs can be retrieved in a single request.
+        /// GetDraftItems does not work off a cache of the Catalog and should be used when trying to get recent item updates.
         /// </summary>
         public static void GetDraftItems(GetDraftItemsRequest request, Action<GetDraftItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -176,7 +189,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves a paginated list of the items from the draft catalog created by the Entity.
+        /// Retrieves a paginated list of the items from the draft catalog created by the Entity. Up to 50 items can be returned at
+        /// once. You can use continuation tokens to paginate through results that return greater than the limit.
+        /// GetEntityDraftItems does not work off a cache of the Catalog and should be used when trying to get recent item updates.
         /// </summary>
         public static void GetEntityDraftItems(GetEntityDraftItemsRequest request, Action<GetEntityDraftItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -189,7 +204,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Gets the submitted review for the specified item by the authenticated entity.
+        /// Gets the submitted review for the specified item by the authenticated entity. Individual ratings and reviews data update
+        /// in near real time with delays within a few seconds.
         /// </summary>
         public static void GetEntityItemReview(GetEntityItemReviewRequest request, Action<GetEntityItemReviewResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -202,7 +218,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get Inventory Collection Ids
+        /// Get Inventory Collection Ids. Up to 50 Ids can be returned at once. You can use continuation tokens to paginate through
+        /// results that return greater than the limit. It can take a few seconds for new collection Ids to show up.
         /// </summary>
         public static void GetInventoryCollectionIds(GetInventoryCollectionIdsRequest request, Action<GetInventoryCollectionIdsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -228,7 +245,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves an item from the public catalog.
+        /// Retrieves an item from the public catalog. GetItem does not work off a cache of the Catalog and should be used when
+        /// trying to get recent item updates. However, please note that item references data is cached and may take a few moments
+        /// for changes to propagate.
         /// </summary>
         public static void GetItem(GetItemRequest request, Action<GetItemResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -241,7 +260,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Search for a given item and return a set of bundles and stores containing the item
+        /// Search for a given item and return a set of bundles and stores containing the item. Up to 50 items can be returned at
+        /// once. You can use continuation tokens to paginate through results that return greater than the limit. This API is
+        /// intended for tooling/automation scenarios and has a reduced RPS with Player Entities limited to 30 requests in 300
+        /// seconds and Title Entities limited to 100 requests in 10 seconds.
         /// </summary>
         public static void GetItemContainers(GetItemContainersRequest request, Action<GetItemContainersResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -254,7 +276,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Gets the moderation state for an item, including the concern category and string reason.
+        /// Gets the moderation state for an item, including the concern category and string reason. More information about
+        /// moderation states can be found here: https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/ugc/moderation
         /// </summary>
         public static void GetItemModerationState(GetItemModerationStateRequest request, Action<GetItemModerationStateResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -280,7 +303,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get a paginated set of reviews associated with the specified item.
+        /// Get a paginated set of reviews associated with the specified item. Individual ratings and reviews data update in near
+        /// real time with delays within a few seconds.
         /// </summary>
         public static void GetItemReviews(GetItemReviewsRequest request, Action<GetItemReviewsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -293,7 +317,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get a summary of all reviews associated with the specified item.
+        /// Get a summary of all ratings and reviews associated with the specified item. Summary ratings data is cached with update
+        /// data coming within 15 minutes.
         /// </summary>
         public static void GetItemReviewSummary(GetItemReviewSummaryRequest request, Action<GetItemReviewSummaryResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -306,7 +331,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Retrieves items from the public catalog.
+        /// Retrieves items from the public catalog. Up to 50 items can be returned at once. GetItems does not work off a cache of
+        /// the Catalog and should be used when trying to get recent item updates. However, please note that item references data is
+        /// cached and may take a few moments for changes to propagate.
         /// </summary>
         public static void GetItems(GetItemsRequest request, Action<GetItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -332,7 +359,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get transaction history.
+        /// Get transaction history for a player. Up to 50 Events can be returned at once. You can use continuation tokens to
+        /// paginate through results that return greater than the limit. Getting transaction history has a lower RPS limit than
+        /// getting a Player's inventory with Player Entities having a limit of 30 requests in 300 seconds and Title Entities having
+        /// a limit of 100 requests in 10 seconds.
         /// </summary>
         public static void GetTransactionHistory(GetTransactionHistoryRequest request, Action<GetTransactionHistoryResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -345,7 +375,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Initiates a publish of an item from the working catalog to the public catalog.
+        /// Initiates a publish of an item from the working catalog to the public catalog. You can use the GetItemPublishStatus API
+        /// to track the state of the item publish.
         /// </summary>
         public static void PublishDraftItem(PublishDraftItemRequest request, Action<PublishDraftItemResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -358,7 +389,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Purchase an item or bundle
+        /// Purchase an item or bundle. Up to 3500 stacks of items can be added to a single inventory collection. Stack size is
+        /// uncapped.
         /// </summary>
         public static void PurchaseInventoryItems(PurchaseInventoryItemsRequest request, Action<PurchaseInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -475,7 +507,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Creates or updates a review for the specified item.
+        /// Creates or updates a review for the specified item. More information around the caching surrounding item ratings and
+        /// reviews can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/ratings#ratings-design-and-caching
         /// </summary>
         public static void ReviewItem(ReviewItemRequest request, Action<ReviewItemResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -489,7 +523,9 @@ namespace PlayFab
 
         /// <summary>
         /// Executes a search against the public catalog using the provided search parameters and returns a set of paginated
-        /// results.
+        /// results. SearchItems uses a cache of the catalog with item updates taking up to a few minutes to propagate. You should
+        /// use the GetItem API for when trying to immediately get recent item updates. More information about the Search API can be
+        /// found here: https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/catalog/search
         /// </summary>
         public static void SearchItems(SearchItemsRequest request, Action<SearchItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -502,7 +538,8 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Sets the moderation state for an item, including the concern category and string reason.
+        /// Sets the moderation state for an item, including the concern category and string reason. More information about
+        /// moderation states can be found here: https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/ugc/moderation
         /// </summary>
         public static void SetItemModerationState(SetItemModerationStateRequest request, Action<SetItemModerationStateResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -554,7 +591,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Transfer inventory items.
+        /// Transfer inventory items. When transferring across collections, a 202 response indicates that the transfer is in
+        /// progress and will complete soon. More information about item transfer scenarios can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/inventory/?tabs=inventory-game-manager#transfer-inventory-items
         /// </summary>
         public static void TransferInventoryItems(TransferInventoryItemsRequest request, Action<TransferInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -567,7 +606,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Updates the configuration for the catalog.
+        /// Updates the configuration for the catalog. Only Title Entities can call this API. There is a limit of 10 requests in 10
+        /// seconds for this API. More information about the Catalog Config can be found here:
+        /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/settings
         /// </summary>
         public static void UpdateCatalogConfig(UpdateCatalogConfigRequest request, Action<UpdateCatalogConfigResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
