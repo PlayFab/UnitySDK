@@ -13,6 +13,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public int? Amount;
         /// <summary>
+        /// The duration to add to the current item expiration date.
+        /// </summary>
+        public double? DurationInSeconds;
+        /// <summary>
         /// The inventory item the operation applies to.
         /// </summary>
         public InventoryItemReference Item;
@@ -2156,7 +2160,7 @@ namespace PlayFab.EconomyModels
     public class RedeemPlayStationStoreInventoryItemsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Authorization code provided by the PlayStation OAuth provider.
+        /// Auth code returned by PlayStation :tm: Network OAuth system.
         /// </summary>
         public string AuthorizationCode;
         /// <summary>
@@ -2171,6 +2175,10 @@ namespace PlayFab.EconomyModels
         /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
+        /// <summary>
+        /// Redirect URI supplied to PlayStation :tm: Network when requesting an auth code
+        /// </summary>
+        public string RedirectUri;
         /// <summary>
         /// Optional Service Label to pass into the request.
         /// </summary>

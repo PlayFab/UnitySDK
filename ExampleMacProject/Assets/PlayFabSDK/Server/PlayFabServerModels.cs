@@ -2125,6 +2125,7 @@ namespace PlayFab.ServerModels
         AsyncExportNotInFlight,
         AsyncExportNotFound,
         AsyncExportRateLimitExceeded,
+        AnalyticsSegmentCountOverLimit,
         SnapshotNotFound,
         InventoryApiNotImplemented,
         LobbyDoesNotExist,
@@ -4108,6 +4109,32 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class LinkSteamIdRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// If another user is already linked to the account, unlink the other user and re-link.
+        /// </summary>
+        public bool? ForceLink;
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Xbox Live identifier.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
+        /// Unique Steam identifier for a user.
+        /// </summary>
+        public string SteamId;
+    }
+
+    [Serializable]
+    public class LinkSteamIdResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class LinkXboxAccountRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -4270,7 +4297,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Unique Steam identifier for a user
+        /// Unique Steam identifier for a user.
         /// </summary>
         public string SteamId;
     }
@@ -4301,7 +4328,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string Sandbox;
         /// <summary>
-        /// Unique Xbox identifier for a user
+        /// Unique Xbox identifier for a user.
         /// </summary>
         public string XboxId;
     }
@@ -6237,6 +6264,24 @@ namespace PlayFab.ServerModels
 
     [Serializable]
     public class UnlinkServerCustomIdResult : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class UnlinkSteamIdRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Steam account.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class UnlinkSteamIdResult : PlayFabResultCommon
     {
     }
 

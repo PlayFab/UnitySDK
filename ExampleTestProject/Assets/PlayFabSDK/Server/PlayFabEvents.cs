@@ -157,6 +157,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LinkPSNAccountResult> OnServerLinkPSNAccountResultEvent;
         public event PlayFabRequestEvent<LinkServerCustomIdRequest> OnServerLinkServerCustomIdRequestEvent;
         public event PlayFabResultEvent<LinkServerCustomIdResult> OnServerLinkServerCustomIdResultEvent;
+        public event PlayFabRequestEvent<LinkSteamIdRequest> OnServerLinkSteamIdRequestEvent;
+        public event PlayFabResultEvent<LinkSteamIdResult> OnServerLinkSteamIdResultEvent;
         public event PlayFabRequestEvent<LinkXboxAccountRequest> OnServerLinkXboxAccountRequestEvent;
         public event PlayFabResultEvent<LinkXboxAccountResult> OnServerLinkXboxAccountResultEvent;
         public event PlayFabRequestEvent<LoginWithServerCustomIdRequest> OnServerLoginWithServerCustomIdRequestEvent;
@@ -241,6 +243,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UnlinkPSNAccountResult> OnServerUnlinkPSNAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkServerCustomIdRequest> OnServerUnlinkServerCustomIdRequestEvent;
         public event PlayFabResultEvent<UnlinkServerCustomIdResult> OnServerUnlinkServerCustomIdResultEvent;
+        public event PlayFabRequestEvent<UnlinkSteamIdRequest> OnServerUnlinkSteamIdRequestEvent;
+        public event PlayFabResultEvent<UnlinkSteamIdResult> OnServerUnlinkSteamIdResultEvent;
         public event PlayFabRequestEvent<UnlinkXboxAccountRequest> OnServerUnlinkXboxAccountRequestEvent;
         public event PlayFabResultEvent<UnlinkXboxAccountResult> OnServerUnlinkXboxAccountResultEvent;
         public event PlayFabRequestEvent<UnlockContainerInstanceRequest> OnServerUnlockContainerInstanceRequestEvent;

@@ -86,6 +86,19 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the title player accounts associated with the given XUIDs.
+        /// </summary>
+        public static void GetTitlePlayersFromXboxLiveIDs(GetTitlePlayersFromXboxLiveIDsRequest request, Action<GetTitlePlayersFromProviderIDsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/Profile/GetTitlePlayersFromXboxLiveIDs", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
         /// Sets the global title access policy
         /// </summary>
         public static void SetGlobalPolicy(SetGlobalPolicyRequest request, Action<SetGlobalPolicyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
