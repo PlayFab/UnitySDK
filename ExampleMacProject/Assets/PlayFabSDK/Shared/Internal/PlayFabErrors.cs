@@ -689,6 +689,7 @@ namespace PlayFab
         AsyncExportNotInFlight = 10011,
         AsyncExportNotFound = 10012,
         AsyncExportRateLimitExceeded = 10013,
+        AnalyticsSegmentCountOverLimit = 10014,
         SnapshotNotFound = 11000,
         InventoryApiNotImplemented = 12000,
         LobbyDoesNotExist = 13000,

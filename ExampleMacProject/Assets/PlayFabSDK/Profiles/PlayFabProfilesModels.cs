@@ -359,6 +359,40 @@ namespace PlayFab.ProfilesModels
         public Dictionary<string,EntityKey> TitlePlayerAccounts;
     }
 
+    [Serializable]
+    public class GetTitlePlayersFromProviderIDsResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Dictionary of provider identifiers mapped to title_player_account lineage. Missing lineage indicates the player either
+        /// doesn't exist or doesn't play the requested title.
+        /// </summary>
+        public Dictionary<string,EntityLineage> TitlePlayerAccounts;
+    }
+
+    /// <summary>
+    /// Given a collection of Xbox IDs (XUIDs), returns all title player accounts.
+    /// </summary>
+    [Serializable]
+    public class GetTitlePlayersFromXboxLiveIDsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Xbox Sandbox the players had on their Xbox tokens.
+        /// </summary>
+        public string Sandbox;
+        /// <summary>
+        /// Optional ID of title to get players from, required if calling using a master_player_account.
+        /// </summary>
+        public string TitleId;
+        /// <summary>
+        /// List of Xbox Live XUIDs
+        /// </summary>
+        public List<string> XboxLiveIds;
+    }
+
     public enum OperationTypes
     {
         Created,
