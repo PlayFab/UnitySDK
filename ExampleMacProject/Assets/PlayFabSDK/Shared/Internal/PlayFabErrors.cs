@@ -728,7 +728,17 @@ namespace PlayFab
         EventSinkDatabaseNotFound = 15011,
         OperationCanceled = 16000,
         InvalidDisplayNameRandomSuffixLength = 17000,
-        AllowNonUniquePlayerDisplayNamesDisableNotAllowed = 17001
+        AllowNonUniquePlayerDisplayNamesDisableNotAllowed = 17001,
+        PartitionedEventInvalid = 18000,
+        PartitionedEventCountOverLimit = 18001,
+        PlayerCustomPropertiesPropertyNameTooLong = 19000,
+        PlayerCustomPropertiesPropertyNameIsInvalid = 19001,
+        PlayerCustomPropertiesStringPropertyValueTooLong = 19002,
+        PlayerCustomPropertiesValueIsInvalidType = 19003,
+        PlayerCustomPropertiesVersionMismatch = 19004,
+        PlayerCustomPropertiesPropertyCountTooHigh = 19005,
+        PlayerCustomPropertiesDuplicatePropertyName = 19006,
+        PlayerCustomPropertiesPropertyDoesNotExist = 19007
     }
 
     public class PlayFabError
