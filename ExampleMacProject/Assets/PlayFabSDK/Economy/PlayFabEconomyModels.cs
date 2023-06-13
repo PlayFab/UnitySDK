@@ -312,6 +312,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public List<CatalogPriceAmount> Amounts;
         /// <summary>
+        /// The per-unit amount this price can be used to purchase.
+        /// </summary>
+        public int? UnitAmount;
+        /// <summary>
         /// The per-unit duration this price can be used to purchase. The maximum duration is 100 years.
         /// </summary>
         public double? UnitDurationInSeconds;
