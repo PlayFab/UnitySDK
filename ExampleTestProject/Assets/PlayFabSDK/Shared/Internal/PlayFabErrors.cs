@@ -650,6 +650,7 @@ namespace PlayFab
         MultiplayerServerBuildReferencedByMatchmakingQueue = 6002,
         MultiplayerServerBuildReferencedByBuildAlias = 6003,
         MultiplayerServerBuildAliasReferencedByMatchmakingQueue = 6004,
+        PartySerializationError = 6005,
         ExperimentationExperimentStopped = 7000,
         ExperimentationExperimentRunning = 7001,
         ExperimentationExperimentNotFound = 7002,

@@ -218,7 +218,7 @@ namespace PlayFab.ProfilesModels
         /// </summary>
         public Dictionary<string,EntityStatisticChildValue> ChildStatistics;
         /// <summary>
-        /// Statistic metadata
+        /// Metadata associated with the Statistic.
         /// </summary>
         public string Metadata;
         /// <summary>

@@ -2510,6 +2510,7 @@ namespace PlayFab.AdminModels
         MultiplayerServerBuildReferencedByMatchmakingQueue,
         MultiplayerServerBuildReferencedByBuildAlias,
         MultiplayerServerBuildAliasReferencedByMatchmakingQueue,
+        PartySerializationError,
         ExperimentationExperimentStopped,
         ExperimentationExperimentRunning,
         ExperimentationExperimentNotFound,
