@@ -2600,7 +2600,9 @@ namespace PlayFab.AdminModels
         PlayerCustomPropertiesVersionMismatch,
         PlayerCustomPropertiesPropertyCountTooHigh,
         PlayerCustomPropertiesDuplicatePropertyName,
-        PlayerCustomPropertiesPropertyDoesNotExist
+        PlayerCustomPropertiesPropertyDoesNotExist,
+        AddonAlreadyExists,
+        AddonDoesntExist
     }
 
     [Serializable]

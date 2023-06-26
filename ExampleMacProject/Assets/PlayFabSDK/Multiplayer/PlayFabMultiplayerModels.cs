@@ -648,7 +648,7 @@ namespace PlayFab.MultiplayerModels
         /// DEPRECATED - this is always true. Assets are downloaded and uncompressed in memory, without the compressedversion being
         /// written first to disc.
         /// </summary>
-        [Obsolete("Use '' instead", false)]
+        [Obsolete("Use '' instead", true)]
         public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size to create the build on.
@@ -824,7 +824,7 @@ namespace PlayFab.MultiplayerModels
         /// DEPRECATED - this is always true. Assets are downloaded and uncompressed in memory, without the compressedversion being
         /// written first to disc.
         /// </summary>
-        [Obsolete("Use '' instead", false)]
+        [Obsolete("Use '' instead", true)]
         public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size to create the build on.
@@ -1008,7 +1008,7 @@ namespace PlayFab.MultiplayerModels
         /// DEPRECATED - this is always true. Assets are downloaded and uncompressed in memory, without the compressedversion being
         /// written first to disc.
         /// </summary>
-        [Obsolete("Use '' instead", false)]
+        [Obsolete("Use '' instead", true)]
         public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size to create the build on.

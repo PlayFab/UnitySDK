@@ -60,7 +60,19 @@ namespace PlayFab
             PlayFabHttp.MakeApiCall("/Event/WriteTelemetryEvents", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
+        /// <summary>
+        /// Write batches of entity based events to as Telemetry events (bypass PlayStream) using a Telemetry Key. The namespace must be 'custom' or start
+        /// with 'custom.'
+        /// </summary>
+        public static void WriteTelemetryEventsWithTelemetryKey(WriteEventsRequest request, Action<WriteEventsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsTelemetryKeyProvided()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must provide a telemetry key to call this method");
 
+            PlayFabHttp.MakeApiCall("/Event/WriteTelemetryEvents", request, AuthType.TelemetryKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+    
     }
 }
 
