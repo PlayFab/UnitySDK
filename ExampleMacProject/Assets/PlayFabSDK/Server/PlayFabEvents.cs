@@ -155,6 +155,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LinkNintendoSwitchDeviceIdResult> OnServerLinkNintendoSwitchDeviceIdResultEvent;
         public event PlayFabRequestEvent<LinkPSNAccountRequest> OnServerLinkPSNAccountRequestEvent;
         public event PlayFabResultEvent<LinkPSNAccountResult> OnServerLinkPSNAccountResultEvent;
+        public event PlayFabRequestEvent<LinkPSNIdRequest> OnServerLinkPSNIdRequestEvent;
+        public event PlayFabResultEvent<LinkPSNIdResponse> OnServerLinkPSNIdResultEvent;
         public event PlayFabRequestEvent<LinkServerCustomIdRequest> OnServerLinkServerCustomIdRequestEvent;
         public event PlayFabResultEvent<LinkServerCustomIdResult> OnServerLinkServerCustomIdResultEvent;
         public event PlayFabRequestEvent<LinkSteamIdRequest> OnServerLinkSteamIdRequestEvent;

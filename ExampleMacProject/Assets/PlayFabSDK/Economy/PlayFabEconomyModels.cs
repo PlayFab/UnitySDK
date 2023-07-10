@@ -1581,8 +1581,11 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// An OData filter used to refine the TransactionHistory. Transaction property 'timestamp' can be used in the filter. For
-        /// example: "timestamp ge 'timestamp ge'" By default, a 6 month timespan from the current date is used.
+        /// An OData filter used to refine the TransactionHistory. Transaction properties 'timestamp', 'transactionid', 'apiname'
+        /// and 'operationtype' can be used in the filter. Properties 'transactionid', 'apiname', and 'operationtype' cannot be used
+        /// together in a single request. The 'timestamp' property can be combined with 'apiname' or 'operationtype' in a single
+        /// request. For example: "timestamp ge 2023-06-20T23:30Z" or "transactionid eq '10'" or "(timestamp ge 2023-06-20T23:30Z)
+        /// and (apiname eq 'AddInventoryItems')". By default, a 6 month timespan from the current date is used.
         /// </summary>
         public string Filter;
     }
