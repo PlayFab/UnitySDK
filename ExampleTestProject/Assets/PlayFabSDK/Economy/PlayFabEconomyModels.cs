@@ -156,7 +156,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public List<string> Platforms;
         /// <summary>
-        /// A set of player entity keys that are allowed to review content. There is a maximum of 64 entities that can be added.
+        /// A set of player entity keys that are allowed to review content. There is a maximum of 128 entities that can be added.
         /// </summary>
         public List<EntityKey> ReviewerEntities;
         /// <summary>

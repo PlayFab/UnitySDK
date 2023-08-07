@@ -1752,15 +1752,16 @@ namespace PlayFab.MultiplayerModels
         /// (less than). The left-hand side of each OData logical expression should be either a search property key (e.g.
         /// string_key1, number_key3, etc) or one of the pre-defined search keys all of which must be prefixed by "lobby/":
         /// lobby/memberCount (number of players in a lobby), lobby/maxMemberCount (maximum number of players allowed in a lobby),
-        /// lobby/membershipLock (must equal 'Unlocked' or 'Locked'), lobby/amOwner (required to equal "true"), lobby/amMember
-        /// (required to equal "true").
+        /// lobby/memberCountRemaining (remaining number of players who can be allowed in a lobby), lobby/membershipLock (must equal
+        /// 'Unlocked' or 'Locked'), lobby/amOwner (required to equal "true"), lobby/amMember (required to equal "true").
         /// </summary>
         public string Filter;
         /// <summary>
         /// OData style string that contains sorting for this query in either ascending ("asc") or descending ("desc") order.
-        /// OrderBy clauses are of the form "number_key1 asc" or the pre-defined search key "lobby/memberCount asc" and
-        /// "lobby/maxMemberCount desc". To sort by closest, a moniker `distance{number_key1 = 5}` can be used to sort by distance
-        /// from the given number. This field only supports either one sort clause or one distance clause.
+        /// OrderBy clauses are of the form "number_key1 asc" or the pre-defined search key "lobby/memberCount asc",
+        /// "lobby/memberCountRemaining desc" and "lobby/maxMemberCount desc". To sort by closest, a moniker `distance{number_key1 =
+        /// 5}` can be used to sort by distance from the given number. This field only supports either one sort clause or one
+        /// distance clause.
         /// </summary>
         public string OrderBy;
         /// <summary>
@@ -1802,15 +1803,16 @@ namespace PlayFab.MultiplayerModels
         /// (less than). The left-hand side of each OData logical expression should be either a search property key (e.g.
         /// string_key1, number_key3, etc) or one of the pre-defined search keys all of which must be prefixed by "lobby/":
         /// lobby/memberCount (number of players in a lobby), lobby/maxMemberCount (maximum number of players allowed in a lobby),
-        /// lobby/membershipLock (must equal 'Unlocked' or 'Locked'), lobby/amOwner (required to equal "true"), lobby/amMember
-        /// (required to equal "true").
+        /// lobby/memberCountRemaining (remaining number of players who can be allowed in a lobby), lobby/membershipLock (must equal
+        /// 'Unlocked' or 'Locked'), lobby/amOwner (required to equal "true"), lobby/amMember (required to equal "true").
         /// </summary>
         public string Filter;
         /// <summary>
         /// OData style string that contains sorting for this query in either ascending ("asc") or descending ("desc") order.
-        /// OrderBy clauses are of the form "number_key1 asc" or the pre-defined search key "lobby/memberCount asc" and
-        /// "lobby/maxMemberCount desc". To sort by closest, a moniker `distance{number_key1 = 5}` can be used to sort by distance
-        /// from the given number. This field only supports either one sort clause or one distance clause.
+        /// OrderBy clauses are of the form "number_key1 asc" or the pre-defined search key "lobby/memberCount asc",
+        /// "lobby/memberCountRemaining desc" and "lobby/maxMemberCount desc". To sort by closest, a moniker `distance{number_key1 =
+        /// 5}` can be used to sort by distance from the given number. This field only supports either one sort clause or one
+        /// distance clause.
         /// </summary>
         public string OrderBy;
         /// <summary>
