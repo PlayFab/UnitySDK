@@ -696,7 +696,8 @@ namespace PlayFab.EconomyModels
         EH,
         YE,
         ZM,
-        ZW
+        ZW,
+        Unknown
     }
 
     /// <summary>
