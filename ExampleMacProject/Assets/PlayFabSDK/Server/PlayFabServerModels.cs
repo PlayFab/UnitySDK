@@ -1999,6 +1999,7 @@ namespace PlayFab.ServerModels
         NamespaceMismatch,
         InvalidServiceConfiguration,
         InvalidNamespaceMismatch,
+        LeaderboardColumnLengthMismatch,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,

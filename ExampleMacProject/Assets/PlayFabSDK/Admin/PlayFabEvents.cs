@@ -39,6 +39,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<BlankResult> OnAdminDeleteContentResultEvent;
         public event PlayFabRequestEvent<DeleteMasterPlayerAccountRequest> OnAdminDeleteMasterPlayerAccountRequestEvent;
         public event PlayFabResultEvent<DeleteMasterPlayerAccountResult> OnAdminDeleteMasterPlayerAccountResultEvent;
+        public event PlayFabRequestEvent<DeleteMasterPlayerEventDataRequest> OnAdminDeleteMasterPlayerEventDataRequestEvent;
+        public event PlayFabResultEvent<DeleteMasterPlayerEventDataResult> OnAdminDeleteMasterPlayerEventDataResultEvent;
         public event PlayFabRequestEvent<DeleteMembershipSubscriptionRequest> OnAdminDeleteMembershipSubscriptionRequestEvent;
         public event PlayFabResultEvent<DeleteMembershipSubscriptionResult> OnAdminDeleteMembershipSubscriptionResultEvent;
         public event PlayFabRequestEvent<DeleteOpenIdConnectionRequest> OnAdminDeleteOpenIdConnectionRequestEvent;
