@@ -561,6 +561,7 @@ namespace PlayFab
         NamespaceMismatch = 1559,
         InvalidServiceConfiguration = 1560,
         InvalidNamespaceMismatch = 1561,
+        LeaderboardColumnLengthMismatch = 1562,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,

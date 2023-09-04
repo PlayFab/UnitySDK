@@ -241,6 +241,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Deletes PlayStream and telemetry event data associated with the master player account from PlayFab storage
+        /// </summary>
+        public void DeleteMasterPlayerEventData(DeleteMasterPlayerEventDataRequest request, Action<DeleteMasterPlayerEventDataResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Admin/DeleteMasterPlayerEventData", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Deletes a player's subscription
         /// </summary>
         public void DeleteMembershipSubscription(DeleteMembershipSubscriptionRequest request, Action<DeleteMembershipSubscriptionResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
