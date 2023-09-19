@@ -447,20 +447,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get details about all current running game servers matching the given parameters.
-        /// </summary>
-        [Obsolete("Use 'MultiplayerServer/ListMultiplayerServers' instead", true)]
-        public static void GetCurrentGames(CurrentGamesRequest request, Action<CurrentGamesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
-            var callSettings = PlayFabSettings.staticSettings;
-            if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
-
-
-            PlayFabHttp.MakeApiCall("/Client/GetCurrentGames", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
-        }
-
-        /// <summary>
         /// Retrieves a list of ranked friends of the current player for the given statistic, starting from the indicated point in
         /// the leaderboard
         /// </summary>
@@ -500,20 +486,6 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Client/GetFriendsList", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
-        }
-
-        /// <summary>
-        /// Get details about the regions hosting game servers matching the given parameters.
-        /// </summary>
-        [Obsolete("Use 'MultiplayerServer/ListMultiplayerServers' instead", true)]
-        public static void GetGameServerRegions(GameServerRegionsRequest request, Action<GameServerRegionsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
-            var callSettings = PlayFabSettings.staticSettings;
-            if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
-
-
-            PlayFabHttp.MakeApiCall("/Client/GetGameServerRegions", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>
@@ -1564,25 +1536,6 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Client/LoginWithXbox", request, AuthType.None, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
-        }
-
-        /// <summary>
-        /// Attempts to locate a game session matching the given parameters. If the goal is to match the player into a specific
-        /// active session, only the LobbyId is required. Otherwise, the BuildVersion, GameMode, and Region are all required
-        /// parameters. Note that parameters specified in the search are required (they are not weighting factors). If a slot is
-        /// found in a server instance matching the parameters, the slot will be assigned to that player, removing it from the
-        /// availabe set. In that case, the information on the game session will be returned, otherwise the Status returned will be
-        /// GameNotFound.
-        /// </summary>
-        [Obsolete("Use 'Match/CreateMatchmakingTicket' instead", true)]
-        public static void Matchmake(MatchmakeRequest request, Action<MatchmakeResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
-            var callSettings = PlayFabSettings.staticSettings;
-            if (!context.IsClientLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
-
-
-            PlayFabHttp.MakeApiCall("/Client/Matchmake", request, AuthType.LoginSession, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>

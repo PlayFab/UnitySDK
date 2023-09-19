@@ -63,16 +63,12 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetCharacterStatisticsResult> OnGetCharacterStatisticsResultEvent;
         public event PlayFabRequestEvent<GetContentDownloadUrlRequest> OnGetContentDownloadUrlRequestEvent;
         public event PlayFabResultEvent<GetContentDownloadUrlResult> OnGetContentDownloadUrlResultEvent;
-        public event PlayFabRequestEvent<CurrentGamesRequest> OnGetCurrentGamesRequestEvent;
-        public event PlayFabResultEvent<CurrentGamesResult> OnGetCurrentGamesResultEvent;
         public event PlayFabRequestEvent<GetFriendLeaderboardRequest> OnGetFriendLeaderboardRequestEvent;
         public event PlayFabResultEvent<GetLeaderboardResult> OnGetFriendLeaderboardResultEvent;
         public event PlayFabRequestEvent<GetFriendLeaderboardAroundPlayerRequest> OnGetFriendLeaderboardAroundPlayerRequestEvent;
         public event PlayFabResultEvent<GetFriendLeaderboardAroundPlayerResult> OnGetFriendLeaderboardAroundPlayerResultEvent;
         public event PlayFabRequestEvent<GetFriendsListRequest> OnGetFriendsListRequestEvent;
         public event PlayFabResultEvent<GetFriendsListResult> OnGetFriendsListResultEvent;
-        public event PlayFabRequestEvent<GameServerRegionsRequest> OnGetGameServerRegionsRequestEvent;
-        public event PlayFabResultEvent<GameServerRegionsResult> OnGetGameServerRegionsResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardRequest> OnGetLeaderboardRequestEvent;
         public event PlayFabResultEvent<GetLeaderboardResult> OnGetLeaderboardResultEvent;
         public event PlayFabRequestEvent<GetLeaderboardAroundCharacterRequest> OnGetLeaderboardAroundCharacterRequestEvent;
@@ -208,8 +204,6 @@ namespace PlayFab.Events
         public event PlayFabRequestEvent<LoginWithSteamRequest> OnLoginWithSteamRequestEvent;
         public event PlayFabRequestEvent<LoginWithTwitchRequest> OnLoginWithTwitchRequestEvent;
         public event PlayFabRequestEvent<LoginWithXboxRequest> OnLoginWithXboxRequestEvent;
-        public event PlayFabRequestEvent<MatchmakeRequest> OnMatchmakeRequestEvent;
-        public event PlayFabResultEvent<MatchmakeResult> OnMatchmakeResultEvent;
         public event PlayFabRequestEvent<OpenTradeRequest> OnOpenTradeRequestEvent;
         public event PlayFabResultEvent<OpenTradeResponse> OnOpenTradeResultEvent;
         public event PlayFabRequestEvent<PayForPurchaseRequest> OnPayForPurchaseRequestEvent;

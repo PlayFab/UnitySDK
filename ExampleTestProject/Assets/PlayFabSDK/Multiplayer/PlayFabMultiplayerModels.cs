@@ -3092,11 +3092,27 @@ namespace PlayFab.MultiplayerModels
         /// The container images we want to list tags for.
         /// </summary>
         public string ImageName;
+        /// <summary>
+        /// The page size for the request.
+        /// </summary>
+        public int? PageSize;
+        /// <summary>
+        /// The skip token for the paged request.
+        /// </summary>
+        public string SkipToken;
     }
 
     [Serializable]
     public class ListContainerImageTagsResponse : PlayFabResultCommon
     {
+        /// <summary>
+        /// The page size on the response.
+        /// </summary>
+        public int PageSize;
+        /// <summary>
+        /// The skip token for the paged response.
+        /// </summary>
+        public string SkipToken;
         /// <summary>
         /// The list of tags for a particular container image.
         /// </summary>

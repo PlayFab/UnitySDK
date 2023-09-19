@@ -35,8 +35,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<DeletePushNotificationTemplateResult> OnServerDeletePushNotificationTemplateResultEvent;
         public event PlayFabRequestEvent<DeleteSharedGroupRequest> OnServerDeleteSharedGroupRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerDeleteSharedGroupResultEvent;
-        public event PlayFabRequestEvent<DeregisterGameRequest> OnServerDeregisterGameRequestEvent;
-        public event PlayFabResultEvent<DeregisterGameResponse> OnServerDeregisterGameResultEvent;
         public event PlayFabRequestEvent<EvaluateRandomResultTableRequest> OnServerEvaluateRandomResultTableRequestEvent;
         public event PlayFabResultEvent<EvaluateRandomResultTableResult> OnServerEvaluateRandomResultTableResultEvent;
         public event PlayFabRequestEvent<ExecuteCloudScriptServerRequest> OnServerExecuteCloudScriptRequestEvent;
@@ -151,6 +149,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GrantItemsToUsersResult> OnServerGrantItemsToUsersResultEvent;
         public event PlayFabRequestEvent<LinkNintendoServiceAccountRequest> OnServerLinkNintendoServiceAccountRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnServerLinkNintendoServiceAccountResultEvent;
+        public event PlayFabRequestEvent<LinkNintendoServiceAccountSubjectRequest> OnServerLinkNintendoServiceAccountSubjectRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerLinkNintendoServiceAccountSubjectResultEvent;
         public event PlayFabRequestEvent<LinkNintendoSwitchDeviceIdRequest> OnServerLinkNintendoSwitchDeviceIdRequestEvent;
         public event PlayFabResultEvent<LinkNintendoSwitchDeviceIdResult> OnServerLinkNintendoSwitchDeviceIdResultEvent;
         public event PlayFabRequestEvent<LinkPSNAccountRequest> OnServerLinkPSNAccountRequestEvent;
@@ -179,16 +179,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<MoveItemToCharacterFromUserResult> OnServerMoveItemToCharacterFromUserResultEvent;
         public event PlayFabRequestEvent<MoveItemToUserFromCharacterRequest> OnServerMoveItemToUserFromCharacterRequestEvent;
         public event PlayFabResultEvent<MoveItemToUserFromCharacterResult> OnServerMoveItemToUserFromCharacterResultEvent;
-        public event PlayFabRequestEvent<NotifyMatchmakerPlayerLeftRequest> OnServerNotifyMatchmakerPlayerLeftRequestEvent;
-        public event PlayFabResultEvent<NotifyMatchmakerPlayerLeftResult> OnServerNotifyMatchmakerPlayerLeftResultEvent;
         public event PlayFabRequestEvent<RedeemCouponRequest> OnServerRedeemCouponRequestEvent;
         public event PlayFabResultEvent<RedeemCouponResult> OnServerRedeemCouponResultEvent;
-        public event PlayFabRequestEvent<RedeemMatchmakerTicketRequest> OnServerRedeemMatchmakerTicketRequestEvent;
-        public event PlayFabResultEvent<RedeemMatchmakerTicketResult> OnServerRedeemMatchmakerTicketResultEvent;
-        public event PlayFabRequestEvent<RefreshGameServerInstanceHeartbeatRequest> OnServerRefreshGameServerInstanceHeartbeatRequestEvent;
-        public event PlayFabResultEvent<RefreshGameServerInstanceHeartbeatResult> OnServerRefreshGameServerInstanceHeartbeatResultEvent;
-        public event PlayFabRequestEvent<RegisterGameRequest> OnServerRegisterGameRequestEvent;
-        public event PlayFabResultEvent<RegisterGameResponse> OnServerRegisterGameResultEvent;
         public event PlayFabRequestEvent<RemoveFriendRequest> OnServerRemoveFriendRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerRemoveFriendResultEvent;
         public event PlayFabRequestEvent<RemoveGenericIDRequest> OnServerRemoveGenericIDRequestEvent;
@@ -219,12 +211,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<SendPushNotificationResult> OnServerSendPushNotificationFromTemplateResultEvent;
         public event PlayFabRequestEvent<SetFriendTagsRequest> OnServerSetFriendTagsRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerSetFriendTagsResultEvent;
-        public event PlayFabRequestEvent<SetGameServerInstanceDataRequest> OnServerSetGameServerInstanceDataRequestEvent;
-        public event PlayFabResultEvent<SetGameServerInstanceDataResult> OnServerSetGameServerInstanceDataResultEvent;
-        public event PlayFabRequestEvent<SetGameServerInstanceStateRequest> OnServerSetGameServerInstanceStateRequestEvent;
-        public event PlayFabResultEvent<SetGameServerInstanceStateResult> OnServerSetGameServerInstanceStateResultEvent;
-        public event PlayFabRequestEvent<SetGameServerInstanceTagsRequest> OnServerSetGameServerInstanceTagsRequestEvent;
-        public event PlayFabResultEvent<SetGameServerInstanceTagsResult> OnServerSetGameServerInstanceTagsResultEvent;
         public event PlayFabRequestEvent<SetPlayerSecretRequest> OnServerSetPlayerSecretRequestEvent;
         public event PlayFabResultEvent<SetPlayerSecretResult> OnServerSetPlayerSecretResultEvent;
         public event PlayFabRequestEvent<SetPublisherDataRequest> OnServerSetPublisherDataRequestEvent;
