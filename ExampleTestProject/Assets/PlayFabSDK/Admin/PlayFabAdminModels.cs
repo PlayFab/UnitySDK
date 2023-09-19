@@ -1860,36 +1860,6 @@ namespace PlayFab.AdminModels
         public double DurationInMinutes;
     }
 
-    public enum GameBuildStatus
-    {
-        Available,
-        Validating,
-        InvalidBuildPackage,
-        Processing,
-        FailedToProcess
-    }
-
-    [Serializable]
-    public class GameModeInfo : PlayFabBaseModel
-    {
-        /// <summary>
-        /// specific game mode type
-        /// </summary>
-        public string Gamemode;
-        /// <summary>
-        /// maximum user count a specific Game Server Instance can support
-        /// </summary>
-        public uint MaxPlayerCount;
-        /// <summary>
-        /// minimum user count required for this Game Server Instance to continue (usually 1)
-        /// </summary>
-        public uint MinPlayerCount;
-        /// <summary>
-        /// whether to start as an open session, meaning that players can matchmake into it (defaults to true)
-        /// </summary>
-        public bool? StartOpen;
-    }
-
     public enum GenericErrorCodes
     {
         Success,
@@ -2828,91 +2798,6 @@ namespace PlayFab.AdminModels
         /// reports can be found at: https://docs.microsoft.com/en-us/gaming/playfab/features/analytics/reports/quickstart.
         /// </summary>
         public string DownloadUrl;
-    }
-
-    [Serializable]
-    public class GetMatchmakerGameInfoRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// unique identifier of the lobby for which info is being requested
-        /// </summary>
-        public string LobbyId;
-    }
-
-    [Serializable]
-    public class GetMatchmakerGameInfoResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// version identifier of the game server executable binary being run
-        /// </summary>
-        public string BuildVersion;
-        /// <summary>
-        /// time when Game Server Instance is currently scheduled to end
-        /// </summary>
-        public DateTime? EndTime;
-        /// <summary>
-        /// unique identifier of the lobby
-        /// </summary>
-        public string LobbyId;
-        /// <summary>
-        /// game mode for this Game Server Instance
-        /// </summary>
-        public string Mode;
-        /// <summary>
-        /// array of unique PlayFab identifiers for users currently connected to this Game Server Instance
-        /// </summary>
-        public List<string> Players;
-        /// <summary>
-        /// region in which the Game Server Instance is running
-        /// </summary>
-        public Region? Region;
-        /// <summary>
-        /// IPV4 address of the server
-        /// </summary>
-        public string ServerIPV4Address;
-        /// <summary>
-        /// IPV6 address of the server
-        /// </summary>
-        public string ServerIPV6Address;
-        /// <summary>
-        /// communication port for this Game Server Instance
-        /// </summary>
-        public uint ServerPort;
-        /// <summary>
-        /// Public DNS name (if any) of the server
-        /// </summary>
-        public string ServerPublicDNSName;
-        /// <summary>
-        /// time when the Game Server Instance was created
-        /// </summary>
-        public DateTime StartTime;
-        /// <summary>
-        /// unique identifier of the Game Server Instance for this lobby
-        /// </summary>
-        public string TitleId;
-    }
-
-    /// <summary>
-    /// These details are used by the PlayFab matchmaking service to determine if an existing Game Server Instance has room for
-    /// additional users, and by the PlayFab game server management service to determine when a new Game Server Host should be
-    /// created in order to prevent excess load on existing Hosts.
-    /// </summary>
-    [Serializable]
-    public class GetMatchmakerGameModesRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// previously uploaded build version for which game modes are being requested
-        /// </summary>
-        public string BuildVersion;
-    }
-
-    [Serializable]
-    public class GetMatchmakerGameModesResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// array of game modes available for the specified build
-        /// </summary>
-        public List<GameModeInfo> GameModes;
     }
 
     /// <summary>
@@ -4153,95 +4038,6 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ModifyServerBuildRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// array of regions where this build can used, when it is active
-        /// </summary>
-        public List<Region> ActiveRegions;
-        /// <summary>
-        /// unique identifier of the previously uploaded build executable to be updated
-        /// </summary>
-        public string BuildId;
-        /// <summary>
-        /// appended to the end of the command line when starting game servers
-        /// </summary>
-        public string CommandLineTemplate;
-        /// <summary>
-        /// developer comment(s) for this build
-        /// </summary>
-        public string Comment;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// path to the game server executable. Defaults to gameserver.exe
-        /// </summary>
-        public string ExecutablePath;
-        /// <summary>
-        /// maximum number of game server instances that can run on a single host machine
-        /// </summary>
-        public int MaxGamesPerHost;
-        /// <summary>
-        /// minimum capacity of additional game server instances that can be started before the autoscaling service starts new host
-        /// machines (given the number of current running host machines and game server instances)
-        /// </summary>
-        public int MinFreeGameSlots;
-        /// <summary>
-        /// new timestamp
-        /// </summary>
-        public DateTime? Timestamp;
-    }
-
-    [Serializable]
-    public class ModifyServerBuildResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// array of regions where this build can used, when it is active
-        /// </summary>
-        public List<Region> ActiveRegions;
-        /// <summary>
-        /// unique identifier for this build executable
-        /// </summary>
-        public string BuildId;
-        /// <summary>
-        /// appended to the end of the command line when starting game servers
-        /// </summary>
-        public string CommandLineTemplate;
-        /// <summary>
-        /// developer comment(s) for this build
-        /// </summary>
-        public string Comment;
-        /// <summary>
-        /// path to the game server executable. Defaults to gameserver.exe
-        /// </summary>
-        public string ExecutablePath;
-        /// <summary>
-        /// maximum number of game server instances that can run on a single host machine
-        /// </summary>
-        public int MaxGamesPerHost;
-        /// <summary>
-        /// minimum capacity of additional game server instances that can be started before the autoscaling service starts new host
-        /// machines (given the number of current running host machines and game server instances)
-        /// </summary>
-        public int MinFreeGameSlots;
-        /// <summary>
-        /// the current status of the build validation and processing steps
-        /// </summary>
-        public GameBuildStatus? Status;
-        /// <summary>
-        /// time this build was last modified (or uploaded, if this build has never been modified)
-        /// </summary>
-        public DateTime Timestamp;
-        /// <summary>
-        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
-        /// title has been selected.
-        /// </summary>
-        public string TitleId;
-    }
-
-    [Serializable]
     public class ModifyUserVirtualCurrencyResult : PlayFabResultCommon
     {
         /// <summary>
@@ -4887,17 +4683,6 @@ namespace PlayFab.AdminModels
         /// The order's updated purchase status.
         /// </summary>
         public string PurchaseStatus;
-    }
-
-    public enum Region
-    {
-        USCentral,
-        USEast,
-        EUWest,
-        Singapore,
-        Japan,
-        Brazil,
-        Australia
     }
 
     /// <summary>
