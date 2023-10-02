@@ -1647,6 +1647,18 @@ namespace PlayFab.MultiplayerModels
         public double Weight;
     }
 
+    public enum DirectPeerConnectivityOptions
+    {
+        None,
+        SamePlatformType,
+        DifferentPlatformType,
+        AnyPlatformType,
+        SameEntityLoginProvider,
+        DifferentEntityLoginProvider,
+        AnyEntityLoginProvider,
+        AnyPlatformTypeAndEntityLoginProvider
+    }
+
     [Serializable]
     public class DynamicStandbySettings : PlayFabBaseModel
     {
@@ -3822,6 +3834,65 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
+    public class PartyInvitationConfiguration : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The list of PlayFab EntityKeys that the invitation allows to authenticate into the network. If this list is empty, all
+        /// users are allowed to authenticate using the invitation's identifier. This list may contain no more than 1024 items.
+        /// </summary>
+        public List<EntityKey> EntityKeys;
+        /// <summary>
+        /// The invite identifier for this party. If this value is specified, it must be no longer than 127 characters.
+        /// </summary>
+        public string Identifier;
+        /// <summary>
+        /// Controls which participants can revoke this invite.
+        /// </summary>
+        public string Revocability;
+    }
+
+    public enum PartyInvitationRevocability
+    {
+        Creator,
+        Anyone
+    }
+
+    [Serializable]
+    public class PartyNetworkConfiguration : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Controls whether and how to support direct peer-to-peer connection attempts among devices in the network.
+        /// </summary>
+        public string DirectPeerConnectivityOptions;
+        /// <summary>
+        /// The maximum number of devices allowed to connect to the network. Must be between 1 and 32, inclusive.
+        /// </summary>
+        public uint MaxDevices;
+        /// <summary>
+        /// The maximum number of devices allowed per user. Must be greater than 0.
+        /// </summary>
+        public uint MaxDevicesPerUser;
+        /// <summary>
+        /// The maximum number of endpoints allowed per device. Must be between 0 and 32, inclusive.
+        /// </summary>
+        public uint MaxEndpointsPerDevice;
+        /// <summary>
+        /// The maximum number of unique users allowed in the network. Must be greater than 0.
+        /// </summary>
+        public uint MaxUsers;
+        /// <summary>
+        /// The maximum number of users allowed per device. Must be between 1 and 8, inclusive.
+        /// </summary>
+        public uint MaxUsersPerDevice;
+        /// <summary>
+        /// An optionally-specified configuration for the initial invitation for this party. If not provided, default configuration
+        /// values will be used: a title-unique invitation identifier will be generated, the revocability will be Anyone, and the
+        /// EntityID list will be empty.
+        /// </summary>
+        public PartyInvitationConfiguration PartyInvitationConfiguration;
+    }
+
+    [Serializable]
     public class Port : PlayFabBaseModel
     {
         /// <summary>
@@ -4092,6 +4163,50 @@ namespace PlayFab.MultiplayerModels
         /// The virtual machine ID that the multiplayer server is located on.
         /// </summary>
         public string VmId;
+    }
+
+    /// <summary>
+    /// Requests a party session from a particular set of builds if build alias params is provided, in any of the given
+    /// preferred regions.
+    /// </summary>
+    [Serializable]
+    public class RequestPartyServiceRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The network configuration for this request.
+        /// </summary>
+        public PartyNetworkConfiguration NetworkConfiguration;
+        /// <summary>
+        /// A guid string party ID created track the party session over its life.
+        /// </summary>
+        public string PartyId;
+        /// <summary>
+        /// The preferred regions to request a party session from. The party service will iterate through the regions in the
+        /// specified order and allocate a party session from the first one that is available.
+        /// </summary>
+        public List<string> PreferredRegions;
+    }
+
+    [Serializable]
+    public class RequestPartyServiceResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The invitation identifier supplied in the PartyInvitationConfiguration, or the PlayFab-generated guid if none was
+        /// supplied.
+        /// </summary>
+        public string InvitationId;
+        /// <summary>
+        /// The guid string party ID of the party session.
+        /// </summary>
+        public string PartyId;
+        /// <summary>
+        /// A base-64 encoded string containing the serialized network descriptor for this party.
+        /// </summary>
+        public string SerializedNetworkDescriptor;
     }
 
     /// <summary>
@@ -4846,6 +4961,10 @@ namespace PlayFab.MultiplayerModels
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Forces the certificate renewal if the certificate already exists. Default is false
+        /// </summary>
+        public bool? ForceUpdate;
         /// <summary>
         /// The game certificate to upload.
         /// </summary>
