@@ -203,7 +203,7 @@ namespace PlayFab.ProfilesModels
         /// <summary>
         /// Attribute Statistic scores.
         /// </summary>
-        public List<int> Scores;
+        public List<string> Scores;
     }
 
     [Serializable]
@@ -224,7 +224,7 @@ namespace PlayFab.ProfilesModels
         /// <summary>
         /// Statistic scores
         /// </summary>
-        public List<int> Scores;
+        public List<string> Scores;
         /// <summary>
         /// Statistic value
         /// </summary>

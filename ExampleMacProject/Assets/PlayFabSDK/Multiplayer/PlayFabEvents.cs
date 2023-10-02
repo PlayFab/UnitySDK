@@ -137,6 +137,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerRemoveMemberResultEvent;
         public event PlayFabRequestEvent<RequestMultiplayerServerRequest> OnMultiplayerRequestMultiplayerServerRequestEvent;
         public event PlayFabResultEvent<RequestMultiplayerServerResponse> OnMultiplayerRequestMultiplayerServerResultEvent;
+        public event PlayFabRequestEvent<RequestPartyServiceRequest> OnMultiplayerRequestPartyServiceRequestEvent;
+        public event PlayFabResultEvent<RequestPartyServiceResponse> OnMultiplayerRequestPartyServiceResultEvent;
         public event PlayFabRequestEvent<RolloverContainerRegistryCredentialsRequest> OnMultiplayerRolloverContainerRegistryCredentialsRequestEvent;
         public event PlayFabResultEvent<RolloverContainerRegistryCredentialsResponse> OnMultiplayerRolloverContainerRegistryCredentialsResultEvent;
         public event PlayFabRequestEvent<SetMatchmakingQueueRequest> OnMultiplayerSetMatchmakingQueueRequestEvent;
