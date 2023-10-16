@@ -1181,6 +1181,10 @@ namespace PlayFab.AdminModels
         /// Manually specified information for an OpenID Connect issuer.
         /// </summary>
         public OpenIdIssuerInformation IssuerInformation;
+        /// <summary>
+        /// Override the issuer name for user indexing and lookup.
+        /// </summary>
+        public string IssuerOverride;
     }
 
     /// <summary>
@@ -4242,9 +4246,17 @@ namespace PlayFab.AdminModels
         /// </summary>
         public bool DiscoverConfiguration;
         /// <summary>
+        /// Ignore 'nonce' claim in identity tokens.
+        /// </summary>
+        public bool? IgnoreNonce;
+        /// <summary>
         /// Information for an OpenID Connect provider.
         /// </summary>
         public OpenIdIssuerInformation IssuerInformation;
+        /// <summary>
+        /// Override the issuer name for user indexing and lookup.
+        /// </summary>
+        public string IssuerOverride;
     }
 
     [Serializable]
@@ -6575,6 +6587,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public string ConnectionId;
         /// <summary>
+        /// Ignore 'nonce' claim in identity tokens.
+        /// </summary>
+        public bool? IgnoreNonce;
+        /// <summary>
         /// The issuer URL or discovery document URL to read issuer information from
         /// </summary>
         public string IssuerDiscoveryUrl;
@@ -6582,6 +6598,10 @@ namespace PlayFab.AdminModels
         /// Manually specified information for an OpenID Connect issuer.
         /// </summary>
         public OpenIdIssuerInformation IssuerInformation;
+        /// <summary>
+        /// Override the issuer name for user indexing and lookup.
+        /// </summary>
+        public string IssuerOverride;
     }
 
     /// <summary>
