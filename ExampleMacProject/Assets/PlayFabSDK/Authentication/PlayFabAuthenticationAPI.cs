@@ -9,9 +9,9 @@ namespace PlayFab
 {
     /// <summary>
     /// The Authentication APIs provide a convenient way to convert classic authentication responses into entity authentication
-    /// models. These APIs will provide you with the entity authentication token needed for subsequent Entity API calls. Manage
-    /// API keys for authenticating any entity. The game_server API is designed to create uniquely identifiable game_server
-    /// entities. The game_server Entity token can be used to call Matchmaking Lobby and Pubsub for server scenarios.
+    /// models. These APIs will provide you with the entity authentication token needed for subsequent Entity API calls. The
+    /// game_server API is designed to create uniquely identifiable game_server entities. The game_server Entity token can be
+    /// used to call Matchmaking Lobby and Pubsub for server scenarios.
     /// </summary>
     public static class PlayFabAuthenticationAPI
     {
