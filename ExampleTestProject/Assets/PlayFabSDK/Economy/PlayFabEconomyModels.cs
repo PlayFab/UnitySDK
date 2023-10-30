@@ -2104,7 +2104,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// Xbox Token used for delegated business partner authentication.
+        /// Xbox Token used for delegated business partner authentication. Token provided by the Xbox Live SDK method
+        /// GetTokenAndSignatureAsync("POST", "https://playfabapi.com/", "").
         /// </summary>
         public string XboxToken;
     }
