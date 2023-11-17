@@ -96,12 +96,6 @@ You are now ready to begin making API calls using the PlayFabClientAPI class. Ch
 
 ## 5. Troubleshooting:
 
-CASE: Follow these instructions to disable IDFA for your IOS release:
- * Do a global code search in the C# project for: #define DISABLE_IDFA
-  * Uncomment any of these defines you find.
- * Alternately, you can add DISABLE_IDFA to the "Scripting Define Symbols" in the Build settings,
- * Or, Check the same API Settings option in our Editor Extension plugin
-
 CASE: If you run into conflicts when upgrading SDKs, remove all files from previous versions and perform a fresh import of our unitypackage or SDK files. 
 
 #### Contact Us
