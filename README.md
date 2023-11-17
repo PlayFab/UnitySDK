@@ -14,13 +14,7 @@ This document describes the process of configuring and building the PlayFab Unit
 
 This document assumes familiarity with the Unity game engine, MonoDevelop Unity .NET programming environment, and Mac OS X operating system environment.
 
-* Users should also be familiar with the topics covered in our [getting started guide](https://api.playfab.com/docs/general-getting-started).
-
-To connect to the PlayFab service, your machine must be running TLS v1.2 or better.
-* For Windows, this means Windows 7 and above
-* [Official Microsoft Documentation](https://msdn.microsoft.com/en-us/library/windows/desktop/aa380516%28v=vs.85%29.aspx)
-* [Support for SSL/TLS protocols on Windows](http://blogs.msdn.com/b/kaushal/archive/2011/10/02/support-for-ssl-tls-protocols-on-windows.aspx)
-
+* Users should also be familiar with the topics covered in our [getting started guide](https://learn.microsoft.com/gaming/playfab/what-is-playfab).
 
 ## 3. Installing or Upgrading the PlayFab UnitySdk
 
@@ -94,11 +88,11 @@ Advanced users can still set their secret key anywhere in their game setup:
 
 ## 4. Usage Instructions:
 
-You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://api.playfab.com/documentation/client) for a complete list of available APIs.
+You are now ready to begin making API calls using the PlayFabClientAPI class. Check out the online [documentation](https://learn.microsoft.com/rest/api/playfab/client/?view=playfab-rest) for a complete list of available APIs.
 
 ##### New Users:
 
-* Check out our Tutorials, Samples and more [here](https://api.playfab.com/docs/tutorials)
+* Check out our Tutorials, Samples and more [here](https://learn.microsoft.com/gaming/playfab/resources/playfab-samples)
 
 ## 5. Troubleshooting:
 
