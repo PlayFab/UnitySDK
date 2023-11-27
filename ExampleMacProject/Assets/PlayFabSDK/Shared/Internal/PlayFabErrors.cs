@@ -563,6 +563,7 @@ namespace PlayFab
         InvalidNamespaceMismatch = 1561,
         LeaderboardColumnLengthMismatch = 1562,
         InvalidStatisticScore = 1563,
+        LeaderboardColumnsNotSpecified = 1564,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
@@ -707,10 +708,10 @@ namespace PlayFab
         LobbyNewOwnerMustBeConnected = 13009,
         LobbyCurrentOwnerStillConnected = 13010,
         LobbyMemberIsNotOwner = 13011,
-        LobbyAssociatedServerMismatch = 13012,
-        LobbyAssociatedServerNotFound = 13013,
-        LobbyAssociatedToDifferentServer = 13014,
-        LobbyServerAlreadyAssociated = 13015,
+        LobbyServerMismatch = 13012,
+        LobbyServerNotFound = 13013,
+        LobbyDifferentServerAlreadyJoined = 13014,
+        LobbyServerAlreadyJoined = 13015,
         LobbyIsNotClientOwned = 13016,
         LobbyDoesNotUseConnections = 13017,
         EventSamplingInvalidRatio = 14000,
@@ -758,7 +759,8 @@ namespace PlayFab
         AddonAlreadyExists = 19008,
         AddonDoesntExist = 19009,
         CopilotDisabled = 19100,
-        CopilotInvalidRequest = 19101
+        CopilotInvalidRequest = 19101,
+        TrueSkillUnauthorized = 20000
     }
 
     public class PlayFabError
