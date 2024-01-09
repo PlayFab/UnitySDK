@@ -15,7 +15,7 @@ Unity Project Setup
   * ![Unity image](/images/Unity/UnityCreateProject.png)
   * Finish creating a new empty project with a name and location of your choice
 * Download PlayFab UnitySdk Unitypackage
-  * https://api.playfab.com/sdks/download/unity-v2ap
+  * https://aka.ms/PlayFabUnitySdk
   * Find the "Project" window in the Unity editor
   * Import the PlayFab unitypackage one of two ways:
     * From Windows, Drag the PlayFab UnitySDK.unitypackage file onto the Project panel in Unity
@@ -69,7 +69,7 @@ public class PlayFabLogin : MonoBehaviour
 * Create a new gameobject, and attach this script to this gameobject
 * In PlayFab Game Manager (via the PlayFab website), you should be able to create your own account, and game title
   * See the first half of this guide for details:
-  * [PlayFab Getting Started](https://api.playfab.com/docs/getting-started-with-playfab)
+  * [PlayFab Getting Started](https://learn.microsoft.com/gaming/playfab/gamemanager/quickstart)
 * Once you have done this, please find this line in PlayFabLogin.cs created above:
   * PlayFabSettings.TitleId = "144"; // Please change this value to your own titleId from PlayFab Game Manager
   * Replace "144" with your own titleId, from Game Manager
@@ -83,7 +83,7 @@ Finish and Execute
   * ![Unity image](/images/Unity/FirstCallLog.png)
 * At this point, you can start making other API calls, and building your game
 * For a list of all available client API calls, see our documentation:
-  * https://api.playfab.com/
+  * https://learn.microsoft.com/rest/api/playfab/client/?view=playfab-rest
 * Happy coding!
 
 Deconstruct the code
@@ -108,10 +108,10 @@ Inside of Setup:
   * Every API method requires a unique request object, with a mix of optional and mandatory parameters
     * For LoginWithCustomIDRequest, there is a mandatory parameter of CustomId, which uniquely identifies a player and CreateAccount, which allows the creation of a new account with this call.
   * For login, most developers will want to use a more appropriate login method
-    * See the [PlayFab Login Documentation](https://api.playfab.com/Documentation/Client#Authentication) for a list of all login methods, and input parameters.  Common choices are:
-      * [LoginWithAndroidDeviceID](https://api.playfab.com/Documentation/Client/method/LoginWithAndroidDeviceID)
-      * [LoginWithIOSDeviceID](https://api.playfab.com/Documentation/Client/method/LoginWithIOSDeviceID)
-      * [LoginWithEmailAddress](https://api.playfab.com/Documentation/Client/method/LoginWithEmailAddress)
+    * See the [PlayFab Login Documentation](https://learn.microsoft.com/rest/api/playfab/client/authentication?view=playfab-rest) for a list of all login methods, and input parameters.  Common choices are:
+      * [LoginWithAndroidDeviceID](https://learn.microsoft.com/rest/api/playfab/client/authentication/login-with-android-device-id?view=playfab-rest)
+      * [LoginWithIOSDeviceID](https://learn.microsoft.com/rest/api/playfab/client/authentication/login-with-ios-device-id?view=playfab-rest)
+      * [LoginWithEmailAddress](https://learn.microsoft.com/rest/api/playfab/client/authentication/login-with-email-address?view=playfab-rest)
 * Inside of OnLoginSuccess:
   * The result object of many API success callbacks will contain the requested information
   * LoginResult contains some basic information about the player, but for most users, login is simply a mandatory step before calling other APIs
@@ -121,6 +121,6 @@ Inside of Setup:
     * PlayFabSettings.TitleId is not set.  If you forget to set titleId to your title, then nothing will work
     * Request parameters.  If you have not provided the correct or required information for a particular API call, then it will fail.  See error.errorMessage, error.errorDetails, or error.GenerateErrorReport() for more info
     * Device connectivity issue.  Cell-phones lose/regain connectivity constantly, and so any API call at any time can fail randomly, and then work immediately after.  Going into a tunnel can disconnect you completely
-    * PlayFab server issue.  As with all software, there can be issues.  See our [release notes](https://api.playfab.com/releaseNotes/) for updates
+    * PlayFab server issue.  As with all software, there can be issues.  See our [release notes](https://learn.microsoft.com/gaming/playfab/release-notes/) for updates
     * The internet is not 100% reliable.  Sometimes the message is corrupted or fails to reach the PlayFab server
   * If you are having difficulty debugging an issue, and the information within the error callback is not sufficient, please visit us on our [forums](https://community.playfab.com/index.html)

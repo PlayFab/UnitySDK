@@ -17,7 +17,7 @@ This document assumes familiarity with the Unity game engine, MonoDevelop Unity 
 To connect to the PlayFab service, your machine must be running TLS v1.2 or better.
 
 - For Windows, this means Windows 7 and above
-- [Official Microsoft Documentation](https://msdn.microsoft.com/en-us/library/windows/desktop/aa380516%28v=vs.85%29.aspx)
+- [Official Microsoft Documentation](https://msdn.microsoft.com/library/windows/desktop/aa380516%28v=vs.85%29.aspx)
 - [Support for SSL/TLS protocols on Windows](http://blogs.msdn.com/b/kaushal/archive/2011/10/02/support-for-ssl-tls-protocols-on-windows.aspx)
 
 
@@ -46,7 +46,7 @@ So what do you need to remove?  Depending on which version of the SDK you have t
 		1. PlayFabUrlRequest.mm
 		2. PlayFabiOS.cs
 
-3. 	Now that you have essentially cleaned out the previous installation,  you will need to import the new SDK which you can get from the [Packages folder of this repository](https://github.com/PlayFab/UnitySDK/tree/versioned/Packages), or via our website at [http://api.playfab.com/sdks/unity](https://api.playfab.com/sdks/unity), or click this link for a [direct download to the unity package](https://github.com/PlayFab/UnitySDK/raw/versioned/Packages/UnitySDK.unitypackage).
+3. 	Now that you have essentially cleaned out the previous installation,  you will need to import the new SDK which you can get from the [Packages folder of this repository](https://github.com/PlayFab/UnitySDK/tree/versioned/Packages), or via our website at https://learn.microsoft.com/gaming/playfab/sdks/unity3d/, or click this link for a [direct download to the unity package](https://github.com/PlayFab/UnitySDK/raw/versioned/Packages/UnitySDK.unitypackage).
 	1. 	Once downloaded, import the unitypackage.  This can be done by double clicking on the file, or using the context menu in the unity project view - Import Package --> Custom Package [(read more about asset packages)](https://docs.unity3d.com/Manual/AssetPackages.html).
 
 

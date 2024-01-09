@@ -57,11 +57,15 @@ PlayFabSettings.TitleId = "144";
 
 #### HTTP Request Configuration:
 
-From the EdEx panel (Settings -> Project), or the PlayFabSharedSettings scriptable object, you can define one of two options for making your HTTPS Rest calls to PlayFab.
+From the EdEx panel (Settings -> Project), or the PlayFabSharedSettings scriptable object, you can set the web request implementaiton used when making HTTPS REST calls to PlayFab.
 
-The UnityWww option uses the Unity WWW class to make web requests. This is the more stable option, but all requests are made using the main Unity thread.
+UnityWebRequest should be your default choice for any new projects. All other options exist for compatibility or customization. It uses the UnityWebRequest built-in engine class and should be appropriate for most scenarios on most platforms and modern engine versions.
 
-The HttpWebRequest option uses the C# native HttpRequest library. This option is multi-threaded, and most of the request will not execute on the main thread. Additionally, advanced users can use PlayFabSettings to customize their request timeouts and other HttpRequest settings (not documented). There is currently a bug in this option where performance will degrade for long running GameServers, or clients that run for more than 24 hours. For these situations, please use UnityWWW.
+The HttpWebRequest option uses the C# HttpRequest library. This option is multi-threaded, and most of the requests will not execute on the main thread. Additionally, advanced users can use PlayFabSettings to customize their request timeouts and other HttpRequest settings (not documented).
+
+The UnityWww option is only available on older versions of the engine (pre 2018.2). It uses the Unity WWW class to make web requests.
+
+The CustomHttp option exists for those that wish to implement their own ITransportPlugin. If you need to go down this route, you can follow the existing code in either PlayFabUnityHttp.cs or PlayFabWebRequest.cs. When you need to register your custom plugin, call PluginManager.SetPlugin using a PluginContract of PlayFab_Transport.
 
 #### To make server API calls:
 
