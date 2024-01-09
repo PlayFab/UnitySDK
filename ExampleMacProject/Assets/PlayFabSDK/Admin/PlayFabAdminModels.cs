@@ -195,6 +195,31 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class AddInventoryItemsV2SegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Amount of the item to be granted to a player
+        /// </summary>
+        public int? Amount;
+        /// <summary>
+        /// The collection id for where the item will be granted in the player inventory
+        /// </summary>
+        public string CollectionId;
+        /// <summary>
+        /// The duration in seconds of the subscription to be granted to a player
+        /// </summary>
+        public int? DurationInSeconds;
+        /// <summary>
+        /// The id of item to be granted to the player
+        /// </summary>
+        public string ItemId;
+        /// <summary>
+        /// The stack id for where the item will be granted in the player inventory
+        /// </summary>
+        public string StackId;
+    }
+
+    [Serializable]
     public class AddInventoryItemV2Content : PlayFabBaseModel
     {
         /// <summary>
@@ -1500,6 +1525,23 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class DeleteInventoryItemsV2SegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The collection id for where the item will be removed from the player inventory
+        /// </summary>
+        public string CollectionId;
+        /// <summary>
+        /// The id of item to be removed from the player
+        /// </summary>
+        public string ItemId;
+        /// <summary>
+        /// The stack id for where the item will be removed from the player inventory
+        /// </summary>
+        public string StackId;
+    }
+
+    [Serializable]
     public class DeleteInventoryItemV2Content : PlayFabBaseModel
     {
         /// <summary>
@@ -2568,6 +2610,8 @@ namespace PlayFab.AdminModels
         LeaderboardColumnLengthMismatch,
         InvalidStatisticScore,
         LeaderboardColumnsNotSpecified,
+        LeaderboardMaxSizeTooLarge,
+        InvalidAttributeStatisticsSpecified,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2611,6 +2655,7 @@ namespace PlayFab.AdminModels
         CatalogItemTypeInvalid,
         CatalogBadRequest,
         CatalogTooManyRequests,
+        InvalidCatalogItemConfiguration,
         ExportInvalidStatusUpdate,
         ExportInvalidPrefix,
         ExportBlobContainerDoesNotExist,
@@ -2742,6 +2787,8 @@ namespace PlayFab.AdminModels
         EventSinkAadNotFound,
         EventSinkDatabaseNotFound,
         EventSinkTitleUnauthorized,
+        EventSinkInsufficientRoleAssignment,
+        EventSinkContainerNotFound,
         OperationCanceled,
         InvalidDisplayNameRandomSuffixLength,
         AllowNonUniquePlayerDisplayNamesDisableNotAllowed,
@@ -2764,7 +2811,23 @@ namespace PlayFab.AdminModels
         AddonDoesntExist,
         CopilotDisabled,
         CopilotInvalidRequest,
-        TrueSkillUnauthorized
+        TrueSkillUnauthorized,
+        TrueSkillBadRequest,
+        TrueSkillMatchResultAlreadySubmitted,
+        TrueSkillDuplicatePlayerInMatchResult,
+        TrueSkillInvalidRanksInMatchResult,
+        TrueSkillNoWinnerInMatchResult,
+        TrueSkillMissingRequiredConditionInMatchResult,
+        TrueSkillMissingRequiredEventInMatchResult,
+        TrueSkillUnknownEventInMatchResult,
+        TrueSkillUnknownConditionName,
+        TrueSkillUnknownConditionValue,
+        TrueSkillUnknownScenarioId,
+        TrueSkillUnknownModelId,
+        TrueSkillNoActiveModelInScenario,
+        StateShareUnauthorized,
+        StateShareStateNotFound,
+        StateShareLinkNotFound
     }
 
     [Serializable]
@@ -5907,9 +5970,17 @@ namespace PlayFab.AdminModels
     public class SegmentTrigger : PlayFabBaseModel
     {
         /// <summary>
+        /// Add inventory item v2 segment trigger action.
+        /// </summary>
+        public AddInventoryItemsV2SegmentAction AddInventoryItemsV2Action;
+        /// <summary>
         /// Ban player segment trigger action.
         /// </summary>
         public BanPlayerSegmentAction BanPlayerAction;
+        /// <summary>
+        /// Delete inventory item v2 segment trigger action.
+        /// </summary>
+        public DeleteInventoryItemsV2SegmentAction DeleteInventoryItemsV2Action;
         /// <summary>
         /// Delete player segment trigger action.
         /// </summary>
@@ -5946,6 +6017,10 @@ namespace PlayFab.AdminModels
         /// Push notification segment trigger action.
         /// </summary>
         public PushNotificationSegmentAction PushNotificationAction;
+        /// <summary>
+        /// Subtract inventory item v2 segment trigger action.
+        /// </summary>
+        public SubtractInventoryItemsV2SegmentAction SubtractInventoryItemsV2Action;
     }
 
     /// <summary>
@@ -6371,6 +6446,31 @@ namespace PlayFab.AdminModels
         CustomerDidNotAcceptPriceChange,
         FreeTrial,
         PaymentPending
+    }
+
+    [Serializable]
+    public class SubtractInventoryItemsV2SegmentAction : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Amount of the item to removed from the player
+        /// </summary>
+        public int? Amount;
+        /// <summary>
+        /// The collection id for where the item will be removed from the player inventory
+        /// </summary>
+        public string CollectionId;
+        /// <summary>
+        /// The duration in seconds to be removed from the subscription in the players inventory
+        /// </summary>
+        public int? DurationInSeconds;
+        /// <summary>
+        /// The id of item to be removed from the player
+        /// </summary>
+        public string ItemId;
+        /// <summary>
+        /// The stack id for where the item will be removed from the player inventory
+        /// </summary>
+        public string StackId;
     }
 
     [Serializable]

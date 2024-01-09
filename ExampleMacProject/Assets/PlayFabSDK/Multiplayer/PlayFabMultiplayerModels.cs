@@ -2730,6 +2730,51 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Preview: Request to join a lobby as a server. Only callable by a game_server entity and this is restricted to client
+    /// owned lobbies which are using connections.
+    /// </summary>
+    [Serializable]
+    public class JoinLobbyAsServerRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// A field which indicates which lobby the game_server will be joining. This field is opaque to everyone except the Lobby
+        /// service.
+        /// </summary>
+        public string ConnectionString;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The private key-value pairs which are visible to all entities in the lobby but can only be modified by the joined
+        /// server.At most 30 key - value pairs may be stored here, keys are limited to 30 characters and values to 1000.The total
+        /// size of all serverData values may not exceed 4096 bytes.
+        /// </summary>
+        public Dictionary<string,string> ServerData;
+        /// <summary>
+        /// The game_server entity which is joining the Lobby. If a different game_server entity has already joined the request will
+        /// fail unless the joined entity is disconnected, in which case the incoming game_server entity will replace the
+        /// disconnected entity.
+        /// </summary>
+        public EntityKey ServerEntity;
+    }
+
+    [Serializable]
+    public class JoinLobbyAsServerResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Successfully joined lobby's id.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// A setting that describes the state of the ServerData after JoinLobbyAsServer call is completed. It is "Initialized", the
+        /// first time a server joins the lobby. It is "Ignored" in any subsequent JoinLobbyAsServer calls after it has been
+        /// initialized. Any new server taking over should call UpdateLobbyAsServer to update ServerData fields.
+        /// </summary>
+        public ServerDataStatus ServerDataStatus;
+    }
+
+    /// <summary>
     /// Request to join a lobby. Only a client can join a lobby.
     /// </summary>
     [Serializable]
@@ -2794,6 +2839,28 @@ namespace PlayFab.MultiplayerModels
     [Serializable]
     public class JoinMatchmakingTicketResult : PlayFabResultCommon
     {
+    }
+
+    /// <summary>
+    /// Preview: Request for server to leave a lobby. Only a game_server entity can leave and this is restricted to client owned
+    /// lobbies which are using connections.
+    /// </summary>
+    [Serializable]
+    public class LeaveLobbyAsServerRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The game_server entity leaving the lobby. If the game_server was subscribed to notifications, it will be unsubscribed.
+        /// If a the given game_server entity is not in the lobby, it will fail.
+        /// </summary>
+        public EntityKey ServerEntity;
     }
 
     /// <summary>
@@ -4289,6 +4356,12 @@ namespace PlayFab.MultiplayerModels
         public List<Schedule> ScheduleList;
     }
 
+    public enum ServerDataStatus
+    {
+        Initialized,
+        Ignored
+    }
+
     [Serializable]
     public class ServerDetails : PlayFabBaseModel
     {
@@ -4859,6 +4932,42 @@ namespace PlayFab.MultiplayerModels
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
+    }
+
+    /// <summary>
+    /// Preview: Request to update the serverData and serverEntity in case of migration. Only a game_server entity can update
+    /// this information and this is restricted to client owned lobbies which are using connections.
+    /// </summary>
+    [Serializable]
+    public class UpdateLobbyAsServerRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The id of the lobby.
+        /// </summary>
+        public string LobbyId;
+        /// <summary>
+        /// The lobby server. Optional. Set a different server as the joined server of the lobby (there can only be 1 joined
+        /// server). When changing the server the previous server will automatically be unsubscribed.
+        /// </summary>
+        public EntityKey Server;
+        /// <summary>
+        /// The private key-value pairs which are visible to all entities in the lobby and modifiable by the joined server.
+        /// Optional. Sets or updates key-value pairs on the lobby. Only the current lobby lobby server can set serverData. Keys may
+        /// be an arbitrary string of at most 30 characters. The total size of all serverData values may not exceed 4096 bytes.
+        /// Values are not individually limited. There can be up to 30 key-value pairs stored here. Keys are case sensitive.
+        /// </summary>
+        public Dictionary<string,string> ServerData;
+        /// <summary>
+        /// The keys to delete from the lobby serverData. Optional. Optional. Deletes key-value pairs on the lobby. Only the current
+        /// joined lobby server can delete serverData. All the specified keys will be removed from the serverData. Keys that do not
+        /// exist in the lobby are a no-op. If the key to delete exists in the serverData (same request) it will result in a bad
+        /// request.
+        /// </summary>
+        public List<string> ServerDataToDelete;
     }
 
     /// <summary>
