@@ -2766,12 +2766,6 @@ namespace PlayFab.MultiplayerModels
         /// Successfully joined lobby's id.
         /// </summary>
         public string LobbyId;
-        /// <summary>
-        /// A setting that describes the state of the ServerData after JoinLobbyAsServer call is completed. It is "Initialized", the
-        /// first time a server joins the lobby. It is "Ignored" in any subsequent JoinLobbyAsServer calls after it has been
-        /// initialized. Any new server taking over should call UpdateLobbyAsServer to update ServerData fields.
-        /// </summary>
-        public ServerDataStatus ServerDataStatus;
     }
 
     /// <summary>
@@ -3339,6 +3333,10 @@ namespace PlayFab.MultiplayerModels
         /// deployed for the title.
         /// </summary>
         public bool? IncludeAllRegions;
+        /// <summary>
+        /// Indicates the Routing Preference used by the Qos servers. The default Routing Preference is Microsoft
+        /// </summary>
+        public string RoutingPreference;
     }
 
     [Serializable]
@@ -3507,6 +3505,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> SearchData;
         /// <summary>
+        /// Preview: Lobby joined server. This is not the server owner, rather the server that has joined a client owned lobby.
+        /// </summary>
+        public LobbyServer Server;
+        /// <summary>
         /// A flag which determines if connections are used. Defaults to true. Only set on create.
         /// </summary>
         public bool UseConnections;
@@ -3515,6 +3517,23 @@ namespace PlayFab.MultiplayerModels
     [Serializable]
     public class LobbyEmptyResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class LobbyServer : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Opaque string, stored on a Subscribe call, which indicates the connection a joined server has with PubSub.
+        /// </summary>
+        public string PubSubConnectionHandle;
+        /// <summary>
+        /// Key-value pairs specific to the joined server.
+        /// </summary>
+        public Dictionary<string,string> ServerData;
+        /// <summary>
+        /// The server entity key.
+        /// </summary>
+        public EntityKey ServerEntity;
     }
 
     [Serializable]
@@ -4356,12 +4375,6 @@ namespace PlayFab.MultiplayerModels
         public List<Schedule> ScheduleList;
     }
 
-    public enum ServerDataStatus
-    {
-        Initialized,
-        Ignored
-    }
-
     [Serializable]
     public class ServerDetails : PlayFabBaseModel
     {
@@ -4950,11 +4963,6 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string LobbyId;
         /// <summary>
-        /// The lobby server. Optional. Set a different server as the joined server of the lobby (there can only be 1 joined
-        /// server). When changing the server the previous server will automatically be unsubscribed.
-        /// </summary>
-        public EntityKey Server;
-        /// <summary>
         /// The private key-value pairs which are visible to all entities in the lobby and modifiable by the joined server.
         /// Optional. Sets or updates key-value pairs on the lobby. Only the current lobby lobby server can set serverData. Keys may
         /// be an arbitrary string of at most 30 characters. The total size of all serverData values may not exceed 4096 bytes.
@@ -4968,6 +4976,11 @@ namespace PlayFab.MultiplayerModels
         /// request.
         /// </summary>
         public List<string> ServerDataToDelete;
+        /// <summary>
+        /// The lobby server. Optional. Set a different server as the joined server of the lobby (there can only be 1 joined
+        /// server). When changing the server the previous server will automatically be unsubscribed.
+        /// </summary>
+        public EntityKey ServerEntity;
     }
 
     /// <summary>
