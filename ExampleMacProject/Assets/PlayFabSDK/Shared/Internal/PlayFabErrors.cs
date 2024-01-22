@@ -566,6 +566,8 @@ namespace PlayFab
         LeaderboardColumnsNotSpecified = 1564,
         LeaderboardMaxSizeTooLarge = 1565,
         InvalidAttributeStatisticsSpecified = 1566,
+        LeaderboardNotFound = 1567,
+        TokenSigningKeyNotFound = 1568,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,

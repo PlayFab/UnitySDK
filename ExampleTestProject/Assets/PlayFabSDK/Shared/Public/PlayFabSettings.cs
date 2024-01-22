@@ -29,7 +29,29 @@ namespace PlayFab
 
     public static class PlayFabSettings
     {
-        static PlayFabSettings() { }
+        static PlayFabSettings() 
+        {
+#if UNITY_GAMECORE || UNITY_GAMECORE_XBOXONE || UNITY_GAMECORE_SCARLETT || MICROSOFT_GAME_CORE
+            PlatformString = "GDK";
+#else
+        switch (Application.platform)
+        {
+            case RuntimePlatform.WindowsEditor:
+            case RuntimePlatform.WindowsPlayer:
+            case RuntimePlatform.WindowsServer:
+                PlatformString = "Windows";
+                break;
+
+            case RuntimePlatform.IPhonePlayer:
+                PlatformString = "iOS";
+                break;
+
+            default:
+                PlatformString = Application.platform.ToString();
+                break;
+        }
+#endif
+        }
 
         private static PlayFabSharedSettings _playFabShared = null;
         private static PlayFabSharedSettings PlayFabSharedPrivate { get { if (_playFabShared == null) _playFabShared = GetSharedSettingsObjectPrivate(); return _playFabShared; } }
@@ -43,9 +65,11 @@ namespace PlayFab
         /// </summary>
         public static readonly PlayFabAuthenticationContext staticPlayer = new PlayFabAuthenticationContext();
 
-        public const string SdkVersion = "2.185.240105";
-        public const string BuildIdentifier = "test";
-        public const string VersionString = "UnitySDK-2.185.240105";
+        public const string SdkVersion = "2.187.240119";
+        public const string BuildIdentifier = "adobuild_unitysdk_217";
+        public const string VersionString = "UnitySDK-2.187.240119";
+        public static string EngineVersion = UnityEngine.Application.unityVersion;
+        public static string PlatformString;
 
         public const string DefaultPlayFabApiUrl = "playfabapi.com";
 
@@ -142,7 +166,7 @@ namespace PlayFab
             _cachedStringBuilder.Clear();
             return _cachedStringBuilder;
         }
-        
+
         public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams, PlayFabApiSettings apiSettings = null)
         {
             StringBuilder sb = AcquireStringBuilder();
@@ -198,9 +222,9 @@ namespace PlayFab
 
             sb.Append(baseUrl).Append(apiCall);
 
+            bool firstParam = true;
             if (getParams != null)
             {
-                bool firstParam = true;
                 foreach (var paramPair in getParams)
                 {
                     if (firstParam)
@@ -215,6 +239,10 @@ namespace PlayFab
                     sb.Append(paramPair.Key).Append("=").Append(paramPair.Value);
                 }
             }
+
+            sb.Append(firstParam ? "?" : "&");
+            sb.Append("engine=").Append(EngineVersion);
+            sb.Append("&platform=").Append(PlatformString);
 
             return sb.ToString();
         }
