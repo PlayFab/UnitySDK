@@ -28,7 +28,7 @@ namespace PlayFab.PfEditor
             var settingsButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton");
             var dataButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton");
             var helpButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton");
-            var logoutButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton");
+            var logoutButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("Button");
             var toolsButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton");
             var packagesButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton");
 
@@ -72,7 +72,7 @@ namespace PlayFab.PfEditor
                     OnHelpClicked();
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("LOGOUT", logoutButtonStyle, GUILayout.MaxWidth(55)))
+                if (GUILayout.Button("LOGOUT", logoutButtonStyle, GUILayout.MaxWidth(85)))
                     OnLogoutClicked();
             }
         }

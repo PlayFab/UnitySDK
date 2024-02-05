@@ -341,13 +341,13 @@ namespace PlayFab.PfEditor
                     // clear blocking requests
                     ProgressBar.UpdateState(ProgressBar.ProgressBarStates.error);
                     ClearBlockingRequest();
-                    Debug.LogError(string.Format("PlayFab EditorExtensions: Caught an error:{0}", status));
+                    Debug.LogError(string.Format("<color=white>PlayFab EditorExtensions: Caught an error:{0}", status + "</color>"));
                     break;
 
                 case EdExStates.OnWarning:
                     ProgressBar.UpdateState(ProgressBar.ProgressBarStates.warning);
                     ClearBlockingRequest();
-                    Debug.LogWarning(string.Format("PlayFab EditorExtensions: {0}", status));
+                    Debug.LogWarning(string.Format("<color=white>PlayFab EditorExtensions: {0}", status + "</color>"));
                     break;
 
                 case EdExStates.OnSuccess:
