@@ -97,6 +97,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayFabIDsFromNintendoSwitchDeviceIdsResult> OnServerGetPlayFabIDsFromNintendoSwitchDeviceIdsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromPSNAccountIDsRequest> OnServerGetPlayFabIDsFromPSNAccountIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromPSNAccountIDsResult> OnServerGetPlayFabIDsFromPSNAccountIDsResultEvent;
+        public event PlayFabRequestEvent<GetPlayFabIDsFromPSNOnlineIDsRequest> OnServerGetPlayFabIDsFromPSNOnlineIDsRequestEvent;
+        public event PlayFabResultEvent<GetPlayFabIDsFromPSNOnlineIDsResult> OnServerGetPlayFabIDsFromPSNOnlineIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromSteamIDsRequest> OnServerGetPlayFabIDsFromSteamIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromSteamIDsResult> OnServerGetPlayFabIDsFromSteamIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromTwitchIDsRequest> OnServerGetPlayFabIDsFromTwitchIDsRequestEvent;

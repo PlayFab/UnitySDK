@@ -79,7 +79,13 @@ namespace PlayFab.PfEditor
                 using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
                 {
                     GUILayout.FlexibleSpace();
+                    Texture2D backgroundTexture = new Texture2D(1, 1);
+                    backgroundTexture.SetPixel(0, 0, Color.black); // Change Color.blue to the desired background color
+                    backgroundTexture.Apply();
+
                     sdkFolder = EditorGUILayout.ObjectField(sdkFolder, typeof(UnityEngine.Object), false, GUILayout.MaxWidth(200));
+                    EditorStyles.objectField.normal.background = backgroundTexture;
+                    EditorStyles.objectField.normal.textColor = new Color(1f, 1f, 1f, 2f);
                     GUILayout.FlexibleSpace();
                 }
 
