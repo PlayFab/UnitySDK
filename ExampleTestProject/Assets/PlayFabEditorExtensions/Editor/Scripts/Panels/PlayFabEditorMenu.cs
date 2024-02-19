@@ -71,7 +71,7 @@ namespace PlayFab.PfEditor
                 if (GUILayout.Button("HELP", helpButtonStyle, GUILayout.MaxWidth(45)))
                     OnHelpClicked();
                 GUILayout.FlexibleSpace();
-
+                GUI.SetNextControlName("logout");
                 if (GUILayout.Button("LOGOUT", logoutButtonStyle, GUILayout.MaxWidth(85)))
                     OnLogoutClicked();
             }
