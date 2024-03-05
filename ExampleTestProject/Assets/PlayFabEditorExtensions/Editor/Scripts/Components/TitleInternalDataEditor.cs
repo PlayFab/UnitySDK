@@ -21,6 +21,7 @@ namespace PlayFab.PfEditor
 
             scrollPos = GUILayout.BeginScrollView(scrollPos, PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1"));
             Value = EditorGUILayout.TextArea(Value, PlayFabEditorHelper.uiStyle.GetStyle("editTxt"));
+            GUI.skin.settings.cursorColor = Color.black;
             GUILayout.EndScrollView();
 
 

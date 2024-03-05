@@ -1999,6 +1999,11 @@ namespace PlayFab.EconomyModels
         public int? TotalCount;
     }
 
+    [Serializable]
+    public class RealMoneyPriceDetails : PlayFabBaseModel
+    {
+    }
+
     /// <summary>
     /// Redeem items from the Apple App Store.
     /// </summary>

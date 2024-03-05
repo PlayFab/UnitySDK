@@ -11,9 +11,56 @@ namespace PlayFab.PfEditor
         GUIStyle selectedStyle;
         GUIStyle defaultStyle;
         GUIStyle bgStyle;
+        private static int focusIndex = 0;
+
+        //changes local
+        public static void InputSubMenuStudiosHandler()
+        {
+            var e = Event.current;
+            if (e.type == EventType.KeyUp)
+            {
+                if (e.keyCode == KeyCode.RightArrow)
+                {
+                    switch (focusIndex)
+                    {
+                        case 0:
+                            GUI.FocusControl("project");
+                            focusIndex = 1;
+                            break;
+                        case 1:
+                            GUI.FocusControl("studios");
+                            focusIndex = 2;
+                            break;
+                        case 2:
+                            GUI.FocusControl("API");
+                            focusIndex = 0;
+                            break;
+                    }
+                }
+                else if (e.keyCode == KeyCode.LeftArrow)
+                {
+                    switch (focusIndex)
+                    {
+                        case 0:
+                            GUI.FocusControl("API");
+                            focusIndex = 2;
+                            break;
+                        case 1:
+                            GUI.FocusControl("project");
+                            focusIndex = 0;
+                            break;
+                        case 2:
+                            GUI.FocusControl("studios");
+                            focusIndex = 1;
+                            break;
+                    }
+                }
+            }
+        }
 
         public void DrawMenu()
         {
+            InputSubMenuStudiosHandler();
             selectedStyle = selectedStyle ?? PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
             defaultStyle = defaultStyle ?? PlayFabEditorHelper.uiStyle.GetStyle("textButton");
             bgStyle = bgStyle ?? PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1");
@@ -25,7 +72,19 @@ namespace PlayFab.PfEditor
                     var styleToUse = item.Value.isSelected ? selectedStyle : defaultStyle;
                     var content = new GUIContent(item.Value.displayName);
                     var size = styleToUse.CalcSize(content);
-
+                    //Chnages in local
+                    switch (item.Value.displayName)
+                    {
+                        case "PROJECT":
+                            GUI.SetNextControlName("project");
+                            break;
+                        case "STUDIOS":
+                            GUI.SetNextControlName("studios");
+                            break;
+                        case "API":
+                            GUI.SetNextControlName("API");
+                            break;
+                    }
                     if (GUILayout.Button(item.Value.displayName, styleToUse, GUILayout.Width(size.x + 1)))
                     {
                         OnMenuItemClicked(item.Key);

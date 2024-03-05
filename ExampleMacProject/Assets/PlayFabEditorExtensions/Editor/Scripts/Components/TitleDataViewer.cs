@@ -14,21 +14,117 @@ namespace PlayFab.PfEditor
         public static TitleDataEditor tdEditor;
         public Vector2 scrollPos = Vector2.zero;
         private bool showSave = false;
+        private static int focusIndex;
+        private static bool isShiftKeyPressed = false;
 
+
+        private static void shiftKeyHandler()
+        {
+            var e = Event.current;
+            if (e.keyCode == KeyCode.LeftShift || e.keyCode == KeyCode.RightShift)
+            {
+                isShiftKeyPressed = true;
+            }
+
+            if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.LeftShift || e.keyCode == KeyCode.RightShift))
+            {
+                isShiftKeyPressed = false;
+            }
+        }
+        private static void titleHandler()
+        {
+            var e = Event.current;
+            shiftKeyHandler();
+            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.Tab)
+            {
+                if (!isShiftKeyPressed)
+                {
+                    switch (focusIndex)
+                    {
+                        case 0:
+                            EditorGUI.FocusTextInControl("refresh");
+                            focusIndex = 1;
+                            break;
+                        case 1:
+                            EditorGUI.FocusTextInControl("add");
+                            focusIndex = 2;
+                            break;
+                        case 2:
+                            EditorGUI.FocusTextInControl("new_value_text_field");
+                            focusIndex = 3;
+                            break;
+                        case 3:
+                            EditorGUI.FocusTextInControl("edit");
+                            focusIndex = 4;
+                            break;
+                        case 4:
+                            EditorGUI.FocusTextInControl("clear");
+                            focusIndex = 5;
+                            break;
+                        case 5:
+                            EditorGUI.FocusTextInControl("save");
+                            focusIndex = 6;
+                            break;
+                        case 6:
+                            EditorGUI.FocusTextInControl("refresh");
+                            focusIndex = 0;
+                            break;
+
+                    }
+                }
+                else
+                {
+                    switch (focusIndex)
+                    {
+                        case 0:
+                            GUI.FocusControl("save");
+                            focusIndex = 1;
+                            break;
+                        case 1:
+                            GUI.FocusControl("clear");
+                            focusIndex = 2;
+                            break;
+                        case 2:
+                            GUI.FocusControl("edit");
+                            focusIndex = 3;
+                            break;
+                        case 3:
+                            EditorGUI.FocusTextInControl("new_value_text_field");
+                            focusIndex = 4;
+                            break;
+                        case 4:
+                            GUI.FocusControl("add");
+                            focusIndex = 5;
+                            break;
+                        case 5:
+                            EditorGUI.FocusTextInControl("refresh");
+                            focusIndex = 6;
+                            break;
+                        case 6:
+                            GUI.FocusControl("save");
+                            focusIndex = 0;
+                            break;
+
+                    }
+                }
+            }
+        }
         // this gets called after the Base draw loop
         public void Draw()
         {
+            titleHandler();
             using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1")))
                 EditorGUILayout.LabelField("TitleData provides Key-Value storage available to all API sets. TitleData is designed to store game-wide configuration data.", PlayFabEditorHelper.uiStyle.GetStyle("genTxt"));
 
             using (new UnityHorizontal())
             {
                 GUILayout.FlexibleSpace();
+                GUI.SetNextControlName("refresh");
                 if (GUILayout.Button("REFRESH", PlayFabEditorHelper.uiStyle.GetStyle("Button")))
                 {
                     RefreshTitleData();
                 }
-
+                GUI.SetNextControlName("add");
                 if (GUILayout.Button("+", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MaxWidth(25)))
                 {
                     AddRecord();
@@ -56,11 +152,12 @@ namespace PlayFab.PfEditor
 
                         using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
                         {
+                            GUI.SetNextControlName("new_value_text_field");
                             items[z].Key = EditorGUILayout.TextField(items[z].Key, keyStyle, GUILayout.Width(keyInputBoxWidth));
 
                             EditorGUILayout.LabelField(":", GUILayout.MaxWidth(10));
                             EditorGUILayout.LabelField("" + items[z].Value, valStyle, GUILayout.MaxWidth(valueInputBoxWidth), GUILayout.MaxHeight(25));
-
+                            GUI.SetNextControlName("edit");
                             if (GUILayout.Button("EDIT", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MaxHeight(19), GUILayout.MinWidth(35)))
                             {
                                 if (tdEditor == null)
@@ -73,6 +170,8 @@ namespace PlayFab.PfEditor
                                 tdEditor.LoadData(items[z].Key, items[z].Value);
                                 tdEditor.Show();
                             }
+                            GUI.SetNextControlName("clear");
+
                             if (GUILayout.Button("X", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MaxHeight(19), GUILayout.MinWidth(20)))
                             {
                                 items[z].isDirty = true;
@@ -89,6 +188,7 @@ namespace PlayFab.PfEditor
                     using (new UnityHorizontal())
                     {
                         GUILayout.FlexibleSpace();
+                        GUI.SetNextControlName("save");
                         if (GUILayout.Button("SAVE", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MaxWidth(200)))
                         {
                             SaveRecords();
@@ -101,6 +201,7 @@ namespace PlayFab.PfEditor
 
         private void AddRecord()
         {
+            //GUI.SetNextControlName("new_value_text_field");
             items.Add(new KvpItem("", "NewValue") { isDirty = true });
         }
 
@@ -111,14 +212,14 @@ namespace PlayFab.PfEditor
                 items.Clear();
                 showSave = false;
                 foreach (var kvp in result.Data)
-                    items.Add(new KvpItem(kvp.Key, kvp.Value));
+                items.Add(new KvpItem(kvp.Key, kvp.Value));
 
                 PlayFabEditorPrefsSO.Instance.TitleDataCache.Clear();
                 foreach (var pair in result.Data)
                     PlayFabEditorPrefsSO.Instance.TitleDataCache.Add(pair.Key, pair.Value);
                 PlayFabEditorDataService.SaveEnvDetails();
             };
-
+           
             PlayFabEditorApi.GetTitleData(dataRequest, PlayFabEditorHelper.SharedErrorCallback);
         }
 
