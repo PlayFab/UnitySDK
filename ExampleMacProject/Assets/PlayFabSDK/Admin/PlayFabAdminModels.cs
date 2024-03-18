@@ -409,6 +409,10 @@ namespace PlayFab.AdminModels
         /// </summary>
         public DateTime? Expires;
         /// <summary>
+        /// Whether or not the Microsoft family members are included in the ban.
+        /// </summary>
+        public bool? IncludeMicrosoftFamily;
+        /// <summary>
         /// The IP address on which the ban was applied. May affect multiple players.
         /// </summary>
         public string IPAddress;
@@ -458,6 +462,10 @@ namespace PlayFab.AdminModels
         /// The duration in hours for the ban. Leave this blank for a permanent ban.
         /// </summary>
         public uint? DurationInHours;
+        /// <summary>
+        /// Whether the Microsoft family members should be included in the ban. May affect multiple players.
+        /// </summary>
+        public bool? IncludeMicrosoftFamily;
         /// <summary>
         /// IP address to be banned. May affect multiple players.
         /// </summary>
@@ -2617,6 +2625,8 @@ namespace PlayFab.AdminModels
         LeaderboardNameConflict,
         LinkedStatisticColumnMismatch,
         NoLinkedStatisticToLeaderboard,
+        StatDefinitionAlreadyLinkedToLeaderboard,
+        LinkingStatsNotAllowedForEntityType,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -6655,6 +6665,10 @@ namespace PlayFab.AdminModels
         /// The updated expiration date for the ban. Null for no change.
         /// </summary>
         public DateTime? Expires;
+        /// <summary>
+        /// The updated decision to ban the Microsoft family members to be updated. Null for no change.
+        /// </summary>
+        public bool? IncludeMicrosoftFamily;
         /// <summary>
         /// The updated IP address for the ban. Null for no change.
         /// </summary>

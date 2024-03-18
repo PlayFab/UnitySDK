@@ -571,6 +571,8 @@ namespace PlayFab
         LeaderboardNameConflict = 1569,
         LinkedStatisticColumnMismatch = 1570,
         NoLinkedStatisticToLeaderboard = 1571,
+        StatDefinitionAlreadyLinkedToLeaderboard = 1572,
+        LinkingStatsNotAllowedForEntityType = 1573,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,

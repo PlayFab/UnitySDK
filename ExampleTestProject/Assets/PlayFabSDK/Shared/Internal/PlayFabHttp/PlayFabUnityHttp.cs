@@ -43,6 +43,16 @@ namespace PlayFab.Internal
             {
                 using (UnityWebRequest www = UnityWebRequest.Get(fullUrl))
                 {
+                    if (PlayFabSettings.staticSettings.CompressResponses)
+                    {
+                        www.SetRequestHeader("Accept-Encoding", "gzip");
+
+                        if (PlayFabSettings.staticSettings.DecompressWithDownloadHandler)
+                        {
+                            www.downloadHandler = new GzipDownloadHandler();
+                        }
+                    }
+
 #if UNITY_2017_2_OR_NEWER
                     yield return www.SendWebRequest();
 #else
@@ -67,8 +77,18 @@ namespace PlayFab.Internal
                 {
                     request = new UnityWebRequest(fullUrl, "POST");
                     request.uploadHandler = (UploadHandler)new UploadHandlerRaw(payload);
-                    request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
                     request.SetRequestHeader("Content-Type", "application/json");
+                    
+                    if (PlayFabSettings.staticSettings.CompressResponses)
+                    {
+                        request.SetRequestHeader("Accept-Encoding", "gzip");
+                        request.downloadHandler = PlayFabSettings.staticSettings.DecompressWithDownloadHandler ? new GzipDownloadHandler() 
+                                                                                                               : new DownloadHandlerBuffer();
+                    }
+                    else
+                    {
+                        request.downloadHandler = new DownloadHandlerBuffer();
+                    }
                 }
 
 
@@ -117,9 +137,19 @@ namespace PlayFab.Internal
             using var www = new UnityWebRequest(reqContainer.FullUrl)
             {
                 uploadHandler = new UploadHandlerRaw(reqContainer.Payload),
-                downloadHandler = new DownloadHandlerBuffer(),
                 method = "POST"
             };
+
+            if (reqContainer.settings.CompressResponses)
+            {
+                www.SetRequestHeader("Accept-Encoding", "gzip");
+                www.downloadHandler = reqContainer.settings.DecompressWithDownloadHandler ? new GzipDownloadHandler()
+                                                                                          : new DownloadHandlerBuffer();
+            }
+            else
+            {
+                www.downloadHandler = new DownloadHandlerBuffer();
+            }
 
             foreach (var headerPair in reqContainer.RequestHeaders)
             {
