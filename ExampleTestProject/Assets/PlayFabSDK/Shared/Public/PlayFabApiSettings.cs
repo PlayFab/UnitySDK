@@ -28,6 +28,12 @@ namespace PlayFab
         /// <summary> Set this to true to prevent focus change information from leaving the device </summary>
         public virtual bool DisableFocusTimeCollection { get; set; }
 
+        /// <summary> Set to enable Gzip compression on all responses. Defaults to false. </summary>
+        public virtual bool CompressResponses { get; set; }
+
+        /// <summary> Enables the custom Gzip DownloadHandler on all responses. Defaults to true. </summary>
+        internal virtual bool DecompressWithDownloadHandler { get; set; } = true;
+
 
         public virtual string GetFullUrl(string apiCall, Dictionary<string, string> getParams)
         {
@@ -79,6 +85,18 @@ namespace PlayFab
         {
             get { var so = GetSO(); return so == null ? base.DisableFocusTimeCollection : so.DisableFocusTimeCollection; }
             set { var so = GetSO(); if (so != null) so.DisableFocusTimeCollection = value; base.DisableFocusTimeCollection = value; }
+        }
+
+        public override bool CompressResponses
+        {
+            get { var so = GetSO(); return so == null ? base.CompressResponses : so.CompressResponses; }
+            set { var so = GetSO(); if (so != null) so.CompressResponses = value; base.CompressResponses = value; }
+        }
+
+        internal override bool DecompressWithDownloadHandler
+        {
+            get { var so = GetSO(); return so == null ? base.DecompressWithDownloadHandler : so.DecompressWithDownloadHandler; }
+            set { var so = GetSO(); if (so != null) so.DecompressWithDownloadHandler = value; base.DecompressWithDownloadHandler = value; }
         }
     }
 }
