@@ -41,10 +41,10 @@ namespace PlayFab.PfEditor
                     GUILayout.BeginArea(new Rect(gmAnchor, 10, EditorGUIUtility.currentViewWidth * .25f, 42));
                     GUILayout.BeginHorizontal();
                 }
+                    if (GUILayout.Button(new GUIContent("", "Dashboard"), PlayFabEditorHelper.uiStyle.GetStyle("gmIcon")))
 
-                if (GUILayout.Button("", PlayFabEditorHelper.uiStyle.GetStyle("gmIcon")))
-                {
-                    OnDashbaordClicked();
+                    {
+                        OnDashbaordClicked();
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.EndArea();

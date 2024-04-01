@@ -21,6 +21,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<DeleteItemResponse> OnEconomyDeleteItemResultEvent;
         public event PlayFabRequestEvent<ExecuteInventoryOperationsRequest> OnEconomyExecuteInventoryOperationsRequestEvent;
         public event PlayFabResultEvent<ExecuteInventoryOperationsResponse> OnEconomyExecuteInventoryOperationsResultEvent;
+        public event PlayFabRequestEvent<ExecuteTransferOperationsRequest> OnEconomyExecuteTransferOperationsRequestEvent;
+        public event PlayFabResultEvent<ExecuteTransferOperationsResponse> OnEconomyExecuteTransferOperationsResultEvent;
         public event PlayFabRequestEvent<GetCatalogConfigRequest> OnEconomyGetCatalogConfigRequestEvent;
         public event PlayFabResultEvent<GetCatalogConfigResponse> OnEconomyGetCatalogConfigResultEvent;
         public event PlayFabRequestEvent<GetDraftItemRequest> OnEconomyGetDraftItemRequestEvent;
@@ -35,6 +37,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetInventoryCollectionIdsResponse> OnEconomyGetInventoryCollectionIdsResultEvent;
         public event PlayFabRequestEvent<GetInventoryItemsRequest> OnEconomyGetInventoryItemsRequestEvent;
         public event PlayFabResultEvent<GetInventoryItemsResponse> OnEconomyGetInventoryItemsResultEvent;
+        public event PlayFabRequestEvent<GetInventoryOperationStatusRequest> OnEconomyGetInventoryOperationStatusRequestEvent;
+        public event PlayFabResultEvent<GetInventoryOperationStatusResponse> OnEconomyGetInventoryOperationStatusResultEvent;
         public event PlayFabRequestEvent<GetItemRequest> OnEconomyGetItemRequestEvent;
         public event PlayFabResultEvent<GetItemResponse> OnEconomyGetItemResultEvent;
         public event PlayFabRequestEvent<GetItemContainersRequest> OnEconomyGetItemContainersRequestEvent;

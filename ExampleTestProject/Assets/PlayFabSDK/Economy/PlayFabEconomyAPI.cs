@@ -145,6 +145,22 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Transfer a list of inventory items. A maximum list of 50 operations can be performed by a single request. When the
+        /// response code is 202, one or more operations did not complete within the timeframe of the request. You can identify the
+        /// pending operations by looking for OperationStatus = 'InProgress'. You can check on the operation status at anytime
+        /// within 1 day of the request by passing the TransactionToken to the GetInventoryOperationStatus API.
+        /// </summary>
+        public static void ExecuteTransferOperations(ExecuteTransferOperationsRequest request, Action<ExecuteTransferOperationsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/Inventory/ExecuteTransferOperations", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
         /// Gets the configuration for the catalog. Only Title Entities can call this API. There is a limit of 100 requests in 10
         /// seconds for this API. More information about the Catalog Config can be found here:
         /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/settings
@@ -242,6 +258,20 @@ namespace PlayFab
 
 
             PlayFabHttp.MakeApiCall("/Inventory/GetInventoryItems", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
+        }
+
+        /// <summary>
+        /// Get the status of an inventory operation using an OperationToken. You can check on the operation status at anytime
+        /// within 1 day of the request by passing the TransactionToken to the this API.
+        /// </summary>
+        public static void GetInventoryOperationStatus(GetInventoryOperationStatusRequest request, Action<GetInventoryOperationStatusResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? PlayFabSettings.staticPlayer;
+            var callSettings = PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+
+
+            PlayFabHttp.MakeApiCall("/Inventory/GetInventoryOperationStatus", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings);
         }
 
         /// <summary>
@@ -593,7 +623,9 @@ namespace PlayFab
         /// <summary>
         /// Transfer inventory items. When transferring across collections, a 202 response indicates that the transfer did not
         /// complete within the timeframe of the request. You can identify the pending operations by looking for OperationStatus =
-        /// 'InProgress'. More information about item transfer scenarios can be found here:
+        /// 'InProgress'. You can check on the operation status at anytime within 1 day of the request by passing the
+        /// TransactionToken to the GetInventoryOperationStatus API. More information about item transfer scenarios can be found
+        /// here:
         /// https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/inventory/?tabs=inventory-game-manager#transfer-inventory-items
         /// </summary>
         public static void TransferInventoryItems(TransferInventoryItemsRequest request, Action<TransferInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
