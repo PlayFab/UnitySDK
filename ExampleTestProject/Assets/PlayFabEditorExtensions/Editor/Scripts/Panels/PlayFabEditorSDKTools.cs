@@ -314,7 +314,7 @@ namespace PlayFab.PfEditor
                     {
                         GUILayout.FlexibleSpace();
                         GUI.SetNextControlName("set_my_title");
-                        if (GUILayout.Button("SET MY TITLE", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
+                        if (GUILayout.Button("SET MY TITLE ->", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
                         {
                             PlayFabEditorMenu.OnSettingsClicked();
                         }
@@ -327,7 +327,7 @@ namespace PlayFab.PfEditor
             {
                 GUILayout.FlexibleSpace();
                 GUI.SetNextControlName("view_release_note");
-                if (GUILayout.Button("VIEW RELEASE NOTES", PlayFabEditorHelper.uiStyle.GetStyle("textButton"), GUILayout.MinHeight(32), GUILayout.MinWidth(200)))
+                if (GUILayout.Button("VIEW RELEASE NOTES ->", PlayFabEditorHelper.uiStyle.GetStyle("textButton"), GUILayout.MinHeight(32), GUILayout.MinWidth(200)))
                 {
                     Application.OpenURL("https://docs.microsoft.com/en-us/gaming/playfab/release-notes/");
                 }

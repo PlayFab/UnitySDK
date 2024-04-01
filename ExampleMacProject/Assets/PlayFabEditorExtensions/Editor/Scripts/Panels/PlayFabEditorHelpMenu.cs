@@ -10,6 +10,21 @@ namespace PlayFab.PfEditor
         // chnages in local
         private static int focusIndex;
         private static bool isShiftKeyPressed = false;
+        private static float scrollFactor = 20f;
+
+        public static void KeyboardEventHandler()
+        {
+            var e = Event.current;
+            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.UpArrow)
+            {
+                scrollPos = new Vector2(0, scrollPos.y - scrollFactor);
+
+            }
+            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.DownArrow)
+            {
+                scrollPos = new Vector2(0, scrollPos.y + scrollFactor);
+            }
+        }
         private static void shiftKeyHandler()
         {
             var e = Event.current;
@@ -94,6 +109,7 @@ namespace PlayFab.PfEditor
         public static void DrawHelpPanel()
         {
             HelpInputHandler();
+            KeyboardEventHandler();
             scrollPos = GUILayout.BeginScrollView(scrollPos, PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1"));
             buttonWidth = EditorGUIUtility.currentViewWidth > 400 ? EditorGUIUtility.currentViewWidth / 2 : 200;
 

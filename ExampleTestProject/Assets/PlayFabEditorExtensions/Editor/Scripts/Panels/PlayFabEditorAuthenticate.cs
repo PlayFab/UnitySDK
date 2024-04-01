@@ -274,7 +274,7 @@ private static void shiftKeyHandler()
                 using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
                 {
                     GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("VIEW README", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
+                    if (GUILayout.Button("VIEW README ->", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
                     {
                         Application.OpenURL("https://github.com/PlayFab/UnityEditorExtensions#setup");
                     }
