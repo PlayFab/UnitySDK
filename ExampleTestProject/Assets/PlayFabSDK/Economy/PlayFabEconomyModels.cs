@@ -2935,6 +2935,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public double? DurationInSeconds;
         /// <summary>
+        /// The friendly id of the items in this transaction.
+        /// </summary>
+        public string ItemFriendlyId;
+        /// <summary>
         /// The item id of the items in this transaction.
         /// </summary>
         public string ItemId;
@@ -2955,6 +2959,10 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class TransactionPurchaseDetails : PlayFabBaseModel
     {
+        /// <summary>
+        /// The friendly id of the Store the item was purchased from or null.
+        /// </summary>
+        public string StoreFriendlyId;
         /// <summary>
         /// The id of the Store the item was purchased from or null.
         /// </summary>
