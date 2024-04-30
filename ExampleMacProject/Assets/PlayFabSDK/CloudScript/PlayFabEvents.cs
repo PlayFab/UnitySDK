@@ -11,6 +11,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ExecuteFunctionResult> OnCloudScriptExecuteFunctionResultEvent;
         public event PlayFabRequestEvent<GetFunctionRequest> OnCloudScriptGetFunctionRequestEvent;
         public event PlayFabResultEvent<GetFunctionResult> OnCloudScriptGetFunctionResultEvent;
+        public event PlayFabRequestEvent<ListFunctionsRequest> OnCloudScriptListEventHubFunctionsRequestEvent;
+        public event PlayFabResultEvent<ListEventHubFunctionsResult> OnCloudScriptListEventHubFunctionsResultEvent;
         public event PlayFabRequestEvent<ListFunctionsRequest> OnCloudScriptListFunctionsRequestEvent;
         public event PlayFabResultEvent<ListFunctionsResult> OnCloudScriptListFunctionsResultEvent;
         public event PlayFabRequestEvent<ListFunctionsRequest> OnCloudScriptListHttpFunctionsRequestEvent;
@@ -25,6 +27,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResult> OnCloudScriptPostFunctionResultForPlayerTriggeredActionResultEvent;
         public event PlayFabRequestEvent<PostFunctionResultForScheduledTaskRequest> OnCloudScriptPostFunctionResultForScheduledTaskRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnCloudScriptPostFunctionResultForScheduledTaskResultEvent;
+        public event PlayFabRequestEvent<RegisterEventHubFunctionRequest> OnCloudScriptRegisterEventHubFunctionRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnCloudScriptRegisterEventHubFunctionResultEvent;
         public event PlayFabRequestEvent<RegisterHttpFunctionRequest> OnCloudScriptRegisterHttpFunctionRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnCloudScriptRegisterHttpFunctionResultEvent;
         public event PlayFabRequestEvent<RegisterQueuedFunctionRequest> OnCloudScriptRegisterQueuedFunctionRequestEvent;
