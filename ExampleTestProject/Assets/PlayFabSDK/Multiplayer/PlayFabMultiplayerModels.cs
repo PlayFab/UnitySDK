@@ -617,6 +617,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public List<GameCertificateReferenceParams> GameCertificateReferences;
         /// <summary>
+        /// The game secrets for the build.
+        /// </summary>
+        public List<GameSecretReferenceParams> GameSecretReferences;
+        /// <summary>
         /// The Linux instrumentation configuration for the build.
         /// </summary>
         public LinuxInstrumentationConfiguration LinuxInstrumentationConfiguration;
@@ -695,6 +699,10 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
+        /// <summary>
+        /// The game secrets for the build.
+        /// </summary>
+        public List<GameSecretReference> GameSecretReferences;
         /// <summary>
         /// The Linux instrumentation configuration for this build.
         /// </summary>
@@ -777,6 +785,10 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReferenceParams> GameCertificateReferences;
+        /// <summary>
+        /// The game secrets for the build.
+        /// </summary>
+        public List<GameSecretReferenceParams> GameSecretReferences;
         /// <summary>
         /// The directory containing the game executable. This would be the start path of the game assets that contain the main game
         /// server executable. If not provided, a best effort will be made to extract it from the start game command.
@@ -861,6 +873,10 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
+        /// <summary>
+        /// The game secrets for the build.
+        /// </summary>
+        public List<GameSecretReference> GameSecretReferences;
         /// <summary>
         /// The directory containing the game executable. This would be the start path of the game assets that contain the main game
         /// server executable. If not provided, a best effort will be made to extract it from the start game command.
@@ -950,6 +966,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public List<GameCertificateReferenceParams> GameCertificateReferences;
         /// <summary>
+        /// The game secrets for the build.
+        /// </summary>
+        public List<GameSecretReferenceParams> GameSecretReferences;
+        /// <summary>
         /// The working directory for the game process. If this is not provided, the working directory will be set based on the
         /// mount path of the game server executable.
         /// </summary>
@@ -1035,6 +1055,10 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
+        /// <summary>
+        /// The game secrets for the build.
+        /// </summary>
+        public List<GameSecretReference> GameSecretReferences;
         /// <summary>
         /// The working directory for the game process. If this is not provided, the working directory will be set based on the
         /// mount path of the game server executable.
@@ -1599,6 +1623,22 @@ namespace PlayFab.MultiplayerModels
         public string VmId;
     }
 
+    /// <summary>
+    /// Deletes a multiplayer server game secret.
+    /// </summary>
+    [Serializable]
+    public class DeleteSecretRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The name of the secret.
+        /// </summary>
+        public string Name;
+    }
+
     [Serializable]
     public class DifferenceRule : PlayFabBaseModel
     {
@@ -1913,6 +1953,24 @@ namespace PlayFab.MultiplayerModels
         /// <summary>
         /// The name of the game certificate. This name should match the name of a certificate that was previously uploaded to this
         /// title.
+        /// </summary>
+        public string Name;
+    }
+
+    [Serializable]
+    public class GameSecretReference : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The name of the game secret. This name should match the name of a secret that was previously added to this title.
+        /// </summary>
+        public string Name;
+    }
+
+    [Serializable]
+    public class GameSecretReferenceParams : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The name of the game secret. This name should match the name of a secret that was previously added to this title.
         /// </summary>
         public string Name;
     }
@@ -3357,6 +3415,43 @@ namespace PlayFab.MultiplayerModels
     }
 
     /// <summary>
+    /// Returns a list of multiplayer server game secrets for a title.
+    /// </summary>
+    [Serializable]
+    public class ListSecretSummariesRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The page size for the request.
+        /// </summary>
+        public int? PageSize;
+        /// <summary>
+        /// The skip token for the paged request.
+        /// </summary>
+        public string SkipToken;
+    }
+
+    [Serializable]
+    public class ListSecretSummariesResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The page size on the response.
+        /// </summary>
+        public int PageSize;
+        /// <summary>
+        /// The list of game secret.
+        /// </summary>
+        public List<SecretSummary> SecretSummaries;
+        /// <summary>
+        /// The skip token for the paged response.
+        /// </summary>
+        public string SkipToken;
+    }
+
+    /// <summary>
     /// List all server backfill ticket Ids the user is a member of.
     /// </summary>
     [Serializable]
@@ -4376,6 +4471,40 @@ namespace PlayFab.MultiplayerModels
     }
 
     [Serializable]
+    public class Secret : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Optional secret expiration date.
+        /// </summary>
+        public DateTime? ExpirationDate;
+        /// <summary>
+        /// A name for the secret. This is used to reference secrets in build configurations.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// Secret value.
+        /// </summary>
+        public string Value;
+    }
+
+    [Serializable]
+    public class SecretSummary : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Optional secret expiration date.
+        /// </summary>
+        public DateTime? ExpirationDate;
+        /// <summary>
+        /// The name of the secret.
+        /// </summary>
+        public string Name;
+        /// <summary>
+        /// The secret version auto-generated after upload.
+        /// </summary>
+        public string Version;
+    }
+
+    [Serializable]
     public class ServerDetails : PlayFabBaseModel
     {
         /// <summary>
@@ -5092,6 +5221,26 @@ namespace PlayFab.MultiplayerModels
         /// The game certificate to upload.
         /// </summary>
         public Certificate GameCertificate;
+    }
+
+    /// <summary>
+    /// Uploads a multiplayer server game secret.
+    /// </summary>
+    [Serializable]
+    public class UploadSecretRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Forces the secret renewal if the secret already exists. Default is false
+        /// </summary>
+        public bool? ForceUpdate;
+        /// <summary>
+        /// The game secret to add.
+        /// </summary>
+        public Secret GameSecret;
     }
 
     [Serializable]

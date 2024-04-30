@@ -156,6 +156,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public List<string> Platforms;
         /// <summary>
+        /// The set of configuration that only applies to Ratings and Reviews.
+        /// </summary>
+        public ReviewConfig Review;
+        /// <summary>
         /// A set of player entity keys that are allowed to review content. There is a maximum of 128 entities that can be added.
         /// </summary>
         public List<EntityKey> ReviewerEntities;
@@ -393,6 +397,15 @@ namespace PlayFab.EconomyModels
         /// can be listed.
         /// </summary>
         public List<string> Tags;
+    }
+
+    [Serializable]
+    public class CategoryRatingConfig : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Name of the category.
+        /// </summary>
+        public string Name;
     }
 
     public enum ConcernCategory
@@ -2320,7 +2333,7 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public EntityKey Entity;
         /// <summary>
-        /// Redirect URI supplied to PlayStation :tm: Network when requesting an auth code
+        /// Redirect URI supplied to PlayStation :tm: Network when requesting an auth code.
         /// </summary>
         public string RedirectUri;
         /// <summary>
@@ -2500,6 +2513,10 @@ namespace PlayFab.EconomyModels
     public class Review : PlayFabBaseModel
     {
         /// <summary>
+        /// The star rating associated with each selected category in this review.
+        /// </summary>
+        public Dictionary<string,int> CategoryRatings;
+        /// <summary>
         /// The number of negative helpfulness votes for this review.
         /// </summary>
         public int HelpfulNegative;
@@ -2551,6 +2568,15 @@ namespace PlayFab.EconomyModels
         /// The title of this review.
         /// </summary>
         public string Title;
+    }
+
+    [Serializable]
+    public class ReviewConfig : PlayFabBaseModel
+    {
+        /// <summary>
+        /// A set of categories that can be applied toward ratings and reviews.
+        /// </summary>
+        public List<CategoryRatingConfig> CategoryRatings;
     }
 
     [Serializable]

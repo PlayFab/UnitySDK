@@ -49,6 +49,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerDeleteLobbyResultEvent;
         public event PlayFabRequestEvent<DeleteRemoteUserRequest> OnMultiplayerDeleteRemoteUserRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteRemoteUserResultEvent;
+        public event PlayFabRequestEvent<DeleteSecretRequest> OnMultiplayerDeleteSecretRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnMultiplayerDeleteSecretResultEvent;
         public event PlayFabRequestEvent<EnableMultiplayerServersForTitleRequest> OnMultiplayerEnableMultiplayerServersForTitleRequestEvent;
         public event PlayFabResultEvent<EnableMultiplayerServersForTitleResponse> OnMultiplayerEnableMultiplayerServersForTitleResultEvent;
         public event PlayFabRequestEvent<FindFriendLobbiesRequest> OnMultiplayerFindFriendLobbiesRequestEvent;
@@ -129,6 +131,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListPartyQosServersResponse> OnMultiplayerListPartyQosServersResultEvent;
         public event PlayFabRequestEvent<ListQosServersForTitleRequest> OnMultiplayerListQosServersForTitleRequestEvent;
         public event PlayFabResultEvent<ListQosServersForTitleResponse> OnMultiplayerListQosServersForTitleResultEvent;
+        public event PlayFabRequestEvent<ListSecretSummariesRequest> OnMultiplayerListSecretSummariesRequestEvent;
+        public event PlayFabResultEvent<ListSecretSummariesResponse> OnMultiplayerListSecretSummariesResultEvent;
         public event PlayFabRequestEvent<ListServerBackfillTicketsForPlayerRequest> OnMultiplayerListServerBackfillTicketsForPlayerRequestEvent;
         public event PlayFabResultEvent<ListServerBackfillTicketsForPlayerResult> OnMultiplayerListServerBackfillTicketsForPlayerResultEvent;
         public event PlayFabRequestEvent<ListTitleMultiplayerServersQuotaChangesRequest> OnMultiplayerListTitleMultiplayerServersQuotaChangesRequestEvent;
@@ -173,6 +177,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LobbyEmptyResult> OnMultiplayerUpdateLobbyAsServerResultEvent;
         public event PlayFabRequestEvent<UploadCertificateRequest> OnMultiplayerUploadCertificateRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUploadCertificateResultEvent;
+        public event PlayFabRequestEvent<UploadSecretRequest> OnMultiplayerUploadSecretRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnMultiplayerUploadSecretResultEvent;
     }
 }
 #endif
