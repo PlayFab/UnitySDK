@@ -118,7 +118,9 @@ namespace PlayFab.MultiplayerModels
         NCasT4_v3,
         Ddv4,
         Ddsv4,
-        HBv3
+        HBv3,
+        Ddv5,
+        Ddsv5
     }
 
     public enum AzureVmSize
@@ -191,7 +193,17 @@ namespace PlayFab.MultiplayerModels
         Standard_HB120_32rs_v3,
         Standard_HB120_64rs_v3,
         Standard_HB120_96rs_v3,
-        Standard_HB120rs_v3
+        Standard_HB120rs_v3,
+        Standard_D2d_v5,
+        Standard_D4d_v5,
+        Standard_D8d_v5,
+        Standard_D16d_v5,
+        Standard_D32d_v5,
+        Standard_D2ds_v5,
+        Standard_D4ds_v5,
+        Standard_D8ds_v5,
+        Standard_D16ds_v5,
+        Standard_D32ds_v5
     }
 
     [Serializable]
@@ -975,7 +987,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string GameWorkingDirectory;
         /// <summary>
-        /// The instrumentation configuration for the build.
+        /// The instrumentation configuration for the Build. Used only if it is a Windows Build.
         /// </summary>
         public InstrumentationConfiguration InstrumentationConfiguration;
         /// <summary>
@@ -983,6 +995,10 @@ namespace PlayFab.MultiplayerModels
         /// detect any breaking changes before they are released to retail. Retail builds should set this value to false.
         /// </summary>
         public bool? IsOSPreview;
+        /// <summary>
+        /// The Linux instrumentation configuration for the Build. Used only if it is a Linux Build.
+        /// </summary>
+        public LinuxInstrumentationConfiguration LinuxInstrumentationConfiguration;
         /// <summary>
         /// Metadata to tag the build. The keys are case insensitive. The build metadata is made available to the server through
         /// Game Server SDK (GSDK).Constraints: Maximum number of keys: 30, Maximum key length: 50, Maximum value length: 100
@@ -1073,6 +1089,10 @@ namespace PlayFab.MultiplayerModels
         /// detect any breaking changes before they are released to retail. Retail builds should set this value to false.
         /// </summary>
         public bool? IsOSPreview;
+        /// <summary>
+        /// The Linux instrumentation configuration for this build.
+        /// </summary>
+        public LinuxInstrumentationConfiguration LinuxInstrumentationConfiguration;
         /// <summary>
         /// The metadata of the build.
         /// </summary>
