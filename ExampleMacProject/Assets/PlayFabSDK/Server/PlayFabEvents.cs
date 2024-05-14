@@ -165,6 +165,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LinkSteamIdResult> OnServerLinkSteamIdResultEvent;
         public event PlayFabRequestEvent<LinkXboxAccountRequest> OnServerLinkXboxAccountRequestEvent;
         public event PlayFabResultEvent<LinkXboxAccountResult> OnServerLinkXboxAccountResultEvent;
+        public event PlayFabRequestEvent<LoginWithPSNRequest> OnServerLoginWithPSNRequestEvent;
+        public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithPSNResultEvent;
         public event PlayFabRequestEvent<LoginWithServerCustomIdRequest> OnServerLoginWithServerCustomIdRequestEvent;
         public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithServerCustomIdResultEvent;
         public event PlayFabRequestEvent<LoginWithSteamIdRequest> OnServerLoginWithSteamIdRequestEvent;

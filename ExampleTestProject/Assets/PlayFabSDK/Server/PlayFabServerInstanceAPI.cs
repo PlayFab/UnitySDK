@@ -999,6 +999,18 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Signs the user in using a PlayStation :tm: Network authentication code, returning a session identifier that can
+        /// subsequently be used for API calls which require an authenticated user
+        /// </summary>
+        public void LoginWithPSN(LoginWithPSNRequest request, Action<ServerLoginResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/LoginWithPSN", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Securely login a game client from an external server backend using a custom identifier for that player. Server Custom ID
         /// and Client Custom ID are mutually exclusive and cannot be used to retrieve the same player account.
         /// </summary>
