@@ -3822,7 +3822,8 @@ namespace PlayFab.ClientModels
         OpenIdConnect,
         Apple,
         NintendoSwitchAccount,
-        GooglePlayGames
+        GooglePlayGames,
+        XboxMobileStore
     }
 
     [Serializable]
@@ -7043,7 +7044,8 @@ namespace PlayFab.ClientModels
         OpenIdConnect,
         Apple,
         NintendoSwitchAccount,
-        GooglePlayGames
+        GooglePlayGames,
+        XboxMobileStore
     }
 
     [Serializable]

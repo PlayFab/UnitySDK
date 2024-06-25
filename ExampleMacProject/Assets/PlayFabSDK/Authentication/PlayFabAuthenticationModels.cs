@@ -160,7 +160,14 @@ namespace PlayFab.AuthenticationModels
     {
         Unknown,
         XboxOne,
-        Scarlett
+        Scarlett,
+        WindowsOneCore,
+        WindowsOneCoreMobile,
+        Win32,
+        android,
+        iOS,
+        PlayStation,
+        Nintendo
     }
 
     public enum LoginIdentityProvider
@@ -186,7 +193,8 @@ namespace PlayFab.AuthenticationModels
         OpenIdConnect,
         Apple,
         NintendoSwitchAccount,
-        GooglePlayGames
+        GooglePlayGames,
+        XboxMobileStore
     }
 
     /// <summary>
