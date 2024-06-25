@@ -52,7 +52,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Add inventory items. Up to 3500 stacks of items can be added to a single inventory collection. Stack size is uncapped.
+        /// Add inventory items. Up to 10,000 stacks of items can be added to a single inventory collection. Stack size is uncapped.
         /// </summary>
         public void AddInventoryItems(AddInventoryItemsRequest request, Action<AddInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -133,11 +133,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Execute a list of Inventory Operations. A maximum list of 10 operations can be performed by a single request. There is
-        /// also a limit to 250 items that can be modified/added in a single request. For example, adding a bundle with 50 items
+        /// Execute a list of Inventory Operations. A maximum list of 250 operations can be performed by a single request. There is
+        /// also a limit to 300 items that can be modified/added in a single request. For example, adding a bundle with 50 items
         /// counts as 50 items modified. All operations must be done within a single inventory collection. This API has a reduced
-        /// RPS compared to an individual inventory operation with Player Entities limited to 15 requests in 90 seconds and Title
-        /// Entities limited to 500 requests in 10 seconds.
+        /// RPS compared to an individual inventory operation with Player Entities limited to 60 requests in 90 seconds.
         /// </summary>
         public void ExecuteInventoryOperations(ExecuteInventoryOperationsRequest request, Action<ExecuteInventoryOperationsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -225,8 +224,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get Inventory Collection Ids. Up to 50 Ids can be returned at once. You can use continuation tokens to paginate through
-        /// results that return greater than the limit. It can take a few seconds for new collection Ids to show up.
+        /// Get Inventory Collection Ids. Up to 50 Ids can be returned at once (or 250 with response compression enabled). You can
+        /// use continuation tokens to paginate through results that return greater than the limit. It can take a few seconds for
+        /// new collection Ids to show up.
         /// </summary>
         public void GetInventoryCollectionIds(GetInventoryCollectionIdsRequest request, Action<GetInventoryCollectionIdsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -358,10 +358,9 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get transaction history for a player. Up to 50 Events can be returned at once. You can use continuation tokens to
+        /// Get transaction history for a player. Up to 250 Events can be returned at once. You can use continuation tokens to
         /// paginate through results that return greater than the limit. Getting transaction history has a lower RPS limit than
-        /// getting a Player's inventory with Player Entities having a limit of 30 requests in 300 seconds and Title Entities having
-        /// a limit of 100 requests in 10 seconds.
+        /// getting a Player's inventory with Player Entities having a limit of 30 requests in 300 seconds.
         /// </summary>
         public void GetTransactionHistory(GetTransactionHistoryRequest request, Action<GetTransactionHistoryResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -384,7 +383,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Purchase an item or bundle. Up to 3500 stacks of items can be added to a single inventory collection. Stack size is
+        /// Purchase an item or bundle. Up to 10,000 stacks of items can be added to a single inventory collection. Stack size is
         /// uncapped.
         /// </summary>
         public void PurchaseInventoryItems(PurchaseInventoryItemsRequest request, Action<PurchaseInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)

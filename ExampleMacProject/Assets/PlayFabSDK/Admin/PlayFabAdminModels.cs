@@ -2633,6 +2633,8 @@ namespace PlayFab.AdminModels
         StatisticDefinitionModificationNotAllowedWhileLinked,
         LeaderboardUpdateNotAllowedWhileLinked,
         CloudScriptAzureFunctionsEventHubRequestError,
+        LeaderboardRateLimitExceeded,
+        ExternalEntityNotAllowedForTier,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2879,9 +2881,27 @@ namespace PlayFab.AdminModels
         TrueSkillJobAlreadyExists,
         TrueSkillJobNotFound,
         TrueSkillOperationCanceled,
-        StateShareUnauthorized,
+        TrueSkillActiveModelLimitExceeded,
+        TrueSkillTotalModelLimitExceeded,
+        TrueSkillUnknownInitialModelId,
+        TrueSkillUnauthorizedForJob,
+        TrueSkillInvalidScenarioName,
+        TrueSkillConditionStateIsRequired,
+        TrueSkillEventStateIsRequired,
+        TrueSkillDuplicateEvent,
+        TrueSkillDuplicateCondition,
+        TrueSkillInvalidAnomalyThreshold,
+        TrueSkillConditionKeyLimitExceeded,
+        TrueSkillConditionValuePerKeyLimitExceeded,
+        TrueSkillEventLimitExceeded,
+        StateShareForbidden,
+        StateShareTitleNotInFlight,
         StateShareStateNotFound,
-        StateShareLinkNotFound
+        StateShareLinkNotFound,
+        StateShareStateRedemptionLimitExceeded,
+        StateShareStateRedemptionLimitNotUpdated,
+        StateShareCreatedStatesLimitExceeded,
+        StateShareIdMissingOrMalformed
     }
 
     [Serializable]
@@ -4284,7 +4304,8 @@ namespace PlayFab.AdminModels
         OpenIdConnect,
         Apple,
         NintendoSwitchAccount,
-        GooglePlayGames
+        GooglePlayGames,
+        XboxMobileStore
     }
 
     [Serializable]
@@ -7510,7 +7531,8 @@ namespace PlayFab.AdminModels
         OpenIdConnect,
         Apple,
         NintendoSwitchAccount,
-        GooglePlayGames
+        GooglePlayGames,
+        XboxMobileStore
     }
 
     [Serializable]
