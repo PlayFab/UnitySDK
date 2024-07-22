@@ -133,7 +133,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Execute a list of Inventory Operations. A maximum list of 250 operations can be performed by a single request. There is
+        /// Execute a list of Inventory Operations. A maximum list of 50 operations can be performed by a single request. There is
         /// also a limit to 300 items that can be modified/added in a single request. For example, adding a bundle with 50 items
         /// counts as 50 items modified. All operations must be done within a single inventory collection. This API has a reduced
         /// RPS compared to an individual inventory operation with Player Entities limited to 60 requests in 90 seconds.
