@@ -1717,7 +1717,8 @@ namespace PlayFab.MultiplayerModels
         SameEntityLoginProvider,
         DifferentEntityLoginProvider,
         AnyEntityLoginProvider,
-        AnyPlatformTypeAndEntityLoginProvider
+        AnyPlatformTypeAndEntityLoginProvider,
+        OnlyServers
     }
 
     [Serializable]
