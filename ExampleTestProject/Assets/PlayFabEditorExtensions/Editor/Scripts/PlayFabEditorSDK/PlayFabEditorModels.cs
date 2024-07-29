@@ -4,15 +4,6 @@ using System.Text;
 
 namespace PlayFab.PfEditor.EditorModels
 {
-    public class RegisterAccountRequest
-    {
-        public string Email;
-        public string Password;
-        public string StudioName;
-        public string DeveloperToolProductName;
-        public string DeveloperToolProductVersion;
-    }
-
     public class RegisterAccountResult
     {
         public string DeveloperClientToken;

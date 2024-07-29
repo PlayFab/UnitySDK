@@ -7,11 +7,6 @@ namespace PlayFab.PfEditor
     public class PlayFabEditorApi
     {
         #region FROM EDITOR API SETS ----------------------------------------------------------------------------------------------------------------------------------------
-        public static void RegisterAccount(RegisterAccountRequest request, Action<RegisterAccountResult> resultCallback, Action<EditorModels.PlayFabError> errorCb)
-        {
-            PlayFabEditorHttp.MakeApiCall("/DeveloperTools/User/RegisterAccount", PlayFabEditorHelper.DEV_API_ENDPOINT, request, resultCallback, errorCb);
-        }
-
         public static void Login(LoginRequest request, Action<LoginResult> resultCallback, Action<EditorModels.PlayFabError> errorCb)
         {
             PlayFabEditorHttp.MakeApiCall("/DeveloperTools/User/Login", PlayFabEditorHelper.DEV_API_ENDPOINT, request, resultCallback, errorCb);
