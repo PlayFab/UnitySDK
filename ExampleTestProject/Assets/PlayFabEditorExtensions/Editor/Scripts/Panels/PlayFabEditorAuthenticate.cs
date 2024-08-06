@@ -204,7 +204,12 @@ private static void shiftKeyHandler()
                     GUILayout.FlexibleSpace();
                     
                     GUI.SetNextControlName("login_microsoft");
-                    if (GUILayout.Button("LOG IN WITH MICROSOFT", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MinHeight(32), GUILayout.MaxWidth(EditorGUIUtility.currentViewWidth - labelWidth)))
+                    var msftTexture = Resources.Load("ms-symbollockup_signin_dark") as Texture2D;
+                    var msftStyle = new GUIStyle();
+                    msftStyle.normal.background = msftTexture;
+                    msftStyle.fixedHeight = msftTexture.height;
+                    msftStyle.fixedWidth = msftTexture.width;
+                    if (GUILayout.Button("", msftStyle))
                     {
                         OnAADLoginButtonClicked();
                     }
@@ -226,8 +231,8 @@ private static void shiftKeyHandler()
                     {
                         var spaceHeight = (separator.fixedHeight - labelStyle.CalcHeight(new GUIContent("or"), EditorGUIUtility.currentViewWidth)) / 2;
                         GUILayout.Space(spaceHeight);
-                        var label = new GUIContent("or");
-                        EditorGUILayout.LabelField(label, GUILayout.Width(labelStyle.CalcSize(label).x));
+                        var label = new GUIContent(" or ");
+                        EditorGUILayout.LabelField(label, labelStyle, GUILayout.Width(labelStyle.CalcSize(label).x));
                         GUILayout.Space(spaceHeight);
                     }
                     EditorGUILayout.LabelField("", separator, GUILayout.MaxWidth(EditorGUIUtility.currentViewWidth / 3));
