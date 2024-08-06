@@ -196,6 +196,46 @@ private static void shiftKeyHandler()
 
             using (new UnityVertical(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1")))
             {
+                var labelStyle = PlayFabEditorHelper.uiStyle.GetStyle("labelStyle");
+                GUILayout.Space(5);
+
+                using (new UnityHorizontal(labelStyle))
+                {
+                    GUILayout.FlexibleSpace();
+                    
+                    GUI.SetNextControlName("login_microsoft");
+                    if (GUILayout.Button("LOG IN WITH MICROSOFT", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MinHeight(32), GUILayout.MaxWidth(EditorGUIUtility.currentViewWidth - labelWidth)))
+                    {
+                        OnAADLoginButtonClicked();
+                    }
+
+                    GUILayout.FlexibleSpace();
+                }
+
+                GUILayout.Space(10);
+
+                using (new UnityHorizontal(labelStyle))
+                {
+                    var separator = new GUIStyle(GUI.skin.horizontalScrollbar);
+                    separator.normal.background = Texture2D.grayTexture;
+                    separator.fixedHeight = 1;
+
+                    GUILayout.FlexibleSpace();
+                    EditorGUILayout.LabelField("", separator, GUILayout.MaxWidth(EditorGUIUtility.currentViewWidth / 3));
+                    using (new UnityVertical())
+                    {
+                        var spaceHeight = (separator.fixedHeight - labelStyle.CalcHeight(new GUIContent("or"), EditorGUIUtility.currentViewWidth)) / 2;
+                        GUILayout.Space(spaceHeight);
+                        var label = new GUIContent("or");
+                        EditorGUILayout.LabelField(label, GUILayout.Width(labelStyle.CalcSize(label).x));
+                        GUILayout.Space(spaceHeight);
+                    }
+                    EditorGUILayout.LabelField("", separator, GUILayout.MaxWidth(EditorGUIUtility.currentViewWidth / 3));
+                    GUILayout.FlexibleSpace();
+                }
+
+                //GUILayout.Space(10);
+
                 using (var fwl = new FixedWidthLabel("EMAIL: "))
                 {
                     GUILayout.Space(labelWidth - fwl.fieldWidth);
@@ -210,19 +250,14 @@ private static void shiftKeyHandler()
                     _userPass = EditorGUILayout.PasswordField(_userPass, PlayFabEditorHelper.uiStyle.GetStyle("TextField"), GUILayout.MinHeight(25));
                 }
 
-                using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("labelStyle")))
+                using (new UnityHorizontal(labelStyle))
                 {
                     var buttonWidth = 200;
-                    GUILayout.Space(EditorGUIUtility.currentViewWidth - buttonWidth * 2);
+                    GUILayout.Space(EditorGUIUtility.currentViewWidth - buttonWidth);
                     GUI.SetNextControlName("login");
                     if (GUILayout.Button("LOG IN", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MinHeight(32), GUILayout.MaxWidth(buttonWidth)))
                     {
                         OnLoginButtonClicked();
-                    }
-                    GUI.SetNextControlName("login_microsoft");
-                    if (GUILayout.Button("LOG IN WITH MICROSOFT", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MinHeight(32), GUILayout.MaxWidth(buttonWidth)))
-                    {
-                        OnAADLoginButtonClicked();
                     }
                 }
             }
