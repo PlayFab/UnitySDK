@@ -2,17 +2,17 @@
 
 using System;
 using System.Collections.Generic;
-using PlayFab.LeaderboardsModels;
+using PlayFab.ProgressionModels;
 using PlayFab.Internal;
 
 namespace PlayFab
 {
     /// <summary>
-    /// Manage entity statistics Manage entity statistics
+    /// Manage entity statistics Manage entity leaderboards
     /// </summary>
-    public static class PlayFabLeaderboardsAPI
+    public static class PlayFabProgressionAPI
     {
-        static PlayFabLeaderboardsAPI() {}
+        static PlayFabProgressionAPI() {}
 
 
         /// <summary>

@@ -2,28 +2,28 @@
 
 using System;
 using System.Collections.Generic;
-using PlayFab.LeaderboardsModels;
+using PlayFab.ProgressionModels;
 using PlayFab.Internal;
 using PlayFab.SharedModels;
 
 namespace PlayFab
 {
     /// <summary>
-    /// Manage entity statistics Manage entity statistics
+    /// Manage entity statistics Manage entity leaderboards
     /// </summary>
-    public class PlayFabLeaderboardsInstanceAPI : IPlayFabInstanceApi
+    public class PlayFabProgressionInstanceAPI : IPlayFabInstanceApi
     {
         public readonly PlayFabApiSettings apiSettings = null;
         public readonly PlayFabAuthenticationContext authenticationContext = null;
 
-        public PlayFabLeaderboardsInstanceAPI(PlayFabAuthenticationContext context)
+        public PlayFabProgressionInstanceAPI(PlayFabAuthenticationContext context)
         {
             if (context == null)
                 throw new PlayFabException(PlayFabExceptionCode.AuthContextRequired, "Context cannot be null, create a PlayFabAuthenticationContext for each player in advance, or call <PlayFabClientInstanceAPI>.GetAuthenticationContext()");
             authenticationContext = context;
         }
 
-        public PlayFabLeaderboardsInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context)
+        public PlayFabProgressionInstanceAPI(PlayFabApiSettings settings, PlayFabAuthenticationContext context)
         {
             if (context == null)
                 throw new PlayFabException(PlayFabExceptionCode.AuthContextRequired, "Context cannot be null, create a PlayFabAuthenticationContext for each player in advance, or call <PlayFabClientInstanceAPI>.GetAuthenticationContext()");
