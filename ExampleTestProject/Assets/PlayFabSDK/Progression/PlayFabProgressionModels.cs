@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using PlayFab.SharedModels;
 
-namespace PlayFab.LeaderboardsModels
+namespace PlayFab.ProgressionModels
 {
     [Serializable]
     public class CreateLeaderboardDefinitionRequest : PlayFabRequestCommon
