@@ -25,6 +25,7 @@ This document assumes familiarity with the Unity game engine, MonoDevelop Unity 
 3. From the Unity editor, go to **Assets** > **Import Package** > **Custom Package** and then select the downloaded PlayFabEditorExtensions package. For latest instructions on how to add a custom package, go to Unity documentation site.
 4. A new window pops up displaying all the files that would be imported into your project. Select **Import** to add all of the files.
 After a successful installation, you will see the PlayFab panel with the Create account or login UI in the Unity editor.
+! Warning: Due to a small issue, you cannot log in with your microsoft account via the playfab editor extension. For a limited time, you can only log in directly with your playfab backsite account via the playfab editor extension. !
 
 ### Editor Extensions SDK Installation/Update
 
