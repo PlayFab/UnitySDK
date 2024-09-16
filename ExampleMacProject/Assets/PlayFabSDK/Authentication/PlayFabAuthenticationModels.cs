@@ -194,7 +194,8 @@ namespace PlayFab.AuthenticationModels
         Apple,
         NintendoSwitchAccount,
         GooglePlayGames,
-        XboxMobileStore
+        XboxMobileStore,
+        King
     }
 
     /// <summary>

@@ -29,8 +29,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetEntityLeaderboardResponse> OnProgressionGetLeaderboardForEntitiesResultEvent;
         public event PlayFabRequestEvent<GetStatisticDefinitionRequest> OnProgressionGetStatisticDefinitionRequestEvent;
         public event PlayFabResultEvent<GetStatisticDefinitionResponse> OnProgressionGetStatisticDefinitionResultEvent;
-        public event PlayFabRequestEvent<GetStatisticDefinitionsRequest> OnProgressionGetStatisticDefinitionsRequestEvent;
-        public event PlayFabResultEvent<GetStatisticDefinitionsResponse> OnProgressionGetStatisticDefinitionsResultEvent;
         public event PlayFabRequestEvent<GetStatisticsRequest> OnProgressionGetStatisticsRequestEvent;
         public event PlayFabResultEvent<GetStatisticsResponse> OnProgressionGetStatisticsResultEvent;
         public event PlayFabRequestEvent<GetStatisticsForEntitiesRequest> OnProgressionGetStatisticsForEntitiesRequestEvent;
