@@ -377,6 +377,44 @@ namespace PlayFab.ProfilesModels
     }
 
     /// <summary>
+    /// Given an entity profile, will update its display name to the one passed in if the profile's version is equal to the
+    /// specified value
+    /// </summary>
+    [Serializable]
+    public class SetDisplayNameRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The new value to be set on Entity Profile's display name
+        /// </summary>
+        public string DisplayName;
+        /// <summary>
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// </summary>
+        public EntityKey Entity;
+        /// <summary>
+        /// The expected version of a profile to perform this update on
+        /// </summary>
+        public int? ExpectedVersion;
+    }
+
+    [Serializable]
+    public class SetDisplayNameResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// The type of operation that occured on the profile's display name
+        /// </summary>
+        public OperationTypes? OperationResult;
+        /// <summary>
+        /// The updated version of the profile after the display name update
+        /// </summary>
+        public int? VersionNumber;
+    }
+
+    /// <summary>
     /// This will set the access policy statements on the given entity profile. This is not additive, any existing statements
     /// will be replaced with the statements in this request.
     /// </summary>

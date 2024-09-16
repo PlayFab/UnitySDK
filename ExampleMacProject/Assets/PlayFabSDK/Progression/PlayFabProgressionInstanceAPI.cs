@@ -184,17 +184,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get all current statistic definitions information
-        /// </summary>
-        public void GetStatisticDefinitions(GetStatisticDefinitionsRequest request, Action<GetStatisticDefinitionsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
-            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
-            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
-            PlayFabHttp.MakeApiCall("/Statistic/GetStatisticDefinitions", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
-        }
-
-        /// <summary>
         /// Gets statistics for the specified entity.
         /// </summary>
         public void GetStatistics(GetStatisticsRequest request, Action<GetStatisticsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)

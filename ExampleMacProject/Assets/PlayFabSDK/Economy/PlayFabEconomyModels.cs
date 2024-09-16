@@ -2408,26 +2408,26 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string FailureDetails;
         /// <summary>
+        /// The Marketplace Alternate ID being redeemed.
+        /// </summary>
+        public string MarketplaceAlternateId;
+        /// <summary>
         /// The transaction id in the external marketplace.
         /// </summary>
         public string MarketplaceTransactionId;
-        /// <summary>
-        /// The ID of the offer being redeemed.
-        /// </summary>
-        public string OfferId;
     }
 
     [Serializable]
     public class RedemptionSuccess : PlayFabBaseModel
     {
         /// <summary>
+        /// The Marketplace Alternate ID being redeemed.
+        /// </summary>
+        public string MarketplaceAlternateId;
+        /// <summary>
         /// The transaction id in the external marketplace.
         /// </summary>
         public string MarketplaceTransactionId;
-        /// <summary>
-        /// The ID of the offer being redeemed.
-        /// </summary>
-        public string OfferId;
         /// <summary>
         /// The timestamp for when the redeem was completed.
         /// </summary>

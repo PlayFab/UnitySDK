@@ -2644,7 +2644,7 @@ namespace PlayFab.AdminModels
         MultipleLinkedStatisticsNotAllowed,
         DuplicateLinkedStatisticColumnNameFound,
         AggregationTypeNotAllowedForMultiColumnStatistic,
-        MaxQueryableVerionsValueNotAllowedForTier,
+        MaxQueryableVersionsValueNotAllowedForTier,
         StatisticDefinitionHasNullOrEmptyVersionConfiguration,
         StatisticColumnLengthMismatch,
         MatchmakingEntityInvalid,
@@ -4333,7 +4333,8 @@ namespace PlayFab.AdminModels
         Apple,
         NintendoSwitchAccount,
         GooglePlayGames,
-        XboxMobileStore
+        XboxMobileStore,
+        King
     }
 
     [Serializable]
@@ -7560,7 +7561,8 @@ namespace PlayFab.AdminModels
         Apple,
         NintendoSwitchAccount,
         GooglePlayGames,
-        XboxMobileStore
+        XboxMobileStore,
+        King
     }
 
     [Serializable]

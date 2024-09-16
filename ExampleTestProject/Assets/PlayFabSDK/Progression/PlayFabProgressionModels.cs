@@ -462,24 +462,6 @@ namespace PlayFab.ProgressionModels
     }
 
     [Serializable]
-    public class GetStatisticDefinitionsRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-    }
-
-    [Serializable]
-    public class GetStatisticDefinitionsResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// List of statistic definitions for the title.
-        /// </summary>
-        public List<StatisticDefinition> StatisticDefinitions;
-    }
-
-    [Serializable]
     public class GetStatisticsForEntitiesRequest : PlayFabRequestCommon
     {
         /// <summary>
