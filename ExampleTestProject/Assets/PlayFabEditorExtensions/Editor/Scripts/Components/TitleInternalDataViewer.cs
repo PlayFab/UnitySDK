@@ -50,15 +50,15 @@ namespace PlayFab.PfEditor
 
                     if (items[z].Value != null)
                     {
-                        var keyStyle = items[z].isDirty ? PlayFabEditorHelper.uiStyle.GetStyle("listKey_dirty") : PlayFabEditorHelper.uiStyle.GetStyle("listKey");
-                        var valStyle = items[z].isDirty ? PlayFabEditorHelper.uiStyle.GetStyle("listValue_dirty") : PlayFabEditorHelper.uiStyle.GetStyle("listValue");
+                        var keyStyle = items[z].isDirty ? PlayFabEditorHelper.uiStyle.GetStyle("TextField") : PlayFabEditorHelper.uiStyle.GetStyle("TextField");
+                        var valStyle = items[z].isDirty ? PlayFabEditorHelper.uiStyle.GetStyle("TextField") : PlayFabEditorHelper.uiStyle.GetStyle("TextField");
 
                         using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
                         {
-                            items[z].Key = EditorGUILayout.TextField(items[z].Key, keyStyle, GUILayout.Width(keyInputBoxWidth));
+                            items[z].Key = EditorGUILayout.TextField(items[z].Key, keyStyle, GUILayout.Width(keyInputBoxWidth), GUILayout.MaxHeight(20));
 
                             EditorGUILayout.LabelField(":", GUILayout.MaxWidth(10));
-                            EditorGUILayout.LabelField("" + items[z].Value, valStyle, GUILayout.MaxWidth(valueInputBoxWidth), GUILayout.MaxHeight(25));
+                            EditorGUILayout.LabelField("" + items[z].Value, valStyle, GUILayout.MaxWidth(valueInputBoxWidth), GUILayout.MaxHeight(20));
 
                             if (GUILayout.Button("EDIT", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MaxHeight(19), GUILayout.MinWidth(35)))
                             {

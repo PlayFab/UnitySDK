@@ -118,7 +118,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get the friend leaderboard for the specified entity. A maximum of 100 friend entries are listed in the leaderboard.
+        /// Get the friend leaderboard for the specified entity. A maximum of 25 friend entries are listed in the leaderboard.
         /// </summary>
         public void GetFriendLeaderboardForEntity(GetFriendLeaderboardForEntityRequest request, Action<GetEntityLeaderboardResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {

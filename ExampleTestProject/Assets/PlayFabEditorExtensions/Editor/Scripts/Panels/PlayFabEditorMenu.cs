@@ -24,8 +24,16 @@ namespace PlayFab.PfEditor
         internal static MenuStates _menuState = MenuStates.Sdks;
         #endregion
         public static void DrawMenu()
-        {
-            mainMenuHandler();
+        { 
+            if (PlayFabEditorSDKTools.IsInstalled && PlayFabEditorSDKTools.isSdkSupported)
+            {
+                mainMenuHandler(); 
+            }
+            else
+            {
+                subMenuHandler();
+            }
+
 
             if (PlayFabEditorSDKTools.IsInstalled && PlayFabEditorSDKTools.isSdkSupported)
                 _menuState = (MenuStates)PlayFabEditorPrefsSO.Instance.curMainMenuIdx;
@@ -54,14 +62,15 @@ namespace PlayFab.PfEditor
 
             using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1"), GUILayout.Height(25), GUILayout.ExpandWidth(true)))
             {
-                GUILayout.Space(5);
-                GUI.SetNextControlName("sdk");
+                GUILayout.Space(5); 
+                GUI.SetNextControlName("sdk"); 
                 if (GUILayout.Button("SDK", sdksButtonStyle, GUILayout.MaxWidth(35)))
                 {
                     OnSdKsClicked();
                 }
                 if (PlayFabEditorSDKTools.IsInstalled && PlayFabEditorSDKTools.isSdkSupported)
                 {
+                    
                     GUI.SetNextControlName("settings");
                     if (GUILayout.Button("SETTINGS", settingsButtonStyle, GUILayout.MaxWidth(65)))
                     {
@@ -97,85 +106,91 @@ namespace PlayFab.PfEditor
             }
         }
 
+        public static void mainMenuHandler()
+        {
+            var e = Event.current;
+            if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.RightArrow))
+            {
+                string[] controlNames = { "sdk", "settings", "data", "tools", "packages", "help", "logOut" };
+                int direction = e.keyCode == KeyCode.RightArrow ? 1 : -1;
+                for (int i = 0; i < controlNames.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNames.Length) % controlNames.Length;
+                    if (IsControlVisible(controlNames[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNames[focusIndex]);
+                        break;
+                    }
+                }
+            }
+            else if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.LeftArrow))
+            {
+                string[] controlNames = { "logOut", "help", "packages", "tools", "data", "settings", "sdk" };
+                int direction = e.keyCode == KeyCode.LeftArrow ? 1 : -1;
+                for (int i = 0; i < controlNames.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNames.Length) % controlNames.Length;
+                    if (IsControlVisible(controlNames[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNames[focusIndex]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static bool IsControlVisible(string controlName)
+        {
+            Rect controlRect = GetControlRectByName(controlName);
+            return controlRect.xMin < Screen.width && controlRect.xMax > 0 &&
+            controlRect.yMin < Screen.height && controlRect.yMax > 0;
+        }
+        private static Rect GetControlRectByName(string controlName)
+        {
+            return new Rect(0, 0, 100, 20);
+        }
+
+        public static void subMenuHandler()
+        {
+            var e = Event.current;
+            if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.RightArrow))
+            {
+                string[] controlNamesnoSDK = { "sdk", "help", "logOut" };
+                int direction = e.keyCode == KeyCode.RightArrow ? 1 : -1;
+                for (int i = 0; i < controlNamesnoSDK.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNamesnoSDK.Length) % controlNamesnoSDK.Length;
+                    if (IsControlVisible(controlNamesnoSDK[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNamesnoSDK[focusIndex]);
+                        break;
+                    }
+                }
+            }
+            else if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.LeftArrow))
+            {
+                string[] controlNamesnoSDK = { "logOut", "help", "sdk" };
+                int direction = e.keyCode == KeyCode.RightArrow ? 1 : -1;
+                for (int i = 0; i < controlNamesnoSDK.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNamesnoSDK.Length) % controlNamesnoSDK.Length;
+                    if (IsControlVisible(controlNamesnoSDK[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNamesnoSDK[focusIndex]);
+                        break;
+                    }
+                }
+            }
+
+        }
+
         public static void OnToolsClicked()
         {
             _menuState = MenuStates.Tools;
             PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnMenuItemClicked, MenuStates.Tools.ToString());
             PlayFabEditorPrefsSO.Instance.curMainMenuIdx = (int)_menuState;
         }
-        public static void mainMenuHandler()
-        {
-            var e = Event.current;
-            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.RightArrow)
-            {
-                switch (focusIndex)
-                {
-                    case 0:
-                        EditorGUI.FocusTextInControl("sdk");
-                        focusIndex = 1;
-                        break;
-                    case 1:
-                        EditorGUI.FocusTextInControl("settings");
-                        focusIndex = 2;
-                        break;
-                    case 2:
-                        EditorGUI.FocusTextInControl("data");
-                        focusIndex = 3;
-                        break;
-                    case 3:
-                        EditorGUI.FocusTextInControl("tools");
-                        focusIndex = 4;
-                        break;
-                    case 4:
-                        EditorGUI.FocusTextInControl("packages");
-                        focusIndex = 5;
-                        break;
-                    case 5:
-                        EditorGUI.FocusTextInControl("help");
-                        focusIndex = 6;
-                        break;
-                    case 6:
-                        EditorGUI.FocusTextInControl("logOut");
-                        focusIndex = 0;
-                        break;
-                }
-
-            }
-            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.LeftArrow)
-            {
-                switch (focusIndex)
-                {
-                    case 0:
-                        EditorGUI.FocusTextInControl("logOut");
-                        focusIndex = 1;
-                        break;
-                    case 1:
-                        EditorGUI.FocusTextInControl("help");
-                        focusIndex = 2;
-                        break;
-                    case 2:
-                        EditorGUI.FocusTextInControl("packages");
-                        focusIndex = 3;
-                        break;
-                    case 3:
-                        EditorGUI.FocusTextInControl("tools");
-                        focusIndex = 4;
-                        break;
-                    case 4:
-                        EditorGUI.FocusTextInControl("data");
-                        focusIndex = 5;
-                        break;
-                    case 5:
-                        EditorGUI.FocusTextInControl("settings");
-                        focusIndex = 6;
-                        break;
-                    case 6:
-                        EditorGUI.FocusTextInControl("sdk");
-                        focusIndex = 0;
-                        break;
-                }
-            }
-        }
+        
         public static void OnDataClicked()
         {
             _menuState = MenuStates.Data;
