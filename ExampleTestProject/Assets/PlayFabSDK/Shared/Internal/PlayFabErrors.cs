@@ -593,6 +593,8 @@ namespace PlayFab
         MaxQueryableVersionsValueNotAllowedForTier = 1591,
         StatisticDefinitionHasNullOrEmptyVersionConfiguration = 1592,
         StatisticColumnLengthMismatch = 1593,
+        InvalidExternalEntityId = 1594,
+        UpdatingStatisticsUsingTransactionIdNotAvailableForFreeTier = 1595,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,

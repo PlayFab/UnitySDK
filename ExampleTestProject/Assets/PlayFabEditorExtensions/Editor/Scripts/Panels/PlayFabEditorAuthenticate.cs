@@ -106,74 +106,54 @@ private static void shiftKeyHandler()
                 }
             }
         }
+
+
         public static void CreateHandler()
         {
+
             var e = Event.current;
-            shiftKeyHandler(); // method calling
-            if (e.type == EventType.KeyUp && e.keyCode == KeyCode.Tab)
+            if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.Tab))
             {
-                if (!isShiftKeyPressed)
+                string[] controlNames = { "game_manger", "email", "password", "confirm_password", "studio_name", "login", "create_account","view_readme" };
+                int direction = e.keyCode == KeyCode.Tab ? 1 : -1;
+                for (int i = 0; i < controlNames.Length; i++)
                 {
-                    switch (focusIndex)
+                    focusIndex = (focusIndex + direction + controlNames.Length) % controlNames.Length;
+                    if (IsControlVisible(controlNames[focusIndex]))
                     {
-                        case 0:
-                            EditorGUI.FocusTextInControl("email");
-                            focusIndex = 1;
-                            break;
-                        case 1:
-                            EditorGUI.FocusTextInControl("password");
-                            focusIndex = 2;
-                            break;
-                        case 2:
-                            EditorGUI.FocusTextInControl("confirm_password");
-                            focusIndex = 3;
-                            break;
-                        case 3:
-                            EditorGUI.FocusTextInControl("studio_name");
-                            focusIndex = 4;
-                            break;
-                        case 4:
-                            GUI.FocusControl("create_account");
-                            focusIndex = 5;
-                            break;
-                        case 5:
-                            GUI.FocusControl("login");
-                            focusIndex = 0;
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (focusIndex)
-                    {
-                        case 0:
-                            GUI.FocusControl("login");
-                            focusIndex = 5;
-                            break;
-                        case 1:
-                            GUI.FocusControl("email");
-                            focusIndex = 0;
-                            break;
-                        case 2:
-                            EditorGUI.FocusTextInControl("password");
-                            focusIndex = 1;
-                            break;
-                        case 3:
-                            EditorGUI.FocusTextInControl("confirm_password");
-                            focusIndex = 2;
-                            break;
-                        case 4:
-                            EditorGUI.FocusTextInControl("studio_name");
-                            focusIndex = 3;
-                            break;
-                        case 5:
-                            EditorGUI.FocusTextInControl("create_account");
-                            focusIndex = 4;
-                            break;
+                        EditorGUI.FocusTextInControl(controlNames[focusIndex]);
+                        break;
                     }
                 }
             }
+            else if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.LeftShift && e.keyCode == KeyCode.Tab))
+            {
+                string[] controlNames = { "view_readme", "create_account", "login", "studio_name", "confirm_password", "password", "email", "game_manger" };
+                int direction = e.keyCode == KeyCode.LeftShift && e.keyCode == KeyCode.Tab ? 1 : -1;
+                for (int i = 0; i < controlNames.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNames.Length) % controlNames.Length;
+                    if (IsControlVisible(controlNames[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNames[focusIndex]);
+                        break;
+                    }
+                }
+            }
+             
         }
+
+        private static bool IsControlVisible(string controlName)
+        {
+            Rect controlRect = GetControlRectByName(controlName);
+            return controlRect.xMin < Screen.width && controlRect.xMax > 0 &&
+            controlRect.yMin < Screen.height && controlRect.yMax > 0;
+        }
+        private static Rect GetControlRectByName(string controlName)
+        {
+            return new Rect(0, 0, 100, 20);
+        }
+
         public static void DrawAuthPanels()
         {
             //capture enter input for login
@@ -274,6 +254,7 @@ private static void shiftKeyHandler()
                 using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
                 {
                     GUILayout.FlexibleSpace();
+                    GUI.SetNextControlName("view_readme");
                     if (GUILayout.Button("VIEW README ->", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
                     {
                         Application.OpenURL("https://github.com/PlayFab/UnityEditorExtensions#setup");
