@@ -73,6 +73,7 @@ namespace PlayFab.PfEditor
                 else if((Event.current.keyCode == KeyCode.Escape))
                 {
                     Close();
+                    GUI.FocusControl("refresh");
                 }
             }
         }

@@ -49,6 +49,7 @@ namespace PlayFab.PfEditor
             Repaint();
             HandleFocusTrap();
         }
+        
         void HandleFocusTrap()
         {
             if (Event.current.type == EventType.KeyDown)
@@ -65,6 +66,11 @@ namespace PlayFab.PfEditor
                         GUI.FocusControl("SaveButton");
                         Event.current.Use();
                     }
+                }
+                else if ((Event.current.keyCode == KeyCode.Escape))
+                {
+                    Close();
+                    GUI.FocusControl("refresh");
                 }
             }
         }

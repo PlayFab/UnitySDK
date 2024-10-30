@@ -39,6 +39,67 @@ namespace PlayFab.PfEditor
         #endregion
 
         #region draw calls
+        private static int focusIndex;
+        public static void subMenuHandler()
+        {
+            var e = Event.current;
+            if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.Tab))
+            {
+                string[] controlNames = { "refresh", "my_game_studio"};
+                int direction = e.keyCode == KeyCode.Tab ? 1 : -1;
+                for (int i = 0; i < controlNames.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNames.Length) % controlNames.Length;
+                    if (IsControlVisible(controlNames[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNames[focusIndex]);
+                        break;
+                    }
+                }
+            }
+        }
+        public static void mainMenuHandler()
+        {
+            var e = Event.current;
+            if (e.type == EventType.KeyUp && (e.keyCode == KeyCode.Tab))
+            {
+                string[] controlNames = { "refresh", "my_game_studio", "my_game", "secret_key", "view_game_manager" };
+                int direction = e.keyCode == KeyCode.Tab ? 1 : -1;
+                for (int i = 0; i < controlNames.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNames.Length) % controlNames.Length;
+                    if (IsControlVisible(controlNames[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNames[focusIndex]);
+                        break;
+                    }
+                }
+            }
+            else if (e.type == EventType.KeyUp && ((e.shift && e.keyCode == KeyCode.Tab)))
+            {
+                string[] controlNames = { "refresh", "my_game_studio", "my_game", "secret_key", "view_game_manager" };
+                int direction = e.shift ? -1 : 1;
+                for (int i = 0; i < controlNames.Length; i++)
+                {
+                    focusIndex = (focusIndex + direction + controlNames.Length) % controlNames.Length;
+                    if (IsControlVisible(controlNames[focusIndex]))
+                    {
+                        EditorGUI.FocusTextInControl(controlNames[focusIndex]);
+                        break;
+                    }
+                }
+            }
+        }
+        private static bool IsControlVisible(string controlName)
+        {
+            Rect controlRect = GetControlRectByName(controlName);
+            return controlRect.xMin < Screen.width && controlRect.xMax > 0 &&
+            controlRect.yMin < Screen.height && controlRect.yMax > 0;
+        }
+        private static Rect GetControlRectByName(string controlName)
+        {
+            return new Rect(0, 0, 100, 20);
+        }
         private static void DrawApiSubPanel()
         {
             using (new UnityVertical(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1")))
@@ -135,6 +196,7 @@ namespace PlayFab.PfEditor
 
         private static void DrawTitleSettingsSubPanel()
         {
+
             float labelWidth = 100;
 
             if (PlayFabEditorPrefsSO.Instance.StudioList != null && PlayFabEditorPrefsSO.Instance.StudioList.Count != StudioFoldOutStates.Count + 1)
@@ -158,16 +220,29 @@ namespace PlayFab.PfEditor
             {
                 EditorGUILayout.LabelField("STUDIOS:", PlayFabEditorHelper.uiStyle.GetStyle("labelStyle"), GUILayout.Width(labelWidth));
                 GUILayout.FlexibleSpace();
+                GUI.SetNextControlName("refresh");
                 if (GUILayout.Button("REFRESH", PlayFabEditorHelper.uiStyle.GetStyle("Button")))
                     PlayFabEditorDataService.RefreshStudiosList();
+            }
+            foreach (var studio in StudioFoldOutStates)
+            {
+                if (studio.Value.isCollapsed)
+                {
+                    subMenuHandler();
+                }
+                else 
+                { 
+                    mainMenuHandler(); 
+                }
+
             }
 
             foreach (var studio in StudioFoldOutStates)
             {
+                GUI.SetNextControlName("my_game_studio");
                 var style = new GUIStyle(EditorStyles.foldout);
                 if (studio.Value.isCollapsed)
-                    style.fontStyle = FontStyle.Normal;
-
+                style.fontStyle = FontStyle.Normal;
                 studio.Value.isCollapsed = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), studio.Value.isCollapsed, string.Format("{0} ({1})", studio.Value.Studio.Name, studio.Value.Studio.Titles.Length), true, PlayFabEditorHelper.uiStyle.GetStyle("foldOut_std"));
                 if (studio.Value.isCollapsed)
                     continue;
@@ -181,6 +256,7 @@ namespace PlayFab.PfEditor
                 GUILayout.Space(5);
 
                 // draw title foldouts
+                GUI.SetNextControlName("my_game");
                 foreach (var title in studio.Value.titleFoldOutStates)
                 {
                     title.Value.isCollapsed = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), title.Value.isCollapsed, string.Format("{0} [{1}]", title.Value.Title.Name, title.Value.Title.Id), true, PlayFabEditorHelper.uiStyle.GetStyle("foldOut_std"));
@@ -191,13 +267,15 @@ namespace PlayFab.PfEditor
                     using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
                     {
                         EditorGUILayout.LabelField("SECRET KEY:", PlayFabEditorHelper.uiStyle.GetStyle("labelStyle"), GUILayout.Width(labelWidth));
-                        EditorGUILayout.TextField("" + title.Value.Title.SecretKey);
+                        GUI.SetNextControlName("secret_key");
+                        EditorGUILayout.TextField("" + title.Value.Title.SecretKey, PlayFabEditorHelper.uiStyle.GetStyle("TextField"), GUILayout.MinWidth(500)); ;
                     }
 
                     using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleClear")))
                     {
                         EditorGUILayout.LabelField("URL:", PlayFabEditorHelper.uiStyle.GetStyle("labelStyle"), GUILayout.Width(labelWidth));
                         GUILayout.FlexibleSpace();
+                        GUI.SetNextControlName("view_game_manager");
                         if (GUILayout.Button("VIEW IN GAME MANAGER", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
                             Application.OpenURL(title.Value.Title.GameManagerUrl);
                         GUILayout.FlexibleSpace();
