@@ -207,9 +207,7 @@ private static void shiftKeyHandler()
                     var msftTexture = Resources.Load("ms-symbollockup_signin_dark") as Texture2D;
                     var msftStyle = new GUIStyle();
                     msftStyle.normal.background = msftTexture;
-                    msftStyle.fixedHeight = msftTexture.height;
-                    msftStyle.fixedWidth = msftTexture.width;
-                    if (GUILayout.Button("", msftStyle))
+                    if (GUILayout.Button("", msftStyle, GUILayout.Width(msftTexture.width), GUILayout.Height(msftTexture.height)))
                     {
                         OnAADLoginButtonClicked();
                     }
@@ -239,8 +237,6 @@ private static void shiftKeyHandler()
                     GUILayout.FlexibleSpace();
                 }
 
-                //GUILayout.Space(10);
-
                 using (var fwl = new FixedWidthLabel("EMAIL: "))
                 {
                     GUILayout.Space(labelWidth - fwl.fieldWidth);
@@ -257,8 +253,8 @@ private static void shiftKeyHandler()
 
                 using (new UnityHorizontal(labelStyle))
                 {
-                    var buttonWidth = 200;
-                    GUILayout.Space(EditorGUIUtility.currentViewWidth - buttonWidth);
+                    var buttonWidth = 100;
+                    GUILayout.FlexibleSpace();
                     GUI.SetNextControlName("login");
                     if (GUILayout.Button("LOG IN", PlayFabEditorHelper.uiStyle.GetStyle("Button"), GUILayout.MinHeight(32), GUILayout.MaxWidth(buttonWidth)))
                     {
