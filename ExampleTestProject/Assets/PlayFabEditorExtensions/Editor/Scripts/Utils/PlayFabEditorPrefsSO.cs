@@ -42,10 +42,29 @@ namespace PlayFab.PfEditor
             }
         }
 
+        // Save current state without secret keys. Those must be manually provided at build time if it is a server build.
         public static void Save()
         {
+            Dictionary<string, string> titleSecrets = new();
+            foreach (var studio in _instance.StudioList)
+            {
+                foreach (var title in studio.Titles)
+                {
+                    titleSecrets[title.Id] = title.SecretKey;
+                    title.SecretKey = null;
+                }
+            }
+
             EditorUtility.SetDirty(_instance);
             AssetDatabase.SaveAssets();
+
+            foreach (var studio in _instance.StudioList)
+            {
+                foreach (var title in studio.Titles)
+                {
+                    title.SecretKey = titleSecrets[title.Id];
+                }
+            }
         }
 
         public string DevAccountEmail;
