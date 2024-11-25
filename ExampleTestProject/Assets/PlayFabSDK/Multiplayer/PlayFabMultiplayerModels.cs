@@ -95,7 +95,9 @@ namespace PlayFab.MultiplayerModels
         CentralIndia,
         UaeNorth,
         UkSouth,
-        SwedenCentral
+        SwedenCentral,
+        CanadaCentral,
+        MexicoCentral
     }
 
     public enum AzureVmFamily
