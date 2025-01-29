@@ -858,6 +858,11 @@ namespace PlayFab.ProgressionModels
         /// Collection of statistics to update, maximum 50.
         /// </summary>
         public List<StatisticUpdate> Statistics;
+        /// <summary>
+        /// Optional transactionId of this update which can be used to ensure idempotence. Using this field is still in testing
+        /// stage.
+        /// </summary>
+        public string TransactionId;
     }
 
     [Serializable]
