@@ -42,7 +42,6 @@ namespace PlayFab.PfEditor
                 EdExStateUpdate += StateUpdateHandler;
             }
 
-            PlayFabEditorDataService.RefreshStudiosList(true);
             GetLatestEdExVersion();
         }
 
@@ -127,37 +126,21 @@ namespace PlayFab.PfEditor
 
                 GUI.enabled = blockingRequests.Count == 0 && !EditorApplication.isCompiling;
 
-                if (PlayFabEditorAuthenticate.IsAuthenticated())
-                {
-                    PlayFabEditorMenu.DrawMenu();
+                PlayFabEditorMenu.DrawMenu();
 
-                    switch (PlayFabEditorMenu._menuState)
-                    {
-                        case PlayFabEditorMenu.MenuStates.Sdks:
-                            PlayFabEditorSDKTools.DrawSdkPanel();
-                            break;
-                        case PlayFabEditorMenu.MenuStates.Settings:
-                            PlayFabEditorSettings.DrawSettingsPanel();
-                            break;
-                        case PlayFabEditorMenu.MenuStates.Help:
-                            PlayFabEditorHelpMenu.DrawHelpPanel();
-                            break;
-                        case PlayFabEditorMenu.MenuStates.Data:
-                            PlayFabEditorDataMenu.DrawDataPanel();
-                            break;
-                        case PlayFabEditorMenu.MenuStates.Tools:
-                            PlayFabEditorToolsMenu.DrawToolsPanel();
-                            break;
-                        case PlayFabEditorMenu.MenuStates.Packages:
-                            PlayFabEditorPackages.DrawPackagesMenu();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else
+                switch (PlayFabEditorMenu._menuState)
                 {
-                    PlayFabEditorAuthenticate.DrawAuthPanels();
+                    case PlayFabEditorMenu.MenuStates.Sdks:
+                        PlayFabEditorSDKTools.DrawSdkPanel();
+                        break;
+                    case PlayFabEditorMenu.MenuStates.Settings:
+                        PlayFabEditorSettings.DrawSettingsPanel();
+                        break;
+                    case PlayFabEditorMenu.MenuStates.Help:
+                        PlayFabEditorHelpMenu.DrawHelpPanel();
+                        break;
+                    default:
+                        break;
                 }
 
                 using (new UnityVertical(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1"), GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))

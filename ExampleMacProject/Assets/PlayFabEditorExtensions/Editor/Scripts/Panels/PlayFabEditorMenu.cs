@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using System.Collections.Generic;
 using UnityEditor;
 
 namespace PlayFab.PfEditor
@@ -14,11 +12,7 @@ namespace PlayFab.PfEditor
         {
             Sdks = 0,
             Settings = 1,
-            Data = 2,
             Help = 3,
-            Tools = 4,
-            Packages = 5,
-            Logout = 6
         }
 
         internal static MenuStates _menuState = MenuStates.Sdks;
@@ -49,16 +43,8 @@ namespace PlayFab.PfEditor
             sdksButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
             if (_menuState == MenuStates.Settings)
             settingsButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
-            if (_menuState == MenuStates.Logout)
-            logoutButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
-            if (_menuState == MenuStates.Data)
-            dataButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
             if (_menuState == MenuStates.Help)
             helpButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
-            if (_menuState == MenuStates.Packages)
-            packagesButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
-            if (_menuState == MenuStates.Tools)
-            toolsButtonStyle = PlayFabEditorHelper.uiStyle.GetStyle("textButton_selected");
 
             using (new UnityHorizontal(PlayFabEditorHelper.uiStyle.GetStyle("gpStyleGray1"), GUILayout.Height(25), GUILayout.ExpandWidth(true)))
             {
@@ -76,32 +62,11 @@ namespace PlayFab.PfEditor
                     {
                         OnSettingsClicked();
                     }
-                    GUI.SetNextControlName("data");
-                    if (GUILayout.Button("DATA", dataButtonStyle, GUILayout.MaxWidth(45)))
-                    {
-                        OnDataClicked();
-                    }
-                    GUI.SetNextControlName("tools");
-                    if (GUILayout.Button("TOOLS", toolsButtonStyle, GUILayout.MaxWidth(45)))
-                    {
-                        OnToolsClicked();
-                    }
-                    GUI.SetNextControlName("packages");
-                    if (GUILayout.Button("PACKAGES", packagesButtonStyle, GUILayout.MaxWidth(72)))
-                    {
-                        OnPackagesClicked();
-                    }
                 }
                 GUI.SetNextControlName("help");
                 if (GUILayout.Button("HELP", helpButtonStyle, GUILayout.MaxWidth(45)))
                 {
                     OnHelpClicked();
-                }
-                GUILayout.FlexibleSpace();
-                GUI.SetNextControlName("logOut");
-                if (GUILayout.Button("LOGOUT", logoutButtonStyle, GUILayout.MaxWidth(85)))
-                {
-                    OnLogoutClicked();
                 }
             }
         }
@@ -145,6 +110,7 @@ namespace PlayFab.PfEditor
             return controlRect.xMin < Screen.width && controlRect.xMax > 0 &&
             controlRect.yMin < Screen.height && controlRect.yMax > 0;
         }
+
         private static Rect GetControlRectByName(string controlName)
         {
             return new Rect(0, 0, 100, 20);
@@ -184,20 +150,6 @@ namespace PlayFab.PfEditor
 
         }
 
-        public static void OnToolsClicked()
-        {
-            _menuState = MenuStates.Tools;
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnMenuItemClicked, MenuStates.Tools.ToString());
-            PlayFabEditorPrefsSO.Instance.curMainMenuIdx = (int)_menuState;
-        }
-        
-        public static void OnDataClicked()
-        {
-            _menuState = MenuStates.Data;
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnMenuItemClicked, MenuStates.Data.ToString());
-            PlayFabEditorPrefsSO.Instance.curMainMenuIdx = (int)_menuState;
-        }
-
         public static void OnHelpClicked()
         {
             _menuState = MenuStates.Help;
@@ -216,23 +168,6 @@ namespace PlayFab.PfEditor
         {
             _menuState = MenuStates.Settings;
             PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnMenuItemClicked, MenuStates.Settings.ToString());
-            PlayFabEditorPrefsSO.Instance.curMainMenuIdx = (int)_menuState;
-        }
-
-        public static void OnPackagesClicked()
-        {
-            _menuState = MenuStates.Packages;
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnMenuItemClicked, MenuStates.Packages.ToString());
-            PlayFabEditorPrefsSO.Instance.curMainMenuIdx = (int)_menuState;
-        }
-
-        public static void OnLogoutClicked()
-        {
-            _menuState = MenuStates.Logout;
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnMenuItemClicked, MenuStates.Logout.ToString());
-            PlayFabEditorAuthenticate.Logout();
-
-            _menuState = MenuStates.Sdks;
             PlayFabEditorPrefsSO.Instance.curMainMenuIdx = (int)_menuState;
         }
     }

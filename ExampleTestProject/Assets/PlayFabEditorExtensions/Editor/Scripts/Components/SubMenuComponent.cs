@@ -6,7 +6,6 @@ namespace PlayFab.PfEditor
     //[InitializeOnLoad]
     public class SubMenuComponent : UnityEditor.Editor
     {
-
         Dictionary<string, MenuItemContainer> items = new Dictionary<string, MenuItemContainer>();
         
         GUIStyle selectedStyle;
@@ -29,10 +28,6 @@ namespace PlayFab.PfEditor
                             focusIndex = 1;
                             break;
                         case 1:
-                            GUI.FocusControl("studios");
-                            focusIndex = 2;
-                            break;
-                        case 2:
                             GUI.FocusControl("API");
                             focusIndex = 0;
                             break;
@@ -47,10 +42,6 @@ namespace PlayFab.PfEditor
                             focusIndex = 1;
                             break;
                         case 1:
-                            GUI.FocusControl("studios");
-                            focusIndex = 2;
-                            break;
-                        case 2:
                             GUI.FocusControl("project");
                             focusIndex = 0;
                             break;
@@ -68,6 +59,7 @@ namespace PlayFab.PfEditor
                 }
             }
         }
+
         public static void InputDataMenuHandler()
         {
             var e = Event.current;
@@ -132,9 +124,6 @@ namespace PlayFab.PfEditor
                             GUI.SetNextControlName("project");
                             InputSubMenuStudiosHandler();
                             break;
-                        case "STUDIOS":
-                            GUI.SetNextControlName("studios");
-                            break;
                         case "API":
                             GUI.SetNextControlName("API");
                             break;
@@ -166,6 +155,7 @@ namespace PlayFab.PfEditor
                 items.Add(n, new MenuItemContainer() { displayName = n, method = m, isSelected = selectState });
             }
         }
+
         private void OnMenuItemClicked(string key)
         {
             if (!items.ContainsKey(key))

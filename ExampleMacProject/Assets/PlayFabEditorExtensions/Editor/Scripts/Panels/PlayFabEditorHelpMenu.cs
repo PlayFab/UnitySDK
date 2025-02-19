@@ -25,6 +25,7 @@ namespace PlayFab.PfEditor
                 scrollPos = new Vector2(0, scrollPos.y + scrollFactor);
             }
         }
+
         private static void shiftKeyHandler()
         {
             var e = Event.current;
@@ -38,6 +39,7 @@ namespace PlayFab.PfEditor
                 isShiftKeyPressed = false;
             }
         }
+
         private static void HelpInputHandler()
         {
             var e = Event.current;
@@ -106,6 +108,7 @@ namespace PlayFab.PfEditor
                 }
             }
         }
+
         public static void DrawHelpPanel()
         {
             HelpInputHandler();

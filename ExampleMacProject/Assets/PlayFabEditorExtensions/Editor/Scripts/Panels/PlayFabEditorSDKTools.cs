@@ -25,7 +25,6 @@ namespace PlayFab.PfEditor
         private static int focusIndex;
         private static bool isShiftKeyPressed = false;
 
-
         private static void shiftKeyHandler()
         {
             var e = Event.current;
@@ -39,6 +38,7 @@ namespace PlayFab.PfEditor
                 isShiftKeyPressed = false;
             }
         }
+
         private static void SDKInputHandler()
         {
             var e = Event.current;
@@ -63,10 +63,6 @@ namespace PlayFab.PfEditor
                             break;
                         case 3:
                             EditorGUI.FocusTextInControl("view_release_note");
-                            focusIndex = 4;
-                            break;
-                        case 4:
-                            GUI.FocusControl("logout");
                             focusIndex = 0;
                             break;
 
@@ -101,6 +97,7 @@ namespace PlayFab.PfEditor
                 }
             }
         }
+
         private static void removeSDKInputHandler()
         {
             var e = Event.current;
@@ -119,10 +116,6 @@ namespace PlayFab.PfEditor
                             EditorGUI.FocusTextInControl("install_playfabsdk");
                             focusIndex = 1;
                             break;
-                        case 2:
-                            GUI.FocusControl("logout");
-                            focusIndex = 2;
-                            break;
                         case 3:
                             EditorGUI.FocusTextInControl("refresh");
                             focusIndex = 0;
@@ -132,11 +125,7 @@ namespace PlayFab.PfEditor
                 else
                 {
                     switch (focusIndex)
-                    {
-                        case 0:
-                            GUI.FocusControl("logout");
-                            focusIndex = 3;
-                            break;                       
+                    {              
                         case 1:
                             GUI.FocusControl("install_playfabsdk");
                             focusIndex = 1;
@@ -145,15 +134,11 @@ namespace PlayFab.PfEditor
                             GUI.FocusControl("refresh");
                             focusIndex = 2;
                             break;
-                        case 3:
-                            EditorGUI.FocusTextInControl("logout");
-                            focusIndex = 0;
-                            break;
-
                     }
                 }
             }
         }
+
         public static void DrawSdkPanel()
         {
             SDKInputHandler();
