@@ -3869,7 +3869,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public DateTime? LastLoginTime;
         /// <summary>
-        /// True if the account was newly created on this login.
+        /// True if the master_player_account was newly created on this login.
         /// </summary>
         public bool NewlyCreated;
         /// <summary>

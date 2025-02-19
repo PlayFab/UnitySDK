@@ -1,4 +1,3 @@
-using PlayFab.PfEditor.EditorModels;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -48,20 +47,8 @@ namespace PlayFab.PfEditor
             AssetDatabase.SaveAssets();
         }
 
-        public string DevAccountEmail;
-        public string DevAccountToken;
-
-        public string AadAuthorization;
-
-        public List<Studio> StudioList = null; // Null means not fetched, empty is a possible return result from GetStudios
-        public string SelectedStudio;
-
-        public readonly Dictionary<string, string> TitleDataCache = new Dictionary<string, string>();
-        public readonly Dictionary<string, string> InternalTitleDataCache = new Dictionary<string, string>();
-
         public string SdkPath;
         public string EdExPath;
-        public string LocalCloudScriptPath;
 
         private string _latestSdkVersion;
         private string _latestEdExVersion;

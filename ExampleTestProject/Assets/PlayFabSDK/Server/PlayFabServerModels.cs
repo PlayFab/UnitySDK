@@ -285,7 +285,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public string Reason;
         /// <summary>
-        /// The family type of the suer that is included in the ban.
+        /// The family type of the user that is included in the ban.
         /// </summary>
         public string UserFamilyType;
     }
@@ -2020,6 +2020,8 @@ namespace PlayFab.ServerModels
         UpdatingStatisticsUsingTransactionIdNotAvailableForFreeTier,
         TransactionAlreadyApplied,
         ReportDataNotRetrievedSuccessfully,
+        ResetIntervalCannotBeModified,
+        VersionIncrementRateExceeded,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2303,6 +2305,7 @@ namespace PlayFab.ServerModels
         GameSaveDataStorageQuotaExceeded,
         GameSaveNewerManifestExists,
         GameSaveBaseVersionNotAvailable,
+        GameSaveManifestVersionQuarantined,
         StateShareForbidden,
         StateShareTitleNotInFlight,
         StateShareStateNotFound,
@@ -5819,7 +5822,7 @@ namespace PlayFab.ServerModels
         /// </summary>
         public DateTime? LastLoginTime;
         /// <summary>
-        /// True if the account was newly created on this login.
+        /// True if the master_player_account was newly created on this login.
         /// </summary>
         public bool NewlyCreated;
         /// <summary>
