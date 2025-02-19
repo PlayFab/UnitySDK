@@ -185,8 +185,15 @@ namespace PlayFab.Internal
                 try
                 {
                     byte[] responseBytes = www.downloadHandler.data;
-                    string responseText = System.Text.Encoding.UTF8.GetString(responseBytes, 0, responseBytes.Length);
-                    OnResponse(responseText, reqContainer);
+                    if (responseBytes == null)
+                    {
+                        OnError("Service response empty", reqContainer);
+                    }
+                    else
+                    {
+                        string responseText = System.Text.Encoding.UTF8.GetString(responseBytes, 0, responseBytes.Length);
+                        OnResponse(responseText, reqContainer);
+                    }
                 }
                 catch (Exception e)
                 {

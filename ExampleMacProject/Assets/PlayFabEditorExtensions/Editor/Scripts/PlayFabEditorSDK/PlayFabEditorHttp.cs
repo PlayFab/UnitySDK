@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using PlayFab.PfEditor.Json;
-using PlayFab.PfEditor.EditorModels;
 using UnityEngine.Networking;
 
 namespace PlayFab.PfEditor
@@ -45,104 +44,6 @@ namespace PlayFab.PfEditor
             resultCallback(fileSaveLocation);
         }
 
-        internal static void MakeApiCall<TRequestType, TResultType>(string api, string apiEndpoint, TRequestType request, Action<TResultType> resultCallback, Action<EditorModels.PlayFabError> errorCallback) where TResultType : class
-        {
-            var url = apiEndpoint + api;
-            var req = JsonWrapper.SerializeObject(request, PlayFabEditorUtil.ApiSerializerStrategy);
-            //Set headers
-            var headers = new Dictionary<string, string>
-            {
-                {"Content-Type", "application/json"},
-                {"X-ReportErrorAsSuccess", "true"},
-                {"X-PlayFabSDK", PlayFabEditorHelper.EDEX_NAME + "_" + PlayFabEditorHelper.EDEX_VERSION}
-            };
-
-            if (api.Contains("/Server/") || api.Contains("/Admin/"))
-            {
-                if (PlayFabEditorDataService.ActiveTitle == null || string.IsNullOrEmpty(PlayFabEditorDataService.ActiveTitle.SecretKey))
-                {
-                    PlayFabEditorDataService.RefreshStudiosList();
-                    return;
-                }
-
-                headers.Add("X-SecretKey", PlayFabEditorDataService.ActiveTitle.SecretKey);
-            }
-
-            if(api.Contains("LoginWithAAD"))
-            {
-                if(PlayFabEditorPrefsSO.Instance.AadAuthorization == "")
-                {
-                    Debug.Log("You MUST login through AAD first before calling this api");
-                    return;
-                }
-
-                headers.Add("Authorization", "Bearer "+(PlayFabEditorPrefsSO.Instance.AadAuthorization));
-            }
-
-            //Encode Payload
-            var payload = System.Text.Encoding.UTF8.GetBytes(req.Trim());
-#if UNITY_2018_2_OR_NEWER
-            var www = new UnityWebRequest(url)
-            {
-                uploadHandler = new UploadHandlerRaw(payload),
-                downloadHandler = new DownloadHandlerBuffer(),
-                method = "POST"
-            };
-
-            foreach (var header in headers)
-            {
-                if (!string.IsNullOrEmpty(header.Key) && !string.IsNullOrEmpty(header.Value))
-                {
-                    www.SetRequestHeader(header.Key, header.Value);
-                }
-                else
-                {
-                    UnityEngine.Debug.LogWarning("Null header");
-                }
-            }
-
-
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnHttpReq, api, PlayFabEditorHelper.MSG_SPIN_BLOCK);
-            EditorCoroutine.Start(Post(www, (response) => { OnWwwSuccess(api, resultCallback, errorCallback, response); }, (error) => { OnWwwError(errorCallback, error); }), www);
-#else
-            var www = new WWW(url, payload, headers);
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnHttpReq, api, PlayFabEditorHelper.MSG_SPIN_BLOCK);
-            EditorCoroutine.Start(Post(www, (response) => { OnWwwSuccess(api, resultCallback, errorCallback, response); }, (error) => { OnWwwError(errorCallback, error); }), www);
-#endif
-        }
-
-        private static void OnWwwSuccess<TResultType>(string api, Action<TResultType> resultCallback, Action<PlayFab.PfEditor.EditorModels.PlayFabError> errorCallback, string response) where TResultType : class
-        {
-            var httpResult = JsonWrapper.DeserializeObject<HttpResponseObject>(response, PlayFabEditorUtil.ApiSerializerStrategy);
-            if (httpResult.code != 200)
-            {
-                OnWwwError(errorCallback, response);
-                return;
-            }
-
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnHttpRes, api);
-            if (resultCallback == null)
-                return;
-
-            TResultType result = null;
-            var resultAssigned = false;
-
-            var dataJson = JsonWrapper.SerializeObject(httpResult.data, PlayFabEditorUtil.ApiSerializerStrategy);
-            result = JsonWrapper.DeserializeObject<TResultType>(dataJson, PlayFabEditorUtil.ApiSerializerStrategy);
-            resultAssigned = true;
-
-            if (resultAssigned)
-                resultCallback(result);
-        }
-
-        private static void OnWwwError(Action<PlayFab.PfEditor.EditorModels.PlayFabError> errorCallback, string error)
-        {
-            if (errorCallback != null)
-                errorCallback(PlayFabEditorHelper.GeneratePlayFabError(error));
-            else
-                PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnError, "OnWwwError" + error);
-        }
-
         internal static void MakeGitHubApiCall(string url, Action<string> resultCallback)
         {
 #if UNITY_2018_2_OR_NEWER
@@ -178,6 +79,7 @@ namespace PlayFab.PfEditor
             }
         }
 #if UNITY_2018_2_OR_NEWER
+
         private static IEnumerator Post(UnityWebRequest www, Action<string> callBack, Action<string> errorCallback)
         {
             if (www != null)
