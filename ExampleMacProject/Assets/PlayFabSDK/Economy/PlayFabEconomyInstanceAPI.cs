@@ -9,7 +9,8 @@ using PlayFab.SharedModels;
 namespace PlayFab
 {
     /// <summary>
-    /// API methods for managing the catalog. Inventory manages in-game assets for any given entity.
+    /// API methods for managing the catalog. Inventory manages in-game assets for any given entity. API methods for managing
+    /// the versioned catalogs.
     /// </summary>
     public class PlayFabEconomyInstanceAPI : IPlayFabInstanceApi
     {
