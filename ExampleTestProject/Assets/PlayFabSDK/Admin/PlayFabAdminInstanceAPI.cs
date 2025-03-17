@@ -285,6 +285,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Deletes title-specific custom properties for a player
+        /// </summary>
+        public void DeletePlayerCustomProperties(DeletePlayerCustomPropertiesRequest request, Action<DeletePlayerCustomPropertiesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Admin/DeletePlayerCustomProperties", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Deletes an existing Player Shared Secret Key. It may take up to 5 minutes for this delete to be reflected after this API
         /// returns.
         /// </summary>
@@ -489,6 +500,17 @@ namespace PlayFab
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
             PlayFabHttp.MakeApiCall("/Admin/GetPlayedTitleList", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Retrieves a title-specific custom property value for a player.
+        /// </summary>
+        public void GetPlayerCustomProperty(GetPlayerCustomPropertyRequest request, Action<GetPlayerCustomPropertyResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Admin/GetPlayerCustomProperty", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>
@@ -846,6 +868,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves title-specific custom property values for a player.
+        /// </summary>
+        public void ListPlayerCustomProperties(ListPlayerCustomPropertiesRequest request, Action<ListPlayerCustomPropertiesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Admin/ListPlayerCustomProperties", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// _NOTE: This is a Legacy Economy API, and is in bugfix-only mode. All new Economy features are being developed only for
         /// version 2._ Retuns the list of all defined virtual currencies for the title
         /// </summary>
@@ -1181,6 +1214,17 @@ namespace PlayFab
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
             PlayFabHttp.MakeApiCall("/Admin/UpdateOpenIdConnection", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Updates the title-specific custom property values for a player
+        /// </summary>
+        public void UpdatePlayerCustomProperties(UpdatePlayerCustomPropertiesRequest request, Action<UpdatePlayerCustomPropertiesResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Admin/UpdatePlayerCustomProperties", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>
