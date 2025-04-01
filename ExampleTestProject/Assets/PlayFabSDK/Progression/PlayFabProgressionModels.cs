@@ -241,7 +241,7 @@ namespace PlayFab.ProgressionModels
         /// </summary>
         public string LeaderboardName;
         /// <summary>
-        /// Maximum number of results to return from the leaderboard. Minimum 1, maximum 1,000.
+        /// Maximum number of results to return from the leaderboard. Minimum 1, maximum 100.
         /// </summary>
         public uint PageSize;
         /// <summary>
