@@ -191,6 +191,7 @@ namespace PlayFab.PfEditor
                     using (new UnityHorizontal())
                     {
                         GUILayout.FlexibleSpace();
+                        GUI.SetNextControlName("upgradeEdex");
                         if (GUILayout.Button("UPGRADE EDEX", PlayFabEditorHelper.uiStyle.GetStyle("textButtonOr")))
                         {
                             UpgradeEdEx();
@@ -202,6 +203,7 @@ namespace PlayFab.PfEditor
                 using (new UnityHorizontal())
                 {
                     GUILayout.FlexibleSpace();
+                    GUI.SetNextControlName("view_documentation");
                     if (GUILayout.Button("VIEW DOCUMENTATION ->", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
                     {
                         Application.OpenURL("https://github.com/PlayFab/UnityEditorExtensions");
@@ -212,6 +214,7 @@ namespace PlayFab.PfEditor
                 using (new UnityHorizontal())
                 {
                     GUILayout.FlexibleSpace();
+                    GUI.SetNextControlName("report_issues");
                     if (GUILayout.Button("REPORT ISSUES ->", PlayFabEditorHelper.uiStyle.GetStyle("textButton")))
                     {
                         Application.OpenURL("https://github.com/PlayFab/UnityEditorExtensions/issues");
@@ -224,6 +227,7 @@ namespace PlayFab.PfEditor
                     using (new UnityHorizontal())
                     {
                         GUILayout.FlexibleSpace();
+                        GUI.SetNextControlName("unInstall");
                         if (GUILayout.Button("UNINSTALL ", PlayFabEditorHelper.uiStyle.GetStyle("button")))
                         {
                             RemoveEdEx();

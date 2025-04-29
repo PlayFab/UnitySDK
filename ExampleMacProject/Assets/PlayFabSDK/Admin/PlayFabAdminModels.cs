@@ -2307,7 +2307,6 @@ namespace PlayFab.AdminModels
         UnableToConnectToDatabase,
         InternalServerError,
         InvalidReportDate,
-        ReportNotAvailable,
         DatabaseThroughputExceeded,
         InvalidGameTicket,
         ExpiredGameTicket,
@@ -2792,6 +2791,11 @@ namespace PlayFab.AdminModels
         VersionIncrementRateExceeded,
         InvalidSteamUsername,
         InvalidVersionResetForLinkedLeaderboard,
+        BattleNetNotEnabledForTitle,
+        ReportNotProcessed,
+        DataNotAvailable,
+        InvalidReportName,
+        ResourceNotModified,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -3071,6 +3075,7 @@ namespace PlayFab.AdminModels
         TrueSkillScenarioContainsActiveModel,
         TrueSkillInvalidConditionRank,
         TrueSkillTotalScenarioLimitExceeded,
+        TrueSkillInvalidConditionsList,
         GameSaveManifestNotFound,
         GameSaveManifestVersionAlreadyExists,
         GameSaveConflictUpdatingManifest,
@@ -3092,6 +3097,9 @@ namespace PlayFab.AdminModels
         GameSaveTitleDoesNotExist,
         GameSaveOperationNotAllowedForTitle,
         GameSaveManifestFilesLimitExceeded,
+        GameSaveManifestDescriptionUpdateNotAllowed,
+        GameSaveTitleConfigNotFound,
+        GameSaveTitleAlreadyOnboarded,
         StateShareForbidden,
         StateShareTitleNotInFlight,
         StateShareStateNotFound,
@@ -3099,7 +3107,9 @@ namespace PlayFab.AdminModels
         StateShareStateRedemptionLimitExceeded,
         StateShareStateRedemptionLimitNotUpdated,
         StateShareCreatedStatesLimitExceeded,
-        StateShareIdMissingOrMalformed
+        StateShareIdMissingOrMalformed,
+        PlayerCreationDisabled,
+        AccountAlreadyExists
     }
 
     [Serializable]
@@ -4562,7 +4572,8 @@ namespace PlayFab.AdminModels
         NintendoSwitchAccount,
         GooglePlayGames,
         XboxMobileStore,
-        King
+        King,
+        BattleNet
     }
 
     [Serializable]
