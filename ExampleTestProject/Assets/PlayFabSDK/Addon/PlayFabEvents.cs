@@ -21,6 +21,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<CreateOrUpdatePSNResponse> OnAddonCreateOrUpdatePSNResultEvent;
         public event PlayFabRequestEvent<CreateOrUpdateSteamRequest> OnAddonCreateOrUpdateSteamRequestEvent;
         public event PlayFabResultEvent<CreateOrUpdateSteamResponse> OnAddonCreateOrUpdateSteamResultEvent;
+        public event PlayFabRequestEvent<CreateOrUpdateToxModRequest> OnAddonCreateOrUpdateToxModRequestEvent;
+        public event PlayFabResultEvent<CreateOrUpdateToxModResponse> OnAddonCreateOrUpdateToxModResultEvent;
         public event PlayFabRequestEvent<CreateOrUpdateTwitchRequest> OnAddonCreateOrUpdateTwitchRequestEvent;
         public event PlayFabResultEvent<CreateOrUpdateTwitchResponse> OnAddonCreateOrUpdateTwitchResultEvent;
         public event PlayFabRequestEvent<DeleteAppleRequest> OnAddonDeleteAppleRequestEvent;
@@ -39,6 +41,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<DeletePSNResponse> OnAddonDeletePSNResultEvent;
         public event PlayFabRequestEvent<DeleteSteamRequest> OnAddonDeleteSteamRequestEvent;
         public event PlayFabResultEvent<DeleteSteamResponse> OnAddonDeleteSteamResultEvent;
+        public event PlayFabRequestEvent<DeleteToxModRequest> OnAddonDeleteToxModRequestEvent;
+        public event PlayFabResultEvent<DeleteToxModResponse> OnAddonDeleteToxModResultEvent;
         public event PlayFabRequestEvent<DeleteTwitchRequest> OnAddonDeleteTwitchRequestEvent;
         public event PlayFabResultEvent<DeleteTwitchResponse> OnAddonDeleteTwitchResultEvent;
         public event PlayFabRequestEvent<GetAppleRequest> OnAddonGetAppleRequestEvent;
@@ -57,6 +61,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPSNResponse> OnAddonGetPSNResultEvent;
         public event PlayFabRequestEvent<GetSteamRequest> OnAddonGetSteamRequestEvent;
         public event PlayFabResultEvent<GetSteamResponse> OnAddonGetSteamResultEvent;
+        public event PlayFabRequestEvent<GetToxModRequest> OnAddonGetToxModRequestEvent;
+        public event PlayFabResultEvent<GetToxModResponse> OnAddonGetToxModResultEvent;
         public event PlayFabRequestEvent<GetTwitchRequest> OnAddonGetTwitchRequestEvent;
         public event PlayFabResultEvent<GetTwitchResponse> OnAddonGetTwitchResultEvent;
     }

@@ -1554,14 +1554,29 @@ namespace PlayFab.Events
             if (OnEventsCreateTelemetryKeyRequestEvent != null) { foreach (var each in OnEventsCreateTelemetryKeyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsCreateTelemetryKeyRequestEvent -= (PlayFabRequestEvent<EventsModels.CreateTelemetryKeyRequest>)each; } } }
             if (OnEventsCreateTelemetryKeyResultEvent != null) { foreach (var each in OnEventsCreateTelemetryKeyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsCreateTelemetryKeyResultEvent -= (PlayFabResultEvent<EventsModels.CreateTelemetryKeyResponse>)each; } } }
 
+            if (OnEventsDeleteDataConnectionRequestEvent != null) { foreach (var each in OnEventsDeleteDataConnectionRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsDeleteDataConnectionRequestEvent -= (PlayFabRequestEvent<EventsModels.DeleteDataConnectionRequest>)each; } } }
+            if (OnEventsDeleteDataConnectionResultEvent != null) { foreach (var each in OnEventsDeleteDataConnectionResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsDeleteDataConnectionResultEvent -= (PlayFabResultEvent<EventsModels.DeleteDataConnectionResponse>)each; } } }
+
             if (OnEventsDeleteTelemetryKeyRequestEvent != null) { foreach (var each in OnEventsDeleteTelemetryKeyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsDeleteTelemetryKeyRequestEvent -= (PlayFabRequestEvent<EventsModels.DeleteTelemetryKeyRequest>)each; } } }
             if (OnEventsDeleteTelemetryKeyResultEvent != null) { foreach (var each in OnEventsDeleteTelemetryKeyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsDeleteTelemetryKeyResultEvent -= (PlayFabResultEvent<EventsModels.DeleteTelemetryKeyResponse>)each; } } }
+
+            if (OnEventsGetDataConnectionRequestEvent != null) { foreach (var each in OnEventsGetDataConnectionRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsGetDataConnectionRequestEvent -= (PlayFabRequestEvent<EventsModels.GetDataConnectionRequest>)each; } } }
+            if (OnEventsGetDataConnectionResultEvent != null) { foreach (var each in OnEventsGetDataConnectionResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsGetDataConnectionResultEvent -= (PlayFabResultEvent<EventsModels.GetDataConnectionResponse>)each; } } }
 
             if (OnEventsGetTelemetryKeyRequestEvent != null) { foreach (var each in OnEventsGetTelemetryKeyRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsGetTelemetryKeyRequestEvent -= (PlayFabRequestEvent<EventsModels.GetTelemetryKeyRequest>)each; } } }
             if (OnEventsGetTelemetryKeyResultEvent != null) { foreach (var each in OnEventsGetTelemetryKeyResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsGetTelemetryKeyResultEvent -= (PlayFabResultEvent<EventsModels.GetTelemetryKeyResponse>)each; } } }
 
+            if (OnEventsListDataConnectionsRequestEvent != null) { foreach (var each in OnEventsListDataConnectionsRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsListDataConnectionsRequestEvent -= (PlayFabRequestEvent<EventsModels.ListDataConnectionsRequest>)each; } } }
+            if (OnEventsListDataConnectionsResultEvent != null) { foreach (var each in OnEventsListDataConnectionsResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsListDataConnectionsResultEvent -= (PlayFabResultEvent<EventsModels.ListDataConnectionsResponse>)each; } } }
+
             if (OnEventsListTelemetryKeysRequestEvent != null) { foreach (var each in OnEventsListTelemetryKeysRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsListTelemetryKeysRequestEvent -= (PlayFabRequestEvent<EventsModels.ListTelemetryKeysRequest>)each; } } }
             if (OnEventsListTelemetryKeysResultEvent != null) { foreach (var each in OnEventsListTelemetryKeysResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsListTelemetryKeysResultEvent -= (PlayFabResultEvent<EventsModels.ListTelemetryKeysResponse>)each; } } }
+
+            if (OnEventsSetDataConnectionRequestEvent != null) { foreach (var each in OnEventsSetDataConnectionRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsSetDataConnectionRequestEvent -= (PlayFabRequestEvent<EventsModels.SetDataConnectionRequest>)each; } } }
+            if (OnEventsSetDataConnectionResultEvent != null) { foreach (var each in OnEventsSetDataConnectionResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsSetDataConnectionResultEvent -= (PlayFabResultEvent<EventsModels.SetDataConnectionResponse>)each; } } }
+
+            if (OnEventsSetDataConnectionActiveRequestEvent != null) { foreach (var each in OnEventsSetDataConnectionActiveRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsSetDataConnectionActiveRequestEvent -= (PlayFabRequestEvent<EventsModels.SetDataConnectionActiveRequest>)each; } } }
+            if (OnEventsSetDataConnectionActiveResultEvent != null) { foreach (var each in OnEventsSetDataConnectionActiveResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsSetDataConnectionActiveResultEvent -= (PlayFabResultEvent<EventsModels.SetDataConnectionActiveResponse>)each; } } }
 
             if (OnEventsSetTelemetryKeyActiveRequestEvent != null) { foreach (var each in OnEventsSetTelemetryKeyActiveRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsSetTelemetryKeyActiveRequestEvent -= (PlayFabRequestEvent<EventsModels.SetTelemetryKeyActiveRequest>)each; } } }
             if (OnEventsSetTelemetryKeyActiveResultEvent != null) { foreach (var each in OnEventsSetTelemetryKeyActiveResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnEventsSetTelemetryKeyActiveResultEvent -= (PlayFabResultEvent<EventsModels.SetTelemetryKeyActiveResponse>)each; } } }
@@ -2106,6 +2121,9 @@ namespace PlayFab.Events
             if (OnAddonCreateOrUpdateSteamRequestEvent != null) { foreach (var each in OnAddonCreateOrUpdateSteamRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonCreateOrUpdateSteamRequestEvent -= (PlayFabRequestEvent<AddonModels.CreateOrUpdateSteamRequest>)each; } } }
             if (OnAddonCreateOrUpdateSteamResultEvent != null) { foreach (var each in OnAddonCreateOrUpdateSteamResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonCreateOrUpdateSteamResultEvent -= (PlayFabResultEvent<AddonModels.CreateOrUpdateSteamResponse>)each; } } }
 
+            if (OnAddonCreateOrUpdateToxModRequestEvent != null) { foreach (var each in OnAddonCreateOrUpdateToxModRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonCreateOrUpdateToxModRequestEvent -= (PlayFabRequestEvent<AddonModels.CreateOrUpdateToxModRequest>)each; } } }
+            if (OnAddonCreateOrUpdateToxModResultEvent != null) { foreach (var each in OnAddonCreateOrUpdateToxModResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonCreateOrUpdateToxModResultEvent -= (PlayFabResultEvent<AddonModels.CreateOrUpdateToxModResponse>)each; } } }
+
             if (OnAddonCreateOrUpdateTwitchRequestEvent != null) { foreach (var each in OnAddonCreateOrUpdateTwitchRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonCreateOrUpdateTwitchRequestEvent -= (PlayFabRequestEvent<AddonModels.CreateOrUpdateTwitchRequest>)each; } } }
             if (OnAddonCreateOrUpdateTwitchResultEvent != null) { foreach (var each in OnAddonCreateOrUpdateTwitchResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonCreateOrUpdateTwitchResultEvent -= (PlayFabResultEvent<AddonModels.CreateOrUpdateTwitchResponse>)each; } } }
 
@@ -2133,6 +2151,9 @@ namespace PlayFab.Events
             if (OnAddonDeleteSteamRequestEvent != null) { foreach (var each in OnAddonDeleteSteamRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonDeleteSteamRequestEvent -= (PlayFabRequestEvent<AddonModels.DeleteSteamRequest>)each; } } }
             if (OnAddonDeleteSteamResultEvent != null) { foreach (var each in OnAddonDeleteSteamResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonDeleteSteamResultEvent -= (PlayFabResultEvent<AddonModels.DeleteSteamResponse>)each; } } }
 
+            if (OnAddonDeleteToxModRequestEvent != null) { foreach (var each in OnAddonDeleteToxModRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonDeleteToxModRequestEvent -= (PlayFabRequestEvent<AddonModels.DeleteToxModRequest>)each; } } }
+            if (OnAddonDeleteToxModResultEvent != null) { foreach (var each in OnAddonDeleteToxModResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonDeleteToxModResultEvent -= (PlayFabResultEvent<AddonModels.DeleteToxModResponse>)each; } } }
+
             if (OnAddonDeleteTwitchRequestEvent != null) { foreach (var each in OnAddonDeleteTwitchRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonDeleteTwitchRequestEvent -= (PlayFabRequestEvent<AddonModels.DeleteTwitchRequest>)each; } } }
             if (OnAddonDeleteTwitchResultEvent != null) { foreach (var each in OnAddonDeleteTwitchResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonDeleteTwitchResultEvent -= (PlayFabResultEvent<AddonModels.DeleteTwitchResponse>)each; } } }
 
@@ -2159,6 +2180,9 @@ namespace PlayFab.Events
 
             if (OnAddonGetSteamRequestEvent != null) { foreach (var each in OnAddonGetSteamRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonGetSteamRequestEvent -= (PlayFabRequestEvent<AddonModels.GetSteamRequest>)each; } } }
             if (OnAddonGetSteamResultEvent != null) { foreach (var each in OnAddonGetSteamResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonGetSteamResultEvent -= (PlayFabResultEvent<AddonModels.GetSteamResponse>)each; } } }
+
+            if (OnAddonGetToxModRequestEvent != null) { foreach (var each in OnAddonGetToxModRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonGetToxModRequestEvent -= (PlayFabRequestEvent<AddonModels.GetToxModRequest>)each; } } }
+            if (OnAddonGetToxModResultEvent != null) { foreach (var each in OnAddonGetToxModResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonGetToxModResultEvent -= (PlayFabResultEvent<AddonModels.GetToxModResponse>)each; } } }
 
             if (OnAddonGetTwitchRequestEvent != null) { foreach (var each in OnAddonGetTwitchRequestEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonGetTwitchRequestEvent -= (PlayFabRequestEvent<AddonModels.GetTwitchRequest>)each; } } }
             if (OnAddonGetTwitchResultEvent != null) { foreach (var each in OnAddonGetTwitchResultEvent.GetInvocationList()) { if (ReferenceEquals(each.Target, instance)) { OnAddonGetTwitchResultEvent -= (PlayFabResultEvent<AddonModels.GetTwitchResponse>)each; } } }
@@ -2706,9 +2730,14 @@ namespace PlayFab.Events
 #endif
 #if !DISABLE_PLAYFABENTITY_API
                 if (type == typeof(EventsModels.CreateTelemetryKeyRequest)) { if (_instance.OnEventsCreateTelemetryKeyRequestEvent != null) { _instance.OnEventsCreateTelemetryKeyRequestEvent((EventsModels.CreateTelemetryKeyRequest)e.Request); return; } }
+                if (type == typeof(EventsModels.DeleteDataConnectionRequest)) { if (_instance.OnEventsDeleteDataConnectionRequestEvent != null) { _instance.OnEventsDeleteDataConnectionRequestEvent((EventsModels.DeleteDataConnectionRequest)e.Request); return; } }
                 if (type == typeof(EventsModels.DeleteTelemetryKeyRequest)) { if (_instance.OnEventsDeleteTelemetryKeyRequestEvent != null) { _instance.OnEventsDeleteTelemetryKeyRequestEvent((EventsModels.DeleteTelemetryKeyRequest)e.Request); return; } }
+                if (type == typeof(EventsModels.GetDataConnectionRequest)) { if (_instance.OnEventsGetDataConnectionRequestEvent != null) { _instance.OnEventsGetDataConnectionRequestEvent((EventsModels.GetDataConnectionRequest)e.Request); return; } }
                 if (type == typeof(EventsModels.GetTelemetryKeyRequest)) { if (_instance.OnEventsGetTelemetryKeyRequestEvent != null) { _instance.OnEventsGetTelemetryKeyRequestEvent((EventsModels.GetTelemetryKeyRequest)e.Request); return; } }
+                if (type == typeof(EventsModels.ListDataConnectionsRequest)) { if (_instance.OnEventsListDataConnectionsRequestEvent != null) { _instance.OnEventsListDataConnectionsRequestEvent((EventsModels.ListDataConnectionsRequest)e.Request); return; } }
                 if (type == typeof(EventsModels.ListTelemetryKeysRequest)) { if (_instance.OnEventsListTelemetryKeysRequestEvent != null) { _instance.OnEventsListTelemetryKeysRequestEvent((EventsModels.ListTelemetryKeysRequest)e.Request); return; } }
+                if (type == typeof(EventsModels.SetDataConnectionRequest)) { if (_instance.OnEventsSetDataConnectionRequestEvent != null) { _instance.OnEventsSetDataConnectionRequestEvent((EventsModels.SetDataConnectionRequest)e.Request); return; } }
+                if (type == typeof(EventsModels.SetDataConnectionActiveRequest)) { if (_instance.OnEventsSetDataConnectionActiveRequestEvent != null) { _instance.OnEventsSetDataConnectionActiveRequestEvent((EventsModels.SetDataConnectionActiveRequest)e.Request); return; } }
                 if (type == typeof(EventsModels.SetTelemetryKeyActiveRequest)) { if (_instance.OnEventsSetTelemetryKeyActiveRequestEvent != null) { _instance.OnEventsSetTelemetryKeyActiveRequestEvent((EventsModels.SetTelemetryKeyActiveRequest)e.Request); return; } }
                 if (type == typeof(EventsModels.WriteEventsRequest)) { if (_instance.OnEventsWriteEventsRequestEvent != null) { _instance.OnEventsWriteEventsRequestEvent((EventsModels.WriteEventsRequest)e.Request); return; } }
                 if (type == typeof(EventsModels.WriteEventsRequest)) { if (_instance.OnEventsWriteTelemetryEventsRequestEvent != null) { _instance.OnEventsWriteTelemetryEventsRequestEvent((EventsModels.WriteEventsRequest)e.Request); return; } }
@@ -2902,6 +2931,7 @@ namespace PlayFab.Events
                 if (type == typeof(AddonModels.CreateOrUpdateNintendoRequest)) { if (_instance.OnAddonCreateOrUpdateNintendoRequestEvent != null) { _instance.OnAddonCreateOrUpdateNintendoRequestEvent((AddonModels.CreateOrUpdateNintendoRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.CreateOrUpdatePSNRequest)) { if (_instance.OnAddonCreateOrUpdatePSNRequestEvent != null) { _instance.OnAddonCreateOrUpdatePSNRequestEvent((AddonModels.CreateOrUpdatePSNRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.CreateOrUpdateSteamRequest)) { if (_instance.OnAddonCreateOrUpdateSteamRequestEvent != null) { _instance.OnAddonCreateOrUpdateSteamRequestEvent((AddonModels.CreateOrUpdateSteamRequest)e.Request); return; } }
+                if (type == typeof(AddonModels.CreateOrUpdateToxModRequest)) { if (_instance.OnAddonCreateOrUpdateToxModRequestEvent != null) { _instance.OnAddonCreateOrUpdateToxModRequestEvent((AddonModels.CreateOrUpdateToxModRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.CreateOrUpdateTwitchRequest)) { if (_instance.OnAddonCreateOrUpdateTwitchRequestEvent != null) { _instance.OnAddonCreateOrUpdateTwitchRequestEvent((AddonModels.CreateOrUpdateTwitchRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.DeleteAppleRequest)) { if (_instance.OnAddonDeleteAppleRequestEvent != null) { _instance.OnAddonDeleteAppleRequestEvent((AddonModels.DeleteAppleRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.DeleteFacebookRequest)) { if (_instance.OnAddonDeleteFacebookRequestEvent != null) { _instance.OnAddonDeleteFacebookRequestEvent((AddonModels.DeleteFacebookRequest)e.Request); return; } }
@@ -2911,6 +2941,7 @@ namespace PlayFab.Events
                 if (type == typeof(AddonModels.DeleteNintendoRequest)) { if (_instance.OnAddonDeleteNintendoRequestEvent != null) { _instance.OnAddonDeleteNintendoRequestEvent((AddonModels.DeleteNintendoRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.DeletePSNRequest)) { if (_instance.OnAddonDeletePSNRequestEvent != null) { _instance.OnAddonDeletePSNRequestEvent((AddonModels.DeletePSNRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.DeleteSteamRequest)) { if (_instance.OnAddonDeleteSteamRequestEvent != null) { _instance.OnAddonDeleteSteamRequestEvent((AddonModels.DeleteSteamRequest)e.Request); return; } }
+                if (type == typeof(AddonModels.DeleteToxModRequest)) { if (_instance.OnAddonDeleteToxModRequestEvent != null) { _instance.OnAddonDeleteToxModRequestEvent((AddonModels.DeleteToxModRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.DeleteTwitchRequest)) { if (_instance.OnAddonDeleteTwitchRequestEvent != null) { _instance.OnAddonDeleteTwitchRequestEvent((AddonModels.DeleteTwitchRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.GetAppleRequest)) { if (_instance.OnAddonGetAppleRequestEvent != null) { _instance.OnAddonGetAppleRequestEvent((AddonModels.GetAppleRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.GetFacebookRequest)) { if (_instance.OnAddonGetFacebookRequestEvent != null) { _instance.OnAddonGetFacebookRequestEvent((AddonModels.GetFacebookRequest)e.Request); return; } }
@@ -2920,6 +2951,7 @@ namespace PlayFab.Events
                 if (type == typeof(AddonModels.GetNintendoRequest)) { if (_instance.OnAddonGetNintendoRequestEvent != null) { _instance.OnAddonGetNintendoRequestEvent((AddonModels.GetNintendoRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.GetPSNRequest)) { if (_instance.OnAddonGetPSNRequestEvent != null) { _instance.OnAddonGetPSNRequestEvent((AddonModels.GetPSNRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.GetSteamRequest)) { if (_instance.OnAddonGetSteamRequestEvent != null) { _instance.OnAddonGetSteamRequestEvent((AddonModels.GetSteamRequest)e.Request); return; } }
+                if (type == typeof(AddonModels.GetToxModRequest)) { if (_instance.OnAddonGetToxModRequestEvent != null) { _instance.OnAddonGetToxModRequestEvent((AddonModels.GetToxModRequest)e.Request); return; } }
                 if (type == typeof(AddonModels.GetTwitchRequest)) { if (_instance.OnAddonGetTwitchRequestEvent != null) { _instance.OnAddonGetTwitchRequestEvent((AddonModels.GetTwitchRequest)e.Request); return; } }
 #endif
 
@@ -3440,9 +3472,14 @@ namespace PlayFab.Events
 #if !DISABLE_PLAYFABENTITY_API
 
                 if (type == typeof(EventsModels.CreateTelemetryKeyResponse)) { if (_instance.OnEventsCreateTelemetryKeyResultEvent != null) { _instance.OnEventsCreateTelemetryKeyResultEvent((EventsModels.CreateTelemetryKeyResponse)e.Result); return; } }
+                if (type == typeof(EventsModels.DeleteDataConnectionResponse)) { if (_instance.OnEventsDeleteDataConnectionResultEvent != null) { _instance.OnEventsDeleteDataConnectionResultEvent((EventsModels.DeleteDataConnectionResponse)e.Result); return; } }
                 if (type == typeof(EventsModels.DeleteTelemetryKeyResponse)) { if (_instance.OnEventsDeleteTelemetryKeyResultEvent != null) { _instance.OnEventsDeleteTelemetryKeyResultEvent((EventsModels.DeleteTelemetryKeyResponse)e.Result); return; } }
+                if (type == typeof(EventsModels.GetDataConnectionResponse)) { if (_instance.OnEventsGetDataConnectionResultEvent != null) { _instance.OnEventsGetDataConnectionResultEvent((EventsModels.GetDataConnectionResponse)e.Result); return; } }
                 if (type == typeof(EventsModels.GetTelemetryKeyResponse)) { if (_instance.OnEventsGetTelemetryKeyResultEvent != null) { _instance.OnEventsGetTelemetryKeyResultEvent((EventsModels.GetTelemetryKeyResponse)e.Result); return; } }
+                if (type == typeof(EventsModels.ListDataConnectionsResponse)) { if (_instance.OnEventsListDataConnectionsResultEvent != null) { _instance.OnEventsListDataConnectionsResultEvent((EventsModels.ListDataConnectionsResponse)e.Result); return; } }
                 if (type == typeof(EventsModels.ListTelemetryKeysResponse)) { if (_instance.OnEventsListTelemetryKeysResultEvent != null) { _instance.OnEventsListTelemetryKeysResultEvent((EventsModels.ListTelemetryKeysResponse)e.Result); return; } }
+                if (type == typeof(EventsModels.SetDataConnectionResponse)) { if (_instance.OnEventsSetDataConnectionResultEvent != null) { _instance.OnEventsSetDataConnectionResultEvent((EventsModels.SetDataConnectionResponse)e.Result); return; } }
+                if (type == typeof(EventsModels.SetDataConnectionActiveResponse)) { if (_instance.OnEventsSetDataConnectionActiveResultEvent != null) { _instance.OnEventsSetDataConnectionActiveResultEvent((EventsModels.SetDataConnectionActiveResponse)e.Result); return; } }
                 if (type == typeof(EventsModels.SetTelemetryKeyActiveResponse)) { if (_instance.OnEventsSetTelemetryKeyActiveResultEvent != null) { _instance.OnEventsSetTelemetryKeyActiveResultEvent((EventsModels.SetTelemetryKeyActiveResponse)e.Result); return; } }
                 if (type == typeof(EventsModels.WriteEventsResponse)) { if (_instance.OnEventsWriteEventsResultEvent != null) { _instance.OnEventsWriteEventsResultEvent((EventsModels.WriteEventsResponse)e.Result); return; } }
                 if (type == typeof(EventsModels.WriteEventsResponse)) { if (_instance.OnEventsWriteTelemetryEventsResultEvent != null) { _instance.OnEventsWriteTelemetryEventsResultEvent((EventsModels.WriteEventsResponse)e.Result); return; } }
@@ -3645,6 +3682,7 @@ namespace PlayFab.Events
                 if (type == typeof(AddonModels.CreateOrUpdateNintendoResponse)) { if (_instance.OnAddonCreateOrUpdateNintendoResultEvent != null) { _instance.OnAddonCreateOrUpdateNintendoResultEvent((AddonModels.CreateOrUpdateNintendoResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.CreateOrUpdatePSNResponse)) { if (_instance.OnAddonCreateOrUpdatePSNResultEvent != null) { _instance.OnAddonCreateOrUpdatePSNResultEvent((AddonModels.CreateOrUpdatePSNResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.CreateOrUpdateSteamResponse)) { if (_instance.OnAddonCreateOrUpdateSteamResultEvent != null) { _instance.OnAddonCreateOrUpdateSteamResultEvent((AddonModels.CreateOrUpdateSteamResponse)e.Result); return; } }
+                if (type == typeof(AddonModels.CreateOrUpdateToxModResponse)) { if (_instance.OnAddonCreateOrUpdateToxModResultEvent != null) { _instance.OnAddonCreateOrUpdateToxModResultEvent((AddonModels.CreateOrUpdateToxModResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.CreateOrUpdateTwitchResponse)) { if (_instance.OnAddonCreateOrUpdateTwitchResultEvent != null) { _instance.OnAddonCreateOrUpdateTwitchResultEvent((AddonModels.CreateOrUpdateTwitchResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.DeleteAppleResponse)) { if (_instance.OnAddonDeleteAppleResultEvent != null) { _instance.OnAddonDeleteAppleResultEvent((AddonModels.DeleteAppleResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.DeleteFacebookResponse)) { if (_instance.OnAddonDeleteFacebookResultEvent != null) { _instance.OnAddonDeleteFacebookResultEvent((AddonModels.DeleteFacebookResponse)e.Result); return; } }
@@ -3654,6 +3692,7 @@ namespace PlayFab.Events
                 if (type == typeof(AddonModels.DeleteNintendoResponse)) { if (_instance.OnAddonDeleteNintendoResultEvent != null) { _instance.OnAddonDeleteNintendoResultEvent((AddonModels.DeleteNintendoResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.DeletePSNResponse)) { if (_instance.OnAddonDeletePSNResultEvent != null) { _instance.OnAddonDeletePSNResultEvent((AddonModels.DeletePSNResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.DeleteSteamResponse)) { if (_instance.OnAddonDeleteSteamResultEvent != null) { _instance.OnAddonDeleteSteamResultEvent((AddonModels.DeleteSteamResponse)e.Result); return; } }
+                if (type == typeof(AddonModels.DeleteToxModResponse)) { if (_instance.OnAddonDeleteToxModResultEvent != null) { _instance.OnAddonDeleteToxModResultEvent((AddonModels.DeleteToxModResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.DeleteTwitchResponse)) { if (_instance.OnAddonDeleteTwitchResultEvent != null) { _instance.OnAddonDeleteTwitchResultEvent((AddonModels.DeleteTwitchResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.GetAppleResponse)) { if (_instance.OnAddonGetAppleResultEvent != null) { _instance.OnAddonGetAppleResultEvent((AddonModels.GetAppleResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.GetFacebookResponse)) { if (_instance.OnAddonGetFacebookResultEvent != null) { _instance.OnAddonGetFacebookResultEvent((AddonModels.GetFacebookResponse)e.Result); return; } }
@@ -3663,6 +3702,7 @@ namespace PlayFab.Events
                 if (type == typeof(AddonModels.GetNintendoResponse)) { if (_instance.OnAddonGetNintendoResultEvent != null) { _instance.OnAddonGetNintendoResultEvent((AddonModels.GetNintendoResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.GetPSNResponse)) { if (_instance.OnAddonGetPSNResultEvent != null) { _instance.OnAddonGetPSNResultEvent((AddonModels.GetPSNResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.GetSteamResponse)) { if (_instance.OnAddonGetSteamResultEvent != null) { _instance.OnAddonGetSteamResultEvent((AddonModels.GetSteamResponse)e.Result); return; } }
+                if (type == typeof(AddonModels.GetToxModResponse)) { if (_instance.OnAddonGetToxModResultEvent != null) { _instance.OnAddonGetToxModResultEvent((AddonModels.GetToxModResponse)e.Result); return; } }
                 if (type == typeof(AddonModels.GetTwitchResponse)) { if (_instance.OnAddonGetTwitchResultEvent != null) { _instance.OnAddonGetTwitchResultEvent((AddonModels.GetTwitchResponse)e.Result); return; } }
 #endif
 
