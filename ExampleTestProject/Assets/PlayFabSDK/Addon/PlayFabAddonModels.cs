@@ -295,6 +295,40 @@ namespace PlayFab.AddonModels
     }
 
     [Serializable]
+    public class CreateOrUpdateToxModRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Account ID obtained after creating your ToxMod developer account.
+        /// </summary>
+        public string AccountId;
+        /// <summary>
+        /// Account Key obtained after creating your ToxMod developer account.
+        /// </summary>
+        public string AccountKey;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Whether ToxMod Addon is Enabled by Title.
+        /// </summary>
+        public bool Enabled;
+        /// <summary>
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// </summary>
+        public EntityKey Entity;
+        /// <summary>
+        /// If an error should be returned if the addon already exists.
+        /// </summary>
+        public bool? ErrorIfExists;
+    }
+
+    [Serializable]
+    public class CreateOrUpdateToxModResponse : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class CreateOrUpdateTwitchRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -465,6 +499,24 @@ namespace PlayFab.AddonModels
 
     [Serializable]
     public class DeleteSteamResponse : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
+    public class DeleteToxModRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// </summary>
+        public EntityKey Entity;
+    }
+
+    [Serializable]
+    public class DeleteToxModResponse : PlayFabResultCommon
     {
     }
 
@@ -745,6 +797,40 @@ namespace PlayFab.AddonModels
         /// Use Steam Payments sandbox endpoint for test transactions.
         /// </summary>
         public bool? UseSandbox;
+    }
+
+    [Serializable]
+    public class GetToxModRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// </summary>
+        public EntityKey Entity;
+    }
+
+    [Serializable]
+    public class GetToxModResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Account ID obtained after creating your Twitch developer account.
+        /// </summary>
+        public string AccountId;
+        /// <summary>
+        /// Account Key obtained after creating your Twitch developer account.
+        /// </summary>
+        public string AccountKey;
+        /// <summary>
+        /// Addon status.
+        /// </summary>
+        public bool Created;
+        /// <summary>
+        /// Whether the ToxMod Addon is enabled by the title.
+        /// </summary>
+        public bool Enabled;
     }
 
     [Serializable]

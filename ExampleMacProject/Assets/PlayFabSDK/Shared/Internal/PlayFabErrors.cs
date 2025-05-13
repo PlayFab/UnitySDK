@@ -605,6 +605,7 @@ namespace PlayFab
         DataNotAvailable = 1604,
         InvalidReportName = 1605,
         ResourceNotModified = 1606,
+        StudioCreationLimitExceeded = 1607,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
@@ -909,6 +910,8 @@ namespace PlayFab
         GameSaveManifestDescriptionUpdateNotAllowed = 20321,
         GameSaveTitleConfigNotFound = 20322,
         GameSaveTitleAlreadyOnboarded = 20323,
+        GameSaveServiceNotEnabledForTitle = 20324,
+        GameSaveServiceOnboardingPending = 20325,
         StateShareForbidden = 21000,
         StateShareTitleNotInFlight = 21001,
         StateShareStateNotFound = 21002,
@@ -918,7 +921,15 @@ namespace PlayFab
         StateShareCreatedStatesLimitExceeded = 21006,
         StateShareIdMissingOrMalformed = 21007,
         PlayerCreationDisabled = 22000,
-        AccountAlreadyExists = 22001
+        AccountAlreadyExists = 22001,
+        TagInvalid = 23000,
+        TagTooLong = 23001,
+        StatisticColumnAggregationMismatch = 23002,
+        StatisticResetIntervalMismatch = 23003,
+        VersionConfigurationCannotBeSpecifiedForLinkedStat = 23004,
+        VersionConfigurationIsRequired = 23005,
+        InvalidEntityTypeForAggregation = 23006,
+        MultiLevelAggregationNotAllowed = 23007
     }
 
     public class PlayFabError
