@@ -157,6 +157,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GrantItemsToUserResult> OnServerGrantItemsToUserResultEvent;
         public event PlayFabRequestEvent<GrantItemsToUsersRequest> OnServerGrantItemsToUsersRequestEvent;
         public event PlayFabResultEvent<GrantItemsToUsersResult> OnServerGrantItemsToUsersResultEvent;
+        public event PlayFabRequestEvent<LinkBattleNetAccountRequest> OnServerLinkBattleNetAccountRequestEvent;
+        public event PlayFabResultEvent<EmptyResult> OnServerLinkBattleNetAccountResultEvent;
         public event PlayFabRequestEvent<LinkNintendoServiceAccountRequest> OnServerLinkNintendoServiceAccountRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnServerLinkNintendoServiceAccountResultEvent;
         public event PlayFabRequestEvent<LinkNintendoServiceAccountSubjectRequest> OnServerLinkNintendoServiceAccountSubjectRequestEvent;
@@ -177,6 +179,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListPlayerCustomPropertiesResult> OnServerListPlayerCustomPropertiesResultEvent;
         public event PlayFabRequestEvent<LoginWithAndroidDeviceIDRequest> OnServerLoginWithAndroidDeviceIDRequestEvent;
         public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithAndroidDeviceIDResultEvent;
+        public event PlayFabRequestEvent<LoginWithBattleNetRequest> OnServerLoginWithBattleNetRequestEvent;
+        public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithBattleNetResultEvent;
         public event PlayFabRequestEvent<LoginWithCustomIDRequest> OnServerLoginWithCustomIDRequestEvent;
         public event PlayFabResultEvent<ServerLoginResult> OnServerLoginWithCustomIDResultEvent;
         public event PlayFabRequestEvent<LoginWithIOSDeviceIDRequest> OnServerLoginWithIOSDeviceIDRequestEvent;
@@ -243,6 +247,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ModifyCharacterVirtualCurrencyResult> OnServerSubtractCharacterVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<SubtractUserVirtualCurrencyRequest> OnServerSubtractUserVirtualCurrencyRequestEvent;
         public event PlayFabResultEvent<ModifyUserVirtualCurrencyResult> OnServerSubtractUserVirtualCurrencyResultEvent;
+        public event PlayFabRequestEvent<UnlinkBattleNetAccountRequest> OnServerUnlinkBattleNetAccountRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnServerUnlinkBattleNetAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkNintendoServiceAccountRequest> OnServerUnlinkNintendoServiceAccountRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerUnlinkNintendoServiceAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkNintendoSwitchDeviceIdRequest> OnServerUnlinkNintendoSwitchDeviceIdRequestEvent;
