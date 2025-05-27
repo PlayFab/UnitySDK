@@ -3103,6 +3103,7 @@ namespace PlayFab.AdminModels
         GameSaveTitleAlreadyOnboarded,
         GameSaveServiceNotEnabledForTitle,
         GameSaveServiceOnboardingPending,
+        GameSaveManifestNotEligibleAsConflictingVersion,
         StateShareForbidden,
         StateShareTitleNotInFlight,
         StateShareStateNotFound,

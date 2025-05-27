@@ -9,7 +9,8 @@ namespace PlayFab.ProgressionModels
     public class CreateLeaderboardDefinitionRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Leaderboard columns describing the sort directions, cannot be changed after creation.
+        /// Leaderboard columns describing the sort directions, cannot be changed after creation. A maximum of 5 columns are
+        /// allowed.
         /// </summary>
         public List<LeaderboardColumn> Columns;
         /// <summary>
@@ -45,7 +46,7 @@ namespace PlayFab.ProgressionModels
         /// </summary>
         public List<string> AggregationSources;
         /// <summary>
-        /// The columns for the statistic defining the aggregation method for each column.
+        /// The columns for the statistic defining the aggregation method for each column. A maximum of 5 columns are allowed.
         /// </summary>
         public List<StatisticColumn> Columns;
         /// <summary>
