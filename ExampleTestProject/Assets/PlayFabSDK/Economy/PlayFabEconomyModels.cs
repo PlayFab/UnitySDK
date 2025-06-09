@@ -2907,6 +2907,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ApiName;
         /// <summary>
+        /// Additional details about the transaction. Null if it was not a clawback operation.
+        /// </summary>
+        public TransactionClawbackDetails ClawbackDetails;
+        /// <summary>
         /// The type of item that the the operation occurred on.
         /// </summary>
         public string ItemType;
@@ -2938,6 +2942,15 @@ namespace PlayFab.EconomyModels
         /// Additional details about the transaction. Null if it was not a transfer operation.
         /// </summary>
         public TransactionTransferDetails TransferDetails;
+    }
+
+    [Serializable]
+    public class TransactionClawbackDetails : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The id of the clawed back operation.
+        /// </summary>
+        public string TransactionIdClawedback;
     }
 
     [Serializable]
