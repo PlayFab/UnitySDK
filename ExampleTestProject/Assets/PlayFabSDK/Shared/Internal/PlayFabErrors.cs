@@ -913,6 +913,9 @@ namespace PlayFab
         GameSaveServiceNotEnabledForTitle = 20324,
         GameSaveServiceOnboardingPending = 20325,
         GameSaveManifestNotEligibleAsConflictingVersion = 20326,
+        GameSaveServiceUnavailable = 20327,
+        GameSaveConflict = 20328,
+        GameSaveManifestNotEligibleForRollback = 20329,
         StateShareForbidden = 21000,
         StateShareTitleNotInFlight = 21001,
         StateShareStateNotFound = 21002,
@@ -930,7 +933,8 @@ namespace PlayFab
         VersionConfigurationCannotBeSpecifiedForLinkedStat = 23004,
         VersionConfigurationIsRequired = 23005,
         InvalidEntityTypeForAggregation = 23006,
-        MultiLevelAggregationNotAllowed = 23007
+        MultiLevelAggregationNotAllowed = 23007,
+        AggregationTypeNotAllowedForLinkedStat = 23008
     }
 
     public class PlayFabError

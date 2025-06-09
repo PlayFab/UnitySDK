@@ -2418,6 +2418,9 @@ namespace PlayFab.ServerModels
         GameSaveServiceNotEnabledForTitle,
         GameSaveServiceOnboardingPending,
         GameSaveManifestNotEligibleAsConflictingVersion,
+        GameSaveServiceUnavailable,
+        GameSaveConflict,
+        GameSaveManifestNotEligibleForRollback,
         StateShareForbidden,
         StateShareTitleNotInFlight,
         StateShareStateNotFound,
@@ -2435,7 +2438,8 @@ namespace PlayFab.ServerModels
         VersionConfigurationCannotBeSpecifiedForLinkedStat,
         VersionConfigurationIsRequired,
         InvalidEntityTypeForAggregation,
-        MultiLevelAggregationNotAllowed
+        MultiLevelAggregationNotAllowed,
+        AggregationTypeNotAllowedForLinkedStat
     }
 
     [Serializable]
