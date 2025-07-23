@@ -2564,8 +2564,8 @@ namespace PlayFab.ClientModels
     public class GetPlayFabIDsFromFacebookIDsRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Array of unique Facebook identifiers for which the title needs to get PlayFab identifiers. The array cannot exceed 2,000
-        /// in length.
+        /// Array of unique Facebook identifiers for which the title needs to get PlayFab identifiers. The array cannot exceed 25 in
+        /// length.
         /// </summary>
         public List<string> FacebookIDs;
     }
@@ -2609,7 +2609,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Game Center identifiers (the Player Identifier) for which the title needs to get PlayFab identifiers.
-        /// The array cannot exceed 2,000 in length.
+        /// The array cannot exceed 25 in length.
         /// </summary>
         public List<string> GameCenterIDs;
     }
@@ -2653,7 +2653,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Google identifiers (Google+ user IDs) for which the title needs to get PlayFab identifiers. The array
-        /// cannot exceed 2,000 in length.
+        /// cannot exceed 25 in length.
         /// </summary>
         public List<string> GoogleIDs;
     }
@@ -2675,7 +2675,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Google Play Games identifiers (Google+ user IDs) for which the title needs to get PlayFab identifiers.
-        /// The array cannot exceed 2,000 in length.
+        /// The array cannot exceed 25 in length.
         /// </summary>
         public List<string> GooglePlayGamesPlayerIDs;
     }
@@ -2697,7 +2697,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Kongregate identifiers (Kongregate's user_id) for which the title needs to get PlayFab identifiers. The
-        /// array cannot exceed 2,000 in length.
+        /// array cannot exceed 25 in length.
         /// </summary>
         public List<string> KongregateIDs;
     }
@@ -2719,7 +2719,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Nintendo Switch Account identifiers for which the title needs to get PlayFab identifiers. The array
-        /// cannot exceed 2,000 in length.
+        /// cannot exceed 25 in length.
         /// </summary>
         public List<string> NintendoAccountIds;
     }
@@ -2741,7 +2741,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Nintendo Switch Device identifiers for which the title needs to get PlayFab identifiers. The array
-        /// cannot exceed 2,000 in length.
+        /// cannot exceed 25 in length.
         /// </summary>
         public List<string> NintendoSwitchDeviceIds;
     }
@@ -2767,7 +2767,7 @@ namespace PlayFab.ClientModels
         public int? IssuerId;
         /// <summary>
         /// Array of unique PlayStation :tm: Network identifiers for which the title needs to get PlayFab identifiers. The array
-        /// cannot exceed 2,000 in length.
+        /// cannot exceed 25 in length.
         /// </summary>
         public List<string> PSNAccountIDs;
     }
@@ -2793,7 +2793,7 @@ namespace PlayFab.ClientModels
         public int? IssuerId;
         /// <summary>
         /// Array of unique PlayStation :tm: Network identifiers for which the title needs to get PlayFab identifiers. The array
-        /// cannot exceed 2,000 in length.
+        /// cannot exceed 25 in length.
         /// </summary>
         public List<string> PSNOnlineIDs;
     }
@@ -2815,7 +2815,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Steam identifiers (Steam profile IDs) for which the title needs to get PlayFab identifiers. The array
-        /// cannot exceed 2,000 in length.
+        /// cannot exceed 25 in length.
         /// </summary>
         public List<string> SteamStringIDs;
     }
@@ -2836,7 +2836,7 @@ namespace PlayFab.ClientModels
     public class GetPlayFabIDsFromSteamNamesRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Array of unique Steam identifiers for which the title needs to get PlayFab identifiers. The array cannot exceed 2,000 in
+        /// Array of unique Steam identifiers for which the title needs to get PlayFab identifiers. The array cannot exceed 25 in
         /// length.
         /// </summary>
         public List<string> SteamNames;
@@ -2860,7 +2860,7 @@ namespace PlayFab.ClientModels
     {
         /// <summary>
         /// Array of unique Twitch identifiers (Twitch's _id) for which the title needs to get PlayFab identifiers. The array cannot
-        /// exceed 2,000 in length.
+        /// exceed 25 in length.
         /// </summary>
         public List<string> TwitchIds;
     }
@@ -2886,7 +2886,7 @@ namespace PlayFab.ClientModels
         public string Sandbox;
         /// <summary>
         /// Array of unique Xbox Live account identifiers for which the title needs to get PlayFab identifiers. The array cannot
-        /// exceed 2,000 in length.
+        /// exceed 25 in length.
         /// </summary>
         public List<string> XboxLiveAccountIDs;
     }

@@ -2920,6 +2920,10 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public TransactionClawbackDetails ClawbackDetails;
         /// <summary>
+        /// The custom tags associated with this transactions.
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
         /// The type of item that the the operation occurred on.
         /// </summary>
         public string ItemType;
