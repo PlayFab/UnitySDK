@@ -2797,6 +2797,7 @@ namespace PlayFab.AdminModels
         InvalidReportName,
         ResourceNotModified,
         StudioCreationLimitExceeded,
+        StudioDeletionInitiated,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -3125,7 +3126,8 @@ namespace PlayFab.AdminModels
         VersionConfigurationIsRequired,
         InvalidEntityTypeForAggregation,
         MultiLevelAggregationNotAllowed,
-        AggregationTypeNotAllowedForLinkedStat
+        AggregationTypeNotAllowedForLinkedStat,
+        StoreMetricsRequestInvalidInput
     }
 
     [Serializable]
