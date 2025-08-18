@@ -9,9 +9,21 @@ namespace PlayFab.AddonModels
     public class CreateOrUpdateAppleRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// Allow validation of receipts from the Apple production environment. Required for app releases.
+        /// </summary>
+        public bool? AllowProduction;
+        /// <summary>
+        /// Allow validation of receipts from the Apple sandbox environment. Typically used while testing.
+        /// </summary>
+        public bool? AllowSandbox;
+        /// <summary>
         /// iOS App Bundle ID obtained after setting up your app in the App Store.
         /// </summary>
         public string AppBundleId;
+        /// <summary>
+        /// AppId obtained after setting up your app in the App Store.
+        /// </summary>
+        public string AppId;
         /// <summary>
         /// iOS App Shared Secret obtained after setting up your app in the App Store.
         /// </summary>
@@ -33,6 +45,18 @@ namespace PlayFab.AddonModels
         /// case where Apple rotates their signing keys.
         /// </summary>
         public bool? IgnoreExpirationDate;
+        /// <summary>
+        /// IssuerId obtained after setting up your app in the App Store.
+        /// </summary>
+        public string IssuerId;
+        /// <summary>
+        /// KeyId obtained after setting up your app in the App Store.
+        /// </summary>
+        public string KeyId;
+        /// <summary>
+        /// PrivateKey obtained after setting up your app in the App Store.
+        /// </summary>
+        public string PrivateKey;
         /// <summary>
         /// Require secure authentication only for this app.
         /// </summary>
