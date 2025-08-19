@@ -3003,6 +3003,14 @@ namespace PlayFab.EconomyModels
     public class TransactionPurchaseDetails : PlayFabBaseModel
     {
         /// <summary>
+        /// The friendly id of the item that was purchased.
+        /// </summary>
+        public string ItemFriendlyId;
+        /// <summary>
+        /// The id of the item that was purchased.
+        /// </summary>
+        public string ItemId;
+        /// <summary>
         /// The friendly id of the Store the item was purchased from or null.
         /// </summary>
         public string StoreFriendlyId;
