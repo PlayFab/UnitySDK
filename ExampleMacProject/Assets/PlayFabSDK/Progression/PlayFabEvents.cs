@@ -41,6 +41,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ListLeaderboardDefinitionsResponse> OnProgressionListLeaderboardDefinitionsResultEvent;
         public event PlayFabRequestEvent<ListStatisticDefinitionsRequest> OnProgressionListStatisticDefinitionsRequestEvent;
         public event PlayFabResultEvent<ListStatisticDefinitionsResponse> OnProgressionListStatisticDefinitionsResultEvent;
+        public event PlayFabRequestEvent<UnlinkAggregationSourceFromStatisticRequest> OnProgressionUnlinkAggregationSourceFromStatisticRequestEvent;
+        public event PlayFabResultEvent<EmptyResponse> OnProgressionUnlinkAggregationSourceFromStatisticResultEvent;
         public event PlayFabRequestEvent<UnlinkLeaderboardFromStatisticRequest> OnProgressionUnlinkLeaderboardFromStatisticRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnProgressionUnlinkLeaderboardFromStatisticResultEvent;
         public event PlayFabRequestEvent<UpdateLeaderboardDefinitionRequest> OnProgressionUpdateLeaderboardDefinitionRequestEvent;
