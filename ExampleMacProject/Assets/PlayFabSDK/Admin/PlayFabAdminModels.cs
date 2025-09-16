@@ -2798,6 +2798,8 @@ namespace PlayFab.AdminModels
         ResourceNotModified,
         StudioCreationLimitExceeded,
         StudioDeletionInitiated,
+        ProductDisabledForTitle,
+        PreconditionFailed,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2930,6 +2932,7 @@ namespace PlayFab.AdminModels
         AsyncExportNotFound,
         AsyncExportRateLimitExceeded,
         AnalyticsSegmentCountOverLimit,
+        GetPlayersInSegmentDeprecated,
         SnapshotNotFound,
         InventoryApiNotImplemented,
         InventoryCollectionDeletionDisallowed,
@@ -3127,7 +3130,13 @@ namespace PlayFab.AdminModels
         InvalidEntityTypeForAggregation,
         MultiLevelAggregationNotAllowed,
         AggregationTypeNotAllowedForLinkedStat,
-        StoreMetricsRequestInvalidInput
+        OperationDeniedDueToDefinitionPolicy,
+        StatisticUpdateNotAllowedWhileLinked,
+        UnsupportedEntityType,
+        EntityTypeSpecifiedRequiresAggregationSource,
+        PlayFabErrorEventNotSupportedForEntityType,
+        StoreMetricsRequestInvalidInput,
+        StoreMetricsErrorRetrievingMetrics
     }
 
     [Serializable]

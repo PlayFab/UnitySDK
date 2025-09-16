@@ -175,6 +175,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<LinkSteamIdResult> OnServerLinkSteamIdResultEvent;
         public event PlayFabRequestEvent<LinkXboxAccountRequest> OnServerLinkXboxAccountRequestEvent;
         public event PlayFabResultEvent<LinkXboxAccountResult> OnServerLinkXboxAccountResultEvent;
+        public event PlayFabRequestEvent<LinkXboxIdRequest> OnServerLinkXboxIdRequestEvent;
+        public event PlayFabResultEvent<LinkXboxAccountResult> OnServerLinkXboxIdResultEvent;
         public event PlayFabRequestEvent<ListPlayerCustomPropertiesRequest> OnServerListPlayerCustomPropertiesRequestEvent;
         public event PlayFabResultEvent<ListPlayerCustomPropertiesResult> OnServerListPlayerCustomPropertiesResultEvent;
         public event PlayFabRequestEvent<LoginWithAndroidDeviceIDRequest> OnServerLoginWithAndroidDeviceIDRequestEvent;
