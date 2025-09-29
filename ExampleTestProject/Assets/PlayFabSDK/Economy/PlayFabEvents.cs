@@ -63,6 +63,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<PurchaseInventoryItemsResponse> OnEconomyPurchaseInventoryItemsResultEvent;
         public event PlayFabRequestEvent<RedeemAppleAppStoreInventoryItemsRequest> OnEconomyRedeemAppleAppStoreInventoryItemsRequestEvent;
         public event PlayFabResultEvent<RedeemAppleAppStoreInventoryItemsResponse> OnEconomyRedeemAppleAppStoreInventoryItemsResultEvent;
+        public event PlayFabRequestEvent<RedeemAppleAppStoreWithJwsInventoryItemsRequest> OnEconomyRedeemAppleAppStoreWithJwsInventoryItemsRequestEvent;
+        public event PlayFabResultEvent<RedeemAppleAppStoreWithJwsInventoryItemsResponse> OnEconomyRedeemAppleAppStoreWithJwsInventoryItemsResultEvent;
         public event PlayFabRequestEvent<RedeemGooglePlayInventoryItemsRequest> OnEconomyRedeemGooglePlayInventoryItemsRequestEvent;
         public event PlayFabResultEvent<RedeemGooglePlayInventoryItemsResponse> OnEconomyRedeemGooglePlayInventoryItemsResultEvent;
         public event PlayFabRequestEvent<RedeemMicrosoftStoreInventoryItemsRequest> OnEconomyRedeemMicrosoftStoreInventoryItemsRequestEvent;
