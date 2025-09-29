@@ -411,6 +411,17 @@ namespace PlayFab
         /// <summary>
         /// Redeem items.
         /// </summary>
+        public void RedeemAppleAppStoreWithJwsInventoryItems(RedeemAppleAppStoreWithJwsInventoryItemsRequest request, Action<RedeemAppleAppStoreWithJwsInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+            PlayFabHttp.MakeApiCall("/Inventory/RedeemAppleAppStoreWithJwsInventoryItems", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Redeem items.
+        /// </summary>
         public void RedeemGooglePlayInventoryItems(RedeemGooglePlayInventoryItemsRequest request, Action<RedeemGooglePlayInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
             var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
