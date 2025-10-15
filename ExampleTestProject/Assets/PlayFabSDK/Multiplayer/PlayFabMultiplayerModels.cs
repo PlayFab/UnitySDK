@@ -4412,6 +4412,10 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public string PartyId;
         /// <summary>
+        /// A player entity Id on behalf of whom the request is being made.
+        /// </summary>
+        public string PlayFabId;
+        /// <summary>
         /// The preferred regions to request a party session from. The party service will iterate through the regions in the
         /// specified order and allocate a party session from the first one that is available.
         /// </summary>

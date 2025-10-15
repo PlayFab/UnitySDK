@@ -2114,6 +2114,7 @@ namespace PlayFab.ServerModels
         StudioDeletionInitiated,
         ProductDisabledForTitle,
         PreconditionFailed,
+        CannotEnableAnonymousPlayerCreation,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
