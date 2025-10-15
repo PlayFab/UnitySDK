@@ -2800,6 +2800,7 @@ namespace PlayFab.AdminModels
         StudioDeletionInitiated,
         ProductDisabledForTitle,
         PreconditionFailed,
+        CannotEnableAnonymousPlayerCreation,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
