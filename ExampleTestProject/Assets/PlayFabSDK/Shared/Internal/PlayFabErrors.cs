@@ -609,6 +609,7 @@ namespace PlayFab
         StudioDeletionInitiated = 1608,
         ProductDisabledForTitle = 1609,
         PreconditionFailed = 1610,
+        CannotEnableAnonymousPlayerCreation = 1611,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
