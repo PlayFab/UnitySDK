@@ -2116,6 +2116,7 @@ namespace PlayFab.ServerModels
         PreconditionFailed,
         CannotEnableAnonymousPlayerCreation,
         ParentCustomerAccountNotFound,
+        AccountLinkedToABannedPlayer,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
