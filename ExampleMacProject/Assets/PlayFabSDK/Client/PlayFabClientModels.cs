@@ -7614,6 +7614,10 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
+        /// Base64 encoded receipt data, passed back by the App Store as a result of a successful purchase.
+        /// </summary>
+        public string JwsReceiptData;
+        /// <summary>
         /// Amount of the stated currency paid, in centesimal units.
         /// </summary>
         public int PurchasePrice;
