@@ -2803,6 +2803,7 @@ namespace PlayFab.AdminModels
         CannotEnableAnonymousPlayerCreation,
         ParentCustomerAccountNotFound,
         AccountLinkedToABannedPlayer,
+        AzureSubscriptionNotEligibleForLinking,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
