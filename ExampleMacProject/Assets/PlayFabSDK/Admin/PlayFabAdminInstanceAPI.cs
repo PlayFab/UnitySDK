@@ -116,7 +116,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Bans users by PlayFab ID with optional IP address, or MAC address for the provided game.
+        /// Bans users by PlayFab ID with optional IP address for the provided game.
         /// </summary>
         public void BanUsers(BanUsersRequest request, Action<BanUsersResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {

@@ -319,8 +319,8 @@ namespace PlayFab.ServerModels
     }
 
     /// <summary>
-    /// The existence of each user will not be verified. When banning by IP or MAC address, multiple players may be affected, so
-    /// use this feature with caution. Returns information about the new bans.
+    /// The existence of each user will not be verified. When banning by IP, multiple players may be affected, so use this
+    /// feature with caution. Returns information about the new bans.
     /// </summary>
     [Serializable]
     public class BanUsersRequest : PlayFabRequestCommon
@@ -2454,6 +2454,7 @@ namespace PlayFab.ServerModels
         UnsupportedEntityType,
         EntityTypeSpecifiedRequiresAggregationSource,
         PlayFabErrorEventNotSupportedForEntityType,
+        MetadataLengthExceeded,
         StoreMetricsRequestInvalidInput,
         StoreMetricsErrorRetrievingMetrics
     }
@@ -3486,6 +3487,28 @@ namespace PlayFab.ServerModels
         /// Mapping of Nintendo Switch Device identifiers to PlayFab identifiers.
         /// </summary>
         public List<NintendoSwitchPlayFabIdPair> Data;
+    }
+
+    [Serializable]
+    public class GetPlayFabIDsFromOpenIdsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Array of unique OpenId Connect identifiers for which the title needs to get PlayFab identifiers. The array cannot exceed
+        /// 10 in length.
+        /// </summary>
+        public List<OpenIdSubjectIdentifier> OpenIdSubjectIdentifiers;
+    }
+
+    /// <summary>
+    /// For OpenId identifiers which have not been linked to PlayFab accounts, null will be returned.
+    /// </summary>
+    [Serializable]
+    public class GetPlayFabIDsFromOpenIdsResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Mapping of OpenId Connect identifiers to PlayFab identifiers.
+        /// </summary>
+        public List<OpenIdSubjectIdentifierPlayFabIdPair> Data;
     }
 
     [Serializable]
@@ -4579,6 +4602,27 @@ namespace PlayFab.ServerModels
     }
 
     [Serializable]
+    public class LinkTwitchAccountRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Twitch access token for authentication.
+        /// </summary>
+        public string AccessToken;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// If another user is already linked to the account, unlink the other user and re-link.
+        /// </summary>
+        public bool? ForceLink;
+        /// <summary>
+        /// PlayFab unique identifier of the user to link.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
     public class LinkXboxAccountRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -4967,6 +5011,44 @@ namespace PlayFab.ServerModels
     }
 
     /// <summary>
+    /// More details regarding Twitch and their authentication system can be found at
+    /// https://github.com/justintv/Twitch-API/blob/master/authentication.md. Developers must provide the Twitch access token
+    /// that is generated using one of the Twitch authentication flows. PlayFab will use the title's unique Twitch Client ID to
+    /// authenticate the token and log in to the PlayFab system. If CreateAccount is set to true and there is not already a user
+    /// matched to the Twitch username that generated the token, then PlayFab will create a new account for this user and link
+    /// the ID. In this case, no email or username will be associated with the PlayFab account. If there is already a different
+    /// PlayFab user linked with this account, then an error will be returned.
+    /// </summary>
+    [Serializable]
+    public class LoginWithTwitchRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Twitch access token for authentication.
+        /// </summary>
+        public string AccessToken;
+        /// <summary>
+        /// If true, create a new PlayFab account if one does not exist.
+        /// </summary>
+        public bool? CreateAccount;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Parameters for requesting additional player info.
+        /// </summary>
+        public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
+        /// <summary>
+        /// Player secret for additional authentication.
+        /// </summary>
+        public string PlayerSecret;
+        /// <summary>
+        /// PlayFab unique identifier of the user.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    /// <summary>
     /// If this is the first time a user has signed in with the Xbox ID and CreateAccount is set to true, a new PlayFab account
     /// will be created and linked to the Xbox Live account. In this case, no email or username will be associated with the
     /// PlayFab account. Otherwise, if no PlayFab account is linked to the Xbox Live account, an error indicating this will be
@@ -5243,6 +5325,32 @@ namespace PlayFab.ServerModels
         public string NintendoSwitchDeviceId;
         /// <summary>
         /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the Nintendo Switch Device identifier.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class OpenIdSubjectIdentifier : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The issuer URL for the OpenId Connect provider, or the override URL if an override exists.
+        /// </summary>
+        public string Issuer;
+        /// <summary>
+        /// The unique subject identifier within the context of the issuer.
+        /// </summary>
+        public string Subject;
+    }
+
+    [Serializable]
+    public class OpenIdSubjectIdentifierPlayFabIdPair : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Unique OpenId Connect identifier for a user.
+        /// </summary>
+        public OpenIdSubjectIdentifier OpenIdSubjectIdentifier;
+        /// <summary>
+        /// Unique PlayFab identifier for a user, or null if no PlayFab account is linked to the OpenId Connect identifier.
         /// </summary>
         public string PlayFabId;
     }
@@ -6777,6 +6885,24 @@ namespace PlayFab.ServerModels
     [Serializable]
     public class UnlinkSteamIdResult : PlayFabResultCommon
     {
+    }
+
+    [Serializable]
+    public class UnlinkTwitchAccountRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Valid token issued by Twitch. Used to specify which twitch account to unlink from the profile. By default it uses the
+        /// one that is present on the profile.
+        /// </summary>
+        public string AccessToken;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// PlayFab unique identifier of the user to unlink.
+        /// </summary>
+        public string PlayFabId;
     }
 
     [Serializable]
