@@ -474,7 +474,7 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Redeem items.
+        /// Redeem items from the Microsoft Store. Supported entitlement types are Developer Manager Consumable and Durable.
         /// </summary>
         public static void RedeemMicrosoftStoreInventoryItems(RedeemMicrosoftStoreInventoryItemsRequest request, Action<RedeemMicrosoftStoreInventoryItemsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
