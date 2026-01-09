@@ -257,6 +257,10 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ModifyUserVirtualCurrencyResult> OnServerSubtractUserVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<UnlinkBattleNetAccountRequest> OnServerUnlinkBattleNetAccountRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerUnlinkBattleNetAccountResultEvent;
+        public event PlayFabRequestEvent<UnlinkFacebookAccountRequest> OnServerUnlinkFacebookAccountRequestEvent;
+        public event PlayFabResultEvent<UnlinkFacebookAccountResult> OnServerUnlinkFacebookAccountResultEvent;
+        public event PlayFabRequestEvent<UnlinkFacebookInstantGamesIdRequest> OnServerUnlinkFacebookInstantGamesIdRequestEvent;
+        public event PlayFabResultEvent<UnlinkFacebookInstantGamesIdResult> OnServerUnlinkFacebookInstantGamesIdResultEvent;
         public event PlayFabRequestEvent<UnlinkNintendoServiceAccountRequest> OnServerUnlinkNintendoServiceAccountRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerUnlinkNintendoServiceAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkNintendoSwitchDeviceIdRequest> OnServerUnlinkNintendoSwitchDeviceIdRequestEvent;
