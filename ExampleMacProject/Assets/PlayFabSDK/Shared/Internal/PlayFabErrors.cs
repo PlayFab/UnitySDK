@@ -657,6 +657,7 @@ namespace PlayFab
         CatalogBadRequest = 4013,
         CatalogTooManyRequests = 4014,
         InvalidCatalogItemConfiguration = 4015,
+        LegacyEconomyDisabled = 4016,
         ExportInvalidStatusUpdate = 5000,
         ExportInvalidPrefix = 5001,
         ExportBlobContainerDoesNotExist = 5002,

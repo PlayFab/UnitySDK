@@ -2848,6 +2848,7 @@ namespace PlayFab.AdminModels
         CatalogBadRequest,
         CatalogTooManyRequests,
         InvalidCatalogItemConfiguration,
+        LegacyEconomyDisabled,
         ExportInvalidStatusUpdate,
         ExportInvalidPrefix,
         ExportBlobContainerDoesNotExist,

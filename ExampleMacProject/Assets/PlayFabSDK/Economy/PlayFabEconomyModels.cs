@@ -1664,32 +1664,6 @@ namespace PlayFab.EconomyModels
     }
 
     /// <summary>
-    /// Gets the access tokens for Microsoft Store authentication.
-    /// </summary>
-    [Serializable]
-    public class GetMicrosoftStoreAccessTokensRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-    }
-
-    [Serializable]
-    public class GetMicrosoftStoreAccessTokensResponse : PlayFabResultCommon
-    {
-        /// <summary>
-        /// The collections access token for calling https://onestore.microsoft.com/b2b/keys/create/collections to obtain a
-        /// CollectionsIdKey for the user
-        /// </summary>
-        public string CollectionsAccessToken;
-        /// <summary>
-        /// The date the collections access token expires
-        /// </summary>
-        public DateTime CollectionsAccessTokenExpirationDate;
-    }
-
-    /// <summary>
     /// Get transaction history for specified entity and collection.
     /// </summary>
     [Serializable]
@@ -2147,6 +2121,13 @@ namespace PlayFab.EconomyModels
         public int? TotalCount;
     }
 
+    /// <summary>
+    /// The multi-currency unit price, in real money, of the item that was redeemed within an individual marketplace. Each
+    /// property is a dictionary where the key is the three-letter currency code as defined in ISO 4217, and the value is the
+    /// currency amount in the smallest unit (e.g. cents, pence, etc.) in accordance with ISO 4217. Example: If the product
+    /// price in USD is $1.39, the dictionary entry would be: ["USD"] = 139. Currently, only United States Dollar (USD) is
+    /// supported.
+    /// </summary>
     [Serializable]
     public class RealMoneyPriceDetails : PlayFabBaseModel
     {
@@ -2312,10 +2293,6 @@ namespace PlayFab.EconomyModels
         /// The id of the entity's collection to perform this action on. (Default="default")
         /// </summary>
         public string CollectionId;
-        /// <summary>
-        /// The OneStore Collections Id Key used for AAD authentication.
-        /// </summary>
-        public string CollectionsIdKey;
         /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
@@ -2499,6 +2476,10 @@ namespace PlayFab.EconomyModels
     [Serializable]
     public class RedemptionSuccess : PlayFabBaseModel
     {
+        /// <summary>
+        /// The timestamp for when the redeem expired.
+        /// </summary>
+        public DateTime? ExpirationTimestamp;
         /// <summary>
         /// The Marketplace Alternate ID being redeemed.
         /// </summary>

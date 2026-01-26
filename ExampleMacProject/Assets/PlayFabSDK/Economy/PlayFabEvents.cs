@@ -53,8 +53,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetItemReviewSummaryResponse> OnEconomyGetItemReviewSummaryResultEvent;
         public event PlayFabRequestEvent<GetItemsRequest> OnEconomyGetItemsRequestEvent;
         public event PlayFabResultEvent<GetItemsResponse> OnEconomyGetItemsResultEvent;
-        public event PlayFabRequestEvent<GetMicrosoftStoreAccessTokensRequest> OnEconomyGetMicrosoftStoreAccessTokensRequestEvent;
-        public event PlayFabResultEvent<GetMicrosoftStoreAccessTokensResponse> OnEconomyGetMicrosoftStoreAccessTokensResultEvent;
         public event PlayFabRequestEvent<GetTransactionHistoryRequest> OnEconomyGetTransactionHistoryRequestEvent;
         public event PlayFabResultEvent<GetTransactionHistoryResponse> OnEconomyGetTransactionHistoryResultEvent;
         public event PlayFabRequestEvent<PublishDraftItemRequest> OnEconomyPublishDraftItemRequestEvent;
