@@ -104,6 +104,32 @@ namespace PlayFab.ServerModels
     }
 
     /// <summary>
+    /// This API adds a contact email to the specified player's profile. If the player's profile already contains a contact
+    /// email, it will update the contact email to the email address specified.
+    /// </summary>
+    [Serializable]
+    public class AddOrUpdateContactEmailRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The new contact email to associate with the player.
+        /// </summary>
+        public string EmailAddress;
+        /// <summary>
+        /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
+        /// </summary>
+        public string PlayFabId;
+    }
+
+    [Serializable]
+    public class AddOrUpdateContactEmailResult : PlayFabResultCommon
+    {
+    }
+
+    /// <summary>
     /// This API will trigger a player_tag_added event and add a tag with the given TagName and PlayFabID to the corresponding
     /// player profile. TagName can be used for segmentation and it is limited to 256 characters. Also there is a limit on the
     /// number of tags a title can have.

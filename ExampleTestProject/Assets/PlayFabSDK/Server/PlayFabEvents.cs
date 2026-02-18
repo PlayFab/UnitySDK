@@ -11,6 +11,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnServerAddFriendResultEvent;
         public event PlayFabRequestEvent<AddGenericIDRequest> OnServerAddGenericIDRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnServerAddGenericIDResultEvent;
+        public event PlayFabRequestEvent<AddOrUpdateContactEmailRequest> OnServerAddOrUpdateContactEmailRequestEvent;
+        public event PlayFabResultEvent<AddOrUpdateContactEmailResult> OnServerAddOrUpdateContactEmailResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnServerAddPlayerTagRequestEvent;
         public event PlayFabResultEvent<AddPlayerTagResult> OnServerAddPlayerTagResultEvent;
         public event PlayFabRequestEvent<AddSharedGroupMembersRequest> OnServerAddSharedGroupMembersRequestEvent;

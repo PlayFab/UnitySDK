@@ -60,18 +60,15 @@ namespace PlayFab.PfEditor
             if (resultCallback == null)
                 return;
 
-            var jsonResponse = JsonWrapper.DeserializeObject<List<object>>(response);
-            if (jsonResponse == null || jsonResponse.Count == 0)
+            var jsonResponse = JsonWrapper.DeserializeObject<JsonObject>(response);
+            if (jsonResponse == null)
                 return;
 
-            // list seems to come back in ascending order (oldest -> newest)
-            var latestSdkTag = (JsonObject)jsonResponse[jsonResponse.Count - 1];
+            // The /releases/latest endpoint returns a single object with a "tag_name" field
             object tag;
-            if (latestSdkTag.TryGetValue("ref", out tag))
+            if (jsonResponse.TryGetValue("tag_name", out tag) && tag != null)
             {
-                var startIndex = tag.ToString().LastIndexOf('/') + 1;
-                var length = tag.ToString().Length - startIndex;
-                resultCallback(tag.ToString().Substring(startIndex, length));
+                resultCallback(tag.ToString());
             }
             else
             {
