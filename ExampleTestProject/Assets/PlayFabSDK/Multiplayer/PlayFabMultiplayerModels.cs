@@ -97,7 +97,35 @@ namespace PlayFab.MultiplayerModels
         UkSouth,
         SwedenCentral,
         CanadaCentral,
-        MexicoCentral
+        MexicoCentral,
+        WestUs3,
+        CanadaEast,
+        UkWest,
+        FranceSouth,
+        SouthIndia,
+        SpainCentral,
+        GermanyWestCentral,
+        ItalyNorth,
+        IndonesiaCentral,
+        ChileCentral,
+        PolandCentral,
+        NewZealandNorth,
+        BrazilSoutheast,
+        NorwayEast,
+        SwitzerlandNorth,
+        MalaysiaWest,
+        IsraelCentral,
+        QatarCentral,
+        UaeCentral,
+        GermanyNorth,
+        AustriaEast,
+        BelgiumCentral,
+        DenmarkEast,
+        SwitzerlandWest,
+        SwedenSouth,
+        NorwayWest,
+        SouthAfricaWest,
+        MalaysiaSouth
     }
 
     public enum AzureVmFamily
@@ -116,6 +144,9 @@ namespace PlayFab.MultiplayerModels
         Easv4,
         Ev4,
         Esv4,
+        Edsv4,
+        Edsv5,
+        Edsv6,
         Dsv3,
         Dsv2,
         NCasT4_v3,
@@ -123,7 +154,16 @@ namespace PlayFab.MultiplayerModels
         Ddsv4,
         HBv3,
         Ddv5,
-        Ddsv5
+        Ddsv5,
+        Ddsv6,
+        Fasv6,
+        Fasv7,
+        Fadsv7,
+        Eadsv5,
+        Eadsv6,
+        Eadsv7,
+        Dadsv7,
+        Dpdsv6
     }
 
     public enum AzureVmSize
@@ -154,6 +194,18 @@ namespace PlayFab.MultiplayerModels
         Standard_F4s_v2,
         Standard_F8s_v2,
         Standard_F16s_v2,
+        Standard_F2as_v6,
+        Standard_F4as_v6,
+        Standard_F8as_v6,
+        Standard_F16as_v6,
+        Standard_F2as_v7,
+        Standard_F4as_v7,
+        Standard_F8as_v7,
+        Standard_F16as_v7,
+        Standard_F2ads_v7,
+        Standard_F4ads_v7,
+        Standard_F8ads_v7,
+        Standard_F16ads_v7,
         Standard_D2as_v4,
         Standard_D4as_v4,
         Standard_D8as_v4,
@@ -170,6 +222,10 @@ namespace PlayFab.MultiplayerModels
         Standard_D4ads_v6,
         Standard_D8ads_v6,
         Standard_D16ads_v6,
+        Standard_D2ads_v7,
+        Standard_D4ads_v7,
+        Standard_D8ads_v7,
+        Standard_D16ads_v7,
         Standard_E2a_v4,
         Standard_E4a_v4,
         Standard_E8a_v4,
@@ -178,6 +234,30 @@ namespace PlayFab.MultiplayerModels
         Standard_E4as_v4,
         Standard_E8as_v4,
         Standard_E16as_v4,
+        Standard_E2ads_v5,
+        Standard_E4ads_v5,
+        Standard_E8ads_v5,
+        Standard_E16ads_v5,
+        Standard_E2ads_v6,
+        Standard_E4ads_v6,
+        Standard_E8ads_v6,
+        Standard_E16ads_v6,
+        Standard_E2ads_v7,
+        Standard_E4ads_v7,
+        Standard_E8ads_v7,
+        Standard_E16ads_v7,
+        Standard_E2ds_v4,
+        Standard_E4ds_v4,
+        Standard_E8ds_v4,
+        Standard_E16ds_v4,
+        Standard_E2ds_v5,
+        Standard_E4ds_v5,
+        Standard_E8ds_v5,
+        Standard_E16ds_v5,
+        Standard_E2ds_v6,
+        Standard_E4ds_v6,
+        Standard_E8ds_v6,
+        Standard_E16ds_v6,
         Standard_D2s_v3,
         Standard_D4s_v3,
         Standard_D8s_v3,
@@ -210,7 +290,15 @@ namespace PlayFab.MultiplayerModels
         Standard_D4ds_v5,
         Standard_D8ds_v5,
         Standard_D16ds_v5,
-        Standard_D32ds_v5
+        Standard_D32ds_v5,
+        Standard_D2ds_v6,
+        Standard_D4ds_v6,
+        Standard_D8ds_v6,
+        Standard_D16ds_v6,
+        Standard_D2pds_v6,
+        Standard_D4pds_v6,
+        Standard_D8pds_v6,
+        Standard_D16pds_v6
     }
 
     [Serializable]
@@ -366,7 +454,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity key of the player whose tickets should be canceled.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -393,7 +481,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity key of the player whose backfill tickets should be canceled.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -1856,7 +1944,9 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public PaginationRequest Pagination;
         /// <summary>
-        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab. Only mutual Xbox Live friends
+        /// (where both users follow each other) are included, unlike GetFriendsList which includes all users the caller is
+        /// following.
         /// </summary>
         public string XboxToken;
     }
@@ -3324,7 +3414,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity key for which to find the ticket Ids.
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -3502,7 +3592,7 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// The entity key for which to find the ticket Ids.
+        /// The entity to perform this action on.
         /// </summary>
         public EntityKey Entity;
         /// <summary>
@@ -4434,6 +4524,10 @@ namespace PlayFab.MultiplayerModels
         /// The guid string party ID of the party session.
         /// </summary>
         public string PartyId;
+        /// <summary>
+        /// The region the party session is located in.
+        /// </summary>
+        public string Region;
         /// <summary>
         /// A base-64 encoded string containing the serialized network descriptor for this party.
         /// </summary>

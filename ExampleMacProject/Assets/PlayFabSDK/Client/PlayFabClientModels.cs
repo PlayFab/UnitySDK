@@ -1975,13 +1975,19 @@ namespace PlayFab.ClientModels
         /// </summary>
         public ExternalFriendSources? ExternalPlatformFriends;
         /// <summary>
+        /// If true, include friends from the same namespace even if they have not logged in to the current title. Defaults to
+        /// false.
+        /// </summary>
+        public bool? NamespaceWide;
+        /// <summary>
         /// If non-null, this determines which properties of the resulting player profiles to return. For API calls from the client,
         /// only the allowed client profile properties for the title may be requested. These allowed properties are configured in
         /// the Game Manager "Client Profile Options" tab in the "Settings" section.
         /// </summary>
         public PlayerProfileViewConstraints ProfileConstraints;
         /// <summary>
-        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab.
+        /// Xbox token if Xbox friends should be included. Requires Xbox be configured on PlayFab. When provided, all Xbox Live
+        /// users the caller is following are included regardless of whether they follow the caller back.
         /// </summary>
         public string XboxToken;
     }
@@ -1992,6 +1998,8 @@ namespace PlayFab.ClientModels
     /// recently, and only friends who also plays this game will be included. Note: If the user authenticated with
     /// AuthenticationToken when calling LoginWithFacebook, instead of AccessToken, an empty list will be returned. For Xbox
     /// Live, user has to have logged into the Xbox Live recently, and only friends who also play this game will be included.
+    /// Xbox Live friends include all users the caller is following, regardless of whether those users follow the caller back.
+    /// This differs from FindFriendLobbies, which only considers mutual Xbox Live friends.
     /// </summary>
     [Serializable]
     public class GetFriendsListResult : PlayFabResultCommon
@@ -2718,6 +2726,11 @@ namespace PlayFab.ClientModels
     public class GetPlayFabIDsFromNintendoServiceAccountIdsRequest : PlayFabRequestCommon
     {
         /// <summary>
+        /// Nintendo NSA issuer URL identifying the environment. When provided, only accounts registered in that environment are
+        /// returned. If null or empty, falls back to the default environment.
+        /// </summary>
+        public string Issuer;
+        /// <summary>
         /// Array of unique Nintendo Switch Account identifiers for which the title needs to get PlayFab identifiers. The array
         /// cannot exceed 25 in length.
         /// </summary>
@@ -2792,6 +2805,10 @@ namespace PlayFab.ClientModels
         /// cannot exceed 25 in length.
         /// </summary>
         public List<string> PSNAccountIDs;
+        /// <summary>
+        /// Optional sandbox id. When provided, resolves players that logged in from that PlayStation :tm: Network sandbox.
+        /// </summary>
+        public string SandboxId;
     }
 
     /// <summary>
@@ -2818,6 +2835,10 @@ namespace PlayFab.ClientModels
         /// cannot exceed 25 in length.
         /// </summary>
         public List<string> PSNOnlineIDs;
+        /// <summary>
+        /// Optional sandbox id. When provided, resolves players that logged in from that PlayStation :tm: Network sandbox.
+        /// </summary>
+        public string SandboxId;
     }
 
     /// <summary>
@@ -3839,6 +3860,11 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string AuthCode;
         /// <summary>
+        /// Optional PlayStation :tm: Network auth version. Controls which PlayStation :tm: Network auth version is used. Accepted
+        /// values are "v2" and "v3".
+        /// </summary>
+        public string AuthVersion;
+        /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
@@ -4104,7 +4130,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4116,7 +4142,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string OS;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4138,7 +4164,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4152,7 +4178,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4174,7 +4200,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4186,7 +4212,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4219,7 +4245,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4227,7 +4253,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4280,7 +4306,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4292,7 +4318,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4336,7 +4362,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4344,7 +4370,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4377,7 +4403,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4389,7 +4415,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string PlayerId;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4444,7 +4470,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4452,7 +4478,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4496,7 +4522,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4504,7 +4530,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4551,7 +4577,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string DeviceModel;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4563,7 +4589,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string OS;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4598,7 +4624,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4610,7 +4636,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string KongregateId;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4632,7 +4658,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4644,7 +4670,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4666,7 +4692,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4678,7 +4704,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string NintendoSwitchDeviceId;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4704,7 +4730,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4717,7 +4743,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4773,6 +4799,11 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string AuthCode;
         /// <summary>
+        /// Optional PlayStation :tm: Network auth version. Controls which PlayStation :tm: Network auth version is used. Accepted
+        /// values are "v2" and "v3".
+        /// </summary>
+        public string AuthVersion;
+        /// <summary>
         /// Automatically create a PlayFab account if one is not currently linked to this ID.
         /// </summary>
         public bool? CreateAccount;
@@ -4781,7 +4812,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4793,7 +4824,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public int? IssuerId;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4829,7 +4860,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4837,7 +4868,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4882,7 +4913,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4890,7 +4921,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -4918,7 +4949,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public Dictionary<string,string> CustomTags;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -4926,7 +4957,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public GetPlayerCombinedInfoRequestParams InfoRequestParameters;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -5657,7 +5688,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string Email;
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
@@ -5669,7 +5700,7 @@ namespace PlayFab.ClientModels
         /// </summary>
         public string Password;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -6022,11 +6053,11 @@ namespace PlayFab.ClientModels
     public class SetPlayerSecretRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Base64 encoded body that is encrypted with the Title's public RSA key (Enterprise Only).
+        /// Base64 encoded body that is encrypted with the Title's public RSA key.
         /// </summary>
         public string EncryptedRequest;
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
     }

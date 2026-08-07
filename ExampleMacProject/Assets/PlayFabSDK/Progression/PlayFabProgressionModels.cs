@@ -938,6 +938,13 @@ namespace PlayFab.ProgressionModels
     public class StatisticUpdate : PlayFabBaseModel
     {
         /// <summary>
+        /// A list of entities to which the statistic update must be aggregated to, in addition to the entity being updated. For
+        /// example, for Group stats where the stat value is aggregated based on the group members, this would refer to the Group
+        /// entity. For a community stat that's aggregated at the Title, it is not required to populate this property (Title is the
+        /// default).
+        /// </summary>
+        public List<EntityKey> AggregationTargetEntityKeys;
+        /// <summary>
         /// Arbitrary metadata to store along side the statistic, will be returned by all Leaderboard APIs.
         /// </summary>
         public string Metadata;

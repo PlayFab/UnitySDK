@@ -5,6 +5,8 @@ namespace PlayFab.Events
 {
     public partial class PlayFabEvents
     {
+        public event PlayFabRequestEvent<ConfigurePSNEventStreamsRequest> OnAddonConfigurePSNEventStreamsRequestEvent;
+        public event PlayFabResultEvent<ConfigurePSNEventStreamsResponse> OnAddonConfigurePSNEventStreamsResultEvent;
         public event PlayFabRequestEvent<CreateOrUpdateAppleRequest> OnAddonCreateOrUpdateAppleRequestEvent;
         public event PlayFabResultEvent<CreateOrUpdateAppleResponse> OnAddonCreateOrUpdateAppleResultEvent;
         public event PlayFabRequestEvent<CreateOrUpdateFacebookRequest> OnAddonCreateOrUpdateFacebookRequestEvent;

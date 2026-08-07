@@ -52,6 +52,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Configures PSN event streams for an existing PSN addon on a title, without requiring a full addon upsert.
+        /// </summary>
+        public void ConfigurePSNEventStreams(ConfigurePSNEventStreamsRequest request, Action<ConfigurePSNEventStreamsResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (!context.IsEntityLoggedIn()) throw new PlayFabException(PlayFabExceptionCode.NotLoggedIn,"Must be logged in to call this method");
+            PlayFabHttp.MakeApiCall("/Addon/ConfigurePSNEventStreams", request, AuthType.EntityToken, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Creates the Apple addon on a title, or updates it if it already exists.
         /// </summary>
         public void CreateOrUpdateApple(CreateOrUpdateAppleRequest request, Action<CreateOrUpdateAppleResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)

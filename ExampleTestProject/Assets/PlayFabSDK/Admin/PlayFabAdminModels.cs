@@ -144,23 +144,6 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class AdCampaignAttribution : PlayFabBaseModel
-    {
-        /// <summary>
-        /// UTC time stamp of attribution
-        /// </summary>
-        public DateTime AttributedAt;
-        /// <summary>
-        /// Attribution campaign identifier
-        /// </summary>
-        public string CampaignId;
-        /// <summary>
-        /// Attribution network name
-        /// </summary>
-        public string Platform;
-    }
-
-    [Serializable]
     public class AdCampaignAttributionModel : PlayFabBaseModel
     {
         /// <summary>
@@ -285,6 +268,10 @@ namespace PlayFab.AdminModels
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// Optional status for the new news item. If not set, defaults to Published.
+        /// </summary>
+        public NewsStatus? Status;
         /// <summary>
         /// Time this news was published. If not set, defaults to now.
         /// </summary>
@@ -806,23 +793,6 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class ContactEmailInfo : PlayFabBaseModel
-    {
-        /// <summary>
-        /// The email address
-        /// </summary>
-        public string EmailAddress;
-        /// <summary>
-        /// The name of the email info data
-        /// </summary>
-        public string Name;
-        /// <summary>
-        /// The verification status of the email
-        /// </summary>
-        public EmailVerificationStatus? VerificationStatus;
-    }
-
-    [Serializable]
     public class ContactEmailInfoModel : PlayFabBaseModel
     {
         /// <summary>
@@ -1219,6 +1189,43 @@ namespace PlayFab.AdminModels
         /// Cron expression for the run schedule of the task. The expression should be in UTC.
         /// </summary>
         public string Schedule;
+    }
+
+    /// <summary>
+    /// Request to create an IP ban for a title.
+    /// </summary>
+    [Serializable]
+    public class CreateIPBanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The UTC date and time when the IP ban expires. Leave this blank for a permanent ban. Must be later than the current time
+        /// and no more than 100 years in the future.
+        /// </summary>
+        public DateTime? Expires;
+        /// <summary>
+        /// The IP address to be banned.
+        /// </summary>
+        public string IPAddress;
+        /// <summary>
+        /// The reason for the IP ban. Maximum 140 characters.
+        /// </summary>
+        public string Reason;
+    }
+
+    /// <summary>
+    /// Result of creating an IP ban.
+    /// </summary>
+    [Serializable]
+    public class CreateIPBanResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the ban that was created
+        /// </summary>
+        public IPBanInfo IPBanData;
     }
 
     [Serializable]
@@ -2682,7 +2689,6 @@ namespace PlayFab.AdminModels
         InsightsManagementGetOperationStatusInvalidParameter,
         DuplicatePurchaseTransactionId,
         EvaluationModePlayerCountExceeded,
-        GetPlayersInSegmentRateLimitExceeded,
         CloudScriptFunctionNameSizeExceeded,
         PaidInsightsFeaturesNotEnabled,
         CloudScriptAzureFunctionsQueueRequestError,
@@ -2804,6 +2810,10 @@ namespace PlayFab.AdminModels
         ParentCustomerAccountNotFound,
         AccountLinkedToABannedPlayer,
         AzureSubscriptionNotEligibleForLinking,
+        EntityIsNotAMember,
+        IPAddressNotFound,
+        PSNNextGenNotConfiguredForTitle,
+        InvalidNintendoIssuer,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2921,6 +2931,8 @@ namespace PlayFab.AdminModels
         ExperimentationExclusionGroupInvalidName,
         ExperimentationLegacyExperimentInvalidOperation,
         ExperimentationExperimentStopFailed,
+        ExperimentationExperimentDeleteFailed,
+        ExperimentationExperimentStartFailed,
         MaxActionDepthExceeded,
         TitleNotOnUpdatedPricingPlan,
         SegmentManagementTitleNotInFlight,
@@ -2938,7 +2950,8 @@ namespace PlayFab.AdminModels
         AsyncExportNotFound,
         AsyncExportRateLimitExceeded,
         AnalyticsSegmentCountOverLimit,
-        GetPlayersInSegmentDeprecated,
+        GetSegmentPlayerCountNotInFlight,
+        GetSegmentPlayerCountRateLimitExceeded,
         SnapshotNotFound,
         InventoryApiNotImplemented,
         InventoryCollectionDeletionDisallowed,
@@ -3014,8 +3027,6 @@ namespace PlayFab.AdminModels
         PlayerCustomPropertiesPropertyDoesNotExist,
         AddonAlreadyExists,
         AddonDoesntExist,
-        CopilotDisabled,
-        CopilotInvalidRequest,
         TrueSkillUnauthorized,
         TrueSkillInvalidTitleId,
         TrueSkillInvalidScenarioId,
@@ -3118,6 +3129,9 @@ namespace PlayFab.AdminModels
         GameSaveConflict,
         GameSaveManifestNotEligibleForRollback,
         GameSaveTitleClientAnonymousAccountCreationNotDisabled,
+        GameSaveTitleConfigNoUpdatesRequested,
+        GameSavePlayerNotEligibleForTransfer,
+        GameSaveAlreadyAutoRolledBack,
         StateShareForbidden,
         StateShareTitleNotInFlight,
         StateShareStateNotFound,
@@ -3143,6 +3157,8 @@ namespace PlayFab.AdminModels
         EntityTypeSpecifiedRequiresAggregationSource,
         PlayFabErrorEventNotSupportedForEntityType,
         MetadataLengthExceeded,
+        MaxQueryableVersionsExceeded,
+        StatisticVersionIncrementNotAllowedWhileLinked,
         StoreMetricsRequestInvalidInput,
         StoreMetricsErrorRetrievingMetrics
     }
@@ -3158,6 +3174,26 @@ namespace PlayFab.AdminModels
         /// Status summary of the actions-on-players-in-segment task instance
         /// </summary>
         public ActionsOnPlayersInSegmentTaskSummary Summary;
+    }
+
+    /// <summary>
+    /// Request to retrieve all IP bans for a title.
+    /// </summary>
+    [Serializable]
+    public class GetAllIPBansRequest : PlayFabRequestCommon
+    {
+    }
+
+    /// <summary>
+    /// Result containing all IP bans for a title.
+    /// </summary>
+    [Serializable]
+    public class GetAllIPBansResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on all IP bans
+        /// </summary>
+        public List<IPBanInfo> IPBanData;
     }
 
     /// <summary>
@@ -3347,6 +3383,30 @@ namespace PlayFab.AdminModels
     }
 
     /// <summary>
+    /// Request to retrieve IP bans matching a specific IP address.
+    /// </summary>
+    [Serializable]
+    public class GetIPBanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The IP address of the ban to retrieve information on.
+        /// </summary>
+        public string IPAddress;
+    }
+
+    /// <summary>
+    /// Result containing IP bans that match the requested IP address.
+    /// </summary>
+    [Serializable]
+    public class GetIPBanResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the ban
+        /// </summary>
+        public List<IPBanInfo> IPBanData;
+    }
+
+    /// <summary>
     /// Useful for identifying titles of which the player's data will be deleted by DeleteMasterPlayer.
     /// </summary>
     [Serializable]
@@ -3511,65 +3571,6 @@ namespace PlayFab.AdminModels
         public string State;
     }
 
-    /// <summary>
-    /// Initial request must contain at least a Segment ID. Subsequent requests must contain the Segment ID as well as the
-    /// Continuation Token. Failure to send the Continuation Token will result in a new player segment list being generated.
-    /// Each time the Continuation Token is passed in the length of the Total Seconds to Live is refreshed. If too much time
-    /// passes between requests to the point that a subsequent request is past the Total Seconds to Live an error will be
-    /// returned and paging will be terminated. This API is resource intensive and should not be used in scenarios which might
-    /// generate high request volumes. Only one request to this API at a time should be made per title. Concurrent requests to
-    /// the API may be rejected with the APIConcurrentRequestLimitExceeded error.
-    /// </summary>
-    [Serializable]
-    public class GetPlayersInSegmentRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// Continuation token if retrieving subsequent pages of results.
-        /// </summary>
-        public string ContinuationToken;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// If set to true, the profiles are loaded asynchronously and the response will include a continuation token and
-        /// approximate profile count until the first batch of profiles is loaded. Use this parameter to help avoid network
-        /// timeouts.
-        /// </summary>
-        public bool? GetProfilesAsync;
-        /// <summary>
-        /// Maximum is 10,000. The value 0 will prevent loading any profiles and return only the count of profiles matching this
-        /// segment.
-        /// </summary>
-        public uint? MaxBatchSize;
-        /// <summary>
-        /// Number of seconds to keep the continuation token active. After token expiration it is not possible to continue paging
-        /// results. Default is 300 (5 minutes). Maximum is 5,400 (90 minutes).
-        /// </summary>
-        public uint? SecondsToLive;
-        /// <summary>
-        /// Unique identifier for this segment.
-        /// </summary>
-        public string SegmentId;
-    }
-
-    [Serializable]
-    public class GetPlayersInSegmentResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// Continuation token to use to retrieve subsequent pages of results. If token returns null there are no more results.
-        /// </summary>
-        public string ContinuationToken;
-        /// <summary>
-        /// Array of player profiles in this segment.
-        /// </summary>
-        public List<PlayerProfile> PlayerProfiles;
-        /// <summary>
-        /// Count of profiles matching this segment.
-        /// </summary>
-        public int ProfilesInSegment;
-    }
-
     [Serializable]
     public class GetPlayersSegmentsRequest : PlayFabRequestCommon
     {
@@ -3683,7 +3684,8 @@ namespace PlayFab.AdminModels
     public class GetPolicyRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// The name of the policy to read. Only supported name is 'ApiPolicy'.
+        /// The name of the policy to read. Only 'ApiPolicy' is supported. This parameter is optional and defaults to 'ApiPolicy' if
+        /// omitted.
         /// </summary>
         public string PolicyName;
     }
@@ -3691,6 +3693,10 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class GetPolicyResponse : PlayFabResultCommon
     {
+        /// <summary>
+        /// The UTC date and time when the policy was last updated. Null if the policy has never been customized.
+        /// </summary>
+        public DateTime? LastUpdated;
         /// <summary>
         /// The name of the policy read.
         /// </summary>
@@ -3745,6 +3751,27 @@ namespace PlayFab.AdminModels
         /// array of random result tables currently available
         /// </summary>
         public Dictionary<string,RandomResultTableListing> Tables;
+    }
+
+    /// <summary>
+    /// Request must contain a valid Segment ID.
+    /// </summary>
+    [Serializable]
+    public class GetSegmentPlayerCountRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Unique identifier for the requested segment.
+        /// </summary>
+        public string SegmentId;
+    }
+
+    [Serializable]
+    public class GetSegmentPlayerCountResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Count of profiles matching this segment.
+        /// </summary>
+        public int ProfilesInSegment;
     }
 
     [Serializable]
@@ -4319,6 +4346,38 @@ namespace PlayFab.AdminModels
         public int Level;
     }
 
+    /// <summary>
+    /// Contains information for an IP ban.
+    /// </summary>
+    [Serializable]
+    public class IPBanInfo : PlayFabBaseModel
+    {
+        /// <summary>
+        /// The active state of this ban.
+        /// </summary>
+        public bool Active;
+        /// <summary>
+        /// PlayFab Developer ID of who issued the ban. Null if ban issued via Title Secret Key.
+        /// </summary>
+        public string BannedByDeveloperId;
+        /// <summary>
+        /// The time when this IP ban was applied.
+        /// </summary>
+        public DateTime? Created;
+        /// <summary>
+        /// The time when this ban expires. Permanent bans do not have expiration date.
+        /// </summary>
+        public DateTime? Expires;
+        /// <summary>
+        /// The IP address on which the ban was applied.
+        /// </summary>
+        public string IPAddress;
+        /// <summary>
+        /// The reason why this IP ban was applied.
+        /// </summary>
+        public string Reason;
+    }
+
     [Serializable]
     public class ItemGrant : PlayFabBaseModel
     {
@@ -4726,6 +4785,14 @@ namespace PlayFab.AdminModels
         public string Name;
     }
 
+    public enum NewsStatus
+    {
+        None,
+        Unpublished,
+        Published,
+        Archived
+    }
+
     [Serializable]
     public class OpenIdConnection : PlayFabBaseModel
     {
@@ -4784,7 +4851,7 @@ namespace PlayFab.AdminModels
     public class PermissionStatement : PlayFabBaseModel
     {
         /// <summary>
-        /// The action this statement effects. The only supported action is 'Execute'.
+        /// The action this statement effects. May only be '*'. This parameter is optional and defaults to '*' if omitted.
         /// </summary>
         public string Action;
         /// <summary>
@@ -4800,7 +4867,8 @@ namespace PlayFab.AdminModels
         /// </summary>
         public EffectType Effect;
         /// <summary>
-        /// The principal this statement will effect. The only supported principal is '*'.
+        /// The principal this statement will effect. May be '*' to match all callers, or a JSON object targeting a specific entity
+        /// type, e.g. {"title_player_account":"*"} for players or {"master_player_account":"*"} for master player accounts.
         /// </summary>
         public string Principal;
         /// <summary>
@@ -4847,149 +4915,6 @@ namespace PlayFab.AdminModels
         /// RiskLevel
         /// </summary>
         public ChurnRiskLevel? RiskLevel;
-    }
-
-    [Serializable]
-    public class PlayerLinkedAccount : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Linked account's email
-        /// </summary>
-        public string Email;
-        /// <summary>
-        /// Authentication platform
-        /// </summary>
-        public LoginIdentityProvider? Platform;
-        /// <summary>
-        /// Platform user identifier
-        /// </summary>
-        public string PlatformUserId;
-        /// <summary>
-        /// Linked account's username
-        /// </summary>
-        public string Username;
-    }
-
-    [Serializable]
-    public class PlayerLocation : PlayFabBaseModel
-    {
-        /// <summary>
-        /// City of the player's geographic location.
-        /// </summary>
-        public string City;
-        /// <summary>
-        /// The two-character continent code for this location
-        /// </summary>
-        public ContinentCode ContinentCode;
-        /// <summary>
-        /// The two-character ISO 3166-1 country code for the country associated with the location
-        /// </summary>
-        public CountryCode CountryCode;
-        /// <summary>
-        /// Latitude coordinate of the player's geographic location.
-        /// </summary>
-        public double? Latitude;
-        /// <summary>
-        /// Longitude coordinate of the player's geographic location.
-        /// </summary>
-        public double? Longitude;
-    }
-
-    [Serializable]
-    public class PlayerProfile : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Array of ad campaigns player has been attributed to
-        /// </summary>
-        public List<AdCampaignAttribution> AdCampaignAttributions;
-        /// <summary>
-        /// Image URL of the player's avatar.
-        /// </summary>
-        public string AvatarUrl;
-        /// <summary>
-        /// Banned until UTC Date. If permanent ban this is set for 20 years after the original ban date.
-        /// </summary>
-        public DateTime? BannedUntil;
-        /// <summary>
-        /// The prediction of the player to churn within the next seven days.
-        /// </summary>
-        public ChurnRiskLevel? ChurnPrediction;
-        /// <summary>
-        /// Array of contact email addresses associated with the player
-        /// </summary>
-        public List<ContactEmailInfo> ContactEmailAddresses;
-        /// <summary>
-        /// Player record created
-        /// </summary>
-        public DateTime? Created;
-        /// <summary>
-        /// Dictionary of player's custom properties.
-        /// </summary>
-        public Dictionary<string,object> CustomProperties;
-        /// <summary>
-        /// Player Display Name
-        /// </summary>
-        public string DisplayName;
-        /// <summary>
-        /// Last login
-        /// </summary>
-        public DateTime? LastLogin;
-        /// <summary>
-        /// Array of third party accounts linked to this player
-        /// </summary>
-        public List<PlayerLinkedAccount> LinkedAccounts;
-        /// <summary>
-        /// Dictionary of player's locations by type.
-        /// </summary>
-        public Dictionary<string,PlayerLocation> Locations;
-        /// <summary>
-        /// Player account origination
-        /// </summary>
-        public LoginIdentityProvider? Origination;
-        /// <summary>
-        /// List of player variants for experimentation
-        /// </summary>
-        public List<string> PlayerExperimentVariants;
-        /// <summary>
-        /// PlayFab Player ID
-        /// </summary>
-        public string PlayerId;
-        /// <summary>
-        /// Array of player statistics
-        /// </summary>
-        public List<PlayerStatistic> PlayerStatistics;
-        /// <summary>
-        /// Publisher this player belongs to
-        /// </summary>
-        public string PublisherId;
-        /// <summary>
-        /// Array of configured push notification end points
-        /// </summary>
-        public List<PushNotificationRegistration> PushNotificationRegistrations;
-        /// <summary>
-        /// Dictionary of player's statistics using only the latest version's value
-        /// </summary>
-        public Dictionary<string,int> Statistics;
-        /// <summary>
-        /// List of player's tags for segmentation.
-        /// </summary>
-        public List<string> Tags;
-        /// <summary>
-        /// Title ID this profile applies to
-        /// </summary>
-        public string TitleId;
-        /// <summary>
-        /// A sum of player's total purchases in USD across all currencies.
-        /// </summary>
-        public uint? TotalValueToDateInUSD;
-        /// <summary>
-        /// Dictionary of player's total purchases by currency.
-        /// </summary>
-        public Dictionary<string,uint> ValuesToDate;
-        /// <summary>
-        /// Dictionary of player's virtual currency balances
-        /// </summary>
-        public Dictionary<string,int> VirtualCurrencyBalances;
     }
 
     [Serializable]
@@ -5154,27 +5079,6 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class PlayerStatistic : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Statistic ID
-        /// </summary>
-        public string Id;
-        /// <summary>
-        /// Statistic name
-        /// </summary>
-        public string Name;
-        /// <summary>
-        /// Current statistic value
-        /// </summary>
-        public int StatisticValue;
-        /// <summary>
-        /// Statistic version (0 if not a versioned statistic)
-        /// </summary>
-        public int StatisticVersion;
-    }
-
-    [Serializable]
     public class PlayerStatisticDefinition : PlayFabBaseModel
     {
         /// <summary>
@@ -5233,6 +5137,32 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
+    public class PolicyDiffSummary : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Number of new statements that would be added.
+        /// </summary>
+        public int StatementsAdded;
+        /// <summary>
+        /// Number of existing statements that would be removed. Only applicable when OverwritePolicy is true.
+        /// </summary>
+        public int StatementsRemoved;
+        /// <summary>
+        /// Number of existing statements that would be replaced by functionally equivalent incoming statements (e.g., same
+        /// resource/effect/principal but different comment).
+        /// </summary>
+        public int StatementsReplaced;
+        /// <summary>
+        /// Number of existing statements that would remain unchanged.
+        /// </summary>
+        public int StatementsUnchanged;
+        /// <summary>
+        /// Total number of statements in the resulting policy.
+        /// </summary>
+        public int TotalResultingStatements;
+    }
+
+    [Serializable]
     public class PushNotificationContent : PlayFabBaseModel
     {
         /// <summary>
@@ -5253,19 +5183,6 @@ namespace PlayFab.AdminModels
     {
         ApplePushNotificationService,
         GoogleCloudMessaging
-    }
-
-    [Serializable]
-    public class PushNotificationRegistration : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Notification configured endpoint
-        /// </summary>
-        public string NotificationEndpointARN;
-        /// <summary>
-        /// Push notification platform
-        /// </summary>
-        public PushNotificationPlatform? Platform;
     }
 
     [Serializable]
@@ -5648,6 +5565,30 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class RevokeInventoryResult : PlayFabResultCommon
     {
+    }
+
+    /// <summary>
+    /// Request to revoke an existing IP ban.
+    /// </summary>
+    [Serializable]
+    public class RevokeIPBanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The IP address of the ban to be revoked.
+        /// </summary>
+        public string IPAddress;
+    }
+
+    /// <summary>
+    /// Result of revoking an IP ban.
+    /// </summary>
+    [Serializable]
+    public class RevokeIPBanResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the ban that was revoked
+        /// </summary>
+        public IPBanInfo IPBanData;
     }
 
     [Serializable]
@@ -6498,7 +6439,7 @@ namespace PlayFab.AdminModels
     public class SetPlayerSecretRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Player secret that is used to verify API request signatures (Enterprise Only).
+        /// Player secret that is used to verify API request signatures.
         /// </summary>
         public string PlayerSecret;
         /// <summary>
@@ -7157,6 +7098,50 @@ namespace PlayFab.AdminModels
         public int Version;
     }
 
+    /// <summary>
+    /// Request to update an existing IP ban.
+    /// </summary>
+    [Serializable]
+    public class UpdateIPBanRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The updated active state for the IP ban. Null for no change.
+        /// </summary>
+        public bool? Active;
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The updated expiration date for the IP ban. Null for no change.
+        /// </summary>
+        public DateTime? Expires;
+        /// <summary>
+        /// The IP address of the ban to be updated.
+        /// </summary>
+        public string IPAddress;
+        /// <summary>
+        /// Whether to make this IP ban permanent. Set to true to make this IP ban permanent. This will not modify Active state.
+        /// </summary>
+        public bool? Permanent;
+        /// <summary>
+        /// The updated reason for the IP ban. Maximum 140 characters. Null for no change.
+        /// </summary>
+        public string Reason;
+    }
+
+    /// <summary>
+    /// Result of updating an IP ban.
+    /// </summary>
+    [Serializable]
+    public class UpdateIPBanResult : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Information on the ban that was created
+        /// </summary>
+        public IPBanInfo IPBanData;
+    }
+
     [Serializable]
     public class UpdateOpenIdConnectionRequest : PlayFabRequestCommon
     {
@@ -7314,7 +7299,8 @@ namespace PlayFab.AdminModels
         /// </summary>
         public bool OverwritePolicy;
         /// <summary>
-        /// The name of the policy being updated. Only supported name is 'ApiPolicy'
+        /// The name of the policy being updated. Only 'ApiPolicy' is supported. This parameter is optional and defaults to
+        /// 'ApiPolicy' if omitted.
         /// </summary>
         public string PolicyName;
         /// <summary>
@@ -7338,6 +7324,11 @@ namespace PlayFab.AdminModels
         /// The statements included in the new version of the policy.
         /// </summary>
         public List<PermissionStatement> Statements;
+        /// <summary>
+        /// Optional warnings about policy statements that may not have the intended effect. For example, resource paths that don't
+        /// match any known API endpoint. The policy update still succeeds when warnings are present.
+        /// </summary>
+        public List<string> Warnings;
     }
 
     [Serializable]
@@ -8059,6 +8050,66 @@ namespace PlayFab.AdminModels
         /// XBox user sandbox
         /// </summary>
         public string XboxUserSandbox;
+    }
+
+    /// <summary>
+    /// Validates the proposed policy change and returns the resulting merged policy, validation errors, warnings, and a diff
+    /// summary showing what would change. Use this to validate the impact of a policy update before calling UpdatePolicy. No
+    /// changes are saved.
+    /// </summary>
+    [Serializable]
+    public class ValidateApiPolicyRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// Whether the validation should simulate overwriting or appending to the existing policy.
+        /// </summary>
+        public bool OverwritePolicy;
+        /// <summary>
+        /// The name of the policy to validate. Only 'ApiPolicy' is supported. This parameter is optional and defaults to
+        /// 'ApiPolicy' if omitted.
+        /// </summary>
+        public string PolicyName;
+        /// <summary>
+        /// Version of the policy to validate against. Must be the latest (as returned by GetPolicy).
+        /// </summary>
+        public int PolicyVersion;
+        /// <summary>
+        /// The statements to validate.
+        /// </summary>
+        public List<PermissionStatement> Statements;
+    }
+
+    [Serializable]
+    public class ValidateApiPolicyResponse : PlayFabResultCommon
+    {
+        /// <summary>
+        /// Summary of what would change compared to the current policy.
+        /// </summary>
+        public PolicyDiffSummary Diff;
+        /// <summary>
+        /// Whether the proposed policy is valid and would be accepted by UpdatePolicy.
+        /// </summary>
+        public bool IsValid;
+        /// <summary>
+        /// The name of the policy validated.
+        /// </summary>
+        public string PolicyName;
+        /// <summary>
+        /// Policy version.
+        /// </summary>
+        public int PolicyVersion;
+        /// <summary>
+        /// The full set of statements that would result from applying this update.
+        /// </summary>
+        public List<PermissionStatement> ResultingStatements;
+        /// <summary>
+        /// Validation errors that would cause UpdatePolicy to reject this request. Empty if IsValid is true.
+        /// </summary>
+        public List<string> ValidationErrors;
+        /// <summary>
+        /// Non-blocking warnings about the proposed policy (e.g., near statement limit, duplicate statements).
+        /// </summary>
+        public List<string> Warnings;
     }
 
     [Serializable]

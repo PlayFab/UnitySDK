@@ -85,6 +85,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Adds or updates a contact email to the specified player's profile.
+        /// </summary>
+        public void AddOrUpdateContactEmail(AddOrUpdateContactEmailRequest request, Action<AddOrUpdateContactEmailResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/AddOrUpdateContactEmail", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Adds a given tag to a player profile. The tag's namespace is automatically generated based on the source of the tag.
         /// </summary>
         public void AddPlayerTag(AddPlayerTagRequest request, Action<AddPlayerTagResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -285,8 +296,22 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Starts an export for the player profiles in a segment. This API creates a snapshot of all the player profiles which
+        /// match the segment definition at the time of the API call. Profiles which change while an export is in progress will not
+        /// be reflected in the results.
+        /// </summary>
+        public void ExportPlayersInSegment(ExportPlayersInSegmentRequest request, Action<ExportPlayersInSegmentResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/ExportPlayersInSegment", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Retrieves an array of player segment definitions. Results from this can be used in subsequent API calls such as
-        /// GetPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not change.
+        /// ExportPlayersInSegment which requires a Segment ID. While segment names can change the ID for that segment will not
+        /// change.
         /// </summary>
         public void GetAllSegments(GetAllSegmentsRequest request, Action<GetAllSegmentsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
@@ -517,22 +542,6 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Allows for paging through all players in a given segment. This API creates a snapshot of all player profiles that match
-        /// the segment definition at the time of its creation and lives through the Total Seconds to Live, refreshing its life span
-        /// on each subsequent use of the Continuation Token. Profiles that change during the course of paging will not be reflected
-        /// in the results. AB Test segments are currently not supported by this operation. NOTE: This API is limited to being
-        /// called 30 times in one minute. You will be returned an error if you exceed this threshold.
-        /// </summary>
-        [Obsolete("No longer available", true)]
-        public void GetPlayersInSegment(GetPlayersInSegmentRequest request, Action<GetPlayersInSegmentResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
-        {
-            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
-            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
-            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
-            PlayFabHttp.MakeApiCall("/Server/GetPlayersInSegment", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
-        }
-
-        /// <summary>
         /// Retrieves the current version and values for the indicated statistics, for the local player.
         /// </summary>
         public void GetPlayerStatistics(GetPlayerStatisticsRequest request, Action<GetPlayerStatisticsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -669,6 +678,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Retrieves the associated PlayFab account identifiers for the given set of server custom player identifiers.
+        /// </summary>
+        public void GetPlayFabIDsFromServerCustomIDs(GetPlayFabIDsFromServerCustomIDsRequest request, Action<GetPlayFabIDsFromServerCustomIDsResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/GetPlayFabIDsFromServerCustomIDs", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Retrieves the unique PlayFab identifiers for the given set of Steam identifiers. The Steam identifiers are the profile
         /// IDs for the user accounts, available as SteamId in the Steamworks Community API calls.
         /// </summary>
@@ -738,6 +758,31 @@ namespace PlayFab
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
             PlayFabHttp.MakeApiCall("/Server/GetRandomResultTables", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Retrieves the result of an export started by ExportPlayersInSegment API. If the ExportPlayersInSegment is successful and
+        /// complete, this API returns the IndexUrl from which the index file can be downloaded. The index file has a list of urls
+        /// from which the files containing the player profile data can be downloaded. Otherwise, it returns the current 'State' of
+        /// the export
+        /// </summary>
+        public void GetSegmentExport(GetPlayersInSegmentExportRequest request, Action<GetPlayersInSegmentExportResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/GetSegmentExport", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Returns the total number of players in a given segment.
+        /// </summary>
+        public void GetSegmentPlayerCount(GetSegmentPlayerCountRequest request, Action<GetSegmentPlayerCountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/GetSegmentPlayerCount", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>
@@ -1526,6 +1571,17 @@ namespace PlayFab
         }
 
         /// <summary>
+        /// Unlinks the related Apple account from the specified user's PlayFab account.
+        /// </summary>
+        public void UnlinkApple(UnlinkAppleRequest request, Action<UnlinkAppleResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/UnlinkApple", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
         /// Unlinks the related Battle.net account from the user's PlayFab account.
         /// </summary>
         public void UnlinkBattleNetAccount(UnlinkBattleNetAccountRequest request, Action<EmptyResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
@@ -1556,6 +1612,17 @@ namespace PlayFab
             var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
             if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
             PlayFabHttp.MakeApiCall("/Server/UnlinkFacebookInstantGamesId", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
+        }
+
+        /// <summary>
+        /// Unlinks the related Game Center account from the specified user's PlayFab account.
+        /// </summary>
+        public void UnlinkGameCenterAccount(UnlinkGameCenterAccountRequest request, Action<UnlinkGameCenterAccountResult> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
+        {
+            var context = (request == null ? null : request.AuthenticationContext) ?? authenticationContext;
+            var callSettings = apiSettings ?? PlayFabSettings.staticSettings;
+            if (string.IsNullOrEmpty(callSettings.DeveloperSecretKey)) { throw new PlayFabException(PlayFabExceptionCode.DeveloperKeyNotSet, "Must set DeveloperSecretKey in settings to call this method"); }
+            PlayFabHttp.MakeApiCall("/Server/UnlinkGameCenterAccount", request, AuthType.DevSecretKey, resultCallback, errorCallback, customData, extraHeaders, context, callSettings, this);
         }
 
         /// <summary>

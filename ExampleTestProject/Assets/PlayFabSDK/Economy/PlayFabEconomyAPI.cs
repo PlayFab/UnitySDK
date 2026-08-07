@@ -379,9 +379,10 @@ namespace PlayFab
         }
 
         /// <summary>
-        /// Get transaction history for a player. Up to 250 Events can be returned at once. You can use continuation tokens to
-        /// paginate through results that return greater than the limit. Getting transaction history has a lower RPS limit than
-        /// getting a Player's inventory with Player Entities having a limit of 30 requests in 300 seconds.
+        /// Get transaction history for a player. Up to 50 Events can be returned at once (or 250 with response compression
+        /// enabled). You can use continuation tokens to paginate through results that return greater than the limit. Getting
+        /// transaction history has a lower RPS limit than getting a Player's inventory with Player Entities having a limit of 30
+        /// requests in 300 seconds.
         /// </summary>
         public static void GetTransactionHistory(GetTransactionHistoryRequest request, Action<GetTransactionHistoryResponse> resultCallback, Action<PlayFabError> errorCallback, object customData = null, Dictionary<string, string> extraHeaders = null)
         {
