@@ -11,6 +11,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EmptyResponse> OnServerAddFriendResultEvent;
         public event PlayFabRequestEvent<AddGenericIDRequest> OnServerAddGenericIDRequestEvent;
         public event PlayFabResultEvent<EmptyResult> OnServerAddGenericIDResultEvent;
+        public event PlayFabRequestEvent<AddOrUpdateContactEmailRequest> OnServerAddOrUpdateContactEmailRequestEvent;
+        public event PlayFabResultEvent<AddOrUpdateContactEmailResult> OnServerAddOrUpdateContactEmailResultEvent;
         public event PlayFabRequestEvent<AddPlayerTagRequest> OnServerAddPlayerTagRequestEvent;
         public event PlayFabResultEvent<AddPlayerTagResult> OnServerAddPlayerTagResultEvent;
         public event PlayFabRequestEvent<AddSharedGroupMembersRequest> OnServerAddSharedGroupMembersRequestEvent;
@@ -41,6 +43,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<EvaluateRandomResultTableResult> OnServerEvaluateRandomResultTableResultEvent;
         public event PlayFabRequestEvent<ExecuteCloudScriptServerRequest> OnServerExecuteCloudScriptRequestEvent;
         public event PlayFabResultEvent<ExecuteCloudScriptResult> OnServerExecuteCloudScriptResultEvent;
+        public event PlayFabRequestEvent<ExportPlayersInSegmentRequest> OnServerExportPlayersInSegmentRequestEvent;
+        public event PlayFabResultEvent<ExportPlayersInSegmentResult> OnServerExportPlayersInSegmentResultEvent;
         public event PlayFabRequestEvent<GetAllSegmentsRequest> OnServerGetAllSegmentsRequestEvent;
         public event PlayFabResultEvent<GetAllSegmentsResult> OnServerGetAllSegmentsResultEvent;
         public event PlayFabRequestEvent<ListUsersCharactersRequest> OnServerGetAllUsersCharactersRequestEvent;
@@ -81,8 +85,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayerProfileResult> OnServerGetPlayerProfileResultEvent;
         public event PlayFabRequestEvent<GetPlayersSegmentsRequest> OnServerGetPlayerSegmentsRequestEvent;
         public event PlayFabResultEvent<GetPlayerSegmentsResult> OnServerGetPlayerSegmentsResultEvent;
-        public event PlayFabRequestEvent<GetPlayersInSegmentRequest> OnServerGetPlayersInSegmentRequestEvent;
-        public event PlayFabResultEvent<GetPlayersInSegmentResult> OnServerGetPlayersInSegmentResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticsRequest> OnServerGetPlayerStatisticsRequestEvent;
         public event PlayFabResultEvent<GetPlayerStatisticsResult> OnServerGetPlayerStatisticsResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticVersionsRequest> OnServerGetPlayerStatisticVersionsRequestEvent;
@@ -107,6 +109,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayFabIDsFromPSNAccountIDsResult> OnServerGetPlayFabIDsFromPSNAccountIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromPSNOnlineIDsRequest> OnServerGetPlayFabIDsFromPSNOnlineIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromPSNOnlineIDsResult> OnServerGetPlayFabIDsFromPSNOnlineIDsResultEvent;
+        public event PlayFabRequestEvent<GetPlayFabIDsFromServerCustomIDsRequest> OnServerGetPlayFabIDsFromServerCustomIDsRequestEvent;
+        public event PlayFabResultEvent<GetPlayFabIDsFromServerCustomIDsResult> OnServerGetPlayFabIDsFromServerCustomIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromSteamIDsRequest> OnServerGetPlayFabIDsFromSteamIDsRequestEvent;
         public event PlayFabResultEvent<GetPlayFabIDsFromSteamIDsResult> OnServerGetPlayFabIDsFromSteamIDsResultEvent;
         public event PlayFabRequestEvent<GetPlayFabIDsFromSteamNamesRequest> OnServerGetPlayFabIDsFromSteamNamesRequestEvent;
@@ -119,6 +123,10 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPublisherDataResult> OnServerGetPublisherDataResultEvent;
         public event PlayFabRequestEvent<GetRandomResultTablesRequest> OnServerGetRandomResultTablesRequestEvent;
         public event PlayFabResultEvent<GetRandomResultTablesResult> OnServerGetRandomResultTablesResultEvent;
+        public event PlayFabRequestEvent<GetPlayersInSegmentExportRequest> OnServerGetSegmentExportRequestEvent;
+        public event PlayFabResultEvent<GetPlayersInSegmentExportResponse> OnServerGetSegmentExportResultEvent;
+        public event PlayFabRequestEvent<GetSegmentPlayerCountRequest> OnServerGetSegmentPlayerCountRequestEvent;
+        public event PlayFabResultEvent<GetSegmentPlayerCountResult> OnServerGetSegmentPlayerCountResultEvent;
         public event PlayFabRequestEvent<GetServerCustomIDsFromPlayFabIDsRequest> OnServerGetServerCustomIDsFromPlayFabIDsRequestEvent;
         public event PlayFabResultEvent<GetServerCustomIDsFromPlayFabIDsResult> OnServerGetServerCustomIDsFromPlayFabIDsResultEvent;
         public event PlayFabRequestEvent<GetSharedGroupDataRequest> OnServerGetSharedGroupDataRequestEvent;
@@ -255,12 +263,16 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<ModifyCharacterVirtualCurrencyResult> OnServerSubtractCharacterVirtualCurrencyResultEvent;
         public event PlayFabRequestEvent<SubtractUserVirtualCurrencyRequest> OnServerSubtractUserVirtualCurrencyRequestEvent;
         public event PlayFabResultEvent<ModifyUserVirtualCurrencyResult> OnServerSubtractUserVirtualCurrencyResultEvent;
+        public event PlayFabRequestEvent<UnlinkAppleRequest> OnServerUnlinkAppleRequestEvent;
+        public event PlayFabResultEvent<UnlinkAppleResult> OnServerUnlinkAppleResultEvent;
         public event PlayFabRequestEvent<UnlinkBattleNetAccountRequest> OnServerUnlinkBattleNetAccountRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerUnlinkBattleNetAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkFacebookAccountRequest> OnServerUnlinkFacebookAccountRequestEvent;
         public event PlayFabResultEvent<UnlinkFacebookAccountResult> OnServerUnlinkFacebookAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkFacebookInstantGamesIdRequest> OnServerUnlinkFacebookInstantGamesIdRequestEvent;
         public event PlayFabResultEvent<UnlinkFacebookInstantGamesIdResult> OnServerUnlinkFacebookInstantGamesIdResultEvent;
+        public event PlayFabRequestEvent<UnlinkGameCenterAccountRequest> OnServerUnlinkGameCenterAccountRequestEvent;
+        public event PlayFabResultEvent<UnlinkGameCenterAccountResult> OnServerUnlinkGameCenterAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkNintendoServiceAccountRequest> OnServerUnlinkNintendoServiceAccountRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnServerUnlinkNintendoServiceAccountResultEvent;
         public event PlayFabRequestEvent<UnlinkNintendoSwitchDeviceIdRequest> OnServerUnlinkNintendoSwitchDeviceIdRequestEvent;

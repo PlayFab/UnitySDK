@@ -6,6 +6,28 @@ using PlayFab.SharedModels;
 namespace PlayFab.AddonModels
 {
     [Serializable]
+    public class ConfigurePSNEventStreamsRequest : PlayFabRequestCommon
+    {
+        /// <summary>
+        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
+        /// </summary>
+        public Dictionary<string,string> CustomTags;
+        /// <summary>
+        /// The optional entity to perform this action on. Defaults to the currently logged in entity.
+        /// </summary>
+        public EntityKey Entity;
+        /// <summary>
+        /// Title name obtained after setting a back server for PS5. Used for clawback event listeners.
+        /// </summary>
+        public string TitleName;
+    }
+
+    [Serializable]
+    public class ConfigurePSNEventStreamsResponse : PlayFabResultCommon
+    {
+    }
+
+    [Serializable]
     public class CreateOrUpdateAppleRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -233,6 +255,10 @@ namespace PlayFab.AddonModels
         /// If an error should be returned if the addon already exists.
         /// </summary>
         public bool? ErrorIfExists;
+        /// <summary>
+        /// List of Nintendo Subscription Environments, currently supporting up to 4. Needs Catalog enabled.
+        /// </summary>
+        public List<NintendoEnvironment> SubscriptionEnvironments;
     }
 
     [Serializable]
@@ -756,6 +782,14 @@ namespace PlayFab.AddonModels
         /// List of Nintendo Environments, currently supporting up to 4.
         /// </summary>
         public List<NintendoEnvironment> Environments;
+        /// <summary>
+        /// List of Nintendo Subscription Environments associated to a secondary AppId, currently supporting up to 4.
+        /// </summary>
+        public List<NintendoEnvironment> SecondarySubscriptionEnvironments;
+        /// <summary>
+        /// List of Nintendo Subscription Environments, currently supporting up to 4.
+        /// </summary>
+        public List<NintendoEnvironment> SubscriptionEnvironments;
     }
 
     [Serializable]
