@@ -1678,7 +1678,8 @@ namespace PlayFab.EconomyModels
         /// </summary>
         public string ContinuationToken;
         /// <summary>
-        /// Number of items to retrieve. This value is optional. The default value is 10
+        /// Number of items to retrieve. This value is optional. The default value is 10. The maximum value is 50, or 250 if
+        /// response compression is enabled.
         /// </summary>
         public int Count;
         /// <summary>

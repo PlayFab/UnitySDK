@@ -27,6 +27,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateCloudScriptTaskResultEvent;
         public event PlayFabRequestEvent<CreateInsightsScheduledScalingTaskRequest> OnAdminCreateInsightsScheduledScalingTaskRequestEvent;
         public event PlayFabResultEvent<CreateTaskResult> OnAdminCreateInsightsScheduledScalingTaskResultEvent;
+        public event PlayFabRequestEvent<CreateIPBanRequest> OnAdminCreateIPBanRequestEvent;
+        public event PlayFabResultEvent<CreateIPBanResult> OnAdminCreateIPBanResultEvent;
         public event PlayFabRequestEvent<CreateOpenIdConnectionRequest> OnAdminCreateOpenIdConnectionRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnAdminCreateOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<CreatePlayerSharedSecretRequest> OnAdminCreatePlayerSharedSecretRequestEvent;
@@ -83,6 +85,10 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetContentUploadUrlResult> OnAdminGetContentUploadUrlResultEvent;
         public event PlayFabRequestEvent<GetDataReportRequest> OnAdminGetDataReportRequestEvent;
         public event PlayFabResultEvent<GetDataReportResult> OnAdminGetDataReportResultEvent;
+        public event PlayFabRequestEvent<GetIPBanRequest> OnAdminGetIPBansForIPRequestEvent;
+        public event PlayFabResultEvent<GetIPBanResult> OnAdminGetIPBansForIPResultEvent;
+        public event PlayFabRequestEvent<GetAllIPBansRequest> OnAdminGetIPBansForTitleRequestEvent;
+        public event PlayFabResultEvent<GetAllIPBansResult> OnAdminGetIPBansForTitleResultEvent;
         public event PlayFabRequestEvent<GetPlayedTitleListRequest> OnAdminGetPlayedTitleListRequestEvent;
         public event PlayFabResultEvent<GetPlayedTitleListResult> OnAdminGetPlayedTitleListResultEvent;
         public event PlayFabRequestEvent<GetPlayerCustomPropertyRequest> OnAdminGetPlayerCustomPropertyRequestEvent;
@@ -95,8 +101,6 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetPlayerSegmentsResult> OnAdminGetPlayerSegmentsResultEvent;
         public event PlayFabRequestEvent<GetPlayerSharedSecretsRequest> OnAdminGetPlayerSharedSecretsRequestEvent;
         public event PlayFabResultEvent<GetPlayerSharedSecretsResult> OnAdminGetPlayerSharedSecretsResultEvent;
-        public event PlayFabRequestEvent<GetPlayersInSegmentRequest> OnAdminGetPlayersInSegmentRequestEvent;
-        public event PlayFabResultEvent<GetPlayersInSegmentResult> OnAdminGetPlayersInSegmentResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticDefinitionsRequest> OnAdminGetPlayerStatisticDefinitionsRequestEvent;
         public event PlayFabResultEvent<GetPlayerStatisticDefinitionsResult> OnAdminGetPlayerStatisticDefinitionsResultEvent;
         public event PlayFabRequestEvent<GetPlayerStatisticVersionsRequest> OnAdminGetPlayerStatisticVersionsRequestEvent;
@@ -111,6 +115,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<GetRandomResultTablesResult> OnAdminGetRandomResultTablesResultEvent;
         public event PlayFabRequestEvent<GetPlayersInSegmentExportRequest> OnAdminGetSegmentExportRequestEvent;
         public event PlayFabResultEvent<GetPlayersInSegmentExportResponse> OnAdminGetSegmentExportResultEvent;
+        public event PlayFabRequestEvent<GetSegmentPlayerCountRequest> OnAdminGetSegmentPlayerCountRequestEvent;
+        public event PlayFabResultEvent<GetSegmentPlayerCountResult> OnAdminGetSegmentPlayerCountResultEvent;
         public event PlayFabRequestEvent<GetSegmentsRequest> OnAdminGetSegmentsRequestEvent;
         public event PlayFabResultEvent<GetSegmentsResponse> OnAdminGetSegmentsResultEvent;
         public event PlayFabRequestEvent<GetStoreItemsRequest> OnAdminGetStoreItemsRequestEvent;
@@ -175,6 +181,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<RevokeInventoryResult> OnAdminRevokeInventoryItemResultEvent;
         public event PlayFabRequestEvent<RevokeInventoryItemsRequest> OnAdminRevokeInventoryItemsRequestEvent;
         public event PlayFabResultEvent<RevokeInventoryItemsResult> OnAdminRevokeInventoryItemsResultEvent;
+        public event PlayFabRequestEvent<RevokeIPBanRequest> OnAdminRevokeIPBanRequestEvent;
+        public event PlayFabResultEvent<RevokeIPBanResult> OnAdminRevokeIPBanResultEvent;
         public event PlayFabRequestEvent<RunTaskRequest> OnAdminRunTaskRequestEvent;
         public event PlayFabResultEvent<RunTaskResult> OnAdminRunTaskResultEvent;
         public event PlayFabRequestEvent<SendAccountRecoveryEmailRequest> OnAdminSendAccountRecoveryEmailRequestEvent;
@@ -207,6 +215,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateCatalogItemsResult> OnAdminUpdateCatalogItemsResultEvent;
         public event PlayFabRequestEvent<UpdateCloudScriptRequest> OnAdminUpdateCloudScriptRequestEvent;
         public event PlayFabResultEvent<UpdateCloudScriptResult> OnAdminUpdateCloudScriptResultEvent;
+        public event PlayFabRequestEvent<UpdateIPBanRequest> OnAdminUpdateIPBanRequestEvent;
+        public event PlayFabResultEvent<UpdateIPBanResult> OnAdminUpdateIPBanResultEvent;
         public event PlayFabRequestEvent<UpdateOpenIdConnectionRequest> OnAdminUpdateOpenIdConnectionRequestEvent;
         public event PlayFabResultEvent<EmptyResponse> OnAdminUpdateOpenIdConnectionResultEvent;
         public event PlayFabRequestEvent<UpdatePlayerCustomPropertiesRequest> OnAdminUpdatePlayerCustomPropertiesRequestEvent;
@@ -239,6 +249,8 @@ namespace PlayFab.Events
         public event PlayFabResultEvent<UpdateUserDataResult> OnAdminUpdateUserReadOnlyDataResultEvent;
         public event PlayFabRequestEvent<UpdateUserTitleDisplayNameRequest> OnAdminUpdateUserTitleDisplayNameRequestEvent;
         public event PlayFabResultEvent<UpdateUserTitleDisplayNameResult> OnAdminUpdateUserTitleDisplayNameResultEvent;
+        public event PlayFabRequestEvent<ValidateApiPolicyRequest> OnAdminValidateApiPolicyRequestEvent;
+        public event PlayFabResultEvent<ValidateApiPolicyResponse> OnAdminValidateApiPolicyResultEvent;
     }
 }
 #endif
