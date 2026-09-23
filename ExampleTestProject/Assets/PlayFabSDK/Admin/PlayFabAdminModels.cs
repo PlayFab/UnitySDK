@@ -3132,6 +3132,8 @@ namespace PlayFab.AdminModels
         GameSaveTitleConfigNoUpdatesRequested,
         GameSavePlayerNotEligibleForTransfer,
         GameSaveAlreadyAutoRolledBack,
+        GameSaveManifestNotEligibleForRestore,
+        GameSaveManifestArchived,
         StateShareForbidden,
         StateShareTitleNotInFlight,
         StateShareStateNotFound,
@@ -7944,6 +7946,11 @@ namespace PlayFab.AdminModels
     public class UserPsnInfo : PlayFabBaseModel
     {
         /// <summary>
+        /// Id of the PlayStation :tm: Network issuer environment this account is keyed under. Supply this value as IssuerId when
+        /// looking the account up.
+        /// </summary>
+        public int? IssuerId;
+        /// <summary>
         /// PlayStation :tm: Network account ID
         /// </summary>
         public string PsnAccountId;
@@ -7951,6 +7958,10 @@ namespace PlayFab.AdminModels
         /// PlayStation :tm: Network online ID
         /// </summary>
         public string PsnOnlineId;
+        /// <summary>
+        /// PlayStation :tm: Network sandbox ID
+        /// </summary>
+        public string PsnSandboxId;
     }
 
     [Serializable]

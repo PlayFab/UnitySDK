@@ -934,6 +934,8 @@ namespace PlayFab
         GameSaveTitleConfigNoUpdatesRequested = 20331,
         GameSavePlayerNotEligibleForTransfer = 20332,
         GameSaveAlreadyAutoRolledBack = 20333,
+        GameSaveManifestNotEligibleForRestore = 20334,
+        GameSaveManifestArchived = 20335,
         StateShareForbidden = 21000,
         StateShareTitleNotInFlight = 21001,
         StateShareStateNotFound = 21002,
