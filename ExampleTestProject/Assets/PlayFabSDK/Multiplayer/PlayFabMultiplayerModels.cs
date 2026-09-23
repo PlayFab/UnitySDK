@@ -737,10 +737,6 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
-        /// The configuration for the monitoring application on the build
-        /// </summary>
-        public MonitoringApplicationConfigurationParams MonitoringApplicationConfiguration;
-        /// <summary>
         /// The number of multiplayer servers to host on a single VM.
         /// </summary>
         public int MultiplayerServerCountPerVm;
@@ -819,10 +815,6 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
-        /// The configuration for the monitoring application for the build
-        /// </summary>
-        public MonitoringApplicationConfiguration MonitoringApplicationConfiguration;
-        /// <summary>
         /// The number of multiplayer servers to host on a single VM of the build.
         /// </summary>
         public int MultiplayerServerCountPerVm;
@@ -846,11 +838,6 @@ namespace PlayFab.MultiplayerModels
         /// The type of game server being hosted.
         /// </summary>
         public string ServerType;
-        /// <summary>
-        /// When true, assets will be downloaded and uncompressed in memory, without the compressedversion being written first to
-        /// disc.
-        /// </summary>
-        public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size the build was created on.
         /// </summary>
@@ -910,10 +897,6 @@ namespace PlayFab.MultiplayerModels
         /// Game Server SDK (GSDK).Constraints: Maximum number of keys: 30, Maximum key length: 50, Maximum value length: 100
         /// </summary>
         public Dictionary<string,string> Metadata;
-        /// <summary>
-        /// The configuration for the monitoring application on the build
-        /// </summary>
-        public MonitoringApplicationConfigurationParams MonitoringApplicationConfiguration;
         /// <summary>
         /// The number of multiplayer servers to host on a single VM.
         /// </summary>
@@ -998,10 +981,6 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
-        /// The configuration for the monitoring application for the build
-        /// </summary>
-        public MonitoringApplicationConfiguration MonitoringApplicationConfiguration;
-        /// <summary>
         /// The number of multiplayer servers to host on a single VM of the build.
         /// </summary>
         public int MultiplayerServerCountPerVm;
@@ -1029,11 +1008,6 @@ namespace PlayFab.MultiplayerModels
         /// The command to run when the multiplayer server has been allocated, including any arguments.
         /// </summary>
         public string StartMultiplayerServerCommand;
-        /// <summary>
-        /// When true, assets will be downloaded and uncompressed in memory, without the compressedversion being written first to
-        /// disc.
-        /// </summary>
-        public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size the build was created on.
         /// </summary>
@@ -1099,10 +1073,6 @@ namespace PlayFab.MultiplayerModels
         /// Game Server SDK (GSDK).Constraints: Maximum number of keys: 30, Maximum key length: 50, Maximum value length: 100
         /// </summary>
         public Dictionary<string,string> Metadata;
-        /// <summary>
-        /// The configuration for the monitoring application on the build
-        /// </summary>
-        public MonitoringApplicationConfigurationParams MonitoringApplicationConfiguration;
         /// <summary>
         /// The number of multiplayer servers to host on a single VM.
         /// </summary>
@@ -1193,10 +1163,6 @@ namespace PlayFab.MultiplayerModels
         /// </summary>
         public Dictionary<string,string> Metadata;
         /// <summary>
-        /// The configuration for the monitoring application for the build
-        /// </summary>
-        public MonitoringApplicationConfiguration MonitoringApplicationConfiguration;
-        /// <summary>
         /// The number of multiplayer servers to host on a single VM of the build.
         /// </summary>
         public int MultiplayerServerCountPerVm;
@@ -1221,11 +1187,6 @@ namespace PlayFab.MultiplayerModels
         /// relative to the root asset folder when unzipped.
         /// </summary>
         public string StartMultiplayerServerCommand;
-        /// <summary>
-        /// When true, assets will be downloaded and uncompressed in memory, without the compressedversion being written first to
-        /// disc.
-        /// </summary>
-        public bool? UseStreamingForAssetDownloads;
         /// <summary>
         /// The VM size the build was created on.
         /// </summary>
@@ -2234,6 +2195,10 @@ namespace PlayFab.MultiplayerModels
         /// The game certificates for the build.
         /// </summary>
         public List<GameCertificateReference> GameCertificateReferences;
+        /// <summary>
+        /// The game secrets for the build.
+        /// </summary>
+        public List<GameSecretReference> GameSecretReferences;
         /// <summary>
         /// The instrumentation configuration of the build.
         /// </summary>
@@ -4015,48 +3980,6 @@ namespace PlayFab.MultiplayerModels
     {
         Unlocked,
         Locked
-    }
-
-    [Serializable]
-    public class MonitoringApplicationConfiguration : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Asset which contains the monitoring application files and scripts.
-        /// </summary>
-        public AssetReference AssetReference;
-        /// <summary>
-        /// Execution script name, this will be the main executable for the monitoring application.
-        /// </summary>
-        public string ExecutionScriptName;
-        /// <summary>
-        /// Installation script name, this will be run before the ExecutionScript.
-        /// </summary>
-        public string InstallationScriptName;
-        /// <summary>
-        /// Timespan the monitoring application will be kept alive when running from the start of the VM
-        /// </summary>
-        public double? OnStartRuntimeInMinutes;
-    }
-
-    [Serializable]
-    public class MonitoringApplicationConfigurationParams : PlayFabBaseModel
-    {
-        /// <summary>
-        /// Asset which contains the monitoring application files and scripts.
-        /// </summary>
-        public AssetReferenceParams AssetReference;
-        /// <summary>
-        /// Execution script name, this will be the main executable for the monitoring application.
-        /// </summary>
-        public string ExecutionScriptName;
-        /// <summary>
-        /// Installation script name, this will be run before the ExecutionScript.
-        /// </summary>
-        public string InstallationScriptName;
-        /// <summary>
-        /// Timespan the monitoring application will be kept alive when running from the start of the VM
-        /// </summary>
-        public double? OnStartRuntimeInMinutes;
     }
 
     [Serializable]

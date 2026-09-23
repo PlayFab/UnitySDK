@@ -167,7 +167,7 @@ namespace PlayFab.InsightsModels
     public class InsightsPerformanceLevel : PlayFabBaseModel
     {
         /// <summary>
-        /// Number of allowed active event exports.
+        /// Number of allowed active event exports. This value is always zero.
         /// </summary>
         public int ActiveEventExports;
         /// <summary>
