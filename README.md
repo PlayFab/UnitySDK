@@ -1,5 +1,16 @@
 # UnitySDK README
 
+[![Latest release][badge-release]][link-release]
+[![License: Apache-2.0][badge-license]][link-license]
+[![Unity 5.3+][badge-unity]][link-unity]
+[![Microsoft GDK supported][badge-gdk]][link-gdk]
+[![Documentation on Microsoft Learn][badge-docs]][link-docs]
+[![Visit our Blog][badge-blog]][link-blog]
+[![Join us on Discord][badge-discord]][link-discord]
+[![PRs welcome][badge-prs]][link-prs]
+
+> **Note:** This legacy SDK has been replaced by the new [PlayFab Unity SDK](https://github.com/PlayFab/PlayFabSDK_Unity). If you are migrating to the new SDK, start with the [Migration Guide](https://github.com/PlayFab/PlayFabSDK_Unity/blob/main/Documents~/MigrationGuide.md).
+
 The PlayFab Unity SDK consists of two packages—PlayFab [UnitySDK](https://aka.ms/PlayFabUnitySdk) and the optional [PlayFab Unity Editor Extensions](https://aka.ms/PlayFabUnityEdEx).
 
 The Editor Extensions package provides a simple user interface to help you download, install, configure, upgrade the PlayFab SDK. It is the simpler way to get set up right away. However, it requires you to include additional files into your project.
@@ -117,3 +128,21 @@ Our Developer Success Team can assist with answering any questions as well as pr
   http://www.apache.org/licenses/
 
   Full details available within the LICENSE file.
+
+<!-- Badge image and link definitions -->
+[badge-release]: https://img.shields.io/github/v/release/PlayFab/UnitySDK?label=release&color=107C10
+[link-release]: https://github.com/PlayFab/UnitySDK/releases
+[badge-license]: https://img.shields.io/github/license/PlayFab/UnitySDK?color=107C10
+[link-license]: LICENSE
+[badge-unity]: https://img.shields.io/badge/Unity-5.3%2B-000000?logo=unity&logoColor=white
+[link-unity]: https://unity.com/
+[badge-gdk]: https://img.shields.io/badge/Microsoft%20GDK-%E2%9C%93-107C10
+[link-gdk]: https://github.com/microsoft/GDK/releases
+[badge-docs]: https://img.shields.io/badge/docs-Microsoft%20Learn-0078D4
+[link-docs]: https://learn.microsoft.com/xbox/playfab/sdks/unity3d/
+[badge-blog]: https://img.shields.io/badge/Visit%20our-Blog-FFA500?logo=rss&logoColor=white
+[link-blog]: https://developer.microsoft.com/en-us/games/articles/
+[badge-discord]: https://img.shields.io/badge/Join%20us%20on-Discord-7289DA?logo=discord&logoColor=white
+[link-discord]: https://aka.ms/msftgamedevdiscord
+[badge-prs]: https://img.shields.io/badge/PRs-welcome-d6336c
+[link-prs]: https://github.com/PlayFab/UnitySDK/pulls
